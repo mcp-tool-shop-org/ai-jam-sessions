@@ -37,6 +37,7 @@ import {
 import type { SongEntry, Difficulty } from "@mcptoolshop/ai-music-sheets";
 import { safeParseMeasure, measureToSingableText, type SingAlongMode } from "./note-parser.js";
 import type { ParseWarning, PlaybackMode, SyncMode } from "./types.js";
+import { createAudioEngine } from "./audio-engine.js";
 import { createVmpkConnector } from "./vmpk.js";
 import { createSession, SessionController } from "./session.js";
 import { createConsoleTeachingHook } from "./teaching.js";
@@ -504,7 +505,7 @@ let activeSession: SessionController | null = null;
 
 server.tool(
   "play_song",
-  "Play a song through VMPK via MIDI. Requires loopMIDI running and VMPK listening. Returns immediately with session info while playback runs in the background.",
+  "Play a song through the built-in piano engine. Returns immediately with session info while playback runs in the background.",
   {
     id: z.string().describe("Song ID (e.g. 'autumn-leaves', 'let-it-be')"),
     speed: z.number().min(0.1).max(4).optional().describe("Speed multiplier (0.5 = half speed, 1.0 = normal, 2.0 = double). Default: 1.0"),
@@ -527,8 +528,8 @@ server.tool(
       activeSession.stop();
     }
 
-    // Connect to MIDI
-    const connector = createVmpkConnector();
+    // Connect piano engine
+    const connector = createAudioEngine();
     try {
       await connector.connect();
     } catch (err) {
@@ -536,18 +537,7 @@ server.tool(
       return {
         content: [{
           type: "text",
-          text: [
-            `MIDI Connection Failed`,
-            ``,
-            `No MIDI output ports were found. On Windows, the built-in`,
-            `Microsoft GS Wavetable Synth should be available automatically.`,
-            ``,
-            `If it's not working, you can also install:`,
-            `1. loopMIDI — https://www.tobias-erichsen.de/software/loopmidi.html`,
-            `2. VMPK — https://vmpk.sourceforge.io/`,
-            ``,
-            `Error: ${msg}`,
-          ].join("\n"),
+          text: `Piano engine failed to start: ${msg}`,
         }],
         isError: true,
       };

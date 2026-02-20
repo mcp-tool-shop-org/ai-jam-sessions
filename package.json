@@ -1,7 +1,7 @@
 {
   "name": "@mcptoolshop/pianoai",
   "version": "1.2.0",
-  "description": "MCP server + CLI for AI-powered piano teaching — plays through VMPK via MIDI with voice feedback",
+  "description": "Piano player with built-in audio engine — plays through speakers, no external software required. MCP server + CLI.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,14 +36,13 @@
   },
   "keywords": [
     "piano",
+    "audio",
     "midi",
     "mcp",
-    "vmpk",
-    "teaching",
     "ai",
     "music",
     "voice",
-    "practice"
+    "web-audio"
   ],
   "author": "mcp-tool-shop",
   "publishConfig": {
@@ -55,9 +54,10 @@
     "url": "https://github.com/mcp-tool-shop-org/pianoai.git"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.26.0",
     "@mcptoolshop/ai-music-sheets": "^1.0.0",
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "jzz": "^1.8.0",
+    "node-web-audio-api": "^1.0.8",
     "zod": "^4.3.6"
   },
   "devDependencies": {
