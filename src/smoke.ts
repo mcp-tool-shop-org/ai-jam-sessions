@@ -4,7 +4,9 @@
 // Verifies: ai-music-sheets loads, note parser works, sessions run with mock,
 // teaching hooks fire, key moments detected, voice/aside hooks produce output,
 // speed control works, progress fires, safe parsing collects warnings,
-// sing-along converts notes and produces blocking directives.
+// sing-along converts notes and produces blocking directives,
+// MIDI parsing, position tracking, PlaybackController, sing-on-MIDI,
+// voice filters, and live MIDI feedback.
 //
 // Usage: pnpm smoke (or: node --import tsx src/smoke.ts)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -28,7 +30,14 @@ import {
   detectKeyMoments,
 } from "./teaching.js";
 import { noteToSingable, measureToSingableText } from "./note-parser.js";
-import type { VoiceDirective, AsideDirective, PlaybackProgress, ParseWarning } from "./types.js";
+import { parseMidiBuffer } from "./midi/parser.js";
+import { PositionTracker } from "./playback/position.js";
+import { PlaybackController } from "./playback/controls.js";
+import { createSingOnMidiHook, midiNoteToSingable, filterClusterForVoice } from "./teaching/sing-on-midi.js";
+import { createLiveMidiFeedbackHook } from "./teaching/live-midi-feedback.js";
+import { writeMidi } from "midi-file";
+import type { VoiceDirective, AsideDirective, PlaybackProgress, ParseWarning, MidiStatus, MidiNote, VmpkConnector } from "./types.js";
+import type { MidiNoteEvent } from "./midi/types.js";
 
 let passed = 0;
 let failed = 0;
@@ -349,6 +358,234 @@ test("composed sing-along + live feedback fires", async () => {
   await sc.play();
   assert(singD.length > 0, "sing-along should fire");
   assert(feedbackVoiceD.length > 0 || feedbackAsideD.length > 0, "feedback should fire");
+});
+
+// ─── MIDI Helpers ──────────────────────────────────────────────────────────
+
+function buildSmokeMidi(notes: Array<{
+  note: number; velocity: number; startTick: number; endTick: number;
+}>, bpm = 120, ticksPerBeat = 480): Uint8Array {
+  const usPerBeat = Math.round(60_000_000 / bpm);
+  type MidiEvent = { deltaTime: number; type: string; [key: string]: any };
+  const events: MidiEvent[] = [];
+  events.push({ deltaTime: 0, type: "setTempo", meta: true, microsecondsPerBeat: usPerBeat });
+  const raw: Array<{ tick: number; event: MidiEvent }> = [];
+  for (const n of notes) {
+    raw.push({ tick: n.startTick, event: { deltaTime: 0, type: "noteOn", channel: 0, noteNumber: n.note, velocity: n.velocity } });
+    raw.push({ tick: n.endTick, event: { deltaTime: 0, type: "noteOff", channel: 0, noteNumber: n.note, velocity: 0 } });
+  }
+  raw.sort((a, b) => a.tick - b.tick);
+  let prevTick = 0;
+  for (const r of raw) {
+    r.event.deltaTime = r.tick - prevTick;
+    prevTick = r.tick;
+    events.push(r.event);
+  }
+  events.push({ deltaTime: 0, type: "endOfTrack", meta: true });
+  return new Uint8Array(writeMidi({
+    header: { format: 0 as const, numTracks: 1, ticksPerBeat },
+    tracks: [events],
+  } as any));
+}
+
+function createSmokeMockConnector(): VmpkConnector {
+  return {
+    async connect() {},
+    async disconnect() {},
+    status(): MidiStatus { return "connected"; },
+    listPorts() { return ["Mock"]; },
+    noteOn(_n: number, _v: number, _c?: number) {},
+    noteOff(_n: number, _c?: number) {},
+    allNotesOff(_c?: number) {},
+    async playNote(_m: MidiNote) {},
+  };
+}
+
+// ─── Test 10: MIDI file parsing ────────────────────────────────────────────
+console.log("\nMIDI file parsing:");
+test("parseMidiBuffer extracts note events", () => {
+  const buf = buildSmokeMidi([
+    { note: 60, velocity: 100, startTick: 0, endTick: 480 },
+    { note: 64, velocity: 90, startTick: 480, endTick: 960 },
+  ]);
+  const parsed = parseMidiBuffer(buf);
+  assert(parsed.events.length === 2, `expected 2 events, got ${parsed.events.length}`);
+  assert(parsed.events[0].note === 60, "first note should be 60");
+  assert(parsed.events[1].note === 64, "second note should be 64");
+  assert(parsed.bpm === 120, `expected 120 BPM, got ${parsed.bpm}`);
+});
+
+test("parseMidiBuffer computes duration", () => {
+  const buf = buildSmokeMidi([
+    { note: 60, velocity: 80, startTick: 0, endTick: 1920 },
+  ], 120, 480);
+  const parsed = parseMidiBuffer(buf);
+  // 1920 ticks at 480 ticks/beat at 120 BPM = 4 beats = 2 seconds
+  assert(parsed.durationSeconds > 1.5 && parsed.durationSeconds < 2.5,
+    `expected ~2s duration, got ${parsed.durationSeconds}`);
+});
+
+// ─── Test 11: Position Tracker ─────────────────────────────────────────────
+console.log("\nPosition tracker:");
+test("PositionTracker computes measures from beats", () => {
+  const notes = [];
+  for (let i = 0; i < 8; i++) {
+    notes.push({ note: 60 + i, velocity: 80, startTick: i * 480, endTick: (i + 1) * 480 });
+  }
+  const buf = buildSmokeMidi(notes, 120, 480);
+  const parsed = parseMidiBuffer(buf);
+  const tracker = new PositionTracker(parsed);
+  assert(tracker.totalMeasures >= 2, `expected >= 2 measures, got ${tracker.totalMeasures}`);
+});
+
+test("snapshotAt returns measure 1 at time 0", () => {
+  const buf = buildSmokeMidi([{ note: 60, velocity: 80, startTick: 0, endTick: 480 }], 120, 480);
+  const parsed = parseMidiBuffer(buf);
+  const tracker = new PositionTracker(parsed);
+  const snap = tracker.snapshotAt(0);
+  assert(snap.measure === 1, `expected measure 1, got ${snap.measure}`);
+  assert(snap.bpm === 120, `expected 120 BPM, got ${snap.bpm}`);
+});
+
+test("timeForMeasure returns seek target", () => {
+  const buf = buildSmokeMidi([{ note: 60, velocity: 80, startTick: 0, endTick: 480 }], 120, 480);
+  const parsed = parseMidiBuffer(buf);
+  const tracker = new PositionTracker(parsed);
+  const t1 = tracker.timeForMeasure(1);
+  const t2 = tracker.timeForMeasure(2);
+  assert(Math.abs(t1) < 0.01, `measure 1 should start at ~0, got ${t1}`);
+  assert(Math.abs(t2 - 2.0) < 0.1, `measure 2 should start at ~2s, got ${t2}`);
+});
+
+test("eventsInMeasure partitions notes correctly", () => {
+  const notes = [];
+  for (let i = 0; i < 8; i++) {
+    notes.push({ note: 60 + i, velocity: 80, startTick: i * 480, endTick: (i + 1) * 480 });
+  }
+  const buf = buildSmokeMidi(notes, 120, 480);
+  const parsed = parseMidiBuffer(buf);
+  const tracker = new PositionTracker(parsed);
+  const m1 = tracker.eventsInMeasure(1);
+  assert(m1.length === 4, `expected 4 events in measure 1, got ${m1.length}`);
+});
+
+// ─── Test 12: PlaybackController ───────────────────────────────────────────
+console.log("\nPlaybackController:");
+test("PlaybackController emits noteOn events", async () => {
+  const buf = buildSmokeMidi([
+    { note: 60, velocity: 100, startTick: 0, endTick: 480 },
+    { note: 64, velocity: 90, startTick: 480, endTick: 960 },
+  ]);
+  const parsed = parseMidiBuffer(buf);
+  const connector = createSmokeMockConnector();
+  const controller = new PlaybackController(connector, parsed);
+  const noteOns: number[] = [];
+  controller.on("noteOn", (e) => { if (e.type === "noteOn") noteOns.push(e.note); });
+  await controller.play({ speed: 100 });
+  assert(noteOns.length === 2, `expected 2 noteOn events, got ${noteOns.length}`);
+  assert(controller.state === "finished", `expected finished, got ${controller.state}`);
+});
+
+test("PlaybackController invokes teaching hook", async () => {
+  const buf = buildSmokeMidi([
+    { note: 60, velocity: 100, startTick: 0, endTick: 480 },
+  ]);
+  const parsed = parseMidiBuffer(buf);
+  const connector = createSmokeMockConnector();
+  const controller = new PlaybackController(connector, parsed);
+  const hook = createRecordingTeachingHook();
+  await controller.play({ speed: 100, teachingHook: hook });
+  const starts = hook.events.filter((e) => e.type === "measure-start");
+  assert(starts.length >= 1, `expected >= 1 measure-start, got ${starts.length}`);
+  const completions = hook.events.filter((e) => e.type === "song-complete");
+  assert(completions.length === 1, "should fire song-complete once");
+});
+
+// ─── Test 13: Sing-on-MIDI ─────────────────────────────────────────────────
+console.log("\nSing-on-MIDI:");
+test("midiNoteToSingable converts note-names", () => {
+  assert(midiNoteToSingable(60, "note-names") === "C4", "60 → C4");
+  assert(midiNoteToSingable(69, "note-names") === "A4", "69 → A4");
+});
+
+test("midiNoteToSingable converts solfege", () => {
+  assert(midiNoteToSingable(60, "solfege") === "Do", "60 → Do");
+  assert(midiNoteToSingable(64, "solfege") === "Mi", "64 → Mi");
+});
+
+test("createSingOnMidiHook produces directives", async () => {
+  const buf = buildSmokeMidi([
+    { note: 60, velocity: 100, startTick: 0, endTick: 480 },
+    { note: 64, velocity: 90, startTick: 480, endTick: 960 },
+  ]);
+  const parsed = parseMidiBuffer(buf);
+  const directives: VoiceDirective[] = [];
+  const hook = createSingOnMidiHook(async (d) => { directives.push(d); }, parsed, { mode: "note-names" });
+  await hook.onMeasureStart(1, undefined, undefined);
+  await hook.onMeasureStart(2, undefined, undefined);
+  assert(hook.directives.length === 2, `expected 2 directives, got ${hook.directives.length}`);
+  assert(hook.directives[0].text.includes("C4"), `first should contain C4, got ${hook.directives[0].text}`);
+});
+
+// ─── Test 14: Voice Filters ───────────────────────────────────────────────
+console.log("\nVoice filters:");
+test("melody-only picks highest note", () => {
+  const chord: MidiNoteEvent[] = [
+    { note: 48, velocity: 80, time: 0, duration: 0.5, channel: 0 },
+    { note: 60, velocity: 80, time: 0, duration: 0.5, channel: 0 },
+    { note: 72, velocity: 80, time: 0, duration: 0.5, channel: 0 },
+  ];
+  const filtered = filterClusterForVoice(chord, "melody-only");
+  assert(filtered.length === 1, `expected 1, got ${filtered.length}`);
+  assert(filtered[0].note === 72, `expected 72, got ${filtered[0].note}`);
+});
+
+test("harmony picks lowest note", () => {
+  const chord: MidiNoteEvent[] = [
+    { note: 48, velocity: 80, time: 0, duration: 0.5, channel: 0 },
+    { note: 72, velocity: 80, time: 0, duration: 0.5, channel: 0 },
+  ];
+  const filtered = filterClusterForVoice(chord, "harmony");
+  assert(filtered.length === 1, `expected 1, got ${filtered.length}`);
+  assert(filtered[0].note === 48, `expected 48, got ${filtered[0].note}`);
+});
+
+// ─── Test 15: Live MIDI Feedback ──────────────────────────────────────────
+console.log("\nLive MIDI feedback:");
+test("createLiveMidiFeedbackHook provides tracker", () => {
+  const buf = buildSmokeMidi([{ note: 60, velocity: 80, startTick: 0, endTick: 480 }], 120, 480);
+  const parsed = parseMidiBuffer(buf);
+  const hook = createLiveMidiFeedbackHook(async () => {}, async () => {}, parsed);
+  assert(hook.tracker instanceof PositionTracker, "should expose PositionTracker");
+  assert(hook.tracker.totalMeasures >= 1, "should have measures");
+});
+
+test("live feedback emits completion", async () => {
+  const buf = buildSmokeMidi([{ note: 60, velocity: 80, startTick: 0, endTick: 480 }], 120, 480);
+  const parsed = parseMidiBuffer(buf);
+  const voiceD: VoiceDirective[] = [];
+  const asideD: AsideDirective[] = [];
+  const hook = createLiveMidiFeedbackHook(async (d) => { voiceD.push(d); }, async (d) => { asideD.push(d); }, parsed);
+  await hook.onSongComplete(10, "Smoke Song");
+  assert(voiceD.some(d => d.text.includes("Smoke Song")), "should mention song name");
+  assert(asideD.some(d => d.reason === "session-complete"), "should emit session-complete");
+});
+
+test("composed sing + live feedback on PlaybackController", async () => {
+  const buf = buildSmokeMidi([
+    { note: 60, velocity: 40, startTick: 0, endTick: 480 },
+    { note: 64, velocity: 110, startTick: 480, endTick: 960 },
+  ]);
+  const parsed = parseMidiBuffer(buf);
+  const connector = createSmokeMockConnector();
+  const controller = new PlaybackController(connector, parsed);
+  const singD: VoiceDirective[] = [];
+  const feedbackA: AsideDirective[] = [];
+  const singHook = createSingOnMidiHook(async (d) => { singD.push(d); }, parsed, { mode: "solfege" });
+  const fbHook = createLiveMidiFeedbackHook(async () => {}, async (d) => { feedbackA.push(d); }, parsed, { voiceInterval: 100 });
+  const composed = composeTeachingHooks(singHook, fbHook);
+  await controller.play({ speed: 100, teachingHook: composed });
+  assert(singD.length > 0, "sing hook should produce directives");
 });
 
 // ─── Summary ────────────────────────────────────────────────────────────────
