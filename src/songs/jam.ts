@@ -233,6 +233,13 @@ const STYLE_HINTS: Record<Genre, string[]> = {
     "Gospel-influenced passing chords and suspensions",
     "Gentle touch, let notes breathe with pedal",
   ],
+  soul: [
+    "Gospel-rooted: steady left hand, right hand sings the melody",
+    "Call-and-response phrasing between hands",
+    "Strong downbeats with slight swing on eighth notes",
+    "Simple chord voicings — power is in conviction, not complexity",
+    "Build dynamics through repetition and emphasis, not speed",
+  ],
   latin: [
     "Bossa nova: bass note on 1, chord on the 'and' of 2",
     "Anticipation: place chords just before the downbeat",
