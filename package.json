@@ -48,7 +48,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mcp-tool-shop-org/pianai.git"
+    "url": "https://github.com/mcp-tool-shop-org/pianoai.git"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.26.0",
