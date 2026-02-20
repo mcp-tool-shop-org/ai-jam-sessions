@@ -2,6 +2,9 @@
 //
 // Manages the playback session: load a song, parse measures, play through
 // VMPK via the connector, track progress, handle pause/resume/stop.
+//
+// Teaching hooks fire at measure boundaries and key moments, allowing
+// the AI teacher to speak, display tips, or push interjections.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { SongEntry } from "ai-music-sheets";
@@ -12,8 +15,10 @@ import type {
   PlayableMeasure,
   Beat,
   VmpkConnector,
+  TeachingHook,
 } from "./types.js";
 import { parseMeasure } from "./note-parser.js";
+import { createSilentTeachingHook, detectKeyMoments } from "./teaching.js";
 
 let sessionCounter = 0;
 
@@ -38,13 +43,18 @@ export function createSession(
     voiceEnabled: options.voice ?? true,
   };
 
-  return new SessionController(session, connector);
+  return new SessionController(
+    session,
+    connector,
+    options.teachingHook ?? createSilentTeachingHook()
+  );
 }
 
 /**
  * Session controller — the main runtime interface for a practice session.
  *
- * Holds the session state + connector, provides play/pause/stop/skip methods.
+ * Holds the session state + connector + teaching hook.
+ * Provides play/pause/stop/skip methods.
  */
 export class SessionController {
   private abortController: AbortController | null = null;
@@ -52,7 +62,8 @@ export class SessionController {
 
   constructor(
     public readonly session: Session,
-    private readonly connector: VmpkConnector
+    private readonly connector: VmpkConnector,
+    private readonly teachingHook: TeachingHook
   ) {
     // Pre-parse all measures at session creation
     const bpm = this.effectiveTempo();
@@ -142,6 +153,11 @@ export class SessionController {
 
       if (!signal.aborted) {
         this.session.state = "finished";
+        // Fire song-complete hook
+        await this.teachingHook.onSongComplete(
+          this.session.measuresPlayed,
+          this.session.song.title
+        );
       }
     } catch (err) {
       if (signal.aborted) {
@@ -217,6 +233,7 @@ export class SessionController {
 
   /**
    * Play a range of measures (inclusive, 0-based indices).
+   * Fires teaching hooks at measure boundaries and key moments.
    */
   private async playRange(
     startIdx: number,
@@ -228,8 +245,23 @@ export class SessionController {
 
       this.session.currentMeasure = i;
       const pm = this.playableMeasures[i];
+      const measureNum = i + 1; // 1-based for display/teaching
 
-      // Play right and left hand simultaneously
+      // ── Teaching: announce measure ──
+      await this.teachingHook.onMeasureStart(
+        measureNum,
+        pm.source.teachingNote,
+        pm.source.dynamics
+      );
+
+      // ── Teaching: check for key moments ──
+      const keyMoments = detectKeyMoments(this.session.song, measureNum);
+      for (const km of keyMoments) {
+        if (signal.aborted) return;
+        await this.teachingHook.onKeyMoment(km);
+      }
+
+      // ── Play the measure ──
       await this.playMeasure(pm, signal);
       this.session.measuresPlayed++;
     }
@@ -273,6 +305,21 @@ export class SessionController {
     signal: AbortSignal
   ): Promise<void> {
     const pm = this.playableMeasures[measureIdx];
+    const measureNum = measureIdx + 1;
+
+    // ── Teaching: announce measure ──
+    await this.teachingHook.onMeasureStart(
+      measureNum,
+      pm.source.teachingNote,
+      pm.source.dynamics
+    );
+
+    // ── Teaching: check key moments ──
+    const keyMoments = detectKeyMoments(this.session.song, measureNum);
+    for (const km of keyMoments) {
+      if (signal.aborted) return;
+      await this.teachingHook.onKeyMoment(km);
+    }
 
     // Right hand alone
     await this.playBeats(pm.rightBeats, signal);
