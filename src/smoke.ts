@@ -1,7 +1,8 @@
 // ─── piano-sessions-ai: Smoke Test ──────────────────────────────────────────
 //
 // Quick integration smoke test — no MIDI hardware needed.
-// Verifies: ai-music-sheets loads, note parser works, sessions run with mock.
+// Verifies: ai-music-sheets loads, note parser works, sessions run with mock,
+// teaching hooks fire, key moments detected.
 //
 // Usage: pnpm smoke (or: node --import tsx src/smoke.ts)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -11,28 +12,31 @@ import {
   getSong,
   getStats,
   searchSongs,
-  GENRES,
 } from "ai-music-sheets";
 import { createSession } from "./session.js";
 import { createMockVmpkConnector } from "./vmpk.js";
 import { parseNoteToMidi, midiToNoteName } from "./note-parser.js";
+import { createRecordingTeachingHook, detectKeyMoments } from "./teaching.js";
 
 let passed = 0;
 let failed = 0;
+const pending: Promise<void>[] = [];
 
 function test(name: string, fn: () => void | Promise<void>): void {
   try {
     const result = fn();
     if (result instanceof Promise) {
-      result
-        .then(() => {
-          passed++;
-          console.log(`  ✓ ${name}`);
-        })
-        .catch((err) => {
-          failed++;
-          console.log(`  ✗ ${name}: ${err}`);
-        });
+      pending.push(
+        result
+          .then(() => {
+            passed++;
+            console.log(`  ✓ ${name}`);
+          })
+          .catch((err) => {
+            failed++;
+            console.log(`  ✗ ${name}: ${err}`);
+          })
+      );
     } else {
       passed++;
       console.log(`  ✓ ${name}`);
@@ -47,7 +51,7 @@ function assert(condition: boolean, msg: string): void {
   if (!condition) throw new Error(`Assertion failed: ${msg}`);
 }
 
-console.log("\n🎹 piano-sessions-ai smoke test\n");
+console.log("\n piano-sessions-ai smoke test\n");
 
 // ─── Test 1: ai-music-sheets loads ──────────────────────────────────────────
 console.log("ai-music-sheets integration:");
@@ -87,7 +91,7 @@ test("MIDI 60 = C4", () => {
   assert(midiToNoteName(60) === "C4", "60 should be C4");
 });
 
-test("round-trip: C#4 → 61 → C#4", () => {
+test("round-trip: C#4 -> 61 -> C#4", () => {
   const midi = parseNoteToMidi("C#4");
   assert(midi === 61, "C#4 should be 61");
   assert(midiToNoteName(midi) === "C#4", "61 should be C#4");
@@ -121,12 +125,41 @@ test("measure mode plays one and pauses", async () => {
   assert(sc.session.measuresPlayed === 1, "1 measure");
 });
 
+// ─── Test 4: Teaching hooks ─────────────────────────────────────────────────
+console.log("\nTeaching hooks:");
+test("detectKeyMoments finds bar 1 in moonlight", () => {
+  const song = getSong("moonlight-sonata-mvt1")!;
+  const moments = detectKeyMoments(song, 1);
+  assert(moments.length > 0, "should find key moment at bar 1");
+});
+
+test("recording hook captures events during playback", async () => {
+  const mock = createMockVmpkConnector();
+  const hook = createRecordingTeachingHook();
+  const song = getSong("let-it-be")!;
+  const sc = createSession(song, mock, { teachingHook: hook });
+  await mock.connect();
+  await sc.play();
+  const starts = hook.events.filter((e) => e.type === "measure-start");
+  assert(starts.length === 8, `expected 8 measure-start events, got ${starts.length}`);
+});
+
+test("song-complete fires after full playback", async () => {
+  const mock = createMockVmpkConnector();
+  const hook = createRecordingTeachingHook();
+  const song = getSong("basic-12-bar-blues")!;
+  const sc = createSession(song, mock, { teachingHook: hook });
+  await mock.connect();
+  await sc.play();
+  const complete = hook.events.filter((e) => e.type === "song-complete");
+  assert(complete.length === 1, "should fire song-complete once");
+});
+
 // ─── Summary ────────────────────────────────────────────────────────────────
 
-// Wait a tick for async tests to complete
-setTimeout(() => {
+Promise.all(pending).then(() => {
   console.log(`\n${"─".repeat(40)}`);
   console.log(`Smoke: ${passed} passed, ${failed} failed`);
   if (failed > 0) process.exit(1);
-  console.log("✅ All smoke tests passed\n");
-}, 100);
+  console.log("All smoke tests passed\n");
+});
