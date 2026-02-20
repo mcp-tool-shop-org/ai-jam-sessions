@@ -23,6 +23,7 @@ export const GENRES = [
   "film",
   "ragtime",
   "new-age",
+  "folk",
 ] as const;
 
 export type Genre = (typeof GENRES)[number];

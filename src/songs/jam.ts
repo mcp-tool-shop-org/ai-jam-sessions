@@ -261,6 +261,13 @@ const STYLE_HINTS: Record<Genre, string[]> = {
     "Dynamics should be subtle, mostly pp to mp",
     "Create a meditative, flowing atmosphere",
   ],
+  folk: [
+    "Simple, singable melody above basic chord accompaniment",
+    "Pentatonic or modal scales — avoid chromatic passing tones",
+    "Gentle waltz feel for 3/4 time, steady pulse for 4/4",
+    "Sustain pedal on beat 1, lift before the next measure",
+    "The melody tells the story — keep accompaniment sparse and supportive",
+  ],
 };
 
 const MOOD_HINTS: Record<string, string[]> = {
