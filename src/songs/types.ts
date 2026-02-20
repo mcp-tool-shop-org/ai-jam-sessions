@@ -19,6 +19,7 @@ export const GENRES = [
   "blues",
   "rock",
   "rnb",
+  "soul",
   "latin",
   "film",
   "ragtime",
