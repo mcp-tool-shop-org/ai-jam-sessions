@@ -172,9 +172,9 @@ export interface SessionOptions {
 
 // ─── VMPK Types ─────────────────────────────────────────────────────────────
 
-/** VMPK connection configuration. */
+/** MIDI connection configuration. */
 export interface VmpkConfig {
-  /** MIDI output port name or regex pattern. Default: /loop/i */
+  /** MIDI output port name, regex pattern, or "auto" to auto-detect. Default: "auto" */
   portName: string | RegExp;
 
   /** MIDI channel (0-15). Default: 0. */

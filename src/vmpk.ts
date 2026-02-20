@@ -1,30 +1,47 @@
-// ─── pianoai: VMPK MIDI Connector ───────────────────────────────────────────
+// ─── pianoai: MIDI Connector ─────────────────────────────────────────────────
 //
-// Connects to VMPK (Virtual MIDI Piano Keyboard) via a virtual MIDI port
-// using the JZZ library. On Windows, requires loopMIDI to create the port.
+// Connects to any available MIDI output using the JZZ library.
+// Auto-detects the best port: prefers loopMIDI/VMPK if present,
+// falls back to the system's built-in MIDI synth (e.g. Microsoft GS
+// Wavetable Synth on Windows). No external software required.
 //
 // Usage:
-//   const vmpk = createVmpkConnector({ portName: /loop/i });
-//   await vmpk.connect();
-//   vmpk.noteOn(60, 100);   // middle C
-//   vmpk.noteOff(60);
-//   await vmpk.disconnect();
+//   const midi = createVmpkConnector();         // auto-detect best port
+//   const midi = createVmpkConnector({ portName: /loop/i }); // force specific port
+//   await midi.connect();
+//   midi.noteOn(60, 100);   // middle C
+//   midi.noteOff(60);
+//   await midi.disconnect();
 // ─────────────────────────────────────────────────────────────────────────────
 
 import JZZ from "jzz";
 import type { VmpkConnector, VmpkConfig, MidiStatus, MidiNote } from "./types.js";
 
-/** Default configuration. */
+/** Default configuration — auto-detect best available MIDI output. */
 const DEFAULT_CONFIG: VmpkConfig = {
-  portName: /loop/i, // matches "loopMIDI Port" on Windows
+  portName: "auto",
   channel: 0,
   velocity: 80,
 };
 
 /**
- * Create a VMPK MIDI connector.
+ * Preferred port patterns, tried in order.
+ * loopMIDI/VMPK first (for users with a full setup), then system synths.
+ */
+const PORT_PREFERENCES: RegExp[] = [
+  /loop/i,         // loopMIDI Port
+  /vmpk/i,         // VMPK direct
+  /wavetable/i,    // Microsoft GS Wavetable Synth
+  /synth/i,        // Any other software synth
+  /midi/i,         // Any port with "MIDI" in the name
+];
+
+/**
+ * Create a MIDI connector.
  *
- * This is the real implementation that talks to hardware via JZZ.
+ * With no config (or portName: "auto"), auto-detects the best available
+ * MIDI output — no external software required on Windows.
+ *
  * For testing, inject a mock VmpkConnector via the Session constructor.
  */
 export function createVmpkConnector(
@@ -35,6 +52,7 @@ export function createVmpkConnector(
   let engine: any = null;
   let port: any = null;
   let currentStatus: MidiStatus = "disconnected";
+  let connectedPortName: string = "";
 
   return {
     async connect(): Promise<void> {
@@ -43,20 +61,55 @@ export function createVmpkConnector(
       currentStatus = "connecting";
       try {
         engine = await JZZ();
+        const ports = listPortsInternal(engine);
 
-        // Try to find a matching port
-        const portName = cfg.portName;
-        port = engine.openMidiOut(portName);
+        if (cfg.portName === "auto") {
+          // Auto-detect: try preferred patterns in order
+          port = null;
+          for (const pattern of PORT_PREFERENCES) {
+            const match = ports.find((p) => pattern.test(p));
+            if (match) {
+              try {
+                port = engine.openMidiOut(match);
+                connectedPortName = match;
+                break;
+              } catch {
+                // This port didn't work, try next pattern
+                continue;
+              }
+            }
+          }
+
+          // Last resort: try the first available port
+          if (!port && ports.length > 0) {
+            port = engine.openMidiOut(ports[0]);
+            connectedPortName = ports[0];
+          }
+
+          if (!port) {
+            throw new Error("No MIDI output ports available");
+          }
+        } else {
+          // Specific port requested
+          port = engine.openMidiOut(cfg.portName);
+          connectedPortName =
+            cfg.portName instanceof RegExp
+              ? (ports.find((p) => (cfg.portName as RegExp).test(p)) ?? cfg.portName.toString())
+              : String(cfg.portName);
+        }
+
         currentStatus = "connected";
+        console.error(`MIDI connected: ${connectedPortName}`);
       } catch (err) {
         currentStatus = "error";
         const portDesc =
-          cfg.portName instanceof RegExp
-            ? cfg.portName.toString()
-            : `"${cfg.portName}"`;
+          cfg.portName === "auto"
+            ? "(auto-detect)"
+            : cfg.portName instanceof RegExp
+              ? cfg.portName.toString()
+              : `"${cfg.portName}"`;
         throw new Error(
-          `Failed to connect to MIDI port ${portDesc}. ` +
-          `On Windows, make sure loopMIDI is running and VMPK is listening. ` +
+          `Failed to connect to MIDI output ${portDesc}. ` +
           `Available ports: ${listPortsInternal(engine).join(", ") || "(none)"}. ` +
           `Error: ${err instanceof Error ? err.message : String(err)}`
         );
