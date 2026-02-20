@@ -2,16 +2,15 @@
 // ─── pianoai: CLI Entry Point ─────────────────────────────────────
 //
 // Usage:
-//   pianoai                     # Interactive mode — list songs, pick one, play
+//   pianoai                     # Show help
 //   pianoai list                # List all songs
 //   pianoai list --genre jazz   # List songs by genre
-//   pianoai play <song-id>      # Play a specific song
+//   pianoai play <song-id>      # Play a song (built-in piano engine)
+//   pianoai play <song-id> --midi  # Play via MIDI output
 //   pianoai sing <song-id>      # Sing along — narrate notes during playback
-//   pianoai info <song-id>      # Show song details (musical language)
+//   pianoai info <song-id>      # Show song details
 //   pianoai stats               # Registry stats
 //   pianoai ports               # List available MIDI ports
-//
-// Requires: loopMIDI running + VMPK listening on the loopMIDI port.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
@@ -22,8 +21,9 @@ import {
   GENRES,
 } from "@mcptoolshop/ai-music-sheets";
 import type { SongEntry, Genre } from "@mcptoolshop/ai-music-sheets";
-import type { PlaybackProgress, PlaybackMode, SyncMode, VoiceDirective, AsideDirective } from "./types.js";
+import type { PlaybackProgress, PlaybackMode, SyncMode, VoiceDirective, AsideDirective, VmpkConnector } from "./types.js";
 import type { SingAlongMode } from "./note-parser.js";
+import { createAudioEngine } from "./audio-engine.js";
 import { createVmpkConnector } from "./vmpk.js";
 import { createSession } from "./session.js";
 import {
@@ -147,7 +147,7 @@ function cmdInfo(args: string[]): void {
 async function cmdPlay(args: string[]): Promise<void> {
   const songId = args[0];
   if (!songId) {
-    console.error("Usage: pianoai play <song-id> [--tempo N] [--speed N] [--mode MODE]");
+    console.error("Usage: pianoai play <song-id> [--tempo N] [--speed N] [--mode MODE] [--midi]");
     process.exit(1);
   }
   const song = getSong(songId);
@@ -157,6 +157,7 @@ async function cmdPlay(args: string[]): Promise<void> {
   }
 
   // Parse flags
+  const useMidi = hasFlag(args, "--midi");
   const portName = getFlag(args, "--port") ?? undefined;
   const tempoStr = getFlag(args, "--tempo");
   const speedStr = getFlag(args, "--speed");
@@ -183,10 +184,12 @@ async function cmdPlay(args: string[]): Promise<void> {
     process.exit(1);
   }
 
-  console.log(`\nConnecting to MIDI...`);
-  const connector = createVmpkConnector(
-    portName ? { portName } : undefined
-  );
+  // Create connector: built-in piano engine or MIDI output
+  const connector: VmpkConnector = useMidi
+    ? createVmpkConnector(portName ? { portName } : undefined)
+    : createAudioEngine();
+
+  console.log(useMidi ? `\nConnecting to MIDI...` : `\nStarting piano...`);
 
   try {
     await connector.connect();
@@ -226,20 +229,7 @@ async function cmdPlay(args: string[]): Promise<void> {
     console.log(session.summary());
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-
-    // Detect MIDI connection failure — provide helpful guidance
-    if (msg.includes("Failed to connect to MIDI") || msg.includes("MIDI port not connected")) {
-      console.error(`\n❌ MIDI Connection Failed`);
-      console.error(`\nTo play through VMPK, you need:`);
-      console.error(`  1. loopMIDI running with a virtual port (e.g. "loopMIDI Port")`);
-      console.error(`     → Download: https://www.tobias-erichsen.de/software/loopmidi.html`);
-      console.error(`  2. VMPK listening on that port`);
-      console.error(`     → Download: https://vmpk.sourceforge.io/`);
-      console.error(`     → VMPK → Edit → MIDI Connections → Input: "loopMIDI Port"`);
-      console.error(`\nDetailed error: ${msg}`);
-    } else {
-      console.error(`\nError: ${msg}`);
-    }
+    console.error(`\nError: ${msg}`);
     process.exit(1);
   } finally {
     await connector.disconnect();
@@ -249,7 +239,7 @@ async function cmdPlay(args: string[]): Promise<void> {
 async function cmdSing(args: string[]): Promise<void> {
   const songId = args[0];
   if (!songId) {
-    console.error("Usage: pianoai sing <song-id> [--mode note-names|solfege|contour|syllables] [--hand right|left|both] [--speed N] [--tempo N] [--with-piano] [--sync concurrent|before]");
+    console.error("Usage: pianoai sing <song-id> [--mode note-names|solfege|contour|syllables] [--hand right|left|both] [--speed N] [--tempo N] [--with-piano] [--sync concurrent|before] [--midi]");
     process.exit(1);
   }
   const song = getSong(songId);
@@ -259,6 +249,7 @@ async function cmdSing(args: string[]): Promise<void> {
   }
 
   // Parse flags
+  const useMidi = hasFlag(args, "--midi");
   const portName = getFlag(args, "--port") ?? undefined;
   const tempoStr = getFlag(args, "--tempo");
   const speedStr = getFlag(args, "--speed");
@@ -302,10 +293,12 @@ async function cmdSing(args: string[]): Promise<void> {
     process.exit(1);
   }
 
-  console.log(`\nConnecting to MIDI...`);
-  const connector = createVmpkConnector(
-    portName ? { portName } : undefined
-  );
+  // Create connector: built-in piano engine or MIDI output
+  const connector: VmpkConnector = useMidi
+    ? createVmpkConnector(portName ? { portName } : undefined)
+    : createAudioEngine();
+
+  console.log(useMidi ? `\nConnecting to MIDI...` : `\nStarting piano...`);
 
   try {
     await connector.connect();
@@ -377,19 +370,7 @@ async function cmdSing(args: string[]): Promise<void> {
     console.log(session.summary());
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-
-    if (msg.includes("Failed to connect to MIDI") || msg.includes("MIDI port not connected")) {
-      console.error(`\n❌ MIDI Connection Failed`);
-      console.error(`\nTo play through VMPK, you need:`);
-      console.error(`  1. loopMIDI running with a virtual port (e.g. "loopMIDI Port")`);
-      console.error(`     → Download: https://www.tobias-erichsen.de/software/loopmidi.html`);
-      console.error(`  2. VMPK listening on that port`);
-      console.error(`     → Download: https://vmpk.sourceforge.io/`);
-      console.error(`     → VMPK → Edit → MIDI Connections → Input: "loopMIDI Port"`);
-      console.error(`\nDetailed error: ${msg}`);
-    } else {
-      console.error(`\nError: ${msg}`);
-    }
+    console.error(`\nError: ${msg}`);
     process.exit(1);
   } finally {
     await connector.disconnect();
@@ -422,43 +403,44 @@ function cmdPorts(): void {
 
 function cmdHelp(): void {
   console.log(`
-pianoai — AI-powered piano teaching via MIDI
+pianoai — Play piano through your speakers
 
 Commands:
   list [--genre <genre>]     List available songs
-  info <song-id>             Show song details and teaching notes
-  play <song-id> [options]   Play a song through VMPK
+  info <song-id>             Show song details
+  play <song-id> [options]   Play a song
   sing <song-id> [options]   Sing along — narrate notes during playback
   stats                      Registry statistics
   ports                      List MIDI output ports
   help                       Show this help
 
 Play options:
-  --port <name>              MIDI port name (default: auto-detect loopMIDI)
   --tempo <bpm>              Override tempo (10-400 BPM)
   --speed <mult>             Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double)
   --mode <mode>              Playback mode: full, measure, hands, loop
+  --midi                     Output via MIDI instead of built-in piano
+  --port <name>              MIDI port name (with --midi)
 
 Sing options:
-  --port <name>              MIDI port name (default: auto-detect loopMIDI)
   --tempo <bpm>              Override tempo (10-400 BPM)
   --speed <mult>             Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double)
   --mode <mode>              Sing-along mode: note-names, solfege, contour, syllables
   --hand <hand>              Which hand: right, left, both
   --with-piano               Play piano accompaniment while singing
   --sync <mode>              Voice+piano sync: concurrent (default), before
+  --midi                     Output via MIDI instead of built-in piano
+  --port <name>              MIDI port name (with --midi)
 
 Examples:
-  pianoai list --genre jazz
-  pianoai info autumn-leaves
-  pianoai play moonlight-sonata-mvt1 --tempo 48
-  pianoai play basic-12-bar-blues --mode measure
-  pianoai play let-it-be --speed 0.5               # half speed practice
-  pianoai play dream-on --speed 0.75 --mode hands   # slow hands-separate
-  pianoai sing let-it-be --mode note-names           # narrate note names
-  pianoai sing fur-elise --mode solfege --hand both  # solfege, both hands
+  pianoai play let-it-be                            # play through speakers
+  pianoai play moonlight-sonata-mvt1 --tempo 48     # slow tempo
+  pianoai play let-it-be --speed 0.5                # half speed
+  pianoai play dream-on --speed 0.75 --mode hands   # hands separate
+  pianoai play let-it-be --midi                     # play via MIDI output
+  pianoai sing let-it-be --mode note-names          # narrate note names
+  pianoai sing fur-elise --mode solfege --hand both # solfege, both hands
   pianoai sing let-it-be --with-piano               # sing + piano together
-  pianoai sing fur-elise --with-piano --sync before # voice first, then piano
+  pianoai list --genre jazz                         # browse jazz songs
 `);
 }
 

@@ -1,10 +1,10 @@
 // ─── pianoai ────────────────────────────────────────────────────────────────
 //
-// MCP server + CLI for AI-powered piano teaching.
-// Plays songs through VMPK via MIDI with voice feedback.
+// Piano player — plays songs through speakers or MIDI.
+// Built-in piano engine included. No external software required.
 //
 // Usage:
-//   import { createSession, createVmpkConnector } from "pianoai";
+//   import { createSession, createAudioEngine } from "@mcptoolshop/pianoai";
 //   import { getSong } from "@mcptoolshop/ai-music-sheets";
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -31,7 +31,10 @@ export type {
 // Export session engine
 export { createSession, SessionController } from "./session.js";
 
-// Export VMPK connector
+// Export piano engine (built-in audio — plays through speakers)
+export { createAudioEngine } from "./audio-engine.js";
+
+// Export MIDI connector (optional — for routing to external MIDI software)
 export { createVmpkConnector, createMockVmpkConnector } from "./vmpk.js";
 
 // Export note parser
