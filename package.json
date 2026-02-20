@@ -1,6 +1,6 @@
 {
   "name": "piano-sessions-ai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP server + CLI for AI-powered piano teaching — plays through VMPK via MIDI with voice feedback",
   "type": "module",
   "main": "dist/index.js",
@@ -14,6 +14,14 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
   },
   "scripts": {
     "build": "tsc",
@@ -32,10 +40,16 @@
     "vmpk",
     "teaching",
     "ai",
-    "music"
+    "music",
+    "voice",
+    "practice"
   ],
   "author": "mcp-tool-shop",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcp-tool-shop-org/piano-ai.git"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.26.0",
     "ai-music-sheets": "file:../ai-music-sheets",

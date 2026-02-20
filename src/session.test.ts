@@ -96,6 +96,20 @@ describe("SessionController", () => {
     expect(sc.session.tempoOverride).toBe(200);
   });
 
+  it("setTempo rejects out-of-range values", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock);
+
+    expect(() => sc.setTempo(5)).toThrow("10 and 400");
+    expect(() => sc.setTempo(500)).toThrow("10 and 400");
+  });
+
+  it("rejects invalid initial tempo", () => {
+    const mock = createMockVmpkConnector();
+    expect(() => createSession(moonlight, mock, { tempo: 5 })).toThrow("10 and 400");
+    expect(() => createSession(moonlight, mock, { tempo: 500 })).toThrow("10 and 400");
+  });
+
   it("summary includes song info", () => {
     const mock = createMockVmpkConnector();
     const sc = createSession(moonlight, mock);

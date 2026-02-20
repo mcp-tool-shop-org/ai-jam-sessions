@@ -38,6 +38,10 @@ export function createSession(
     throw new Error(`Speed must be between 0 (exclusive) and 4: got ${speed}`);
   }
 
+  if (options.tempo !== undefined && (options.tempo < 10 || options.tempo > 400)) {
+    throw new Error(`Tempo must be between 10 and 400 BPM: got ${options.tempo}`);
+  }
+
   const session: Session = {
     id: `session-${++sessionCounter}`,
     song,
@@ -252,8 +256,11 @@ export class SessionController {
     }
   }
 
-  /** Set tempo override. */
+  /** Set tempo override (10–400 BPM). */
   setTempo(bpm: number): void {
+    if (bpm < 10 || bpm > 400) {
+      throw new Error(`Tempo must be between 10 and 400 BPM: got ${bpm}`);
+    }
     this.session.tempoOverride = bpm;
     this.reParseMeasures();
   }
