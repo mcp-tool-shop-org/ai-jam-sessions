@@ -26,6 +26,9 @@ import type { SingAlongMode } from "./note-parser.js";
 import { createAudioEngine } from "./audio-engine.js";
 import { createVmpkConnector } from "./vmpk.js";
 import { createSession } from "./session.js";
+import { parseMidiFile } from "./midi/parser.js";
+import { MidiPlaybackEngine } from "./playback/midi-engine.js";
+import { existsSync } from "node:fs";
 import {
   createConsoleTeachingHook,
   createSingAlongHook,
@@ -145,30 +148,17 @@ function cmdInfo(args: string[]): void {
 }
 
 async function cmdPlay(args: string[]): Promise<void> {
-  const songId = args[0];
-  if (!songId) {
-    console.error("Usage: pianoai play <song-id> [--tempo N] [--speed N] [--mode MODE] [--midi]");
-    process.exit(1);
-  }
-  const song = getSong(songId);
-  if (!song) {
-    console.error(`Song not found: "${songId}". Run 'pianoai list' to see available songs.`);
+  const target = args[0];
+  if (!target) {
+    console.error("Usage: pianoai play <song-id | file.mid> [--speed N] [--tempo N] [--mode MODE] [--midi]");
     process.exit(1);
   }
 
   // Parse flags
   const useMidi = hasFlag(args, "--midi");
   const portName = getFlag(args, "--port") ?? undefined;
-  const tempoStr = getFlag(args, "--tempo");
   const speedStr = getFlag(args, "--speed");
   const modeStr = getFlag(args, "--mode") ?? "full";
-
-  // Validate mode
-  if (!VALID_MODES.includes(modeStr as PlaybackMode)) {
-    console.error(`Invalid mode: "${modeStr}". Available: ${VALID_MODES.join(", ")}`);
-    process.exit(1);
-  }
-  const mode = modeStr as PlaybackMode;
 
   // Validate speed
   const speed = speedStr ? parseFloat(speedStr) : undefined;
@@ -177,14 +167,10 @@ async function cmdPlay(args: string[]): Promise<void> {
     process.exit(1);
   }
 
-  // Validate tempo
-  const tempo = tempoStr ? parseInt(tempoStr, 10) : undefined;
-  if (tempo !== undefined && (isNaN(tempo) || tempo < 10 || tempo > 400)) {
-    console.error(`Invalid tempo: "${tempoStr}". Must be between 10 and 400 BPM.`);
-    process.exit(1);
-  }
+  // Determine source: .mid file or library song
+  const isMidiFile = target.endsWith(".mid") || target.endsWith(".midi") || existsSync(target);
 
-  // Create connector: built-in piano engine or MIDI output
+  // Create connector
   const connector: VmpkConnector = useMidi
     ? createVmpkConnector(portName ? { portName } : undefined)
     : createAudioEngine();
@@ -195,38 +181,80 @@ async function cmdPlay(args: string[]): Promise<void> {
     await connector.connect();
     console.log(`Connected!`);
 
-    // Create session with teaching hooks + progress
-    const teachingHook = createConsoleTeachingHook();
-    const session = createSession(song, connector, {
-      mode,
-      tempo,
-      speed,
-      teachingHook,
-      onProgress: printProgress,
-      progressInterval: 0, // report every measure
-    });
+    if (isMidiFile) {
+      // ── MIDI file playback ──
+      if (!existsSync(target)) {
+        console.error(`File not found: "${target}"`);
+        process.exit(1);
+      }
 
-    // Report parse warnings
-    if (session.parseWarnings.length > 0) {
-      console.log(`\n⚠ ${session.parseWarnings.length} note parsing warning(s):`);
-      for (const w of session.parseWarnings.slice(0, 5)) {
-        console.log(`  • ${w.location}: "${w.token}" — ${w.message}`);
+      const parsed = await parseMidiFile(target);
+      const trackInfo = parsed.trackNames.length > 0 ? parsed.trackNames.join(", ") : "Unknown";
+      const durationAtSpeed = parsed.durationSeconds / (speed ?? 1.0);
+
+      console.log(`\nPlaying: ${target}`);
+      console.log(`  Tracks: ${trackInfo} (${parsed.trackCount})`);
+      console.log(`  Notes: ${parsed.noteCount} | Tempo: ${parsed.bpm} BPM | Duration: ~${Math.round(durationAtSpeed)}s`);
+      console.log();
+
+      const engine = new MidiPlaybackEngine(connector, parsed);
+      await engine.play({
+        speed: speed ?? 1.0,
+        onProgress: printProgress,
+      });
+
+      console.log(`\nFinished! ${engine.eventsPlayed} notes played.`);
+    } else {
+      // ── Library song playback ──
+      const song = getSong(target);
+      if (!song) {
+        console.error(`Song not found: "${target}". Run 'pianoai list' to see available songs, or provide a .mid file path.`);
+        process.exit(1);
       }
-      if (session.parseWarnings.length > 5) {
-        console.log(`  … and ${session.parseWarnings.length - 5} more`);
+
+      const tempoStr = getFlag(args, "--tempo");
+      const tempo = tempoStr ? parseInt(tempoStr, 10) : undefined;
+      if (tempo !== undefined && (isNaN(tempo) || tempo < 10 || tempo > 400)) {
+        console.error(`Invalid tempo: "${tempoStr}". Must be between 10 and 400 BPM.`);
+        process.exit(1);
       }
+
+      if (!VALID_MODES.includes(modeStr as PlaybackMode)) {
+        console.error(`Invalid mode: "${modeStr}". Available: ${VALID_MODES.join(", ")}`);
+        process.exit(1);
+      }
+      const mode = modeStr as PlaybackMode;
+
+      const teachingHook = createConsoleTeachingHook();
+      const session = createSession(song, connector, {
+        mode,
+        tempo,
+        speed,
+        teachingHook,
+        onProgress: printProgress,
+        progressInterval: 0,
+      });
+
+      if (session.parseWarnings.length > 0) {
+        console.log(`\n⚠ ${session.parseWarnings.length} note parsing warning(s):`);
+        for (const w of session.parseWarnings.slice(0, 5)) {
+          console.log(`  • ${w.location}: "${w.token}" — ${w.message}`);
+        }
+        if (session.parseWarnings.length > 5) {
+          console.log(`  … and ${session.parseWarnings.length - 5} more`);
+        }
+      }
+
+      printSongInfo(song);
+      const speedLabel = speed && speed !== 1.0 ? ` × ${speed}x speed` : "";
+      const tempoLabel = tempo ? ` (${tempo} BPM${speedLabel})` : speedLabel ? ` (${song.tempo} BPM${speedLabel})` : "";
+      console.log(`Playing: ${song.title}${tempoLabel} [${mode} mode]\n`);
+
+      await session.play();
+
+      console.log(`\nFinished! ${session.session.measuresPlayed} measures played.`);
+      console.log(session.summary());
     }
-
-    // Display session info
-    printSongInfo(song);
-    const speedLabel = speed && speed !== 1.0 ? ` × ${speed}x speed` : "";
-    const tempoLabel = tempo ? ` (${tempo} BPM${speedLabel})` : speedLabel ? ` (${song.tempo} BPM${speedLabel})` : "";
-    console.log(`Playing: ${song.title}${tempoLabel} [${mode} mode]\n`);
-
-    await session.play();
-
-    console.log(`\nFinished! ${session.session.measuresPlayed} measures played.`);
-    console.log(session.summary());
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`\nError: ${msg}`);
@@ -406,39 +434,35 @@ function cmdHelp(): void {
 pianoai — Play piano through your speakers
 
 Commands:
-  list [--genre <genre>]     List available songs
+  play <song | file.mid>     Play a song or MIDI file
+  list [--genre <genre>]     List built-in songs
   info <song-id>             Show song details
-  play <song-id> [options]   Play a song
   sing <song-id> [options]   Sing along — narrate notes during playback
   stats                      Registry statistics
   ports                      List MIDI output ports
   help                       Show this help
 
 Play options:
-  --tempo <bpm>              Override tempo (10-400 BPM)
   --speed <mult>             Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double)
-  --mode <mode>              Playback mode: full, measure, hands, loop
+  --tempo <bpm>              Override tempo (10-400 BPM, library songs only)
+  --mode <mode>              Playback mode: full, measure, hands, loop (library songs only)
   --midi                     Output via MIDI instead of built-in piano
   --port <name>              MIDI port name (with --midi)
 
 Sing options:
   --tempo <bpm>              Override tempo (10-400 BPM)
-  --speed <mult>             Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double)
+  --speed <mult>             Speed multiplier
   --mode <mode>              Sing-along mode: note-names, solfege, contour, syllables
   --hand <hand>              Which hand: right, left, both
   --with-piano               Play piano accompaniment while singing
   --sync <mode>              Voice+piano sync: concurrent (default), before
   --midi                     Output via MIDI instead of built-in piano
-  --port <name>              MIDI port name (with --midi)
 
 Examples:
-  pianoai play let-it-be                            # play through speakers
-  pianoai play moonlight-sonata-mvt1 --tempo 48     # slow tempo
-  pianoai play let-it-be --speed 0.5                # half speed
-  pianoai play dream-on --speed 0.75 --mode hands   # hands separate
+  pianoai play song.mid                             # play a MIDI file
+  pianoai play /path/to/moonlight.mid --speed 0.75  # MIDI file at 3/4 speed
+  pianoai play let-it-be                            # play from built-in library
   pianoai play let-it-be --midi                     # play via MIDI output
-  pianoai sing let-it-be --mode note-names          # narrate note names
-  pianoai sing fur-elise --mode solfege --hand both # solfege, both hands
   pianoai sing let-it-be --with-piano               # sing + piano together
   pianoai list --genre jazz                         # browse jazz songs
 `);

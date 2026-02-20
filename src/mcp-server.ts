@@ -36,11 +36,15 @@ import {
 } from "@mcptoolshop/ai-music-sheets";
 import type { SongEntry, Difficulty } from "@mcptoolshop/ai-music-sheets";
 import { safeParseMeasure, measureToSingableText, type SingAlongMode } from "./note-parser.js";
-import type { ParseWarning, PlaybackMode, SyncMode } from "./types.js";
+import type { ParseWarning, PlaybackMode, SyncMode, VmpkConnector } from "./types.js";
 import { createAudioEngine } from "./audio-engine.js";
 import { createVmpkConnector } from "./vmpk.js";
 import { createSession, SessionController } from "./session.js";
 import { createConsoleTeachingHook } from "./teaching.js";
+import { parseMidiFile, parseMidiBuffer } from "./midi/parser.js";
+import { MidiPlaybackEngine } from "./playback/midi-engine.js";
+import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -497,17 +501,37 @@ server.tool(
   }
 );
 
-// ─── Active Session State ─────────────────────────────────────────────────
+// ─── Active Playback State ────────────────────────────────────────────────
 
 let activeSession: SessionController | null = null;
+let activeMidiEngine: MidiPlaybackEngine | null = null;
+let activeConnector: VmpkConnector | null = null;
+
+/** Stop whatever is currently playing. */
+function stopActive(): void {
+  if (activeSession && activeSession.state === "playing") {
+    activeSession.stop();
+  }
+  activeSession = null;
+
+  if (activeMidiEngine && activeMidiEngine.state === "playing") {
+    activeMidiEngine.stop();
+  }
+  activeMidiEngine = null;
+
+  if (activeConnector) {
+    activeConnector.disconnect().catch(() => {});
+    activeConnector = null;
+  }
+}
 
 // ─── Tool: play_song ──────────────────────────────────────────────────────
 
 server.tool(
   "play_song",
-  "Play a song through the built-in piano engine. Returns immediately with session info while playback runs in the background.",
+  "Play a song through the built-in piano engine. Accepts a library song ID or a path to a .mid file. Returns immediately with session info while playback runs in the background.",
   {
-    id: z.string().describe("Song ID (e.g. 'autumn-leaves', 'let-it-be')"),
+    id: z.string().describe("Song ID (e.g. 'autumn-leaves', 'let-it-be') OR path to a .mid file"),
     speed: z.number().min(0.1).max(4).optional().describe("Speed multiplier (0.5 = half speed, 1.0 = normal, 2.0 = double). Default: 1.0"),
     tempo: z.number().int().min(10).max(400).optional().describe("Override tempo in BPM (10-400). Default: song's tempo"),
     mode: z.enum(["full", "measure", "hands", "loop"]).optional().describe("Playback mode: full (default), measure (one at a time), hands (separate then together), loop"),
@@ -515,17 +539,18 @@ server.tool(
     endMeasure: z.number().int().min(1).optional().describe("End measure for loop mode (1-based)"),
   },
   async ({ id, speed, tempo, mode, startMeasure, endMeasure }) => {
-    const song = getSong(id);
-    if (!song) {
+    // Stop whatever is currently playing
+    stopActive();
+
+    // Determine if this is a .mid file path or a library song ID
+    const isMidiFile = id.endsWith(".mid") || id.endsWith(".midi") || existsSync(id);
+    const librarySong = isMidiFile ? null : getSong(id);
+
+    if (!isMidiFile && !librarySong) {
       return {
-        content: [{ type: "text", text: `Song not found: "${id}". Use list_songs to see available songs.` }],
+        content: [{ type: "text", text: `Song not found: "${id}". Use list_songs to see available songs, or provide a path to a .mid file.` }],
         isError: true,
       };
-    }
-
-    // Stop any active session first
-    if (activeSession && activeSession.state === "playing") {
-      activeSession.stop();
     }
 
     // Connect piano engine
@@ -535,19 +560,70 @@ server.tool(
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       return {
-        content: [{
-          type: "text",
-          text: `Piano engine failed to start: ${msg}`,
-        }],
+        content: [{ type: "text", text: `Piano engine failed to start: ${msg}` }],
         isError: true,
       };
     }
+    activeConnector = connector;
 
-    // Build loop range if specified
+    // ── MIDI file playback ──
+    if (isMidiFile) {
+      let parsed;
+      try {
+        parsed = await parseMidiFile(id);
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        connector.disconnect().catch(() => {});
+        activeConnector = null;
+        return {
+          content: [{ type: "text", text: `Failed to parse MIDI file: ${msg}` }],
+          isError: true,
+        };
+      }
+
+      const engine = new MidiPlaybackEngine(connector, parsed);
+      activeMidiEngine = engine;
+
+      // Play in background
+      const playPromise = engine.play({ speed: speed ?? 1.0 });
+      playPromise
+        .then(() => {
+          console.error(`Finished playing MIDI file: ${id} (${parsed.noteCount} notes, ${parsed.durationSeconds.toFixed(1)}s)`);
+        })
+        .catch((err) => {
+          console.error(`Playback error: ${err instanceof Error ? err.message : String(err)}`);
+        })
+        .finally(() => {
+          connector.disconnect().catch(() => {});
+          if (activeMidiEngine === engine) activeMidiEngine = null;
+          if (activeConnector === connector) activeConnector = null;
+        });
+
+      const effectiveSpeed = speed ?? 1.0;
+      const durationAtSpeed = parsed.durationSeconds / effectiveSpeed;
+      const speedLabel = effectiveSpeed !== 1.0 ? ` × ${effectiveSpeed}x` : "";
+      const trackInfo = parsed.trackNames.length > 0 ? parsed.trackNames.join(", ") : "Unknown";
+
+      const lines = [
+        `Now playing: **${id}** (MIDI file)`,
+        ``,
+        `- **Tracks:** ${trackInfo} (${parsed.trackCount} track${parsed.trackCount !== 1 ? "s" : ""})`,
+        `- **Notes:** ${parsed.noteCount}`,
+        `- **Tempo:** ${parsed.bpm} BPM${speedLabel}`,
+        `- **Duration:** ~${Math.round(durationAtSpeed)}s`,
+        `- **Format:** MIDI type ${parsed.format}`,
+        ``,
+        `Use \`stop_playback\` to stop. Playback runs in the background.`,
+      ];
+
+      return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
+    // ── Library song playback ──
+    const song = librarySong!;
     const loopRange: [number, number] | undefined =
       startMeasure && endMeasure ? [startMeasure, endMeasure] : undefined;
 
-    // Create session
     const playbackMode = (mode ?? "full") as PlaybackMode;
     const teachingHook = createConsoleTeachingHook();
     const session = createSession(song, connector, {
@@ -559,7 +635,7 @@ server.tool(
     });
     activeSession = session;
 
-    // Start playback in background — don't await (MCP call returns immediately)
+    // Play in background
     const playPromise = session.play();
     playPromise
       .then(() => {
@@ -570,12 +646,10 @@ server.tool(
       })
       .finally(() => {
         connector.disconnect().catch(() => {});
-        if (activeSession === session) {
-          activeSession = null;
-        }
+        if (activeSession === session) activeSession = null;
+        if (activeConnector === connector) activeConnector = null;
       });
 
-    // Build response
     const effectiveSpeed = speed ?? 1.0;
     const baseTempo = tempo ?? song.tempo;
     const effectiveTempo = Math.round(baseTempo * effectiveSpeed);
@@ -594,11 +668,9 @@ server.tool(
     if (loopRange) {
       lines.push(`- **Loop range:** measures ${loopRange[0]}–${loopRange[1]}`);
     }
-
     if (warnings.length > 0) {
       lines.push(``, `⚠ ${warnings.length} note(s) had parse warnings and will be skipped.`);
     }
-
     lines.push(``, `Use \`stop_playback\` to stop. Playback runs in the background.`);
 
     return { content: [{ type: "text", text: lines.join("\n") }] };
@@ -612,24 +684,23 @@ server.tool(
   "Stop the currently playing song and disconnect MIDI.",
   {},
   async () => {
-    if (!activeSession) {
+    const wasPlaying = activeSession || activeMidiEngine;
+    if (!wasPlaying) {
       return {
         content: [{ type: "text", text: "No song is currently playing." }],
       };
     }
 
-    const songTitle = activeSession.session.song.title;
-    const measuresPlayed = activeSession.session.measuresPlayed;
-    const state = activeSession.state;
+    const info = activeSession
+      ? `${activeSession.session.song.title} (${activeSession.session.measuresPlayed} measures played)`
+      : activeMidiEngine
+        ? `MIDI file (${activeMidiEngine.eventsPlayed}/${activeMidiEngine.totalEvents} events played)`
+        : "Unknown";
 
-    activeSession.stop();
-    activeSession = null;
+    stopActive();
 
     return {
-      content: [{
-        type: "text",
-        text: `Stopped: ${songTitle} (was ${state}, ${measuresPlayed} measures played)`,
-      }],
+      content: [{ type: "text", text: `Stopped: ${info}` }],
     };
   }
 );
