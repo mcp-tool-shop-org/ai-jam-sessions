@@ -3,3 +3,8 @@ dist
 .git
 *.md
 !README.md
+*.test.ts
+src/smoke.ts
+.github
+plugin
+scripts
