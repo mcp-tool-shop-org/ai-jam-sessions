@@ -98,6 +98,34 @@ export {
 } from "./playback/timing.js";
 export type { ScheduledEvent } from "./playback/timing.js";
 
+// Export real-time playback controller
+export { PlaybackController, createPlaybackController } from "./playback/controls.js";
+export type {
+  PlaybackEventType,
+  PlaybackEvent,
+  NoteOnEvent,
+  NoteOffEvent,
+  StateChangeEvent,
+  SpeedChangeEvent,
+  ProgressEvent,
+  ErrorEvent,
+  AnyPlaybackEvent,
+  PlaybackListener,
+  PlaybackControlOptions,
+} from "./playback/controls.js";
+
+// Export MIDI singing + feedback hooks
+export {
+  createSingOnMidiHook,
+  midiNoteToSingable,
+  clusterToSingable,
+  contourDirection,
+} from "./teaching/sing-on-midi.js";
+export type { SingOnMidiOptions } from "./teaching/sing-on-midi.js";
+
+export { createMidiFeedbackHook } from "./teaching/midi-feedback.js";
+export type { MidiFeedbackOptions } from "./teaching/midi-feedback.js";
+
 // Export playback schemas
 export {
   PlaySourceSchema,
