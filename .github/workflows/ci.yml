@@ -7,6 +7,7 @@ on:
       - "pnpm-lock.yaml"
       - "tsconfig.json"
       - "src/**"
+      - "Dockerfile"
       - ".github/workflows/**"
     branches: [main]
   pull_request:
@@ -15,6 +16,7 @@ on:
       - "pnpm-lock.yaml"
       - "tsconfig.json"
       - "src/**"
+      - "Dockerfile"
       - ".github/workflows/**"
   workflow_dispatch:
 
