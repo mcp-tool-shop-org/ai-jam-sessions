@@ -9,39 +9,35 @@
 <h1 align="center">PianoAI</h1>
 
 <p align="center">
-  Servidor MCP + CLI para enseñanza de piano con IA — reproduce a través de VMPK vía MIDI con retroalimentación por voz.
+  Reproductor de piano con motor de audio integrado — suena por los altavoces, sin software externo necesario. Servidor MCP + CLI.
 </p>
 
-[![Tests](https://img.shields.io/badge/tests-181_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Smoke](https://img.shields.io/badge/smoke-29_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![MCP Tools](https://img.shields.io/badge/MCP_tools-8-purple)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![MCP Tools](https://img.shields.io/badge/MCP_tools-12-purple)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Songs](https://img.shields.io/badge/songs-10_built--in-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
 ## ¿Qué es esto?
 
-Un CLI en TypeScript y servidor MCP que carga canciones de piano desde [ai-music-sheets](https://github.com/mcp-tool-shop-org/ai-music-sheets), las convierte a MIDI y las reproduce a través de [VMPK](https://vmpk.sourceforge.io/) mediante un puerto MIDI virtual. El motor de enseñanza lanza interjecciones en los límites de compás y en momentos clave, permitiendo que un LLM actúe como profesor de piano en vivo con retroalimentación por voz y notificaciones aparte.
+Un reproductor de piano en TypeScript que reproduce archivos MIDI estándar y canciones integradas a través de tus altavoces. No requiere software externo — el motor de audio integrado se encarga de todo. Incluye un servidor MCP para integración con LLMs y un CLI para uso directo.
+
+Soporta narración de canto en tiempo real y retroalimentación de enseñanza en vivo durante la reproducción.
 
 ## Características
 
+- **Motor de piano integrado** — reproduce por los altavoces vía `node-web-audio-api`, sin hardware MIDI necesario
+- **Soporte de archivos MIDI estándar** — reproduce cualquier archivo `.mid`: `pianoai play song.mid`
+- **Canto en tiempo real** — narra nombres de notas, solfeo, contorno o sílabas durante la reproducción MIDI
+- **Filtros de voz** — canta solo la melodía (nota más aguda), armonía (más grave) o todas las notas por acorde
+- **Retroalimentación de enseñanza en vivo** — consejos de dinámica según la posición, avisos de rango, límites de sección, anuncios de hitos
+- **Seguimiento de posición** — mapeo de pulso/compás/tempo desde MIDI en crudo con soporte de búsqueda
 - **4 modos de reproducción** — completa, compás por compás, manos separadas, bucle
-- **Control de velocidad** — práctica lenta a 0.5x hasta reproducción rápida a 2x, acumulable con modificación de tempo
-- **Seguimiento de progreso** — callbacks configurables en hitos porcentuales o por compás
-- **9 hooks de enseñanza** — console, silent, recording, callback, voice, aside, sing-along, compose, live feedback
-- **Narración de canto** — nombres de notas, solfeo, contorno o sílabas hablados antes de cada compás
-- **Canto sincronizado + piano** — concurrent (sensación de dúo) o before (voz primero) mediante `--with-piano`
-- **Retroalimentación por voz** — salida `VoiceDirective` para integración con mcp-voice-soundboard
-- **Retroalimentación en vivo** — estímulo en tiempo real, consejos de dinámica y avisos de dificultad durante la reproducción
-- **Interjecciones aparte** — salida `AsideDirective` para la bandeja de mcp-aside
+- **Control de velocidad** — práctica lenta a 0.5x hasta 4x rápida, acumulable con modificación de tempo
+- **Controles en tiempo real** — pausa, reanudación, cambio de velocidad, búsqueda durante la reproducción con listeners de eventos
+- **12 herramientas MCP** — reproducir, pausar, velocidad, detener, explorar, cantar, enseñar — todo mediante el protocolo MCP
+- **12 hooks de enseñanza** — console, silent, recording, callback, voice, aside, sing-along, live feedback, MIDI singing, MIDI live feedback, compose
+- **Salida MIDI opcional** — enrutar a software externo con la bandera `--midi` (requiere loopMIDI + VMPK)
 - **Análisis seguro** — las notas incorrectas se omiten con `ParseWarning`s recopilados
-- **8 herramientas MCP** — exponen el registro, notas de enseñanza, canto guiado y recomendaciones de canciones a LLMs
-- **Analizador de notas** — notación científica de altura a MIDI y viceversa
-- **Conector simulado** — cobertura completa de tests sin hardware MIDI
-
-## Requisitos previos
-
-1. **[loopMIDI](https://www.tobias-erichsen.de/software/loopmidi.html)** — crea un puerto MIDI virtual (ej. "loopMIDI Port")
-2. **[VMPK](https://vmpk.sourceforge.io/)** — configura la entrada MIDI a tu puerto loopMIDI
-3. **Node.js 18+**
+- **Conector simulado** — cobertura completa de tests sin hardware
 
 ## Instalación
 
@@ -49,46 +45,62 @@ Un CLI en TypeScript y servidor MCP que carga canciones de piano desde [ai-music
 npm install -g @mcptoolshop/pianoai
 ```
 
+Requiere **Node.js 18+**. Eso es todo — sin controladores MIDI, sin puertos virtuales, sin software externo.
+
 ## Inicio rápido
 
 ```bash
-# Listar todas las canciones
+# Reproducir un archivo MIDI
+pianoai play path/to/song.mid
+
+# Reproducir con canto (narrar nombres de notas mientras suenan)
+pianoai play song.mid --with-singing
+
+# Cantar solo la melodía (omitir notas de acorde, solo la voz superior)
+pianoai play song.mid --with-singing --voice-filter melody-only
+
+# Reproducir con retroalimentación de enseñanza (dinámica, estímulo)
+pianoai play song.mid --with-teaching
+
+# Reproducir con canto y enseñanza juntos
+pianoai play song.mid --with-singing --with-teaching --sing-mode solfege
+
+# Práctica a mitad de velocidad con canto
+pianoai play song.mid --speed 0.5 --with-singing
+
+# Saltar al segundo 45 y reproducir desde ahí
+pianoai play song.mid --seek 45
+
+# Reproducir una canción de la biblioteca integrada
+pianoai play let-it-be
+
+# Listar todas las canciones integradas
 pianoai list
 
 # Mostrar detalles de canción + notas de enseñanza
 pianoai info moonlight-sonata-mvt1
 
-# Reproducir una canción a través de VMPK
-pianoai play let-it-be
-
-# Reproducir con modificación de tempo
-pianoai play basic-12-bar-blues --tempo 80
-
-# Avanzar compás por compás
-pianoai play autumn-leaves --mode measure
-
-# Práctica a mitad de velocidad
-pianoai play moonlight-sonata-mvt1 --speed 0.5
-
-# Práctica lenta con manos separadas
-pianoai play dream-on --speed 0.75 --mode hands
-
-# Cantar junto — narrar nombres de notas durante la reproducción
-pianoai sing let-it-be --mode note-names
-
-# Cantar junto con solfeo, ambas manos
-pianoai sing fur-elise --mode solfege --hand both
-
-# Cantar + piano juntos (sensación de dúo)
-pianoai sing let-it-be --with-piano
-
-# Voz primero, luego piano
-pianoai sing fur-elise --with-piano --sync before
+# Cantar junto con una canción de la biblioteca (narración por voz)
+pianoai sing let-it-be --mode solfege --with-piano
 ```
+
+### Opciones de reproducción
+
+| Bandera | Descripción |
+|---------|-------------|
+| `--speed <mult>` | Multiplicador de velocidad: 0.5 = mitad, 1.0 = normal, 2.0 = doble |
+| `--tempo <bpm>` | Modificar el tempo predeterminado de la canción (10-400 BPM) |
+| `--mode <mode>` | Modo de reproducción: `full`, `measure`, `hands`, `loop` |
+| `--with-singing` | Activar narración de canto en tiempo real |
+| `--with-teaching` | Activar retroalimentación de enseñanza en vivo |
+| `--sing-mode <mode>` | Modo de canto: `note-names`, `solfege`, `contour`, `syllables` |
+| `--voice-filter <f>` | Filtro de voz: `all`, `melody-only`, `harmony` |
+| `--seek <seconds>` | Saltar a un momento específico antes de reproducir |
+| `--midi` | Enrutar a software MIDI externo en lugar del motor integrado |
 
 ## Servidor MCP
 
-El servidor MCP expone 8 herramientas para integración con LLMs:
+El servidor MCP expone 12 herramientas para integración con LLMs:
 
 | Herramienta | Descripción |
 |-------------|-------------|
@@ -96,15 +108,14 @@ El servidor MCP expone 8 herramientas para integración con LLMs:
 | `song_info` | Obtener lenguaje musical completo, objetivos de enseñanza, sugerencias de práctica |
 | `registry_stats` | Conteo de canciones por género y dificultad |
 | `teaching_note` | Nota de enseñanza por compás, digitación, dinámicas |
-| `sing_along` | Obtener texto cantable por compás (nombres de notas, solfeo, contorno, sílabas); soporta `withPiano` para acompañamiento sincronizado |
 | `suggest_song` | Obtener una recomendación basada en criterios |
 | `list_measures` | Vista general de compases con notas de enseñanza + advertencias de análisis |
+| `sing_along` | Obtener texto cantable (nombres de notas, solfeo, contorno, sílabas) por compás |
 | `practice_setup` | Sugerir velocidad, modo y configuración de voz para una canción |
-
-```bash
-# Iniciar el servidor MCP (transporte stdio)
-pnpm mcp
-```
+| `play_song` | Reproducir una canción o archivo MIDI con canto y enseñanza opcionales |
+| `pause_playback` | Pausar o reanudar la canción en reproducción |
+| `set_speed` | Cambiar la velocidad de reproducción durante la reproducción |
+| `stop_playback` | Detener la canción en reproducción |
 
 ### Configuración de Claude Desktop
 
@@ -112,195 +123,148 @@ pnpm mcp
 {
   "mcpServers": {
     "pianoai": {
-      "command": "pianoai-mcp"
+      "command": "npx",
+      "args": ["-y", "-p", "@mcptoolshop/pianoai", "pianoai-mcp"]
     }
   }
 }
 ```
 
-## Comandos del CLI
+### play_song con canto y enseñanza
 
-| Comando | Descripción |
-|---------|-------------|
-| `list [--genre <genre>]` | Listar canciones disponibles, opcionalmente filtradas por género |
-| `info <song-id>` | Mostrar detalles de canción: lenguaje musical, notas de enseñanza, estructura |
-| `play <song-id> [opts]` | Reproducir una canción a través de VMPK vía MIDI |
-| `sing <song-id> [opts]` | Cantar junto — narrar notas durante la reproducción |
-| `stats` | Estadísticas del registro (canciones, géneros, compases) |
-| `ports` | Listar puertos de salida MIDI disponibles |
-| `help` | Mostrar información de uso |
+La herramienta MCP `play_song` acepta las banderas `withSinging` y `withTeaching`:
 
-### Opciones de reproducción
-
-| Bandera | Descripción |
-|---------|-------------|
-| `--port <name>` | Nombre del puerto MIDI (por defecto: autodetectar loopMIDI) |
-| `--tempo <bpm>` | Modificar el tempo predeterminado de la canción (10-400 BPM) |
-| `--speed <mult>` | Multiplicador de velocidad: 0.5 = mitad, 1.0 = normal, 2.0 = doble |
-| `--mode <mode>` | Modo de reproducción: `full`, `measure`, `hands`, `loop` |
-
-### Opciones de canto
-
-| Bandera | Descripción |
-|---------|-------------|
-| `--mode <mode>` | Modo de canto: `note-names`, `solfege`, `contour`, `syllables` |
-| `--hand <hand>` | Qué mano: `right`, `left`, `both` |
-| `--with-piano` | Reproducir acompañamiento de piano mientras se canta |
-| `--sync <mode>` | Sincronización voz+piano: `concurrent` (por defecto, dúo), `before` (voz primero) |
-
-## Motor de enseñanza
-
-El motor de enseñanza dispara hooks durante la reproducción. 9 implementaciones de hooks cubren todos los casos de uso:
-
-| Hook | Caso de uso |
-|------|-------------|
-| `createConsoleTeachingHook()` | CLI — registra compases, momentos y finalización en consola |
-| `createSilentTeachingHook()` | Testing — sin operación |
-| `createRecordingTeachingHook()` | Testing — graba eventos para aserciones |
-| `createCallbackTeachingHook(cb)` | Personalizado — redirige a cualquier callback asíncrono |
-| `createVoiceTeachingHook(sink)` | Voz — produce `VoiceDirective` para mcp-voice-soundboard |
-| `createAsideTeachingHook(sink)` | Aparte — produce `AsideDirective` para la bandeja de mcp-aside |
-| `createSingAlongHook(sink, song)` | Canto — narra notas/solfeo/contorno antes de cada compás |
-| `createLiveFeedbackHook(voiceSink, asideSink, song)` | Retroalimentación — estímulo, consejos de dinámica, avisos de dificultad |
-| `composeTeachingHooks(...hooks)` | Múltiple — despacha a múltiples hooks en serie |
-
-### Retroalimentación por voz
-
-```typescript
-import { createSession, createVoiceTeachingHook } from "@mcptoolshop/pianoai";
-import { getSong } from "ai-music-sheets";
-
-const voiceHook = createVoiceTeachingHook(
-  async (directive) => {
-    // Redirigir a voice_speak de mcp-voice-soundboard
-    console.log(`[Voice] ${directive.text}`);
-  },
-  { voice: "narrator", speechSpeed: 0.9 }
-);
-
-const session = createSession(getSong("moonlight-sonata-mvt1")!, connector, {
-  teachingHook: voiceHook,
-  speed: 0.5, // práctica a mitad de velocidad
-});
-
-await session.play();
-// voiceHook.directives → todas las instrucciones de voz que se dispararon
 ```
-
-### Narración de canto
-
-```typescript
-import {
-  createSingAlongHook,
-  createVoiceTeachingHook,
-  composeTeachingHooks,
-  createSession,
-} from "@mcptoolshop/pianoai";
-import { getSong } from "@mcptoolshop/ai-music-sheets";
-
-const song = getSong("let-it-be")!;
-
-// Narrar solfeo antes de cada compás, luego notas de enseñanza
-const singHook = createSingAlongHook(voiceSink, song, {
-  mode: "solfege",
-  hand: "right",
-});
-const teachHook = createVoiceTeachingHook(voiceSink);
-const combined = composeTeachingHooks(singHook, teachHook);
-
-const session = createSession(song, connector, { teachingHook: combined });
-await session.play();
-// singHook.directives → "Do... Mi... Sol" bloqueante antes de cada compás
-```
-
-### Composición de hooks
-
-```typescript
-import {
-  createVoiceTeachingHook,
-  createAsideTeachingHook,
-  createRecordingTeachingHook,
-  composeTeachingHooks,
-} from "@mcptoolshop/pianoai";
-
-// Los tres se disparan en cada evento
-const composed = composeTeachingHooks(
-  createVoiceTeachingHook(voiceSink),
-  createAsideTeachingHook(asideSink),
-  createRecordingTeachingHook()
-);
+play_song({ id: "path/to/song.mid", withSinging: true, withTeaching: true, singMode: "solfege" })
 ```
 
 ## API programática
 
-```typescript
-import { getSong } from "ai-music-sheets";
-import { createSession, createVmpkConnector } from "@mcptoolshop/pianoai";
+### Reproducir un archivo MIDI con controles en tiempo real
 
-const connector = createVmpkConnector({ portName: /loop/i });
+```typescript
+import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/pianoai";
+
+const connector = createAudioEngine();
+await connector.connect();
+
+const midi = await parseMidiFile("song.mid");
+const controller = new PlaybackController(connector, midi);
+
+// Escuchar eventos
+controller.on("noteOn", (e) => console.log(`Nota: ${e.noteName}`));
+controller.on("stateChange", (e) => console.log(`Estado: ${e.state}`));
+
+await controller.play({ speed: 0.75 });
+
+controller.pause();       // pausar
+controller.setSpeed(1.5); // cambiar velocidad
+await controller.resume();// reanudar a nueva velocidad
+
+await connector.disconnect();
+```
+
+### Reproducir con canto y enseñanza en vivo
+
+```typescript
+import {
+  createAudioEngine,
+  parseMidiFile,
+  PlaybackController,
+  createSingOnMidiHook,
+  createLiveMidiFeedbackHook,
+  composeTeachingHooks,
+} from "@mcptoolshop/pianoai";
+
+const connector = createAudioEngine();
+await connector.connect();
+const midi = await parseMidiFile("song.mid");
+
+const singHook = createSingOnMidiHook(
+  async (d) => console.log(`♪ ${d.text}`),
+  midi,
+  { mode: "solfege", voiceFilter: "melody-only" }
+);
+
+const feedbackHook = createLiveMidiFeedbackHook(
+  async (d) => console.log(`🎓 ${d.text}`),
+  async (d) => console.log(`💡 ${d.text}`),
+  midi,
+  { voiceInterval: 8 }
+);
+
+const composed = composeTeachingHooks(singHook, feedbackHook);
+const controller = new PlaybackController(connector, midi);
+await controller.play({ teachingHook: composed });
+
+// feedbackHook.tracker tiene información de posición
+console.log(`Total de compases: ${feedbackHook.tracker.totalMeasures}`);
+```
+
+### Reproducir una canción de la biblioteca integrada
+
+```typescript
+import { getSong } from "@mcptoolshop/ai-music-sheets";
+import { createSession, createAudioEngine } from "@mcptoolshop/pianoai";
+
+const connector = createAudioEngine();
 await connector.connect();
 
 const song = getSong("autumn-leaves")!;
 const session = createSession(song, connector, {
-  mode: "measure",
-  tempo: 100,
-  speed: 0.75,           // 75% de velocidad para práctica
-  onProgress: (p) => console.log(p.percent), // "25%", "50%", etc.
+  mode: "full",
+  speed: 0.75,
 });
 
-await session.play();          // reproduce un compás, pausa
-session.next();                // avanza al siguiente compás
-await session.play();          // reproduce el siguiente compás
-session.setSpeed(1.0);         // vuelve a velocidad normal
-await session.play();          // reproduce el siguiente compás a velocidad completa
-session.stop();                // detiene y reinicia
-
-// Verificar advertencias de análisis (notas incorrectas en los datos de la canción)
-if (session.parseWarnings.length > 0) {
-  console.warn("Algunas notas no pudieron ser analizadas:", session.parseWarnings);
-}
-
+await session.play();
 await connector.disconnect();
 ```
 
 ## Arquitectura
 
 ```
-ai-music-sheets (biblioteca)     pianoai (tiempo de ejecución)
-┌──────────────────────┐         ┌────────────────────────────────┐
-│ SongEntry (híbrido)  │────────→│ Note Parser (seguro + estricto)│
-│ Registry (búsqueda)  │         │ Session Engine (veloc.+progreso│
-│ 10 canciones, 10 gén.│         │ Teaching Engine (9 hooks)      │
-└──────────────────────┘         │ VMPK Connector (JZZ)          │
-                                 │ MCP Server (8 herramientas)    │
-                                 │ CLI (barra de progreso + voz)  │
-                                 └─────────┬──────────────────────┘
-                                           │ MIDI
-                                           ▼
-                                 ┌─────────────────┐
-                                 │ loopMIDI → VMPK │
-                                 └─────────────────┘
+Archivos MIDI estándar (.mid)   Canciones integradas (ai-music-sheets)
+        │                              │
+        ▼                              ▼
+   MIDI Parser ──────────────── Note Parser
+        │                              │
+        ▼                              ▼
+  MidiPlaybackEngine            SessionController
+        │                              │
+        └──────── PlaybackController ──┘
+                  (eventos en tiempo real, hooks)
+                         │
+           ┌─────────────┼─────────────┐
+           ▼             ▼             ▼
+      AudioEngine   Teaching Hooks  Progress
+      (altavoces)   (canto, retro.) (callbacks)
+           │
+           ▼
+     node-web-audio-api (Rust DSP)
+
+Seguimiento de posición:
+  MIDI Parser → PositionTracker → mapeo de pulso/compás/tempo
+                                → búsqueda por tiempo / búsqueda por compás
+                                → resúmenes de compás para retroalimentación en vivo
 
 Enrutamiento de hooks de enseñanza:
-  Session → TeachingHook → VoiceDirective → mcp-voice-soundboard
-                         → AsideDirective → bandeja de mcp-aside
-                         → Console log    → terminal del CLI
-                         → Recording      → aserciones de test
+  PlaybackController → TeachingHook → VoiceDirective → mcp-voice-soundboard
+                                    → AsideDirective → bandeja de mcp-aside
+                                    → Console log    → terminal del CLI
+                                    → Recording      → aserciones de test
 ```
 
 ## Testing
 
 ```bash
-pnpm test       # 181 tests con Vitest (parser + session + teaching + voice + aside + sing-along)
-pnpm smoke      # 29 smoke tests (integración, sin MIDI necesario)
+pnpm test       # 243 tests con Vitest
 pnpm typecheck  # tsc --noEmit
+pnpm smoke      # tests de integración
 ```
-
-El conector VMPK simulado (`createMockVmpkConnector`) registra todos los eventos MIDI sin hardware, permitiendo cobertura completa de tests. Las funciones de análisis seguro (`safeParseMeasure`) recopilan objetos `ParseWarning` en lugar de lanzar excepciones, de modo que la reproducción continúa correctamente si una canción tiene notas malformadas.
 
 ## Relacionados
 
-- **[ai-music-sheets](https://github.com/mcp-tool-shop-org/ai-music-sheets)** — La biblioteca de canciones: 10 géneros, formato híbrido (metadatos + lenguaje musical + compases listos para código)
+- **[ai-music-sheets](https://github.com/mcp-tool-shop-org/ai-music-sheets)** — La biblioteca de canciones integrada
 
 ## Licencia
 

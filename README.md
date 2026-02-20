@@ -257,8 +257,9 @@ Teaching hook routing:
 ## Testing
 
 ```bash
-pnpm test       # 221 Vitest tests
+pnpm test       # 243 Vitest tests
 pnpm typecheck  # tsc --noEmit
+pnpm smoke      # integration smoke tests
 ```
 
 ## Related
