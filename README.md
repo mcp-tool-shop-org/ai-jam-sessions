@@ -1,4 +1,8 @@
 <p align="center">
+  <a href="README.md"><strong>English</strong></a> | <a href="README.ja.md">日本語</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.pt-BR.md">Português</a>
+</p>
+
+<p align="center">
   <img src="logo.png" alt="PianoAI logo" width="180" />
 </p>
 
@@ -33,7 +37,7 @@ A piano that Claude can play. PianoAI is an MCP server with a built-in audio eng
 ## Install
 
 ```bash
-npm install -g @mcptoolshop/pianoai
+npm install -g @mcptoolshop/ai_jam_session
 ```
 
 Requires **Node.js 18+**. That's it — no MIDI drivers, no virtual ports, no external software.
@@ -42,19 +46,19 @@ Requires **Node.js 18+**. That's it — no MIDI drivers, no virtual ports, no ex
 
 ```bash
 # Play a built-in song
-pianoai play let-it-be
+ai-jam-session play let-it-be
 
 # Play a MIDI file
-pianoai play path/to/song.mid
+ai-jam-session play path/to/song.mid
 
 # Half-speed practice
-pianoai play moonlight-sonata-mvt1 --speed 0.5
+ai-jam-session play moonlight-sonata-mvt1 --speed 0.5
 
 # List all built-in songs
-pianoai list
+ai-jam-session list
 
 # Show song details + teaching notes
-pianoai info autumn-leaves
+ai-jam-session info autumn-leaves
 ```
 
 ### Play Options
@@ -105,7 +109,7 @@ Optional parameters: `mood` (upbeat, melancholic, dreamy, etc.), `difficulty`, `
   "mcpServers": {
     "pianoai": {
       "command": "npx",
-      "args": ["-y", "-p", "@mcptoolshop/pianoai", "pianoai-mcp"]
+      "args": ["-y", "-p", "@mcptoolshop/ai_jam_session", "ai-jam-session-mcp"]
     }
   }
 }
@@ -146,7 +150,7 @@ Two agent personalities:
 ## Programmatic API
 
 ```typescript
-import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/pianoai";
+import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/ai_jam_session";
 
 const connector = createAudioEngine();
 await connector.connect();
@@ -167,7 +171,7 @@ await connector.disconnect();
 ### Play a built-in song
 
 ```typescript
-import { getSong, createSession, createAudioEngine } from "@mcptoolshop/pianoai";
+import { getSong, createSession, createAudioEngine } from "@mcptoolshop/ai_jam_session";
 
 const connector = createAudioEngine();
 await connector.connect();
