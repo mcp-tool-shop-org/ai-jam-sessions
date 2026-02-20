@@ -3,7 +3,8 @@
 // Quick integration smoke test — no MIDI hardware needed.
 // Verifies: ai-music-sheets loads, note parser works, sessions run with mock,
 // teaching hooks fire, key moments detected, voice/aside hooks produce output,
-// speed control works, progress fires, safe parsing collects warnings.
+// speed control works, progress fires, safe parsing collects warnings,
+// sing-along converts notes and produces blocking directives.
 //
 // Usage: pnpm smoke (or: node --import tsx src/smoke.ts)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -21,9 +22,11 @@ import {
   createRecordingTeachingHook,
   createVoiceTeachingHook,
   createAsideTeachingHook,
+  createSingAlongHook,
   composeTeachingHooks,
   detectKeyMoments,
 } from "./teaching.js";
+import { noteToSingable, measureToSingableText } from "./note-parser.js";
 import type { VoiceDirective, AsideDirective, PlaybackProgress, ParseWarning } from "./types.js";
 
 let passed = 0;
@@ -234,6 +237,52 @@ test("composed hooks dispatch to both voice and aside", async () => {
   await sc.play();
   assert(voiceD.length > 0, "voice should receive events");
   assert(asideD.length > 0, "aside should receive events");
+});
+
+// ─── Test 7: Sing-along ─────────────────────────────────────────────────────
+console.log("\nSing-along:");
+test("noteToSingable converts C4 to note name", () => {
+  assert(noteToSingable("C4", "note-names") === "C", "C4 → C");
+});
+
+test("noteToSingable converts C4 to solfege", () => {
+  assert(noteToSingable("C4", "solfege") === "Do", "C4 → Do");
+});
+
+test("measureToSingableText produces singable output", () => {
+  const result = measureToSingableText(
+    { rightHand: "C4:q E4:q G4:q", leftHand: "C3:h" },
+    { mode: "note-names", hand: "right" }
+  );
+  assert(result === "C... E... G", `expected "C... E... G", got "${result}"`);
+});
+
+test("sing-along hook produces blocking directives", async () => {
+  const directives: VoiceDirective[] = [];
+  const song = getSong("let-it-be")!;
+  const hook = createSingAlongHook(async (d) => { directives.push(d); }, song);
+  const mock = createMockVmpkConnector();
+  const sc = createSession(song, mock, { teachingHook: hook });
+  await mock.connect();
+  await sc.play();
+  assert(directives.length > 0, "should produce directives");
+  assert(directives[0].blocking === true, "first directive should be blocking");
+});
+
+test("composed sing-along + voice hooks both fire", async () => {
+  const singD: VoiceDirective[] = [];
+  const voiceD: VoiceDirective[] = [];
+  const song = getSong("let-it-be")!;
+  const composed = composeTeachingHooks(
+    createSingAlongHook(async (d) => { singD.push(d); }, song),
+    createVoiceTeachingHook(async (d) => { voiceD.push(d); })
+  );
+  const mock = createMockVmpkConnector();
+  const sc = createSession(song, mock, { teachingHook: composed });
+  await mock.connect();
+  await sc.play();
+  assert(singD.length > 0, "sing-along should receive events");
+  assert(voiceD.length > 0, "voice should receive events");
 });
 
 // ─── Summary ────────────────────────────────────────────────────────────────

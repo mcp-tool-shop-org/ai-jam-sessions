@@ -12,9 +12,9 @@
   AI搭載ピアノ教習用MCPサーバー＋CLI — MIDIを介してVMPKで演奏し、音声フィードバックを提供します。
 </p>
 
-[![Tests](https://img.shields.io/badge/tests-121_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Smoke](https://img.shields.io/badge/smoke-20_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![MCP Tools](https://img.shields.io/badge/MCP_tools-7-purple)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Tests](https://img.shields.io/badge/tests-163_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Smoke](https://img.shields.io/badge/smoke-25_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![MCP Tools](https://img.shields.io/badge/MCP_tools-8-purple)](https://github.com/mcp-tool-shop-org/pianoai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
 ## これは何ですか？
@@ -26,11 +26,12 @@ TypeScript製のCLIおよびMCPサーバーで、[ai-music-sheets](https://githu
 - **4つの再生モード** — フル再生、小節ごと、片手ずつ、ループ
 - **速度制御** — 0.5倍のスロー練習から2倍の高速再生まで、テンポオーバーライドと組み合わせ可能
 - **進捗トラッキング** — パーセンテージマイルストーンまたは小節ごとのコールバックを設定可能
-- **7つの教習フック** — console、silent、recording、callback、voice、aside、compose
+- **8つの教習フック** — console、silent、recording、callback、voice、aside、sing-along、compose
+- **シングアロングナレーション** — 各小節の前に音名、ソルフェージュ、輪郭、シラブルを読み上げ
 - **音声フィードバック** — mcp-voice-soundboard連携用の`VoiceDirective`出力
 - **アサイド指示** — mcp-asideインボックス用の`AsideDirective`出力
 - **安全なパース** — 不正なノートはスキップされ、`ParseWarning`として収集
-- **7つのMCPツール** — レジストリ、教習ノート、楽曲レコメンドをLLMに公開
+- **8つのMCPツール** — レジストリ、教習ノート、シングアロング、楽曲レコメンドをLLMに公開
 - **ノートパーサー** — 科学的音名表記とMIDIの相互変換
 - **モックコネクター** — MIDIハードウェアなしで完全なテストカバレッジを実現
 
@@ -69,11 +70,17 @@ pianai play moonlight-sonata-mvt1 --speed 0.5
 
 # スロー片手練習
 pianai play dream-on --speed 0.75 --mode hands
+
+# シングアロング — 再生中にノート名をナレーション
+pianai sing let-it-be --mode note-names
+
+# ソルフェージュで両手をシングアロング
+pianai sing fur-elise --mode solfege --hand both
 ```
 
 ## MCPサーバー
 
-MCPサーバーはLLM連携用に7つのツールを公開しています：
+MCPサーバーはLLM連携用に8つのツールを公開しています：
 
 | ツール | 説明 |
 |------|------|
@@ -81,6 +88,7 @@ MCPサーバーはLLM連携用に7つのツールを公開しています：
 | `song_info` | 音楽表現、教習目標、練習提案の詳細を取得 |
 | `registry_stats` | ジャンル別・難易度別の楽曲数 |
 | `teaching_note` | 小節ごとの教習ノート、運指、ダイナミクス |
+| `sing_along` | 小節ごとの歌唱テキスト（音名、ソルフェージュ、輪郭、シラブル）を取得 |
 | `suggest_song` | 条件に基づくレコメンドを取得 |
 | `list_measures` | 教習ノートとパース警告付きの小節一覧 |
 | `practice_setup` | 楽曲に適した速度、モード、音声設定を提案 |
@@ -109,6 +117,7 @@ pnpm mcp
 | `list [--genre <genre>]` | 利用可能な楽曲を一覧表示、ジャンルでフィルタリング可能 |
 | `info <song-id>` | 楽曲の詳細を表示：音楽表現、教習ノート、構成 |
 | `play <song-id> [opts]` | MIDIを介してVMPKで楽曲を再生 |
+| `sing <song-id> [opts]` | シングアロング — 再生中にノートをナレーション |
 | `stats` | レジストリ統計（楽曲数、ジャンル、小節数） |
 | `ports` | 利用可能なMIDI出力ポートを一覧表示 |
 | `help` | 使用方法を表示 |
@@ -124,7 +133,7 @@ pnpm mcp
 
 ## 教習エンジン
 
-教習エンジンは再生中にフックを発火します。7つのフック実装がすべてのユースケースをカバーします：
+教習エンジンは再生中にフックを発火します。8つのフック実装がすべてのユースケースをカバーします：
 
 | フック | 用途 |
 |------|------|
@@ -134,6 +143,7 @@ pnpm mcp
 | `createCallbackTeachingHook(cb)` | カスタム — 任意の非同期コールバックにルーティング |
 | `createVoiceTeachingHook(sink)` | 音声 — mcp-voice-soundboard用の`VoiceDirective`を生成 |
 | `createAsideTeachingHook(sink)` | アサイド — mcp-asideインボックス用の`AsideDirective`を生成 |
+| `createSingAlongHook(sink, song)` | シングアロング — 各小節の前にノート名/ソルフェージュ/輪郭をナレーション |
 | `composeTeachingHooks(...hooks)` | 複合 — 複数のフックに順次ディスパッチ |
 
 ### 音声フィードバック
@@ -157,6 +167,32 @@ const session = createSession(getSong("moonlight-sonata-mvt1")!, connector, {
 
 await session.play();
 // voiceHook.directives → 発火されたすべての音声指示
+```
+
+### シングアロングナレーション
+
+```typescript
+import {
+  createSingAlongHook,
+  createVoiceTeachingHook,
+  composeTeachingHooks,
+  createSession,
+} from "@mcptoolshop/pianoai";
+import { getSong } from "@mcptoolshop/ai-music-sheets";
+
+const song = getSong("let-it-be")!;
+
+// 各小節の前にソルフェージュをナレーション、その後教習ノートを読み上げ
+const singHook = createSingAlongHook(voiceSink, song, {
+  mode: "solfege",
+  hand: "right",
+});
+const teachHook = createVoiceTeachingHook(voiceSink);
+const combined = composeTeachingHooks(singHook, teachHook);
+
+const session = createSession(song, connector, { teachingHook: combined });
+await session.play();
+// singHook.directives → 各小節前のブロッキング "Do... Mi... Sol"
 ```
 
 ### フックの合成
@@ -216,9 +252,9 @@ ai-music-sheets (ライブラリ)       pianai (ランタイム)
 ┌──────────────────────┐         ┌────────────────────────────────┐
 │ SongEntry (ハイブリッド) │────────→│ Note Parser (安全＋厳密)       │
 │ Registry (検索)       │         │ Session Engine (速度＋進捗)     │
-│ 10曲, 10ジャンル      │         │ Teaching Engine (7フック)       │
+│ 10曲, 10ジャンル      │         │ Teaching Engine (8フック)       │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
-                                 │ MCP Server (7ツール)            │
+                                 │ MCP Server (8ツール)            │
                                  │ CLI (プログレスバー＋音声)       │
                                  └─────────┬──────────────────────┘
                                            │ MIDI
@@ -237,8 +273,8 @@ ai-music-sheets (ライブラリ)       pianai (ランタイム)
 ## テスト
 
 ```bash
-pnpm test       # 121個のVitestテスト（パーサー＋セッション＋教習＋音声＋アサイド）
-pnpm smoke      # 20個のスモークテスト（統合テスト、MIDIハードウェア不要）
+pnpm test       # 163個のVitestテスト（パーサー＋セッション＋教習＋音声＋アサイド＋シングアロング）
+pnpm smoke      # 25個のスモークテスト（統合テスト、MIDIハードウェア不要）
 pnpm typecheck  # tsc --noEmit
 ```
 

@@ -12,9 +12,9 @@
   AI 驱动的钢琴教学 MCP 服务器 + CLI —— 通过 MIDI 在 VMPK 上演奏，并提供语音反馈。
 </p>
 
-[![Tests](https://img.shields.io/badge/tests-121_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Smoke](https://img.shields.io/badge/smoke-20_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![MCP Tools](https://img.shields.io/badge/MCP_tools-7-purple)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Tests](https://img.shields.io/badge/tests-163_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Smoke](https://img.shields.io/badge/smoke-25_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![MCP Tools](https://img.shields.io/badge/MCP_tools-8-purple)](https://github.com/mcp-tool-shop-org/pianoai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
 ## 这是什么？
@@ -26,11 +26,12 @@
 - **4 种播放模式** —— 完整播放、逐小节播放、分手练习、循环播放
 - **速度控制** —— 0.5 倍慢速练习至 2 倍快速播放，可与速度覆盖叠加
 - **进度追踪** —— 可配置的百分比里程碑或逐小节回调
-- **7 种教学钩子** —— console、silent、recording、callback、voice、aside、compose
+- **8 种教学钩子** —— console、silent、recording、callback、voice、aside、sing-along、compose
+- **跟唱叙述** —— 在每个小节前朗读音名、唱名、轮廓或音节
 - **语音反馈** —— `VoiceDirective` 输出，集成 mcp-voice-soundboard
 - **旁白插话** —— `AsideDirective` 输出，发送到 mcp-aside 收件箱
 - **安全解析** —— 错误音符会被优雅跳过，并收集 `ParseWarning`
-- **7 个 MCP 工具** —— 向 LLM 暴露曲库、教学注释和曲目推荐
+- **8 个 MCP 工具** —— 向 LLM 暴露曲库、教学注释、跟唱和曲目推荐
 - **音符解析器** —— 科学音高记谱法与 MIDI 互转
 - **模拟连接器** —— 无需 MIDI 硬件即可实现完整测试覆盖
 
@@ -69,11 +70,17 @@ pianai play moonlight-sonata-mvt1 --speed 0.5
 
 # 慢速分手练习
 pianai play dream-on --speed 0.75 --mode hands
+
+# 跟唱 — 播放时朗读音名
+pianai sing let-it-be --mode note-names
+
+# 用唱名跟唱，双手
+pianai sing fur-elise --mode solfege --hand both
 ```
 
 ## MCP 服务器
 
-MCP 服务器提供 7 个工具用于 LLM 集成：
+MCP 服务器提供 8 个工具用于 LLM 集成：
 
 | 工具 | 描述 |
 |------|------|
@@ -81,6 +88,7 @@ MCP 服务器提供 7 个工具用于 LLM 集成：
 | `song_info` | 获取完整的音乐语言、教学目标、练习建议 |
 | `registry_stats` | 按流派和难度统计曲目数量 |
 | `teaching_note` | 逐小节的教学注释、指法、力度 |
+| `sing_along` | 获取每小节可唱文本（音名、唱名、轮廓、音节） |
 | `suggest_song` | 根据条件获取曲目推荐 |
 | `list_measures` | 小节概览，含教学注释 + 解析警告 |
 | `practice_setup` | 为曲目建议速度、模式和语音设置 |
@@ -109,6 +117,7 @@ pnpm mcp
 | `list [--genre <genre>]` | 列出可用曲目，可按流派筛选 |
 | `info <song-id>` | 显示曲目详情：音乐语言、教学注释、结构 |
 | `play <song-id> [opts]` | 通过 MIDI 在 VMPK 上播放曲目 |
+| `sing <song-id> [opts]` | 跟唱 — 播放时朗读音符 |
 | `stats` | 曲库统计（曲目数、流派、小节数） |
 | `ports` | 列出可用的 MIDI 输出端口 |
 | `help` | 显示使用说明 |
@@ -124,7 +133,7 @@ pnpm mcp
 
 ## 教学引擎
 
-教学引擎在播放过程中触发钩子。7 种钩子实现覆盖所有使用场景：
+教学引擎在播放过程中触发钩子。8 种钩子实现覆盖所有使用场景：
 
 | 钩子 | 使用场景 |
 |------|----------|
@@ -134,6 +143,7 @@ pnpm mcp
 | `createCallbackTeachingHook(cb)` | 自定义 —— 路由到任意异步回调 |
 | `createVoiceTeachingHook(sink)` | 语音 —— 为 mcp-voice-soundboard 生成 `VoiceDirective` |
 | `createAsideTeachingHook(sink)` | 旁白 —— 为 mcp-aside 收件箱生成 `AsideDirective` |
+| `createSingAlongHook(sink, song)` | 跟唱 —— 在每个小节前朗读音名/唱名/轮廓 |
 | `composeTeachingHooks(...hooks)` | 组合 —— 按顺序分发到多个钩子 |
 
 ### 语音反馈
@@ -157,6 +167,32 @@ const session = createSession(getSong("moonlight-sonata-mvt1")!, connector, {
 
 await session.play();
 // voiceHook.directives → 所有已触发的语音指令
+```
+
+### 跟唱叙述
+
+```typescript
+import {
+  createSingAlongHook,
+  createVoiceTeachingHook,
+  composeTeachingHooks,
+  createSession,
+} from "@mcptoolshop/pianoai";
+import { getSong } from "@mcptoolshop/ai-music-sheets";
+
+const song = getSong("let-it-be")!;
+
+// 每个小节前朗读唱名，然后朗读教学注释
+const singHook = createSingAlongHook(voiceSink, song, {
+  mode: "solfege",
+  hand: "right",
+});
+const teachHook = createVoiceTeachingHook(voiceSink);
+const combined = composeTeachingHooks(singHook, teachHook);
+
+const session = createSession(song, connector, { teachingHook: combined });
+await session.play();
+// singHook.directives → 每个小节前的阻塞 "Do... Mi... Sol"
 ```
 
 ### 组合钩子
@@ -216,9 +252,9 @@ ai-music-sheets (曲库)           pianai (运行时)
 ┌──────────────────────┐         ┌────────────────────────────────┐
 │ SongEntry (混合格式)  │────────→│ Note Parser (安全 + 严格)      │
 │ Registry (搜索)      │         │ Session Engine (速度+进度)      │
-│ 10 首曲目, 10 种流派  │         │ Teaching Engine (7 种钩子)      │
+│ 10 首曲目, 10 种流派  │         │ Teaching Engine (8 种钩子)      │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
-                                 │ MCP Server (7 个工具)           │
+                                 │ MCP Server (8 个工具)           │
                                  │ CLI (进度条 + 语音)             │
                                  └─────────┬──────────────────────┘
                                            │ MIDI
@@ -237,8 +273,8 @@ ai-music-sheets (曲库)           pianai (运行时)
 ## 测试
 
 ```bash
-pnpm test       # 121 个 Vitest 测试（解析器 + 会话 + 教学 + 语音 + 旁白）
-pnpm smoke      # 20 个冒烟测试（集成测试，无需 MIDI 硬件）
+pnpm test       # 163 个 Vitest 测试（解析器 + 会话 + 教学 + 语音 + 旁白 + 跟唱）
+pnpm smoke      # 25 个冒烟测试（集成测试，无需 MIDI 硬件）
 pnpm typecheck  # tsc --noEmit
 ```
 
