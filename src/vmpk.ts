@@ -1,4 +1,4 @@
-// ─── pianai: VMPK MIDI Connector ────────────────────────────────────────────
+// ─── pianoai: VMPK MIDI Connector ───────────────────────────────────────────
 //
 // Connects to VMPK (Virtual MIDI Piano Keyboard) via a virtual MIDI port
 // using the JZZ library. On Windows, requires loopMIDI to create the port.

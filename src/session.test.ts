@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { getSong } from "@mcptoolshop/ai-music-sheets";
 import { createSession } from "./session.js";
 import { createMockVmpkConnector } from "./vmpk.js";
+import { createRecordingTeachingHook } from "./teaching.js";
 import type { PlaybackProgress } from "./types.js";
 
 describe("SessionController", () => {
@@ -493,5 +494,86 @@ describe("Edge cases: setSpeed validation", () => {
     const sc = createSession(blues, mock);
     sc.setSpeed(0.01);
     expect(sc.session.speed).toBe(0.01);
+  });
+});
+
+describe("SyncMode", () => {
+  const blues = getSong("basic-12-bar-blues")!;
+  const moonlight = getSong("moonlight-sonata-mvt1")!;
+
+  it("defaults syncMode to concurrent", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock);
+    expect(sc.session.syncMode).toBe("concurrent");
+  });
+
+  it("accepts syncMode: before", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock, { syncMode: "before" });
+    expect(sc.session.syncMode).toBe("before");
+  });
+
+  it("concurrent mode: voice and playback run in parallel", async () => {
+    const mock = createMockVmpkConnector();
+    const hook = createRecordingTeachingHook();
+    const sc = createSession(blues, mock, {
+      syncMode: "concurrent",
+      teachingHook: hook,
+    });
+    await mock.connect();
+    await sc.play();
+
+    expect(sc.state).toBe("finished");
+    expect(sc.session.measuresPlayed).toBe(12);
+    const starts = hook.events.filter((e) => e.type === "measure-start");
+    expect(starts.length).toBe(12);
+  });
+
+  it("before mode: voice completes before playback starts", async () => {
+    const mock = createMockVmpkConnector();
+    const hook = createRecordingTeachingHook();
+    const sc = createSession(blues, mock, {
+      syncMode: "before",
+      teachingHook: hook,
+    });
+    await mock.connect();
+    await sc.play();
+
+    expect(sc.state).toBe("finished");
+    expect(sc.session.measuresPlayed).toBe(12);
+    const starts = hook.events.filter((e) => e.type === "measure-start");
+    expect(starts.length).toBe(12);
+  });
+
+  it("hands mode respects syncMode: concurrent", async () => {
+    const mock = createMockVmpkConnector();
+    const hook = createRecordingTeachingHook();
+    const sc = createSession(moonlight, mock, {
+      mode: "hands",
+      syncMode: "concurrent",
+      teachingHook: hook,
+    });
+    await mock.connect();
+    await sc.play();
+
+    expect(sc.state).toBe("paused");
+    const starts = hook.events.filter((e) => e.type === "measure-start");
+    expect(starts.length).toBe(1);
+  });
+
+  it("hands mode respects syncMode: before", async () => {
+    const mock = createMockVmpkConnector();
+    const hook = createRecordingTeachingHook();
+    const sc = createSession(moonlight, mock, {
+      mode: "hands",
+      syncMode: "before",
+      teachingHook: hook,
+    });
+    await mock.connect();
+    await sc.play();
+
+    expect(sc.state).toBe("paused");
+    const starts = hook.events.filter((e) => e.type === "measure-start");
+    expect(starts.length).toBe(1);
   });
 });

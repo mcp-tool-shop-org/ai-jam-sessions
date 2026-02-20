@@ -1,4 +1,4 @@
-// ─── pianai: Core Types ─────────────────────────────────────────────────────
+// ─── pianoai: Core Types ────────────────────────────────────────────────────
 //
 // Session management, MIDI playback, and teaching interaction types.
 // These bridge ai-music-sheets (the library) with the runtime (MIDI + voice).
@@ -64,6 +64,11 @@ export type PlaybackMode =
   | "hands"       // Play each hand separately, then together
   | "loop";       // Loop a range of measures
 
+/** Sync mode for voice + piano coordination. */
+export type SyncMode =
+  | "concurrent"  // Voice and piano play at the same time (duet feel)
+  | "before";     // Voice speaks notes before piano plays (lecture style)
+
 /** A practice session. */
 export interface Session {
   /** Unique session ID. */
@@ -77,6 +82,9 @@ export interface Session {
 
   /** Playback mode. */
   mode: PlaybackMode;
+
+  /** Sync mode for voice + piano coordination. */
+  syncMode: SyncMode;
 
   /** Current measure index (0-based). */
   currentMeasure: number;
@@ -125,6 +133,13 @@ export type ProgressCallback = (progress: PlaybackProgress) => void;
 export interface SessionOptions {
   /** Playback mode (default: "full"). */
   mode?: PlaybackMode;
+
+  /**
+   * Sync mode for voice + piano coordination (default: "concurrent").
+   * "concurrent" = voice and piano play simultaneously (duet feel).
+   * "before" = voice speaks notes before piano plays (lecture style).
+   */
+  syncMode?: SyncMode;
 
   /** Tempo override in BPM (default: song's tempo). */
   tempo?: number;
@@ -292,6 +307,24 @@ export interface AsideDirective {
 
 /** Callback that receives aside directives. */
 export type AsideSink = (directive: AsideDirective) => Promise<void>;
+
+/** Options for the live feedback teaching hook. */
+export interface LiveFeedbackHookOptions {
+  /** Emit a voice encouragement every N measures (default: 4). */
+  voiceInterval?: number;
+
+  /** React to dynamics changes with aside tips (default: true). */
+  encourageOnDynamics?: boolean;
+
+  /** Warn about difficult passages with voice tips (default: true). */
+  warnOnDifficult?: boolean;
+
+  /** Voice preset name (default: undefined = server default). */
+  voice?: string;
+
+  /** Speech speed (default: 1.0). */
+  speechSpeed?: number;
+}
 
 /**
  * Teaching hook interface — inject this into sessions to receive

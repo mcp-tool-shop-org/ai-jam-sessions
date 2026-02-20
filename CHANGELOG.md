@@ -1,5 +1,34 @@
 # Changelog
 
+## 1.1.0 (2026-02-20)
+
+Synchronized singing + piano playback, live teaching feedback, and the `pianai` → `pianoai` rename.
+
+### Features
+
+- **Synchronized singing + piano** — new `syncMode` option: `concurrent` (voice + piano simultaneously, duet feel) or `before` (voice first, then piano)
+- **Live teaching feedback hook** — `createLiveFeedbackHook(voiceSink, asideSink, song)` delivers real-time encouragement every N measures, dynamics tips on intensity changes, difficulty warnings on challenging passages, and completion celebrations
+- **9 teaching hooks** — adds `createLiveFeedbackHook` to the existing 8 (console, silent, recording, callback, voice, aside, sing-along, compose)
+- **CLI `--with-piano` flag** — `pianoai sing <id> --with-piano` plays piano accompaniment while singing
+- **CLI `--sync` flag** — choose `concurrent` (default) or `before` sync mode for sing commands
+- **MCP `sing_along` extension** — `withPiano` and `syncMode` parameters for synchronized singing + accompaniment info
+
+### Breaking Changes
+
+- **CLI binary renamed** — `pianai` → `pianoai`, `pianai-mcp` → `pianoai-mcp`
+- **MCP server name** — `pianai` → `pianoai` (update your Claude Desktop config)
+
+### Docs
+
+- All 8 READMEs updated with v1.1.0 features, new CLI examples, Sing Options table, and updated architecture diagram
+- CLI command name corrected to `pianoai` across all documentation
+
+### Testing
+
+- 181 Vitest unit tests (+18 new: SyncMode, LiveFeedbackHook, integration)
+- 29 smoke tests (+4 new: concurrent/before sync, live feedback, composed feedback)
+- Full TypeScript strict mode — zero errors
+
 ## 1.0.0 (2026-02-20)
 
 Initial public release of **PianoAI** — an MCP server + CLI for AI-powered piano teaching.

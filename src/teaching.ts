@@ -1,4 +1,4 @@
-// ─── pianai: Teaching Engine ─────────────────────────────────────────────────
+// ─── pianoai: Teaching Engine ────────────────────────────────────────────────
 //
 // Provides TeachingHook implementations that deliver teaching interjections
 // during playback. The session engine calls these hooks at key moments.
@@ -18,6 +18,7 @@ import type {
   VoiceSink,
   AsideDirective,
   AsideSink,
+  LiveFeedbackHookOptions,
 } from "./types.js";
 import type { SongEntry } from "@mcptoolshop/ai-music-sheets";
 
@@ -438,6 +439,155 @@ export function createSingAlongHook(
 
     async push(_interjection) {
       // Sing-along hook does not speak push interjections
+    },
+  };
+}
+
+// ─── Live Feedback Hook (voice + aside during singing) ───────────────────────
+
+/** Encouragement phrases keyed by context. */
+const ENCOURAGEMENTS = [
+  "Keep it up!",
+  "Sounding great!",
+  "Nice rhythm!",
+  "Beautiful phrasing!",
+  "You've got this!",
+  "Smooth playing!",
+];
+
+/** Dynamics-aware aside tips. */
+const DYNAMICS_TIPS: Record<string, string> = {
+  pp: "Pianissimo — very soft, barely touching the keys.",
+  p: "Piano — play gently, light touch.",
+  mp: "Mezzo-piano — moderately soft, warm tone.",
+  mf: "Mezzo-forte — moderately loud, confident touch.",
+  f: "Forte — play strong, full sound.",
+  ff: "Fortissimo — very loud, powerful!",
+  crescendo: "Building intensity — lean into the crescendo.",
+  decrescendo: "Pulling back — ease off gradually.",
+  dim: "Diminuendo — getting softer, let the sound fade.",
+};
+
+/**
+ * Live feedback teaching hook — pushes context-aware encouragement and tips
+ * during singing/playback sessions via both voice and aside sinks.
+ *
+ * - Voice: periodic encouragement every N measures + key moment reactions
+ * - Aside: dynamics tips, fingering warnings, deeper contextual notes
+ *
+ * Composable with other hooks via composeTeachingHooks.
+ */
+export function createLiveFeedbackHook(
+  voiceSink: VoiceSink,
+  asideSink: AsideSink,
+  song: SongEntry,
+  options: LiveFeedbackHookOptions = {}
+): TeachingHook & { voiceDirectives: VoiceDirective[]; asideDirectives: AsideDirective[] } {
+  const {
+    voiceInterval = 4,
+    encourageOnDynamics = true,
+    warnOnDifficult = true,
+    voice,
+    speechSpeed = 1.0,
+  } = options;
+
+  const voiceDirectives: VoiceDirective[] = [];
+  const asideDirectives: AsideDirective[] = [];
+  let measureCount = 0;
+  let lastDynamics: string | undefined;
+
+  async function emitVoice(directive: VoiceDirective): Promise<void> {
+    voiceDirectives.push(directive);
+    await voiceSink(directive);
+  }
+
+  async function emitAside(directive: AsideDirective): Promise<void> {
+    asideDirectives.push(directive);
+    await asideSink(directive);
+  }
+
+  return {
+    voiceDirectives,
+    asideDirectives,
+
+    async onMeasureStart(measureNumber, teachingNote, dynamics) {
+      measureCount++;
+
+      // ── Dynamics change → aside tip ──
+      if (encourageOnDynamics && dynamics && dynamics !== lastDynamics) {
+        const tip = DYNAMICS_TIPS[dynamics.toLowerCase()] ??
+          `${dynamics} — adjust your touch accordingly.`;
+        await emitAside({
+          text: `Measure ${measureNumber}: ${tip}`,
+          priority: "low",
+          reason: "dynamics-change",
+          source: `measure-${measureNumber}`,
+          tags: ["piano-teacher", "live-feedback", "dynamics"],
+        });
+      }
+      lastDynamics = dynamics;
+
+      // ── Difficult passage warning → aside ──
+      if (warnOnDifficult && teachingNote) {
+        const lower = teachingNote.toLowerCase();
+        if (lower.includes("watch") || lower.includes("tricky") ||
+            lower.includes("careful") || lower.includes("difficult") ||
+            lower.includes("finger")) {
+          await emitAside({
+            text: `Heads up at measure ${measureNumber}: ${teachingNote}`,
+            priority: "med",
+            reason: "difficulty-warning",
+            source: `measure-${measureNumber}`,
+            tags: ["piano-teacher", "live-feedback", "warning"],
+          });
+        }
+      }
+
+      // ── Periodic voice encouragement ──
+      if (voiceInterval > 0 && measureCount % voiceInterval === 0) {
+        const phrase = ENCOURAGEMENTS[measureCount % ENCOURAGEMENTS.length];
+        await emitVoice({
+          text: phrase,
+          voice,
+          speed: speechSpeed,
+          blocking: false,
+        });
+      }
+    },
+
+    async onKeyMoment(moment) {
+      await emitVoice({
+        text: `Watch for this: ${moment}`,
+        voice,
+        speed: speechSpeed,
+        blocking: false,
+      });
+    },
+
+    async onSongComplete(measuresPlayed, songTitle) {
+      await emitVoice({
+        text: `Fantastic work on ${songTitle}! You played through all ${measuresPlayed} measures.`,
+        voice,
+        speed: speechSpeed,
+        blocking: false,
+      });
+      await emitAside({
+        text: `Session complete: ${songTitle} — ${measuresPlayed} measures played. Great practice session!`,
+        priority: "low",
+        reason: "session-complete",
+        tags: ["piano-teacher", "live-feedback", "completion"],
+      });
+    },
+
+    async push(interjection) {
+      // Route pushes to aside
+      await emitAside({
+        text: interjection.text,
+        priority: interjection.priority,
+        reason: interjection.reason,
+        source: interjection.source,
+        tags: ["piano-teacher", "live-feedback", interjection.reason],
+      });
     },
   };
 }
