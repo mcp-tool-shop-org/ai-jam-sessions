@@ -105,7 +105,7 @@ Parametros opcionales: `mood` (alegre, melancolico, sonador, etc.), `difficulty`
 ```json
 {
   "mcpServers": {
-    "pianoai": {
+    "ai_jam_session": {
       "command": "npx",
       "args": ["-y", "-p", "@mcptoolshop/ai_jam_session", "ai-jam-session-mcp"]
     }
@@ -119,10 +119,10 @@ PianoAI incluye un plugin de Claude Code que agrega comandos slash y personalida
 
 | Comando | Descripcion |
 |---------|-------------|
-| `/pianoai:teach <song>` | Iniciar una sesion de ensenanza estructurada |
-| `/pianoai:practice <song>` | Obtener un plan de practica con recomendaciones de velocidad/modo |
-| `/pianoai:explore [query]` | Explorar la biblioteca de canciones por genero, dificultad o palabra clave |
-| `/pianoai:jam <song or genre>` | Iniciar una sesion de jam -- Claude crea su propia interpretacion |
+| `/ai-jam-session:teach <song>` | Iniciar una sesion de ensenanza estructurada |
+| `/ai-jam-session:practice <song>` | Obtener un plan de practica con recomendaciones de velocidad/modo |
+| `/ai-jam-session:explore [query]` | Explorar la biblioteca de canciones por genero, dificultad o palabra clave |
+| `/ai-jam-session:jam <song or genre>` | Iniciar una sesion de jam -- Claude crea su propia interpretacion |
 
 Dos personalidades de agente:
 - **Profesor de Piano** -- paciente, pedagogico, se adapta al nivel del estudiante

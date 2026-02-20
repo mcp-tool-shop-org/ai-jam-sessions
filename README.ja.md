@@ -107,7 +107,7 @@ MCPサーバーはLLM連携用に15のツールを公開しています:
 ```json
 {
   "mcpServers": {
-    "pianoai": {
+    "ai_jam_session": {
       "command": "npx",
       "args": ["-y", "-p", "@mcptoolshop/ai_jam_session", "ai-jam-session-mcp"]
     }
@@ -121,10 +121,10 @@ PianoAIにはスラッシュコマンドとエージェントパーソナリテ�
 
 | コマンド | 説明 |
 |---------|------|
-| `/pianoai:teach <song>` | 構造化された教習セッションを開始 |
-| `/pianoai:practice <song>` | 速度・モードのおすすめ付き練習プランを取得 |
-| `/pianoai:explore [query]` | ジャンル、難易度、キーワードでライブラリを閲覧 |
-| `/pianoai:jam <song or genre>` | ジャムセッションを開始 — Claudeが独自の解釈を創作 |
+| `/ai-jam-session:teach <song>` | 構造化された教習セッションを開始 |
+| `/ai-jam-session:practice <song>` | 速度・モードのおすすめ付き練習プランを取得 |
+| `/ai-jam-session:explore [query]` | ジャンル、難易度、キーワードでライブラリを閲覧 |
+| `/ai-jam-session:jam <song or genre>` | ジャムセッションを開始 — Claudeが独自の解釈を創作 |
 
 2つのエージェントパーソナリティ:
 - **ピアノ教師** — 忍耐強く教育的、生徒のレベルに合わせた指導

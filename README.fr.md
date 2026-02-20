@@ -23,7 +23,7 @@ Un piano que Claude peut jouer. PianoAI est un serveur MCP avec un moteur audio 
 - **Moteur piano integre** -- audio a base d'echantillons via `node-web-audio-api`, joue dans les haut-parleurs
 - **Bibliotheque de 100 morceaux** -- classique, jazz, pop, blues, rock, R&B, latin, film, ragtime, new-age
 - **AI Jam Session** -- Claude analyse les accords et la melodie d'un morceau, puis cree sa propre interpretation
-- **Support des fichiers MIDI** -- jouez n'importe quel fichier `.mid` : `pianoai play song.mid`
+- **Support des fichiers MIDI** -- jouez n'importe quel fichier `.mid` : `ai-jam-session play song.mid`
 - **Systeme pedagogique** -- notes d'enseignement par mesure, descriptions du langage musical, recommandations de pratique
 - **4 modes de lecture** -- integral, mesure par mesure, mains separees, boucle
 - **Controle de la vitesse** -- de 0.5x pour la pratique lente jusqu'a 4x rapide
@@ -105,7 +105,7 @@ Parametres optionnels : `mood` (enjoue, melancolique, reveur, etc.), `difficulty
 ```json
 {
   "mcpServers": {
-    "pianoai": {
+    "ai_jam_session": {
       "command": "npx",
       "args": ["-y", "-p", "@mcptoolshop/ai_jam_session", "ai-jam-session-mcp"]
     }
@@ -119,10 +119,10 @@ PianoAI est livre avec un plugin Claude Code qui ajoute des commandes slash et d
 
 | Commande | Description |
 |----------|-------------|
-| `/pianoai:teach <song>` | Demarrer une session d'enseignement structuree |
-| `/pianoai:practice <song>` | Obtenir un plan de pratique avec des recommandations de vitesse/mode |
-| `/pianoai:explore [query]` | Parcourir la bibliotheque par genre, difficulte ou mot-cle |
-| `/pianoai:jam <song or genre>` | Demarrer une session de jam -- Claude cree sa propre interpretation |
+| `/ai-jam-session:teach <song>` | Demarrer une session d'enseignement structuree |
+| `/ai-jam-session:practice <song>` | Obtenir un plan de pratique avec des recommandations de vitesse/mode |
+| `/ai-jam-session:explore [query]` | Parcourir la bibliotheque par genre, difficulte ou mot-cle |
+| `/ai-jam-session:jam <song or genre>` | Demarrer une session de jam -- Claude cree sa propre interpretation |
 
 Deux personnalites d'agent :
 - **Professeur de piano** -- patient, pedagogique, s'adapte au niveau de l'eleve

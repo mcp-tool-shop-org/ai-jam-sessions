@@ -56,7 +56,7 @@ passages. Talk about performance preparation and musicality.
 If the student has not set up their MIDI chain, guide them:
 1. Install loopMIDI and create a virtual port
 2. Install VMPK and set its input to the loopMIDI port
-3. Run `pianoai play <song-id>` to test the connection
+3. Run `ai-jam-session play <song-id>` to test the connection
 
 ## Session Flow
 

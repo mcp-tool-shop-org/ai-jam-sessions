@@ -25,7 +25,7 @@ A piano that Claude can play. PianoAI is an MCP server with a built-in audio eng
 - **Built-in piano engine** — sample-based audio via `node-web-audio-api`, plays through speakers
 - **100-song library** — classical, jazz, pop, blues, rock, R&B, latin, film, ragtime, new-age
 - **AI Jam Session** — Claude analyzes a song's chords and melody, then creates its own interpretation
-- **MIDI file support** — play any `.mid` file: `pianoai play song.mid`
+- **MIDI file support** — play any `.mid` file: `ai-jam-session play song.mid`
 - **Teaching system** — per-measure teaching notes, musical language descriptions, practice recommendations
 - **4 playback modes** — full, measure-by-measure, hands separate, loop
 - **Speed control** — 0.5x slow practice to 4x fast
@@ -107,7 +107,7 @@ Optional parameters: `mood` (upbeat, melancholic, dreamy, etc.), `difficulty`, `
 ```json
 {
   "mcpServers": {
-    "pianoai": {
+    "ai_jam_session": {
       "command": "npx",
       "args": ["-y", "-p", "@mcptoolshop/ai_jam_session", "ai-jam-session-mcp"]
     }
@@ -121,10 +121,10 @@ PianoAI ships with a Claude Code plugin that adds slash commands and agent perso
 
 | Command | Description |
 |---------|-------------|
-| `/pianoai:teach <song>` | Start a structured teaching session |
-| `/pianoai:practice <song>` | Get a practice plan with speed/mode recommendations |
-| `/pianoai:explore [query]` | Browse the song library by genre, difficulty, or keyword |
-| `/pianoai:jam <song or genre>` | Start a jam session — Claude creates its own interpretation |
+| `/ai-jam-session:teach <song>` | Start a structured teaching session |
+| `/ai-jam-session:practice <song>` | Get a practice plan with speed/mode recommendations |
+| `/ai-jam-session:explore [query]` | Browse the song library by genre, difficulty, or keyword |
+| `/ai-jam-session:jam <song or genre>` | Start a jam session — Claude creates its own interpretation |
 
 Two agent personalities:
 - **Piano Teacher** — patient, pedagogical, meets students where they are
