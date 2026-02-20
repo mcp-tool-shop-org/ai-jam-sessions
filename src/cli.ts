@@ -18,12 +18,13 @@ import {
   getSong,
   getSongsByGenre,
   getStats,
-  searchSongs,
   GENRES,
 } from "ai-music-sheets";
 import type { SongEntry, Genre } from "ai-music-sheets";
+import type { PlaybackProgress, PlaybackMode } from "./types.js";
 import { createVmpkConnector } from "./vmpk.js";
 import { createSession } from "./session.js";
+import { createConsoleTeachingHook } from "./teaching.js";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -74,6 +75,20 @@ function printSongInfo(song: SongEntry): void {
   console.log(`\nTags: ${song.tags.join(", ")}\n`);
 }
 
+/** Print a progress bar. */
+function printProgress(progress: PlaybackProgress): void {
+  const barWidth = 30;
+  const filled = Math.round(progress.ratio * barWidth);
+  const bar = "█".repeat(filled) + "░".repeat(barWidth - filled);
+  const elapsed = (progress.elapsedMs / 1000).toFixed(1);
+  process.stdout.write(
+    `\r  [${bar}] ${progress.percent} — measure ${progress.currentMeasure}/${progress.totalMeasures} (${elapsed}s)`
+  );
+  if (progress.ratio >= 1) {
+    process.stdout.write("\n");
+  }
+}
+
 function padRight(s: string, len: number): string {
   return s.length >= len ? s.substring(0, len) : s + " ".repeat(len - s.length);
 }
@@ -81,6 +96,8 @@ function padRight(s: string, len: number): string {
 function truncate(s: string, max: number): string {
   return s.length <= max ? s : s.substring(0, max - 1) + "…";
 }
+
+const VALID_MODES: PlaybackMode[] = ["full", "measure", "hands", "loop"];
 
 // ─── Commands ───────────────────────────────────────────────────────────────
 
@@ -115,18 +132,41 @@ function cmdInfo(args: string[]): void {
 async function cmdPlay(args: string[]): Promise<void> {
   const songId = args[0];
   if (!songId) {
-    console.error("Usage: piano-ai play <song-id>");
+    console.error("Usage: piano-ai play <song-id> [--tempo N] [--speed N] [--mode MODE]");
     process.exit(1);
   }
   const song = getSong(songId);
   if (!song) {
-    console.error(`Song not found: "${songId}"`);
+    console.error(`Song not found: "${songId}". Run 'piano-ai list' to see available songs.`);
     process.exit(1);
   }
 
+  // Parse flags
   const portName = getFlag(args, "--port") ?? undefined;
   const tempoStr = getFlag(args, "--tempo");
-  const mode = getFlag(args, "--mode") ?? "full";
+  const speedStr = getFlag(args, "--speed");
+  const modeStr = getFlag(args, "--mode") ?? "full";
+
+  // Validate mode
+  if (!VALID_MODES.includes(modeStr as PlaybackMode)) {
+    console.error(`Invalid mode: "${modeStr}". Available: ${VALID_MODES.join(", ")}`);
+    process.exit(1);
+  }
+  const mode = modeStr as PlaybackMode;
+
+  // Validate speed
+  const speed = speedStr ? parseFloat(speedStr) : undefined;
+  if (speed !== undefined && (isNaN(speed) || speed <= 0 || speed > 4)) {
+    console.error(`Invalid speed: "${speedStr}". Must be between 0 (exclusive) and 4.`);
+    process.exit(1);
+  }
+
+  // Validate tempo
+  const tempo = tempoStr ? parseInt(tempoStr, 10) : undefined;
+  if (tempo !== undefined && (isNaN(tempo) || tempo < 10 || tempo > 400)) {
+    console.error(`Invalid tempo: "${tempoStr}". Must be between 10 and 400 BPM.`);
+    process.exit(1);
+  }
 
   console.log(`\nConnecting to MIDI...`);
   const connector = createVmpkConnector(
@@ -135,23 +175,56 @@ async function cmdPlay(args: string[]): Promise<void> {
 
   try {
     await connector.connect();
-    console.log(`Connected! Playing: ${song.title}`);
+    console.log(`Connected!`);
 
+    // Create session with teaching hooks + progress
+    const teachingHook = createConsoleTeachingHook();
     const session = createSession(song, connector, {
-      mode: mode as any,
-      tempo: tempoStr ? parseInt(tempoStr, 10) : undefined,
+      mode,
+      tempo,
+      speed,
+      teachingHook,
+      onProgress: printProgress,
+      progressInterval: 0, // report every measure
     });
 
+    // Report parse warnings
+    if (session.parseWarnings.length > 0) {
+      console.log(`\n⚠ ${session.parseWarnings.length} note parsing warning(s):`);
+      for (const w of session.parseWarnings.slice(0, 5)) {
+        console.log(`  • ${w.location}: "${w.token}" — ${w.message}`);
+      }
+      if (session.parseWarnings.length > 5) {
+        console.log(`  … and ${session.parseWarnings.length - 5} more`);
+      }
+    }
+
+    // Display session info
     printSongInfo(song);
-    console.log("Playing...\n");
+    const speedLabel = speed && speed !== 1.0 ? ` × ${speed}x speed` : "";
+    const tempoLabel = tempo ? ` (${tempo} BPM${speedLabel})` : speedLabel ? ` (${song.tempo} BPM${speedLabel})` : "";
+    console.log(`Playing: ${song.title}${tempoLabel} [${mode} mode]\n`);
 
     await session.play();
 
     console.log(`\nFinished! ${session.session.measuresPlayed} measures played.`);
+    console.log(session.summary());
   } catch (err) {
-    console.error(
-      `Error: ${err instanceof Error ? err.message : String(err)}`
-    );
+    const msg = err instanceof Error ? err.message : String(err);
+
+    // Detect MIDI connection failure — provide helpful guidance
+    if (msg.includes("Failed to connect to MIDI") || msg.includes("MIDI port not connected")) {
+      console.error(`\n❌ MIDI Connection Failed`);
+      console.error(`\nTo play through VMPK, you need:`);
+      console.error(`  1. loopMIDI running with a virtual port (e.g. "loopMIDI Port")`);
+      console.error(`     → Download: https://www.tobias-erichsen.de/software/loopmidi.html`);
+      console.error(`  2. VMPK listening on that port`);
+      console.error(`     → Download: https://vmpk.sourceforge.io/`);
+      console.error(`     → VMPK → Edit → MIDI Connections → Input: "loopMIDI Port"`);
+      console.error(`\nDetailed error: ${msg}`);
+    } else {
+      console.error(`\nError: ${msg}`);
+    }
     process.exit(1);
   } finally {
     await connector.disconnect();
@@ -196,7 +269,8 @@ Commands:
 
 Play options:
   --port <name>              MIDI port name (default: auto-detect loopMIDI)
-  --tempo <bpm>              Override tempo
+  --tempo <bpm>              Override tempo (10-400 BPM)
+  --speed <mult>             Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double)
   --mode <mode>              Playback mode: full, measure, hands, loop
 
 Examples:
@@ -204,6 +278,8 @@ Examples:
   piano-ai info autumn-leaves
   piano-ai play moonlight-sonata-mvt1 --tempo 48
   piano-ai play basic-12-bar-blues --mode measure
+  piano-ai play let-it-be --speed 0.5               # half speed practice
+  piano-ai play dream-on --speed 0.75 --mode hands   # slow hands-separate
 `);
 }
 
