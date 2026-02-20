@@ -17,6 +17,8 @@ import type { SongEntry, Measure } from "./songs/types.js";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
+export type PianoRollColorMode = "hand" | "pitch-class";
+
 export interface PianoRollOptions {
   /** First measure to render (1-based). Default: 1 */
   startMeasure?: number;
@@ -32,6 +34,8 @@ export interface PianoRollOptions {
   showDynamics?: boolean;
   /** Show measure teaching notes as tooltip titles. Default: false */
   showTeachingNotes?: boolean;
+  /** Note coloring mode. Default: "hand" (blue RH / coral LH). */
+  colorMode?: PianoRollColorMode;
 }
 
 /** A resolved note ready for rendering. */
@@ -63,6 +67,24 @@ const COLORS = {
   pitchLabel: "#666688",
   blackKeyBg: "#151526",
 };
+
+// ─── Pitch-Class Colors ─────────────────────────────────────────────────────
+
+/** 12 chromatic colors, warm-to-cool rainbow. Index = pitch class (C=0). */
+const PITCH_CLASS_COLORS: { fill: string; stroke: string; name: string }[] = [
+  { fill: "#ff4444", stroke: "#cc2222", name: "C" },
+  { fill: "#ff8844", stroke: "#cc6622", name: "C#" },
+  { fill: "#ffcc44", stroke: "#ccaa22", name: "D" },
+  { fill: "#88dd44", stroke: "#66bb22", name: "D#" },
+  { fill: "#44dd44", stroke: "#22bb22", name: "E" },
+  { fill: "#44ddaa", stroke: "#22bb88", name: "F" },
+  { fill: "#44ccdd", stroke: "#22aabb", name: "F#" },
+  { fill: "#4488ff", stroke: "#2266cc", name: "G" },
+  { fill: "#6644ff", stroke: "#4422cc", name: "G#" },
+  { fill: "#aa44ff", stroke: "#8822cc", name: "A" },
+  { fill: "#dd44cc", stroke: "#bb22aa", name: "A#" },
+  { fill: "#ff4488", stroke: "#cc2266", name: "B" },
+];
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -171,6 +193,7 @@ export function renderPianoRoll(
     showMetronome: options?.showMetronome ?? true,
     showDynamics: options?.showDynamics ?? true,
     showTeachingNotes: options?.showTeachingNotes ?? false,
+    colorMode: options?.colorMode ?? "hand",
   };
 
   // Clamp measure range
@@ -306,11 +329,21 @@ export function renderPianoRoll(
     const y = gridY + (maxMidi - note.midi) * opts.pitchRowHeight + 1;
     const w = Math.max(2, (note.durationBeats / bpm) * measureWidth - 1);
     const h = opts.pitchRowHeight - 2;
-    const cls = note.hand === "right" ? "note-rh" : "note-lh";
     const noteName = midiToNoteName(note.midi);
     const handLabel = note.hand === "right" ? "RH" : "LH";
 
-    lines.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="${cls}">`);
+    let fill: string;
+    let stroke: string;
+    if (opts.colorMode === "pitch-class") {
+      const pc = note.midi % 12;
+      fill = PITCH_CLASS_COLORS[pc].fill;
+      stroke = PITCH_CLASS_COLORS[pc].stroke;
+    } else {
+      fill = note.hand === "right" ? COLORS.rhNote : COLORS.lhNote;
+      stroke = note.hand === "right" ? COLORS.rhNoteStroke : COLORS.lhNoteStroke;
+    }
+
+    lines.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="0.5" rx="2" ry="2">`);
     lines.push(`  <title>${handLabel}: ${noteName} (m.${measures[note.measureIndex].number})</title>`);
     lines.push(`</rect>`);
   }
@@ -342,12 +375,26 @@ export function renderPianoRoll(
   }
 
   // ── Legend ──
-  const legendY = footerY + 16;
-  const legendX = gridX + gridWidth - 120;
-  lines.push(`<rect x="${legendX}" y="${legendY - 8}" width="8" height="8" fill="${COLORS.rhNote}" rx="1"/>`);
-  lines.push(`<text x="${legendX + 12}" y="${legendY}" fill="${COLORS.text}" font-size="9">Right Hand</text>`);
-  lines.push(`<rect x="${legendX + 70}" y="${legendY - 8}" width="8" height="8" fill="${COLORS.lhNote}" rx="1"/>`);
-  lines.push(`<text x="${legendX + 82}" y="${legendY}" fill="${COLORS.text}" font-size="9">Left Hand</text>`);
+  if (opts.colorMode === "pitch-class") {
+    // Chromatic pitch-class legend: show only the pitch classes present in the song
+    const presentPcs = [...new Set(allNotes.map(n => n.midi % 12))].sort((a, b) => a - b);
+    const legendY = footerY + 16;
+    let lx = gridX + gridWidth - presentPcs.length * 28;
+    for (const pc of presentPcs) {
+      const c = PITCH_CLASS_COLORS[pc];
+      lines.push(`<rect x="${lx}" y="${legendY - 8}" width="8" height="8" fill="${c.fill}" rx="1"/>`);
+      lines.push(`<text x="${lx + 11}" y="${legendY}" fill="${COLORS.text}" font-size="8">${c.name}</text>`);
+      lx += 28;
+    }
+  } else {
+    // Hand-based legend (default)
+    const legendY = footerY + 16;
+    const legendX = gridX + gridWidth - 120;
+    lines.push(`<rect x="${legendX}" y="${legendY - 8}" width="8" height="8" fill="${COLORS.rhNote}" rx="1"/>`);
+    lines.push(`<text x="${legendX + 12}" y="${legendY}" fill="${COLORS.text}" font-size="9">Right Hand</text>`);
+    lines.push(`<rect x="${legendX + 70}" y="${legendY - 8}" width="8" height="8" fill="${COLORS.lhNote}" rx="1"/>`);
+    lines.push(`<text x="${legendX + 82}" y="${legendY}" fill="${COLORS.text}" font-size="9">Left Hand</text>`);
+  }
 
   // ── Close SVG ──
   lines.push(`</svg>`);

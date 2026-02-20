@@ -4,7 +4,7 @@
 // No external software required — npm install gives you everything.
 //
 // Piano model features:
-//   - 12 sine partials per voice with inharmonic frequency stretching
+//   - Configurable sine partials per voice with inharmonic frequency stretching
 //   - Per-partial amplitude envelopes (higher harmonics decay faster)
 //   - Velocity-dependent timbre (harder = brighter, more harmonics)
 //   - Hammer noise transient (bandpass-filtered noise burst on attack)
@@ -13,8 +13,17 @@
 //   - DynamicsCompressor for polyphony safety
 //   - 48-voice polyphony with LRU voice stealing
 //
+// Keyboard voices:
+//   - grand      — Concert Grand (default). Rich, full, wide stereo.
+//   - upright    — Upright Piano. Warm, short sustain, more hammer.
+//   - electric   — Electric Piano. Clean, bell-like, chorus shimmer.
+//   - honkytonk  — Honky-Tonk. Jangly detuning, bright, punchy.
+//   - musicbox   — Music Box. Crystal pure, long sustain, delicate.
+//   - bright     — Bright Grand. Sparkly, present, cuts through.
+//
 // Usage:
-//   const piano = createAudioEngine();
+//   const piano = createAudioEngine();             // Concert Grand (default)
+//   const piano = createAudioEngine("honkytonk");  // Honky-Tonk
 //   await piano.connect();
 //   piano.noteOn(60, 100);   // middle C, forte
 //   piano.noteOff(60);
@@ -22,6 +31,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { VmpkConnector, MidiStatus, MidiNote } from "./types.js";
+import { getMergedVoice, type PianoVoiceId, type PianoVoiceConfig } from "./piano-voices.js";
 
 // ─── Lazy Import ────────────────────────────────────────────────────────────
 // Don't load the native binary until the engine is actually used.
@@ -37,9 +47,6 @@ async function loadAudioContext(): Promise<any> {
 }
 
 // ─── Piano Physics ──────────────────────────────────────────────────────────
-
-/** Max partials per voice (bass notes get all, treble gets fewer). */
-const MAX_PARTIALS = 12;
 
 /** Maximum simultaneous voices before stealing. */
 const MAX_POLYPHONY = 48;
@@ -57,30 +64,13 @@ function midiToOctave(note: number): number {
 /**
  * Stereo pan: low notes left, high notes right.
  * Mimics sitting at a piano — bass on the left, treble on the right.
+ * Width parameter scales the range (0 = mono, 1 = full spread).
  */
-function noteToPan(note: number): number {
-  return Math.max(-0.7, Math.min(0.7, ((note - 21) / 87) * 1.4 - 0.7));
+function noteToPan(note: number, stereoWidth: number): number {
+  const raw = ((note - 21) / 87) * 1.4 - 0.7;
+  const scaled = raw * stereoWidth;
+  return Math.max(-0.7, Math.min(0.7, scaled));
 }
-
-/**
- * Inharmonicity coefficient by octave.
- *
- * Piano strings are stiff, not ideal — partials are stretched above
- * pure harmonics. This gives pianos their characteristic shimmer.
- *
- * f_n = n × f₀ × √(1 + B × n²)
- */
-const B_COEFF: number[] = [
-  0.00012, // octave 0 (A0 area) — highest inharmonicity
-  0.00008, // octave 1
-  0.00004, // octave 2
-  0.00002, // octave 3
-  0.00001, // octave 4 (middle C)
-  0.000006, // octave 5
-  0.000004, // octave 6
-  0.000003, // octave 7
-  0.000002, // octave 8
-];
 
 /** Compute stretched partial frequency with inharmonicity. */
 function partialFreq(fundamental: number, n: number, B: number): number {
@@ -91,27 +81,28 @@ function partialFreq(fundamental: number, n: number, B: number): number {
  * How many partials to use for this note.
  * Bass notes have richer harmonic content; treble is simpler.
  */
-function partialsForNote(midiNote: number): number {
-  if (midiNote > 90) return 5; // High treble
-  if (midiNote > 72) return 8; // Upper register
-  if (midiNote > 54) return 10; // Middle register
-  return MAX_PARTIALS; // Bass — full harmonic series
+function partialsForNote(midiNote: number, voice: PianoVoiceConfig): number {
+  const [highTreble, upperReg, midReg, bass] = voice.partialsPerRegister;
+  if (midiNote > 90) return highTreble;
+  if (midiNote > 72) return upperReg;
+  if (midiNote > 54) return midReg;
+  return bass;
 }
 
 /**
  * Amplitude for the nth partial (1-based).
  *
- * Base amplitude follows ~1/n^0.7 with exponential rolloff.
+ * Base amplitude follows ~1/n^rolloff with exponential rolloff.
  * Velocity controls brightness: soft = warm, hard = bright.
  */
-function partialAmplitude(n: number, velocity01: number): number {
-  const base = Math.pow(n, -0.7) * Math.exp(-0.08 * n);
+function partialAmplitude(n: number, velocity01: number, voice: PianoVoiceConfig): number {
+  const base = Math.pow(n, -voice.partialRolloff) * Math.exp(-voice.partialDecayRate * n);
 
   // Velocity-dependent brightness: high partials only appear at higher velocity
   if (n <= 3) return base;
   const brightnessGate = Math.pow(
     velocity01,
-    0.3 + (n - 3) * 0.12
+    voice.brightnessBase + (n - 3) * voice.brightnessSlope
   );
   return base * brightnessGate;
 }
@@ -122,20 +113,21 @@ function partialAmplitude(n: number, velocity01: number): number {
  * Higher partials decay much faster than the fundamental.
  * Lower notes ring longer than higher notes.
  */
-function partialDecayTime(n: number, midiNote: number): number {
-  // Base decay for fundamental: 3s (treble) to 15s (bass)
+function partialDecayTime(n: number, midiNote: number, voice: PianoVoiceConfig): number {
+  // Base decay for fundamental: decayBase (treble) to decayBase+decayRange (bass)
   const registerFactor = 1.0 - (midiNote - 21) / 87;
-  const baseFundamental = 3 + registerFactor * 12;
-  // Higher partials: decay ∝ 1/n^0.8
-  return baseFundamental * Math.pow(n, -0.8);
+  const baseFundamental = voice.decayBase + registerFactor * voice.decayRange;
+  // Higher partials: decay ∝ 1/n^exponent
+  return baseFundamental * Math.pow(n, -voice.decayPartialExponent);
 }
 
 /**
  * Attack time based on velocity.
  * Harder strikes = shorter hammer pulse = sharper attack.
  */
-function attackTime(velocity01: number): number {
-  return 0.002 + (1 - velocity01) * 0.008; // 2ms (ff) to 10ms (pp)
+function attackTime(velocity01: number, voice: PianoVoiceConfig): number {
+  const [ff, pp] = voice.attackRange;
+  return ff + (1 - velocity01) * (pp - ff);
 }
 
 // ─── Voice ──────────────────────────────────────────────────────────────────
@@ -159,8 +151,12 @@ interface Voice {
  *
  * Implements VmpkConnector so it's a drop-in replacement anywhere
  * the codebase uses a connector (sessions, CLI, MCP server).
+ *
+ * @param voiceId — Piano voice preset. Default: "grand" (Concert Grand).
  */
-export function createAudioEngine(): VmpkConnector {
+export function createAudioEngine(voiceId?: PianoVoiceId): VmpkConnector {
+  const voice = getMergedVoice(voiceId ?? "grand") ?? getMergedVoice("grand")!;
+
   let ctx: any = null;
   let currentStatus: MidiStatus = "disconnected";
   let compressor: any = null;
@@ -179,7 +175,9 @@ export function createAudioEngine(): VmpkConnector {
 
   /** Create a reusable noise buffer for hammer transients. */
   function createHammerNoiseBuffer(): void {
-    const durationMs = 40;
+    if (voice.hammerNoiseAmount <= 0 || voice.hammerNoiseDuration <= 0) return;
+
+    const durationMs = voice.hammerNoiseDuration;
     const length = Math.ceil((durationMs / 1000) * ctx.sampleRate);
     hammerNoiseBuffer = ctx.createBuffer(1, length, ctx.sampleRate);
     const data = new Float32Array(length);
@@ -194,18 +192,18 @@ export function createAudioEngine(): VmpkConnector {
     const velocity01 = Math.max(0.01, Math.min(1.0, velocity / 127));
     const freq = midiToFreq(note);
     const octave = midiToOctave(note);
-    const B = B_COEFF[octave] ?? 0.000003;
+    const B = voice.inharmonicity[octave] ?? 0.000003;
     const now = ctx.currentTime;
-    const attack = attackTime(velocity01);
-    const numPartials = partialsForNote(note);
+    const attack = attackTime(velocity01, voice);
+    const numPartials = partialsForNote(note, voice);
 
     // ── Master gain: constant volume (per-partial gains shape the envelope) ──
     const voiceMaster = ctx.createGain();
-    voiceMaster.gain.value = velocity01 * 0.25;
+    voiceMaster.gain.value = velocity01 * voice.voiceGain;
 
     // ── Stereo panner ──
     const panner = ctx.createStereoPanner();
-    panner.pan.value = noteToPan(note);
+    panner.pan.value = noteToPan(note, voice.stereoWidth);
     voiceMaster.connect(panner);
     panner.connect(compressor);
 
@@ -221,12 +219,12 @@ export function createAudioEngine(): VmpkConnector {
       osc.type = "sine";
       osc.frequency.value = pFreq;
 
-      // Duplex stringing: subtle random detuning for warmth
-      osc.detune.value = (Math.random() - 0.5) * 3; // ±1.5 cents
+      // Duplex stringing: random detuning for warmth (spread/2 = ± cents)
+      osc.detune.value = (Math.random() - 0.5) * voice.detuneSpread;
 
       const gain = ctx.createGain();
-      const amp = partialAmplitude(n, velocity01);
-      const decay = partialDecayTime(n, note);
+      const amp = partialAmplitude(n, velocity01, voice);
+      const decay = partialDecayTime(n, note, voice);
 
       // Envelope: silence → attack → exponential decay
       gain.gain.setValueAtTime(0, now);
@@ -244,7 +242,7 @@ export function createAudioEngine(): VmpkConnector {
 
     // ── Hammer noise transient ──
     let noiseSource: any = null;
-    if (hammerNoiseBuffer) {
+    if (hammerNoiseBuffer && voice.hammerNoiseAmount > 0) {
       noiseSource = ctx.createBufferSource();
       noiseSource.buffer = hammerNoiseBuffer;
 
@@ -252,11 +250,12 @@ export function createAudioEngine(): VmpkConnector {
       const noiseFilter = ctx.createBiquadFilter();
       noiseFilter.type = "bandpass";
       noiseFilter.frequency.value = Math.min(freq * 2.5, 10000);
-      noiseFilter.Q.value = 0.5 + velocity01 * 2.5;
+      const [baseQ, velQ] = voice.hammerNoiseQRange;
+      noiseFilter.Q.value = baseQ + velocity01 * velQ;
 
       // Quick envelope: burst then silence
       const noiseGain = ctx.createGain();
-      const noiseAmp = velocity01 * 0.2;
+      const noiseAmp = velocity01 * voice.hammerNoiseAmount;
       noiseGain.gain.setValueAtTime(noiseAmp, now);
       noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
 
@@ -280,31 +279,31 @@ export function createAudioEngine(): VmpkConnector {
   }
 
   /** Release a voice (damper engages — fast fade out). */
-  function releaseVoice(voice: Voice): void {
-    if (voice.released) return;
-    voice.released = true;
+  function releaseVoice(v: Voice): void {
+    if (v.released) return;
+    v.released = true;
 
     const now = ctx.currentTime;
-    const releaseTime = 0.12; // 120ms damper release
+    const releaseTime = voice.releaseTime;
 
     // Cancel ongoing scheduled values and fade to silence
-    for (const g of voice.partialGains) {
+    for (const g of v.partialGains) {
       g.gain.cancelScheduledValues(now);
       g.gain.setValueAtTime(g.gain.value, now);
       g.gain.linearRampToValueAtTime(0, now + releaseTime);
     }
 
     // Schedule full cleanup after release completes
-    voice.cleanupTimer = setTimeout(() => killVoice(voice), (releaseTime + 0.05) * 1000);
+    v.cleanupTimer = setTimeout(() => killVoice(v), (releaseTime + 0.05) * 1000);
   }
 
   /** Immediately destroy a voice and free resources. */
-  function killVoice(voice: Voice): void {
-    if (voice.cleanupTimer) {
-      clearTimeout(voice.cleanupTimer);
-      voice.cleanupTimer = null;
+  function killVoice(v: Voice): void {
+    if (v.cleanupTimer) {
+      clearTimeout(v.cleanupTimer);
+      v.cleanupTimer = null;
     }
-    for (const osc of voice.oscillators) {
+    for (const osc of v.oscillators) {
       try {
         osc.stop();
         osc.disconnect();
@@ -312,28 +311,28 @@ export function createAudioEngine(): VmpkConnector {
         /* already stopped */
       }
     }
-    for (const g of voice.partialGains) {
+    for (const g of v.partialGains) {
       try {
         g.disconnect();
       } catch {
         /* ok */
       }
     }
-    if (voice.noiseSource) {
+    if (v.noiseSource) {
       try {
-        voice.noiseSource.stop();
-        voice.noiseSource.disconnect();
+        v.noiseSource.stop();
+        v.noiseSource.disconnect();
       } catch {
         /* ok */
       }
     }
     try {
-      voice.masterGain.disconnect();
+      v.masterGain.disconnect();
     } catch {
       /* ok */
     }
     try {
-      voice.panner.disconnect();
+      v.panner.disconnect();
     } catch {
       /* ok */
     }
@@ -343,9 +342,9 @@ export function createAudioEngine(): VmpkConnector {
   function stealOldest(): void {
     if (voiceOrder.length === 0) return;
     const oldestNote = voiceOrder.shift()!;
-    const voice = activeVoices.get(oldestNote);
-    if (voice) {
-      killVoice(voice);
+    const oldest = activeVoices.get(oldestNote);
+    if (oldest) {
+      killVoice(oldest);
       activeVoices.delete(oldestNote);
     }
   }
@@ -376,7 +375,7 @@ export function createAudioEngine(): VmpkConnector {
         compressor.release.value = 0.2;
 
         master = ctx.createGain();
-        master.gain.value = 0.85;
+        master.gain.value = voice.masterGain;
 
         compressor.connect(master);
         master.connect(ctx.destination);
@@ -385,7 +384,7 @@ export function createAudioEngine(): VmpkConnector {
         createHammerNoiseBuffer();
 
         currentStatus = "connected";
-        console.error("Piano engine connected (built-in audio)");
+        console.error(`Piano engine connected (${voice.name})`);
       } catch (err) {
         currentStatus = "error";
         throw new Error(
@@ -396,9 +395,9 @@ export function createAudioEngine(): VmpkConnector {
 
     async disconnect(): Promise<void> {
       // Kill all active voices
-      for (const [, voice] of activeVoices) {
+      for (const [, v] of activeVoices) {
         try {
-          killVoice(voice);
+          killVoice(v);
         } catch {
           /* ok */
         }
@@ -425,7 +424,7 @@ export function createAudioEngine(): VmpkConnector {
     },
 
     listPorts(): string[] {
-      return ["Built-in Piano"];
+      return [`Built-in Piano (${voice.name})`];
     },
 
     noteOn(note: number, velocity: number, channel?: number): void {
@@ -444,17 +443,17 @@ export function createAudioEngine(): VmpkConnector {
         stealOldest();
       }
 
-      const voice = createVoice(note, velocity);
-      activeVoices.set(note, voice);
+      const v = createVoice(note, velocity);
+      activeVoices.set(note, v);
       voiceOrder.push(note);
     },
 
     noteOff(note: number, channel?: number): void {
       if (!ctx || currentStatus !== "connected") return;
 
-      const voice = activeVoices.get(note);
-      if (voice) {
-        releaseVoice(voice);
+      const v = activeVoices.get(note);
+      if (v) {
+        releaseVoice(v);
         activeVoices.delete(note);
         removeFromOrder(note);
       }
@@ -462,8 +461,8 @@ export function createAudioEngine(): VmpkConnector {
 
     allNotesOff(channel?: number): void {
       if (!ctx) return;
-      for (const [, voice] of activeVoices) {
-        killVoice(voice);
+      for (const [, v] of activeVoices) {
+        killVoice(v);
       }
       activeVoices.clear();
       voiceOrder.length = 0;

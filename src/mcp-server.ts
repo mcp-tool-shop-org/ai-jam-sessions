@@ -48,6 +48,14 @@ import { renderPianoRoll } from "./piano-roll.js";
 import type { ParseWarning, PlaybackMode, SyncMode, VmpkConnector } from "./types.js";
 import { createAudioEngine } from "./audio-engine.js";
 import { createVmpkConnector } from "./vmpk.js";
+import {
+  listVoices, suggestVoice, getVoice, getMergedVoice,
+  VOICE_IDS, TUNING_PARAMS,
+  loadUserTuning, saveUserTuning, resetUserTuning,
+  type PianoVoiceId, type UserTuning,
+} from "./piano-voices.js";
+import { detectChord, midiNotesToNames } from "./chord-detect.js";
+import type { PianoRollColorMode } from "./piano-roll.js";
 import { createSession, SessionController } from "./session.js";
 import { createConsoleTeachingHook, composeTeachingHooks } from "./teaching.js";
 import { parseMidiFile, parseMidiBuffer } from "./midi/parser.js";
@@ -521,6 +529,8 @@ let activeSession: SessionController | null = null;
 let activeMidiEngine: MidiPlaybackEngine | null = null;
 let activeController: PlaybackController | null = null;
 let activeConnector: VmpkConnector | null = null;
+let activeVoiceId: string = "grand";
+let activeNotes: Set<number> = new Set();
 
 /** Stop whatever is currently playing. */
 function stopActive(): void {
@@ -543,6 +553,7 @@ function stopActive(): void {
     activeConnector.disconnect().catch(() => {});
     activeConnector = null;
   }
+  activeNotes.clear();
 }
 
 // ─── Tool: play_song ──────────────────────────────────────────────────────
@@ -560,8 +571,9 @@ server.tool(
     withSinging: z.boolean().optional().describe("Enable sing-along narration during playback (note-names by default). Default: false"),
     withTeaching: z.boolean().optional().describe("Enable live teaching feedback (encouragement, dynamics tips, difficulty warnings). Default: false"),
     singMode: z.enum(["note-names", "solfege", "contour", "syllables"]).optional().describe("Sing-along mode when withSinging is true. Default: note-names"),
+    keyboard: z.enum(VOICE_IDS as unknown as [string, ...string[]]).optional().describe("Piano voice/keyboard: grand (default), upright, electric, honkytonk, musicbox, bright. Each has a different character suited to different genres."),
   },
-  async ({ id, speed, tempo, mode, startMeasure, endMeasure, withSinging, withTeaching, singMode }) => {
+  async ({ id, speed, tempo, mode, startMeasure, endMeasure, withSinging, withTeaching, singMode, keyboard }) => {
     // Stop whatever is currently playing
     stopActive();
 
@@ -577,7 +589,10 @@ server.tool(
     }
 
     // Connect piano engine
-    const connector = createAudioEngine();
+    const voiceId = (keyboard ?? "grand") as PianoVoiceId;
+    activeVoiceId = voiceId;
+    activeNotes.clear();
+    const connector = createAudioEngine(voiceId);
     try {
       await connector.connect();
     } catch (err) {
@@ -766,6 +781,7 @@ server.tool(
     const lines = [
       `Now playing: **${song.title}** by ${song.composer ?? "Traditional"}`,
       ``,
+      `- **Keyboard:** ${voiceId}`,
       `- **Mode:** ${playbackMode}`,
       `- **Tempo:** ${baseTempo} BPM${speedLabel} → ${effectiveTempo} BPM effective`,
       `- **Key:** ${song.key} | **Time:** ${song.timeSignature}`,
@@ -1108,13 +1124,14 @@ server.tool(
 
 server.tool(
   "view_piano_roll",
-  "Render a piano roll visualization of a song as SVG. Returns an image showing note positions over time — blue rectangles for right hand, pink/coral for left hand. Use this to visually verify compositions before playing them.",
+  "Render a piano roll visualization of a song as SVG. Returns an image showing note positions over time. Color modes: 'hand' (blue RH / coral LH, default) or 'pitch-class' (chromatic rainbow — each pitch class gets its own color, making harmonic patterns visible).",
   {
     songId: z.string().describe("Song ID from the library (e.g. 'fur-elise')"),
     startMeasure: z.number().int().min(1).optional().describe("First measure to render (1-based). Default: 1"),
     endMeasure: z.number().int().min(1).optional().describe("Last measure to render (1-based). Default: last measure"),
+    color_mode: z.enum(["hand", "pitch-class"]).optional().describe("Note coloring: 'hand' (RH/LH, default) or 'pitch-class' (chromatic rainbow)"),
   },
-  async ({ songId, startMeasure, endMeasure }) => {
+  async ({ songId, startMeasure, endMeasure, color_mode }) => {
     const song = getSong(songId);
     if (!song) {
       return {
@@ -1123,7 +1140,11 @@ server.tool(
       };
     }
 
-    const svg = renderPianoRoll(song, { startMeasure, endMeasure });
+    const svg = renderPianoRoll(song, {
+      startMeasure,
+      endMeasure,
+      colorMode: (color_mode ?? "hand") as PianoRollColorMode,
+    });
 
     return {
       content: [{
@@ -1132,6 +1153,232 @@ server.tool(
         mimeType: "image/svg+xml",
       }],
     };
+  }
+);
+
+// ─── Tool: list_keyboards ──────────────────────────────────────────────────
+
+server.tool(
+  "list_keyboards",
+  "List available piano keyboard voices. Each voice has a different timbre suited to different genres. Use the keyboard parameter in play_song to choose one.",
+  {},
+  async () => {
+    const voices = listVoices();
+    const lines = [
+      `# Piano Keyboards`,
+      ``,
+      `${voices.length} voices available. Pass the ID to \`play_song\` with the \`keyboard\` parameter.`,
+      ``,
+    ];
+
+    for (const v of voices) {
+      const isDefault = v.id === "grand" ? " **(default)**" : "";
+      lines.push(`## ${v.name}${isDefault}`);
+      lines.push(`**ID:** \`${v.id}\``);
+      lines.push(`${v.description}`);
+      lines.push(`**Best for:** ${v.suggestedFor.join(", ")}`);
+      lines.push(``);
+    }
+
+    lines.push(`---`);
+    lines.push(`*Tip: Use \`suggestVoice\` logic — the play_song tool will use the genre-suggested keyboard if none is specified.*`);
+
+    return { content: [{ type: "text", text: lines.join("\n") }] };
+  }
+);
+
+// ─── Tool: tune_keyboard ──────────────────────────────────────────────────
+
+server.tool(
+  "tune_keyboard",
+  "Tune a piano keyboard voice by adjusting synthesis parameters. Changes are saved and persist across sessions. Use get_keyboard_config to see current settings, reset_keyboard to restore factory defaults.",
+  {
+    id: z.enum(VOICE_IDS as readonly [string, ...string[]]).describe("Voice ID to tune"),
+    brightness: z.number().min(0.05).max(0.5).optional().describe("Brightness at moderate velocity (0.05=very bright, 0.5=very dark)"),
+    "brightness-slope": z.number().min(0.03).max(0.2).optional().describe("Velocity sensitivity for upper partials"),
+    decay: z.number().min(1).max(10).optional().describe("Sustain length in seconds (treble end)"),
+    "bass-decay": z.number().min(4).max(25).optional().describe("Additional sustain for bass in seconds"),
+    hammer: z.number().min(0).max(0.5).optional().describe("Hammer attack intensity (0=none)"),
+    detune: z.number().min(0).max(20).optional().describe("Random detuning in cents (chorus effect)"),
+    stereo: z.number().min(0).max(1).optional().describe("Stereo spread (0=mono, 1=full)"),
+    volume: z.number().min(0.1).max(0.5).optional().describe("Per-voice volume"),
+    release: z.number().min(0.03).max(0.3).optional().describe("Damper speed in seconds"),
+    rolloff: z.number().min(0.3).max(1.5).optional().describe("Harmonic darkness (higher=darker)"),
+    "attack-fast": z.number().min(0.001).max(0.01).optional().describe("Fastest attack time (ff) in seconds"),
+    "attack-slow": z.number().min(0.003).max(0.02).optional().describe("Slowest attack time (pp) in seconds"),
+  },
+  async (params) => {
+    const { id, ...tuningParams } = params;
+
+    // Collect non-undefined tuning params
+    const overrides: UserTuning = {};
+    for (const [key, val] of Object.entries(tuningParams)) {
+      if (val !== undefined) overrides[key] = val as number;
+    }
+
+    if (Object.keys(overrides).length === 0) {
+      return {
+        content: [{ type: "text", text: `No tuning parameters provided. Available: ${TUNING_PARAMS.map(p => p.key).join(", ")}` }],
+        isError: true,
+      };
+    }
+
+    saveUserTuning(id, overrides);
+    const merged = getMergedVoice(id)!;
+    const userTuning = loadUserTuning(id);
+
+    const lines = [
+      `Tuned **${merged.name}** (\`${id}\`):`,
+      ``,
+    ];
+    for (const [key, val] of Object.entries(overrides)) {
+      const param = TUNING_PARAMS.find(p => p.key === key);
+      lines.push(`- **${key}**: ${val}${param ? ` — ${param.description}` : ""}`);
+    }
+    lines.push(``, `${Object.keys(userTuning).length} total override(s) saved. Use \`reset_keyboard\` to restore factory defaults.`);
+
+    return { content: [{ type: "text", text: lines.join("\n") }] };
+  }
+);
+
+// ─── Tool: get_keyboard_config ────────────────────────────────────────────
+
+server.tool(
+  "get_keyboard_config",
+  "Show the full configuration of a keyboard voice, including any user tuning overrides. Shows both the factory preset values and any custom adjustments.",
+  {
+    id: z.enum(VOICE_IDS as readonly [string, ...string[]]).describe("Voice ID to inspect"),
+  },
+  async ({ id }) => {
+    const base = getVoice(id)!;
+    const userTuning = loadUserTuning(id);
+    const merged = getMergedVoice(id)!;
+    const hasOverrides = Object.keys(userTuning).length > 0;
+
+    const lines = [
+      `# ${merged.name} (\`${id}\`)`,
+      `${merged.description}`,
+      `**Best for:** ${merged.suggestedFor.join(", ")}`,
+      ``,
+      `## Tunable Parameters`,
+      ``,
+      `| Parameter | Factory | Current | Range |`,
+      `|-----------|---------|---------|-------|`,
+    ];
+
+    for (const param of TUNING_PARAMS) {
+      let factoryVal: number;
+      let currentVal: number;
+      if (param.isArrayIndex !== undefined) {
+        factoryVal = (base as any)[param.configKey][param.isArrayIndex];
+        currentVal = (merged as any)[param.configKey][param.isArrayIndex];
+      } else {
+        factoryVal = (base as any)[param.configKey];
+        currentVal = (merged as any)[param.configKey];
+      }
+      const isOverridden = param.key in userTuning;
+      const marker = isOverridden ? " *" : "";
+      lines.push(`| ${param.key} | ${factoryVal} | ${currentVal}${marker} | ${param.min}–${param.max} |`);
+    }
+
+    if (hasOverrides) {
+      lines.push(``, `*\\* = user override*`);
+      lines.push(``, `Use \`reset_keyboard\` to clear all overrides.`);
+    } else {
+      lines.push(``, `*No user overrides. Using factory preset.*`);
+    }
+
+    return { content: [{ type: "text", text: lines.join("\n") }] };
+  }
+);
+
+// ─── Tool: reset_keyboard ─────────────────────────────────────────────────
+
+server.tool(
+  "reset_keyboard",
+  "Reset a keyboard voice to factory default settings, clearing all user tuning overrides.",
+  {
+    id: z.enum(VOICE_IDS as readonly [string, ...string[]]).describe("Voice ID to reset"),
+  },
+  async ({ id }) => {
+    const hadOverrides = Object.keys(loadUserTuning(id)).length > 0;
+    resetUserTuning(id);
+    const voice = getVoice(id)!;
+
+    if (hadOverrides) {
+      return { content: [{ type: "text", text: `Reset **${voice.name}** (\`${id}\`) to factory defaults. All user tuning overrides cleared.` }] };
+    }
+    return { content: [{ type: "text", text: `**${voice.name}** (\`${id}\`) was already at factory defaults.` }] };
+  }
+);
+
+// ─── Tool: playback_status ────────────────────────────────────────────────
+
+server.tool(
+  "playback_status",
+  "Get a real-time snapshot of the current playback state: measure, tempo, speed, keyboard voice, and more. Returns nothing if no song is playing.",
+  {},
+  async () => {
+    // Library song session
+    if (activeSession) {
+      const s = activeSession.session;
+      const state = activeSession.state;
+      const song = s.song;
+      const measure = activeSession.currentMeasureDisplay;
+      const total = activeSession.totalMeasures;
+      const effectiveTempo = activeSession.effectiveTempo();
+      const baseTempo = activeSession.baseTempo();
+      const speed = s.speed;
+
+      const lines = [
+        `# Playback Status`,
+        ``,
+        `- **Song:** ${song.title}${song.composer ? ` — ${song.composer}` : ""}`,
+        `- **State:** ${state}`,
+        `- **Keyboard:** ${activeVoiceId}`,
+        `- **Measure:** ${measure} / ${total} (${Math.round(measure / total * 100)}%)`,
+        `- **Tempo:** ${baseTempo} BPM × ${speed}x = ${effectiveTempo} BPM`,
+        `- **Key:** ${song.key} | **Time:** ${song.timeSignature}`,
+        `- **Mode:** ${s.mode}`,
+        `- **Measures played:** ${s.measuresPlayed}`,
+      ];
+
+      // Current measure info
+      if (measure > 0 && measure <= song.measures.length) {
+        const m = song.measures[measure - 1];
+        if (m.dynamics) lines.push(`- **Dynamics:** ${m.dynamics}`);
+        if (m.teachingNote) lines.push(`- **Teaching:** ${m.teachingNote}`);
+      }
+
+      return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
+    // MIDI file playback
+    if (activeController) {
+      const state = activeController.state;
+      const pos = activeController.positionSeconds;
+      const events = activeController.eventsPlayed;
+      const total = activeController.totalEvents;
+      const speed = activeController.speed;
+
+      const lines = [
+        `# Playback Status (MIDI)`,
+        ``,
+        `- **State:** ${state}`,
+        `- **Keyboard:** ${activeVoiceId}`,
+        `- **Position:** ${pos.toFixed(1)}s`,
+        `- **Events:** ${events} / ${total} (${Math.round(events / total * 100)}%)`,
+        `- **Speed:** ${speed}x`,
+      ];
+
+      return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
+    if (activeMidiEngine) {
+      return { content: [{ type: "text", text: `Playback active (MIDI engine, no detailed status available).` }] };
+    }
+
+    return { content: [{ type: "text", text: `No active playback. Use \`play_song\` to start playing.` }] };
   }
 );
 

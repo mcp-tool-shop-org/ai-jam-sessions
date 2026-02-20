@@ -26,6 +26,12 @@ import type { PlaybackProgress, PlaybackMode, SyncMode, VoiceDirective, AsideDir
 import type { SingAlongMode } from "./note-parser.js";
 import { createAudioEngine } from "./audio-engine.js";
 import { createVmpkConnector } from "./vmpk.js";
+import {
+  listVoices, getVoice, getMergedVoice, VOICE_IDS,
+  TUNING_PARAMS, loadUserTuning, saveUserTuning, resetUserTuning,
+  type PianoVoiceId, type UserTuning,
+} from "./piano-voices.js";
+import type { PianoRollColorMode } from "./piano-roll.js";
 import { createSession } from "./session.js";
 import { parseMidiFile } from "./midi/parser.js";
 import { MidiPlaybackEngine } from "./playback/midi-engine.js";
@@ -171,6 +177,14 @@ async function cmdPlay(args: string[]): Promise<void> {
   const singModeStr = getFlag(args, "--sing-mode") ?? "note-names";
   const seekStr = getFlag(args, "--seek");
   const voiceFilterStr = getFlag(args, "--voice-filter") ?? "all";
+  const keyboardStr = getFlag(args, "--keyboard") ?? "grand";
+
+  // Validate keyboard
+  if (!VOICE_IDS.includes(keyboardStr as PianoVoiceId)) {
+    console.error(`Unknown keyboard: "${keyboardStr}". Available: ${VOICE_IDS.join(", ")}`);
+    process.exit(1);
+  }
+  const keyboardId = keyboardStr as PianoVoiceId;
 
   // Validate speed
   const speed = speedStr ? parseFloat(speedStr) : undefined;
@@ -188,9 +202,9 @@ async function cmdPlay(args: string[]): Promise<void> {
   // Create connector
   const connector: VmpkConnector = useMidi
     ? createVmpkConnector(portName ? { portName } : undefined)
-    : createAudioEngine();
+    : createAudioEngine(keyboardId);
 
-  console.log(useMidi ? `\nConnecting to MIDI...` : `\nStarting piano...`);
+  console.log(useMidi ? `\nConnecting to MIDI...` : `\nStarting ${keyboardStr} piano...`);
 
   try {
     await connector.connect();
@@ -385,6 +399,14 @@ async function cmdSing(args: string[]): Promise<void> {
   const handStr = getFlag(args, "--hand") ?? "right";
   const withPiano = hasFlag(args, "--with-piano");
   const syncStr = getFlag(args, "--sync") ?? "concurrent";
+  const singKeyboardStr = getFlag(args, "--keyboard") ?? "grand";
+
+  // Validate keyboard
+  if (!VOICE_IDS.includes(singKeyboardStr as PianoVoiceId)) {
+    console.error(`Unknown keyboard: "${singKeyboardStr}". Available: ${VOICE_IDS.join(", ")}`);
+    process.exit(1);
+  }
+  const singKeyboardId = singKeyboardStr as PianoVoiceId;
 
   // Validate sing-along mode
   if (!VALID_SING_MODES.includes(modeStr as SingAlongMode)) {
@@ -424,9 +446,9 @@ async function cmdSing(args: string[]): Promise<void> {
   // Create connector: built-in piano engine or MIDI output
   const connector: VmpkConnector = useMidi
     ? createVmpkConnector(portName ? { portName } : undefined)
-    : createAudioEngine();
+    : createAudioEngine(singKeyboardId);
 
-  console.log(useMidi ? `\nConnecting to MIDI...` : `\nStarting piano...`);
+  console.log(useMidi ? `\nConnecting to MIDI...` : `\nStarting ${singKeyboardStr} piano...`);
 
   try {
     await connector.connect();
@@ -555,10 +577,19 @@ async function cmdView(args: string[]): Promise<void> {
     }
   }
 
+  // Parse --color flag
+  const colorStr = getFlag(args, "--color") ?? "hand";
+  const validColors = ["hand", "pitch-class"];
+  if (!validColors.includes(colorStr)) {
+    console.error(`Invalid --color: "${colorStr}". Options: ${validColors.join(", ")}`);
+    process.exit(1);
+  }
+  const colorMode = colorStr as PianoRollColorMode;
+
   // Parse --out flag for output path
   const outPath = getFlag(args, "--out");
 
-  const svg = renderPianoRoll(song, { startMeasure, endMeasure });
+  const svg = renderPianoRoll(song, { startMeasure, endMeasure, colorMode });
 
   if (outPath) {
     const { writeFileSync } = await import("node:fs");
@@ -576,6 +607,118 @@ async function cmdView(args: string[]): Promise<void> {
   }
 }
 
+function cmdKeyboards(): void {
+  const voices = listVoices();
+  console.log(`\nAvailable Piano Keyboards:`);
+  console.log(`${"─".repeat(80)}`);
+  for (const v of voices) {
+    const isDefault = v.id === "grand" ? " (default)" : "";
+    console.log(`  ${padRight(v.id, 12)} ${v.name}${isDefault}`);
+    console.log(`  ${padRight("", 12)} ${v.description}`);
+    console.log(`  ${padRight("", 12)} Best for: ${v.suggestedFor.join(", ")}`);
+    console.log();
+  }
+  console.log(`Use --keyboard <id> with play or sing commands.`);
+  console.log(`Example: pianoai play amazing-grace --keyboard upright\n`);
+}
+
+function cmdTune(args: string[]): void {
+  const voiceId = args[0];
+  if (!voiceId) {
+    console.log(`\nUsage: pianoai tune <keyboard-id> [--param value ...] [--reset] [--show]`);
+    console.log(`\nKeyboard IDs: ${VOICE_IDS.join(", ")}`);
+    console.log(`\nTunable parameters:`);
+    for (const p of TUNING_PARAMS) {
+      console.log(`  --${padRight(p.key, 18)} ${p.description} (${p.min}–${p.max})`);
+    }
+    console.log(`\nSpecial flags:`);
+    console.log(`  --reset              Reset to factory defaults`);
+    console.log(`  --show               Show current config\n`);
+    return;
+  }
+
+  if (!VOICE_IDS.includes(voiceId as any)) {
+    console.error(`Unknown keyboard: "${voiceId}". Valid: ${VOICE_IDS.join(", ")}`);
+    process.exit(1);
+  }
+
+  // --reset flag
+  if (args.includes("--reset")) {
+    const hadOverrides = Object.keys(loadUserTuning(voiceId)).length > 0;
+    resetUserTuning(voiceId);
+    const voice = getVoice(voiceId)!;
+    if (hadOverrides) {
+      console.log(`Reset ${voice.name} (${voiceId}) to factory defaults.`);
+    } else {
+      console.log(`${voice.name} (${voiceId}) was already at factory defaults.`);
+    }
+    return;
+  }
+
+  // --show flag
+  if (args.includes("--show")) {
+    const base = getVoice(voiceId)!;
+    const merged = getMergedVoice(voiceId)!;
+    const tuning = loadUserTuning(voiceId);
+    console.log(`\n${merged.name} (${voiceId})`);
+    console.log(`${"─".repeat(60)}`);
+    for (const p of TUNING_PARAMS) {
+      let factoryVal: number;
+      let currentVal: number;
+      if (p.isArrayIndex !== undefined) {
+        factoryVal = (base as any)[p.configKey][p.isArrayIndex];
+        currentVal = (merged as any)[p.configKey][p.isArrayIndex];
+      } else {
+        factoryVal = (base as any)[p.configKey];
+        currentVal = (merged as any)[p.configKey];
+      }
+      const marker = p.key in tuning ? " *" : "";
+      console.log(`  ${padRight(p.key, 18)} ${currentVal}${marker}  (factory: ${factoryVal}, range: ${p.min}–${p.max})`);
+    }
+    const overrideCount = Object.keys(tuning).length;
+    if (overrideCount > 0) {
+      console.log(`\n  * = user override (${overrideCount} total)`);
+    } else {
+      console.log(`\n  Using factory preset.`);
+    }
+    console.log();
+    return;
+  }
+
+  // Parse tuning params from args
+  const overrides: UserTuning = {};
+  for (const p of TUNING_PARAMS) {
+    const val = getFlag(args, `--${p.key}`);
+    if (val !== null) {
+      const num = parseFloat(val);
+      if (isNaN(num)) {
+        console.error(`Invalid value for --${p.key}: "${val}" (expected a number)`);
+        process.exit(1);
+      }
+      if (num < p.min || num > p.max) {
+        console.error(`--${p.key} ${num} is out of range (${p.min}–${p.max})`);
+        process.exit(1);
+      }
+      overrides[p.key] = num;
+    }
+  }
+
+  if (Object.keys(overrides).length === 0) {
+    console.error(`No tuning parameters specified. Run 'pianoai tune' to see available parameters.`);
+    process.exit(1);
+  }
+
+  saveUserTuning(voiceId, overrides);
+  const merged = getMergedVoice(voiceId)!;
+  const totalOverrides = Object.keys(loadUserTuning(voiceId)).length;
+
+  console.log(`\nTuned ${merged.name} (${voiceId}):`);
+  for (const [key, val] of Object.entries(overrides)) {
+    console.log(`  ${padRight(key, 18)} → ${val}`);
+  }
+  console.log(`\n${totalOverrides} total override(s) saved. Use --reset to restore factory.\n`);
+}
+
 function cmdHelp(): void {
   console.log(`
 pianoai — Play piano through your speakers
@@ -583,9 +726,11 @@ pianoai — Play piano through your speakers
 Commands:
   play <song | file.mid>     Play a song or MIDI file
   view <song-id> [options]   Render a piano roll SVG visualization
+  tune <keyboard> [options]  Tune a keyboard voice (persists across sessions)
   list [--genre <genre>]     List built-in songs
   info <song-id>             Show song details
   sing <song-id> [options]   Sing along — narrate notes during playback
+  keyboards                  List available piano keyboard voices
   stats                      Registry statistics
   ports                      List MIDI output ports
   help                       Show this help
@@ -594,29 +739,45 @@ Play options:
   --speed <mult>             Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double)
   --tempo <bpm>              Override tempo (10-400 BPM, library songs only)
   --mode <mode>              Playback mode: full, measure, hands, loop (library songs only)
+  --keyboard <voice>         Piano voice: grand, upright, electric, honkytonk, musicbox, bright
   --midi                     Output via MIDI instead of built-in piano
   --port <name>              MIDI port name (with --midi)
 
 View options:
   --measures <start-end>     Measure range to render (e.g. 1-8, 9-16). Default: all
+  --color <mode>             Note coloring: hand (default) or pitch-class (chromatic rainbow)
   --out <file.svg>           Output file path. Default: temp file
+
+Tune options:
+  --show                     Show current config for a keyboard
+  --reset                    Reset keyboard to factory defaults
+  --brightness <0.05-0.5>    Brightness at moderate velocity
+  --decay <1-10>             Sustain length (treble, seconds)
+  --hammer <0-0.5>           Hammer attack intensity
+  --detune <0-20>            Random detuning (chorus effect, cents)
+  ... (run 'pianoai tune' for all parameters)
 
 Sing options:
   --tempo <bpm>              Override tempo (10-400 BPM)
   --speed <mult>             Speed multiplier
   --mode <mode>              Sing-along mode: note-names, solfege, contour, syllables
   --hand <hand>              Which hand: right, left, both
+  --keyboard <voice>         Piano voice: grand, upright, electric, honkytonk, musicbox, bright
   --with-piano               Play piano accompaniment while singing
   --sync <mode>              Voice+piano sync: concurrent (default), before
   --midi                     Output via MIDI instead of built-in piano
 
 Examples:
-  pianoai play song.mid                             # play a MIDI file
-  pianoai play /path/to/moonlight.mid --speed 0.75  # MIDI file at 3/4 speed
-  pianoai play let-it-be                            # play from built-in library
-  pianoai play let-it-be --midi                     # play via MIDI output
-  pianoai sing let-it-be --with-piano               # sing + piano together
-  pianoai list --genre jazz                         # browse jazz songs
+  pianoai play song.mid                                  # play a MIDI file
+  pianoai play amazing-grace --keyboard upright           # folk on an upright
+  pianoai play the-entertainer --keyboard honkytonk       # ragtime on honky-tonk
+  pianoai play autumn-leaves --keyboard electric          # jazz on electric piano
+  pianoai tune grand --brightness 0.3 --decay 5           # tune the grand piano
+  pianoai tune grand --show                               # see current grand config
+  pianoai tune grand --reset                              # reset grand to factory
+  pianoai view autumn-leaves --color pitch-class           # chromatic color view
+  pianoai keyboards                                       # list all piano voices
+  pianoai list --genre jazz                               # browse jazz songs
 `);
 }
 
@@ -655,6 +816,12 @@ async function main(): Promise<void> {
       break;
     case "view":
       await cmdView(args.slice(1));
+      break;
+    case "tune":
+      cmdTune(args.slice(1));
+      break;
+    case "keyboards":
+      cmdKeyboards();
       break;
     case "stats":
       cmdStats();
