@@ -6,8 +6,8 @@
     "name": "mcp-tool-shop",
     "email": "64996768+mcp-tool-shop@users.noreply.github.com"
   },
-  "homepage": "https://github.com/mcp-tool-shop-org/pianoai",
-  "repository": "https://github.com/mcp-tool-shop-org/pianoai",
+  "homepage": "https://github.com/mcp-tool-shop-org/ai_jam_session",
+  "repository": "https://github.com/mcp-tool-shop-org/ai_jam_session",
   "license": "MIT",
   "keywords": ["piano", "audio", "music", "mcp", "web-audio"]
 }
