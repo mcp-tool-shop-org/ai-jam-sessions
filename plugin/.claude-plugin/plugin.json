@@ -1,7 +1,7 @@
 {
   "name": "pianoai",
-  "version": "1.1.0",
-  "description": "AI-powered piano teaching — browse songs, get teaching notes, set up practice sessions, and sing along through natural conversation.",
+  "version": "1.2.0",
+  "description": "AI-powered piano teaching — browse songs, get teaching notes, play songs through VMPK via MIDI, and sing along through natural conversation.",
   "author": {
     "name": "mcp-tool-shop",
     "email": "64996768+mcp-tool-shop@users.noreply.github.com"
