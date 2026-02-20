@@ -10,6 +10,9 @@ import {
   safeParseHandString,
   safeParseMeasure,
   midiToNoteName,
+  noteToSingable,
+  handToSingableText,
+  measureToSingableText,
 } from "./note-parser.js";
 import type { ParseWarning } from "./types.js";
 
@@ -259,5 +262,143 @@ describe("safeParseMeasure", () => {
     // Left hand: ZZZ skipped (bad note, default :q suffix)
     expect(pm.leftBeats.length).toBe(0);
     expect(warnings.length).toBe(2);
+  });
+});
+
+// ─── Sing-Along Conversion ──────────────────────────────────────────────────
+
+describe("noteToSingable", () => {
+  it("note-names: C4 → 'C'", () => {
+    expect(noteToSingable("C4", "note-names")).toBe("C");
+  });
+
+  it("note-names: F#5 → 'F sharp'", () => {
+    expect(noteToSingable("F#5", "note-names")).toBe("F sharp");
+  });
+
+  it("note-names: Bb3 → 'B flat'", () => {
+    expect(noteToSingable("Bb3", "note-names")).toBe("B flat");
+  });
+
+  it("note-names: rest → 'rest'", () => {
+    expect(noteToSingable("R", "note-names")).toBe("rest");
+  });
+
+  it("solfege: C4 → 'Do'", () => {
+    expect(noteToSingable("C4", "solfege")).toBe("Do");
+  });
+
+  it("solfege: E4 → 'Mi'", () => {
+    expect(noteToSingable("E4", "solfege")).toBe("Mi");
+  });
+
+  it("solfege: F#5 → 'Fi'", () => {
+    expect(noteToSingable("F#5", "solfege")).toBe("Fi");
+  });
+
+  it("solfege: Bb3 → 'Te' (flat solfege)", () => {
+    expect(noteToSingable("Bb3", "solfege")).toBe("Te");
+  });
+
+  it("solfege: Ab4 → 'Le' (flat solfege)", () => {
+    expect(noteToSingable("Ab4", "solfege")).toBe("Le");
+  });
+
+  it("solfege: Eb4 → 'Me' (flat solfege)", () => {
+    expect(noteToSingable("Eb4", "solfege")).toBe("Me");
+  });
+
+  it("syllables: any note → 'da'", () => {
+    expect(noteToSingable("C4", "syllables")).toBe("da");
+    expect(noteToSingable("F#5", "syllables")).toBe("da");
+  });
+
+  it("syllables: rest → '...'", () => {
+    expect(noteToSingable("R", "syllables")).toBe("...");
+  });
+
+  it("contour: falls back to letter", () => {
+    expect(noteToSingable("C4", "contour")).toBe("C");
+  });
+
+  it("passes through unparseable tokens", () => {
+    expect(noteToSingable("XYZ", "note-names")).toBe("XYZ");
+  });
+});
+
+describe("handToSingableText", () => {
+  it("note-names: sequence", () => {
+    expect(handToSingableText("C4:q E4:q G4:q", "note-names")).toBe("C... E... G");
+  });
+
+  it("solfege: sequence", () => {
+    expect(handToSingableText("C4:q E4:q G4:q", "solfege")).toBe("Do... Mi... Sol");
+  });
+
+  it("syllables: sequence", () => {
+    expect(handToSingableText("C4:q E4:q G4:q", "syllables")).toBe("da... da... da");
+  });
+
+  it("contour: ascending → 'up... up'", () => {
+    expect(handToSingableText("C4:q E4:q G4:q", "contour")).toBe("up... up");
+  });
+
+  it("contour: descending → 'down... down'", () => {
+    expect(handToSingableText("G4:q E4:q C4:q", "contour")).toBe("down... down");
+  });
+
+  it("contour: mixed → 'up... down'", () => {
+    expect(handToSingableText("C4:q E4:q C4:q", "contour")).toBe("up... down");
+  });
+
+  it("contour: repeated note → 'same'", () => {
+    expect(handToSingableText("C4:q C4:q", "contour")).toBe("same");
+  });
+
+  it("contour: single note → 'hold'", () => {
+    expect(handToSingableText("C4:q", "contour")).toBe("hold");
+  });
+
+  it("returns empty for empty string", () => {
+    expect(handToSingableText("", "note-names")).toBe("");
+  });
+
+  it("handles rest tokens in contour", () => {
+    expect(handToSingableText("C4:q R:q E4:q", "contour")).toBe("rest... rest");
+  });
+});
+
+describe("measureToSingableText", () => {
+  const measure = { rightHand: "C4:q E4:q G4:q", leftHand: "C3:h E3:h" };
+
+  it("right hand only", () => {
+    const result = measureToSingableText(measure, { mode: "note-names", hand: "right" });
+    expect(result).toBe("C... E... G");
+  });
+
+  it("left hand only", () => {
+    const result = measureToSingableText(measure, { mode: "note-names", hand: "left" });
+    expect(result).toBe("C... E");
+  });
+
+  it("both hands", () => {
+    const result = measureToSingableText(measure, { mode: "solfege", hand: "both" });
+    expect(result).toBe("Do... Mi... Sol. Left hand: Do... Mi");
+  });
+
+  it("both hands with empty left", () => {
+    const result = measureToSingableText(
+      { rightHand: "C4:q", leftHand: "" },
+      { mode: "note-names", hand: "both" }
+    );
+    expect(result).toBe("C");
+  });
+
+  it("both hands with empty right", () => {
+    const result = measureToSingableText(
+      { rightHand: "", leftHand: "C3:q" },
+      { mode: "note-names", hand: "both" }
+    );
+    expect(result).toBe("C");
   });
 });

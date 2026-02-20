@@ -232,3 +232,129 @@ export function midiToNoteName(midi: number): string {
   const noteIndex = midi % 12;
   return `${noteNames[noteIndex]}${octave}`;
 }
+
+// ─── Sing-Along Conversion ──────────────────────────────────────────────────
+
+/** Sing-along mode for note narration. */
+export type SingAlongMode = "note-names" | "solfege" | "contour" | "syllables";
+
+/** Solfege mapping: note name (with optional accidental) → solfege syllable. */
+const SOLFEGE_MAP: Record<string, string> = {
+  C: "Do", "C#": "Di", Db: "Ra",
+  D: "Re", "D#": "Ri", Eb: "Me",
+  E: "Mi",
+  F: "Fa", "F#": "Fi", Gb: "Se",
+  G: "Sol", "G#": "Si", Ab: "Le",
+  A: "La", "A#": "Li", Bb: "Te",
+  B: "Ti",
+};
+
+/**
+ * Convert a single note string (e.g. "C4", "F#5") to a singable syllable.
+ *
+ * - "note-names": "C", "F sharp", "B flat"
+ * - "solfege": "Do", "Fi", "Te"
+ * - "syllables": always "da"
+ * - "contour": falls back to letter (contour handled at measure level)
+ */
+export function noteToSingable(noteStr: string, mode: SingAlongMode): string {
+  const trimmed = noteStr.trim();
+  if (trimmed === "R" || trimmed === "r") return mode === "syllables" ? "..." : "rest";
+
+  const match = trimmed.match(/^([A-Ga-g])(#|b)?(\d)?$/);
+  if (!match) return trimmed; // pass through unparseable
+
+  const [, letter, accidental] = match;
+  const upperLetter = letter.toUpperCase();
+
+  switch (mode) {
+    case "note-names": {
+      const acc = accidental === "#" ? " sharp" : accidental === "b" ? " flat" : "";
+      return `${upperLetter}${acc}`;
+    }
+    case "solfege": {
+      const key = accidental ? `${upperLetter}${accidental}` : upperLetter;
+      return SOLFEGE_MAP[key] ?? upperLetter;
+    }
+    case "syllables":
+      return "da";
+    case "contour":
+      return upperLetter; // fallback — contour handled at measure level
+  }
+}
+
+/** Options for measure-level singable text generation. */
+export interface SingAlongTextOptions {
+  mode: SingAlongMode;
+  hand: "right" | "left" | "both";
+}
+
+/**
+ * Convert a hand string (e.g. "C4:q E4:q G4:q") to singable text.
+ *
+ * For "contour" mode, compares consecutive MIDI pitches and returns
+ * direction words: "up", "down", "same".
+ *
+ * For other modes, maps each note token through noteToSingable and
+ * joins with "... " (speech pause).
+ */
+export function handToSingableText(
+  handStr: string,
+  mode: SingAlongMode
+): string {
+  if (!handStr || handStr.trim() === "") return "";
+
+  const tokens = handStr.trim().split(/\s+/);
+
+  if (mode === "contour") {
+    if (tokens.length <= 1) return "hold";
+    const midis = tokens.map((t) => {
+      const noteStr = t.split(":")[0];
+      try {
+        return parseNoteToMidi(noteStr);
+      } catch {
+        return -1;
+      }
+    });
+    const dirs: string[] = [];
+    for (let i = 1; i < midis.length; i++) {
+      if (midis[i] < 0 || midis[i - 1] < 0) {
+        dirs.push("rest");
+        continue;
+      }
+      const diff = midis[i] - midis[i - 1];
+      dirs.push(diff > 0 ? "up" : diff < 0 ? "down" : "same");
+    }
+    return dirs.join("... ");
+  }
+
+  // note-names, solfege, syllables
+  const syllables = tokens.map((t) => {
+    const noteStr = t.split(":")[0];
+    return noteToSingable(noteStr, mode);
+  });
+  return syllables.join("... ");
+}
+
+/**
+ * Convert a Measure to singable text for voice narration.
+ *
+ * Returns the singable syllables for the specified hand(s).
+ * When hand="both", right hand text comes first, then "Left hand:" prefix.
+ */
+export function measureToSingableText(
+  measure: { rightHand: string; leftHand: string },
+  options: SingAlongTextOptions
+): string {
+  const { mode, hand } = options;
+
+  if (hand === "right") return handToSingableText(measure.rightHand, mode);
+  if (hand === "left") return handToSingableText(measure.leftHand, mode);
+
+  // both
+  const right = handToSingableText(measure.rightHand, mode);
+  const left = handToSingableText(measure.leftHand, mode);
+  if (!left) return right;
+  if (!right) return left;
+  return `${right}. Left hand: ${left}`;
+}
