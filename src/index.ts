@@ -82,6 +82,22 @@ export type {
 export { parseMidiFile, parseMidiBuffer } from "./midi/parser.js";
 export type { MidiNoteEvent, TempoEvent, ParsedMidi } from "./midi/types.js";
 
+// Export MIDI playback engine
+export { MidiPlaybackEngine } from "./playback/midi-engine.js";
+export type {
+  MidiPlaybackOptions,
+  MidiPlaybackState,
+} from "./playback/midi-engine.js";
+
+// Export playback timing utilities
+export {
+  calculateSchedule,
+  totalDurationMs,
+  clusterEvents,
+  sliceEventsByTime,
+} from "./playback/timing.js";
+export type { ScheduledEvent } from "./playback/timing.js";
+
 // Export playback schemas
 export {
   PlaySourceSchema,
