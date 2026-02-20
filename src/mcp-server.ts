@@ -40,9 +40,13 @@ import type { ParseWarning, PlaybackMode, SyncMode, VmpkConnector } from "./type
 import { createAudioEngine } from "./audio-engine.js";
 import { createVmpkConnector } from "./vmpk.js";
 import { createSession, SessionController } from "./session.js";
-import { createConsoleTeachingHook } from "./teaching.js";
+import { createConsoleTeachingHook, composeTeachingHooks } from "./teaching.js";
 import { parseMidiFile, parseMidiBuffer } from "./midi/parser.js";
 import { MidiPlaybackEngine } from "./playback/midi-engine.js";
+import { PlaybackController } from "./playback/controls.js";
+import { createSingOnMidiHook } from "./teaching/sing-on-midi.js";
+import { createMidiFeedbackHook } from "./teaching/midi-feedback.js";
+import type { VoiceDirective, AsideDirective } from "./types.js";
 import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 
@@ -505,6 +509,7 @@ server.tool(
 
 let activeSession: SessionController | null = null;
 let activeMidiEngine: MidiPlaybackEngine | null = null;
+let activeController: PlaybackController | null = null;
 let activeConnector: VmpkConnector | null = null;
 
 /** Stop whatever is currently playing. */
@@ -518,6 +523,11 @@ function stopActive(): void {
     activeMidiEngine.stop();
   }
   activeMidiEngine = null;
+
+  if (activeController && activeController.state === "playing") {
+    activeController.stop();
+  }
+  activeController = null;
 
   if (activeConnector) {
     activeConnector.disconnect().catch(() => {});
@@ -537,8 +547,11 @@ server.tool(
     mode: z.enum(["full", "measure", "hands", "loop"]).optional().describe("Playback mode: full (default), measure (one at a time), hands (separate then together), loop"),
     startMeasure: z.number().int().min(1).optional().describe("Start measure for loop mode (1-based)"),
     endMeasure: z.number().int().min(1).optional().describe("End measure for loop mode (1-based)"),
+    withSinging: z.boolean().optional().describe("Enable sing-along narration during playback (note-names by default). Default: false"),
+    withTeaching: z.boolean().optional().describe("Enable live teaching feedback (encouragement, dynamics tips, difficulty warnings). Default: false"),
+    singMode: z.enum(["note-names", "solfege", "contour", "syllables"]).optional().describe("Sing-along mode when withSinging is true. Default: note-names"),
   },
-  async ({ id, speed, tempo, mode, startMeasure, endMeasure }) => {
+  async ({ id, speed, tempo, mode, startMeasure, endMeasure, withSinging, withTeaching, singMode }) => {
     // Stop whatever is currently playing
     stopActive();
 
@@ -581,28 +594,80 @@ server.tool(
         };
       }
 
-      const engine = new MidiPlaybackEngine(connector, parsed);
-      activeMidiEngine = engine;
+      // Build teaching hooks if requested
+      const hooks: import("./types.js").TeachingHook[] = [];
+      const singingLog: string[] = [];
+      const feedbackLog: string[] = [];
 
-      // Play in background
-      const playPromise = engine.play({ speed: speed ?? 1.0 });
-      playPromise
-        .then(() => {
-          console.error(`Finished playing MIDI file: ${id} (${parsed.noteCount} notes, ${parsed.durationSeconds.toFixed(1)}s)`);
-        })
-        .catch((err) => {
-          console.error(`Playback error: ${err instanceof Error ? err.message : String(err)}`);
-        })
-        .finally(() => {
-          connector.disconnect().catch(() => {});
-          if (activeMidiEngine === engine) activeMidiEngine = null;
-          if (activeConnector === connector) activeConnector = null;
-        });
+      if (withSinging) {
+        const voiceSink = async (d: VoiceDirective) => {
+          singingLog.push(d.text);
+          console.error(`♪ ${d.text}`);
+        };
+        hooks.push(createSingOnMidiHook(voiceSink, parsed, {
+          mode: (singMode ?? "note-names") as import("./note-parser.js").SingAlongMode,
+        }));
+      }
+
+      if (withTeaching) {
+        const voiceSink = async (d: VoiceDirective) => {
+          feedbackLog.push(d.text);
+          console.error(`🎓 ${d.text}`);
+        };
+        const asideSink = async (d: AsideDirective) => {
+          feedbackLog.push(d.text);
+          console.error(`💡 ${d.text}`);
+        };
+        hooks.push(createMidiFeedbackHook(voiceSink, asideSink, parsed));
+      }
+
+      hooks.push(createConsoleTeachingHook());
+      const teachingHook = composeTeachingHooks(...hooks);
+
+      // Use PlaybackController when hooks are active, raw engine otherwise
+      if (withSinging || withTeaching) {
+        const controller = new PlaybackController(connector, parsed);
+        activeController = controller;
+
+        const playPromise = controller.play({ speed: speed ?? 1.0, teachingHook });
+        playPromise
+          .then(() => {
+            console.error(`Finished playing MIDI file: ${id} (${parsed.noteCount} notes, ${parsed.durationSeconds.toFixed(1)}s)`);
+          })
+          .catch((err) => {
+            console.error(`Playback error: ${err instanceof Error ? err.message : String(err)}`);
+          })
+          .finally(() => {
+            connector.disconnect().catch(() => {});
+            if (activeController === controller) activeController = null;
+            if (activeConnector === connector) activeConnector = null;
+          });
+      } else {
+        const engine = new MidiPlaybackEngine(connector, parsed);
+        activeMidiEngine = engine;
+
+        const playPromise = engine.play({ speed: speed ?? 1.0 });
+        playPromise
+          .then(() => {
+            console.error(`Finished playing MIDI file: ${id} (${parsed.noteCount} notes, ${parsed.durationSeconds.toFixed(1)}s)`);
+          })
+          .catch((err) => {
+            console.error(`Playback error: ${err instanceof Error ? err.message : String(err)}`);
+          })
+          .finally(() => {
+            connector.disconnect().catch(() => {});
+            if (activeMidiEngine === engine) activeMidiEngine = null;
+            if (activeConnector === connector) activeConnector = null;
+          });
+      }
 
       const effectiveSpeed = speed ?? 1.0;
       const durationAtSpeed = parsed.durationSeconds / effectiveSpeed;
       const speedLabel = effectiveSpeed !== 1.0 ? ` × ${effectiveSpeed}x` : "";
       const trackInfo = parsed.trackNames.length > 0 ? parsed.trackNames.join(", ") : "Unknown";
+      const features: string[] = [];
+      if (withSinging) features.push(`singing (${singMode ?? "note-names"})`);
+      if (withTeaching) features.push("teaching feedback");
 
       const lines = [
         `Now playing: **${id}** (MIDI file)`,
@@ -612,9 +677,11 @@ server.tool(
         `- **Tempo:** ${parsed.bpm} BPM${speedLabel}`,
         `- **Duration:** ~${Math.round(durationAtSpeed)}s`,
         `- **Format:** MIDI type ${parsed.format}`,
-        ``,
-        `Use \`stop_playback\` to stop. Playback runs in the background.`,
       ];
+      if (features.length > 0) {
+        lines.push(`- **Features:** ${features.join(", ")}`);
+      }
+      lines.push(``, `Use \`stop_playback\` to stop. Playback runs in the background.`);
 
       return { content: [{ type: "text", text: lines.join("\n") }] };
     }
@@ -625,9 +692,38 @@ server.tool(
       startMeasure && endMeasure ? [startMeasure, endMeasure] : undefined;
 
     const playbackMode = (mode ?? "full") as PlaybackMode;
-    const teachingHook = createConsoleTeachingHook();
+
+    // Build teaching hooks
+    const libHooks: import("./types.js").TeachingHook[] = [];
+
+    if (withSinging) {
+      const { createSingAlongHook } = await import("./teaching.js");
+      const voiceSink = async (d: VoiceDirective) => {
+        console.error(`♪ ${d.text}`);
+      };
+      libHooks.push(createSingAlongHook(voiceSink, song, {
+        mode: (singMode ?? "note-names") as import("./note-parser.js").SingAlongMode,
+      }));
+    }
+
+    if (withTeaching) {
+      const { createLiveFeedbackHook } = await import("./teaching.js");
+      const voiceSink = async (d: VoiceDirective) => {
+        console.error(`🎓 ${d.text}`);
+      };
+      const asideSink = async (d: AsideDirective) => {
+        console.error(`💡 ${d.text}`);
+      };
+      libHooks.push(createLiveFeedbackHook(voiceSink, asideSink, song));
+    }
+
+    libHooks.push(createConsoleTeachingHook());
+    const teachingHook = composeTeachingHooks(...libHooks);
+
+    const syncMode = (withSinging && !withTeaching) ? "before" as SyncMode : "concurrent" as SyncMode;
     const session = createSession(song, connector, {
       mode: playbackMode,
+      syncMode,
       speed,
       tempo,
       loopRange,
@@ -684,7 +780,7 @@ server.tool(
   "Stop the currently playing song and disconnect MIDI.",
   {},
   async () => {
-    const wasPlaying = activeSession || activeMidiEngine;
+    const wasPlaying = activeSession || activeMidiEngine || activeController;
     if (!wasPlaying) {
       return {
         content: [{ type: "text", text: "No song is currently playing." }],
@@ -695,7 +791,9 @@ server.tool(
       ? `${activeSession.session.song.title} (${activeSession.session.measuresPlayed} measures played)`
       : activeMidiEngine
         ? `MIDI file (${activeMidiEngine.eventsPlayed}/${activeMidiEngine.totalEvents} events played)`
-        : "Unknown";
+        : activeController
+          ? `MIDI file (${activeController.eventsPlayed}/${activeController.totalEvents} events played)`
+          : "Unknown";
 
     stopActive();
 

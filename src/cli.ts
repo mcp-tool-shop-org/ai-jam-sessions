@@ -28,6 +28,7 @@ import { createVmpkConnector } from "./vmpk.js";
 import { createSession } from "./session.js";
 import { parseMidiFile } from "./midi/parser.js";
 import { MidiPlaybackEngine } from "./playback/midi-engine.js";
+import { PlaybackController } from "./playback/controls.js";
 import { existsSync } from "node:fs";
 import {
   createConsoleTeachingHook,
@@ -35,6 +36,9 @@ import {
   createLiveFeedbackHook,
   composeTeachingHooks,
 } from "./teaching.js";
+import { createSingOnMidiHook } from "./teaching/sing-on-midi.js";
+import { createMidiFeedbackHook } from "./teaching/midi-feedback.js";
+import type { TeachingHook } from "./types.js";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -150,15 +154,18 @@ function cmdInfo(args: string[]): void {
 async function cmdPlay(args: string[]): Promise<void> {
   const target = args[0];
   if (!target) {
-    console.error("Usage: pianoai play <song-id | file.mid> [--speed N] [--tempo N] [--mode MODE] [--midi]");
+    console.error("Usage: pianoai play <song-id | file.mid> [--speed N] [--tempo N] [--mode MODE] [--midi] [--with-singing] [--with-teaching] [--sing-mode MODE]");
     process.exit(1);
   }
 
   // Parse flags
   const useMidi = hasFlag(args, "--midi");
+  const withSinging = hasFlag(args, "--with-singing");
+  const withTeaching = hasFlag(args, "--with-teaching");
   const portName = getFlag(args, "--port") ?? undefined;
   const speedStr = getFlag(args, "--speed");
   const modeStr = getFlag(args, "--mode") ?? "full";
+  const singModeStr = getFlag(args, "--sing-mode") ?? "note-names";
 
   // Validate speed
   const speed = speedStr ? parseFloat(speedStr) : undefined;
@@ -166,6 +173,9 @@ async function cmdPlay(args: string[]): Promise<void> {
     console.error(`Invalid speed: "${speedStr}". Must be between 0 (exclusive) and 4.`);
     process.exit(1);
   }
+
+  // Validate sing mode
+  const singMode = singModeStr as SingAlongMode;
 
   // Determine source: .mid file or library song
   const isMidiFile = target.endsWith(".mid") || target.endsWith(".midi") || existsSync(target);
@@ -191,19 +201,61 @@ async function cmdPlay(args: string[]): Promise<void> {
       const parsed = await parseMidiFile(target);
       const trackInfo = parsed.trackNames.length > 0 ? parsed.trackNames.join(", ") : "Unknown";
       const durationAtSpeed = parsed.durationSeconds / (speed ?? 1.0);
+      const features: string[] = [];
+      if (withSinging) features.push(`singing (${singMode})`);
+      if (withTeaching) features.push("teaching");
 
       console.log(`\nPlaying: ${target}`);
       console.log(`  Tracks: ${trackInfo} (${parsed.trackCount})`);
       console.log(`  Notes: ${parsed.noteCount} | Tempo: ${parsed.bpm} BPM | Duration: ~${Math.round(durationAtSpeed)}s`);
+      if (features.length > 0) console.log(`  Features: ${features.join(", ")}`);
       console.log();
 
-      const engine = new MidiPlaybackEngine(connector, parsed);
-      await engine.play({
-        speed: speed ?? 1.0,
-        onProgress: printProgress,
-      });
+      // Build teaching hooks
+      const hooks: TeachingHook[] = [];
 
-      console.log(`\nFinished! ${engine.eventsPlayed} notes played.`);
+      if (withSinging) {
+        const voiceSink = async (d: VoiceDirective) => {
+          console.log(`  ♪ ${d.text}`);
+        };
+        hooks.push(createSingOnMidiHook(voiceSink, parsed, {
+          mode: singMode,
+          speechSpeed: speed ?? 1.0,
+        }));
+      }
+
+      if (withTeaching) {
+        const voiceSink = async (d: VoiceDirective) => {
+          console.log(`  🎓 ${d.text}`);
+        };
+        const asideSink = async (d: AsideDirective) => {
+          const prefix = d.priority === "med" ? "💡" : d.priority === "high" ? "❗" : "ℹ️";
+          console.log(`  ${prefix} ${d.text}`);
+        };
+        hooks.push(createMidiFeedbackHook(voiceSink, asideSink, parsed));
+      }
+
+      hooks.push(createConsoleTeachingHook());
+      const teachingHook = composeTeachingHooks(...hooks);
+
+      if (withSinging || withTeaching) {
+        // Use PlaybackController for hook integration
+        const controller = new PlaybackController(connector, parsed);
+        await controller.play({
+          speed: speed ?? 1.0,
+          teachingHook,
+          onProgress: printProgress,
+        });
+        console.log(`\nFinished! ${controller.eventsPlayed} notes played.`);
+      } else {
+        // Raw engine for plain playback
+        const engine = new MidiPlaybackEngine(connector, parsed);
+        await engine.play({
+          speed: speed ?? 1.0,
+          onProgress: printProgress,
+        });
+        console.log(`\nFinished! ${engine.eventsPlayed} notes played.`);
+      }
     } else {
       // ── Library song playback ──
       const song = getSong(target);
@@ -225,9 +277,37 @@ async function cmdPlay(args: string[]): Promise<void> {
       }
       const mode = modeStr as PlaybackMode;
 
-      const teachingHook = createConsoleTeachingHook();
+      // Build teaching hooks
+      const libHooks: TeachingHook[] = [];
+
+      if (withSinging) {
+        const voiceSink = async (d: VoiceDirective) => {
+          console.log(`  ♪ ${d.text}`);
+        };
+        libHooks.push(createSingAlongHook(voiceSink, song, {
+          mode: singMode,
+          speechSpeed: speed ?? 1.0,
+        }));
+      }
+
+      if (withTeaching) {
+        const voiceSink = async (d: VoiceDirective) => {
+          console.log(`  🎓 ${d.text}`);
+        };
+        const asideSink = async (d: AsideDirective) => {
+          const prefix = d.priority === "med" ? "💡" : d.priority === "high" ? "❗" : "ℹ️";
+          console.log(`  ${prefix} ${d.text}`);
+        };
+        libHooks.push(createLiveFeedbackHook(voiceSink, asideSink, song));
+      }
+
+      libHooks.push(createConsoleTeachingHook());
+      const teachingHook = composeTeachingHooks(...libHooks);
+
+      const syncMode: SyncMode = (withSinging && !withTeaching) ? "before" : "concurrent";
       const session = createSession(song, connector, {
         mode,
+        syncMode,
         tempo,
         speed,
         teachingHook,
