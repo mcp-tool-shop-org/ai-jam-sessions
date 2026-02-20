@@ -36,6 +36,8 @@ import {
   saveSong,
   initializeRegistry,
   midiToSongEntry,
+  generateJamBrief,
+  formatJamBrief,
   GENRES,
   DIFFICULTIES,
 } from "./songs/index.js";
@@ -907,6 +909,43 @@ server.tool(
     }
 
     return { content: [{ type: "text", text: "No song is currently playing." }] };
+  }
+);
+
+// ─── Tool: jam_session ──────────────────────────────────────────────────
+
+server.tool(
+  "jam_session",
+  "Get a 'jam brief' from a source song — chord progression, melody outline, structure, and style hints. Use this as source material to create your own interpretation, then save with add_song and play with play_song.",
+  {
+    songId: z.string().describe("Source song ID to jam on (e.g. 'autumn-leaves')"),
+    style: z.enum(GENRES as unknown as [string, ...string[]]).optional()
+      .describe("Target genre for reinterpretation (e.g., turn a classical piece into jazz)"),
+    mood: z.string().optional()
+      .describe("Target mood (e.g., 'upbeat', 'melancholic', 'dreamy', 'energetic', 'gentle', 'playful')"),
+    difficulty: z.enum(DIFFICULTIES as unknown as [string, ...string[]]).optional()
+      .describe("Target difficulty level"),
+    measures: z.string().optional()
+      .describe("Measure range to focus on (e.g., '1-8' for just the opening)"),
+  },
+  async ({ songId, style, mood, difficulty, measures }) => {
+    const song = getSong(songId);
+    if (!song) {
+      return {
+        content: [{ type: "text", text: `Song not found: "${songId}". Use list_songs to see available songs.` }],
+        isError: true,
+      };
+    }
+
+    const options = {
+      style: style as Genre | undefined,
+      mood,
+      difficulty: difficulty as Difficulty | undefined,
+      measures,
+    };
+    const brief = generateJamBrief(song, options);
+    const text = formatJamBrief(brief, options);
+    return { content: [{ type: "text", text }] };
   }
 );
 

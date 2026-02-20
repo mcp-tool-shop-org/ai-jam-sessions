@@ -75,3 +75,7 @@ export type { SongConfig, MeasureOverride, ConfigError } from "./config/schema.j
 
 // Config loader
 export { loadSongConfigs, loadSongConfig, listConfigIds } from "./config/loader.js";
+
+// Jam session
+export { generateJamBrief, formatJamBrief, inferChord, computeContour, getStyleGuidance } from "./jam.js";
+export type { JamBrief, JamBriefOptions, ChordMeasure, MelodyMeasure } from "./jam.js";
