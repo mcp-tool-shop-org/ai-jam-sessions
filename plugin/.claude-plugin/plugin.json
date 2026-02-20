@@ -1,6 +1,6 @@
 {
   "name": "pianoai",
-  "version": "1.3.0",
+  "version": "0.1.0",
   "description": "Piano player with built-in audio engine — plays through speakers, no external software required.",
   "author": {
     "name": "mcp-tool-shop",
