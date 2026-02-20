@@ -23,7 +23,7 @@ Un pianoforte che Claude sa suonare. PianoAI e un server MCP con motore audio in
 - **Motore piano integrato** — audio basato su campioni tramite `node-web-audio-api`, riproduce dagli altoparlanti
 - **Libreria di 100 brani** — classica, jazz, pop, blues, rock, R&B, latin, colonne sonore, ragtime, new-age
 - **AI Jam Session** — Claude analizza gli accordi e la melodia di un brano, poi crea la propria interpretazione
-- **Supporto file MIDI** — riproduci qualsiasi file `.mid`: `pianoai play song.mid`
+- **Supporto file MIDI** — riproduci qualsiasi file `.mid`: `ai-jam-session play song.mid`
 - **Sistema didattico** — note didattiche per ogni battuta, descrizioni del linguaggio musicale, consigli per lo studio
 - **4 modalita di riproduzione** — completa, battuta per battuta, mani separate, loop
 - **Controllo velocita** — da 0.5x per lo studio lento fino a 4x per la riproduzione veloce
@@ -105,7 +105,7 @@ Parametri opzionali: `mood` (allegro, malinconico, sognante, ecc.), `difficulty`
 ```json
 {
   "mcpServers": {
-    "pianoai": {
+    "ai_jam_session": {
       "command": "npx",
       "args": ["-y", "-p", "@mcptoolshop/ai_jam_session", "ai-jam-session-mcp"]
     }
@@ -119,10 +119,10 @@ PianoAI include un plugin per Claude Code che aggiunge comandi slash e personali
 
 | Comando | Descrizione |
 |---------|-------------|
-| `/pianoai:teach <song>` | Avvia una sessione didattica strutturata |
-| `/pianoai:practice <song>` | Ottieni un piano di studio con raccomandazioni su velocita e modalita |
-| `/pianoai:explore [query]` | Esplora la libreria musicale per genere, difficolta o parola chiave |
-| `/pianoai:jam <song or genre>` | Avvia una jam session — Claude crea la propria interpretazione |
+| `/ai-jam-session:teach <song>` | Avvia una sessione didattica strutturata |
+| `/ai-jam-session:practice <song>` | Ottieni un piano di studio con raccomandazioni su velocita e modalita |
+| `/ai-jam-session:explore [query]` | Esplora la libreria musicale per genere, difficolta o parola chiave |
+| `/ai-jam-session:jam <song or genre>` | Avvia una jam session — Claude crea la propria interpretazione |
 
 Due personalita agente:
 - **Piano Teacher** — paziente, pedagogico, si adatta al livello dello studente
