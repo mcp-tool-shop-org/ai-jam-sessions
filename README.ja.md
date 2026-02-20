@@ -37,7 +37,7 @@ Claudeが演奏できるピアノです。PianoAIは内蔵オーディオエン�
 ## インストール
 
 ```bash
-npm install -g @mcptoolshop/ai_jam_session
+npm install -g @mcptoolshop/ai-jam-session
 ```
 
 **Node.js 18+**が必要です。それだけです — MIDIドライバも、仮想ポートも、外部ソフトウェアも不要です。
@@ -109,7 +109,7 @@ MCPサーバーはLLM連携用に15のツールを公開しています:
   "mcpServers": {
     "ai_jam_session": {
       "command": "npx",
-      "args": ["-y", "-p", "@mcptoolshop/ai_jam_session", "ai-jam-session-mcp"]
+      "args": ["-y", "-p", "@mcptoolshop/ai-jam-session", "ai-jam-session-mcp"]
     }
   }
 }
@@ -150,7 +150,7 @@ PianoAIにはスラッシュコマンドとエージェントパーソナリテ�
 ## プログラマティックAPI
 
 ```typescript
-import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/ai_jam_session";
+import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/ai-jam-session";
 
 const connector = createAudioEngine();
 await connector.connect();
@@ -171,7 +171,7 @@ await connector.disconnect();
 ### 内蔵楽曲を再生
 
 ```typescript
-import { getSong, createSession, createAudioEngine } from "@mcptoolshop/ai_jam_session";
+import { getSong, createSession, createAudioEngine } from "@mcptoolshop/ai-jam-session";
 
 const connector = createAudioEngine();
 await connector.connect();

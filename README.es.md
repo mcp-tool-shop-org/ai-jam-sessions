@@ -35,7 +35,7 @@ Un piano que Claude puede tocar. PianoAI es un servidor MCP con un motor de audi
 ## Instalacion
 
 ```bash
-npm install -g @mcptoolshop/ai_jam_session
+npm install -g @mcptoolshop/ai-jam-session
 ```
 
 Requiere **Node.js 18+**. Eso es todo -- sin controladores MIDI, sin puertos virtuales, sin software externo.
@@ -107,7 +107,7 @@ Parametros opcionales: `mood` (alegre, melancolico, sonador, etc.), `difficulty`
   "mcpServers": {
     "ai_jam_session": {
       "command": "npx",
-      "args": ["-y", "-p", "@mcptoolshop/ai_jam_session", "ai-jam-session-mcp"]
+      "args": ["-y", "-p", "@mcptoolshop/ai-jam-session", "ai-jam-session-mcp"]
     }
   }
 }
@@ -148,7 +148,7 @@ Dos personalidades de agente:
 ## API programatica
 
 ```typescript
-import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/ai_jam_session";
+import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/ai-jam-session";
 
 const connector = createAudioEngine();
 await connector.connect();
@@ -169,7 +169,7 @@ await connector.disconnect();
 ### Reproducir una cancion integrada
 
 ```typescript
-import { getSong, createSession, createAudioEngine } from "@mcptoolshop/ai_jam_session";
+import { getSong, createSession, createAudioEngine } from "@mcptoolshop/ai-jam-session";
 
 const connector = createAudioEngine();
 await connector.connect();
