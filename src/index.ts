@@ -126,6 +126,18 @@ export type { SingOnMidiOptions } from "./teaching/sing-on-midi.js";
 export { createMidiFeedbackHook } from "./teaching/midi-feedback.js";
 export type { MidiFeedbackOptions } from "./teaching/midi-feedback.js";
 
+// Export MIDI live feedback (position-aware)
+export { createLiveMidiFeedbackHook } from "./teaching/live-midi-feedback.js";
+export type { LiveMidiFeedbackOptions } from "./teaching/live-midi-feedback.js";
+
+// Export position tracker
+export { PositionTracker, createPositionTracker } from "./playback/position.js";
+export type { PositionSnapshot, PositionCallback } from "./playback/position.js";
+
+// Export voice filter
+export { filterClusterForVoice } from "./teaching/sing-on-midi.js";
+export type { SingVoiceFilter } from "./teaching/sing-on-midi.js";
+
 // Export playback schemas
 export {
   PlaySourceSchema,

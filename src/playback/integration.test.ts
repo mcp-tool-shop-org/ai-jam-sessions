@@ -1,14 +1,17 @@
-// ─── Phase 3 Integration Tests ──────────────────────────────────────────────
+// ─── Integration Tests ──────────────────────────────────────────────────────
 //
-// Tests for real-time controls, sing-on-MIDI, MIDI feedback, and composition.
+// Tests for real-time controls, sing-on-MIDI, MIDI feedback, composition,
+// position tracking, live feedback, and voice filters.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { describe, it, expect, vi } from "vitest";
 import { writeMidi } from "midi-file";
 import { parseMidiBuffer } from "../midi/parser.js";
 import { PlaybackController } from "./controls.js";
-import { createSingOnMidiHook, midiNoteToSingable, clusterToSingable, contourDirection } from "../teaching/sing-on-midi.js";
+import { PositionTracker, createPositionTracker } from "./position.js";
+import { createSingOnMidiHook, midiNoteToSingable, clusterToSingable, contourDirection, filterClusterForVoice } from "../teaching/sing-on-midi.js";
 import { createMidiFeedbackHook } from "../teaching/midi-feedback.js";
+import { createLiveMidiFeedbackHook } from "../teaching/live-midi-feedback.js";
 import { composeTeachingHooks, createRecordingTeachingHook } from "../teaching.js";
 import type { VmpkConnector, MidiStatus, MidiNote, VoiceDirective, AsideDirective } from "../types.js";
 import type { MidiNoteEvent } from "../midi/types.js";
@@ -404,5 +407,407 @@ describe("composed hooks: singing + feedback during MIDI playback", () => {
     expect(singDirectives.length).toBeGreaterThan(0);
     // Feedback should have detected the velocity drop (100 → 30)
     expect(feedbackAside.some((d) => d.reason === "dynamics-change")).toBe(true);
+  });
+});
+
+// ─── Phase 4: Position Tracker Tests ────────────────────────────────────────
+
+describe("PositionTracker", () => {
+  it("computes total beats and measures for a simple MIDI", () => {
+    // 8 quarter notes at 120 BPM = 4 seconds, 8 beats, 2 measures
+    const notes = [];
+    for (let i = 0; i < 8; i++) {
+      notes.push({ note: 60 + i, velocity: 80, startTick: i * 480, endTick: (i + 1) * 480 });
+    }
+    const buf = buildMidi(notes, 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const tracker = new PositionTracker(parsed);
+
+    expect(tracker.totalBeats).toBeGreaterThanOrEqual(7);
+    expect(tracker.totalMeasures).toBeGreaterThanOrEqual(2);
+  });
+
+  it("snapshotAt returns correct measure for time 0", () => {
+    const buf = buildMidi([
+      { note: 60, velocity: 80, startTick: 0, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const tracker = new PositionTracker(parsed);
+
+    const snap = tracker.snapshotAt(0);
+    expect(snap.measure).toBe(1);
+    expect(snap.beat).toBe(0);
+    expect(snap.bpm).toBe(120);
+    expect(snap.ratio).toBe(0);
+  });
+
+  it("snapshotAt returns later measure for later time", () => {
+    // At 120 BPM, 4 beats = 2 seconds = 1 measure
+    const notes = [];
+    for (let i = 0; i < 12; i++) {
+      notes.push({ note: 60, velocity: 80, startTick: i * 480, endTick: (i + 1) * 480 });
+    }
+    const buf = buildMidi(notes, 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const tracker = new PositionTracker(parsed);
+
+    // 2 seconds in = beat 4 = measure 2
+    const snap = tracker.snapshotAt(2.0);
+    expect(snap.measure).toBe(2);
+    expect(snap.beat).toBeCloseTo(4, 1);
+  });
+
+  it("timeForMeasure returns correct seek time", () => {
+    const buf = buildMidi([
+      { note: 60, velocity: 80, startTick: 0, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const tracker = new PositionTracker(parsed);
+
+    expect(tracker.timeForMeasure(1)).toBeCloseTo(0, 2);
+    // Measure 2 starts at beat 4 = 2 seconds at 120 BPM
+    expect(tracker.timeForMeasure(2)).toBeCloseTo(2.0, 2);
+  });
+
+  it("eventIndexForTime uses binary search", () => {
+    const notes = [];
+    for (let i = 0; i < 10; i++) {
+      notes.push({ note: 60, velocity: 80, startTick: i * 480, endTick: (i + 1) * 480 });
+    }
+    const buf = buildMidi(notes, 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const tracker = new PositionTracker(parsed);
+
+    // First event is at time 0
+    expect(tracker.eventIndexForTime(0)).toBe(0);
+    // Past the end
+    expect(tracker.eventIndexForTime(999)).toBe(parsed.events.length);
+  });
+
+  it("eventsInMeasure returns events within estimated measure bounds", () => {
+    // 8 notes across 2 measures (4 beats each at 120 BPM)
+    const notes = [];
+    for (let i = 0; i < 8; i++) {
+      notes.push({ note: 60 + i, velocity: 80, startTick: i * 480, endTick: (i + 1) * 480 });
+    }
+    const buf = buildMidi(notes, 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const tracker = new PositionTracker(parsed);
+
+    const m1Events = tracker.eventsInMeasure(1);
+    expect(m1Events.length).toBe(4); // first 4 notes
+    expect(m1Events[0].note).toBe(60);
+
+    const m2Events = tracker.eventsInMeasure(2);
+    expect(m2Events.length).toBe(4); // next 4 notes
+    expect(m2Events[0].note).toBe(64);
+  });
+
+  it("measureSummary detects chords", () => {
+    // Two notes at the same time = chord
+    const buf = buildMidi([
+      { note: 60, velocity: 80, startTick: 0, endTick: 480 },
+      { note: 64, velocity: 80, startTick: 0, endTick: 480 },
+      { note: 67, velocity: 80, startTick: 0, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const tracker = new PositionTracker(parsed);
+
+    const summary = tracker.measureSummary(1);
+    expect(summary.hasChord).toBe(true);
+    expect(summary.noteCount).toBe(3);
+    expect(summary.minNote).toBe(60);
+    expect(summary.maxNote).toBe(67);
+  });
+
+  it("createPositionTracker factory works", () => {
+    const buf = buildMidi([
+      { note: 60, velocity: 80, startTick: 0, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const tracker = createPositionTracker(parsed);
+    expect(tracker).toBeInstanceOf(PositionTracker);
+    expect(tracker.totalMeasures).toBeGreaterThanOrEqual(1);
+  });
+});
+
+// ─── Phase 4: Voice Filter Tests ────────────────────────────────────────────
+
+describe("filterClusterForVoice", () => {
+  const chord: MidiNoteEvent[] = [
+    { note: 48, velocity: 80, time: 0, duration: 0.5, channel: 0 }, // C3 (lowest)
+    { note: 60, velocity: 80, time: 0, duration: 0.5, channel: 0 }, // C4
+    { note: 72, velocity: 80, time: 0, duration: 0.5, channel: 0 }, // C5 (highest)
+  ];
+
+  it("all filter returns all events", () => {
+    const result = filterClusterForVoice(chord, "all");
+    expect(result.length).toBe(3);
+  });
+
+  it("melody-only picks highest note", () => {
+    const result = filterClusterForVoice(chord, "melody-only");
+    expect(result.length).toBe(1);
+    expect(result[0].note).toBe(72);
+  });
+
+  it("harmony picks lowest note", () => {
+    const result = filterClusterForVoice(chord, "harmony");
+    expect(result.length).toBe(1);
+    expect(result[0].note).toBe(48);
+  });
+
+  it("handles empty cluster", () => {
+    expect(filterClusterForVoice([], "all")).toEqual([]);
+    expect(filterClusterForVoice([], "melody-only")).toEqual([]);
+    expect(filterClusterForVoice([], "harmony")).toEqual([]);
+  });
+
+  it("handles single note (all filters return it)", () => {
+    const single: MidiNoteEvent[] = [
+      { note: 60, velocity: 80, time: 0, duration: 0.5, channel: 0 },
+    ];
+    expect(filterClusterForVoice(single, "all").length).toBe(1);
+    expect(filterClusterForVoice(single, "melody-only").length).toBe(1);
+    expect(filterClusterForVoice(single, "harmony").length).toBe(1);
+  });
+});
+
+describe("createSingOnMidiHook with voiceFilter", () => {
+  it("melody-only filter produces single-note directives for chords", async () => {
+    // Build a MIDI with a chord (notes at same tick)
+    const buf = buildMidi([
+      { note: 48, velocity: 80, startTick: 0, endTick: 480 },
+      { note: 60, velocity: 80, startTick: 0, endTick: 480 },
+      { note: 72, velocity: 80, startTick: 0, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const directives: VoiceDirective[] = [];
+    const sink = async (d: VoiceDirective) => { directives.push(d); };
+
+    const hook = createSingOnMidiHook(sink, parsed, {
+      mode: "note-names",
+      voiceFilter: "melody-only",
+    });
+
+    await hook.onMeasureStart(1, undefined, undefined);
+
+    // Should only sing the highest note (C5 = 72)
+    expect(hook.directives.length).toBe(1);
+    expect(hook.directives[0].text).toContain("C5");
+    expect(hook.directives[0].text).not.toContain("C3");
+  });
+
+  it("harmony filter picks lowest note", async () => {
+    const buf = buildMidi([
+      { note: 48, velocity: 80, startTick: 0, endTick: 480 },
+      { note: 72, velocity: 80, startTick: 0, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const sink = async (_d: VoiceDirective) => {};
+
+    const hook = createSingOnMidiHook(sink, parsed, {
+      mode: "note-names",
+      voiceFilter: "harmony",
+    });
+
+    await hook.onMeasureStart(1, undefined, undefined);
+
+    expect(hook.directives.length).toBe(1);
+    expect(hook.directives[0].text).toContain("C3");
+    expect(hook.directives[0].text).not.toContain("C5");
+  });
+});
+
+// ─── Phase 4: Live MIDI Feedback Tests ──────────────────────────────────────
+
+describe("createLiveMidiFeedbackHook", () => {
+  it("provides position tracker reference", () => {
+    const buf = buildMidi([
+      { note: 60, velocity: 80, startTick: 0, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const voiceSink = async (_d: VoiceDirective) => {};
+    const asideSink = async (_d: AsideDirective) => {};
+
+    const hook = createLiveMidiFeedbackHook(voiceSink, asideSink, parsed);
+    expect(hook.tracker).toBeInstanceOf(PositionTracker);
+    expect(hook.tracker.totalMeasures).toBeGreaterThanOrEqual(1);
+  });
+
+  it("detects velocity shift between measures", async () => {
+    // Measure 1: soft notes (velocity 30), Measure 2: loud notes (velocity 110)
+    // At 120 BPM, 480 ticks/beat, 4 beats/measure = 1920 ticks/measure
+    const notes = [];
+    for (let i = 0; i < 4; i++) {
+      notes.push({ note: 60, velocity: 30, startTick: i * 480, endTick: (i + 1) * 480 });
+    }
+    for (let i = 4; i < 8; i++) {
+      notes.push({ note: 64, velocity: 110, startTick: i * 480, endTick: (i + 1) * 480 });
+    }
+    const buf = buildMidi(notes, 120, 480);
+    const parsed = parseMidiBuffer(buf);
+
+    const asideDirectives: AsideDirective[] = [];
+    const voiceSink = async (_d: VoiceDirective) => {};
+    const asideSink = async (d: AsideDirective) => { asideDirectives.push(d); };
+
+    const hook = createLiveMidiFeedbackHook(voiceSink, asideSink, parsed, {
+      voiceInterval: 100, // disable encouragement
+    });
+
+    // Fire events for all 8 notes
+    for (let i = 1; i <= 8; i++) {
+      await hook.onMeasureStart(i, undefined, undefined);
+    }
+
+    const dynamicsTips = asideDirectives.filter((d) => d.reason === "dynamics-change");
+    expect(dynamicsTips.length).toBeGreaterThan(0);
+  });
+
+  it("detects wide range passages", async () => {
+    // A measure with C2 (36) and C5 (72) = 36 semitone range
+    const buf = buildMidi([
+      { note: 36, velocity: 80, startTick: 0, endTick: 240 },
+      { note: 72, velocity: 80, startTick: 240, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+
+    const asideDirectives: AsideDirective[] = [];
+    const voiceSink = async (_d: VoiceDirective) => {};
+    const asideSink = async (d: AsideDirective) => { asideDirectives.push(d); };
+
+    const hook = createLiveMidiFeedbackHook(voiceSink, asideSink, parsed, {
+      voiceInterval: 100,
+    });
+
+    await hook.onMeasureStart(1, undefined, undefined);
+
+    const rangeWarnings = asideDirectives.filter(
+      (d) => d.reason === "difficulty-warning" && d.tags?.includes("range")
+    );
+    expect(rangeWarnings.length).toBe(1);
+    expect(rangeWarnings[0].text).toContain("Wide range");
+  });
+
+  it("emits periodic encouragement", async () => {
+    // 16 notes = 4 measures at 120 BPM
+    const notes = [];
+    for (let i = 0; i < 16; i++) {
+      notes.push({ note: 60 + (i % 4), velocity: 80, startTick: i * 480, endTick: (i + 1) * 480 });
+    }
+    const buf = buildMidi(notes, 120, 480);
+    const parsed = parseMidiBuffer(buf);
+
+    const voiceDirectives: VoiceDirective[] = [];
+    const voiceSink = async (d: VoiceDirective) => { voiceDirectives.push(d); };
+    const asideSink = async (_d: AsideDirective) => {};
+
+    const hook = createLiveMidiFeedbackHook(voiceSink, asideSink, parsed, {
+      voiceInterval: 2, // encourage every 2 measures
+      announceMilestones: false,
+    });
+
+    for (let i = 1; i <= 16; i++) {
+      await hook.onMeasureStart(i, undefined, undefined);
+    }
+
+    // Should have encouragement at measure 2, 4 etc
+    expect(voiceDirectives.length).toBeGreaterThanOrEqual(2);
+    expect(voiceDirectives.every((d) => d.blocking === false)).toBe(true);
+  });
+
+  it("emits completion with measure count", async () => {
+    const buf = buildMidi([
+      { note: 60, velocity: 80, startTick: 0, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+
+    const voiceDirectives: VoiceDirective[] = [];
+    const asideDirectives: AsideDirective[] = [];
+    const voiceSink = async (d: VoiceDirective) => { voiceDirectives.push(d); };
+    const asideSink = async (d: AsideDirective) => { asideDirectives.push(d); };
+
+    const hook = createLiveMidiFeedbackHook(voiceSink, asideSink, parsed);
+    await hook.onSongComplete(42, "Test Song");
+
+    expect(voiceDirectives.some((d) => d.text.includes("Test Song"))).toBe(true);
+    expect(voiceDirectives.some((d) => d.text.includes("42 notes"))).toBe(true);
+    expect(asideDirectives.some((d) => d.reason === "session-complete")).toBe(true);
+  });
+
+  it("only processes each measure once", async () => {
+    // 4 notes in measure 1 — hook should only fire once for measure 1
+    const buf = buildMidi([
+      { note: 60, velocity: 80, startTick: 0, endTick: 120 },
+      { note: 64, velocity: 80, startTick: 120, endTick: 240 },
+      { note: 67, velocity: 80, startTick: 240, endTick: 360 },
+      { note: 72, velocity: 80, startTick: 360, endTick: 480 },
+    ], 120, 480);
+    const parsed = parseMidiBuffer(buf);
+
+    const asideDirectives: AsideDirective[] = [];
+    const voiceSink = async (_d: VoiceDirective) => {};
+    const asideSink = async (d: AsideDirective) => { asideDirectives.push(d); };
+
+    const hook = createLiveMidiFeedbackHook(voiceSink, asideSink, parsed);
+
+    // Call for each note — all in measure 1
+    for (let i = 1; i <= 4; i++) {
+      await hook.onMeasureStart(i, undefined, undefined);
+    }
+
+    // Should deduplicate — only one "pass" through measure 1 logic
+    // (no duplicate range/density/velocity warnings)
+    const m1Warnings = asideDirectives.filter((d) => d.source === "measure-1");
+    // Each type of warning should appear at most once for measure 1
+    const reasons = m1Warnings.map((d) => d.reason);
+    expect(new Set(reasons).size).toBe(reasons.length);
+  });
+});
+
+// ─── Phase 4: Composed Position-Aware Hooks ─────────────────────────────────
+
+describe("composed hooks: singing + live feedback during MIDI playback", () => {
+  it("both position-aware hooks work together via compose", async () => {
+    // Build a MIDI with dynamics variation
+    const notes = [];
+    for (let i = 0; i < 4; i++) {
+      notes.push({ note: 60 + i, velocity: 40, startTick: i * 480, endTick: (i + 1) * 480 });
+    }
+    for (let i = 4; i < 8; i++) {
+      notes.push({ note: 64 + i, velocity: 110, startTick: i * 480, endTick: (i + 1) * 480 });
+    }
+    const buf = buildMidi(notes, 120, 480);
+    const parsed = parseMidiBuffer(buf);
+    const connector = createMockConnector();
+    const controller = new PlaybackController(connector, parsed);
+
+    const singDirectives: VoiceDirective[] = [];
+    const feedbackVoice: VoiceDirective[] = [];
+    const feedbackAside: AsideDirective[] = [];
+
+    const singHook = createSingOnMidiHook(
+      async (d) => { singDirectives.push(d); },
+      parsed,
+      { mode: "solfege", voiceFilter: "melody-only" }
+    );
+
+    const feedbackHook = createLiveMidiFeedbackHook(
+      async (d) => { feedbackVoice.push(d); },
+      async (d) => { feedbackAside.push(d); },
+      parsed,
+      { voiceInterval: 100, announceMilestones: false }
+    );
+
+    const composed = composeTeachingHooks(singHook, feedbackHook);
+    await controller.play({ speed: 100, teachingHook: composed });
+
+    // Singing should have produced solfege directives
+    expect(singDirectives.length).toBeGreaterThan(0);
+    // Live feedback should have detected the velocity shift
+    expect(feedbackAside.some((d) => d.reason === "dynamics-change")).toBe(true);
+    // Live feedback exposes tracker
+    expect(feedbackHook.tracker.totalMeasures).toBeGreaterThanOrEqual(2);
   });
 });
