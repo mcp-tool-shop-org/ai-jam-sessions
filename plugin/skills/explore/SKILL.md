@@ -5,7 +5,7 @@ argument-hint: "[genre, difficulty, or search query]"
 
 # Song Explorer
 
-Help the student discover songs in the PianoAI library.
+Help the student discover songs in the AI Jam Session library.
 
 ## Steps
 

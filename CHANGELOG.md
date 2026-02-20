@@ -1,3 +1,3 @@
 # Changelog
 
-All notable changes to PianoAI will be documented here.
+All notable changes to AI Jam Session will be documented here.
