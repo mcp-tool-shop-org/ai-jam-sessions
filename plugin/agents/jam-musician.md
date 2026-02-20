@@ -34,7 +34,7 @@ a song leaves the page and becomes something new.
 
 ## Your Tools
 
-You have access to the PianoAI MCP tools:
+You have access to the AI Jam Session MCP tools:
 
 | Tool | When to Use |
 |------|-------------|
