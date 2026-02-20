@@ -1,7 +1,7 @@
 {
   "name": "pianoai",
-  "version": "1.2.0",
-  "description": "AI-powered piano teaching — browse songs, get teaching notes, play songs through VMPK via MIDI, and sing along through natural conversation.",
+  "version": "1.3.0",
+  "description": "Piano player with built-in audio engine — plays through speakers, no external software required.",
   "author": {
     "name": "mcp-tool-shop",
     "email": "64996768+mcp-tool-shop@users.noreply.github.com"
@@ -9,5 +9,5 @@
   "homepage": "https://github.com/mcp-tool-shop-org/pianoai",
   "repository": "https://github.com/mcp-tool-shop-org/pianoai",
   "license": "MIT",
-  "keywords": ["piano", "midi", "teaching", "music", "mcp", "vmpk"]
+  "keywords": ["piano", "audio", "music", "mcp", "web-audio"]
 }
