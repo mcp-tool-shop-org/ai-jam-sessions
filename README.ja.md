@@ -3,13 +3,13 @@
 </p>
 
 <p align="center">
-  <img src="logo.png" alt="PianoAI logo" width="180" />
+  <img src="logo.png" alt="AI Jam Session logo" width="180" />
 </p>
 
-<h1 align="center">PianoAI</h1>
+<h1 align="center">AI Jam Session</h1>
 
 <p align="center">
-  内蔵オーディオエンジンと100曲ライブラリを備えたAIピアノプレイヤー。Claude用MCPサーバー、人間用CLI。
+  内蔵オーディオエンジンと100曲ライブラリを備えたAIピアノプレイヤー。MCPサーバー + CLI。
 </p>
 
 [![MCP Tools](https://img.shields.io/badge/MCP_tools-15-purple)](https://github.com/mcp-tool-shop-org/ai_jam_session)
@@ -18,7 +18,7 @@
 
 ## これは何ですか？
 
-Claudeが演奏できるピアノです。PianoAIは内蔵オーディオエンジンを搭載したMCPサーバーで、外部ソフトウェア不要でスピーカーから直接再生します。Claudeは10ジャンル100曲のライブラリを閲覧し、楽曲を選び、教え、ジャムセッションを行います。スタンドアロンCLIとしても動作します。
+Claudeが演奏できるピアノです。AI Jam Sessionは内蔵オーディオエンジンを搭載したMCPサーバーで、外部ソフトウェア不要でスピーカーから直接再生します。Claudeは10ジャンル100曲のライブラリを閲覧し、楽曲を選び、教え、ジャムセッションを行います。スタンドアロンCLIとしても動作します。
 
 ## 機能
 
@@ -117,7 +117,7 @@ MCPサーバーはLLM連携用に15のツールを公開しています:
 
 ### Claude Codeプラグイン
 
-PianoAIにはスラッシュコマンドとエージェントパーソナリティを追加するClaude Codeプラグインが付属しています:
+AI Jam Sessionにはスラッシュコマンドとエージェントパーソナリティを追加するClaude Codeプラグインが付属しています:
 
 | コマンド | 説明 |
 |---------|------|

@@ -1,13 +1,13 @@
 <p align="center"><a href="README.md">English</a> | <a href="README.ja.md">日本語</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <strong>Italiano</strong> | <a href="README.pt-BR.md">Português</a></p>
 
 <p align="center">
-  <img src="logo.png" alt="Logo PianoAI" width="180" />
+  <img src="logo.png" alt="Logo AI Jam Session" width="180" />
 </p>
 
-<h1 align="center">PianoAI</h1>
+<h1 align="center">AI Jam Session</h1>
 
 <p align="center">
-  Pianoforte AI con motore audio integrato e libreria di 100 brani. Server MCP per Claude, CLI per gli esseri umani.
+  Pianoforte AI con motore audio integrato e libreria di 100 brani. Server MCP + CLI.
 </p>
 
 [![MCP Tools](https://img.shields.io/badge/MCP_tools-15-purple)](https://github.com/mcp-tool-shop-org/ai_jam_session)
@@ -16,7 +16,7 @@
 
 ## Cos'e?
 
-Un pianoforte che Claude sa suonare. PianoAI e un server MCP con motore audio integrato: riproduce il suono direttamente dai tuoi altoparlanti, senza bisogno di software esterno. Claude esplora una libreria di 100 brani in 10 generi, sceglie i pezzi, li insegna e ci improvvisa sopra. Funziona anche come CLI indipendente.
+Un pianoforte che Claude sa suonare. AI Jam Session e un server MCP con motore audio integrato: riproduce il suono direttamente dai tuoi altoparlanti, senza bisogno di software esterno. Claude esplora una libreria di 100 brani in 10 generi, sceglie i pezzi, li insegna e ci improvvisa sopra. Funziona anche come CLI indipendente.
 
 ## Funzionalita
 
@@ -115,7 +115,7 @@ Parametri opzionali: `mood` (allegro, malinconico, sognante, ecc.), `difficulty`
 
 ### Plugin per Claude Code
 
-PianoAI include un plugin per Claude Code che aggiunge comandi slash e personalita agente:
+AI Jam Session include un plugin per Claude Code che aggiunge comandi slash e personalita agente:
 
 | Comando | Descrizione |
 |---------|-------------|
