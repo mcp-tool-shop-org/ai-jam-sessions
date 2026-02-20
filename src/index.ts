@@ -60,6 +60,8 @@ export type {
   SessionOptions,
   SessionState,
   PlaybackMode,
+  PlaybackProgress,
+  ProgressCallback,
   MidiNote,
   Beat,
   PlayableMeasure,

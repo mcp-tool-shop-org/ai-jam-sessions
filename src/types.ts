@@ -84,6 +84,9 @@ export interface Session {
   /** Tempo override (BPM). Null = use song's default tempo. */
   tempoOverride: number | null;
 
+  /** Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double). */
+  speed: number;
+
   /** Measure range for loop mode [start, end] (1-based, inclusive). */
   loopRange: [number, number] | null;
 
@@ -97,6 +100,27 @@ export interface Session {
   voiceEnabled: boolean;
 }
 
+/** Progress update — emitted during playback. */
+export interface PlaybackProgress {
+  /** Current measure (1-based). */
+  currentMeasure: number;
+
+  /** Total measures in the song. */
+  totalMeasures: number;
+
+  /** Completion ratio (0.0 – 1.0). */
+  ratio: number;
+
+  /** Percentage string (e.g. "50%"). */
+  percent: string;
+
+  /** Elapsed time since playback started (ms). */
+  elapsedMs: number;
+}
+
+/** Progress callback — called at configurable intervals during playback. */
+export type ProgressCallback = (progress: PlaybackProgress) => void;
+
 /** Options for creating a new session. */
 export interface SessionOptions {
   /** Playback mode (default: "full"). */
@@ -104,6 +128,13 @@ export interface SessionOptions {
 
   /** Tempo override in BPM (default: song's tempo). */
   tempo?: number;
+
+  /**
+   * Speed multiplier (default: 1.0).
+   * 0.5 = half speed (practice slow), 1.0 = normal, 2.0 = double speed.
+   * Stacks with tempo override: effective tempo = (override ?? song.tempo) * speed.
+   */
+  speed?: number;
 
   /** Loop range [start, end] for loop mode. */
   loopRange?: [number, number];
@@ -113,6 +144,15 @@ export interface SessionOptions {
 
   /** Teaching hook for interjections during playback. */
   teachingHook?: TeachingHook;
+
+  /** Progress callback — called after each measure completes. */
+  onProgress?: ProgressCallback;
+
+  /**
+   * Progress notification interval (0.0 – 1.0, default: 0.1 = every 10%).
+   * Set to 0 to fire after every measure. Set to 1 to only fire at completion.
+   */
+  progressInterval?: number;
 }
 
 // ─── VMPK Types ─────────────────────────────────────────────────────────────

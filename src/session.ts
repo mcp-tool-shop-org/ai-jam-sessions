@@ -13,6 +13,8 @@ import type {
   SessionOptions,
   SessionState,
   PlayableMeasure,
+  PlaybackProgress,
+  ProgressCallback,
   Beat,
   VmpkConnector,
   TeachingHook,
@@ -30,6 +32,11 @@ export function createSession(
   connector: VmpkConnector,
   options: SessionOptions = {}
 ): SessionController {
+  const speed = options.speed ?? 1.0;
+  if (speed <= 0 || speed > 4) {
+    throw new Error(`Speed must be between 0 (exclusive) and 4: got ${speed}`);
+  }
+
   const session: Session = {
     id: `session-${++sessionCounter}`,
     song,
@@ -37,6 +44,7 @@ export function createSession(
     mode: options.mode ?? "full",
     currentMeasure: 0,
     tempoOverride: options.tempo ?? null,
+    speed,
     loopRange: options.loopRange ?? null,
     startedAt: new Date(),
     measuresPlayed: 0,
@@ -46,7 +54,9 @@ export function createSession(
   return new SessionController(
     session,
     connector,
-    options.teachingHook ?? createSilentTeachingHook()
+    options.teachingHook ?? createSilentTeachingHook(),
+    options.onProgress,
+    options.progressInterval
   );
 }
 
@@ -59,12 +69,21 @@ export function createSession(
 export class SessionController {
   private abortController: AbortController | null = null;
   private playableMeasures: PlayableMeasure[] = [];
+  private playStartedAt: number = 0;
+  private lastProgressMilestone: number = -1;
+  private readonly onProgress?: ProgressCallback;
+  private readonly progressInterval: number;
 
   constructor(
     public readonly session: Session,
     private readonly connector: VmpkConnector,
-    private readonly teachingHook: TeachingHook
+    private readonly teachingHook: TeachingHook,
+    onProgress?: ProgressCallback,
+    progressInterval?: number
   ) {
+    this.onProgress = onProgress;
+    this.progressInterval = progressInterval ?? 0.1; // default: every 10%
+
     // Pre-parse all measures at session creation
     const bpm = this.effectiveTempo();
     this.playableMeasures = session.song.measures.map((m) =>
@@ -72,8 +91,20 @@ export class SessionController {
     );
   }
 
-  /** Effective tempo (override or song default). */
+  /**
+   * Effective tempo — base tempo (override or song default) * speed multiplier.
+   * This is the actual BPM used for playback timing.
+   */
   effectiveTempo(): number {
+    const base = this.session.tempoOverride ?? this.session.song.tempo;
+    return base * this.session.speed;
+  }
+
+  /**
+   * Base tempo — override or song default, without speed multiplier.
+   * Useful for display ("Playing at 60 BPM × 0.5 speed").
+   */
+  baseTempo(): number {
     return this.session.tempoOverride ?? this.session.song.tempo;
   }
 
@@ -109,6 +140,8 @@ export class SessionController {
 
     this.session.state = "playing";
     this.abortController = new AbortController();
+    this.playStartedAt = Date.now();
+    this.lastProgressMilestone = -1;
     const signal = this.abortController.signal;
 
     try {
@@ -209,24 +242,78 @@ export class SessionController {
   /** Set tempo override. */
   setTempo(bpm: number): void {
     this.session.tempoOverride = bpm;
-    // Re-parse measures with new tempo
+    // Re-parse measures with new effective tempo
     this.playableMeasures = this.session.song.measures.map((m) =>
-      parseMeasure(m, bpm)
+      parseMeasure(m, this.effectiveTempo())
+    );
+  }
+
+  /**
+   * Set speed multiplier (0.5 = half speed, 1.0 = normal, 2.0 = double).
+   * Re-parses all measures with the new effective tempo.
+   */
+  setSpeed(speed: number): void {
+    if (speed <= 0 || speed > 4) {
+      throw new Error(`Speed must be between 0 (exclusive) and 4: got ${speed}`);
+    }
+    this.session.speed = speed;
+    // Re-parse measures with new effective tempo
+    this.playableMeasures = this.session.song.measures.map((m) =>
+      parseMeasure(m, this.effectiveTempo())
     );
   }
 
   /** Get a summary of the current session state. */
   summary(): string {
     const s = this.session;
+    const speedStr = s.speed !== 1.0 ? ` × ${s.speed}x` : "";
     const lines = [
       `Session: ${s.id}`,
       `Song: ${s.song.title} (${s.song.composer ?? "Traditional"})`,
-      `Genre: ${s.song.genre} | Key: ${s.song.key} | Tempo: ${this.effectiveTempo()} BPM`,
+      `Genre: ${s.song.genre} | Key: ${s.song.key} | Tempo: ${this.baseTempo()} BPM${speedStr}`,
       `Mode: ${s.mode} | State: ${s.state}`,
       `Progress: measure ${this.currentMeasureDisplay} / ${this.totalMeasures}`,
       `Measures played: ${s.measuresPlayed}`,
     ];
     return lines.join("\n");
+  }
+
+  /** Build a PlaybackProgress snapshot. */
+  private buildProgress(): PlaybackProgress {
+    const current = this.session.measuresPlayed;
+    const total = this.totalMeasures;
+    const ratio = total > 0 ? current / total : 0;
+    return {
+      currentMeasure: this.currentMeasureDisplay,
+      totalMeasures: total,
+      ratio,
+      percent: `${Math.round(ratio * 100)}%`,
+      elapsedMs: Date.now() - this.playStartedAt,
+    };
+  }
+
+  /**
+   * Emit a progress notification if we've crossed the next milestone.
+   * With progressInterval 0.1, fires at 10%, 20%, 30%, … 100%.
+   * With progressInterval 0, fires after every measure.
+   */
+  private emitProgress(): void {
+    if (!this.onProgress) return;
+
+    const progress = this.buildProgress();
+
+    if (this.progressInterval <= 0) {
+      // Fire after every measure
+      this.onProgress(progress);
+      return;
+    }
+
+    // Check if we've crossed the next milestone
+    const currentMilestone = Math.floor(progress.ratio / this.progressInterval);
+    if (currentMilestone > this.lastProgressMilestone) {
+      this.lastProgressMilestone = currentMilestone;
+      this.onProgress(progress);
+    }
   }
 
   // ─── Internal playback ──────────────────────────────────────────────────
@@ -264,6 +351,9 @@ export class SessionController {
       // ── Play the measure ──
       await this.playMeasure(pm, signal);
       this.session.measuresPlayed++;
+
+      // ── Progress notification ──
+      this.emitProgress();
     }
   }
 
