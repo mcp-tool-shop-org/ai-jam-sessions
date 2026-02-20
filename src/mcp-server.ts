@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// ─── piano-sessions-ai: MCP Server ─────────────────────────────────────────
+// ─── pianai: MCP Server ─────────────────────────────────────────────────────
 //
 // Exposes the ai-music-sheets registry and session engine as MCP tools.
 // An LLM can browse songs, get teaching info, suggest practice setups,
@@ -64,7 +64,7 @@ function suggestMode(difficulty: Difficulty): { mode: string; reason: string } {
 // ─── Server ─────────────────────────────────────────────────────────────────
 
 const server = new McpServer({
-  name: "piano-sessions-ai",
+  name: "pianai",
   version: "0.2.0",
 });
 
@@ -375,7 +375,7 @@ server.tool(
       ``,
       `## CLI Command`,
       `\`\`\``,
-      `piano-ai play ${song.id} --speed ${speed} --mode ${mode}`,
+      `pianai play ${song.id} --speed ${speed} --mode ${mode}`,
       `\`\`\``,
       ``,
       `## Practice Progression`,
@@ -389,7 +389,7 @@ server.tool(
     if (song.difficulty === "advanced") {
       lines.push(
         `5. Try **loop** mode on difficult passages`,
-        `   Example: \`piano-ai play ${song.id} --mode loop\``
+        `   Example: \`pianai play ${song.id} --mode loop\``
       );
     }
 
@@ -411,7 +411,7 @@ server.tool(
 async function main(): Promise<void> {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("piano-sessions-ai MCP server running on stdio");
+  console.error("pianai MCP server running on stdio");
 }
 
 main().catch((err) => {

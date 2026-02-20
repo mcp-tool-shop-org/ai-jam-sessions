@@ -1,10 +1,10 @@
-# piano-sessions-ai
+# pianai
 
 MCP server + CLI for AI-powered piano teaching — plays through VMPK via MIDI with voice feedback.
 
-[![Tests](https://img.shields.io/badge/tests-121_passing-brightgreen)](https://github.com/mcp-tool-shop-org/piano-ai)
-[![Smoke](https://img.shields.io/badge/smoke-20_passing-brightgreen)](https://github.com/mcp-tool-shop-org/piano-ai)
-[![MCP Tools](https://img.shields.io/badge/MCP_tools-7-purple)](https://github.com/mcp-tool-shop-org/piano-ai)
+[![Tests](https://img.shields.io/badge/tests-121_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianai)
+[![Smoke](https://img.shields.io/badge/smoke-20_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianai)
+[![MCP Tools](https://img.shields.io/badge/MCP_tools-7-purple)](https://github.com/mcp-tool-shop-org/pianai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
 ## What is this?
@@ -82,9 +82,9 @@ pnpm mcp
 ```json
 {
   "mcpServers": {
-    "piano-sessions-ai": {
+    "pianai": {
       "command": "node",
-      "args": ["F:/AI/piano-ai/dist/mcp-server.js"]
+      "args": ["F:/AI/pianai/dist/mcp-server.js"]
     }
   }
 }
@@ -127,7 +127,7 @@ The teaching engine fires hooks during playback. 7 hook implementations cover ev
 ### Voice feedback
 
 ```typescript
-import { createSession, createVoiceTeachingHook } from "piano-sessions-ai";
+import { createSession, createVoiceTeachingHook } from "pianai";
 import { getSong } from "ai-music-sheets";
 
 const voiceHook = createVoiceTeachingHook(
@@ -155,7 +155,7 @@ import {
   createAsideTeachingHook,
   createRecordingTeachingHook,
   composeTeachingHooks,
-} from "piano-sessions-ai";
+} from "pianai";
 
 // All three fire on every event
 const composed = composeTeachingHooks(
@@ -169,7 +169,7 @@ const composed = composeTeachingHooks(
 
 ```typescript
 import { getSong } from "ai-music-sheets";
-import { createSession, createVmpkConnector } from "piano-sessions-ai";
+import { createSession, createVmpkConnector } from "pianai";
 
 const connector = createVmpkConnector({ portName: /loop/i });
 await connector.connect();
@@ -200,7 +200,7 @@ await connector.disconnect();
 ## Architecture
 
 ```
-ai-music-sheets (library)        piano-sessions-ai (runtime)
+ai-music-sheets (library)        pianai (runtime)
 ┌──────────────────────┐         ┌────────────────────────────────┐
 │ SongEntry (hybrid)   │────────→│ Note Parser (safe + strict)    │
 │ Registry (search)    │         │ Session Engine (speed+progress)│
@@ -225,7 +225,7 @@ Teaching hook routing:
 ## Testing
 
 ```bash
-pnpm test       # 101 Vitest tests (parser + session + teaching + voice + aside)
+pnpm test       # 121 Vitest tests (parser + session + teaching + voice + aside)
 pnpm smoke      # 20 smoke tests (integration, no MIDI needed)
 pnpm typecheck  # tsc --noEmit
 ```

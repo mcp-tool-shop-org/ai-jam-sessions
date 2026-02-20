@@ -1,4 +1,4 @@
-// ─── piano-sessions-ai: Smoke Test ──────────────────────────────────────────
+// ─── pianai: Smoke Test ──────────────────────────────────────────────────────
 //
 // Quick integration smoke test — no MIDI hardware needed.
 // Verifies: ai-music-sheets loads, note parser works, sessions run with mock,
@@ -59,7 +59,7 @@ function assert(condition: boolean, msg: string): void {
   if (!condition) throw new Error(`Assertion failed: ${msg}`);
 }
 
-console.log("\n piano-sessions-ai smoke test\n");
+console.log("\n pianai smoke test\n");
 
 // ─── Test 1: ai-music-sheets loads ──────────────────────────────────────────
 console.log("ai-music-sheets integration:");

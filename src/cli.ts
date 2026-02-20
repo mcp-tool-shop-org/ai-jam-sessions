@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-// ─── piano-sessions-ai: CLI Entry Point ─────────────────────────────────────
+// ─── pianai: CLI Entry Point ─────────────────────────────────────
 //
 // Usage:
-//   piano-ai                     # Interactive mode — list songs, pick one, play
-//   piano-ai list                # List all songs
-//   piano-ai list --genre jazz   # List songs by genre
-//   piano-ai play <song-id>      # Play a specific song
-//   piano-ai info <song-id>      # Show song details (musical language)
-//   piano-ai stats               # Registry stats
-//   piano-ai ports               # List available MIDI ports
+//   pianai                     # Interactive mode — list songs, pick one, play
+//   pianai list                # List all songs
+//   pianai list --genre jazz   # List songs by genre
+//   pianai play <song-id>      # Play a specific song
+//   pianai info <song-id>      # Show song details (musical language)
+//   pianai stats               # Registry stats
+//   pianai ports               # List available MIDI ports
 //
 // Requires: loopMIDI running + VMPK listening on the loopMIDI port.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -118,7 +118,7 @@ function cmdList(args: string[]): void {
 function cmdInfo(args: string[]): void {
   const songId = args[0];
   if (!songId) {
-    console.error("Usage: piano-ai info <song-id>");
+    console.error("Usage: pianai info <song-id>");
     process.exit(1);
   }
   const song = getSong(songId);
@@ -132,12 +132,12 @@ function cmdInfo(args: string[]): void {
 async function cmdPlay(args: string[]): Promise<void> {
   const songId = args[0];
   if (!songId) {
-    console.error("Usage: piano-ai play <song-id> [--tempo N] [--speed N] [--mode MODE]");
+    console.error("Usage: pianai play <song-id> [--tempo N] [--speed N] [--mode MODE]");
     process.exit(1);
   }
   const song = getSong(songId);
   if (!song) {
-    console.error(`Song not found: "${songId}". Run 'piano-ai list' to see available songs.`);
+    console.error(`Song not found: "${songId}". Run 'pianai list' to see available songs.`);
     process.exit(1);
   }
 
@@ -257,7 +257,7 @@ function cmdPorts(): void {
 
 function cmdHelp(): void {
   console.log(`
-piano-sessions-ai — AI-powered piano teaching via MIDI
+pianai — AI-powered piano teaching via MIDI
 
 Commands:
   list [--genre <genre>]     List available songs
@@ -274,12 +274,12 @@ Play options:
   --mode <mode>              Playback mode: full, measure, hands, loop
 
 Examples:
-  piano-ai list --genre jazz
-  piano-ai info autumn-leaves
-  piano-ai play moonlight-sonata-mvt1 --tempo 48
-  piano-ai play basic-12-bar-blues --mode measure
-  piano-ai play let-it-be --speed 0.5               # half speed practice
-  piano-ai play dream-on --speed 0.75 --mode hands   # slow hands-separate
+  pianai list --genre jazz
+  pianai info autumn-leaves
+  pianai play moonlight-sonata-mvt1 --tempo 48
+  pianai play basic-12-bar-blues --mode measure
+  pianai play let-it-be --speed 0.5               # half speed practice
+  pianai play dream-on --speed 0.75 --mode hands   # slow hands-separate
 `);
 }
 
@@ -322,7 +322,7 @@ async function main(): Promise<void> {
       if (song) {
         printSongInfo(song);
       } else {
-        console.error(`Unknown command: "${command}". Run 'piano-ai help' for usage.`);
+        console.error(`Unknown command: "${command}". Run 'pianai help' for usage.`);
         process.exit(1);
       }
   }

@@ -1,4 +1,4 @@
-// ─── piano-sessions-ai: Core Types ──────────────────────────────────────────
+// ─── pianai: Core Types ─────────────────────────────────────────────────────
 //
 // Session management, MIDI playback, and teaching interaction types.
 // These bridge ai-music-sheets (the library) with the runtime (MIDI + voice).

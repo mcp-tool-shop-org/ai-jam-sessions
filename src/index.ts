@@ -1,10 +1,10 @@
-// ─── piano-sessions-ai ──────────────────────────────────────────────────────
+// ─── pianai ─────────────────────────────────────────────────────────────────
 //
 // MCP server + CLI for AI-powered piano teaching.
 // Plays songs through VMPK via MIDI with voice feedback.
 //
 // Usage:
-//   import { createSession, createVmpkConnector } from "piano-sessions-ai";
+//   import { createSession, createVmpkConnector } from "pianai";
 //   import { getSong } from "ai-music-sheets";
 // ─────────────────────────────────────────────────────────────────────────────
 
