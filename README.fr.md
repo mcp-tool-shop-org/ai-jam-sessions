@@ -12,9 +12,9 @@
   Serveur MCP + CLI pour l'enseignement du piano par IA — joue via VMPK par MIDI avec retour vocal.
 </p>
 
-[![Tests](https://img.shields.io/badge/tests-121_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Smoke](https://img.shields.io/badge/smoke-20_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![MCP Tools](https://img.shields.io/badge/MCP_tools-7-purple)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Tests](https://img.shields.io/badge/tests-163_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Smoke](https://img.shields.io/badge/smoke-25_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![MCP Tools](https://img.shields.io/badge/MCP_tools-8-purple)](https://github.com/mcp-tool-shop-org/pianoai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
 ## Qu'est-ce que c'est ?
@@ -26,11 +26,12 @@ Un CLI TypeScript et un serveur MCP qui charge des morceaux de piano depuis [ai-
 - **4 modes de lecture** — complet, mesure par mesure, mains séparées, boucle
 - **Contrôle de la vitesse** — 0.5x pour la pratique lente jusqu'à 2x en lecture rapide, cumulable avec le tempo personnalisé
 - **Suivi de progression** — callbacks configurables par pourcentage ou par mesure
-- **7 hooks pédagogiques** — console, silencieux, enregistrement, callback, voix, aside, composition
+- **8 hooks pédagogiques** — console, silencieux, enregistrement, callback, voix, aside, chant accompagné, composition
+- **Narration chantée** — noms de notes, solfège, contour ou syllabes prononcés avant chaque mesure
 - **Retour vocal** — sortie `VoiceDirective` pour l'intégration mcp-voice-soundboard
 - **Interjections aside** — sortie `AsideDirective` pour la boîte de réception mcp-aside
 - **Analyse sécurisée** — les notes invalides sont ignorées avec collecte de `ParseWarning`
-- **7 outils MCP** — exposent le registre, les notes pédagogiques et les recommandations de morceaux aux LLMs
+- **8 outils MCP** — exposent le registre, les notes pédagogiques, le chant accompagné et les recommandations de morceaux aux LLMs
 - **Analyseur de notes** — notation scientifique des hauteurs vers MIDI et inversement
 - **Connecteur mock** — couverture de test complète sans matériel MIDI
 
@@ -69,11 +70,17 @@ pianai play moonlight-sonata-mvt1 --speed 0.5
 
 # Pratique lente mains séparées
 pianai play dream-on --speed 0.75 --mode hands
+
+# Chanter ensemble — narrer les noms de notes pendant la lecture
+pianai sing let-it-be --mode note-names
+
+# Chanter ensemble en solfège, deux mains
+pianai sing fur-elise --mode solfege --hand both
 ```
 
 ## Serveur MCP
 
-Le serveur MCP expose 7 outils pour l'intégration LLM :
+Le serveur MCP expose 8 outils pour l'intégration LLM :
 
 | Outil | Description |
 |-------|-------------|
@@ -81,6 +88,7 @@ Le serveur MCP expose 7 outils pour l'intégration LLM :
 | `song_info` | Obtenir le langage musical complet, les objectifs pédagogiques, les suggestions de pratique |
 | `registry_stats` | Nombre de morceaux par genre et difficulté |
 | `teaching_note` | Note pédagogique par mesure, doigtés, dynamiques |
+| `sing_along` | Obtenir le texte chantable par mesure (noms de notes, solfège, contour, syllabes) |
 | `suggest_song` | Obtenir une recommandation selon des critères |
 | `list_measures` | Aperçu des mesures avec notes pédagogiques + avertissements d'analyse |
 | `practice_setup` | Suggérer la vitesse, le mode et les réglages vocaux pour un morceau |
@@ -109,6 +117,7 @@ pnpm mcp
 | `list [--genre <genre>]` | Lister les morceaux disponibles, avec filtre optionnel par genre |
 | `info <song-id>` | Afficher les détails du morceau : langage musical, notes pédagogiques, structure |
 | `play <song-id> [opts]` | Jouer un morceau via VMPK par MIDI |
+| `sing <song-id> [opts]` | Chanter ensemble — narrer les notes pendant la lecture |
 | `stats` | Statistiques du registre (morceaux, genres, mesures) |
 | `ports` | Lister les ports de sortie MIDI disponibles |
 | `help` | Afficher les informations d'utilisation |
@@ -124,7 +133,7 @@ pnpm mcp
 
 ## Moteur pédagogique
 
-Le moteur pédagogique déclenche des hooks pendant la lecture. 7 implémentations de hooks couvrent tous les cas d'usage :
+Le moteur pédagogique déclenche des hooks pendant la lecture. 8 implémentations de hooks couvrent tous les cas d'usage :
 
 | Hook | Cas d'usage |
 |------|-------------|
@@ -134,6 +143,7 @@ Le moteur pédagogique déclenche des hooks pendant la lecture. 7 implémentatio
 | `createCallbackTeachingHook(cb)` | Personnalisé — redirige vers n'importe quel callback asynchrone |
 | `createVoiceTeachingHook(sink)` | Voix — produit des `VoiceDirective` pour mcp-voice-soundboard |
 | `createAsideTeachingHook(sink)` | Aside — produit des `AsideDirective` pour la boîte de réception mcp-aside |
+| `createSingAlongHook(sink, song)` | Chant — narre les notes/solfège/contour avant chaque mesure |
 | `composeTeachingHooks(...hooks)` | Multi — dispatch vers plusieurs hooks en série |
 
 ### Retour vocal
@@ -177,6 +187,32 @@ const composed = composeTeachingHooks(
 );
 ```
 
+### Narration chantée
+
+```typescript
+import {
+  createSingAlongHook,
+  createVoiceTeachingHook,
+  composeTeachingHooks,
+  createSession,
+} from "@mcptoolshop/pianoai";
+import { getSong } from "@mcptoolshop/ai-music-sheets";
+
+const song = getSong("let-it-be")!;
+
+// Narrer le solfège avant chaque mesure, puis les notes pédagogiques
+const singHook = createSingAlongHook(voiceSink, song, {
+  mode: "solfege",
+  hand: "right",
+});
+const teachHook = createVoiceTeachingHook(voiceSink);
+const combined = composeTeachingHooks(singHook, teachHook);
+
+const session = createSession(song, connector, { teachingHook: combined });
+await session.play();
+// singHook.directives → "Do... Mi... Sol" bloquant avant chaque mesure
+```
+
 ## API programmatique
 
 ```typescript
@@ -216,9 +252,9 @@ ai-music-sheets (bibliothèque)   pianai (runtime)
 ┌──────────────────────┐         ┌────────────────────────────────┐
 │ SongEntry (hybride)  │────────→│ Note Parser (sûr + strict)    │
 │ Registry (recherche) │         │ Session Engine (vitesse+suivi) │
-│ 10 morceaux, 10 genres│        │ Teaching Engine (7 hooks)      │
+│ 10 morceaux, 10 genres│        │ Teaching Engine (8 hooks)      │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
-                                 │ MCP Server (7 outils)          │
+                                 │ MCP Server (8 outils)          │
                                  │ CLI (barre de progression+voix)│
                                  └─────────┬──────────────────────┘
                                            │ MIDI
@@ -237,8 +273,8 @@ Routage des hooks pédagogiques :
 ## Tests
 
 ```bash
-pnpm test       # 121 tests Vitest (parser + session + teaching + voice + aside)
-pnpm smoke      # 20 tests d'intégration (pas de MIDI requis)
+pnpm test       # 163 tests Vitest (parser + session + teaching + voice + aside + chant)
+pnpm smoke      # 25 tests d'intégration (pas de MIDI requis)
 pnpm typecheck  # tsc --noEmit
 ```
 
