@@ -110,6 +110,9 @@ export interface SessionOptions {
 
   /** Enable voice feedback (default: true). */
   voice?: boolean;
+
+  /** Teaching hook for interjections during playback. */
+  teachingHook?: TeachingHook;
 }
 
 // ─── VMPK Types ─────────────────────────────────────────────────────────────
@@ -171,3 +174,46 @@ export const DURATION_MAP: Record<string, number> = {
 export const NOTE_OFFSETS: Record<string, number> = {
   C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11,
 };
+
+// ─── Teaching Hook Types ────────────────────────────────────────────────────
+
+/** Priority level for teaching interjections. */
+export type TeachingPriority = "low" | "med" | "high";
+
+/** A teaching interjection — something the AI teacher says during practice. */
+export interface TeachingInterjection {
+  /** The text to speak/display. */
+  text: string;
+
+  /** Priority: low = ambient, med = useful, high = critical instruction. */
+  priority: TeachingPriority;
+
+  /** Why this interjection was triggered. */
+  reason: "measure-start" | "key-moment" | "style-tip" | "encouragement" | "correction" | "custom";
+
+  /** Source: which measure or song element triggered this. */
+  source?: string;
+}
+
+/**
+ * Teaching hook interface — inject this into sessions to receive
+ * teaching interjections during playback. Implementations can route
+ * to mcp-voice-soundboard, mcp-aside, console, or anything else.
+ */
+export interface TeachingHook {
+  /** Called before a measure plays — opportunity to announce what's coming. */
+  onMeasureStart(
+    measureNumber: number,
+    teachingNote: string | undefined,
+    dynamics: string | undefined
+  ): Promise<void>;
+
+  /** Called when a key moment in the song is reached. */
+  onKeyMoment(moment: string): Promise<void>;
+
+  /** Called when the song finishes. */
+  onSongComplete(measuresPlayed: number, songTitle: string): Promise<void>;
+
+  /** Push a custom interjection. */
+  push(interjection: TeachingInterjection): Promise<void>;
+}

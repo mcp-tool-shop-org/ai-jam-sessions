@@ -35,13 +35,15 @@
   "author": "mcp-tool-shop",
   "license": "MIT",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "ai-music-sheets": "file:../ai-music-sheets",
-    "jzz": "^1.8.0"
+    "jzz": "^1.8.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "tsx": "^4.19",
     "typescript": "^5.7",
-    "vitest": "^3.0",
-    "tsx": "^4.19"
+    "vitest": "^3.0"
   }
 }
