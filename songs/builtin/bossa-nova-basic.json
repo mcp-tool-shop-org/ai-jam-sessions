@@ -1,0 +1,95 @@
+{
+  "id": "bossa-nova-basic",
+  "title": "Bossa Nova in C (Basic Pattern)",
+  "genre": "latin",
+  "difficulty": "intermediate",
+  "key": "C major",
+  "tempo": 130,
+  "timeSignature": "4/4",
+  "durationSeconds": 30,
+  "tags": [
+    "bossa-nova",
+    "brazilian",
+    "syncopation",
+    "chord-melody",
+    "groove"
+  ],
+  "source": "Traditional bossa nova comping pattern",
+  "musicalLanguage": {
+    "description": "The bossa nova piano pattern is syncopated magic. The left hand plays the signature 'long-short-short-long-short' rhythm while the right hand adds chord stabs and melody. This basic pattern in C major teaches the fundamental bossa groove that underpins songs like The Girl from Ipanema.",
+    "structure": "Repeated 8-bar vamp: CM7-Dm7-G7-CM7",
+    "keyMoments": [
+      "Bars 1-2: CM7 — establish the bossa rhythm. The syncopation is everything.",
+      "Bars 3-4: Dm7 — the ii chord. Same rhythm, new color.",
+      "Bars 5-6: G7 — the V chord. The rhythm drives toward resolution.",
+      "Bars 7-8: Back to CM7 — smooth landing. Loop endlessly."
+    ],
+    "teachingGoals": [
+      "Bossa nova syncopation — the signature long-short-short-long-short pattern",
+      "Left-hand independence: bass notes on specific off-beats",
+      "Chord voicings in the right hand: 3rds and 7ths close together"
+    ],
+    "styleTips": [
+      "Relaxed but precise — the syncopation must be exact but never stiff",
+      "Light touch — bossa nova is whispered, not shouted",
+      "The left hand is the groove; the right hand adds color and melody"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "R:e E4:e G4:e R:e E4:e G4:q R:e",
+      "leftHand": "C3:q R:e C3:e R:q C3:q",
+      "fingering": "RH: 1-3 chord stabs, LH: syncopated bass",
+      "teachingNote": "CM7 — the signature bossa rhythm. Count: 'rest-AND-a rest-AND-a-rest'. The syncopation IS the style.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 2,
+      "rightHand": "R:e E4:e B4:e R:e E4:e B4:q R:e",
+      "leftHand": "C3:q R:e C3:e R:q C3:q",
+      "teachingNote": "Still CM7 — add the B (major 7th) for that dreamy bossa sound."
+    },
+    {
+      "number": 3,
+      "rightHand": "R:e D4:e F4:e R:e D4:e A4:q R:e",
+      "leftHand": "D3:q R:e D3:e R:q D3:q",
+      "fingering": "RH: 1-3 then 1-5, LH: syncopated bass on D",
+      "teachingNote": "Dm7 — same rhythm, move everything up one scale step. The groove shouldn't change."
+    },
+    {
+      "number": 4,
+      "rightHand": "R:e D4:e F4:e R:e D4:e C5:q R:e",
+      "leftHand": "D3:q R:e D3:e R:q D3:q",
+      "teachingNote": "Dm7 continued — the C on top adds the 7th. Rich and mellow."
+    },
+    {
+      "number": 5,
+      "rightHand": "R:e B3:e F4:e R:e B3:e F4:q R:e",
+      "leftHand": "G2:q R:e G2:e R:q G2:q",
+      "fingering": "RH: 1-4 (G7 tritone), LH: bass on G",
+      "teachingNote": "G7 — the tritone (B-F) gives this chord its pull. In bossa, it's subtle, not aggressive.",
+      "dynamics": "mf"
+    },
+    {
+      "number": 6,
+      "rightHand": "R:e B3:e F4:e R:e D4:e F4:q R:e",
+      "leftHand": "G2:q R:e G2:e R:q G2:q",
+      "teachingNote": "G7 continued — the D adds the 5th. Feel the tension wanting to resolve to C."
+    },
+    {
+      "number": 7,
+      "rightHand": "R:e E4:e G4:e R:e E4:e B4:q R:e",
+      "leftHand": "C3:q R:e C3:e R:q C3:q",
+      "teachingNote": "CM7 — home again. The resolution should feel like a sigh of relief.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 8,
+      "rightHand": "E4:q G4:q B4:h",
+      "leftHand": "C3:h C3:h",
+      "teachingNote": "Ending CM7 — let the major 7th ring. In a loop, skip this and go back to bar 1.",
+      "dynamics": "p"
+    }
+  ]
+}

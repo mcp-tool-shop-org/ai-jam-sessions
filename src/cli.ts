@@ -19,8 +19,9 @@ import {
   getSongsByGenre,
   getStats,
   GENRES,
-} from "@mcptoolshop/ai-music-sheets";
-import type { SongEntry, Genre } from "@mcptoolshop/ai-music-sheets";
+  initializeRegistry,
+} from "./songs/index.js";
+import type { SongEntry, Genre } from "./songs/types.js";
 import type { PlaybackProgress, PlaybackMode, SyncMode, VoiceDirective, AsideDirective, VmpkConnector } from "./types.js";
 import type { SingAlongMode } from "./note-parser.js";
 import { createAudioEngine } from "./audio-engine.js";
@@ -575,6 +576,14 @@ function getFlag(args: string[], flag: string): string | null {
 }
 
 async function main(): Promise<void> {
+  // Load songs from builtin + user directories
+  const { dirname, join } = await import("node:path");
+  const { fileURLToPath } = await import("node:url");
+  const __dirname = dirname(fileURLToPath(import.meta.url));
+  const builtinDir = join(__dirname, "..", "songs", "builtin");
+  const userDir = join(process.env.HOME ?? process.env.USERPROFILE ?? ".", ".pianoai", "songs");
+  initializeRegistry(builtinDir, userDir);
+
   const args = process.argv.slice(2);
   const command = args[0] ?? "help";
 

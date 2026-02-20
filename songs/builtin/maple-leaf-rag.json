@@ -1,0 +1,99 @@
+{
+  "id": "maple-leaf-rag",
+  "title": "Maple Leaf Rag (A Section)",
+  "genre": "ragtime",
+  "composer": "Scott Joplin",
+  "difficulty": "advanced",
+  "key": "Ab major",
+  "tempo": 96,
+  "timeSignature": "4/4",
+  "durationSeconds": 30,
+  "tags": [
+    "joplin",
+    "ragtime",
+    "stride",
+    "syncopation",
+    "classic"
+  ],
+  "source": "Public domain — A section of the original score (simplified)",
+  "musicalLanguage": {
+    "description": "The piece that launched ragtime into the mainstream. Maple Leaf Rag's A section is a masterclass in syncopated melody over stride bass. The right hand plays off the beat while the left hand keeps strict time with the oom-pah stride pattern. This is the piece Joplin was most proud of.",
+    "structure": "A section — 8 bars, repeated",
+    "keyMoments": [
+      "Bar 1: The syncopated octave Abs set the tone — aggressive and confident",
+      "Bars 3-4: The melody climbs through Bb-C-Db — the classic ragtime scale run",
+      "Bars 7-8: The turnaround with the chromatic bass descent into the repeat"
+    ],
+    "teachingGoals": [
+      "Advanced stride left hand: octave bass + mid-range chord alternation",
+      "Right-hand syncopation against a steady left hand — true independence",
+      "Ragtime articulation: detached bass, connected melody"
+    ],
+    "styleTips": [
+      "NOT FAST — Joplin explicitly marked 'Tempo di marcia' (march tempo)",
+      "Left hand: bass notes short and detached, chords lighter and sustained",
+      "Right hand: let the syncopated notes ring slightly longer than written"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "Ab4:e R:s Ab4:s Ab4:e C5:e Eb5:e Ab4:e",
+      "leftHand": "Ab2:e Eb3:e Ab3:e Eb3:e",
+      "fingering": "RH: 1-1-1-3-5-1, LH: 5-2-1-2 (stride)",
+      "teachingNote": "The famous opening — syncopated Ab octaves. The 'rest-sixteenth' gives it the kick.",
+      "dynamics": "f"
+    },
+    {
+      "number": 2,
+      "rightHand": "Db5:e C5:e Ab4:e Eb4:e C4:q R:q",
+      "leftHand": "Db2:e Ab2:e Db3:e Ab2:e",
+      "fingering": "RH: 4-3-1-3-1, LH: 5-2-1-2",
+      "teachingNote": "Descending from the peak — Db-C-Ab-Eb. Keep it crisp and bouncy."
+    },
+    {
+      "number": 3,
+      "rightHand": "Ab4:e Bb4:e C5:e Db5:e Eb5:e R:e Db5:q",
+      "leftHand": "Ab2:e Eb3:e Ab3:e Eb3:e",
+      "fingering": "RH: 1-2-3-4-5-4, LH: stride",
+      "teachingNote": "The ascending scale run — the heart of the rag. Don't accent the top note — it's the REST that makes it ragtime.",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "C5:e Ab4:e Eb4:e Ab4:e C5:h",
+      "leftHand": "Eb2:e Bb2:e Eb3:e Bb2:e",
+      "fingering": "RH: 3-1-1-1-3, LH: 5-2-1-2 (Eb stride)",
+      "teachingNote": "Eb major in the bass — the V chord. The melody outlines the chord going up and down."
+    },
+    {
+      "number": 5,
+      "rightHand": "Ab4:e R:s Ab4:s Ab4:e C5:e Eb5:e Ab4:e",
+      "leftHand": "Ab2:e Eb3:e Ab3:e Eb3:e",
+      "teachingNote": "The A section repeats its opening. This time, play with more confidence.",
+      "dynamics": "f"
+    },
+    {
+      "number": 6,
+      "rightHand": "Db5:e C5:e Ab4:e F4:e Eb4:q R:q",
+      "leftHand": "Db2:e Ab2:e Db3:e Ab2:e",
+      "fingering": "RH: 4-3-1-2-1, LH: 5-2-1-2",
+      "teachingNote": "Slight variation — F natural instead of Eb. Joplin loved these small surprises."
+    },
+    {
+      "number": 7,
+      "rightHand": "Eb4:e G4:e Bb4:e Eb5:e Db5:e C5:e Bb4:e Ab4:e",
+      "leftHand": "Eb2:e Bb2:e Eb3:e Bb2:e",
+      "fingering": "RH: 1-3-4-5-4-3-2-1, LH: stride",
+      "teachingNote": "The turnaround — up through Eb major then cascade down. This is the show-off moment.",
+      "dynamics": "ff"
+    },
+    {
+      "number": 8,
+      "rightHand": "Ab4:q R:e Ab3:e Ab4:h",
+      "leftHand": "Ab2:e Eb3:e Ab3:e Eb2:e",
+      "fingering": "RH: 1-1-1, LH: 5-2-1-5",
+      "teachingNote": "Landing back on Ab. The octave drop is the exclamation point. Ready to loop!"
+    }
+  ]
+}

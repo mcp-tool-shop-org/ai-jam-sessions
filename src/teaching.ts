@@ -20,7 +20,7 @@ import type {
   AsideSink,
   LiveFeedbackHookOptions,
 } from "./types.js";
-import type { SongEntry } from "@mcptoolshop/ai-music-sheets";
+import type { SongEntry } from "./songs/types.js";
 
 // ─── Console Hook (CLI / development) ───────────────────────────────────────
 

@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { getSong } from "@mcptoolshop/ai-music-sheets";
+import { getSong, initializeRegistry } from "./songs/index.js";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+initializeRegistry(join(__dirname, "..", "songs", "builtin"));
 import {
   createConsoleTeachingHook,
   createSilentTeachingHook,

@@ -6,7 +6,7 @@
 
 import { NOTE_OFFSETS, DURATION_MAP } from "./types.js";
 import type { MidiNote, Beat, PlayableMeasure, ParseWarning } from "./types.js";
-import type { Measure } from "@mcptoolshop/ai-music-sheets";
+import type { Measure } from "./songs/types.js";
 
 /**
  * Parse a scientific pitch string into a MIDI note number.

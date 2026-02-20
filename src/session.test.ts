@@ -1,9 +1,16 @@
-import { describe, it, expect } from "vitest";
-import { getSong } from "@mcptoolshop/ai-music-sheets";
+import { describe, it, expect, beforeAll } from "vitest";
+import { getSong, initializeRegistry } from "./songs/index.js";
 import { createSession } from "./session.js";
 import { createMockVmpkConnector } from "./vmpk.js";
 import { createRecordingTeachingHook } from "./teaching.js";
 import type { PlaybackProgress } from "./types.js";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Initialize registry at module level (before describe bodies run)
+initializeRegistry(join(__dirname, "..", "songs", "builtin"));
 
 describe("SessionController", () => {
   const moonlight = getSong("moonlight-sonata-mvt1")!;

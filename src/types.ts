@@ -4,7 +4,7 @@
 // These bridge ai-music-sheets (the library) with the runtime (MIDI + voice).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { SongEntry, Measure, Genre, Difficulty } from "@mcptoolshop/ai-music-sheets";
+import type { SongEntry, Measure, Genre, Difficulty } from "./songs/types.js";
 
 // ─── MIDI Types ─────────────────────────────────────────────────────────────
 

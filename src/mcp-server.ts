@@ -31,10 +31,16 @@ import {
   getSongsByDifficulty,
   searchSongs,
   getStats,
+  registerSong,
+  validateSong,
+  saveSong,
+  initializeRegistry,
+  midiToSongEntry,
   GENRES,
   DIFFICULTIES,
-} from "@mcptoolshop/ai-music-sheets";
-import type { SongEntry, Difficulty } from "@mcptoolshop/ai-music-sheets";
+} from "./songs/index.js";
+import type { SongEntry, Difficulty, Genre } from "./songs/types.js";
+import { readFileSync } from "node:fs";
 import { safeParseMeasure, measureToSingableText, type SingAlongMode } from "./note-parser.js";
 import type { ParseWarning, PlaybackMode, SyncMode, VmpkConnector } from "./types.js";
 import { createAudioEngine } from "./audio-engine.js";
@@ -904,9 +910,157 @@ server.tool(
   }
 );
 
+// ─── Tool: add_song ──────────────────────────────────────────────────────
+
+server.tool(
+  "add_song",
+  "Add a new song to the library. Provide a complete SongEntry as JSON. The song is validated, registered, and saved to the user songs directory.",
+  {
+    song: z.string().describe("Complete SongEntry as a JSON string"),
+  },
+  async ({ song: songJson }) => {
+    try {
+      const parsed = JSON.parse(songJson) as SongEntry;
+      const errors = validateSong(parsed);
+      if (errors.length > 0) {
+        return {
+          content: [{
+            type: "text",
+            text: `Song validation failed:\n  - ${errors.join("\n  - ")}`,
+          }],
+        };
+      }
+
+      // Check for duplicates
+      if (getSong(parsed.id)) {
+        return {
+          content: [{
+            type: "text",
+            text: `A song with ID "${parsed.id}" already exists in the library.`,
+          }],
+        };
+      }
+
+      registerSong(parsed);
+
+      // Save to user songs directory
+      const userDir = getUserSongsDir();
+      const filePath = saveSong(parsed, userDir);
+
+      return {
+        content: [{
+          type: "text",
+          text: `Song "${parsed.title}" (${parsed.id}) added to the library.\n` +
+            `Genre: ${parsed.genre} | Difficulty: ${parsed.difficulty} | ` +
+            `${parsed.measures.length} measures | ${parsed.durationSeconds}s\n` +
+            `Saved to: ${filePath}`,
+        }],
+      };
+    } catch (err) {
+      return {
+        content: [{
+          type: "text",
+          text: `Failed to add song: ${err instanceof Error ? err.message : String(err)}`,
+        }],
+      };
+    }
+  }
+);
+
+// ─── Tool: import_midi ──────────────────────────────────────────────────
+
+server.tool(
+  "import_midi",
+  "Import a MIDI file as a song. Provide the file path and metadata. The MIDI is parsed, converted to a SongEntry, and saved to the user songs directory.",
+  {
+    midi_path: z.string().describe("Path to .mid file"),
+    id: z.string().describe("Song ID (kebab-case, e.g. 'fur-elise')"),
+    title: z.string().describe("Song title"),
+    genre: z.enum(GENRES as unknown as [string, ...string[]]).describe("Genre"),
+    difficulty: z.enum(DIFFICULTIES as unknown as [string, ...string[]]).describe("Difficulty"),
+    key: z.string().describe("Key signature (e.g. 'C major', 'A minor')"),
+    composer: z.string().optional().describe("Composer or artist"),
+    description: z.string().optional().describe("1-3 sentence description of the piece"),
+    tags: z.array(z.string()).optional().describe("Tags for search (default: genre + difficulty)"),
+  },
+  async ({ midi_path, id, title, genre, difficulty, key, composer, description, tags }) => {
+    try {
+      const midiBuffer = new Uint8Array(readFileSync(midi_path));
+
+      const config = {
+        id,
+        title,
+        genre: genre as Genre,
+        difficulty: difficulty as Difficulty,
+        key,
+        composer,
+        tags: tags ?? [genre, difficulty],
+        musicalLanguage: {
+          description: description ?? `${title} — a ${difficulty} ${genre} piece in ${key}.`,
+          structure: "To be determined",
+          keyMoments: [`Bar 1: ${title} begins`],
+          teachingGoals: [`Learn ${title} at ${difficulty} level`],
+          styleTips: [`Play in ${genre} style`],
+        },
+      };
+
+      const song = midiToSongEntry(midiBuffer, config);
+
+      // Check for duplicates
+      if (getSong(song.id)) {
+        return {
+          content: [{
+            type: "text",
+            text: `A song with ID "${song.id}" already exists in the library.`,
+          }],
+        };
+      }
+
+      registerSong(song);
+
+      const userDir = getUserSongsDir();
+      const filePath = saveSong(song, userDir);
+
+      return {
+        content: [{
+          type: "text",
+          text: `MIDI imported as "${song.title}" (${song.id}).\n` +
+            `Genre: ${song.genre} | Difficulty: ${song.difficulty} | Key: ${song.key}\n` +
+            `Tempo: ${song.tempo} BPM | Time: ${song.timeSignature} | ` +
+            `${song.measures.length} measures | ${song.durationSeconds}s\n` +
+            `Saved to: ${filePath}`,
+        }],
+      };
+    } catch (err) {
+      return {
+        content: [{
+          type: "text",
+          text: `Failed to import MIDI: ${err instanceof Error ? err.message : String(err)}`,
+        }],
+      };
+    }
+  }
+);
+
+// ─── Helpers ─────────────────────────────────────────────────────────────
+
+function getUserSongsDir(): string {
+  const home = process.env.HOME ?? process.env.USERPROFILE ?? ".";
+  return `${home}/.pianoai/songs`;
+}
+
 // ─── Start ──────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
+  // Load songs from builtin + user directories
+  const { dirname } = await import("node:path");
+  const { fileURLToPath } = await import("node:url");
+  const { join } = await import("node:path");
+  const __dirname = dirname(fileURLToPath(import.meta.url));
+  const builtinDir = join(__dirname, "..", "songs", "builtin");
+  const userDir = join(process.env.HOME ?? process.env.USERPROFILE ?? ".", ".pianoai", "songs");
+  initializeRegistry(builtinDir, userDir);
+
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error("pianoai MCP server running on stdio");

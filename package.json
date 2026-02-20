@@ -17,6 +17,7 @@
   },
   "files": [
     "dist",
+    "songs/builtin",
     "README.md",
     "LICENSE",
     "logo.svg"
@@ -54,7 +55,6 @@
     "url": "https://github.com/mcp-tool-shop-org/pianoai.git"
   },
   "dependencies": {
-    "@mcptoolshop/ai-music-sheets": "^0.1.0",
     "@modelcontextprotocol/sdk": "^1.26.0",
     "jzz": "^1.8.0",
     "midi-file": "^1.2.4",

@@ -4,11 +4,10 @@
 // Built-in piano engine included. No external software required.
 //
 // Usage:
-//   import { createSession, createAudioEngine } from "@mcptoolshop/pianoai";
-//   import { getSong } from "@mcptoolshop/ai-music-sheets";
+//   import { createSession, createAudioEngine, getSong } from "@mcptoolshop/pianoai";
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Re-export ai-music-sheets for convenience
+// Re-export song library
 export {
   getAllSongs,
   getSong,
@@ -16,9 +15,17 @@ export {
   getSongsByDifficulty,
   searchSongs,
   getStats,
+  registerSong,
+  validateSong,
+  clearRegistry,
+  initializeRegistry,
+  saveSong,
+  loadSongFile,
+  loadSongsFromDir,
+  midiToSongEntry,
   GENRES,
   DIFFICULTIES,
-} from "@mcptoolshop/ai-music-sheets";
+} from "./songs/index.js";
 
 export type {
   SongEntry,
@@ -26,7 +33,7 @@ export type {
   MusicalLanguage,
   Genre,
   Difficulty,
-} from "@mcptoolshop/ai-music-sheets";
+} from "./songs/types.js";
 
 // Export session engine
 export { createSession, SessionController } from "./session.js";

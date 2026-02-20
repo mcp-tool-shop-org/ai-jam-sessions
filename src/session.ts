@@ -7,7 +7,7 @@
 // the AI teacher to speak, display tips, or push interjections.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { SongEntry } from "@mcptoolshop/ai-music-sheets";
+import type { SongEntry } from "./songs/types.js";
 import type {
   Session,
   SessionOptions,
