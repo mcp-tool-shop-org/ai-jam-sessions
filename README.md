@@ -30,7 +30,7 @@ A TypeScript CLI and MCP server that loads piano songs from [ai-music-sheets](ht
 - **Voice feedback** — `VoiceDirective` output for mcp-voice-soundboard integration
 - **Aside interjections** — `AsideDirective` output for mcp-aside inbox
 - **Safe parsing** — bad notes skip gracefully with collected `ParseWarning`s
-- **6 MCP tools** — expose registry, teaching notes, and song recommendations to LLMs
+- **7 MCP tools** — expose registry, teaching notes, and song recommendations to LLMs
 - **Note parser** — scientific pitch notation to MIDI and back
 - **Mock connector** — full test coverage without MIDI hardware
 
@@ -40,32 +40,35 @@ A TypeScript CLI and MCP server that loads piano songs from [ai-music-sheets](ht
 2. **[VMPK](https://vmpk.sourceforge.io/)** — set MIDI input to your loopMIDI port
 3. **Node.js 18+**
 
+## Install
+
+```bash
+npm install -g pianai
+```
+
 ## Quick Start
 
 ```bash
-pnpm install
-pnpm build
-
 # List all songs
-node dist/cli.js list
+pianai list
 
 # Show song details + teaching notes
-node dist/cli.js info moonlight-sonata-mvt1
+pianai info moonlight-sonata-mvt1
 
 # Play a song through VMPK
-node dist/cli.js play let-it-be
+pianai play let-it-be
 
 # Play with tempo override
-node dist/cli.js play basic-12-bar-blues --tempo 80
+pianai play basic-12-bar-blues --tempo 80
 
 # Step through measure by measure
-node dist/cli.js play autumn-leaves --mode measure
+pianai play autumn-leaves --mode measure
 
 # Half-speed practice
-node dist/cli.js play moonlight-sonata-mvt1 --speed 0.5
+pianai play moonlight-sonata-mvt1 --speed 0.5
 
 # Slow hands-separate practice
-node dist/cli.js play dream-on --speed 0.75 --mode hands
+pianai play dream-on --speed 0.75 --mode hands
 ```
 
 ## MCP Server
@@ -93,8 +96,7 @@ pnpm mcp
 {
   "mcpServers": {
     "pianai": {
-      "command": "node",
-      "args": ["F:/AI/pianai/dist/mcp-server.js"]
+      "command": "pianai-mcp"
     }
   }
 }
@@ -216,7 +218,7 @@ ai-music-sheets (library)        pianai (runtime)
 │ Registry (search)    │         │ Session Engine (speed+progress)│
 │ 10 songs, 10 genres  │         │ Teaching Engine (7 hooks)      │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
-                                 │ MCP Server (6 tools)           │
+                                 │ MCP Server (7 tools)           │
                                  │ CLI (progress bar + voice)     │
                                  └─────────┬──────────────────────┘
                                            │ MIDI

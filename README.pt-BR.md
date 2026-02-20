@@ -30,7 +30,7 @@ Um CLI em TypeScript e servidor MCP que carrega musicas de piano de [ai-music-sh
 - **Feedback por voz** — saida `VoiceDirective` para integracao com mcp-voice-soundboard
 - **Interjecoes aside** — saida `AsideDirective` para caixa de entrada do mcp-aside
 - **Parsing seguro** — notas invalidas sao ignoradas graciosamente com `ParseWarning`s coletados
-- **6 ferramentas MCP** — expoe registro, notas de ensino e recomendacoes de musicas para LLMs
+- **7 ferramentas MCP** — expoe registro, notas de ensino e recomendacoes de musicas para LLMs
 - **Parser de notas** — notacao cientifica de altura para MIDI e vice-versa
 - **Conector mock** — cobertura completa de testes sem hardware MIDI
 
@@ -40,32 +40,35 @@ Um CLI em TypeScript e servidor MCP que carrega musicas de piano de [ai-music-sh
 2. **[VMPK](https://vmpk.sourceforge.io/)** — configure a entrada MIDI para sua porta loopMIDI
 3. **Node.js 18+**
 
+## Instalação
+
+```bash
+npm install -g pianai
+```
+
 ## Inicio Rapido
 
 ```bash
-pnpm install
-pnpm build
-
 # Listar todas as musicas
-node dist/cli.js list
+pianai list
 
 # Mostrar detalhes da musica + notas de ensino
-node dist/cli.js info moonlight-sonata-mvt1
+pianai info moonlight-sonata-mvt1
 
 # Reproduzir uma musica pelo VMPK
-node dist/cli.js play let-it-be
+pianai play let-it-be
 
 # Reproduzir com override de tempo
-node dist/cli.js play basic-12-bar-blues --tempo 80
+pianai play basic-12-bar-blues --tempo 80
 
 # Avancar compasso a compasso
-node dist/cli.js play autumn-leaves --mode measure
+pianai play autumn-leaves --mode measure
 
 # Pratica em metade da velocidade
-node dist/cli.js play moonlight-sonata-mvt1 --speed 0.5
+pianai play moonlight-sonata-mvt1 --speed 0.5
 
 # Pratica lenta com maos separadas
-node dist/cli.js play dream-on --speed 0.75 --mode hands
+pianai play dream-on --speed 0.75 --mode hands
 ```
 
 ## Servidor MCP
@@ -93,8 +96,7 @@ pnpm mcp
 {
   "mcpServers": {
     "pianai": {
-      "command": "node",
-      "args": ["F:/AI/pianai/dist/mcp-server.js"]
+      "command": "pianai-mcp"
     }
   }
 }
@@ -216,7 +218,7 @@ ai-music-sheets (biblioteca)     pianai (runtime)
 │ Registry (busca)     │         │ Session Engine (veloc.+progr.) │
 │ 10 musicas, 10 gen.  │         │ Teaching Engine (7 hooks)      │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
-                                 │ MCP Server (6 ferramentas)     │
+                                 │ MCP Server (7 ferramentas)     │
                                  │ CLI (barra de progresso + voz) │
                                  └─────────┬──────────────────────┘
                                            │ MIDI

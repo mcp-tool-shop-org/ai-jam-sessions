@@ -30,7 +30,7 @@
 - **वॉइस फीडबैक** — mcp-voice-soundboard इंटीग्रेशन के लिए `VoiceDirective` आउटपुट
 - **Aside इंटरजेक्शन** — mcp-aside इनबॉक्स के लिए `AsideDirective` आउटपुट
 - **सुरक्षित पार्सिंग** — खराब नोट्स एकत्रित `ParseWarning` के साथ सुचारू रूप से स्किप होते हैं
-- **6 MCP टूल** — LLM के लिए रजिस्ट्री, टीचिंग नोट्स, और गाने की सिफारिशें उपलब्ध कराते हैं
+- **7 MCP टूल** — LLM के लिए रजिस्ट्री, टीचिंग नोट्स, और गाने की सिफारिशें उपलब्ध कराते हैं
 - **नोट पार्सर** — साइंटिफिक पिच नोटेशन से MIDI और वापस
 - **मॉक कनेक्टर** — MIDI हार्डवेयर के बिना पूर्ण टेस्ट कवरेज
 
@@ -40,32 +40,35 @@
 2. **[VMPK](https://vmpk.sourceforge.io/)** — MIDI इनपुट को अपने loopMIDI पोर्ट पर सेट करें
 3. **Node.js 18+**
 
+## इंस्टॉल
+
+```bash
+npm install -g pianai
+```
+
 ## त्वरित प्रारंभ
 
 ```bash
-pnpm install
-pnpm build
-
 # सभी गाने सूचीबद्ध करें
-node dist/cli.js list
+pianai list
 
 # गाने का विवरण + टीचिंग नोट्स देखें
-node dist/cli.js info moonlight-sonata-mvt1
+pianai info moonlight-sonata-mvt1
 
 # VMPK के माध्यम से गाना बजाएँ
-node dist/cli.js play let-it-be
+pianai play let-it-be
 
 # टेम्पो ओवरराइड के साथ बजाएँ
-node dist/cli.js play basic-12-bar-blues --tempo 80
+pianai play basic-12-bar-blues --tempo 80
 
 # मेजर-दर-मेजर चरणबद्ध तरीके से चलें
-node dist/cli.js play autumn-leaves --mode measure
+pianai play autumn-leaves --mode measure
 
 # आधी गति से अभ्यास
-node dist/cli.js play moonlight-sonata-mvt1 --speed 0.5
+pianai play moonlight-sonata-mvt1 --speed 0.5
 
 # धीमा हैंड्स-सेपरेट अभ्यास
-node dist/cli.js play dream-on --speed 0.75 --mode hands
+pianai play dream-on --speed 0.75 --mode hands
 ```
 
 ## MCP सर्वर
@@ -93,8 +96,7 @@ pnpm mcp
 {
   "mcpServers": {
     "pianai": {
-      "command": "node",
-      "args": ["F:/AI/pianai/dist/mcp-server.js"]
+      "command": "pianai-mcp"
     }
   }
 }
@@ -216,7 +218,7 @@ ai-music-sheets (लाइब्रेरी)       pianai (रनटाइम)
 │ Registry (खोज)       │         │ Session Engine (स्पीड+प्रगति)  │
 │ 10 गाने, 10 शैलियाँ  │         │ Teaching Engine (7 हुक)        │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
-                                 │ MCP Server (6 टूल)            │
+                                 │ MCP Server (7 टूल)            │
                                  │ CLI (प्रोग्रेस बार + वॉइस)    │
                                  └─────────┬──────────────────────┘
                                            │ MIDI

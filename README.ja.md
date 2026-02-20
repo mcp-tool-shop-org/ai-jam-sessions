@@ -30,7 +30,7 @@ TypeScript製のCLIおよびMCPサーバーで、[ai-music-sheets](https://githu
 - **音声フィードバック** — mcp-voice-soundboard連携用の`VoiceDirective`出力
 - **アサイド指示** — mcp-asideインボックス用の`AsideDirective`出力
 - **安全なパース** — 不正なノートはスキップされ、`ParseWarning`として収集
-- **6つのMCPツール** — レジストリ、教習ノート、楽曲レコメンドをLLMに公開
+- **7つのMCPツール** — レジストリ、教習ノート、楽曲レコメンドをLLMに公開
 - **ノートパーサー** — 科学的音名表記とMIDIの相互変換
 - **モックコネクター** — MIDIハードウェアなしで完全なテストカバレッジを実現
 
@@ -40,32 +40,35 @@ TypeScript製のCLIおよびMCPサーバーで、[ai-music-sheets](https://githu
 2. **[VMPK](https://vmpk.sourceforge.io/)** — MIDI入力をloopMIDIポートに設定
 3. **Node.js 18+**
 
+## インストール
+
+```bash
+npm install -g pianai
+```
+
 ## クイックスタート
 
 ```bash
-pnpm install
-pnpm build
-
 # 全楽曲を一覧表示
-node dist/cli.js list
+pianai list
 
 # 楽曲の詳細と教習ノートを表示
-node dist/cli.js info moonlight-sonata-mvt1
+pianai info moonlight-sonata-mvt1
 
 # VMPKを通じて楽曲を再生
-node dist/cli.js play let-it-be
+pianai play let-it-be
 
 # テンポを指定して再生
-node dist/cli.js play basic-12-bar-blues --tempo 80
+pianai play basic-12-bar-blues --tempo 80
 
 # 小節ごとにステップ再生
-node dist/cli.js play autumn-leaves --mode measure
+pianai play autumn-leaves --mode measure
 
 # 半速で練習
-node dist/cli.js play moonlight-sonata-mvt1 --speed 0.5
+pianai play moonlight-sonata-mvt1 --speed 0.5
 
 # スロー片手練習
-node dist/cli.js play dream-on --speed 0.75 --mode hands
+pianai play dream-on --speed 0.75 --mode hands
 ```
 
 ## MCPサーバー
@@ -93,8 +96,7 @@ pnpm mcp
 {
   "mcpServers": {
     "pianai": {
-      "command": "node",
-      "args": ["F:/AI/pianai/dist/mcp-server.js"]
+      "command": "pianai-mcp"
     }
   }
 }
@@ -216,7 +218,7 @@ ai-music-sheets (ライブラリ)       pianai (ランタイム)
 │ Registry (検索)       │         │ Session Engine (速度＋進捗)     │
 │ 10曲, 10ジャンル      │         │ Teaching Engine (7フック)       │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
-                                 │ MCP Server (6ツール)            │
+                                 │ MCP Server (7ツール)            │
                                  │ CLI (プログレスバー＋音声)       │
                                  └─────────┬──────────────────────┘
                                            │ MIDI

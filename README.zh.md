@@ -30,7 +30,7 @@
 - **语音反馈** —— `VoiceDirective` 输出，集成 mcp-voice-soundboard
 - **旁白插话** —— `AsideDirective` 输出，发送到 mcp-aside 收件箱
 - **安全解析** —— 错误音符会被优雅跳过，并收集 `ParseWarning`
-- **6 个 MCP 工具** —— 向 LLM 暴露曲库、教学注释和曲目推荐
+- **7 个 MCP 工具** —— 向 LLM 暴露曲库、教学注释和曲目推荐
 - **音符解析器** —— 科学音高记谱法与 MIDI 互转
 - **模拟连接器** —— 无需 MIDI 硬件即可实现完整测试覆盖
 
@@ -40,32 +40,35 @@
 2. **[VMPK](https://vmpk.sourceforge.io/)** —— 将 MIDI 输入设置为你的 loopMIDI 端口
 3. **Node.js 18+**
 
+## 安装
+
+```bash
+npm install -g pianai
+```
+
 ## 快速开始
 
 ```bash
-pnpm install
-pnpm build
-
 # 列出所有曲目
-node dist/cli.js list
+pianai list
 
 # 显示曲目详情 + 教学注释
-node dist/cli.js info moonlight-sonata-mvt1
+pianai info moonlight-sonata-mvt1
 
 # 通过 VMPK 播放曲目
-node dist/cli.js play let-it-be
+pianai play let-it-be
 
 # 覆盖速度播放
-node dist/cli.js play basic-12-bar-blues --tempo 80
+pianai play basic-12-bar-blues --tempo 80
 
 # 逐小节步进
-node dist/cli.js play autumn-leaves --mode measure
+pianai play autumn-leaves --mode measure
 
 # 半速练习
-node dist/cli.js play moonlight-sonata-mvt1 --speed 0.5
+pianai play moonlight-sonata-mvt1 --speed 0.5
 
 # 慢速分手练习
-node dist/cli.js play dream-on --speed 0.75 --mode hands
+pianai play dream-on --speed 0.75 --mode hands
 ```
 
 ## MCP 服务器
@@ -93,8 +96,7 @@ pnpm mcp
 {
   "mcpServers": {
     "pianai": {
-      "command": "node",
-      "args": ["F:/AI/pianai/dist/mcp-server.js"]
+      "command": "pianai-mcp"
     }
   }
 }
@@ -216,7 +218,7 @@ ai-music-sheets (曲库)           pianai (运行时)
 │ Registry (搜索)      │         │ Session Engine (速度+进度)      │
 │ 10 首曲目, 10 种流派  │         │ Teaching Engine (7 种钩子)      │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
-                                 │ MCP Server (6 个工具)           │
+                                 │ MCP Server (7 个工具)           │
                                  │ CLI (进度条 + 语音)             │
                                  └─────────┬──────────────────────┘
                                            │ MIDI
