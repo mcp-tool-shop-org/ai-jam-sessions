@@ -41,6 +41,7 @@ import { createSingOnMidiHook } from "./teaching/sing-on-midi.js";
 import { createLiveMidiFeedbackHook } from "./teaching/live-midi-feedback.js";
 import { PositionTracker } from "./playback/position.js";
 import type { TeachingHook } from "./types.js";
+import { renderPianoRoll } from "./piano-roll.js";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -528,12 +529,60 @@ function cmdPorts(): void {
   console.log("Tip: Run loopMIDI and create a port, then set VMPK input to that port.\n");
 }
 
+async function cmdView(args: string[]): Promise<void> {
+  const songId = args[0];
+  if (!songId) {
+    console.error("Usage: ai-jam-session view <song-id> [--measures 1-8] [--out file.svg]");
+    process.exit(1);
+  }
+  const song = getSong(songId);
+  if (!song) {
+    console.error(`Song not found: "${songId}". Run 'ai-jam-session list' to see available songs.`);
+    process.exit(1);
+  }
+
+  // Parse --measures flag (e.g. "1-8", "9-16")
+  const measuresStr = getFlag(args, "--measures");
+  let startMeasure: number | undefined;
+  let endMeasure: number | undefined;
+  if (measuresStr) {
+    const parts = measuresStr.split("-");
+    startMeasure = parseInt(parts[0], 10);
+    endMeasure = parts[1] ? parseInt(parts[1], 10) : startMeasure;
+    if (isNaN(startMeasure) || isNaN(endMeasure)) {
+      console.error(`Invalid --measures range: "${measuresStr}". Use format like "1-8" or "5-12".`);
+      process.exit(1);
+    }
+  }
+
+  // Parse --out flag for output path
+  const outPath = getFlag(args, "--out");
+
+  const svg = renderPianoRoll(song, { startMeasure, endMeasure });
+
+  if (outPath) {
+    const { writeFileSync } = await import("node:fs");
+    writeFileSync(outPath, svg, "utf8");
+    console.log(`Piano roll written to: ${outPath}`);
+  } else {
+    // Write to temp file
+    const { tmpdir } = await import("node:os");
+    const { join } = await import("node:path");
+    const { writeFileSync } = await import("node:fs");
+    const tempPath = join(tmpdir(), `piano-roll-${song.id}.svg`);
+    writeFileSync(tempPath, svg, "utf8");
+    console.log(`Piano roll written to: ${tempPath}`);
+    console.log(`Open in browser to view.`);
+  }
+}
+
 function cmdHelp(): void {
   console.log(`
 pianoai — Play piano through your speakers
 
 Commands:
   play <song | file.mid>     Play a song or MIDI file
+  view <song-id> [options]   Render a piano roll SVG visualization
   list [--genre <genre>]     List built-in songs
   info <song-id>             Show song details
   sing <song-id> [options]   Sing along — narrate notes during playback
@@ -547,6 +596,10 @@ Play options:
   --mode <mode>              Playback mode: full, measure, hands, loop (library songs only)
   --midi                     Output via MIDI instead of built-in piano
   --port <name>              MIDI port name (with --midi)
+
+View options:
+  --measures <start-end>     Measure range to render (e.g. 1-8, 9-16). Default: all
+  --out <file.svg>           Output file path. Default: temp file
 
 Sing options:
   --tempo <bpm>              Override tempo (10-400 BPM)
@@ -599,6 +652,9 @@ async function main(): Promise<void> {
       break;
     case "sing":
       await cmdSing(args.slice(1));
+      break;
+    case "view":
+      await cmdView(args.slice(1));
       break;
     case "stats":
       cmdStats();

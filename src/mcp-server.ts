@@ -44,6 +44,7 @@ import {
 import type { SongEntry, Difficulty, Genre } from "./songs/types.js";
 import { readFileSync } from "node:fs";
 import { safeParseMeasure, measureToSingableText, type SingAlongMode } from "./note-parser.js";
+import { renderPianoRoll } from "./piano-roll.js";
 import type { ParseWarning, PlaybackMode, SyncMode, VmpkConnector } from "./types.js";
 import { createAudioEngine } from "./audio-engine.js";
 import { createVmpkConnector } from "./vmpk.js";
@@ -1100,6 +1101,37 @@ server.tool(
         }],
       };
     }
+  }
+);
+
+// ─── Tool: view_piano_roll ─────────────────────────────────────────────────
+
+server.tool(
+  "view_piano_roll",
+  "Render a piano roll visualization of a song as SVG. Returns an image showing note positions over time — blue rectangles for right hand, pink/coral for left hand. Use this to visually verify compositions before playing them.",
+  {
+    songId: z.string().describe("Song ID from the library (e.g. 'fur-elise')"),
+    startMeasure: z.number().int().min(1).optional().describe("First measure to render (1-based). Default: 1"),
+    endMeasure: z.number().int().min(1).optional().describe("Last measure to render (1-based). Default: last measure"),
+  },
+  async ({ songId, startMeasure, endMeasure }) => {
+    const song = getSong(songId);
+    if (!song) {
+      return {
+        content: [{ type: "text" as const, text: `Song not found: "${songId}". Use list_songs to see available songs.` }],
+        isError: true,
+      };
+    }
+
+    const svg = renderPianoRoll(song, { startMeasure, endMeasure });
+
+    return {
+      content: [{
+        type: "image" as const,
+        data: Buffer.from(svg).toString("base64"),
+        mimeType: "image/svg+xml",
+      }],
+    };
   }
 );
 
