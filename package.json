@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/pianoai",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "MCP server + CLI for AI-powered piano teaching — plays through VMPK via MIDI with voice feedback",
   "type": "module",
   "main": "dist/index.js",

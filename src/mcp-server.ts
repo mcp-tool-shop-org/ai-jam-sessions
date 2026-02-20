@@ -17,6 +17,8 @@
 //   list_measures   — overview of measures with teaching notes
 //   practice_setup  — suggest speed, mode, and voice settings for a song
 //   sing_along      — get singable text (note names/solfege/contour/syllables) for measures
+//   play_song       — play a song through VMPK via MIDI
+//   stop_playback   — stop the currently playing song
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -34,7 +36,10 @@ import {
 } from "@mcptoolshop/ai-music-sheets";
 import type { SongEntry, Difficulty } from "@mcptoolshop/ai-music-sheets";
 import { safeParseMeasure, measureToSingableText, type SingAlongMode } from "./note-parser.js";
-import type { ParseWarning } from "./types.js";
+import type { ParseWarning, PlaybackMode, SyncMode } from "./types.js";
+import { createVmpkConnector } from "./vmpk.js";
+import { createSession, SessionController } from "./session.js";
+import { createConsoleTeachingHook } from "./teaching.js";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -66,7 +71,7 @@ function suggestMode(difficulty: Difficulty): { mode: string; reason: string } {
 
 const server = new McpServer({
   name: "pianoai",
-  version: "1.1.0",
+  version: "1.2.0",
 });
 
 // ─── Tool: list_songs ───────────────────────────────────────────────────────
@@ -488,6 +493,154 @@ server.tool(
     }
 
     return { content: [{ type: "text", text: lines.join("\n") }] };
+  }
+);
+
+// ─── Active Session State ─────────────────────────────────────────────────
+
+let activeSession: SessionController | null = null;
+
+// ─── Tool: play_song ──────────────────────────────────────────────────────
+
+server.tool(
+  "play_song",
+  "Play a song through VMPK via MIDI. Requires loopMIDI running and VMPK listening. Returns immediately with session info while playback runs in the background.",
+  {
+    id: z.string().describe("Song ID (e.g. 'autumn-leaves', 'let-it-be')"),
+    speed: z.number().min(0.1).max(4).optional().describe("Speed multiplier (0.5 = half speed, 1.0 = normal, 2.0 = double). Default: 1.0"),
+    tempo: z.number().int().min(10).max(400).optional().describe("Override tempo in BPM (10-400). Default: song's tempo"),
+    mode: z.enum(["full", "measure", "hands", "loop"]).optional().describe("Playback mode: full (default), measure (one at a time), hands (separate then together), loop"),
+    startMeasure: z.number().int().min(1).optional().describe("Start measure for loop mode (1-based)"),
+    endMeasure: z.number().int().min(1).optional().describe("End measure for loop mode (1-based)"),
+  },
+  async ({ id, speed, tempo, mode, startMeasure, endMeasure }) => {
+    const song = getSong(id);
+    if (!song) {
+      return {
+        content: [{ type: "text", text: `Song not found: "${id}". Use list_songs to see available songs.` }],
+        isError: true,
+      };
+    }
+
+    // Stop any active session first
+    if (activeSession && activeSession.state === "playing") {
+      activeSession.stop();
+    }
+
+    // Connect to MIDI
+    const connector = createVmpkConnector();
+    try {
+      await connector.connect();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      return {
+        content: [{
+          type: "text",
+          text: [
+            `MIDI Connection Failed`,
+            ``,
+            `To play through VMPK, you need:`,
+            `1. loopMIDI running with a virtual port (e.g. "loopMIDI Port")`,
+            `   → Download: https://www.tobias-erichsen.de/software/loopmidi.html`,
+            `2. VMPK listening on that port`,
+            `   → Download: https://vmpk.sourceforge.io/`,
+            `   → VMPK → Edit → MIDI Connections → Input: "loopMIDI Port"`,
+            ``,
+            `Error: ${msg}`,
+          ].join("\n"),
+        }],
+        isError: true,
+      };
+    }
+
+    // Build loop range if specified
+    const loopRange: [number, number] | undefined =
+      startMeasure && endMeasure ? [startMeasure, endMeasure] : undefined;
+
+    // Create session
+    const playbackMode = (mode ?? "full") as PlaybackMode;
+    const teachingHook = createConsoleTeachingHook();
+    const session = createSession(song, connector, {
+      mode: playbackMode,
+      speed,
+      tempo,
+      loopRange,
+      teachingHook,
+    });
+    activeSession = session;
+
+    // Start playback in background — don't await (MCP call returns immediately)
+    const playPromise = session.play();
+    playPromise
+      .then(() => {
+        console.error(`Finished playing: ${song.title} (${session.session.measuresPlayed} measures)`);
+      })
+      .catch((err) => {
+        console.error(`Playback error: ${err instanceof Error ? err.message : String(err)}`);
+      })
+      .finally(() => {
+        connector.disconnect().catch(() => {});
+        if (activeSession === session) {
+          activeSession = null;
+        }
+      });
+
+    // Build response
+    const effectiveSpeed = speed ?? 1.0;
+    const baseTempo = tempo ?? song.tempo;
+    const effectiveTempo = Math.round(baseTempo * effectiveSpeed);
+    const speedLabel = effectiveSpeed !== 1.0 ? ` × ${effectiveSpeed}x` : "";
+
+    const warnings = session.parseWarnings;
+    const lines = [
+      `Now playing: **${song.title}** by ${song.composer ?? "Traditional"}`,
+      ``,
+      `- **Mode:** ${playbackMode}`,
+      `- **Tempo:** ${baseTempo} BPM${speedLabel} → ${effectiveTempo} BPM effective`,
+      `- **Key:** ${song.key} | **Time:** ${song.timeSignature}`,
+      `- **Measures:** ${song.measures.length}`,
+    ];
+
+    if (loopRange) {
+      lines.push(`- **Loop range:** measures ${loopRange[0]}–${loopRange[1]}`);
+    }
+
+    if (warnings.length > 0) {
+      lines.push(``, `⚠ ${warnings.length} note(s) had parse warnings and will be skipped.`);
+    }
+
+    lines.push(``, `Use \`stop_playback\` to stop. Playback runs in the background.`);
+
+    return { content: [{ type: "text", text: lines.join("\n") }] };
+  }
+);
+
+// ─── Tool: stop_playback ──────────────────────────────────────────────────
+
+server.tool(
+  "stop_playback",
+  "Stop the currently playing song and disconnect MIDI.",
+  {},
+  async () => {
+    if (!activeSession) {
+      return {
+        content: [{ type: "text", text: "No song is currently playing." }],
+      };
+    }
+
+    const songTitle = activeSession.session.song.title;
+    const measuresPlayed = activeSession.session.measuresPlayed;
+    const state = activeSession.state;
+
+    activeSession.stop();
+    activeSession = null;
+
+    return {
+      content: [{
+        type: "text",
+        text: `Stopped: ${songTitle} (was ${state}, ${measuresPlayed} measures played)`,
+      }],
+    };
   }
 );
 
