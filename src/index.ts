@@ -78,6 +78,20 @@ export type {
   SingAlongHookOptions,
 } from "./teaching.js";
 
+// Export MIDI file parser
+export { parseMidiFile, parseMidiBuffer } from "./midi/parser.js";
+export type { MidiNoteEvent, TempoEvent, ParsedMidi } from "./midi/types.js";
+
+// Export playback schemas
+export {
+  PlaySourceSchema,
+  LibraryPlaySchema,
+  FilePlaySchema,
+  UrlPlaySchema,
+  PlaybackOptionsSchema,
+} from "./schemas.js";
+export type { PlaySource, PlaybackOptions } from "./schemas.js";
+
 // Export types
 export type {
   Session,
