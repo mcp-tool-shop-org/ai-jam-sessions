@@ -1,7 +1,7 @@
 {
   "name": "@mcptoolshop/ai-jam-session",
-  "version": "0.1.1",
-  "description": "Piano player with built-in audio engine — plays through speakers, no external software required. MCP server + CLI.",
+  "version": "0.1.0",
+  "description": "Teach your AI to play piano. MCP server with built-in audio engine, music sheet format, and piano roll visualizer.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
