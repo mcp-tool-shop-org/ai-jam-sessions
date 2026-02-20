@@ -6,6 +6,7 @@
 //   pianai list                # List all songs
 //   pianai list --genre jazz   # List songs by genre
 //   pianai play <song-id>      # Play a specific song
+//   pianai sing <song-id>      # Sing along — narrate notes during playback
 //   pianai info <song-id>      # Show song details (musical language)
 //   pianai stats               # Registry stats
 //   pianai ports               # List available MIDI ports
@@ -22,9 +23,14 @@ import {
 } from "@mcptoolshop/ai-music-sheets";
 import type { SongEntry, Genre } from "@mcptoolshop/ai-music-sheets";
 import type { PlaybackProgress, PlaybackMode } from "./types.js";
+import type { SingAlongMode } from "./note-parser.js";
 import { createVmpkConnector } from "./vmpk.js";
 import { createSession } from "./session.js";
-import { createConsoleTeachingHook } from "./teaching.js";
+import {
+  createConsoleTeachingHook,
+  createSingAlongHook,
+  composeTeachingHooks,
+} from "./teaching.js";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -98,6 +104,8 @@ function truncate(s: string, max: number): string {
 }
 
 const VALID_MODES: PlaybackMode[] = ["full", "measure", "hands", "loop"];
+const VALID_SING_MODES: SingAlongMode[] = ["note-names", "solfege", "contour", "syllables"];
+const VALID_HANDS = ["right", "left", "both"] as const;
 
 // ─── Commands ───────────────────────────────────────────────────────────────
 
@@ -231,6 +239,127 @@ async function cmdPlay(args: string[]): Promise<void> {
   }
 }
 
+async function cmdSing(args: string[]): Promise<void> {
+  const songId = args[0];
+  if (!songId) {
+    console.error("Usage: pianai sing <song-id> [--mode note-names|solfege|contour|syllables] [--hand right|left|both] [--speed N] [--tempo N] [--port NAME]");
+    process.exit(1);
+  }
+  const song = getSong(songId);
+  if (!song) {
+    console.error(`Song not found: "${songId}". Run 'pianai list' to see available songs.`);
+    process.exit(1);
+  }
+
+  // Parse flags
+  const portName = getFlag(args, "--port") ?? undefined;
+  const tempoStr = getFlag(args, "--tempo");
+  const speedStr = getFlag(args, "--speed");
+  const modeStr = getFlag(args, "--mode") ?? "note-names";
+  const handStr = getFlag(args, "--hand") ?? "right";
+
+  // Validate sing-along mode
+  if (!VALID_SING_MODES.includes(modeStr as SingAlongMode)) {
+    console.error(`Invalid mode: "${modeStr}". Available: ${VALID_SING_MODES.join(", ")}`);
+    process.exit(1);
+  }
+  const singMode = modeStr as SingAlongMode;
+
+  // Validate hand
+  if (!VALID_HANDS.includes(handStr as typeof VALID_HANDS[number])) {
+    console.error(`Invalid hand: "${handStr}". Available: ${VALID_HANDS.join(", ")}`);
+    process.exit(1);
+  }
+  const hand = handStr as "right" | "left" | "both";
+
+  // Validate speed
+  const speed = speedStr ? parseFloat(speedStr) : undefined;
+  if (speed !== undefined && (isNaN(speed) || speed <= 0 || speed > 4)) {
+    console.error(`Invalid speed: "${speedStr}". Must be between 0 (exclusive) and 4.`);
+    process.exit(1);
+  }
+
+  // Validate tempo
+  const tempo = tempoStr ? parseInt(tempoStr, 10) : undefined;
+  if (tempo !== undefined && (isNaN(tempo) || tempo < 10 || tempo > 400)) {
+    console.error(`Invalid tempo: "${tempoStr}". Must be between 10 and 400 BPM.`);
+    process.exit(1);
+  }
+
+  console.log(`\nConnecting to MIDI...`);
+  const connector = createVmpkConnector(
+    portName ? { portName } : undefined
+  );
+
+  try {
+    await connector.connect();
+    console.log(`Connected!`);
+
+    // Console voice sink — prints sing-along text
+    const voiceSink = async (directive: { text: string }) => {
+      console.log(`  ♪ ${directive.text}`);
+    };
+
+    // Compose sing-along hook with console teaching hook
+    const singHook = createSingAlongHook(voiceSink, song, {
+      mode: singMode,
+      hand,
+      speechSpeed: speed ?? 1.0,
+    });
+    const consoleHook = createConsoleTeachingHook();
+    const teachingHook = composeTeachingHooks(singHook, consoleHook);
+
+    const session = createSession(song, connector, {
+      mode: "full",
+      tempo,
+      speed,
+      teachingHook,
+      onProgress: printProgress,
+      progressInterval: 0,
+    });
+
+    // Report parse warnings
+    if (session.parseWarnings.length > 0) {
+      console.log(`\n⚠ ${session.parseWarnings.length} note parsing warning(s):`);
+      for (const w of session.parseWarnings.slice(0, 5)) {
+        console.log(`  • ${w.location}: "${w.token}" — ${w.message}`);
+      }
+      if (session.parseWarnings.length > 5) {
+        console.log(`  … and ${session.parseWarnings.length - 5} more`);
+      }
+    }
+
+    // Display session info
+    printSongInfo(song);
+    const speedLabel = speed && speed !== 1.0 ? ` × ${speed}x speed` : "";
+    const tempoLabel = tempo ? ` (${tempo} BPM${speedLabel})` : speedLabel ? ` (${song.tempo} BPM${speedLabel})` : "";
+    console.log(`Singing along: ${song.title}${tempoLabel} [${singMode} / ${hand} hand]\n`);
+
+    await session.play();
+
+    console.log(`\nFinished! ${session.session.measuresPlayed} measures played.`);
+    console.log(session.summary());
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+
+    if (msg.includes("Failed to connect to MIDI") || msg.includes("MIDI port not connected")) {
+      console.error(`\n❌ MIDI Connection Failed`);
+      console.error(`\nTo play through VMPK, you need:`);
+      console.error(`  1. loopMIDI running with a virtual port (e.g. "loopMIDI Port")`);
+      console.error(`     → Download: https://www.tobias-erichsen.de/software/loopmidi.html`);
+      console.error(`  2. VMPK listening on that port`);
+      console.error(`     → Download: https://vmpk.sourceforge.io/`);
+      console.error(`     → VMPK → Edit → MIDI Connections → Input: "loopMIDI Port"`);
+      console.error(`\nDetailed error: ${msg}`);
+    } else {
+      console.error(`\nError: ${msg}`);
+    }
+    process.exit(1);
+  } finally {
+    await connector.disconnect();
+  }
+}
+
 function cmdStats(): void {
   const stats = getStats();
   console.log("\nRegistry Stats:");
@@ -263,6 +392,7 @@ Commands:
   list [--genre <genre>]     List available songs
   info <song-id>             Show song details and teaching notes
   play <song-id> [options]   Play a song through VMPK
+  sing <song-id> [options]   Sing along — narrate notes during playback
   stats                      Registry statistics
   ports                      List MIDI output ports
   help                       Show this help
@@ -273,6 +403,13 @@ Play options:
   --speed <mult>             Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double)
   --mode <mode>              Playback mode: full, measure, hands, loop
 
+Sing options:
+  --port <name>              MIDI port name (default: auto-detect loopMIDI)
+  --tempo <bpm>              Override tempo (10-400 BPM)
+  --speed <mult>             Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double)
+  --mode <mode>              Sing-along mode: note-names, solfege, contour, syllables
+  --hand <hand>              Which hand: right, left, both
+
 Examples:
   pianai list --genre jazz
   pianai info autumn-leaves
@@ -280,6 +417,8 @@ Examples:
   pianai play basic-12-bar-blues --mode measure
   pianai play let-it-be --speed 0.5               # half speed practice
   pianai play dream-on --speed 0.75 --mode hands   # slow hands-separate
+  pianai sing let-it-be --mode note-names           # narrate note names
+  pianai sing fur-elise --mode solfege --hand both  # solfege, both hands
 `);
 }
 
@@ -304,6 +443,9 @@ async function main(): Promise<void> {
       break;
     case "play":
       await cmdPlay(args.slice(1));
+      break;
+    case "sing":
+      await cmdSing(args.slice(1));
       break;
     case "stats":
       cmdStats();
