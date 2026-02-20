@@ -2,19 +2,24 @@
 
 MCP server + CLI for AI-powered piano teaching — plays through VMPK via MIDI with voice feedback.
 
-[![Tests](https://img.shields.io/badge/tests-65_passing-brightgreen)](https://github.com/mcp-tool-shop-org/piano-ai)
-[![Smoke](https://img.shields.io/badge/smoke-14_passing-brightgreen)](https://github.com/mcp-tool-shop-org/piano-ai)
+[![Tests](https://img.shields.io/badge/tests-101_passing-brightgreen)](https://github.com/mcp-tool-shop-org/piano-ai)
+[![Smoke](https://img.shields.io/badge/smoke-20_passing-brightgreen)](https://github.com/mcp-tool-shop-org/piano-ai)
 [![MCP Tools](https://img.shields.io/badge/MCP_tools-6-purple)](https://github.com/mcp-tool-shop-org/piano-ai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
 ## What is this?
 
-A TypeScript CLI and MCP server that loads piano songs from [ai-music-sheets](https://github.com/mcp-tool-shop-org/ai-music-sheets), parses them into MIDI, and plays them through [VMPK](https://vmpk.sourceforge.io/) via a virtual MIDI port. The teaching engine fires interjections at measure boundaries and key moments, enabling an LLM to act as a live piano teacher.
+A TypeScript CLI and MCP server that loads piano songs from [ai-music-sheets](https://github.com/mcp-tool-shop-org/ai-music-sheets), parses them into MIDI, and plays them through [VMPK](https://vmpk.sourceforge.io/) via a virtual MIDI port. The teaching engine fires interjections at measure boundaries and key moments, enabling an LLM to act as a live piano teacher with voice and aside feedback.
 
 ## Features
 
 - **4 playback modes** — full, measure-by-measure, hands separate, loop
-- **Teaching hooks** — fire at measure boundaries and key moments during playback
+- **Speed control** — 0.5x slow practice to 2x fast playback, stacks with tempo override
+- **Progress tracking** — configurable callbacks at percentage milestones or per-measure
+- **7 teaching hooks** — console, silent, recording, callback, voice, aside, compose
+- **Voice feedback** — `VoiceDirective` output for mcp-voice-soundboard integration
+- **Aside interjections** — `AsideDirective` output for mcp-aside inbox
+- **Safe parsing** — bad notes skip gracefully with collected `ParseWarning`s
 - **6 MCP tools** — expose registry, teaching notes, and song recommendations to LLMs
 - **Note parser** — scientific pitch notation to MIDI and back
 - **Mock connector** — full test coverage without MIDI hardware
@@ -45,6 +50,12 @@ node dist/cli.js play basic-12-bar-blues --tempo 80
 
 # Step through measure by measure
 node dist/cli.js play autumn-leaves --mode measure
+
+# Half-speed practice
+node dist/cli.js play moonlight-sonata-mvt1 --speed 0.5
+
+# Slow hands-separate practice
+node dist/cli.js play dream-on --speed 0.75 --mode hands
 ```
 
 ## MCP Server
@@ -94,34 +105,64 @@ pnpm mcp
 | Flag | Description |
 |------|-------------|
 | `--port <name>` | MIDI port name (default: auto-detect loopMIDI) |
-| `--tempo <bpm>` | Override the song's default tempo |
+| `--tempo <bpm>` | Override the song's default tempo (10-400 BPM) |
+| `--speed <mult>` | Speed multiplier: 0.5 = half, 1.0 = normal, 2.0 = double |
 | `--mode <mode>` | Playback mode: `full`, `measure`, `hands`, `loop` |
 
 ## Teaching Engine
 
-The teaching engine fires hooks during playback:
-
-```typescript
-import { createSession, createRecordingTeachingHook } from "piano-sessions-ai";
-import { getSong } from "ai-music-sheets";
-
-const hook = createRecordingTeachingHook();
-const session = createSession(getSong("moonlight-sonata-mvt1")!, connector, {
-  teachingHook: hook,
-});
-
-await session.play();
-// hook.events → measure-start, key-moment, song-complete events
-```
-
-### Hook implementations
+The teaching engine fires hooks during playback. 7 hook implementations cover every use case:
 
 | Hook | Use case |
 |------|----------|
-| `createConsoleTeachingHook()` | CLI — logs to console |
+| `createConsoleTeachingHook()` | CLI — logs measures, moments, completion to console |
 | `createSilentTeachingHook()` | Testing — no-op |
-| `createRecordingTeachingHook()` | Testing — records events |
-| `createCallbackTeachingHook(cb)` | Custom — route to voice/aside |
+| `createRecordingTeachingHook()` | Testing — records events for assertions |
+| `createCallbackTeachingHook(cb)` | Custom — route to any async callback |
+| `createVoiceTeachingHook(sink)` | Voice — produces `VoiceDirective` for mcp-voice-soundboard |
+| `createAsideTeachingHook(sink)` | Aside — produces `AsideDirective` for mcp-aside inbox |
+| `composeTeachingHooks(...hooks)` | Multi — dispatch to multiple hooks in series |
+
+### Voice feedback
+
+```typescript
+import { createSession, createVoiceTeachingHook } from "piano-sessions-ai";
+import { getSong } from "ai-music-sheets";
+
+const voiceHook = createVoiceTeachingHook(
+  async (directive) => {
+    // Route to mcp-voice-soundboard's voice_speak
+    console.log(`[Voice] ${directive.text}`);
+  },
+  { voice: "narrator", speechSpeed: 0.9 }
+);
+
+const session = createSession(getSong("moonlight-sonata-mvt1")!, connector, {
+  teachingHook: voiceHook,
+  speed: 0.5, // half-speed practice
+});
+
+await session.play();
+// voiceHook.directives → all voice instructions that were fired
+```
+
+### Composing hooks
+
+```typescript
+import {
+  createVoiceTeachingHook,
+  createAsideTeachingHook,
+  createRecordingTeachingHook,
+  composeTeachingHooks,
+} from "piano-sessions-ai";
+
+// All three fire on every event
+const composed = composeTeachingHooks(
+  createVoiceTeachingHook(voiceSink),
+  createAsideTeachingHook(asideSink),
+  createRecordingTeachingHook()
+);
+```
 
 ## Programmatic API
 
@@ -136,12 +177,21 @@ const song = getSong("autumn-leaves")!;
 const session = createSession(song, connector, {
   mode: "measure",
   tempo: 100,
+  speed: 0.75,           // 75% speed for practice
+  onProgress: (p) => console.log(p.percent), // "25%", "50%", etc.
 });
 
 await session.play();          // plays one measure, pauses
 session.next();                // advance to next measure
 await session.play();          // play next measure
+session.setSpeed(1.0);         // back to normal speed
+await session.play();          // play next measure at full speed
 session.stop();                // stop and reset
+
+// Check for any parse warnings (bad notes in the song data)
+if (session.parseWarnings.length > 0) {
+  console.warn("Some notes could not be parsed:", session.parseWarnings);
+}
 
 await connector.disconnect();
 ```
@@ -150,30 +200,36 @@ await connector.disconnect();
 
 ```
 ai-music-sheets (library)        piano-sessions-ai (runtime)
-┌──────────────────────┐         ┌───────────────────────────┐
-│ SongEntry (hybrid)   │────────→│ Note Parser               │
-│ Registry (search)    │         │ Session Engine             │
-│ 10 songs, 10 genres  │         │ Teaching Engine (hooks)    │
-└──────────────────────┘         │ VMPK Connector (JZZ)      │
-                                 │ MCP Server (6 tools)       │
-                                 │ CLI                        │
-                                 └─────────┬─────────────────┘
+┌──────────────────────┐         ┌────────────────────────────────┐
+│ SongEntry (hybrid)   │────────→│ Note Parser (safe + strict)    │
+│ Registry (search)    │         │ Session Engine (speed+progress)│
+│ 10 songs, 10 genres  │         │ Teaching Engine (7 hooks)      │
+└──────────────────────┘         │ VMPK Connector (JZZ)          │
+                                 │ MCP Server (6 tools)           │
+                                 │ CLI (progress bar + voice)     │
+                                 └─────────┬──────────────────────┘
                                            │ MIDI
                                            ▼
                                  ┌─────────────────┐
                                  │ loopMIDI → VMPK │
                                  └─────────────────┘
+
+Teaching hook routing:
+  Session → TeachingHook → VoiceDirective → mcp-voice-soundboard
+                         → AsideDirective → mcp-aside inbox
+                         → Console log    → CLI terminal
+                         → Recording      → test assertions
 ```
 
 ## Testing
 
 ```bash
-pnpm test       # 65 Vitest tests (parser + session + teaching)
-pnpm smoke      # 14 smoke tests (integration, no MIDI needed)
+pnpm test       # 101 Vitest tests (parser + session + teaching + voice + aside)
+pnpm smoke      # 20 smoke tests (integration, no MIDI needed)
 pnpm typecheck  # tsc --noEmit
 ```
 
-The mock VMPK connector (`createMockVmpkConnector`) records all MIDI events without hardware, enabling full test coverage.
+The mock VMPK connector (`createMockVmpkConnector`) records all MIDI events without hardware, enabling full test coverage. Safe parsing functions (`safeParseMeasure`) collect `ParseWarning` objects instead of throwing, so playback continues gracefully if a song has malformed notes.
 
 ## Related
 

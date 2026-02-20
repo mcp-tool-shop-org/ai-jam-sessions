@@ -2,7 +2,8 @@
 //
 // Quick integration smoke test — no MIDI hardware needed.
 // Verifies: ai-music-sheets loads, note parser works, sessions run with mock,
-// teaching hooks fire, key moments detected.
+// teaching hooks fire, key moments detected, voice/aside hooks produce output,
+// speed control works, progress fires, safe parsing collects warnings.
 //
 // Usage: pnpm smoke (or: node --import tsx src/smoke.ts)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -15,8 +16,15 @@ import {
 } from "ai-music-sheets";
 import { createSession } from "./session.js";
 import { createMockVmpkConnector } from "./vmpk.js";
-import { parseNoteToMidi, midiToNoteName } from "./note-parser.js";
-import { createRecordingTeachingHook, detectKeyMoments } from "./teaching.js";
+import { parseNoteToMidi, midiToNoteName, safeParseNoteToken } from "./note-parser.js";
+import {
+  createRecordingTeachingHook,
+  createVoiceTeachingHook,
+  createAsideTeachingHook,
+  composeTeachingHooks,
+  detectKeyMoments,
+} from "./teaching.js";
+import type { VoiceDirective, AsideDirective, PlaybackProgress, ParseWarning } from "./types.js";
 
 let passed = 0;
 let failed = 0;
@@ -97,6 +105,13 @@ test("round-trip: C#4 -> 61 -> C#4", () => {
   assert(midiToNoteName(midi) === "C#4", "61 should be C#4");
 });
 
+test("safe parse returns null + warning for bad token", () => {
+  const warnings: ParseWarning[] = [];
+  const result = safeParseNoteToken("GARBAGE:q", 120, "test", warnings);
+  assert(result === null, "should return null for bad token");
+  assert(warnings.length === 1, "should collect 1 warning");
+});
+
 // ─── Test 3: Session engine ─────────────────────────────────────────────────
 console.log("\nSession engine:");
 test("creates session in loaded state", () => {
@@ -125,7 +140,30 @@ test("measure mode plays one and pauses", async () => {
   assert(sc.session.measuresPlayed === 1, "1 measure");
 });
 
-// ─── Test 4: Teaching hooks ─────────────────────────────────────────────────
+// ─── Test 4: Speed + progress ───────────────────────────────────────────────
+console.log("\nSpeed + progress:");
+test("speed multiplier affects effective tempo", () => {
+  const mock = createMockVmpkConnector();
+  const song = getSong("basic-12-bar-blues")!;
+  const sc = createSession(song, mock, { speed: 0.5 });
+  assert(sc.effectiveTempo() === song.tempo * 0.5, "should be half tempo");
+});
+
+test("progress fires during playback", async () => {
+  const mock = createMockVmpkConnector();
+  const song = getSong("basic-12-bar-blues")!;
+  const events: PlaybackProgress[] = [];
+  const sc = createSession(song, mock, {
+    onProgress: (p) => events.push({ ...p }),
+    progressInterval: 0,
+  });
+  await mock.connect();
+  await sc.play();
+  assert(events.length === 12, `expected 12 progress events, got ${events.length}`);
+  assert(events[11].percent === "100%", "last event should be 100%");
+});
+
+// ─── Test 5: Teaching hooks ─────────────────────────────────────────────────
 console.log("\nTeaching hooks:");
 test("detectKeyMoments finds bar 1 in moonlight", () => {
   const song = getSong("moonlight-sonata-mvt1")!;
@@ -153,6 +191,49 @@ test("song-complete fires after full playback", async () => {
   await sc.play();
   const complete = hook.events.filter((e) => e.type === "song-complete");
   assert(complete.length === 1, "should fire song-complete once");
+});
+
+// ─── Test 6: Voice + aside hooks ────────────────────────────────────────────
+console.log("\nVoice + aside hooks:");
+test("voice hook produces directives during playback", async () => {
+  const mock = createMockVmpkConnector();
+  const directives: VoiceDirective[] = [];
+  const voiceHook = createVoiceTeachingHook(async (d) => { directives.push(d); });
+  const song = getSong("moonlight-sonata-mvt1")!;
+  const sc = createSession(song, mock, { teachingHook: voiceHook });
+  await mock.connect();
+  await sc.play();
+  assert(directives.length > 0, "should produce voice directives");
+  const completion = directives.find((d) => d.text.includes("Great work"));
+  assert(completion !== undefined, "should have completion directive");
+});
+
+test("aside hook produces directives during playback", async () => {
+  const mock = createMockVmpkConnector();
+  const directives: AsideDirective[] = [];
+  const asideHook = createAsideTeachingHook(async (d) => { directives.push(d); });
+  const song = getSong("moonlight-sonata-mvt1")!;
+  const sc = createSession(song, mock, { teachingHook: asideHook });
+  await mock.connect();
+  await sc.play();
+  assert(directives.length > 0, "should produce aside directives");
+  assert(directives[0].tags!.includes("piano-teacher"), "should have piano-teacher tag");
+});
+
+test("composed hooks dispatch to both voice and aside", async () => {
+  const mock = createMockVmpkConnector();
+  const voiceD: VoiceDirective[] = [];
+  const asideD: AsideDirective[] = [];
+  const composed = composeTeachingHooks(
+    createVoiceTeachingHook(async (d) => { voiceD.push(d); }),
+    createAsideTeachingHook(async (d) => { asideD.push(d); })
+  );
+  const song = getSong("let-it-be")!;
+  const sc = createSession(song, mock, { teachingHook: composed });
+  await mock.connect();
+  await sc.play();
+  assert(voiceD.length > 0, "voice should receive events");
+  assert(asideD.length > 0, "aside should receive events");
 });
 
 // ─── Summary ────────────────────────────────────────────────────────────────

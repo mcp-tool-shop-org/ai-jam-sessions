@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { getSong } from "ai-music-sheets";
 import { createSession } from "./session.js";
 import { createMockVmpkConnector } from "./vmpk.js";
+import type { PlaybackProgress } from "./types.js";
 
 describe("SessionController", () => {
   const moonlight = getSong("moonlight-sonata-mvt1")!;
@@ -168,5 +169,118 @@ describe("MockVmpkConnector", () => {
   it("listPorts returns mock port", () => {
     const mock = createMockVmpkConnector();
     expect(mock.listPorts()).toEqual(["Mock Port 1"]);
+  });
+});
+
+describe("Speed control", () => {
+  const blues = getSong("basic-12-bar-blues")!;
+
+  it("defaults speed to 1.0", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock);
+    expect(sc.session.speed).toBe(1.0);
+    expect(sc.effectiveTempo()).toBe(blues.tempo);
+  });
+
+  it("applies speed multiplier to effective tempo", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock, { speed: 0.5 });
+    expect(sc.session.speed).toBe(0.5);
+    expect(sc.effectiveTempo()).toBe(blues.tempo * 0.5);
+  });
+
+  it("stacks speed with tempo override", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock, { tempo: 100, speed: 0.5 });
+    expect(sc.baseTempo()).toBe(100);
+    expect(sc.effectiveTempo()).toBe(50);
+  });
+
+  it("setSpeed changes speed and re-parses", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock);
+    sc.setSpeed(2.0);
+    expect(sc.session.speed).toBe(2.0);
+    expect(sc.effectiveTempo()).toBe(blues.tempo * 2.0);
+  });
+
+  it("rejects invalid speed values", () => {
+    const mock = createMockVmpkConnector();
+    expect(() => createSession(blues, mock, { speed: 0 })).toThrow();
+    expect(() => createSession(blues, mock, { speed: -1 })).toThrow();
+    expect(() => createSession(blues, mock, { speed: 5 })).toThrow();
+  });
+
+  it("summary shows speed when not 1.0", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock, { speed: 0.75 });
+    expect(sc.summary()).toContain("0.75x");
+  });
+});
+
+describe("Progress tracking", () => {
+  const blues = getSong("basic-12-bar-blues")!;
+
+  it("fires progress after every measure when interval=0", async () => {
+    const mock = createMockVmpkConnector();
+    const events: PlaybackProgress[] = [];
+    const sc = createSession(blues, mock, {
+      onProgress: (p) => events.push({ ...p }),
+      progressInterval: 0,
+    });
+    await mock.connect();
+    await sc.play();
+
+    expect(events.length).toBe(12); // one per measure
+    expect(events[0].currentMeasure).toBe(1);
+    expect(events[11].currentMeasure).toBe(12);
+    expect(events[11].percent).toBe("100%");
+  });
+
+  it("fires progress at 10% milestones (default)", async () => {
+    const mock = createMockVmpkConnector();
+    const events: PlaybackProgress[] = [];
+    const sc = createSession(blues, mock, {
+      onProgress: (p) => events.push({ ...p }),
+      // default: progressInterval = 0.1
+    });
+    await mock.connect();
+    await sc.play();
+
+    // 12 measures → milestones at ~8%, 17%, 25%, 33%, 42%, 50%, 58%, 67%, 75%, 83%, 92%, 100%
+    // With floor(ratio/0.1), fires at milestones 0,1,2,3,...10
+    expect(events.length).toBeGreaterThan(0);
+    expect(events.length).toBeLessThanOrEqual(12);
+  });
+
+  it("does not fire when no callback is set", async () => {
+    const mock = createMockVmpkConnector();
+    // No onProgress — should not throw
+    const sc = createSession(blues, mock);
+    await mock.connect();
+    await sc.play();
+    expect(sc.state).toBe("finished");
+  });
+
+  it("progress includes elapsed time", async () => {
+    const mock = createMockVmpkConnector();
+    const events: PlaybackProgress[] = [];
+    const sc = createSession(blues, mock, {
+      onProgress: (p) => events.push({ ...p }),
+      progressInterval: 0,
+    });
+    await mock.connect();
+    await sc.play();
+
+    expect(events[0].elapsedMs).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe("Parse warnings", () => {
+  it("exposes parseWarnings array (empty for valid songs)", () => {
+    const mock = createMockVmpkConnector();
+    const blues = getSong("basic-12-bar-blues")!;
+    const sc = createSession(blues, mock);
+    expect(sc.parseWarnings).toEqual([]);
   });
 });

@@ -6,8 +6,12 @@ import {
   parseNoteToken,
   parseHandString,
   parseMeasure,
+  safeParseNoteToken,
+  safeParseHandString,
+  safeParseMeasure,
   midiToNoteName,
 } from "./note-parser.js";
+import type { ParseWarning } from "./types.js";
 
 describe("parseNoteToMidi", () => {
   it("converts C4 to 60 (middle C)", () => {
@@ -180,5 +184,80 @@ describe("midiToNoteName", () => {
 
   it("-1 → R (rest)", () => {
     expect(midiToNoteName(-1)).toBe("R");
+  });
+});
+
+describe("safeParseNoteToken", () => {
+  it("returns MidiNote for valid token", () => {
+    const warnings: ParseWarning[] = [];
+    const result = safeParseNoteToken("C4:q", 120, "test", warnings);
+    expect(result).not.toBeNull();
+    expect(result!.note).toBe(60);
+    expect(warnings.length).toBe(0);
+  });
+
+  it("returns null and collects warning for invalid token", () => {
+    const warnings: ParseWarning[] = [];
+    const result = safeParseNoteToken("XYZ:q", 120, "measure 1 right hand", warnings);
+    expect(result).toBeNull();
+    expect(warnings.length).toBe(1);
+    expect(warnings[0].token).toBe("XYZ:q");
+    expect(warnings[0].location).toBe("measure 1 right hand");
+    expect(warnings[0].message).toContain("Invalid note");
+  });
+
+  it("returns null for bad duration suffix", () => {
+    const warnings: ParseWarning[] = [];
+    const result = safeParseNoteToken("C4:z", 120, "test", warnings);
+    expect(result).toBeNull();
+    expect(warnings.length).toBe(1);
+    expect(warnings[0].message).toContain("Unknown duration");
+  });
+});
+
+describe("safeParseHandString", () => {
+  it("skips bad tokens and returns good ones", () => {
+    const warnings: ParseWarning[] = [];
+    const beats = safeParseHandString("C4:q BAD:q E4:q", "right", 120, 1, warnings);
+    expect(beats.length).toBe(2); // C4 and E4 parsed, BAD skipped
+    expect(beats[0].notes[0].note).toBe(60);
+    expect(beats[1].notes[0].note).toBe(64);
+    expect(warnings.length).toBe(1);
+    expect(warnings[0].token).toBe("BAD:q");
+  });
+
+  it("returns empty for all-bad tokens", () => {
+    const warnings: ParseWarning[] = [];
+    const beats = safeParseHandString("XYZ:q ZZZ:q", "left", 120, 2, warnings);
+    expect(beats.length).toBe(0);
+    expect(warnings.length).toBe(2);
+  });
+});
+
+describe("safeParseMeasure", () => {
+  it("parses valid measure with no warnings", () => {
+    const warnings: ParseWarning[] = [];
+    const pm = safeParseMeasure(
+      { number: 1, rightHand: "C4:q E4:q", leftHand: "C3:h" },
+      120,
+      warnings
+    );
+    expect(pm.rightBeats.length).toBe(2);
+    expect(pm.leftBeats.length).toBe(1);
+    expect(warnings.length).toBe(0);
+  });
+
+  it("handles measure with bad notes gracefully", () => {
+    const warnings: ParseWarning[] = [];
+    const pm = safeParseMeasure(
+      { number: 5, rightHand: "C4:q GARBAGE E4:q", leftHand: "ZZZ" },
+      120,
+      warnings
+    );
+    // Right hand: C4 + E4 good, GARBAGE skipped
+    expect(pm.rightBeats.length).toBe(2);
+    // Left hand: ZZZ skipped (bad note, default :q suffix)
+    expect(pm.leftBeats.length).toBe(0);
+    expect(warnings.length).toBe(2);
   });
 });
