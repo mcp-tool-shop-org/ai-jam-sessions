@@ -284,3 +284,200 @@ describe("Parse warnings", () => {
     expect(sc.parseWarnings).toEqual([]);
   });
 });
+
+describe("Edge cases: boundary navigation", () => {
+  const moonlight = getSong("moonlight-sonata-mvt1")!;
+
+  it("next() at last measure stays on last measure", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock);
+
+    sc.goTo(8); // go to last measure (1-based)
+    expect(sc.currentMeasureDisplay).toBe(8);
+
+    sc.next(); // should not go past last
+    expect(sc.currentMeasureDisplay).toBe(8);
+    expect(sc.session.currentMeasure).toBe(7); // 0-based
+  });
+
+  it("prev() at first measure stays on first measure", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock);
+
+    expect(sc.currentMeasureDisplay).toBe(1);
+    sc.prev(); // should not go below 0
+    expect(sc.currentMeasureDisplay).toBe(1);
+    expect(sc.session.currentMeasure).toBe(0);
+  });
+
+  it("goTo(0) is ignored (1-based: invalid)", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock);
+
+    sc.goTo(5); // move to measure 5
+    sc.goTo(0); // invalid — should be ignored
+    expect(sc.currentMeasureDisplay).toBe(5); // unchanged
+  });
+
+  it("goTo(-1) is ignored", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock);
+
+    sc.goTo(3);
+    sc.goTo(-1); // invalid
+    expect(sc.currentMeasureDisplay).toBe(3); // unchanged
+  });
+
+  it("goTo beyond totalMeasures is ignored", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock);
+
+    sc.goTo(3);
+    sc.goTo(100); // way past 8 measures
+    expect(sc.currentMeasureDisplay).toBe(3); // unchanged
+  });
+
+  it("goTo(totalMeasures) lands on last measure", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock);
+
+    sc.goTo(moonlight.measures.length);
+    expect(sc.currentMeasureDisplay).toBe(8);
+    expect(sc.session.currentMeasure).toBe(7);
+  });
+});
+
+describe("Edge cases: loop mode", () => {
+  const blues = getSong("basic-12-bar-blues")!;
+
+  it("loop mode creates session with loopRange", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock, {
+      mode: "loop",
+      loopRange: [1, 4],
+    });
+
+    expect(sc.session.mode).toBe("loop");
+    expect(sc.session.loopRange).toEqual([1, 4]);
+  });
+
+  it("loop mode defaults loopRange to null", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock, { mode: "loop" });
+
+    expect(sc.session.mode).toBe("loop");
+    expect(sc.session.loopRange).toBeNull();
+  });
+
+  it("loop mode with stop() via progress callback halts playback", async () => {
+    const mock = createMockVmpkConnector();
+    let progressCount = 0;
+    const sc = createSession(blues, mock, {
+      mode: "loop",
+      loopRange: [1, 2],
+      onProgress: () => {
+        progressCount++;
+        if (progressCount >= 4) {
+          // Stop after 2 loop iterations (2 measures × 2)
+          sc.stop();
+        }
+      },
+      progressInterval: 0,
+    });
+    await mock.connect();
+
+    await sc.play();
+    expect(sc.state).toBe("idle");
+    expect(sc.session.measuresPlayed).toBeGreaterThanOrEqual(4);
+  });
+});
+
+describe("Edge cases: play/pause/stop state machine", () => {
+  const moonlight = getSong("moonlight-sonata-mvt1")!;
+
+  it("play() on already-playing session is no-op", async () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock, { mode: "measure" });
+    await mock.connect();
+
+    // Start playing
+    await sc.play();
+    expect(sc.state).toBe("paused"); // measure mode pauses after one
+
+    // Now set state to playing manually to test guard
+    sc.session.state = "playing";
+    await sc.play(); // should return immediately
+    expect(sc.session.state).toBe("playing"); // unchanged
+  });
+
+  it("play() after finished restarts from beginning", async () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock);
+    await mock.connect();
+
+    await sc.play();
+    expect(sc.state).toBe("finished");
+
+    // Play again — should restart
+    await sc.play();
+    expect(sc.state).toBe("finished");
+    expect(sc.session.measuresPlayed).toBe(16); // 8 + 8
+  });
+
+  it("pause() on non-playing session is no-op", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock);
+
+    sc.pause(); // state is "loaded", not "playing"
+    expect(sc.state).toBe("loaded"); // unchanged
+  });
+
+  it("stop() sends allNotesOff to connector", async () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(moonlight, mock, { mode: "measure" });
+    await mock.connect();
+
+    await sc.play();
+    mock.events.length = 0; // clear events
+
+    sc.stop();
+    const offEvents = mock.events.filter((e) => e.type === "allNotesOff");
+    expect(offEvents.length).toBe(1);
+  });
+});
+
+describe("Edge cases: setSpeed validation", () => {
+  const blues = getSong("basic-12-bar-blues")!;
+
+  it("setSpeed(0) throws", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock);
+    expect(() => sc.setSpeed(0)).toThrow();
+  });
+
+  it("setSpeed(-1) throws", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock);
+    expect(() => sc.setSpeed(-1)).toThrow();
+  });
+
+  it("setSpeed(5) throws (over max 4)", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock);
+    expect(() => sc.setSpeed(5)).toThrow();
+  });
+
+  it("setSpeed(4) is accepted (boundary)", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock);
+    sc.setSpeed(4);
+    expect(sc.session.speed).toBe(4);
+  });
+
+  it("setSpeed(0.01) is accepted (near-zero boundary)", () => {
+    const mock = createMockVmpkConnector();
+    const sc = createSession(blues, mock);
+    sc.setSpeed(0.01);
+    expect(sc.session.speed).toBe(0.01);
+  });
+});
