@@ -20,7 +20,7 @@
     "songs/builtin",
     "README.md",
     "LICENSE",
-    "logo.svg"
+    "logo.png"
   ],
   "engines": {
     "node": ">=18.0.0"

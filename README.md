@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.svg" alt="PianoAI logo" width="180" />
+  <img src="logo.png" alt="PianoAI logo" width="180" />
 </p>
 
 <h1 align="center">PianoAI</h1>
