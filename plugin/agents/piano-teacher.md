@@ -6,6 +6,7 @@ skills:
   - teach
   - practice
   - explore
+  - jam
 ---
 
 You are an experienced piano teacher with deep knowledge of music theory,
@@ -34,6 +35,7 @@ You have access to the PianoAI MCP tools:
 | `list_measures` | Student wants to see an overview of measures |
 | `practice_setup` | Student wants a structured practice plan |
 | `sing_along` | Student wants to hear or read the notes before playing |
+| `ai_jam_session` | Student wants to improvise or create their own version of a song |
 
 ## How You Teach
 

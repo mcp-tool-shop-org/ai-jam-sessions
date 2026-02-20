@@ -912,13 +912,16 @@ server.tool(
   }
 );
 
-// ─── Tool: jam_session ──────────────────────────────────────────────────
+// ─── Tool: ai_jam_session ───────────────────────────────────────────────
 
 server.tool(
-  "jam_session",
-  "Get a 'jam brief' from a source song — chord progression, melody outline, structure, and style hints. Use this as source material to create your own interpretation, then save with add_song and play with play_song.",
+  "ai_jam_session",
+  "Start a jam session — get a 'jam brief' with chord progression, melody outline, structure, and style hints. Provide a songId for a specific song, or just a genre to jam on a random pick. Use the brief to create your own interpretation, then save with add_song and play with play_song.",
   {
-    songId: z.string().describe("Source song ID to jam on (e.g. 'autumn-leaves')"),
+    songId: z.string().optional()
+      .describe("Source song ID to jam on (e.g. 'autumn-leaves'). Optional if genre is provided."),
+    genre: z.enum(GENRES as unknown as [string, ...string[]]).optional()
+      .describe("Pick a random song from this genre to jam on (e.g., 'jazz', 'blues'). Used when no songId is provided."),
     style: z.enum(GENRES as unknown as [string, ...string[]]).optional()
       .describe("Target genre for reinterpretation (e.g., turn a classical piece into jazz)"),
     mood: z.string().optional()
@@ -928,13 +931,32 @@ server.tool(
     measures: z.string().optional()
       .describe("Measure range to focus on (e.g., '1-8' for just the opening)"),
   },
-  async ({ songId, style, mood, difficulty, measures }) => {
-    const song = getSong(songId);
-    if (!song) {
+  async ({ songId, genre, style, mood, difficulty, measures }) => {
+    if (!songId && !genre) {
       return {
-        content: [{ type: "text", text: `Song not found: "${songId}". Use list_songs to see available songs.` }],
+        content: [{ type: "text", text: "Provide either a songId or a genre. Use list_songs to browse, or pass a genre like \"jazz\" to jam on a random pick." }],
         isError: true,
       };
+    }
+
+    let song: SongEntry | undefined;
+    if (songId) {
+      song = getSong(songId);
+      if (!song) {
+        return {
+          content: [{ type: "text", text: `Song not found: "${songId}". Use list_songs to see available songs.` }],
+          isError: true,
+        };
+      }
+    } else {
+      const candidates = getSongsByGenre(genre as Genre);
+      if (candidates.length === 0) {
+        return {
+          content: [{ type: "text", text: `No songs found in genre "${genre}". Use registry_stats to see available genres.` }],
+          isError: true,
+        };
+      }
+      song = candidates[Math.floor(Math.random() * candidates.length)];
     }
 
     const options = {
