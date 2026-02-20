@@ -1,43 +1,34 @@
 <p align="center">
-  <strong>English</strong> | <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.pt-BR.md">Português</a>
-</p>
-
-<p align="center">
   <img src="logo.svg" alt="PianoAI logo" width="180" />
 </p>
 
 <h1 align="center">PianoAI</h1>
 
 <p align="center">
-  Piano player with built-in audio engine — plays through speakers, no external software required. MCP server + CLI.
+  AI piano player with built-in audio engine and 100-song library. MCP server for Claude, CLI for humans.
 </p>
 
+[![MCP Tools](https://img.shields.io/badge/MCP_tools-15-purple)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Songs](https://img.shields.io/badge/songs-100_built--in-blue)](https://github.com/mcp-tool-shop-org/pianoai)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![MCP Tools](https://img.shields.io/badge/MCP_tools-12-purple)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Songs](https://img.shields.io/badge/songs-10_built--in-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
 ## What is this?
 
-A TypeScript piano player that plays standard MIDI files and built-in songs through your speakers. No external software required — the built-in audio engine handles everything. Includes an MCP server for LLM integration and a CLI for direct use.
-
-Supports real-time sing-along narration and live teaching feedback during playback.
+A piano that Claude can play. PianoAI is an MCP server with a built-in audio engine — it plays through your speakers, no external software required. Claude browses a 100-song library spanning 10 genres, picks songs, teaches them, and jams on them. Also works as a standalone CLI.
 
 ## Features
 
-- **Built-in piano engine** — plays through speakers via `node-web-audio-api`, no MIDI hardware needed
-- **Standard MIDI file support** — play any `.mid` file: `pianoai play song.mid`
-- **Real-time singing** — narrate note-names, solfege, contour, or syllables during MIDI playback
-- **Voice filters** — sing melody-only (highest note), harmony (lowest), or all notes per chord
-- **Live teaching feedback** — position-aware dynamics tips, range warnings, section boundaries, milestone announcements
-- **Position tracking** — beat/measure/tempo mapping from raw MIDI with seek support
+- **Built-in piano engine** — sample-based audio via `node-web-audio-api`, plays through speakers
+- **100-song library** — classical, jazz, pop, blues, rock, R&B, latin, film, ragtime, new-age
+- **AI Jam Session** — Claude analyzes a song's chords and melody, then creates its own interpretation
+- **MIDI file support** — play any `.mid` file: `pianoai play song.mid`
+- **Teaching system** — per-measure teaching notes, musical language descriptions, practice recommendations
 - **4 playback modes** — full, measure-by-measure, hands separate, loop
-- **Speed control** — 0.5x slow practice to 4x fast, stacks with tempo override
-- **Real-time controls** — pause, resume, speed change, seek during playback with event listeners
-- **12 MCP tools** — play, pause, speed, stop, browse, sing, teach — all through the MCP protocol
-- **12 teaching hooks** — console, silent, recording, callback, voice, aside, sing-along, live feedback, MIDI singing, MIDI live feedback, compose
+- **Speed control** — 0.5x slow practice to 4x fast
+- **Real-time controls** — pause, resume, speed change during playback
+- **15 MCP tools** — play, browse, teach, jam, import — all through the MCP protocol
+- **Add your own songs** — `add_song` tool accepts SongEntry JSON, `import_midi` converts MIDI files
 - **Optional MIDI output** — route to external software via `--midi` flag (requires loopMIDI + VMPK)
-- **Safe parsing** — bad notes skip gracefully with collected `ParseWarning`s
-- **Mock connector** — full test coverage without hardware
 
 ## Install
 
@@ -50,38 +41,20 @@ Requires **Node.js 18+**. That's it — no MIDI drivers, no virtual ports, no ex
 ## Quick Start
 
 ```bash
+# Play a built-in song
+pianoai play let-it-be
+
 # Play a MIDI file
 pianoai play path/to/song.mid
 
-# Play with singing (narrate note names as they play)
-pianoai play song.mid --with-singing
-
-# Sing melody only (skip chord notes, just top voice)
-pianoai play song.mid --with-singing --voice-filter melody-only
-
-# Play with teaching feedback (dynamics, encouragement)
-pianoai play song.mid --with-teaching
-
-# Play with both singing and teaching
-pianoai play song.mid --with-singing --with-teaching --sing-mode solfege
-
-# Half-speed practice with singing
-pianoai play song.mid --speed 0.5 --with-singing
-
-# Seek to second 45 and play from there
-pianoai play song.mid --seek 45
-
-# Play a built-in library song
-pianoai play let-it-be
+# Half-speed practice
+pianoai play moonlight-sonata-mvt1 --speed 0.5
 
 # List all built-in songs
 pianoai list
 
 # Show song details + teaching notes
-pianoai info moonlight-sonata-mvt1
-
-# Sing along with a library song (voice narration)
-pianoai sing let-it-be --mode solfege --with-piano
+pianoai info autumn-leaves
 ```
 
 ### Play Options
@@ -91,33 +64,41 @@ pianoai sing let-it-be --mode solfege --with-piano
 | `--speed <mult>` | Speed multiplier: 0.5 = half, 1.0 = normal, 2.0 = double |
 | `--tempo <bpm>` | Override the song's default tempo (10-400 BPM) |
 | `--mode <mode>` | Playback mode: `full`, `measure`, `hands`, `loop` |
-| `--with-singing` | Enable real-time sing-along narration |
-| `--with-teaching` | Enable live teaching feedback |
-| `--sing-mode <mode>` | Sing mode: `note-names`, `solfege`, `contour`, `syllables` |
-| `--voice-filter <f>` | Voice filter: `all`, `melody-only`, `harmony` |
-| `--seek <seconds>` | Jump to a specific time before playing |
 | `--midi` | Route to external MIDI software instead of built-in engine |
 
 ## MCP Server
 
-The MCP server exposes 12 tools for LLM integration:
+The MCP server exposes 15 tools for LLM integration:
 
 | Tool | Description |
 |------|-------------|
 | `list_songs` | Browse/search songs by genre, difficulty, or query |
-| `song_info` | Get full musical language, teaching goals, practice suggestions |
+| `song_info` | Full musical language, teaching goals, practice suggestions |
 | `registry_stats` | Song counts by genre and difficulty |
 | `teaching_note` | Per-measure teaching note, fingering, dynamics |
-| `suggest_song` | Get a recommendation based on criteria |
-| `list_measures` | Overview of measures with teaching notes + parse warnings |
-| `sing_along` | Get singable text (note names, solfege, contour, syllables) per measure |
-| `practice_setup` | Suggest speed, mode, and voice settings for a song |
-| `play_song` | Play a song or MIDI file with optional singing and teaching |
+| `suggest_song` | Recommendation based on criteria |
+| `list_measures` | Overview of measures with teaching notes |
+| `practice_setup` | Suggest speed, mode, and settings for a song |
+| `sing_along` | Singable text (note names, solfege, contour) per measure |
+| `play_song` | Play a song or MIDI file through speakers |
 | `pause_playback` | Pause or resume the currently playing song |
 | `set_speed` | Change playback speed during playback |
 | `stop_playback` | Stop the currently playing song |
+| `ai_jam_session` | Get a jam brief — chords, melody, style guidance — for improvisation |
+| `add_song` | Add a new song (SongEntry JSON) to the library |
+| `import_midi` | Convert a MIDI file into a SongEntry and register it |
 
-### Claude Desktop configuration
+### AI Jam Session
+
+The `ai_jam_session` tool extracts a structured "jam brief" from any song: chord progression, melody contour, and genre-specific style guidance. Claude uses the brief to create its own interpretation.
+
+Two modes:
+- **Specific song:** `ai_jam_session({ songId: "autumn-leaves", style: "blues" })` — jam on Autumn Leaves, blues style
+- **Random genre pick:** `ai_jam_session({ genre: "jazz" })` — pick a random jazz song and jam on it
+
+Optional parameters: `mood` (upbeat, melancholic, dreamy, etc.), `difficulty`, `measures` (range like "1-8").
+
+### Claude Desktop / Claude Code configuration
 
 ```json
 {
@@ -130,17 +111,39 @@ The MCP server exposes 12 tools for LLM integration:
 }
 ```
 
-### play_song with singing and teaching
+### Claude Code Plugin
 
-The `play_song` MCP tool accepts `withSinging` and `withTeaching` flags:
+PianoAI ships with a Claude Code plugin that adds slash commands and agent personalities:
 
-```
-play_song({ id: "path/to/song.mid", withSinging: true, withTeaching: true, singMode: "solfege" })
-```
+| Command | Description |
+|---------|-------------|
+| `/pianoai:teach <song>` | Start a structured teaching session |
+| `/pianoai:practice <song>` | Get a practice plan with speed/mode recommendations |
+| `/pianoai:explore [query]` | Browse the song library by genre, difficulty, or keyword |
+| `/pianoai:jam <song or genre>` | Start a jam session — Claude creates its own interpretation |
+
+Two agent personalities:
+- **Piano Teacher** — patient, pedagogical, meets students where they are
+- **Jam Musician** — laid-back jam band vibes, groove-first, encourages experimentation
+
+## Song Library
+
+100 built-in songs across 10 genres, 3 difficulty levels:
+
+| Genre | Songs | Examples |
+|-------|-------|---------|
+| Classical | 10 | Fur Elise, Clair de Lune, Moonlight Sonata, Bach Prelude in C |
+| Jazz | 10 | Autumn Leaves, Take Five, So What, Misty |
+| Pop | 10 | Imagine, Hallelujah, Piano Man, Bohemian Rhapsody |
+| Blues | 10 | Basic 12-Bar, St. Louis Blues, Stormy Monday, Thrill Is Gone |
+| Rock | 10 | Stairway Intro, Hotel California, Rocket Man, Layla Coda |
+| R&B | 10 | Superstition, Georgia On My Mind, Lean On Me, My Girl |
+| Latin | 10 | Girl from Ipanema, Besame Mucho, Oye Como Va, Wave |
+| Film | 11 | Cinema Paradiso, Moon River, Hedwig's Theme, Spirited Away |
+| Ragtime | 9 | The Entertainer, Maple Leaf Rag, Elite Syncopations |
+| New-Age | 10 | River Flows in You, Snowfall, Crystal Stream, Evening Calm |
 
 ## Programmatic API
-
-### Play a MIDI file with real-time controls
 
 ```typescript
 import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/pianoai";
@@ -151,61 +154,20 @@ await connector.connect();
 const midi = await parseMidiFile("song.mid");
 const controller = new PlaybackController(connector, midi);
 
-// Listen to events
 controller.on("noteOn", (e) => console.log(`Note: ${e.noteName}`));
-controller.on("stateChange", (e) => console.log(`State: ${e.state}`));
-
 await controller.play({ speed: 0.75 });
 
-controller.pause();       // pause
-controller.setSpeed(1.5); // change speed
-await controller.resume();// resume at new speed
+controller.pause();
+controller.setSpeed(1.5);
+await controller.resume();
 
 await connector.disconnect();
 ```
 
-### Play with singing and live teaching
+### Play a built-in song
 
 ```typescript
-import {
-  createAudioEngine,
-  parseMidiFile,
-  PlaybackController,
-  createSingOnMidiHook,
-  createLiveMidiFeedbackHook,
-  composeTeachingHooks,
-} from "@mcptoolshop/pianoai";
-
-const connector = createAudioEngine();
-await connector.connect();
-const midi = await parseMidiFile("song.mid");
-
-const singHook = createSingOnMidiHook(
-  async (d) => console.log(`♪ ${d.text}`),
-  midi,
-  { mode: "solfege", voiceFilter: "melody-only" }
-);
-
-const feedbackHook = createLiveMidiFeedbackHook(
-  async (d) => console.log(`🎓 ${d.text}`),
-  async (d) => console.log(`💡 ${d.text}`),
-  midi,
-  { voiceInterval: 8 }
-);
-
-const composed = composeTeachingHooks(singHook, feedbackHook);
-const controller = new PlaybackController(connector, midi);
-await controller.play({ teachingHook: composed });
-
-// feedbackHook.tracker has position info
-console.log(`Total measures: ${feedbackHook.tracker.totalMeasures}`);
-```
-
-### Play a built-in library song
-
-```typescript
-import { getSong } from "@mcptoolshop/ai-music-sheets";
-import { createSession, createAudioEngine } from "@mcptoolshop/pianoai";
+import { getSong, createSession, createAudioEngine } from "@mcptoolshop/pianoai";
 
 const connector = createAudioEngine();
 await connector.connect();
@@ -223,48 +185,25 @@ await connector.disconnect();
 ## Architecture
 
 ```
-Standard MIDI files (.mid)   Built-in songs (ai-music-sheets)
-        │                              │
-        ▼                              ▼
-   MIDI Parser ──────────────── Note Parser
-        │                              │
-        ▼                              ▼
-  MidiPlaybackEngine            SessionController
-        │                              │
-        └──────── PlaybackController ──┘
-                  (real-time events, hooks)
-                         │
-           ┌─────────────┼─────────────┐
-           ▼             ▼             ▼
-      AudioEngine   Teaching Hooks  Progress
-      (speakers)    (sing, feedback) (callbacks)
-           │
-           ▼
-     node-web-audio-api (Rust DSP)
-
-Position tracking:
-  MIDI Parser → PositionTracker → beat/measure/tempo mapping
-                                → seek-to-time / seek-to-measure
-                                → measure summaries for live feedback
-
-Teaching hook routing:
-  PlaybackController → TeachingHook → VoiceDirective → mcp-voice-soundboard
-                                    → AsideDirective → mcp-aside inbox
-                                    → Console log    → CLI terminal
-                                    → Recording      → test assertions
+MIDI files (.mid)          Built-in song library (JSON)
+       |                              |
+       v                              v
+  MIDI Parser ──────────────── Note Parser
+       |                              |
+       v                              v
+ MidiPlaybackEngine            SessionController
+       |                              |
+       └──────── PlaybackController ──┘
+                 (real-time events, hooks)
+                        |
+          ┌─────────────┼─────────────┐
+          v             v             v
+     AudioEngine   Teaching Hooks  Progress
+     (speakers)    (per-measure)   (callbacks)
+          |
+          v
+    node-web-audio-api (Rust DSP)
 ```
-
-## Testing
-
-```bash
-pnpm test       # 243 Vitest tests
-pnpm typecheck  # tsc --noEmit
-pnpm smoke      # integration smoke tests
-```
-
-## Related
-
-- **[ai-music-sheets](https://github.com/mcp-tool-shop-org/ai-music-sheets)** — The built-in song library
 
 ## License
 
