@@ -1,5 +1,5 @@
 {
-  "name": "@mcptoolshop/ai_jam_session",
+  "name": "@mcptoolshop/ai-jam-session",
   "version": "0.1.0",
   "description": "Piano player with built-in audio engine — plays through speakers, no external software required. MCP server + CLI.",
   "type": "module",

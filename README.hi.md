@@ -35,7 +35,7 @@
 ## इंस्टॉल करें
 
 ```bash
-npm install -g @mcptoolshop/ai_jam_session
+npm install -g @mcptoolshop/ai-jam-session
 ```
 
 **Node.js 18+** ज़रूरी है। बस इतना ही — कोई MIDI ड्राइवर नहीं, कोई वर्चुअल पोर्ट नहीं, कोई बाहरी सॉफ़्टवेयर नहीं।
@@ -107,7 +107,7 @@ MCP सर्वर LLM इंटीग्रेशन के लिए 15 ट�
   "mcpServers": {
     "ai_jam_session": {
       "command": "npx",
-      "args": ["-y", "-p", "@mcptoolshop/ai_jam_session", "ai-jam-session-mcp"]
+      "args": ["-y", "-p", "@mcptoolshop/ai-jam-session", "ai-jam-session-mcp"]
     }
   }
 }
@@ -148,7 +148,7 @@ PianoAI में एक Claude Code प्लगइन शामिल है �
 ## प्रोग्रामैटिक API
 
 ```typescript
-import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/ai_jam_session";
+import { createAudioEngine, parseMidiFile, PlaybackController } from "@mcptoolshop/ai-jam-session";
 
 const connector = createAudioEngine();
 await connector.connect();
@@ -169,7 +169,7 @@ await connector.disconnect();
 ### बिल्ट-इन गाना बजाएँ
 
 ```typescript
-import { getSong, createSession, createAudioEngine } from "@mcptoolshop/ai_jam_session";
+import { getSong, createSession, createAudioEngine } from "@mcptoolshop/ai-jam-session";
 
 const connector = createAudioEngine();
 await connector.connect();
