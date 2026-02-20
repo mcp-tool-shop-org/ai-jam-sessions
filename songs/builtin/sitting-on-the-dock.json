@@ -1,0 +1,91 @@
+{
+  "id": "sitting-on-the-dock",
+  "title": "Sitting On the Dock of the Bay",
+  "genre": "rnb",
+  "composer": "Otis Redding / Steve Cropper",
+  "difficulty": "beginner",
+  "key": "G major",
+  "tempo": 104,
+  "timeSignature": "4/4",
+  "durationSeconds": 18,
+  "tags": [
+    "soul",
+    "otis-redding",
+    "relaxed",
+    "classic",
+    "easy-chords"
+  ],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "Otis Redding's laid-back masterpiece captures the feeling of watching the tide roll in. Built on a simple G-B7-C-A progression, the song is accessible for beginners while sounding musically complete. The melody is conversational and unhurried, and the left hand plays simple root-position chords.",
+    "structure": "Verse: G-B7-C-A pattern (4 bars), Chorus: E-G-E-G rocking motion (4 bars)",
+    "keyMoments": [
+      "Bar 1: G major opens — relaxed, like sitting on a dock.",
+      "Bar 2: B7 — the unexpected major chord on the III. Gives it soul.",
+      "Bars 5-6: E minor to G — the rocking motion of the chorus, like waves."
+    ],
+    "teachingGoals": [
+      "Simple chord progressions with one unexpected chord (B7)",
+      "Relaxed tempo playing — resisting the urge to rush",
+      "Basic left hand chord patterns supporting melody"
+    ],
+    "styleTips": [
+      "Play like you have nowhere to be — this song is about doing nothing",
+      "The B7 chord should surprise slightly — bring it out a touch",
+      "Left hand: simple and steady. Right hand: conversational and easy"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "B4:q A4:q G4:h",
+      "leftHand": "G2:q B2:q D3:q G3:q",
+      "dynamics": "mf",
+      "teachingNote": "G major — open and easy. The melody settles immediately."
+    },
+    {
+      "number": 2,
+      "rightHand": "B4:q A4:q G4:q F#4:q",
+      "leftHand": "B2:q D#3:q F#3:q B3:q",
+      "teachingNote": "B7 — the soulful twist. F# in the melody leans into this chord."
+    },
+    {
+      "number": 3,
+      "rightHand": "G4:q A4:q B4:q A4:q",
+      "leftHand": "C3:q E3:q G3:q C4:q",
+      "teachingNote": "C major — bright lift. Melody bounces gently."
+    },
+    {
+      "number": 4,
+      "rightHand": "G4:q E4:q D4:h",
+      "leftHand": "A2:q C#3:q E3:q A3:q",
+      "teachingNote": "A major — settling down before the chorus."
+    },
+    {
+      "number": 5,
+      "rightHand": "E4:q G4:q E4:q G4:q",
+      "leftHand": "E3:h B3:h",
+      "dynamics": "mf",
+      "teachingNote": "E minor — the rocking chorus figure. Back and forth like waves."
+    },
+    {
+      "number": 6,
+      "rightHand": "D4:q G4:q D4:q G4:q",
+      "leftHand": "G2:h D3:h",
+      "teachingNote": "G major — still rocking. Keep it effortless."
+    },
+    {
+      "number": 7,
+      "rightHand": "E4:q G4:q E4:q G4:q",
+      "leftHand": "E3:h B3:h",
+      "teachingNote": "E minor — the wave continues. Same gentle motion."
+    },
+    {
+      "number": 8,
+      "rightHand": "G4:h R:h",
+      "leftHand": "G2:q B2:q D3:h",
+      "dynamics": "p",
+      "teachingNote": "G major — fade out. The rest at the end is the sound of the ocean."
+    }
+  ]
+}

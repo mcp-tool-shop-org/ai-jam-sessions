@@ -1,0 +1,70 @@
+{
+  "id": "magnetic-rag",
+  "title": "Magnetic Rag",
+  "genre": "ragtime",
+  "composer": "Scott Joplin",
+  "difficulty": "advanced",
+  "key": "Bb major",
+  "tempo": 100,
+  "timeSignature": "4/4",
+  "durationSeconds": 19,
+  "tags": ["ragtime", "joplin", "final", "sophisticated", "advanced"],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "Magnetic Rag (1914) was Joplin's last published rag and shows his most mature compositional voice. It blends ragtime with deeper harmonic language, foreshadowing early jazz with unexpected chord changes and a bittersweet quality.",
+    "structure": "A section excerpt (8 bars)",
+    "keyMoments": ["Chromatic bass motion in measures 3-4", "Bittersweet harmonic shift in measure 6"],
+    "teachingGoals": ["Navigate chromatic harmony in ragtime context", "Develop sensitivity to Joplin's late harmonic language"],
+    "styleTips": ["Play with weight and gravitas — this is mature Joplin", "Let the chromatic moments breathe; do not rush through them"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "Bb4:e D5:e F5:q Eb5:e D5:e C5:q",
+      "leftHand": "Bb2:q D4 F4:q Bb2:q D4 F4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 2,
+      "rightHand": "D5:e C5:e Bb4:e A4:e Bb4:q D5:q",
+      "leftHand": "F3:q A3 C4:q F3:q A3 C4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 3,
+      "rightHand": "F5:e Eb5:e D5:e Db5:e C5:q Bb4:q",
+      "leftHand": "Bb2:q D4 F4:q A2:q C4 Eb4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "A4:e Bb4:e C5:e D5:e Eb5:q D5:q",
+      "leftHand": "Ab2:q C4 Eb4:q G2:q Bb3 D4:q",
+      "dynamics": "mp"
+    },
+    {
+      "number": 5,
+      "rightHand": "F5:e D5:e Bb4:e D5:e F5:q A5:q",
+      "leftHand": "Bb2:q D4 F4:q Bb2:q D4 F4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 6,
+      "rightHand": "Ab5:e G5:e F5:e Eb5:e Db5:q C5:q",
+      "leftHand": "Db3:q F3 Ab3:q C3:q E4 Bb3:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 7,
+      "rightHand": "D5:e Eb5:e F5:e G5:e A5:e Bb5:e A5:q",
+      "leftHand": "Bb2:q D4 F4:q F3:q A3 Eb4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 8,
+      "rightHand": "Bb5:h R:h",
+      "leftHand": "Bb2:q D4 F4:q Bb2:q R:q",
+      "dynamics": "ff"
+    }
+  ]
+}

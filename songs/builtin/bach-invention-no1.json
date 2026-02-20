@@ -1,0 +1,70 @@
+{
+  "id": "bach-invention-no1",
+  "title": "Invention No. 1 in C Major, BWV 772",
+  "genre": "classical",
+  "composer": "Johann Sebastian Bach",
+  "difficulty": "beginner",
+  "key": "C major",
+  "tempo": 96,
+  "timeSignature": "4/4",
+  "durationSeconds": 20,
+  "tags": ["classical", "bach", "baroque", "counterpoint", "invention"],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "Bach's Two-Part Invention No. 1 in C Major is one of the most important pedagogical works in the piano repertoire. The right hand states the subject, and the left hand answers in imitation. This simplified excerpt captures the opening subject and answer.",
+    "structure": "Opening subject and answer (8 bars)",
+    "keyMoments": ["Subject statement in right hand, measure 1", "Imitative answer in left hand, measure 3"],
+    "teachingGoals": ["Understand imitative counterpoint between two voices", "Develop hand independence with two melodic lines"],
+    "styleTips": ["Each hand should sound like an independent singer", "Keep articulation light and clear — no pedal"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "C4:s D4:s E4:s F4:s D4:s E4:s C4:s E4:e G4:e C5:e",
+      "leftHand": "R:w",
+      "dynamics": "mf"
+    },
+    {
+      "number": 2,
+      "rightHand": "B4:s A4:s G4:s A4:s B4:s C5:s A4:q G4:q",
+      "leftHand": "R:w",
+      "dynamics": "mf"
+    },
+    {
+      "number": 3,
+      "rightHand": "A4:q D5:q C5:e B4:e A4:e G4:e",
+      "leftHand": "C3:s D3:s E3:s F3:s D3:s E3:s C3:s E3:e G3:e C4:e",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "F4:e G4:e A4:e F4:e D4:e E4:e F4:e D4:e",
+      "leftHand": "B3:s A3:s G3:s A3:s B3:s C4:s A3:q G3:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 5,
+      "rightHand": "G4:e A4:e B4:e G4:e A4:e B4:e C5:e A4:e",
+      "leftHand": "E3:e F3:e G3:e A3:e F3:e G3:e E3:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 6,
+      "rightHand": "B4:e C5:e D5:e B4:e C5:e D5:e E5:e C5:e",
+      "leftHand": "D3:q G3:q F3:e E3:e D3:e C3:e",
+      "dynamics": "mf"
+    },
+    {
+      "number": 7,
+      "rightHand": "D5:e E5:e F5:e D5:e E5:q C5:q",
+      "leftHand": "B2:e C3:e D3:e B2:e C3:q E3:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 8,
+      "rightHand": "C5:h R:h",
+      "leftHand": "C3:h R:h",
+      "dynamics": "f"
+    }
+  ]
+}

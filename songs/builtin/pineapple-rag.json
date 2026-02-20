@@ -1,0 +1,70 @@
+{
+  "id": "pineapple-rag",
+  "title": "Pineapple Rag",
+  "genre": "ragtime",
+  "composer": "Scott Joplin",
+  "difficulty": "intermediate",
+  "key": "Bb major",
+  "tempo": 116,
+  "timeSignature": "4/4",
+  "durationSeconds": 17,
+  "tags": ["ragtime", "joplin", "bright", "cheerful"],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "Pineapple Rag (1908) is a bright and buoyant rag with a sunny disposition. Its melody bounces playfully over the stride bass, full of optimistic energy and Joplin's trademark melodic charm.",
+    "structure": "A section excerpt (8 bars)",
+    "keyMoments": ["Bright opening leap in measure 1", "Playful call-and-response between hands in measure 5"],
+    "teachingGoals": ["Practice stride bass in Bb major", "Develop light, bouncy touch in the right hand"],
+    "styleTips": ["Keep the mood bright and sunny throughout", "Let eighth notes bounce rather than plod"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "R:e Bb4:e D5:e F5:e Bb5:q F5:q",
+      "leftHand": "Bb2:q D4 F4:q Bb2:q D4 F4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 2,
+      "rightHand": "G5:e F5:e Eb5:e D5:e C5:q Bb4:q",
+      "leftHand": "Eb3:q G3 Bb3:q F3:q A3 C4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 3,
+      "rightHand": "D5:e Eb5:e F5:e D5:e Bb4:q D5:q",
+      "leftHand": "Bb2:q D4 F4:q Bb2:q D4 F4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "C5:q A4:e Bb4:e F4:h",
+      "leftHand": "F3:q A3 C4:q Bb2:q D4 F4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 5,
+      "rightHand": "R:e Bb4:e D5:e F5:e G5:e F5:e D5:q",
+      "leftHand": "Bb2:q D4 F4:q Eb3:q G3 Bb3:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 6,
+      "rightHand": "Eb5:e D5:e C5:e Bb4:e A4:q Bb4:q",
+      "leftHand": "F3:q A3 C4:q Bb2:q D4 F4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 7,
+      "rightHand": "D5:e F5:e Bb5:q A5:e G5:e F5:q",
+      "leftHand": "Bb2:q D4 F4:q F3:q A3 Eb4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 8,
+      "rightHand": "Bb5:h R:h",
+      "leftHand": "Bb2:q D4 F4:q Bb2:q R:q",
+      "dynamics": "f"
+    }
+  ]
+}

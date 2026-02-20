@@ -1,0 +1,92 @@
+{
+  "id": "guantanamera",
+  "title": "Guantanamera",
+  "genre": "latin",
+  "composer": "Traditional Cuban / Jose Fernandez Diaz",
+  "difficulty": "beginner",
+  "key": "C major",
+  "tempo": 112,
+  "timeSignature": "4/4",
+  "durationSeconds": 17,
+  "tags": [
+    "cuban",
+    "folk",
+    "traditional",
+    "sing-along",
+    "easy"
+  ],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "Cuba's most famous folk song, built on a simple three-chord pattern in C major. The melody is instantly recognizable and singable, making this an ideal beginner piece. The left hand plays a basic Latin accompaniment pattern while the right hand carries the beloved melody. The simplicity is its strength.",
+    "structure": "Verse: C-F-G-C pattern (4 bars), Chorus: same chords with melodic variation (4 bars)",
+    "keyMoments": [
+      "Bar 1: C major — the opening call. Everyone knows this melody.",
+      "Bars 3-4: G to C — the singalong resolution that makes crowds join in.",
+      "Bars 5-6: The chorus melody lifts higher — more energy, same simplicity."
+    ],
+    "teachingGoals": [
+      "Three-chord song in C major — I, IV, V",
+      "Basic Latin left hand pattern",
+      "Playing a melody that everyone can sing along to"
+    ],
+    "styleTips": [
+      "Warm and communal — this is a song for everyone to share",
+      "Keep the rhythm steady and danceable",
+      "Left hand should have a gentle Cuban feel — not too rigid"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "E4:q E4:q F4:q G4:q",
+      "leftHand": "C3:q G3:q C3:q G3:q",
+      "dynamics": "mf",
+      "teachingNote": "C major — the famous opening. Simple and warm."
+    },
+    {
+      "number": 2,
+      "rightHand": "A4:q G4:q F4:h",
+      "leftHand": "F3:q C4:q F3:q C4:q",
+      "teachingNote": "F major — melody peaks on A then settles. Natural and easy."
+    },
+    {
+      "number": 3,
+      "rightHand": "E4:q D4:q E4:q F4:q",
+      "leftHand": "G2:q D3:q G2:q D3:q",
+      "teachingNote": "G major — setting up the return. Melody rocks gently."
+    },
+    {
+      "number": 4,
+      "rightHand": "E4:h C4:h",
+      "leftHand": "C3:q G3:q C3:h",
+      "teachingNote": "C major — home. Two half notes. Clean and satisfying."
+    },
+    {
+      "number": 5,
+      "rightHand": "G4:q G4:q A4:q G4:q",
+      "leftHand": "C3:q E3:q G3:q E3:q",
+      "dynamics": "f",
+      "teachingNote": "Chorus — C major, melody lifts to the higher octave."
+    },
+    {
+      "number": 6,
+      "rightHand": "A4:q G4:q F4:q E4:q",
+      "leftHand": "F3:q A3:q C4:q A3:q",
+      "teachingNote": "F major — descending melody. The sing-along peak."
+    },
+    {
+      "number": 7,
+      "rightHand": "D4:q E4:q F4:q E4:q",
+      "leftHand": "G2:q B2:q D3:q B2:q",
+      "dynamics": "mf",
+      "teachingNote": "G major — preparing final resolution. Keep singing inside."
+    },
+    {
+      "number": 8,
+      "rightHand": "C4:w",
+      "leftHand": "C3:q E3:q G3:q C4:q",
+      "dynamics": "p",
+      "teachingNote": "C major — whole note ending. Arpeggio in the bass for a warm finish."
+    }
+  ]
+}

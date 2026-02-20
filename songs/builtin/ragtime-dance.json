@@ -1,0 +1,70 @@
+{
+  "id": "ragtime-dance",
+  "title": "The Ragtime Dance",
+  "genre": "ragtime",
+  "composer": "Scott Joplin",
+  "difficulty": "intermediate",
+  "key": "C major",
+  "tempo": 104,
+  "timeSignature": "4/4",
+  "durationSeconds": 18,
+  "tags": ["ragtime", "joplin", "dance", "folk"],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "The Ragtime Dance (1902) was originally conceived as a folk ballet with sung directions. This piano arrangement captures its dance-like character with stomping bass patterns and a melody that invites movement.",
+    "structure": "A section excerpt (8 bars)",
+    "keyMoments": ["Dance-like opening figure in measure 1", "Stomping bass emphasis in measure 4"],
+    "teachingGoals": ["Feel the dance pulse underlying ragtime", "Practice accented stride patterns"],
+    "styleTips": ["Imagine dancers stepping to each beat", "Give slight accent to beats 1 and 3 in the bass for a stomping feel"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "E5:e C5:e G4:e C5:e E5:q G5:q",
+      "leftHand": "C3:q E4 G4:q C3:q E4 G4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 2,
+      "rightHand": "F5:e E5:e D5:e C5:e B4:q G4:q",
+      "leftHand": "G2:q B3 D4:q G2:q B3 D4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 3,
+      "rightHand": "A4:e C5:e E5:q D5:e C5:e B4:q",
+      "leftHand": "A2:q C4 E4:q G2:q B3 D4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "C5:q R:e G4:e C5:e E5:e G5:q",
+      "leftHand": "C3:q E4 G4:q C3:q E4 G4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 5,
+      "rightHand": "A5:e G5:e E5:e C5:e D5:q E5:q",
+      "leftHand": "F2:q A3 C4:q G2:q B3 D4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 6,
+      "rightHand": "F5:e E5:e D5:e E5:e C5:q R:q",
+      "leftHand": "A2:q C4 E4:q G2:q B3 D4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 7,
+      "rightHand": "E5:e D5:e C5:e B4:e A4:e B4:e C5:q",
+      "leftHand": "F2:q A3 C4:q G2:q B3 D4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 8,
+      "rightHand": "C5:h R:h",
+      "leftHand": "C3:q E4 G4:q C3:q R:q",
+      "dynamics": "f"
+    }
+  ]
+}

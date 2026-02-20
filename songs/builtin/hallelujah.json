@@ -1,0 +1,92 @@
+{
+  "id": "hallelujah",
+  "title": "Hallelujah",
+  "genre": "pop",
+  "composer": "Leonard Cohen",
+  "difficulty": "intermediate",
+  "key": "C major",
+  "tempo": 56,
+  "timeSignature": "6/8",
+  "durationSeconds": 51,
+  "tags": [
+    "cohen",
+    "folk-pop",
+    "ballad",
+    "arpeggiated",
+    "6/8-time"
+  ],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "A folk-pop masterpiece in 6/8 time, built on a descending chord progression that mirrors the lyrical gravity. The arpeggiated accompaniment gives it a hymn-like, meditative quality. This arrangement uses the verse section with its iconic I-V-vi-IV-V progression.",
+    "structure": "Verse (8 bars) in 6/8 — C-Am-C-Am-F-G-C-G cycle",
+    "keyMoments": [
+      "Bars 1-2: C to Am — the descending bass establishes the reflective mood",
+      "Bars 5-6: F to G — the harmonic lift toward the 'Hallelujah' moment",
+      "Bars 7-8: C to G — resolution and preparation to repeat"
+    ],
+    "teachingGoals": [
+      "Playing in 6/8 time — feeling two groups of three",
+      "Arpeggiated left-hand patterns in compound meter",
+      "Smooth melodic phrasing over a rocking accompaniment"
+    ],
+    "styleTips": [
+      "Feel the 6/8 as a gentle rocking motion — ONE-two-three FOUR-five-six",
+      "The left hand arpeggio should be completely even, like a lullaby",
+      "Right-hand melody floats above — sing it in your head as you play"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "E4:q. G4:q.",
+      "leftHand": "C3:e E3:e G3:e C3:e E3:e G3:e",
+      "teachingNote": "C major in 6/8 — feel the two-beat rocking pattern. Each dotted quarter = one beat group.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 2,
+      "rightHand": "A4:q. G4:q.",
+      "leftHand": "A2:e C3:e E3:e A2:e C3:e E3:e",
+      "teachingNote": "A minor — the melody rises to A4 then settles back. Feel the shift to minor."
+    },
+    {
+      "number": 3,
+      "rightHand": "E4:q. G4:q.",
+      "leftHand": "C3:e E3:e G3:e C3:e E3:e G3:e",
+      "teachingNote": "Back to C major — the repetition is intentional. This song is built on cycles."
+    },
+    {
+      "number": 4,
+      "rightHand": "A4:q. E4:q.",
+      "leftHand": "A2:e C3:e E3:e A2:e C3:e E3:e",
+      "teachingNote": "A minor again — this time the melody drops from A4 to E4. A gentle sigh."
+    },
+    {
+      "number": 5,
+      "rightHand": "F4:q. A4:q.",
+      "leftHand": "F2:e A2:e C3:e F2:e A2:e C3:e",
+      "teachingNote": "F major — the IV chord lifts the harmony. This is where the chorus feeling begins.",
+      "dynamics": "mf"
+    },
+    {
+      "number": 6,
+      "rightHand": "G4:q. B4:q.",
+      "leftHand": "G2:e B2:e D3:e G2:e B2:e D3:e",
+      "teachingNote": "G major — the V chord. Tension building toward resolution."
+    },
+    {
+      "number": 7,
+      "rightHand": "C5:q. G4:q.",
+      "leftHand": "C3:e E3:e G3:e C3:e E3:e G3:e",
+      "teachingNote": "C major — the melody peaks at C5 for the climax, then descends. The 'Hallelujah' moment.",
+      "dynamics": "f"
+    },
+    {
+      "number": 8,
+      "rightHand": "E4:q. D4:q.",
+      "leftHand": "G2:e B2:e D3:e G2:e B2:e D3:e",
+      "teachingNote": "G major — the phrase ends open on the V chord, pulling you back to repeat.",
+      "dynamics": "mp"
+    }
+  ]
+}

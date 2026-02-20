@@ -1,0 +1,70 @@
+{
+  "id": "elite-syncopations",
+  "title": "Elite Syncopations",
+  "genre": "ragtime",
+  "composer": "Scott Joplin",
+  "difficulty": "advanced",
+  "key": "F major",
+  "tempo": 116,
+  "timeSignature": "4/4",
+  "durationSeconds": 17,
+  "tags": ["ragtime", "joplin", "syncopated", "advanced", "virtuosic"],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "Elite Syncopations (1902) is one of Joplin's most rhythmically complex rags. The right hand weaves intricate syncopated patterns that constantly shift the accent, demanding precise coordination with the steady left-hand stride.",
+    "structure": "A section excerpt (8 bars)",
+    "keyMoments": ["Cross-rhythm syncopation in measures 1-2", "Chromatic descent in measure 6"],
+    "teachingGoals": ["Master complex syncopation against steady bass", "Develop independence between hands at tempo"],
+    "styleTips": ["Exaggerate the syncopated accents slightly for clarity", "Left hand must be absolutely rock-steady to anchor the rhythm"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "R:e F5:e A5:e F5:e C5:e F5:e A5:e F5:e",
+      "leftHand": "F2:q A3 C4:q F2:q A3 C4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 2,
+      "rightHand": "G5:e E5:e C5:e E5:e G5:q E5:q",
+      "leftHand": "C3:q E4 Bb3:q C3:q E4 Bb3:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 3,
+      "rightHand": "F5:e D5:e A4:e D5:e F5:e A5:e F5:q",
+      "leftHand": "Bb2:q D4 F4:q Bb2:q D4 F4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "E5:e C5:e A4:e G4:e F4:q R:q",
+      "leftHand": "C3:q E4 Bb3:q F2:q A3 C4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 5,
+      "rightHand": "R:e F5:e A5:e C6:e A5:e F5:e C5:q",
+      "leftHand": "F2:q A3 C4:q F2:q A3 C4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 6,
+      "rightHand": "Bb5:e A5:e Ab5:e G5:e F5:e E5:e D5:q",
+      "leftHand": "Bb2:q D4 F4:q C3:q E4 Bb3:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 7,
+      "rightHand": "C5:e D5:e E5:e F5:e G5:e A5:e Bb5:q",
+      "leftHand": "F2:q A3 C4:q Bb2:q D4 F4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 8,
+      "rightHand": "A5:q F5:q C5:q R:q",
+      "leftHand": "F2:q A3 C4:q F2:q R:q",
+      "dynamics": "ff"
+    }
+  ]
+}

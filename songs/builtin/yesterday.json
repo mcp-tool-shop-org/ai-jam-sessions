@@ -1,0 +1,92 @@
+{
+  "id": "yesterday",
+  "title": "Yesterday",
+  "genre": "pop",
+  "composer": "John Lennon & Paul McCartney",
+  "difficulty": "beginner",
+  "key": "F major",
+  "tempo": 96,
+  "timeSignature": "4/4",
+  "durationSeconds": 20,
+  "tags": [
+    "beatles",
+    "ballad",
+    "melancholic",
+    "beginner-friendly",
+    "classic"
+  ],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "One of the most covered songs in history, originally performed with a string quartet. The melody is singable and poignant, moving through F major with surprising chromatic touches. This simplified arrangement focuses on the vocal melody with basic chord support.",
+    "structure": "Verse (8 bars) — F-Em7-A7-Dm-Bb-C-F progression with melodic narrative",
+    "keyMoments": [
+      "Bars 1-2: F major opening — the melody immediately establishes the wistful mood",
+      "Bars 3-4: A7 to Dm — the harmonic surprise that gives the song its distinctive color",
+      "Bars 7-8: Bb-C-F cadence — the classic resolution that brings the verse home"
+    ],
+    "teachingGoals": [
+      "Playing a lyrical melody with proper phrasing",
+      "Basic chord shapes in F major: F, Dm, Bb, C",
+      "Understanding how melody and harmony work together"
+    ],
+    "styleTips": [
+      "Play the melody as if you were singing it — breathe where a singer would",
+      "Left hand should be gentle and supportive, never overpowering",
+      "Slightly slower than strict tempo feels right — let it be nostalgic"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "A4:q A4:q A4:q Bb4:q",
+      "leftHand": "F3:h C3:h",
+      "teachingNote": "F major — the melody begins on the third degree. Simple, direct, unforgettable.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 2,
+      "rightHand": "C5:q Bb4:q A4:q G4:q",
+      "leftHand": "E3:h A2:h",
+      "teachingNote": "Em7 to A7 implied — the melody descends smoothly. Notice the E natural in the bass."
+    },
+    {
+      "number": 3,
+      "rightHand": "F4:q G4:q A4:h",
+      "leftHand": "D3:h A2:h",
+      "teachingNote": "D minor — the relative minor. The melody rises F-G-A, a hopeful gesture."
+    },
+    {
+      "number": 4,
+      "rightHand": "A4:q G4:q F4:h",
+      "leftHand": "Bb2:h C3:h",
+      "teachingNote": "Bb to C — the melody mirrors the rise with a fall. Classic arch-shaped phrasing."
+    },
+    {
+      "number": 5,
+      "rightHand": "F4:q G4:q A4:q Bb4:q",
+      "leftHand": "F3:h C3:h",
+      "teachingNote": "Back to F — the second phrase begins with ascending energy.",
+      "dynamics": "mf"
+    },
+    {
+      "number": 6,
+      "rightHand": "C5:q Bb4:q A4:q G4:q",
+      "leftHand": "E3:h A2:h",
+      "teachingNote": "Same harmonic motion as bar 2 — the symmetry is what makes this melody stick."
+    },
+    {
+      "number": 7,
+      "rightHand": "F4:q E4:q D4:q C4:q",
+      "leftHand": "Bb2:h C3:h",
+      "teachingNote": "Bb to C — melody descends to the depths. This is the emotional low point.",
+      "dynamics": "p"
+    },
+    {
+      "number": 8,
+      "rightHand": "F4:w",
+      "leftHand": "F2:h F3:h",
+      "teachingNote": "F major — the melody lands on the tonic. Hold it and let the sadness settle.",
+      "dynamics": "p"
+    }
+  ]
+}

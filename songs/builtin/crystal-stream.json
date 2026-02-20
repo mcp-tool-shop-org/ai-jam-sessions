@@ -1,0 +1,70 @@
+{
+  "id": "crystal-stream",
+  "title": "Crystal Stream",
+  "genre": "new-age",
+  "composer": "Claude (original)",
+  "difficulty": "intermediate",
+  "key": "E minor",
+  "tempo": 80,
+  "timeSignature": "4/4",
+  "durationSeconds": 24,
+  "tags": ["new-age", "flowing", "water", "intermediate", "arpeggios"],
+  "source": "Claude arrangement",
+  "musicalLanguage": {
+    "description": "A flowing piece that captures the movement of water over smooth stones. The right hand plays continuous sixteenth-note arpeggios that ripple across the keyboard while the left hand provides a deep, anchoring bass line.",
+    "structure": "Through-composed flowing arpeggio piece (8 bars)",
+    "keyMoments": ["Continuous water-like flow begins in measure 1", "Minor-to-major shift in measure 5"],
+    "teachingGoals": ["Develop even sixteenth-note arpeggio technique", "Practice sustaining a flowing texture while the bass moves independently"],
+    "styleTips": ["Keep the right hand perfectly even — the water flows without interruption", "Pedal changes on each new harmony to keep the stream clear"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "E4:s G4:s B4:s E5:s G4:s B4:s E5:s G5:s B4:s E5:s G5:s B5:s E5:s G5:s B5:s E6:s",
+      "leftHand": "E2:h B2:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 2,
+      "rightHand": "D4:s G4:s B4:s D5:s G4:s B4:s D5:s G5:s B4:s D5:s G5:s B5:s D5:s G5:s B5:s D6:s",
+      "leftHand": "G2:h D3:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 3,
+      "rightHand": "C4:s E4:s A4:s C5:s E4:s A4:s C5:s E5:s A4:s C5:s E5:s A5:s C5:s E5:s A5:s C6:s",
+      "leftHand": "A2:h E3:h",
+      "dynamics": "mp"
+    },
+    {
+      "number": 4,
+      "rightHand": "B3:s D4:s F#4:s B4:s D4:s F#4:s B4:s D5:s F#4:s B4:s D5:s F#5:s B4:s D5:s F#5:s B5:s",
+      "leftHand": "B2:h F#3:h",
+      "dynamics": "mp"
+    },
+    {
+      "number": 5,
+      "rightHand": "C4:s E4:s G4:s C5:s E4:s G4:s C5:s E5:s G4:s C5:s E5:s G5:s C5:s E5:s G5:s C6:s",
+      "leftHand": "C3:h G3:h",
+      "dynamics": "mf"
+    },
+    {
+      "number": 6,
+      "rightHand": "D4:s F#4:s A4:s D5:s F#4:s A4:s D5:s F#5:s A4:s D5:s F#5:s A5:s D5:s F#5:s A5:s D6:s",
+      "leftHand": "D3:h A3:h",
+      "dynamics": "mf"
+    },
+    {
+      "number": 7,
+      "rightHand": "E4:s G4:s B4:s E5:s G4:s B4:s E5:s G5:s B4:s E5:s G5:s B5:s G5:s E5:s B4:s G4:s",
+      "leftHand": "E2:h B2:h",
+      "dynamics": "mp"
+    },
+    {
+      "number": 8,
+      "rightHand": "E4:s G4:s B4:s E5:s B4:s G4:s E4:q E5:h",
+      "leftHand": "E2:w",
+      "dynamics": "p"
+    }
+  ]
+}

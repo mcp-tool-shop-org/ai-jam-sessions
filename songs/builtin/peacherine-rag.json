@@ -1,0 +1,70 @@
+{
+  "id": "peacherine-rag",
+  "title": "Peacherine Rag",
+  "genre": "ragtime",
+  "composer": "Scott Joplin",
+  "difficulty": "intermediate",
+  "key": "C major",
+  "tempo": 112,
+  "timeSignature": "4/4",
+  "durationSeconds": 17,
+  "tags": ["ragtime", "joplin", "lively", "syncopated"],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "A lively and bright rag published in 1901, Peacherine Rag showcases Joplin's gift for infectious melody. The right hand carries a bouncy syncopated tune over a steady oom-pah bass.",
+    "structure": "A section excerpt (8 bars)",
+    "keyMoments": ["Syncopated opening motif in measure 1", "Chromatic passing tone in measure 5"],
+    "teachingGoals": ["Practice steady oom-pah bass pattern", "Develop right-hand syncopation independence"],
+    "styleTips": ["Keep left hand strictly rhythmic and even", "Right hand should bounce lightly on syncopated notes"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "R:e C5:e E5:e G5:e C6:q R:q",
+      "leftHand": "C3:q E4 G4:q C3:q E4 G4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 2,
+      "rightHand": "E5:e C5:e D5:e E5:e G5:q E5:q",
+      "leftHand": "G2:q B3 D4:q G2:q B3 D4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 3,
+      "rightHand": "C5:e D5:e E5:e G5:e A5:q G5:q",
+      "leftHand": "C3:q E4 G4:q C3:q E4 G4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "F5:e E5:e D5:e C5:e D5:h",
+      "leftHand": "F2:q A3 C4:q G2:q B3 D4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 5,
+      "rightHand": "R:e C5:e E5:e G5:e C6:q R:q",
+      "leftHand": "C3:q E4 G4:q C3:q E4 G4:q",
+      "dynamics": "f"
+    },
+    {
+      "number": 6,
+      "rightHand": "E5:e C5:e D5:e Eb5:e E5:q G5:q",
+      "leftHand": "A2:q C4 E4:q A2:q C4 E4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 7,
+      "rightHand": "A5:e G5:e F5:e E5:e D5:q C5:q",
+      "leftHand": "F2:q A3 C4:q G2:q B3 D4:q",
+      "dynamics": "mf"
+    },
+    {
+      "number": 8,
+      "rightHand": "C5:h R:h",
+      "leftHand": "C3:q E4 G4:q C3:q R:q",
+      "dynamics": "f"
+    }
+  ]
+}

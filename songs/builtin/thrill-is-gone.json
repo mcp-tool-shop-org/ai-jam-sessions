@@ -1,0 +1,94 @@
+{
+  "id": "thrill-is-gone",
+  "title": "The Thrill Is Gone",
+  "genre": "blues",
+  "composer": "Roy Hawkins / Rick Darnell",
+  "difficulty": "intermediate",
+  "key": "B minor",
+  "tempo": 84,
+  "timeSignature": "4/4",
+  "durationSeconds": 23,
+  "tags": [
+    "minor-blues",
+    "bb-king",
+    "slow-blues",
+    "minor-key",
+    "string-arrangement",
+    "iconic"
+  ],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "B.B. King's signature song, recorded in 1969 with a string section that transformed blues forever. The minor key gives it a haunting, melancholy quality unlike standard major-key blues. The melody is sparse and vocal — every note is chosen with the economy of a master storyteller.",
+    "structure": "Minor blues form (Bm-Em-F#7). This excerpt: first 8 bars",
+    "keyMoments": [
+      "Bar 1-2: Bm — the stark minor opening. Sparse melody over a simple bass.",
+      "Bar 3-4: Bm continues — the space between notes IS the emotion",
+      "Bar 5-6: Em — the iv chord deepens the sadness",
+      "Bar 7-8: Bm — return to the tonic with a melodic sigh"
+    ],
+    "teachingGoals": [
+      "Minor blues form — different from standard major 12-bar",
+      "Economy of notes — saying more with less, B.B. King style",
+      "Minor key voicings and the natural minor scale"
+    ],
+    "styleTips": [
+      "Less is more — B.B. King was the master of one perfect note",
+      "Let notes sustain and decay naturally — use the pedal",
+      "The rests are emotional — they are where the listener feels the weight"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "D5:q F#5:h D5:q",
+      "leftHand": "B2:h F#3:h",
+      "teachingNote": "Bm — the melody enters simply. D-F#-D outlines the minor triad. Spare and powerful.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 2,
+      "rightHand": "B4:h R:h",
+      "leftHand": "B2:h F#3:h",
+      "teachingNote": "Bm — the melody descends to the root and stops. The silence speaks."
+    },
+    {
+      "number": 3,
+      "rightHand": "A4:q B4:q D5:q E5:q",
+      "leftHand": "B2:h F#3:h",
+      "teachingNote": "Bm — melody climbs stepwise. A-B-D-E from the B natural minor scale.",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "D5:h B4:h",
+      "leftHand": "B2:h F#3:h",
+      "teachingNote": "Bm — settling back down. Two half notes, unhurried. No rush."
+    },
+    {
+      "number": 5,
+      "rightHand": "G5:q E5:q D5:q B4:q",
+      "leftHand": "E3:h B3:h",
+      "teachingNote": "Em — the iv chord. Melody descends through Em chord tones. The sadness deepens."
+    },
+    {
+      "number": 6,
+      "rightHand": "E5:h R:h",
+      "leftHand": "E3:h B3:h",
+      "teachingNote": "Em — rest after E5. Let the minor quality hang in the air.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 7,
+      "rightHand": "D5:q C#5:q B4:h",
+      "leftHand": "B2:h F#3:h",
+      "teachingNote": "Bm — melody sighs downward: D-C#-B. The C# adds a dorian color.",
+      "dynamics": "p"
+    },
+    {
+      "number": 8,
+      "rightHand": "A4:q B4:h R:q",
+      "leftHand": "B2:h F#3:h",
+      "teachingNote": "Bm — a small upward gesture (A to B) before resting. Breath before the next phrase."
+    }
+  ]
+}

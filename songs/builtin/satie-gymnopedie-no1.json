@@ -1,0 +1,70 @@
+{
+  "id": "satie-gymnopedie-no1",
+  "title": "Gymnopedie No. 1",
+  "genre": "classical",
+  "composer": "Erik Satie",
+  "difficulty": "beginner",
+  "key": "D major",
+  "tempo": 72,
+  "timeSignature": "3/4",
+  "durationSeconds": 20,
+  "tags": ["classical", "satie", "minimalist", "gentle", "impressionist"],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "Satie's iconic Gymnopedie No. 1 is one of the simplest yet most hauntingly beautiful piano pieces ever written. Two alternating chords in the left hand support a wandering, melancholic melody. This simplified excerpt captures the opening bars.",
+    "structure": "Opening theme excerpt (8 bars in 3/4)",
+    "keyMoments": ["Iconic opening two-chord alternation in measures 1-2", "Melody entrance in measure 3"],
+    "teachingGoals": ["Learn to voice a melody over simple chords", "Develop a quiet, introspective touch"],
+    "styleTips": ["Play extremely softly and with no hurry at all", "The two alternating chords should be almost identical in weight"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "R:h.",
+      "leftHand": "G3:q D4 B4:h",
+      "dynamics": "pp"
+    },
+    {
+      "number": 2,
+      "rightHand": "R:h.",
+      "leftHand": "A3:q D4 B4:h",
+      "dynamics": "pp"
+    },
+    {
+      "number": 3,
+      "rightHand": "F#5:h E5:q",
+      "leftHand": "G3:q D4 B4:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 4,
+      "rightHand": "D5:h C#5:q",
+      "leftHand": "A3:q D4 B4:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 5,
+      "rightHand": "B4:h A4:q",
+      "leftHand": "G3:q D4 B4:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 6,
+      "rightHand": "G4:h F#4:q",
+      "leftHand": "A3:q D4 B4:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 7,
+      "rightHand": "E4:h D4:q",
+      "leftHand": "G3:q D4 B4:h",
+      "dynamics": "pp"
+    },
+    {
+      "number": 8,
+      "rightHand": "D4:h.",
+      "leftHand": "D3:q D4 A4:h",
+      "dynamics": "pp"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "id": "great-balls-of-fire",
+  "title": "Great Balls of Fire",
+  "genre": "rock",
+  "composer": "Otis Blackwell & Jack Hammer",
+  "difficulty": "advanced",
+  "key": "C major",
+  "tempo": 168,
+  "timeSignature": "4/4",
+  "durationSeconds": 11,
+  "tags": [
+    "jerry-lee-lewis",
+    "boogie",
+    "rock-and-roll",
+    "advanced",
+    "high-energy"
+  ],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "The wildest piano performance in rock and roll history. Jerry Lee Lewis's boogie-woogie-meets-rock style features a pounding left-hand bass pattern, crashing right-hand chords, and unstoppable energy. This arrangement captures the 12-bar blues-rock feel with walking bass and percussive treble chords.",
+    "structure": "12-bar blues condensed to 8 bars — C-F-C-G-F-C boogie pattern",
+    "keyMoments": [
+      "Bars 1-2: The driving C major boogie — pounding bass with crashing treble chords",
+      "Bars 3-4: F major — the IV chord with the same relentless energy",
+      "Bars 7-8: The G-F-C turnaround — classic 12-bar blues resolution at breakneck speed"
+    ],
+    "teachingGoals": [
+      "Boogie-woogie left-hand walking bass pattern",
+      "Playing at high tempo with control and accuracy",
+      "Rock and roll piano technique — percussive, aggressive touch"
+    ],
+    "styleTips": [
+      "Attack the keys — this is not gentle music. Jerry Lee played like the piano owed him money",
+      "The left hand drives everything — it must be rock solid and relentless",
+      "Right hand chords should be punched, not pressed — think percussion, not singing"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "C4 E4 G4:q C4 E4 G4:q C4 E4 G4:q C4 E4 G4:q",
+      "leftHand": "C2:e E2:e G2:e A2:e C2:e E2:e G2:e A2:e",
+      "teachingNote": "C major boogie — crashing chords over walking bass. This is pure energy from beat one.",
+      "dynamics": "ff"
+    },
+    {
+      "number": 2,
+      "rightHand": "C4 E4 G4:q C4 E4 Bb4:q C4 E4 G4:q C4 E4 Bb4:q",
+      "leftHand": "C2:e E2:e G2:e A2:e C2:e E2:e G2:e A2:e",
+      "teachingNote": "C7 — the Bb adds the bluesy 7th. Alternating G and Bb is a classic rock and roll move."
+    },
+    {
+      "number": 3,
+      "rightHand": "F4 A4 C5:q F4 A4 C5:q F4 A4 Eb5:q F4 A4 C5:q",
+      "leftHand": "F2:e A2:e C3:e D3:e F2:e A2:e C3:e D3:e",
+      "teachingNote": "F major — the IV chord. Same boogie pattern transposed. The Eb5 adds the bluesy seventh."
+    },
+    {
+      "number": 4,
+      "rightHand": "F4 A4 C5:q F4 A4 Eb5:q F4 A4 C5:q F4 A4 C5:q",
+      "leftHand": "F2:e A2:e C3:e D3:e F2:e A2:e C3:e D3:e",
+      "teachingNote": "F7 continues — keep the left hand absolutely steady. It is the engine."
+    },
+    {
+      "number": 5,
+      "rightHand": "C4 E4 G4:q C4 E4 Bb4:q C4 E4 G4:q C4 E4 Bb4:q",
+      "leftHand": "C2:e E2:e G2:e A2:e C2:e E2:e G2:e A2:e",
+      "teachingNote": "Back to C — the return hits even harder after the F chord. Dig in.",
+      "dynamics": "ff"
+    },
+    {
+      "number": 6,
+      "rightHand": "C4 E4 G4:q C4 E4 G4:q C4 E4 G4:q R:q",
+      "leftHand": "C2:e E2:e G2:e A2:e C2:e E2:e G2:q",
+      "teachingNote": "C major — a brief rest on beat 4 creates a dramatic pause before the turnaround."
+    },
+    {
+      "number": 7,
+      "rightHand": "G4 B4 D5:q G4 B4 D5:q F4 A4 C5:q F4 A4 C5:q",
+      "leftHand": "G2:e B2:e D3:e B2:e F2:e A2:e C3:e A2:e",
+      "teachingNote": "G to F — the classic V-IV turnaround. Two beats each, quick and punchy.",
+      "dynamics": "f"
+    },
+    {
+      "number": 8,
+      "rightHand": "C4 E4 G4:q E5:e C5:e G4:e E4:e C4 E4 G4:q",
+      "leftHand": "C2:e E2:e G2:e A2:e C2:h",
+      "teachingNote": "C major finale — a descending run before the final chord. Slam it home.",
+      "dynamics": "ff"
+    }
+  ]
+}

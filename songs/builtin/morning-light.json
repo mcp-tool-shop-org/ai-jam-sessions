@@ -1,0 +1,70 @@
+{
+  "id": "morning-light",
+  "title": "Morning Light",
+  "genre": "new-age",
+  "composer": "Claude (original)",
+  "difficulty": "beginner",
+  "key": "G major",
+  "tempo": 72,
+  "timeSignature": "4/4",
+  "durationSeconds": 27,
+  "tags": ["new-age", "bright", "arpeggios", "beginner", "uplifting"],
+  "source": "Claude arrangement",
+  "musicalLanguage": {
+    "description": "A bright, uplifting piece built on simple arpeggiated patterns that evoke sunlight gradually filling a room. The harmony moves gently through diatonic chords in G major, creating warmth and optimism.",
+    "structure": "Through-composed ascending arpeggio piece (8 bars)",
+    "keyMoments": ["Sunrise arpeggio in measure 1", "Warm climax in measure 5"],
+    "teachingGoals": ["Practice basic arpeggio patterns across both hands", "Learn to create a sense of musical growth and direction"],
+    "styleTips": ["Gradually grow from very soft to moderately warm", "Each arpeggio should flow smoothly into the next"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "G4:e B4:e D5:e G5:e D5:e B4:e G4:q",
+      "leftHand": "G3:h D4:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 2,
+      "rightHand": "A4:e C5:e E5:e A5:e E5:e C5:e A4:q",
+      "leftHand": "A3:h E4:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 3,
+      "rightHand": "B4:e D5:e G5:e B5:e G5:e D5:e B4:q",
+      "leftHand": "G3:h D4:h",
+      "dynamics": "mp"
+    },
+    {
+      "number": 4,
+      "rightHand": "C5:e E5:e G5:e C6:e G5:e E5:e C5:q",
+      "leftHand": "C4:h G3:h",
+      "dynamics": "mp"
+    },
+    {
+      "number": 5,
+      "rightHand": "D5:e G5:e B5:e D6:e B5:e G5:e D5:q",
+      "leftHand": "G3:h B3:h",
+      "dynamics": "mf"
+    },
+    {
+      "number": 6,
+      "rightHand": "C5:e E5:e A5:e C6:e A5:e E5:e C5:q",
+      "leftHand": "A3:h E4:h",
+      "dynamics": "mf"
+    },
+    {
+      "number": 7,
+      "rightHand": "B4:e D5:e F#5:e A5:e F#5:e D5:e B4:q",
+      "leftHand": "D3:h A3:h",
+      "dynamics": "mp"
+    },
+    {
+      "number": 8,
+      "rightHand": "G4:e B4:e D5:e G5:e D5:h",
+      "leftHand": "G3:h G2:h",
+      "dynamics": "p"
+    }
+  ]
+}

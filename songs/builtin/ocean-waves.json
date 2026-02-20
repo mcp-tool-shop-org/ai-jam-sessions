@@ -1,0 +1,70 @@
+{
+  "id": "ocean-waves",
+  "title": "Ocean Waves",
+  "genre": "new-age",
+  "composer": "Claude (original)",
+  "difficulty": "beginner",
+  "key": "C major",
+  "tempo": 58,
+  "timeSignature": "4/4",
+  "durationSeconds": 33,
+  "tags": ["new-age", "ocean", "rolling", "beginner", "peaceful"],
+  "source": "Claude arrangement",
+  "musicalLanguage": {
+    "description": "A peaceful, rolling piece that mimics the rhythm of ocean waves. The left hand provides a steady rocking arpeggio pattern while the right hand plays a simple, singing melody. The effect is hypnotic and calming.",
+    "structure": "Through-composed wave-pattern piece (8 bars)",
+    "keyMoments": ["Wave pattern established in measure 1", "Melody crests gently in measure 5"],
+    "teachingGoals": ["Develop a smooth, rocking accompaniment pattern", "Learn to shape a melody over a repeating ostinato"],
+    "styleTips": ["The left hand is the waves — keep it perfectly even and hypnotic", "The melody should float above like a seabird"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "E5:h G5:h",
+      "leftHand": "C3:e G3:e C4:e G3:e C3:e G3:e C4:e G3:e",
+      "dynamics": "p"
+    },
+    {
+      "number": 2,
+      "rightHand": "F5:h E5:h",
+      "leftHand": "F3:e C4:e F4:e C4:e F3:e C4:e F4:e C4:e",
+      "dynamics": "p"
+    },
+    {
+      "number": 3,
+      "rightHand": "D5:q E5:q F5:q E5:q",
+      "leftHand": "G3:e D4:e G4:e D4:e G3:e D4:e G4:e D4:e",
+      "dynamics": "mp"
+    },
+    {
+      "number": 4,
+      "rightHand": "C5:h R:h",
+      "leftHand": "C3:e G3:e C4:e G3:e C3:e G3:e C4:e G3:e",
+      "dynamics": "p"
+    },
+    {
+      "number": 5,
+      "rightHand": "G5:q A5:q G5:q E5:q",
+      "leftHand": "A3:e E4:e A4:e E4:e A3:e E4:e A4:e E4:e",
+      "dynamics": "mf"
+    },
+    {
+      "number": 6,
+      "rightHand": "F5:q E5:q D5:q C5:q",
+      "leftHand": "F3:e C4:e F4:e C4:e G3:e D4:e G4:e D4:e",
+      "dynamics": "mp"
+    },
+    {
+      "number": 7,
+      "rightHand": "D5:q E5:q C5:h",
+      "leftHand": "G3:e D4:e G4:e D4:e C3:e G3:e C4:e G3:e",
+      "dynamics": "mp"
+    },
+    {
+      "number": 8,
+      "rightHand": "C5:w",
+      "leftHand": "C3:e G3:e C4:e G3:e C3:h",
+      "dynamics": "pp"
+    }
+  ]
+}

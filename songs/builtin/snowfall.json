@@ -1,0 +1,70 @@
+{
+  "id": "snowfall",
+  "title": "Snowfall",
+  "genre": "new-age",
+  "composer": "Claude (original)",
+  "difficulty": "beginner",
+  "key": "A minor",
+  "tempo": 60,
+  "timeSignature": "4/4",
+  "durationSeconds": 32,
+  "tags": ["new-age", "gentle", "winter", "beginner", "meditative"],
+  "source": "Claude arrangement",
+  "musicalLanguage": {
+    "description": "A gentle, contemplative piece that evokes snowflakes drifting slowly downward. Simple descending patterns in the right hand mimic falling snow, while the left hand provides a warm harmonic cushion beneath.",
+    "structure": "Through-composed descending pattern piece (8 bars)",
+    "keyMoments": ["First snowflake pattern in measure 1", "Warm major resolution in measure 7"],
+    "teachingGoals": ["Practice gentle descending scale patterns", "Learn to create atmosphere with simple notes and pedal"],
+    "styleTips": ["Imagine each note is a snowflake landing softly", "Use pedal to connect the falling notes into a continuous texture"]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "E5:q D5:q C5:q B4:q",
+      "leftHand": "A2:h E3:h",
+      "dynamics": "pp"
+    },
+    {
+      "number": 2,
+      "rightHand": "A4:q G4:q F4:q E4:q",
+      "leftHand": "A2:h F3:h",
+      "dynamics": "pp"
+    },
+    {
+      "number": 3,
+      "rightHand": "E5:q D5:q C5:q A4:q",
+      "leftHand": "D3:h A3:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 4,
+      "rightHand": "B4:q G4:q E4:h",
+      "leftHand": "E3:h B3:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 5,
+      "rightHand": "F5:q E5:q D5:q C5:q",
+      "leftHand": "F3:h C4:h",
+      "dynamics": "mp"
+    },
+    {
+      "number": 6,
+      "rightHand": "B4:q A4:q G4:q F4:q",
+      "leftHand": "G3:h D4:h",
+      "dynamics": "mp"
+    },
+    {
+      "number": 7,
+      "rightHand": "E4:q F4:q G4:q A4:q",
+      "leftHand": "C3:h G3:h",
+      "dynamics": "p"
+    },
+    {
+      "number": 8,
+      "rightHand": "A4:w",
+      "leftHand": "A2:w",
+      "dynamics": "pp"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "minor-blues-in-a",
+  "title": "Minor Blues in A",
+  "genre": "blues",
+  "composer": "Traditional",
+  "difficulty": "intermediate",
+  "key": "A minor",
+  "tempo": 92,
+  "timeSignature": "4/4",
+  "durationSeconds": 21,
+  "tags": [
+    "minor-blues",
+    "A-minor",
+    "dark",
+    "moody",
+    "12-bar",
+    "modal"
+  ],
+  "source": "Claude arrangement",
+  "musicalLanguage": {
+    "description": "A minor-key 12-bar blues with a darker, moodier sound than standard major-key blues. The Am7-Dm7-E7 progression creates tension without resolution, a haunting quality that influenced everything from jazz to rock. The A minor blues scale (A C D Eb E G) provides the melodic vocabulary.",
+    "structure": "Minor 12-bar blues: i(4)-iv(2)-i(2)-V-iv-i-V. This excerpt: 8 bars",
+    "keyMoments": [
+      "Bar 1-2: Am7 — the minor tonic sets a dark, introspective mood",
+      "Bar 3-4: Am7 continues — the melody uses the minor blues scale with Eb (the blue note)",
+      "Bar 5-6: Dm7 — minor iv chord. The darkness deepens.",
+      "Bar 7-8: Am7 — return home with a descending line"
+    ],
+    "teachingGoals": [
+      "Minor blues form — i-iv-V in a minor key",
+      "A minor blues scale: A C D Eb E G",
+      "Difference between major and minor blues sound and feel"
+    ],
+    "styleTips": [
+      "Play with a darker touch — less bounce, more weight",
+      "The Eb (blue note) should be emphasized — it is the soul of minor blues",
+      "Left hand uses minor 7th voicings — root + minor 7th"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "A4:q C5:q E5:q G5:q",
+      "leftHand": "A2:q E3:q A3:q E3:q",
+      "teachingNote": "Am7 — ascending through Am7 chord tones. Left hand establishes the minor root-fifth pattern.",
+      "dynamics": "mf"
+    },
+    {
+      "number": 2,
+      "rightHand": "E5:q Eb5:q D5:q C5:q",
+      "leftHand": "A2:q E3:q A3:q E3:q",
+      "teachingNote": "Am7 — the E-Eb is the critical blues move: natural 5th sliding down to the blue note."
+    },
+    {
+      "number": 3,
+      "rightHand": "A4:q C5:q D5:q Eb5:q",
+      "leftHand": "A2:q E3:q A3:q G3:q",
+      "teachingNote": "Am7 — climbing through the minor blues scale. Eb (the blue note) is the peak.",
+      "dynamics": "f"
+    },
+    {
+      "number": 4,
+      "rightHand": "E5:q D5:q C5:q A4:q",
+      "leftHand": "A2:q E3:q A3:q E3:q",
+      "teachingNote": "Am7 — descending back to A. Natural E replaces Eb on the way down — common practice."
+    },
+    {
+      "number": 5,
+      "rightHand": "D5:q F5:q A5:q C6:q",
+      "leftHand": "D3:q A3:q D4:q A3:q",
+      "teachingNote": "Dm7 — the iv chord. Melody arpeggiates Dm7 upward. The mood deepens.",
+      "dynamics": "mf"
+    },
+    {
+      "number": 6,
+      "rightHand": "A5:q Ab5:q G5:q F5:q",
+      "leftHand": "D3:q A3:q D4:q A3:q",
+      "teachingNote": "Dm7 — descending with Ab as the blue note over Dm. Chromatic tension."
+    },
+    {
+      "number": 7,
+      "rightHand": "E5:q D5:q C5:q B4:q",
+      "leftHand": "A2:q E3:q A3:q E3:q",
+      "teachingNote": "Am7 — back to the tonic. Stepwise descent through A minor.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 8,
+      "rightHand": "A4:h R:h",
+      "leftHand": "A2:q E3:q A3:h",
+      "teachingNote": "Am7 — land on the root and rest. Silence after the descent creates weight."
+    }
+  ]
+}

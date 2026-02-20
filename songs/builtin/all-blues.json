@@ -1,0 +1,92 @@
+{
+  "id": "all-blues",
+  "title": "All Blues",
+  "genre": "jazz",
+  "composer": "Miles Davis",
+  "difficulty": "intermediate",
+  "key": "G mixolydian",
+  "tempo": 132,
+  "timeSignature": "6/8",
+  "durationSeconds": 22,
+  "tags": [
+    "modal-jazz",
+    "miles-davis",
+    "kind-of-blue",
+    "waltz-blues",
+    "6/8",
+    "groove"
+  ],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "A hypnotic 6/8 blues from Kind of Blue that grooves like a slow waltz. Built on a G7 mixolydian foundation, the piece uses a rocking left-hand figure that never stops. The piano tremolo between two voicings creates the signature shimmering sound that Bill Evans made famous.",
+    "structure": "12-bar blues in 6/8. This excerpt: first 8 bars (I and IV chords)",
+    "keyMoments": [
+      "Bar 1-4: G7 — the hypnotic rocking figure establishes the trance-like feel",
+      "Bar 5-6: C7/G — the IV chord. Same rocking motion, new harmony",
+      "Bar 7-8: Back to G7 — the groove never breaks, only the colors change"
+    ],
+    "teachingGoals": [
+      "6/8 feel — two groups of three, like a slow waltz with blues flavor",
+      "Piano tremolo/rocking voicing technique between two shapes",
+      "Blues form adapted to 6/8 — same I-IV-V structure, different groove"
+    ],
+    "styleTips": [
+      "The left hand rocks gently — think of a boat on calm water",
+      "Do not accent beat 1 too hard — let the 6/8 flow evenly",
+      "Right hand melody is sparse and modal — leave lots of space"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "D5:q. B4:q.",
+      "leftHand": "G2:e B2:e D3:e G2:e B2:e D3:e",
+      "teachingNote": "G7 — the rocking bass pattern: G-B-D repeating in eighth notes. Two groups of three in 6/8.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 2,
+      "rightHand": "F5:q. D5:q.",
+      "leftHand": "G2:e B2:e D3:e G2:e B2:e D3:e",
+      "teachingNote": "G7 continues. Right hand adds the b7 (F) — this is the blues note."
+    },
+    {
+      "number": 3,
+      "rightHand": "G5:q. F5:e D5:q",
+      "leftHand": "G2:e B2:e D3:e G2:e B2:e D3:e",
+      "teachingNote": "Melody peaks at G5 then descends. The groove stays hypnotic underneath.",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "B4:q. R:q.",
+      "leftHand": "G2:e B2:e D3:e G2:e B2:e D3:e",
+      "teachingNote": "Phrase ends on B4 with a rest. Silence is as important as sound."
+    },
+    {
+      "number": 5,
+      "rightHand": "E5:q. C5:q.",
+      "leftHand": "C3:e E3:e G3:e C3:e E3:e G3:e",
+      "teachingNote": "C7 — the IV chord! Left hand shifts the rocking pattern to C-E-G."
+    },
+    {
+      "number": 6,
+      "rightHand": "Bb4:q. G4:q.",
+      "leftHand": "C3:e E3:e G3:e C3:e E3:e G3:e",
+      "teachingNote": "C7 continues. Bb is the 7th — dominant color over the IV chord."
+    },
+    {
+      "number": 7,
+      "rightHand": "D5:q. B4:q.",
+      "leftHand": "G2:e B2:e D3:e G2:e B2:e D3:e",
+      "teachingNote": "Back to G7. Same voicings as bar 1. The groove comes home.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 8,
+      "rightHand": "G4:q. R:q.",
+      "leftHand": "G2:e B2:e D3:e G2:e B2:e D3:e",
+      "teachingNote": "G7 settles. The melody disappears, leaving only the rocking bass."
+    }
+  ]
+}

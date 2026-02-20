@@ -1,0 +1,92 @@
+{
+  "id": "hotel-california",
+  "title": "Hotel California",
+  "genre": "rock",
+  "composer": "Don Felder, Don Henley & Glenn Frey",
+  "difficulty": "intermediate",
+  "key": "B minor",
+  "tempo": 74,
+  "timeSignature": "4/4",
+  "durationSeconds": 26,
+  "tags": [
+    "eagles",
+    "fingerpicking",
+    "classic-rock",
+    "arpeggiated",
+    "mysterious"
+  ],
+  "source": "Claude arrangement — simplified interpretation",
+  "musicalLanguage": {
+    "description": "An adaptation of the iconic guitar arpeggiation for piano. The song's verse uses a descending chord progression in B minor that creates its mysterious, hypnotic atmosphere. The piano arrangement preserves the flowing arpeggiated texture and the characteristic minor-key harmonic movement.",
+    "structure": "Verse (8 bars) — Bm-F#-A-E-G-D-Em-F# progression",
+    "keyMoments": [
+      "Bars 1-2: Bm to F# — the dark opening with the dominant pull",
+      "Bars 3-4: A to E — the relative major provides brief warmth",
+      "Bars 7-8: Em to F# — the haunting turnaround that pulls back to B minor"
+    ],
+    "teachingGoals": [
+      "Playing in B minor with two sharps (F#, C#)",
+      "Arpeggiated patterns adapted from guitar fingerpicking style",
+      "Understanding minor key chord progressions"
+    ],
+    "styleTips": [
+      "Keep the arpeggiation even and hypnotic — this song casts a spell through repetition",
+      "The minor key should feel mysterious, not sad — there is beauty in the darkness",
+      "Slight rubato on chord changes enhances the dreamlike quality"
+    ]
+  },
+  "measures": [
+    {
+      "number": 1,
+      "rightHand": "F#4:e B4:e D5:e B4:e F#4:e B4:e D5:e B4:e",
+      "leftHand": "B2:h F#2:h",
+      "teachingNote": "B minor — the mysterious opening. Let the arpeggiation create a sense of place.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 2,
+      "rightHand": "F#4:e A#4:e C#5:e A#4:e F#4:e A#4:e C#5:e A#4:e",
+      "leftHand": "F#2:h F#3:h",
+      "teachingNote": "F# major — the dominant chord. A# is the leading tone that wants to resolve to B."
+    },
+    {
+      "number": 3,
+      "rightHand": "E4:e A4:e C#5:e A4:e E4:e A4:e C#5:e A4:e",
+      "leftHand": "A2:h E3:h",
+      "teachingNote": "A major — a moment of brightness in the minor landscape. Relative major warmth.",
+      "dynamics": "mf"
+    },
+    {
+      "number": 4,
+      "rightHand": "E4:e G#4:e B4:e G#4:e E4:e G#4:e B4:e G#4:e",
+      "leftHand": "E2:h B2:h",
+      "teachingNote": "E major — the IV chord. G# gives it the major quality. The progression keeps descending."
+    },
+    {
+      "number": 5,
+      "rightHand": "D4:e G4:e B4:e G4:e D4:e G4:e B4:e G4:e",
+      "leftHand": "G2:h D3:h",
+      "teachingNote": "G major — the VI chord. We are far from home now, harmonically wandering."
+    },
+    {
+      "number": 6,
+      "rightHand": "D4:e F#4:e A4:e F#4:e D4:e F#4:e A4:e F#4:e",
+      "leftHand": "D2:h A2:h",
+      "teachingNote": "D major — III chord. The brightness continues before the dark return.",
+      "dynamics": "mp"
+    },
+    {
+      "number": 7,
+      "rightHand": "E4:e G4:e B4:e G4:e E4:e G4:e B4:e G4:e",
+      "leftHand": "E2:h B2:h",
+      "teachingNote": "E minor — the iv chord. Natural G replaces G#. The mood darkens for the return."
+    },
+    {
+      "number": 8,
+      "rightHand": "F#4:e A#4:e C#5:e A#4:e F#4:h",
+      "leftHand": "F#2:h B2:h",
+      "teachingNote": "F# to Bm — the dominant resolves to tonic. The cycle is ready to repeat.",
+      "dynamics": "p"
+    }
+  ]
+}
