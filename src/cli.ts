@@ -37,7 +37,8 @@ import {
   composeTeachingHooks,
 } from "./teaching.js";
 import { createSingOnMidiHook } from "./teaching/sing-on-midi.js";
-import { createMidiFeedbackHook } from "./teaching/midi-feedback.js";
+import { createLiveMidiFeedbackHook } from "./teaching/live-midi-feedback.js";
+import { PositionTracker } from "./playback/position.js";
 import type { TeachingHook } from "./types.js";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -154,7 +155,7 @@ function cmdInfo(args: string[]): void {
 async function cmdPlay(args: string[]): Promise<void> {
   const target = args[0];
   if (!target) {
-    console.error("Usage: pianoai play <song-id | file.mid> [--speed N] [--tempo N] [--mode MODE] [--midi] [--with-singing] [--with-teaching] [--sing-mode MODE]");
+    console.error("Usage: pianoai play <song-id | file.mid> [--speed N] [--tempo N] [--mode MODE] [--midi] [--with-singing] [--with-teaching] [--sing-mode MODE] [--seek N]");
     process.exit(1);
   }
 
@@ -166,6 +167,8 @@ async function cmdPlay(args: string[]): Promise<void> {
   const speedStr = getFlag(args, "--speed");
   const modeStr = getFlag(args, "--mode") ?? "full";
   const singModeStr = getFlag(args, "--sing-mode") ?? "note-names";
+  const seekStr = getFlag(args, "--seek");
+  const voiceFilterStr = getFlag(args, "--voice-filter") ?? "all";
 
   // Validate speed
   const speed = speedStr ? parseFloat(speedStr) : undefined;
@@ -199,15 +202,28 @@ async function cmdPlay(args: string[]): Promise<void> {
       }
 
       const parsed = await parseMidiFile(target);
+      const tracker = new PositionTracker(parsed);
       const trackInfo = parsed.trackNames.length > 0 ? parsed.trackNames.join(", ") : "Unknown";
       const durationAtSpeed = parsed.durationSeconds / (speed ?? 1.0);
       const features: string[] = [];
-      if (withSinging) features.push(`singing (${singMode})`);
+      if (withSinging) features.push(`singing (${singMode}, ${voiceFilterStr})`);
       if (withTeaching) features.push("teaching");
+
+      // Validate seek
+      const seekSec = seekStr ? parseFloat(seekStr) : undefined;
+      if (seekSec !== undefined && (isNaN(seekSec) || seekSec < 0)) {
+        console.error(`Invalid seek: "${seekStr}". Must be a positive number (seconds).`);
+        process.exit(1);
+      }
 
       console.log(`\nPlaying: ${target}`);
       console.log(`  Tracks: ${trackInfo} (${parsed.trackCount})`);
       console.log(`  Notes: ${parsed.noteCount} | Tempo: ${parsed.bpm} BPM | Duration: ~${Math.round(durationAtSpeed)}s`);
+      console.log(`  Measures: ~${tracker.totalMeasures} (estimated)`);
+      if (seekSec) {
+        const seekSnap = tracker.snapshotAt(seekSec);
+        console.log(`  Seeking to: ${seekSec}s (measure ${seekSnap.measure}, beat ${seekSnap.beatInMeasure.toFixed(1)})`);
+      }
       if (features.length > 0) console.log(`  Features: ${features.join(", ")}`);
       console.log();
 
@@ -220,6 +236,7 @@ async function cmdPlay(args: string[]): Promise<void> {
         };
         hooks.push(createSingOnMidiHook(voiceSink, parsed, {
           mode: singMode,
+          voiceFilter: voiceFilterStr as import("./teaching/sing-on-midi.js").SingVoiceFilter,
           speechSpeed: speed ?? 1.0,
         }));
       }
@@ -232,7 +249,8 @@ async function cmdPlay(args: string[]): Promise<void> {
           const prefix = d.priority === "med" ? "💡" : d.priority === "high" ? "❗" : "ℹ️";
           console.log(`  ${prefix} ${d.text}`);
         };
-        hooks.push(createMidiFeedbackHook(voiceSink, asideSink, parsed));
+        // Use position-aware feedback (measure-level context)
+        hooks.push(createLiveMidiFeedbackHook(voiceSink, asideSink, parsed));
       }
 
       hooks.push(createConsoleTeachingHook());

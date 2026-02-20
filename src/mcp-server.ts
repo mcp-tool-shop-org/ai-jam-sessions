@@ -46,6 +46,7 @@ import { MidiPlaybackEngine } from "./playback/midi-engine.js";
 import { PlaybackController } from "./playback/controls.js";
 import { createSingOnMidiHook } from "./teaching/sing-on-midi.js";
 import { createMidiFeedbackHook } from "./teaching/midi-feedback.js";
+import { createLiveMidiFeedbackHook } from "./teaching/live-midi-feedback.js";
 import type { VoiceDirective, AsideDirective } from "./types.js";
 import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -618,7 +619,8 @@ server.tool(
           feedbackLog.push(d.text);
           console.error(`💡 ${d.text}`);
         };
-        hooks.push(createMidiFeedbackHook(voiceSink, asideSink, parsed));
+        // Use position-aware feedback (measure-level context) over basic per-note
+        hooks.push(createLiveMidiFeedbackHook(voiceSink, asideSink, parsed));
       }
 
       hooks.push(createConsoleTeachingHook());
@@ -800,6 +802,105 @@ server.tool(
     return {
       content: [{ type: "text", text: `Stopped: ${info}` }],
     };
+  }
+);
+
+// ─── Tool: pause_playback ─────────────────────────────────────────────────
+
+server.tool(
+  "pause_playback",
+  "Pause or resume the currently playing song.",
+  {
+    resume: z.boolean().optional().describe("If true, resume playback. If false or omitted, pause."),
+  },
+  async ({ resume }) => {
+    if (resume) {
+      // Resume
+      if (activeController && activeController.state === "paused") {
+        activeController.resume().catch(() => {});
+        return { content: [{ type: "text", text: "Resumed playback." }] };
+      }
+      if (activeSession && activeSession.state === "paused") {
+        activeSession.play().catch(() => {});
+        return { content: [{ type: "text", text: "Resumed playback." }] };
+      }
+      return { content: [{ type: "text", text: "Nothing is paused." }] };
+    }
+
+    // Pause
+    if (activeController && activeController.state === "playing") {
+      activeController.pause();
+      const pos = activeController.positionSeconds;
+      return {
+        content: [{
+          type: "text",
+          text: `Paused at ${pos.toFixed(1)}s (${activeController.eventsPlayed}/${activeController.totalEvents} events).`,
+        }],
+      };
+    }
+    if (activeMidiEngine && activeMidiEngine.state === "playing") {
+      activeMidiEngine.pause();
+      return {
+        content: [{
+          type: "text",
+          text: `Paused at ${activeMidiEngine.positionSeconds.toFixed(1)}s.`,
+        }],
+      };
+    }
+    if (activeSession && activeSession.state === "playing") {
+      activeSession.pause();
+      return {
+        content: [{
+          type: "text",
+          text: `Paused (${activeSession.session.measuresPlayed} measures played).`,
+        }],
+      };
+    }
+
+    return { content: [{ type: "text", text: "No song is currently playing." }] };
+  }
+);
+
+// ─── Tool: set_speed ──────────────────────────────────────────────────────
+
+server.tool(
+  "set_speed",
+  "Change the playback speed of the currently playing song. Takes effect on the next note.",
+  {
+    speed: z.number().min(0.1).max(4).describe("New speed multiplier (0.1–4.0)"),
+  },
+  async ({ speed }) => {
+    if (activeController) {
+      const prev = activeController.speed;
+      activeController.setSpeed(speed);
+      return {
+        content: [{
+          type: "text",
+          text: `Speed changed: ${prev}x → ${speed}x. Takes effect on next note.`,
+        }],
+      };
+    }
+    if (activeMidiEngine) {
+      const prev = activeMidiEngine.speed;
+      activeMidiEngine.setSpeed(speed);
+      return {
+        content: [{
+          type: "text",
+          text: `Speed changed: ${prev}x → ${speed}x.`,
+        }],
+      };
+    }
+    if (activeSession) {
+      activeSession.setSpeed(speed);
+      return {
+        content: [{
+          type: "text",
+          text: `Speed changed to ${speed}x.`,
+        }],
+      };
+    }
+
+    return { content: [{ type: "text", text: "No song is currently playing." }] };
   }
 );
 
