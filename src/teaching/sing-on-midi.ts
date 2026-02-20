@@ -5,6 +5,11 @@
 // this hook reads the actual MidiNoteEvent stream and converts MIDI note numbers
 // to singable syllables (note-names, solfege, contour, or syllables).
 //
+// Supports voice filters:
+// - "all" — sing every note/chord (default)
+// - "melody-only" — pick the highest note per cluster (typical melody line)
+// - "harmony" — pick the lowest note per cluster (bass/harmony line)
+//
 // Designed to work with PlaybackController — listens to note events in real time.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -83,11 +88,52 @@ export function contourDirection(
   return "same";
 }
 
+// ─── Voice Filter ───────────────────────────────────────────────────────────
+
+/**
+ * Which notes to sing from each cluster:
+ * - "all" — sing every note (chords become "C and E and G")
+ * - "melody-only" — highest note per cluster (typical RH melody)
+ * - "harmony" — lowest note per cluster (bass line / LH)
+ */
+export type SingVoiceFilter = "all" | "melody-only" | "harmony";
+
+/**
+ * Filter a cluster of events based on the voice filter.
+ * Returns a subset of events to sing.
+ */
+export function filterClusterForVoice(
+  events: readonly MidiNoteEvent[],
+  filter: SingVoiceFilter
+): MidiNoteEvent[] {
+  if (events.length === 0) return [];
+  if (filter === "all") return [...events];
+
+  if (filter === "melody-only") {
+    // Pick the highest note (typical melody line is on top)
+    let highest = events[0];
+    for (const e of events) {
+      if (e.note > highest.note) highest = e;
+    }
+    return [highest];
+  }
+
+  // "harmony" — pick the lowest note
+  let lowest = events[0];
+  for (const e of events) {
+    if (e.note < lowest.note) lowest = e;
+  }
+  return [lowest];
+}
+
 // ─── Sing-On-MIDI Options ───────────────────────────────────────────────────
 
 export interface SingOnMidiOptions {
   /** Singable mode. Default: "note-names". */
   mode?: SingAlongMode;
+
+  /** Voice filter: which notes to sing per cluster. Default: "all". */
+  voiceFilter?: SingVoiceFilter;
 
   /** Voice preset for speech synthesis. */
   voice?: string;
@@ -134,6 +180,7 @@ export function createSingOnMidiHook(
 ): TeachingHook & { directives: VoiceDirective[]; clusters: MidiNoteEvent[][] } {
   const {
     mode = "note-names",
+    voiceFilter = "all",
     voice,
     speechSpeed = 1.0,
     announcePosition = false,
@@ -176,7 +223,10 @@ export function createSingOnMidiHook(
       if (clusterIndex === undefined || clusterIndex === lastAnnouncedCluster) return;
 
       lastAnnouncedCluster = clusterIndex;
-      const cluster = clusters[clusterIndex];
+      const rawCluster = clusters[clusterIndex];
+
+      // Apply voice filter (melody-only picks highest, harmony picks lowest)
+      const cluster = filterClusterForVoice(rawCluster, voiceFilter);
 
       // Build singable text
       let text: string;
