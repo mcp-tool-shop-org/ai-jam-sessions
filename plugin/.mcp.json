@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "pianoai": {
+      "command": "npx",
+      "args": ["-y", "-p", "@mcptoolshop/pianoai", "pianoai-mcp"],
+      "env": {}
+    }
+  }
+}

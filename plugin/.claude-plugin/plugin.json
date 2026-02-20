@@ -1,0 +1,13 @@
+{
+  "name": "pianoai",
+  "version": "1.1.0",
+  "description": "AI-powered piano teaching — browse songs, get teaching notes, set up practice sessions, and sing along through natural conversation.",
+  "author": {
+    "name": "mcp-tool-shop",
+    "email": "64996768+mcp-tool-shop@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/mcp-tool-shop-org/pianoai",
+  "repository": "https://github.com/mcp-tool-shop-org/pianoai",
+  "license": "MIT",
+  "keywords": ["piano", "midi", "teaching", "music", "mcp", "vmpk"]
+}
