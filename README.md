@@ -3,13 +3,13 @@
 </p>
 
 <p align="center">
-  <img src="logo.png" alt="PianoAI logo" width="180" />
+  <img src="logo.png" alt="AI Jam Session logo" width="180" />
 </p>
 
-<h1 align="center">PianoAI</h1>
+<h1 align="center">AI Jam Session</h1>
 
 <p align="center">
-  AI piano player with built-in audio engine and 100-song library. MCP server for Claude, CLI for humans.
+  AI piano player with built-in audio engine and 100-song library. MCP server + CLI.
 </p>
 
 [![MCP Tools](https://img.shields.io/badge/MCP_tools-15-purple)](https://github.com/mcp-tool-shop-org/ai_jam_session)
@@ -18,13 +18,13 @@
 
 ## What is this?
 
-A piano that Claude can play. PianoAI is an MCP server with a built-in audio engine — it plays through your speakers, no external software required. Claude browses a 100-song library spanning 10 genres, picks songs, teaches them, and jams on them. Also works as a standalone CLI.
+A piano that AI can play. AI Jam Session is an MCP server with a built-in audio engine — it plays through your speakers, no external software required. Your LLM browses a 100-song library spanning 10 genres, picks songs, teaches them, and jams on them. Also works as a standalone CLI.
 
 ## Features
 
 - **Built-in piano engine** — sample-based audio via `node-web-audio-api`, plays through speakers
 - **100-song library** — classical, jazz, pop, blues, rock, R&B, latin, film, ragtime, new-age
-- **AI Jam Session** — Claude analyzes a song's chords and melody, then creates its own interpretation
+- **AI Jam Session** — analyzes a song's chords and melody, then creates a new interpretation
 - **MIDI file support** — play any `.mid` file: `ai-jam-session play song.mid`
 - **Teaching system** — per-measure teaching notes, musical language descriptions, practice recommendations
 - **4 playback modes** — full, measure-by-measure, hands separate, loop
@@ -94,7 +94,7 @@ The MCP server exposes 15 tools for LLM integration:
 
 ### AI Jam Session
 
-The `ai_jam_session` tool extracts a structured "jam brief" from any song: chord progression, melody contour, and genre-specific style guidance. Claude uses the brief to create its own interpretation.
+The `ai_jam_session` tool extracts a structured "jam brief" from any song: chord progression, melody contour, and genre-specific style guidance. The LLM uses the brief to create its own interpretation.
 
 Two modes:
 - **Specific song:** `ai_jam_session({ songId: "autumn-leaves", style: "blues" })` — jam on Autumn Leaves, blues style
@@ -117,14 +117,14 @@ Optional parameters: `mood` (upbeat, melancholic, dreamy, etc.), `difficulty`, `
 
 ### Claude Code Plugin
 
-PianoAI ships with a Claude Code plugin that adds slash commands and agent personalities:
+AI Jam Session ships with a Claude Code plugin that adds slash commands and agent personalities:
 
 | Command | Description |
 |---------|-------------|
 | `/ai-jam-session:teach <song>` | Start a structured teaching session |
 | `/ai-jam-session:practice <song>` | Get a practice plan with speed/mode recommendations |
 | `/ai-jam-session:explore [query]` | Browse the song library by genre, difficulty, or keyword |
-| `/ai-jam-session:jam <song or genre>` | Start a jam session — Claude creates its own interpretation |
+| `/ai-jam-session:jam <song or genre>` | Start a jam session — create a new interpretation |
 
 Two agent personalities:
 - **Piano Teacher** — patient, pedagogical, meets students where they are
