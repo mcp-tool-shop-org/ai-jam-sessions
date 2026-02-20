@@ -12,23 +12,25 @@
   Server MCP + CLI per l'insegnamento del pianoforte con IA — riproduce tramite VMPK via MIDI con feedback vocale.
 </p>
 
-[![Tests](https://img.shields.io/badge/tests-163_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Smoke](https://img.shields.io/badge/smoke-25_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Tests](https://img.shields.io/badge/tests-181_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Smoke](https://img.shields.io/badge/smoke-29_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
 [![MCP Tools](https://img.shields.io/badge/MCP_tools-8-purple)](https://github.com/mcp-tool-shop-org/pianoai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
-## Cos'è questo?
+## Cos'e questo?
 
 Un CLI TypeScript e server MCP che carica brani per pianoforte da [ai-music-sheets](https://github.com/mcp-tool-shop-org/ai-music-sheets), li analizza in MIDI e li riproduce tramite [VMPK](https://vmpk.sourceforge.io/) attraverso una porta MIDI virtuale. Il motore didattico lancia interventi ai confini delle battute e nei momenti chiave, permettendo a un LLM di agire come insegnante di pianoforte dal vivo con feedback vocale e interjection aside.
 
-## Funzionalità
+## Funzionalita
 
-- **4 modalità di riproduzione** — completa, battuta per battuta, mani separate, loop
-- **Controllo della velocità** — pratica lenta a 0.5x fino a riproduzione veloce a 2x, cumulabile con override del tempo
+- **4 modalita di riproduzione** — completa, battuta per battuta, mani separate, loop
+- **Controllo della velocita** — pratica lenta a 0.5x fino a riproduzione veloce a 2x, cumulabile con override del tempo
 - **Tracciamento dei progressi** — callback configurabili a traguardi percentuali o per battuta
-- **8 hook didattici** — console, silent, recording, callback, voice, aside, sing-along, compose
+- **9 hook didattici** — console, silent, recording, callback, voice, aside, sing-along, compose, live feedback
 - **Narrazione cantata** — nomi delle note, solfeggio, contorno o sillabe pronunciati prima di ogni battuta
+- **Canto sincronizzato + piano** — concurrent (sensazione di duetto) o before (prima la voce) tramite `--with-piano`
 - **Feedback vocale** — output `VoiceDirective` per l'integrazione con mcp-voice-soundboard
+- **Feedback didattico in tempo reale** — incoraggiamento, suggerimenti di dinamica e avvisi di difficolta durante la riproduzione
 - **Interjection aside** — output `AsideDirective` per la inbox di mcp-aside
 - **Parsing sicuro** — le note errate vengono saltate con raccolta di `ParseWarning`
 - **8 strumenti MCP** — espongono registro, note didattiche, canto accompagnato e raccomandazioni di brani agli LLM
@@ -51,31 +53,37 @@ npm install -g @mcptoolshop/pianoai
 
 ```bash
 # Elenca tutti i brani
-pianai list
+pianoai list
 
 # Mostra dettagli del brano + note didattiche
-pianai info moonlight-sonata-mvt1
+pianoai info moonlight-sonata-mvt1
 
 # Riproduci un brano tramite VMPK
-pianai play let-it-be
+pianoai play let-it-be
 
 # Riproduci con override del tempo
-pianai play basic-12-bar-blues --tempo 80
+pianoai play basic-12-bar-blues --tempo 80
 
 # Avanza battuta per battuta
-pianai play autumn-leaves --mode measure
+pianoai play autumn-leaves --mode measure
 
-# Pratica a metà velocità
-pianai play moonlight-sonata-mvt1 --speed 0.5
+# Pratica a meta velocita
+pianoai play moonlight-sonata-mvt1 --speed 0.5
 
 # Pratica lenta a mani separate
-pianai play dream-on --speed 0.75 --mode hands
+pianoai play dream-on --speed 0.75 --mode hands
 
 # Cantare insieme — narrare i nomi delle note durante la riproduzione
-pianai sing let-it-be --mode note-names
+pianoai sing let-it-be --mode note-names
 
 # Cantare insieme con solfeggio, entrambe le mani
-pianai sing fur-elise --mode solfege --hand both
+pianoai sing fur-elise --mode solfege --hand both
+
+# Cantare + piano insieme (duetto)
+pianoai sing let-it-be --with-piano
+
+# Prima la voce, poi il piano
+pianoai sing fur-elise --with-piano --sync before
 ```
 
 ## Server MCP
@@ -84,14 +92,14 @@ Il server MCP espone 8 strumenti per l'integrazione con LLM:
 
 | Strumento | Descrizione |
 |-----------|-------------|
-| `list_songs` | Sfoglia/cerca brani per genere, difficoltà o query |
+| `list_songs` | Sfoglia/cerca brani per genere, difficolta o query |
 | `song_info` | Ottieni linguaggio musicale completo, obiettivi didattici, suggerimenti di pratica |
-| `registry_stats` | Conteggio brani per genere e difficoltà |
+| `registry_stats` | Conteggio brani per genere e difficolta |
 | `teaching_note` | Nota didattica per battuta, diteggiatura, dinamiche |
 | `suggest_song` | Ottieni una raccomandazione basata su criteri |
 | `list_measures` | Panoramica delle battute con note didattiche + avvisi di parsing |
-| `sing_along` | Ottieni testo cantabile per battuta (nomi note, solfeggio, contorno, sillabe) |
-| `practice_setup` | Suggerisci velocità, modalità e impostazioni vocali per un brano |
+| `sing_along` | Ottieni testo cantabile per battuta (nomi note, solfeggio, contorno, sillabe); supporta `withPiano` per accompagnamento sincronizzato |
+| `practice_setup` | Suggerisci velocita, modalita e impostazioni vocali per un brano |
 
 ```bash
 # Avvia il server MCP (trasporto stdio)
@@ -103,8 +111,8 @@ pnpm mcp
 ```json
 {
   "mcpServers": {
-    "pianai": {
-      "command": "pianai-mcp"
+    "pianoai": {
+      "command": "pianoai-mcp"
     }
   }
 }
@@ -128,12 +136,21 @@ pnpm mcp
 |------|-------------|
 | `--port <name>` | Nome della porta MIDI (predefinito: rilevamento automatico loopMIDI) |
 | `--tempo <bpm>` | Override del tempo predefinito del brano (10-400 BPM) |
-| `--speed <mult>` | Moltiplicatore di velocità: 0.5 = metà, 1.0 = normale, 2.0 = doppio |
-| `--mode <mode>` | Modalità di riproduzione: `full`, `measure`, `hands`, `loop` |
+| `--speed <mult>` | Moltiplicatore di velocita: 0.5 = meta, 1.0 = normale, 2.0 = doppio |
+| `--mode <mode>` | Modalita di riproduzione: `full`, `measure`, `hands`, `loop` |
+
+### Opzioni di Canto
+
+| Flag | Descrizione |
+|------|-------------|
+| `--mode <mode>` | Modalita canto: `note-names`, `solfege`, `contour`, `syllables` |
+| `--hand <hand>` | Quale mano: `right`, `left`, `both` |
+| `--with-piano` | Riproduci accompagnamento piano mentre canti |
+| `--sync <mode>` | Sincronizzazione voce+piano: `concurrent` (predefinito, duetto), `before` (prima la voce) |
 
 ## Motore Didattico
 
-Il motore didattico attiva hook durante la riproduzione. 8 implementazioni di hook coprono ogni caso d'uso:
+Il motore didattico attiva hook durante la riproduzione. 9 implementazioni di hook coprono ogni caso d'uso:
 
 | Hook | Caso d'uso |
 |------|------------|
@@ -144,7 +161,8 @@ Il motore didattico attiva hook durante la riproduzione. 8 implementazioni di ho
 | `createVoiceTeachingHook(sink)` | Voce — produce `VoiceDirective` per mcp-voice-soundboard |
 | `createAsideTeachingHook(sink)` | Aside — produce `AsideDirective` per la inbox di mcp-aside |
 | `createSingAlongHook(sink, song)` | Canto — narra note/solfeggio/contorno prima di ogni battuta |
-| `composeTeachingHooks(...hooks)` | Multi — invia a più hook in serie |
+| `createLiveFeedbackHook(voiceSink, asideSink, song)` | Feedback in tempo reale — incoraggiamento, suggerimenti di dinamica, avvisi di difficolta |
+| `composeTeachingHooks(...hooks)` | Multi — invia a piu hook in serie |
 
 ### Feedback vocale
 
@@ -162,7 +180,7 @@ const voiceHook = createVoiceTeachingHook(
 
 const session = createSession(getSong("moonlight-sonata-mvt1")!, connector, {
   teachingHook: voiceHook,
-  speed: 0.5, // pratica a metà velocità
+  speed: 0.5, // pratica a meta velocita
 });
 
 await session.play();
@@ -226,15 +244,15 @@ const song = getSong("autumn-leaves")!;
 const session = createSession(song, connector, {
   mode: "measure",
   tempo: 100,
-  speed: 0.75,           // 75% di velocità per la pratica
+  speed: 0.75,           // 75% di velocita per la pratica
   onProgress: (p) => console.log(p.percent), // "25%", "50%", ecc.
 });
 
 await session.play();          // riproduce una battuta, poi pausa
 session.next();                // avanza alla battuta successiva
 await session.play();          // riproduce la battuta successiva
-session.setSpeed(1.0);         // torna alla velocità normale
-await session.play();          // riproduce la battuta successiva a piena velocità
+session.setSpeed(1.0);         // torna alla velocita normale
+await session.play();          // riproduce la battuta successiva a piena velocita
 session.stop();                // ferma e ripristina
 
 // Controlla eventuali avvisi di parsing (note errate nei dati del brano)
@@ -248,11 +266,11 @@ await connector.disconnect();
 ## Architettura
 
 ```
-ai-music-sheets (libreria)       pianai (runtime)
+ai-music-sheets (libreria)       pianoai (runtime)
 ┌──────────────────────┐         ┌────────────────────────────────┐
 │ SongEntry (ibrido)   │────────→│ Parser Note (sicuro + rigoroso)│
 │ Registry (ricerca)   │         │ Motore Sessione (veloc+progr)  │
-│ 10 brani, 10 generi  │         │ Motore Didattico (8 hook)      │
+│ 10 brani, 10 generi  │         │ Motore Didattico (9 hook)      │
 └──────────────────────┘         │ Connettore VMPK (JZZ)          │
                                  │ Server MCP (8 strumenti)        │
                                  │ CLI (barra progresso + voce)    │
@@ -273,12 +291,12 @@ Instradamento hook didattici:
 ## Test
 
 ```bash
-pnpm test       # 163 test Vitest (parser + sessione + didattica + voce + aside + canto)
-pnpm smoke      # 25 smoke test (integrazione, nessun MIDI necessario)
+pnpm test       # 181 test Vitest (parser + sessione + didattica + voce + aside + canto)
+pnpm smoke      # 29 smoke test (integrazione, nessun MIDI necessario)
 pnpm typecheck  # tsc --noEmit
 ```
 
-Il connettore VMPK mock (`createMockVmpkConnector`) registra tutti gli eventi MIDI senza hardware, garantendo copertura completa dei test. Le funzioni di parsing sicuro (`safeParseMeasure`) raccolgono oggetti `ParseWarning` invece di lanciare eccezioni, così la riproduzione continua senza interruzioni anche se un brano contiene note malformate.
+Il connettore VMPK mock (`createMockVmpkConnector`) registra tutti gli eventi MIDI senza hardware, garantendo copertura completa dei test. Le funzioni di parsing sicuro (`safeParseMeasure`) raccolgono oggetti `ParseWarning` invece di lanciare eccezioni, cosi la riproduzione continua senza interruzioni anche se un brano contiene note malformate.
 
 ## Correlati
 

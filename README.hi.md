@@ -12,8 +12,8 @@
   AI-संचालित पियानो शिक्षण के लिए MCP सर्वर + CLI — MIDI के माध्यम से VMPK पर बजाता है और वॉइस फीडबैक देता है।
 </p>
 
-[![Tests](https://img.shields.io/badge/tests-163_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Smoke](https://img.shields.io/badge/smoke-25_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Tests](https://img.shields.io/badge/tests-181_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Smoke](https://img.shields.io/badge/smoke-29_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
 [![MCP Tools](https://img.shields.io/badge/MCP_tools-8-purple)](https://github.com/mcp-tool-shop-org/pianoai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
@@ -26,8 +26,10 @@
 - **4 प्लेबैक मोड** — full, measure-by-measure, hands separate, loop
 - **स्पीड कंट्रोल** — 0.5x धीमे अभ्यास से 2x तेज़ प्लेबैक तक, टेम्पो ओवरराइड के साथ स्टैक होता है
 - **प्रगति ट्रैकिंग** — प्रतिशत माइलस्टोन या प्रति-मेजर पर कॉन्फ़िगर करने योग्य कॉलबैक
-- **8 टीचिंग हुक** — console, silent, recording, callback, voice, aside, sing-along, compose
+- **9 टीचिंग हुक** — console, silent, recording, callback, voice, aside, sing-along, compose, live feedback
 - **सिंग-अलॉंग नैरेशन** — प्रत्येक मेजर से पहले नोट नाम, सोलफेज, कॉन्टूर, या सिलेबल बोले जाते हैं
+- **सिंक्रोनाइज़्ड गायन + पियानो** — concurrent (डुएट फ़ील) या before (पहले वॉइस) `--with-piano` के माध्यम से
+- **लाइव टीचिंग फीडबैक** — प्लेबैक के दौरान रीयल-टाइम प्रोत्साहन, डायनामिक्स टिप्स, और कठिनाई चेतावनियाँ
 - **वॉइस फीडबैक** — mcp-voice-soundboard इंटीग्रेशन के लिए `VoiceDirective` आउटपुट
 - **Aside इंटरजेक्शन** — mcp-aside इनबॉक्स के लिए `AsideDirective` आउटपुट
 - **सुरक्षित पार्सिंग** — खराब नोट्स एकत्रित `ParseWarning` के साथ सुचारू रूप से स्किप होते हैं
@@ -51,31 +53,37 @@ npm install -g @mcptoolshop/pianoai
 
 ```bash
 # सभी गाने सूचीबद्ध करें
-pianai list
+pianoai list
 
 # गाने का विवरण + टीचिंग नोट्स देखें
-pianai info moonlight-sonata-mvt1
+pianoai info moonlight-sonata-mvt1
 
 # VMPK के माध्यम से गाना बजाएँ
-pianai play let-it-be
+pianoai play let-it-be
 
 # टेम्पो ओवरराइड के साथ बजाएँ
-pianai play basic-12-bar-blues --tempo 80
+pianoai play basic-12-bar-blues --tempo 80
 
 # मेजर-दर-मेजर चरणबद्ध तरीके से चलें
-pianai play autumn-leaves --mode measure
+pianoai play autumn-leaves --mode measure
 
 # आधी गति से अभ्यास
-pianai play moonlight-sonata-mvt1 --speed 0.5
+pianoai play moonlight-sonata-mvt1 --speed 0.5
 
 # धीमा हैंड्स-सेपरेट अभ्यास
-pianai play dream-on --speed 0.75 --mode hands
+pianoai play dream-on --speed 0.75 --mode hands
 
 # सिंग अलॉंग — प्लेबैक के दौरान नोट नाम नैरेट करें
-pianai sing let-it-be --mode note-names
+pianoai sing let-it-be --mode note-names
 
 # सोलफेज के साथ सिंग अलॉंग, दोनों हाथ
-pianai sing fur-elise --mode solfege --hand both
+pianoai sing fur-elise --mode solfege --hand both
+
+# सिंग + पियानो एक साथ (डुएट फ़ील)
+pianoai sing let-it-be --with-piano
+
+# पहले वॉइस, फिर पियानो
+pianoai sing fur-elise --with-piano --sync before
 ```
 
 ## MCP सर्वर
@@ -89,7 +97,7 @@ MCP सर्वर LLM इंटीग्रेशन के लिए 8 टू
 | `registry_stats` | शैली और कठिनाई के अनुसार गानों की गिनती |
 | `teaching_note` | प्रति-मेजर टीचिंग नोट, फिंगरिंग, डायनामिक्स |
 | `suggest_song` | मानदंडों के आधार पर सिफारिश प्राप्त करें |
-| `sing_along` | प्रति-मेजर गाने योग्य टेक्स्ट (नोट नाम, सोलफेज, कॉन्टूर, सिलेबल) प्राप्त करें |
+| `sing_along` | प्रति-मेजर गाने योग्य टेक्स्ट (नोट नाम, सोलफेज, कॉन्टूर, सिलेबल) प्राप्त करें; `withPiano` सपोर्ट |
 | `list_measures` | टीचिंग नोट्स + पार्स चेतावनियों के साथ मेजर का अवलोकन |
 | `practice_setup` | किसी गाने के लिए स्पीड, मोड, और वॉइस सेटिंग्स सुझाएँ |
 
@@ -103,8 +111,8 @@ pnpm mcp
 ```json
 {
   "mcpServers": {
-    "pianai": {
-      "command": "pianai-mcp"
+    "pianoai": {
+      "command": "pianoai-mcp"
     }
   }
 }
@@ -131,9 +139,18 @@ pnpm mcp
 | `--speed <mult>` | स्पीड मल्टीप्लायर: 0.5 = आधा, 1.0 = सामान्य, 2.0 = दोगुना |
 | `--mode <mode>` | प्लेबैक मोड: `full`, `measure`, `hands`, `loop` |
 
+### सिंग विकल्प
+
+| फ़्लैग | विवरण |
+|--------|--------|
+| `--mode <mode>` | सिंग-अलॉंग मोड: `note-names`, `solfege`, `contour`, `syllables` |
+| `--hand <hand>` | कौन सा हाथ: `right`, `left`, `both` |
+| `--with-piano` | गायन के दौरान पियानो संगत बजाएँ |
+| `--sync <mode>` | वॉइस+पियानो सिंक: `concurrent` (डिफ़ॉल्ट, डुएट), `before` (पहले वॉइस) |
+
 ## टीचिंग इंजन
 
-टीचिंग इंजन प्लेबैक के दौरान हुक फायर करता है। 8 हुक इम्प्लीमेंटेशन हर उपयोग मामले को कवर करते हैं:
+टीचिंग इंजन प्लेबैक के दौरान हुक फायर करता है। 9 हुक इम्प्लीमेंटेशन हर उपयोग मामले को कवर करते हैं:
 
 | हुक | उपयोग मामला |
 |------|-------------|
@@ -144,6 +161,7 @@ pnpm mcp
 | `createVoiceTeachingHook(sink)` | वॉइस — mcp-voice-soundboard के लिए `VoiceDirective` उत्पन्न करता है |
 | `createAsideTeachingHook(sink)` | Aside — mcp-aside इनबॉक्स के लिए `AsideDirective` उत्पन्न करता है |
 | `createSingAlongHook(sink, song)` | सिंग-अलॉंग — प्रत्येक मेजर से पहले नोट नाम/सोलफेज/कॉन्टूर नैरेट करता है |
+| `createLiveFeedbackHook(voiceSink, asideSink, song)` | लाइव फीडबैक — प्रोत्साहन, डायनामिक्स टिप्स, कठिनाई चेतावनियाँ |
 | `composeTeachingHooks(...hooks)` | मल्टी — क्रमिक रूप से कई हुक पर डिस्पैच करता है |
 
 ### वॉइस फीडबैक
@@ -248,11 +266,11 @@ await connector.disconnect();
 ## आर्किटेक्चर
 
 ```
-ai-music-sheets (लाइब्रेरी)       pianai (रनटाइम)
+ai-music-sheets (लाइब्रेरी)       pianoai (रनटाइम)
 ┌──────────────────────┐         ┌────────────────────────────────┐
 │ SongEntry (हाइब्रिड) │────────→│ Note Parser (सुरक्षित + सख्त) │
 │ Registry (खोज)       │         │ Session Engine (स्पीड+प्रगति)  │
-│ 10 गाने, 10 शैलियाँ  │         │ Teaching Engine (8 हुक)        │
+│ 10 गाने, 10 शैलियाँ  │         │ Teaching Engine (9 हुक)        │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
                                  │ MCP Server (8 टूल)            │
                                  │ CLI (प्रोग्रेस बार + वॉइस)    │
@@ -273,8 +291,8 @@ ai-music-sheets (लाइब्रेरी)       pianai (रनटाइम)
 ## टेस्टिंग
 
 ```bash
-pnpm test       # 163 Vitest टेस्ट (पार्सर + सेशन + टीचिंग + वॉइस + aside + सिंग-अलॉंग)
-pnpm smoke      # 25 स्मोक टेस्ट (इंटीग्रेशन, MIDI आवश्यक नहीं)
+pnpm test       # 181 Vitest टेस्ट (पार्सर + सेशन + टीचिंग + वॉइस + aside + सिंग-अलॉंग)
+pnpm smoke      # 29 स्मोक टेस्ट (इंटीग्रेशन, MIDI आवश्यक नहीं)
 pnpm typecheck  # tsc --noEmit
 ```
 

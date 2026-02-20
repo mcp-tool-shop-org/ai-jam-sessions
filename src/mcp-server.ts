@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// ─── pianai: MCP Server ─────────────────────────────────────────────────────
+// ─── pianoai: MCP Server ─────────────────────────────────────────────────────
 //
 // Exposes the ai-music-sheets registry and session engine as MCP tools.
 // An LLM can browse songs, get teaching info, suggest practice setups,
@@ -65,8 +65,8 @@ function suggestMode(difficulty: Difficulty): { mode: string; reason: string } {
 // ─── Server ─────────────────────────────────────────────────────────────────
 
 const server = new McpServer({
-  name: "pianai",
-  version: "1.0.0",
+  name: "pianoai",
+  version: "1.1.0",
 });
 
 // ─── Tool: list_songs ───────────────────────────────────────────────────────
@@ -376,7 +376,7 @@ server.tool(
       ``,
       `## CLI Command`,
       `\`\`\``,
-      `pianai play ${song.id} --speed ${speed} --mode ${mode}`,
+      `pianoai play ${song.id} --speed ${speed} --mode ${mode}`,
       `\`\`\``,
       ``,
       `## Practice Progression`,
@@ -390,7 +390,7 @@ server.tool(
     if (song.difficulty === "advanced") {
       lines.push(
         `5. Try **loop** mode on difficult passages`,
-        `   Example: \`pianai play ${song.id} --mode loop\``
+        `   Example: \`pianoai play ${song.id} --mode loop\``
       );
     }
 
@@ -411,7 +411,7 @@ server.tool(
 
 server.tool(
   "sing_along",
-  "Get singable text (note names, solfege, contour, or syllables) for a range of measures. Use to narrate or 'sing along' with piano playback.",
+  "Get singable text (note names, solfege, contour, or syllables) for a range of measures. Optionally enable piano accompaniment for synchronized singing + playback.",
   {
     id: z.string().describe("Song ID"),
     startMeasure: z.number().int().min(1).optional().describe("Start measure (1-based, default: 1)"),
@@ -420,8 +420,12 @@ server.tool(
       .describe("Sing-along mode (default: 'note-names')"),
     hand: z.enum(["right", "left", "both"]).optional()
       .describe("Which hand to narrate (default: 'right')"),
+    withPiano: z.boolean().optional()
+      .describe("Include piano accompaniment info and CLI command for live playback (default: false)"),
+    syncMode: z.enum(["concurrent", "before"]).optional()
+      .describe("Voice+piano sync mode: 'concurrent' = duet feel, 'before' = voice first (default: 'concurrent')"),
   },
-  async ({ id, startMeasure, endMeasure, mode, hand }) => {
+  async ({ id, startMeasure, endMeasure, mode, hand, withPiano, syncMode }) => {
     const song = getSong(id);
     if (!song) {
       return {
@@ -432,6 +436,7 @@ server.tool(
 
     const effectiveMode: SingAlongMode = (mode as SingAlongMode) ?? "note-names";
     const effectiveHand = hand ?? "right";
+    const effectiveSyncMode = syncMode ?? "concurrent";
     const start = (startMeasure ?? 1) - 1;
     const end = Math.min((endMeasure ?? song.measures.length) - 1, song.measures.length - 1);
     const measures = song.measures.slice(start, end + 1);
@@ -440,8 +445,12 @@ server.tool(
       `# Sing Along: ${song.title}`,
       `**Mode:** ${effectiveMode} | **Hand:** ${effectiveHand}`,
       `**Measures:** ${start + 1} to ${end + 1}`,
-      ``,
     ];
+
+    if (withPiano) {
+      lines.push(`**Piano accompaniment:** enabled (${effectiveSyncMode} sync)`);
+    }
+    lines.push(``);
 
     for (const m of measures) {
       const singable = measureToSingableText(
@@ -451,11 +460,32 @@ server.tool(
       lines.push(`**Measure ${m.number}:** ${singable}`);
     }
 
-    lines.push(
-      ``,
-      `---`,
-      `*Tip: Use \`practice_setup "${song.id}"\` for a full practice configuration, then compose a sing-along hook with a voice hook for live narration during playback.*`
-    );
+    if (withPiano) {
+      const { speed, label: speedLabel } = suggestSpeed(song.difficulty as Difficulty);
+      const effectiveTempo = Math.round(song.tempo * speed);
+
+      lines.push(
+        ``,
+        `---`,
+        `## Piano Accompaniment`,
+        `Voice and piano play **${effectiveSyncMode === "concurrent" ? "simultaneously (duet feel)" : "sequentially (voice first, then piano)"}**.`,
+        ``,
+        `**Suggested speed:** ${speedLabel} → ${effectiveTempo} BPM`,
+        `**Live feedback:** encouragement every 4 measures + dynamics tips`,
+        ``,
+        `### CLI Command`,
+        `\`\`\``,
+        `pianoai sing ${song.id} --with-piano --mode ${effectiveMode} --hand ${effectiveHand} --sync ${effectiveSyncMode}`,
+        `\`\`\``,
+      );
+    } else {
+      lines.push(
+        ``,
+        `---`,
+        `*Tip: Add \`withPiano: true\` for synchronized singing + piano playback, or run:*`,
+        `*\`pianoai sing ${song.id} --with-piano\`*`,
+      );
+    }
 
     return { content: [{ type: "text", text: lines.join("\n") }] };
   }
@@ -466,7 +496,7 @@ server.tool(
 async function main(): Promise<void> {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("pianai MCP server running on stdio");
+  console.error("pianoai MCP server running on stdio");
 }
 
 main().catch((err) => {

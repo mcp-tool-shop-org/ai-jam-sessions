@@ -12,8 +12,8 @@
   AI搭載ピアノ教習用MCPサーバー＋CLI — MIDIを介してVMPKで演奏し、音声フィードバックを提供します。
 </p>
 
-[![Tests](https://img.shields.io/badge/tests-163_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Smoke](https://img.shields.io/badge/smoke-25_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Tests](https://img.shields.io/badge/tests-181_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Smoke](https://img.shields.io/badge/smoke-29_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
 [![MCP Tools](https://img.shields.io/badge/MCP_tools-8-purple)](https://github.com/mcp-tool-shop-org/pianoai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
@@ -24,9 +24,11 @@ TypeScript製のCLIおよびMCPサーバーで、[ai-music-sheets](https://githu
 ## 機能
 
 - **4つの再生モード** — フル再生、小節ごと、片手ずつ、ループ
+- **シンクロ歌唱＋ピアノ** — concurrent（デュエット）またはbefore（ボイス先行）を `--with-piano` で選択
 - **速度制御** — 0.5倍のスロー練習から2倍の高速再生まで、テンポオーバーライドと組み合わせ可能
 - **進捗トラッキング** — パーセンテージマイルストーンまたは小節ごとのコールバックを設定可能
-- **8つの教習フック** — console、silent、recording、callback、voice、aside、sing-along、compose
+- **9つの教習フック** — console、silent、recording、callback、voice、aside、sing-along、live feedback、compose
+- **ライブ教習フィードバック** — 再生中のリアルタイム励まし、ダイナミクスのヒント、難易度の警告
 - **シングアロングナレーション** — 各小節の前に音名、ソルフェージュ、輪郭、シラブルを読み上げ
 - **音声フィードバック** — mcp-voice-soundboard連携用の`VoiceDirective`出力
 - **アサイド指示** — mcp-asideインボックス用の`AsideDirective`出力
@@ -51,31 +53,37 @@ npm install -g @mcptoolshop/pianoai
 
 ```bash
 # 全楽曲を一覧表示
-pianai list
+pianoai list
 
 # 楽曲の詳細と教習ノートを表示
-pianai info moonlight-sonata-mvt1
+pianoai info moonlight-sonata-mvt1
 
 # VMPKを通じて楽曲を再生
-pianai play let-it-be
+pianoai play let-it-be
 
 # テンポを指定して再生
-pianai play basic-12-bar-blues --tempo 80
+pianoai play basic-12-bar-blues --tempo 80
 
 # 小節ごとにステップ再生
-pianai play autumn-leaves --mode measure
+pianoai play autumn-leaves --mode measure
 
 # 半速で練習
-pianai play moonlight-sonata-mvt1 --speed 0.5
+pianoai play moonlight-sonata-mvt1 --speed 0.5
 
 # スロー片手練習
-pianai play dream-on --speed 0.75 --mode hands
+pianoai play dream-on --speed 0.75 --mode hands
 
 # シングアロング — 再生中にノート名をナレーション
-pianai sing let-it-be --mode note-names
+pianoai sing let-it-be --mode note-names
 
 # ソルフェージュで両手をシングアロング
-pianai sing fur-elise --mode solfege --hand both
+pianoai sing fur-elise --mode solfege --hand both
+
+# シング＋ピアノ同時再生（デュエット）
+pianoai sing let-it-be --with-piano
+
+# ボイス先行でピアノ再生
+pianoai sing fur-elise --with-piano --sync before
 ```
 
 ## MCPサーバー
@@ -88,7 +96,7 @@ MCPサーバーはLLM連携用に8つのツールを公開しています：
 | `song_info` | 音楽表現、教習目標、練習提案の詳細を取得 |
 | `registry_stats` | ジャンル別・難易度別の楽曲数 |
 | `teaching_note` | 小節ごとの教習ノート、運指、ダイナミクス |
-| `sing_along` | 小節ごとの歌唱テキスト（音名、ソルフェージュ、輪郭、シラブル）を取得 |
+| `sing_along` | 小節ごとの歌唱テキスト（音名、ソルフェージュ、輪郭、シラブル）を取得。`withPiano`でピアノ伴奏同時再生に対応 |
 | `suggest_song` | 条件に基づくレコメンドを取得 |
 | `list_measures` | 教習ノートとパース警告付きの小節一覧 |
 | `practice_setup` | 楽曲に適した速度、モード、音声設定を提案 |
@@ -103,8 +111,8 @@ pnpm mcp
 ```json
 {
   "mcpServers": {
-    "pianai": {
-      "command": "pianai-mcp"
+    "pianoai": {
+      "command": "pianoai-mcp"
     }
   }
 }
@@ -131,9 +139,18 @@ pnpm mcp
 | `--speed <mult>` | 速度倍率：0.5 = 半速、1.0 = 通常、2.0 = 倍速 |
 | `--mode <mode>` | 再生モード：`full`、`measure`、`hands`、`loop` |
 
+### シングオプション
+
+| フラグ | 説明 |
+|------|------|
+| `--mode <mode>` | シングアロングモード：`note-names`、`solfege`、`contour`、`syllables` |
+| `--hand <hand>` | どちらの手：`right`、`left`、`both` |
+| `--with-piano` | 歌唱中にピアノ伴奏を再生 |
+| `--sync <mode>` | ボイス＋ピアノ同期：`concurrent`（デフォルト、デュエット）、`before`（ボイス先行） |
+
 ## 教習エンジン
 
-教習エンジンは再生中にフックを発火します。8つのフック実装がすべてのユースケースをカバーします：
+教習エンジンは再生中にフックを発火します。9つのフック実装がすべてのユースケースをカバーします：
 
 | フック | 用途 |
 |------|------|
@@ -144,6 +161,7 @@ pnpm mcp
 | `createVoiceTeachingHook(sink)` | 音声 — mcp-voice-soundboard用の`VoiceDirective`を生成 |
 | `createAsideTeachingHook(sink)` | アサイド — mcp-asideインボックス用の`AsideDirective`を生成 |
 | `createSingAlongHook(sink, song)` | シングアロング — 各小節の前にノート名/ソルフェージュ/輪郭をナレーション |
+| `createLiveFeedbackHook(voiceSink, asideSink, song)` | ライブフィードバック — 励まし、ダイナミクスのヒント、難易度の警告 |
 | `composeTeachingHooks(...hooks)` | 複合 — 複数のフックに順次ディスパッチ |
 
 ### 音声フィードバック
@@ -248,11 +266,11 @@ await connector.disconnect();
 ## アーキテクチャ
 
 ```
-ai-music-sheets (ライブラリ)       pianai (ランタイム)
+ai-music-sheets (ライブラリ)       pianoai (ランタイム)
 ┌──────────────────────┐         ┌────────────────────────────────┐
 │ SongEntry (ハイブリッド) │────────→│ Note Parser (安全＋厳密)       │
 │ Registry (検索)       │         │ Session Engine (速度＋進捗)     │
-│ 10曲, 10ジャンル      │         │ Teaching Engine (8フック)       │
+│ 10曲, 10ジャンル      │         │ Teaching Engine (9フック)       │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
                                  │ MCP Server (8ツール)            │
                                  │ CLI (プログレスバー＋音声)       │
@@ -273,8 +291,8 @@ ai-music-sheets (ライブラリ)       pianai (ランタイム)
 ## テスト
 
 ```bash
-pnpm test       # 163個のVitestテスト（パーサー＋セッション＋教習＋音声＋アサイド＋シングアロング）
-pnpm smoke      # 25個のスモークテスト（統合テスト、MIDIハードウェア不要）
+pnpm test       # 181個のVitestテスト（パーサー＋セッション＋教習＋音声＋アサイド＋シングアロング）
+pnpm smoke      # 29個のスモークテスト（統合テスト、MIDIハードウェア不要）
 pnpm typecheck  # tsc --noEmit
 ```
 

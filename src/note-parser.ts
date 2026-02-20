@@ -1,4 +1,4 @@
-// ─── pianai: Note Parser ─────────────────────────────────────────────────────
+// ─── pianoai: Note Parser ────────────────────────────────────────────────────
 //
 // Converts scientific pitch notation (e.g. "C4:q", "F#5:e", "Bb3:h")
 // into MIDI note numbers and durations for playback.

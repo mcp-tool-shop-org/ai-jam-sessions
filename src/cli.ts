@@ -1,15 +1,15 @@
 #!/usr/bin/env node
-// ─── pianai: CLI Entry Point ─────────────────────────────────────
+// ─── pianoai: CLI Entry Point ─────────────────────────────────────
 //
 // Usage:
-//   pianai                     # Interactive mode — list songs, pick one, play
-//   pianai list                # List all songs
-//   pianai list --genre jazz   # List songs by genre
-//   pianai play <song-id>      # Play a specific song
-//   pianai sing <song-id>      # Sing along — narrate notes during playback
-//   pianai info <song-id>      # Show song details (musical language)
-//   pianai stats               # Registry stats
-//   pianai ports               # List available MIDI ports
+//   pianoai                     # Interactive mode — list songs, pick one, play
+//   pianoai list                # List all songs
+//   pianoai list --genre jazz   # List songs by genre
+//   pianoai play <song-id>      # Play a specific song
+//   pianoai sing <song-id>      # Sing along — narrate notes during playback
+//   pianoai info <song-id>      # Show song details (musical language)
+//   pianoai stats               # Registry stats
+//   pianoai ports               # List available MIDI ports
 //
 // Requires: loopMIDI running + VMPK listening on the loopMIDI port.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -22,13 +22,14 @@ import {
   GENRES,
 } from "@mcptoolshop/ai-music-sheets";
 import type { SongEntry, Genre } from "@mcptoolshop/ai-music-sheets";
-import type { PlaybackProgress, PlaybackMode } from "./types.js";
+import type { PlaybackProgress, PlaybackMode, SyncMode, VoiceDirective, AsideDirective } from "./types.js";
 import type { SingAlongMode } from "./note-parser.js";
 import { createVmpkConnector } from "./vmpk.js";
 import { createSession } from "./session.js";
 import {
   createConsoleTeachingHook,
   createSingAlongHook,
+  createLiveFeedbackHook,
   composeTeachingHooks,
 } from "./teaching.js";
 
@@ -106,6 +107,12 @@ function truncate(s: string, max: number): string {
 const VALID_MODES: PlaybackMode[] = ["full", "measure", "hands", "loop"];
 const VALID_SING_MODES: SingAlongMode[] = ["note-names", "solfege", "contour", "syllables"];
 const VALID_HANDS = ["right", "left", "both"] as const;
+const VALID_SYNC_MODES: SyncMode[] = ["concurrent", "before"];
+
+/** Check for boolean flag (no value). */
+function hasFlag(args: string[], flag: string): boolean {
+  return args.includes(flag);
+}
 
 // ─── Commands ───────────────────────────────────────────────────────────────
 
@@ -126,7 +133,7 @@ function cmdList(args: string[]): void {
 function cmdInfo(args: string[]): void {
   const songId = args[0];
   if (!songId) {
-    console.error("Usage: pianai info <song-id>");
+    console.error("Usage: pianoai info <song-id>");
     process.exit(1);
   }
   const song = getSong(songId);
@@ -140,12 +147,12 @@ function cmdInfo(args: string[]): void {
 async function cmdPlay(args: string[]): Promise<void> {
   const songId = args[0];
   if (!songId) {
-    console.error("Usage: pianai play <song-id> [--tempo N] [--speed N] [--mode MODE]");
+    console.error("Usage: pianoai play <song-id> [--tempo N] [--speed N] [--mode MODE]");
     process.exit(1);
   }
   const song = getSong(songId);
   if (!song) {
-    console.error(`Song not found: "${songId}". Run 'pianai list' to see available songs.`);
+    console.error(`Song not found: "${songId}". Run 'pianoai list' to see available songs.`);
     process.exit(1);
   }
 
@@ -242,12 +249,12 @@ async function cmdPlay(args: string[]): Promise<void> {
 async function cmdSing(args: string[]): Promise<void> {
   const songId = args[0];
   if (!songId) {
-    console.error("Usage: pianai sing <song-id> [--mode note-names|solfege|contour|syllables] [--hand right|left|both] [--speed N] [--tempo N] [--port NAME]");
+    console.error("Usage: pianoai sing <song-id> [--mode note-names|solfege|contour|syllables] [--hand right|left|both] [--speed N] [--tempo N] [--with-piano] [--sync concurrent|before]");
     process.exit(1);
   }
   const song = getSong(songId);
   if (!song) {
-    console.error(`Song not found: "${songId}". Run 'pianai list' to see available songs.`);
+    console.error(`Song not found: "${songId}". Run 'pianoai list' to see available songs.`);
     process.exit(1);
   }
 
@@ -257,6 +264,8 @@ async function cmdSing(args: string[]): Promise<void> {
   const speedStr = getFlag(args, "--speed");
   const modeStr = getFlag(args, "--mode") ?? "note-names";
   const handStr = getFlag(args, "--hand") ?? "right";
+  const withPiano = hasFlag(args, "--with-piano");
+  const syncStr = getFlag(args, "--sync") ?? "concurrent";
 
   // Validate sing-along mode
   if (!VALID_SING_MODES.includes(modeStr as SingAlongMode)) {
@@ -271,6 +280,13 @@ async function cmdSing(args: string[]): Promise<void> {
     process.exit(1);
   }
   const hand = handStr as "right" | "left" | "both";
+
+  // Validate sync mode
+  if (!VALID_SYNC_MODES.includes(syncStr as SyncMode)) {
+    console.error(`Invalid sync mode: "${syncStr}". Available: ${VALID_SYNC_MODES.join(", ")}`);
+    process.exit(1);
+  }
+  const syncMode = syncStr as SyncMode;
 
   // Validate speed
   const speed = speedStr ? parseFloat(speedStr) : undefined;
@@ -296,21 +312,40 @@ async function cmdSing(args: string[]): Promise<void> {
     console.log(`Connected!`);
 
     // Console voice sink — prints sing-along text
-    const voiceSink = async (directive: { text: string }) => {
+    const voiceSink = async (directive: VoiceDirective) => {
       console.log(`  ♪ ${directive.text}`);
     };
 
-    // Compose sing-along hook with console teaching hook
+    // Console aside sink — prints feedback tips
+    const asideSink = async (directive: AsideDirective) => {
+      const prefix =
+        directive.priority === "med" ? "💡" :
+        directive.priority === "high" ? "❗" : "ℹ️";
+      console.log(`  ${prefix} ${directive.text}`);
+    };
+
+    // Build hooks: sing-along + optional live feedback + console
+    const hooks = [];
     const singHook = createSingAlongHook(voiceSink, song, {
       mode: singMode,
       hand,
       speechSpeed: speed ?? 1.0,
     });
-    const consoleHook = createConsoleTeachingHook();
-    const teachingHook = composeTeachingHooks(singHook, consoleHook);
+    hooks.push(singHook);
+
+    if (withPiano) {
+      const feedbackHook = createLiveFeedbackHook(voiceSink, asideSink, song, {
+        voiceInterval: 4,
+      });
+      hooks.push(feedbackHook);
+    }
+
+    hooks.push(createConsoleTeachingHook());
+    const teachingHook = composeTeachingHooks(...hooks);
 
     const session = createSession(song, connector, {
       mode: "full",
+      syncMode: withPiano ? syncMode : "before",
       tempo,
       speed,
       teachingHook,
@@ -333,7 +368,8 @@ async function cmdSing(args: string[]): Promise<void> {
     printSongInfo(song);
     const speedLabel = speed && speed !== 1.0 ? ` × ${speed}x speed` : "";
     const tempoLabel = tempo ? ` (${tempo} BPM${speedLabel})` : speedLabel ? ` (${song.tempo} BPM${speedLabel})` : "";
-    console.log(`Singing along: ${song.title}${tempoLabel} [${singMode} / ${hand} hand]\n`);
+    const pianoLabel = withPiano ? ` + piano (${syncMode})` : "";
+    console.log(`Singing along: ${song.title}${tempoLabel} [${singMode} / ${hand} hand${pianoLabel}]\n`);
 
     await session.play();
 
@@ -386,7 +422,7 @@ function cmdPorts(): void {
 
 function cmdHelp(): void {
   console.log(`
-pianai — AI-powered piano teaching via MIDI
+pianoai — AI-powered piano teaching via MIDI
 
 Commands:
   list [--genre <genre>]     List available songs
@@ -409,16 +445,20 @@ Sing options:
   --speed <mult>             Speed multiplier (0.5 = half, 1.0 = normal, 2.0 = double)
   --mode <mode>              Sing-along mode: note-names, solfege, contour, syllables
   --hand <hand>              Which hand: right, left, both
+  --with-piano               Play piano accompaniment while singing
+  --sync <mode>              Voice+piano sync: concurrent (default), before
 
 Examples:
-  pianai list --genre jazz
-  pianai info autumn-leaves
-  pianai play moonlight-sonata-mvt1 --tempo 48
-  pianai play basic-12-bar-blues --mode measure
-  pianai play let-it-be --speed 0.5               # half speed practice
-  pianai play dream-on --speed 0.75 --mode hands   # slow hands-separate
-  pianai sing let-it-be --mode note-names           # narrate note names
-  pianai sing fur-elise --mode solfege --hand both  # solfege, both hands
+  pianoai list --genre jazz
+  pianoai info autumn-leaves
+  pianoai play moonlight-sonata-mvt1 --tempo 48
+  pianoai play basic-12-bar-blues --mode measure
+  pianoai play let-it-be --speed 0.5               # half speed practice
+  pianoai play dream-on --speed 0.75 --mode hands   # slow hands-separate
+  pianoai sing let-it-be --mode note-names           # narrate note names
+  pianoai sing fur-elise --mode solfege --hand both  # solfege, both hands
+  pianoai sing let-it-be --with-piano               # sing + piano together
+  pianoai sing fur-elise --with-piano --sync before # voice first, then piano
 `);
 }
 
@@ -464,7 +504,7 @@ async function main(): Promise<void> {
       if (song) {
         printSongInfo(song);
       } else {
-        console.error(`Unknown command: "${command}". Run 'pianai help' for usage.`);
+        console.error(`Unknown command: "${command}". Run 'pianoai help' for usage.`);
         process.exit(1);
       }
   }

@@ -12,8 +12,8 @@
   MCP server + CLI for AI-powered piano teaching — plays through VMPK via MIDI with voice feedback.
 </p>
 
-[![Tests](https://img.shields.io/badge/tests-163_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Smoke](https://img.shields.io/badge/smoke-25_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Tests](https://img.shields.io/badge/tests-181_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Smoke](https://img.shields.io/badge/smoke-29_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
 [![MCP Tools](https://img.shields.io/badge/MCP_tools-8-purple)](https://github.com/mcp-tool-shop-org/pianoai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
@@ -24,9 +24,11 @@ A TypeScript CLI and MCP server that loads piano songs from [ai-music-sheets](ht
 ## Features
 
 - **4 playback modes** — full, measure-by-measure, hands separate, loop
+- **Synchronized singing + piano** — concurrent (duet feel) or sequential (voice first) via `--with-piano`
 - **Speed control** — 0.5x slow practice to 2x fast playback, stacks with tempo override
 - **Progress tracking** — configurable callbacks at percentage milestones or per-measure
-- **8 teaching hooks** — console, silent, recording, callback, voice, aside, sing-along, compose
+- **9 teaching hooks** — console, silent, recording, callback, voice, aside, sing-along, live feedback, compose
+- **Live teaching feedback** — real-time encouragement, dynamics tips, and difficulty warnings during playback
 - **Sing-along narration** — note names, solfege, contour, or syllables spoken before each measure
 - **Voice feedback** — `VoiceDirective` output for mcp-voice-soundboard integration
 - **Aside interjections** — `AsideDirective` output for mcp-aside inbox
@@ -51,31 +53,37 @@ npm install -g @mcptoolshop/pianoai
 
 ```bash
 # List all songs
-pianai list
+pianoai list
 
 # Show song details + teaching notes
-pianai info moonlight-sonata-mvt1
+pianoai info moonlight-sonata-mvt1
 
 # Play a song through VMPK
-pianai play let-it-be
+pianoai play let-it-be
 
 # Play with tempo override
-pianai play basic-12-bar-blues --tempo 80
+pianoai play basic-12-bar-blues --tempo 80
 
 # Step through measure by measure
-pianai play autumn-leaves --mode measure
+pianoai play autumn-leaves --mode measure
 
 # Half-speed practice
-pianai play moonlight-sonata-mvt1 --speed 0.5
+pianoai play moonlight-sonata-mvt1 --speed 0.5
 
 # Slow hands-separate practice
-pianai play dream-on --speed 0.75 --mode hands
+pianoai play dream-on --speed 0.75 --mode hands
 
 # Sing along — narrate note names during playback
-pianai sing let-it-be --mode note-names
+pianoai sing let-it-be --mode note-names
 
 # Sing along with solfege, both hands
-pianai sing fur-elise --mode solfege --hand both
+pianoai sing fur-elise --mode solfege --hand both
+
+# Sing + piano together (duet feel)
+pianoai sing let-it-be --with-piano
+
+# Voice first, then piano
+pianoai sing fur-elise --with-piano --sync before
 ```
 
 ## MCP Server
@@ -90,7 +98,7 @@ The MCP server exposes 8 tools for LLM integration:
 | `teaching_note` | Per-measure teaching note, fingering, dynamics |
 | `suggest_song` | Get a recommendation based on criteria |
 | `list_measures` | Overview of measures with teaching notes + parse warnings |
-| `sing_along` | Get singable text (note names, solfege, contour, syllables) per measure |
+| `sing_along` | Get singable text (note names, solfege, contour, syllables) per measure — supports `withPiano` for accompaniment |
 | `practice_setup` | Suggest speed, mode, and voice settings for a song |
 
 ```bash
@@ -103,8 +111,8 @@ pnpm mcp
 ```json
 {
   "mcpServers": {
-    "pianai": {
-      "command": "pianai-mcp"
+    "pianoai": {
+      "command": "pianoai-mcp"
     }
   }
 }
@@ -131,9 +139,18 @@ pnpm mcp
 | `--speed <mult>` | Speed multiplier: 0.5 = half, 1.0 = normal, 2.0 = double |
 | `--mode <mode>` | Playback mode: `full`, `measure`, `hands`, `loop` |
 
+### Sing Options
+
+| Flag | Description |
+|------|-------------|
+| `--mode <mode>` | Sing-along mode: `note-names`, `solfege`, `contour`, `syllables` |
+| `--hand <hand>` | Which hand: `right`, `left`, `both` |
+| `--with-piano` | Play piano accompaniment while singing |
+| `--sync <mode>` | Voice+piano sync: `concurrent` (default, duet feel), `before` (voice first) |
+
 ## Teaching Engine
 
-The teaching engine fires hooks during playback. 8 hook implementations cover every use case:
+The teaching engine fires hooks during playback. 9 hook implementations cover every use case:
 
 | Hook | Use case |
 |------|----------|
@@ -144,6 +161,7 @@ The teaching engine fires hooks during playback. 8 hook implementations cover ev
 | `createVoiceTeachingHook(sink)` | Voice — produces `VoiceDirective` for mcp-voice-soundboard |
 | `createAsideTeachingHook(sink)` | Aside — produces `AsideDirective` for mcp-aside inbox |
 | `createSingAlongHook(sink, song)` | Sing-along — narrates notes/solfege/contour before each measure |
+| `createLiveFeedbackHook(voiceSink, asideSink, song)` | Live feedback — encouragement, dynamics tips, difficulty warnings |
 | `composeTeachingHooks(...hooks)` | Multi — dispatch to multiple hooks in series |
 
 ### Voice feedback
@@ -213,6 +231,32 @@ await session.play();
 // singHook.directives → blocking "Do... Mi... Sol" before each measure
 ```
 
+### Synchronized singing + piano
+
+```typescript
+import {
+  createSingAlongHook,
+  createLiveFeedbackHook,
+  composeTeachingHooks,
+  createSession,
+} from "@mcptoolshop/pianoai";
+import { getSong } from "@mcptoolshop/ai-music-sheets";
+
+const song = getSong("let-it-be")!;
+
+// Compose sing-along + live feedback for the full teaching experience
+const composed = composeTeachingHooks(
+  createSingAlongHook(voiceSink, song, { mode: "solfege" }),
+  createLiveFeedbackHook(voiceSink, asideSink, song, { voiceInterval: 4 })
+);
+
+const session = createSession(song, connector, {
+  teachingHook: composed,
+  syncMode: "concurrent", // voice + piano play simultaneously
+});
+await session.play();
+```
+
 ## Programmatic API
 
 ```typescript
@@ -227,6 +271,7 @@ const session = createSession(song, connector, {
   mode: "measure",
   tempo: 100,
   speed: 0.75,           // 75% speed for practice
+  syncMode: "concurrent", // voice + piano in parallel
   onProgress: (p) => console.log(p.percent), // "25%", "50%", etc.
 });
 
@@ -248,11 +293,11 @@ await connector.disconnect();
 ## Architecture
 
 ```
-ai-music-sheets (library)        pianai (runtime)
+ai-music-sheets (library)        pianoai (runtime)
 ┌──────────────────────┐         ┌────────────────────────────────┐
 │ SongEntry (hybrid)   │────────→│ Note Parser (safe + strict)    │
 │ Registry (search)    │         │ Session Engine (speed+progress)│
-│ 10 songs, 10 genres  │         │ Teaching Engine (8 hooks)      │
+│ 10 songs, 10 genres  │         │ Teaching Engine (9 hooks)      │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
                                  │ MCP Server (8 tools)           │
                                  │ CLI (progress bar + voice)     │
@@ -273,8 +318,8 @@ Teaching hook routing:
 ## Testing
 
 ```bash
-pnpm test       # 163 Vitest tests (parser + session + teaching + voice + aside + sing-along)
-pnpm smoke      # 25 smoke tests (integration, no MIDI needed)
+pnpm test       # 181 Vitest tests (parser + session + teaching + voice + aside + sing-along + sync + feedback)
+pnpm smoke      # 29 smoke tests (integration, no MIDI needed)
 pnpm typecheck  # tsc --noEmit
 ```
 

@@ -1,4 +1,4 @@
-// ─── pianai: Session Engine ──────────────────────────────────────────────────
+// ─── pianoai: Session Engine ─────────────────────────────────────────────────
 //
 // Manages the playback session: load a song, parse measures, play through
 // VMPK via the connector, track progress, handle pause/resume/stop.
@@ -12,6 +12,7 @@ import type {
   Session,
   SessionOptions,
   SessionState,
+  SyncMode,
   PlayableMeasure,
   PlaybackProgress,
   ProgressCallback,
@@ -47,6 +48,7 @@ export function createSession(
     song,
     state: "loaded",
     mode: options.mode ?? "full",
+    syncMode: options.syncMode ?? "concurrent",
     currentMeasure: 0,
     tempoOverride: options.tempo ?? null,
     speed,
@@ -335,12 +337,18 @@ export class SessionController {
   /**
    * Play a range of measures (inclusive, 0-based indices).
    * Fires teaching hooks at measure boundaries and key moments.
+   *
+   * In "concurrent" syncMode: voice and piano play simultaneously (duet feel).
+   * In "before" syncMode: voice speaks before piano plays (lecture style).
+   * Key moments always fire before playback in both modes (instructional).
    */
   private async playRange(
     startIdx: number,
     endIdx: number,
     signal: AbortSignal
   ): Promise<void> {
+    const concurrent = this.session.syncMode === "concurrent";
+
     for (let i = startIdx; i <= endIdx; i++) {
       if (signal.aborted) return;
 
@@ -348,22 +356,32 @@ export class SessionController {
       const pm = this.playableMeasures[i];
       const measureNum = i + 1; // 1-based for display/teaching
 
-      // ── Teaching: announce measure ──
-      await this.teachingHook.onMeasureStart(
-        measureNum,
-        pm.source.teachingNote,
-        pm.source.dynamics
-      );
-
-      // ── Teaching: check for key moments ──
+      // ── Teaching: check for key moments (always before playback) ──
       const keyMoments = detectKeyMoments(this.session.song, measureNum);
       for (const km of keyMoments) {
         if (signal.aborted) return;
         await this.teachingHook.onKeyMoment(km);
       }
 
-      // ── Play the measure ──
-      await this.playMeasure(pm, signal);
+      // ── Voice + piano: concurrent or sequential ──
+      if (concurrent) {
+        await Promise.all([
+          this.teachingHook.onMeasureStart(
+            measureNum,
+            pm.source.teachingNote,
+            pm.source.dynamics
+          ),
+          this.playMeasure(pm, signal),
+        ]);
+      } else {
+        await this.teachingHook.onMeasureStart(
+          measureNum,
+          pm.source.teachingNote,
+          pm.source.dynamics
+        );
+        await this.playMeasure(pm, signal);
+      }
+
       this.session.measuresPlayed++;
 
       // ── Progress notification ──
@@ -403,6 +421,7 @@ export class SessionController {
 
   /**
    * Play hands separately then together (for "hands" mode).
+   * Respects syncMode: concurrent voice plays alongside the first hand pass.
    */
   private async playHandsSeparate(
     measureIdx: number,
@@ -410,23 +429,33 @@ export class SessionController {
   ): Promise<void> {
     const pm = this.playableMeasures[measureIdx];
     const measureNum = measureIdx + 1;
+    const concurrent = this.session.syncMode === "concurrent";
 
-    // ── Teaching: announce measure ──
-    await this.teachingHook.onMeasureStart(
-      measureNum,
-      pm.source.teachingNote,
-      pm.source.dynamics
-    );
-
-    // ── Teaching: check key moments ──
+    // ── Teaching: check key moments (always before playback) ──
     const keyMoments = detectKeyMoments(this.session.song, measureNum);
     for (const km of keyMoments) {
       if (signal.aborted) return;
       await this.teachingHook.onKeyMoment(km);
     }
 
-    // Right hand alone
-    await this.playBeats(pm.rightBeats, signal);
+    // ── Voice + first hand pass: concurrent or sequential ──
+    if (concurrent) {
+      await Promise.all([
+        this.teachingHook.onMeasureStart(
+          measureNum,
+          pm.source.teachingNote,
+          pm.source.dynamics
+        ),
+        this.playBeats(pm.rightBeats, signal),
+      ]);
+    } else {
+      await this.teachingHook.onMeasureStart(
+        measureNum,
+        pm.source.teachingNote,
+        pm.source.dynamics
+      );
+      await this.playBeats(pm.rightBeats, signal);
+    }
     if (signal.aborted) return;
 
     // Left hand alone

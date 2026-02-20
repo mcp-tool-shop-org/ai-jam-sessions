@@ -1,4 +1,4 @@
-// ─── pianai: Smoke Test ──────────────────────────────────────────────────────
+// ─── pianoai: Smoke Test ─────────────────────────────────────────────────────
 //
 // Quick integration smoke test — no MIDI hardware needed.
 // Verifies: ai-music-sheets loads, note parser works, sessions run with mock,
@@ -23,6 +23,7 @@ import {
   createVoiceTeachingHook,
   createAsideTeachingHook,
   createSingAlongHook,
+  createLiveFeedbackHook,
   composeTeachingHooks,
   detectKeyMoments,
 } from "./teaching.js";
@@ -62,7 +63,7 @@ function assert(condition: boolean, msg: string): void {
   if (!condition) throw new Error(`Assertion failed: ${msg}`);
 }
 
-console.log("\n pianai smoke test\n");
+console.log("\n pianoai smoke test\n");
 
 // ─── Test 1: ai-music-sheets loads ──────────────────────────────────────────
 console.log("ai-music-sheets integration:");
@@ -283,6 +284,71 @@ test("composed sing-along + voice hooks both fire", async () => {
   await sc.play();
   assert(singD.length > 0, "sing-along should receive events");
   assert(voiceD.length > 0, "voice should receive events");
+});
+
+// ─── Test 8: SyncMode ────────────────────────────────────────────────────────
+console.log("\nSyncMode:");
+test("concurrent sync completes without error", async () => {
+  const mock = createMockVmpkConnector();
+  const song = getSong("let-it-be")!;
+  const hook = createRecordingTeachingHook();
+  const sc = createSession(song, mock, { syncMode: "concurrent", teachingHook: hook });
+  await mock.connect();
+  await sc.play();
+  assert(sc.session.measuresPlayed === 8, "should play 8 measures");
+  assert(hook.events.filter(e => e.type === "measure-start").length === 8, "8 measure-start events");
+});
+
+test("before sync completes without error", async () => {
+  const mock = createMockVmpkConnector();
+  const song = getSong("let-it-be")!;
+  const hook = createRecordingTeachingHook();
+  const sc = createSession(song, mock, { syncMode: "before", teachingHook: hook });
+  await mock.connect();
+  await sc.play();
+  assert(sc.session.measuresPlayed === 8, "should play 8 measures");
+});
+
+// ─── Test 9: Live Feedback Hook ──────────────────────────────────────────────
+console.log("\nLive feedback:");
+test("live feedback hook fires during full playback", async () => {
+  const song = getSong("moonlight-sonata-mvt1")!;
+  const voiceD: VoiceDirective[] = [];
+  const asideD: AsideDirective[] = [];
+  const hook = createLiveFeedbackHook(
+    async (d) => { voiceD.push(d); },
+    async (d) => { asideD.push(d); },
+    song,
+    { voiceInterval: 4 }
+  );
+  const mock = createMockVmpkConnector();
+  const sc = createSession(song, mock, { teachingHook: hook });
+  await mock.connect();
+  await sc.play();
+  assert(voiceD.length > 0, "should produce voice directives");
+  assert(asideD.length > 0, "should produce aside directives");
+});
+
+test("composed sing-along + live feedback fires", async () => {
+  const song = getSong("let-it-be")!;
+  const singD: VoiceDirective[] = [];
+  const feedbackVoiceD: VoiceDirective[] = [];
+  const feedbackAsideD: AsideDirective[] = [];
+  const composed = composeTeachingHooks(
+    createSingAlongHook(async (d) => { singD.push(d); }, song),
+    createLiveFeedbackHook(
+      async (d) => { feedbackVoiceD.push(d); },
+      async (d) => { feedbackAsideD.push(d); },
+      song,
+      { voiceInterval: 4 }
+    )
+  );
+  const mock = createMockVmpkConnector();
+  const sc = createSession(song, mock, { teachingHook: composed, syncMode: "concurrent" });
+  await mock.connect();
+  await sc.play();
+  assert(singD.length > 0, "sing-along should fire");
+  assert(feedbackVoiceD.length > 0 || feedbackAsideD.length > 0, "feedback should fire");
 });
 
 // ─── Summary ────────────────────────────────────────────────────────────────

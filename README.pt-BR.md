@@ -9,11 +9,11 @@
 <h1 align="center">PianoAI</h1>
 
 <p align="center">
-  Servidor MCP + CLI para ensino de piano com IA — reproduz através do VMPK via MIDI com feedback por voz.
+  Servidor MCP + CLI para ensino de piano com IA — reproduz atraves do VMPK via MIDI com feedback por voz.
 </p>
 
-[![Tests](https://img.shields.io/badge/tests-163_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
-[![Smoke](https://img.shields.io/badge/smoke-25_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Tests](https://img.shields.io/badge/tests-181_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
+[![Smoke](https://img.shields.io/badge/smoke-29_passing-brightgreen)](https://github.com/mcp-tool-shop-org/pianoai)
 [![MCP Tools](https://img.shields.io/badge/MCP_tools-8-purple)](https://github.com/mcp-tool-shop-org/pianoai)
 [![Songs](https://img.shields.io/badge/songs-10_(via_ai--music--sheets)-blue)](https://github.com/mcp-tool-shop-org/ai-music-sheets)
 
@@ -26,8 +26,10 @@ Um CLI em TypeScript e servidor MCP que carrega musicas de piano de [ai-music-sh
 - **4 modos de reproducao** — completo, compasso a compasso, maos separadas, loop
 - **Controle de velocidade** — pratica lenta em 0.5x ate reproducao rapida em 2x, acumula com override de tempo
 - **Acompanhamento de progresso** — callbacks configuraveis em marcos percentuais ou por compasso
-- **8 hooks de ensino** — console, silencioso, gravacao, callback, voz, aside, sing-along, composicao
+- **9 hooks de ensino** — console, silencioso, gravacao, callback, voz, aside, sing-along, composicao, live feedback
 - **Narracao cantada** — nomes de notas, solfejo, contorno ou silabas falados antes de cada compasso
+- **Canto sincronizado + piano** — concurrent (sensacao de dueto) ou before (voz primeiro) via `--with-piano`
+- **Feedback de ensino ao vivo** — encorajamento em tempo real, dicas de dinamica e avisos de dificuldade durante a reproducao
 - **Feedback por voz** — saida `VoiceDirective` para integracao com mcp-voice-soundboard
 - **Interjecoes aside** — saida `AsideDirective` para caixa de entrada do mcp-aside
 - **Parsing seguro** — notas invalidas sao ignoradas graciosamente com `ParseWarning`s coletados
@@ -41,7 +43,7 @@ Um CLI em TypeScript e servidor MCP que carrega musicas de piano de [ai-music-sh
 2. **[VMPK](https://vmpk.sourceforge.io/)** — configure a entrada MIDI para sua porta loopMIDI
 3. **Node.js 18+**
 
-## Instalação
+## Instalacao
 
 ```bash
 npm install -g @mcptoolshop/pianoai
@@ -51,31 +53,37 @@ npm install -g @mcptoolshop/pianoai
 
 ```bash
 # Listar todas as musicas
-pianai list
+pianoai list
 
 # Mostrar detalhes da musica + notas de ensino
-pianai info moonlight-sonata-mvt1
+pianoai info moonlight-sonata-mvt1
 
 # Reproduzir uma musica pelo VMPK
-pianai play let-it-be
+pianoai play let-it-be
 
 # Reproduzir com override de tempo
-pianai play basic-12-bar-blues --tempo 80
+pianoai play basic-12-bar-blues --tempo 80
 
 # Avancar compasso a compasso
-pianai play autumn-leaves --mode measure
+pianoai play autumn-leaves --mode measure
 
 # Pratica em metade da velocidade
-pianai play moonlight-sonata-mvt1 --speed 0.5
+pianoai play moonlight-sonata-mvt1 --speed 0.5
 
 # Pratica lenta com maos separadas
-pianai play dream-on --speed 0.75 --mode hands
+pianoai play dream-on --speed 0.75 --mode hands
 
 # Cantar junto — narrar nomes de notas durante a reproducao
-pianai sing let-it-be --mode note-names
+pianoai sing let-it-be --mode note-names
 
 # Cantar junto com solfejo, ambas as maos
-pianai sing fur-elise --mode solfege --hand both
+pianoai sing fur-elise --mode solfege --hand both
+
+# Cantar + piano juntos (sensacao de dueto)
+pianoai sing let-it-be --with-piano
+
+# Voz primeiro, depois piano
+pianoai sing fur-elise --with-piano --sync before
 ```
 
 ## Servidor MCP
@@ -88,7 +96,7 @@ O servidor MCP expoe 8 ferramentas para integracao com LLMs:
 | `song_info` | Obter linguagem musical completa, objetivos de ensino, sugestoes de pratica |
 | `registry_stats` | Contagem de musicas por genero e dificuldade |
 | `teaching_note` | Nota de ensino por compasso, digitacao, dinamica |
-| `sing_along` | Obter texto cantavel por compasso (nomes de notas, solfejo, contorno, silabas) |
+| `sing_along` | Obter texto cantavel por compasso (nomes de notas, solfejo, contorno, silabas); suporta `withPiano` para acompanhamento sincronizado |
 | `suggest_song` | Obter recomendacao baseada em criterios |
 | `list_measures` | Visao geral dos compassos com notas de ensino + avisos de parsing |
 | `practice_setup` | Sugerir velocidade, modo e configuracoes de voz para uma musica |
@@ -103,8 +111,8 @@ pnpm mcp
 ```json
 {
   "mcpServers": {
-    "pianai": {
-      "command": "pianai-mcp"
+    "pianoai": {
+      "command": "pianoai-mcp"
     }
   }
 }
@@ -131,9 +139,18 @@ pnpm mcp
 | `--speed <mult>` | Multiplicador de velocidade: 0.5 = metade, 1.0 = normal, 2.0 = dobro |
 | `--mode <mode>` | Modo de reproducao: `full`, `measure`, `hands`, `loop` |
 
+### Opcoes de Canto
+
+| Flag | Descricao |
+|------|-----------|
+| `--mode <mode>` | Modo de canto: `note-names`, `solfege`, `contour`, `syllables` |
+| `--hand <hand>` | Qual mao: `right`, `left`, `both` |
+| `--with-piano` | Reproduzir acompanhamento de piano enquanto canta |
+| `--sync <mode>` | Sincronizacao voz+piano: `concurrent` (padrao, dueto), `before` (voz primeiro) |
+
 ## Motor de Ensino
 
-O motor de ensino dispara hooks durante a reproducao. 8 implementacoes de hooks cobrem todos os casos de uso:
+O motor de ensino dispara hooks durante a reproducao. 9 implementacoes de hooks cobrem todos os casos de uso:
 
 | Hook | Caso de uso |
 |------|-------------|
@@ -144,6 +161,7 @@ O motor de ensino dispara hooks durante a reproducao. 8 implementacoes de hooks 
 | `createVoiceTeachingHook(sink)` | Voz — produz `VoiceDirective` para mcp-voice-soundboard |
 | `createAsideTeachingHook(sink)` | Aside — produz `AsideDirective` para caixa de entrada do mcp-aside |
 | `createSingAlongHook(sink, song)` | Canto — narra notas/solfejo/contorno antes de cada compasso |
+| `createLiveFeedbackHook(voiceSink, asideSink, song)` | Feedback ao vivo — encorajamento, dicas de dinamica, avisos de dificuldade |
 | `composeTeachingHooks(...hooks)` | Multiplo — despacha para multiplos hooks em serie |
 
 ### Feedback por voz
@@ -248,11 +266,11 @@ await connector.disconnect();
 ## Arquitetura
 
 ```
-ai-music-sheets (biblioteca)     pianai (runtime)
+ai-music-sheets (biblioteca)     pianoai (runtime)
 ┌──────────────────────┐         ┌────────────────────────────────┐
 │ SongEntry (hibrido)  │────────→│ Note Parser (seguro + estrito) │
 │ Registry (busca)     │         │ Session Engine (veloc.+progr.) │
-│ 10 musicas, 10 gen.  │         │ Teaching Engine (8 hooks)      │
+│ 10 musicas, 10 gen.  │         │ Teaching Engine (9 hooks)      │
 └──────────────────────┘         │ VMPK Connector (JZZ)          │
                                  │ MCP Server (8 ferramentas)     │
                                  │ CLI (barra de progresso + voz) │
@@ -273,8 +291,8 @@ Roteamento de hooks de ensino:
 ## Testes
 
 ```bash
-pnpm test       # 163 testes Vitest (parser + session + teaching + voice + aside + sing-along)
-pnpm smoke      # 25 testes de integracao (smoke, sem MIDI necessario)
+pnpm test       # 181 testes Vitest (parser + session + teaching + voice + aside + sing-along)
+pnpm smoke      # 29 testes de integracao (smoke, sem MIDI necessario)
 pnpm typecheck  # tsc --noEmit
 ```
 

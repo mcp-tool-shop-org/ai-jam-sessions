@@ -8,6 +8,7 @@ import {
   createVoiceTeachingHook,
   createAsideTeachingHook,
   createSingAlongHook,
+  createLiveFeedbackHook,
   composeTeachingHooks,
   detectKeyMoments,
 } from "./teaching.js";
@@ -556,5 +557,213 @@ describe("Sing-Along + Session integration", () => {
     expect(directives.length).toBe(measureCount + 1);
     expect(directives[0].blocking).toBe(true);
     expect(directives[directives.length - 1].blocking).toBe(false); // completion
+  });
+});
+
+// ─── Live Feedback Hook ──────────────────────────────────────────────────────
+
+describe("LiveFeedbackHook", () => {
+  const moonlight = getSong("moonlight-sonata-mvt1")!;
+
+  it("emits voice directives at interval", async () => {
+    const voiceD: VoiceDirective[] = [];
+    const asideD: AsideDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async (d) => { voiceD.push(d); },
+      async (d) => { asideD.push(d); },
+      moonlight,
+      { voiceInterval: 2 }
+    );
+
+    // Fire 4 measure starts
+    await hook.onMeasureStart(1, undefined, undefined);
+    await hook.onMeasureStart(2, undefined, undefined);
+    await hook.onMeasureStart(3, undefined, undefined);
+    await hook.onMeasureStart(4, undefined, undefined);
+
+    // Should emit voice every 2 measures → measures 2 and 4
+    const encouragements = voiceD.filter((d) => !d.text.startsWith("Watch"));
+    expect(encouragements.length).toBe(2);
+  });
+
+  it("emits aside on dynamics change", async () => {
+    const voiceD: VoiceDirective[] = [];
+    const asideD: AsideDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async (d) => { voiceD.push(d); },
+      async (d) => { asideD.push(d); },
+      moonlight,
+    );
+
+    await hook.onMeasureStart(1, undefined, "pp");
+    const dynamicsAsides = asideD.filter((d) => d.reason === "dynamics-change");
+    expect(dynamicsAsides.length).toBe(1);
+    expect(dynamicsAsides[0].text).toContain("Pianissimo");
+  });
+
+  it("does not emit aside when dynamics unchanged", async () => {
+    const voiceD: VoiceDirective[] = [];
+    const asideD: AsideDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async (d) => { voiceD.push(d); },
+      async (d) => { asideD.push(d); },
+      moonlight,
+    );
+
+    await hook.onMeasureStart(1, undefined, "mf");
+    await hook.onMeasureStart(2, undefined, "mf"); // same dynamics
+    const dynamicsAsides = asideD.filter((d) => d.reason === "dynamics-change");
+    expect(dynamicsAsides.length).toBe(1); // only the first
+  });
+
+  it("emits aside on difficult passage warning", async () => {
+    const voiceD: VoiceDirective[] = [];
+    const asideD: AsideDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async (d) => { voiceD.push(d); },
+      async (d) => { asideD.push(d); },
+      moonlight,
+    );
+
+    await hook.onMeasureStart(5, "Watch your finger crossing here", undefined);
+    const warnings = asideD.filter((d) => d.reason === "difficulty-warning");
+    expect(warnings.length).toBe(1);
+    expect(warnings[0].text).toContain("finger crossing");
+  });
+
+  it("fires voice on key moments", async () => {
+    const voiceD: VoiceDirective[] = [];
+    const asideD: AsideDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async (d) => { voiceD.push(d); },
+      async (d) => { asideD.push(d); },
+      moonlight,
+    );
+
+    await hook.onKeyMoment("Bar 1: iconic triplet arpeggio");
+    expect(voiceD.length).toBe(1);
+    expect(voiceD[0].text).toContain("Watch for this");
+    expect(voiceD[0].blocking).toBe(false);
+  });
+
+  it("fires completion on song end with both voice and aside", async () => {
+    const voiceD: VoiceDirective[] = [];
+    const asideD: AsideDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async (d) => { voiceD.push(d); },
+      async (d) => { asideD.push(d); },
+      moonlight,
+    );
+
+    await hook.onSongComplete(8, "Moonlight Sonata");
+    expect(voiceD.length).toBe(1);
+    expect(voiceD[0].text).toContain("Fantastic");
+    expect(asideD.length).toBe(1);
+    expect(asideD[0].reason).toBe("session-complete");
+  });
+
+  it("respects encourageOnDynamics=false", async () => {
+    const asideD: AsideDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async () => {},
+      async (d) => { asideD.push(d); },
+      moonlight,
+      { encourageOnDynamics: false }
+    );
+
+    await hook.onMeasureStart(1, undefined, "ff");
+    const dynamicsAsides = asideD.filter((d) => d.reason === "dynamics-change");
+    expect(dynamicsAsides.length).toBe(0);
+  });
+
+  it("respects warnOnDifficult=false", async () => {
+    const asideD: AsideDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async () => {},
+      async (d) => { asideD.push(d); },
+      moonlight,
+      { warnOnDifficult: false }
+    );
+
+    await hook.onMeasureStart(1, "Watch your fingers here", undefined);
+    const warnings = asideD.filter((d) => d.reason === "difficulty-warning");
+    expect(warnings.length).toBe(0);
+  });
+
+  it("uses custom voice and speed", async () => {
+    const voiceD: VoiceDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async (d) => { voiceD.push(d); },
+      async () => {},
+      moonlight,
+      { voice: "narrator", speechSpeed: 0.9, voiceInterval: 1 }
+    );
+
+    await hook.onMeasureStart(1, undefined, undefined);
+    expect(voiceD[0].voice).toBe("narrator");
+    expect(voiceD[0].speed).toBe(0.9);
+  });
+
+  it("records directives on the hook object", async () => {
+    const hook = createLiveFeedbackHook(
+      async () => {},
+      async () => {},
+      moonlight,
+      { voiceInterval: 1 }
+    );
+
+    await hook.onMeasureStart(1, undefined, "mf");
+    await hook.onKeyMoment("test moment");
+    expect(hook.voiceDirectives.length).toBeGreaterThan(0);
+    expect(hook.asideDirectives.length).toBeGreaterThan(0);
+  });
+
+  it("composes with sing-along hook", async () => {
+    const song = getSong("let-it-be")!;
+    const singD: VoiceDirective[] = [];
+    const feedbackVoiceD: VoiceDirective[] = [];
+    const feedbackAsideD: AsideDirective[] = [];
+
+    const singHook = createSingAlongHook(async (d) => { singD.push(d); }, song);
+    const feedbackHook = createLiveFeedbackHook(
+      async (d) => { feedbackVoiceD.push(d); },
+      async (d) => { feedbackAsideD.push(d); },
+      song,
+      { voiceInterval: 2 }
+    );
+    const composed = composeTeachingHooks(singHook, feedbackHook);
+
+    await composed.onMeasureStart(1, "Keep wrists relaxed", "mp");
+    await composed.onMeasureStart(2, undefined, "mf");
+    expect(singD.length).toBe(2);
+    expect(feedbackVoiceD.length).toBe(1); // encouragement at measure 2
+    expect(feedbackAsideD.length).toBeGreaterThan(0); // dynamics + possibly warning
+  });
+});
+
+describe("LiveFeedback + Session integration", () => {
+  it("live feedback hook fires during full playback", async () => {
+    const mock = createMockVmpkConnector();
+    const song = getSong("moonlight-sonata-mvt1")!;
+    const voiceD: VoiceDirective[] = [];
+    const asideD: AsideDirective[] = [];
+    const hook = createLiveFeedbackHook(
+      async (d) => { voiceD.push(d); },
+      async (d) => { asideD.push(d); },
+      song,
+      { voiceInterval: 4 }
+    );
+    const sc = createSession(song, mock, { teachingHook: hook });
+
+    await mock.connect();
+    await sc.play();
+
+    // Should have periodic encouragements + key moment reactions + completion
+    expect(voiceD.length).toBeGreaterThan(0);
+    // Should have dynamics tips + completion aside
+    expect(asideD.length).toBeGreaterThan(0);
+    // Completion message should be present
+    const completion = voiceD.find((d) => d.text.includes("Fantastic"));
+    expect(completion).toBeDefined();
   });
 });

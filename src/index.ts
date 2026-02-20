@@ -1,10 +1,10 @@
-// ─── pianai ─────────────────────────────────────────────────────────────────
+// ─── pianoai ────────────────────────────────────────────────────────────────
 //
 // MCP server + CLI for AI-powered piano teaching.
 // Plays songs through VMPK via MIDI with voice feedback.
 //
 // Usage:
-//   import { createSession, createVmpkConnector } from "pianai";
+//   import { createSession, createVmpkConnector } from "pianoai";
 //   import { getSong } from "@mcptoolshop/ai-music-sheets";
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -62,6 +62,7 @@ export {
   createVoiceTeachingHook,
   createAsideTeachingHook,
   createSingAlongHook,
+  createLiveFeedbackHook,
   composeTeachingHooks,
   detectKeyMoments,
 } from "./teaching.js";
@@ -80,6 +81,7 @@ export type {
   SessionOptions,
   SessionState,
   PlaybackMode,
+  SyncMode,
   PlaybackProgress,
   ProgressCallback,
   ParseWarning,
@@ -96,6 +98,7 @@ export type {
   VoiceSink,
   AsideDirective,
   AsideSink,
+  LiveFeedbackHookOptions,
 } from "./types.js";
 
 export { DURATION_MAP, NOTE_OFFSETS } from "./types.js";
