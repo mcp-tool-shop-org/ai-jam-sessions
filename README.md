@@ -22,6 +22,7 @@
   <a href="https://www.npmjs.com/package/ai-jam-sessions"><img src="https://img.shields.io/npm/v/ai-jam-sessions" alt="npm"></a>
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-120_across_12_genres-blue" alt="Songs"></a>
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-24-green" alt="Ready"></a>
+[![SafeSkill 74/100](https://img.shields.io/badge/SafeSkill-74%2F100_Passes%20with%20Notes-yellow)](https://safeskill.dev/scan/mcp-tool-shop-org-ai-jam-sessions)
 </p>
 
 ---
