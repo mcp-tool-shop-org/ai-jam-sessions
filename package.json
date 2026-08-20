@@ -66,21 +66,21 @@
     "url": "https://github.com/mcp-tool-shop-org/ai-jam-sessions.git"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.109.1",
+    "@anthropic-ai/sdk": "^0.117.1",
     "@modelcontextprotocol/sdk": "1.30.0",
     "ajv": "^8.20.0",
     "jzz": "^1.8.0",
     "midi-file": "^1.2.4",
-    "node-web-audio-api": "^2.0.0",
+    "node-web-audio-api": "^2.2.0",
     "pink-trombone-mod": "^0.1.0",
     "vocal-synth-engine": "github:mcp-tool-shop-org/vocal-synth-engine#7269cd539b20907743601f66812b3d904d43508e",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/node": "^26.1.0",
+    "@types/node": "^26.2.0",
     "@vitest/coverage-v8": "^4.1.9",
-    "tsx": "^4.23.0",
-    "typescript": "^6.0.3",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.9"
   }
 }
