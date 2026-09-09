@@ -1,5 +1,5 @@
 {
-  "id": "compare:amazing-grace|peacherine-rag",
+  "id": "compare:amazing-grace|elite-syncopations",
   "schema_version": "jam-actions-v1/1.0.0",
   "family": "compare",
   "provenance": {
@@ -22,7 +22,7 @@
     "training_use_permitted": true
   },
   "scope": {
-    "song_id": "amazing-grace|peacherine-rag",
+    "song_id": "amazing-grace|elite-syncopations",
     "phrase_window": "full:69",
     "instrument": "piano",
     "key": "Eb major",
@@ -36,7 +36,7 @@
     },
     "gold": {
       "family": "compare",
-      "answer": "same_key",
+      "answer": "different_key",
       "engine": "song.key"
     }
   },
@@ -79,7 +79,7 @@
       {
         "turn": 1,
         "role": "user",
-        "content": "Do \"Amazing Grace\" and \"Peacherine Rag\" share a key signature? Answer with exactly one of: same_key, different_key."
+        "content": "Do \"Amazing Grace\" and \"Elite Syncopations\" share a key signature? Answer with exactly one of: same_key, different_key."
       },
       {
         "turn": 2,
@@ -95,14 +95,14 @@
           {
             "tool": "song_info",
             "arguments": {
-              "id": "peacherine-rag"
+              "id": "elite-syncopations"
             }
           },
           {
             "tool": "compare_songs",
             "arguments": {
               "song_a": "amazing-grace",
-              "song_b": "peacherine-rag"
+              "song_b": "elite-syncopations"
             }
           }
         ]
@@ -122,9 +122,9 @@
         "role": "tool",
         "tool": "song_info",
         "content": {
-          "id": "peacherine-rag",
-          "title": "Peacherine Rag",
-          "key": "Eb major"
+          "id": "elite-syncopations",
+          "title": "Elite Syncopations",
+          "key": "Bb major"
         }
       },
       {
@@ -133,13 +133,13 @@
         "tool": "compare_songs",
         "content": {
           "key_a": "Eb major",
-          "key_b": "Eb major"
+          "key_b": "Bb major"
         }
       },
       {
         "turn": 6,
         "role": "assistant",
-        "content": "Eb major, Eb major: same: same_key"
+        "content": "Eb major, Bb major: different: different_key"
       }
     ]
   },

@@ -1,7 +1,7 @@
 {
-  "id": "harmony:maple-leaf-rag:m84:pass",
+  "id": "compare:maple-leaf-rag|pathetique-mvt2",
   "schema_version": "jam-actions-v1/1.0.0",
-  "family": "harmony",
+  "family": "compare",
   "provenance": {
     "source_url": "library:maple-leaf-rag",
     "source_collected_at": "library-scan",
@@ -22,7 +22,7 @@
     "training_use_permitted": true
   },
   "scope": {
-    "song_id": "maple-leaf-rag",
+    "song_id": "maple-leaf-rag|pathetique-mvt2",
     "phrase_window": "full:144",
     "instrument": "piano",
     "key": "Ab major",
@@ -32,28 +32,12 @@
   },
   "observation": {
     "thresholds": {
-      "max_chromatic_ratio": 0.2
+      "min_pitch_classes": 2
     },
     "gold": {
-      "family": "harmony",
-      "answer": "verified",
-      "engine": "verifyHarmony"
-    },
-    "harmony": {
-      "melody": [
-        {
-          "number": 84,
-          "rightHand": "G#4:q F3:q F4:q G#4:q C#3:q C#4:q"
-        }
-      ],
-      "reharmonization": [
-        {
-          "measure": 84,
-          "intendedChord": "C#",
-          "voicing": "G#3 F2 F3 G#3 C#2 C#3"
-        }
-      ],
-      "key": "Ab major"
+      "family": "compare",
+      "answer": "same_key",
+      "engine": "song.key"
     }
   },
   "annotation_target": {
@@ -88,26 +72,36 @@
     ]
   },
   "target_trace": {
-    "task_family": "harmony",
+    "task_family": "compare",
     "objective": "Answer using tools. Do not guess from the question text.",
     "session": [
       {
         "turn": 1,
         "role": "user",
-        "content": "Proposed reharmonization of measure 84 of \"Maple Leaf Rag\": [{\"measure\":84,\"intendedChord\":\"C#\",\"voicing\":\"G#3 F2 F3 G#3 C#2 C#3\"}]\nDoes it clear the harmony verifier? Answer with exactly one of: verified, rejected."
+        "content": "Do \"Maple Leaf Rag\" and \"Pathetique Sonata, 2nd Movement (Adagio cantabile)\" share a key signature? Answer with exactly one of: same_key, different_key."
       },
       {
         "turn": 2,
         "role": "assistant",
-        "content": "Running the deterministic harmony verifier.",
+        "content": "Comparing the two library entries.",
         "tool_calls": [
           {
-            "tool": "verify_harmony",
+            "tool": "song_info",
             "arguments": {
-              "songId": "maple-leaf-rag",
-              "measures": "84-84",
-              "reharmonization": "[{\"measure\":84,\"intendedChord\":\"C#\",\"voicing\":\"G#3 F2 F3 G#3 C#2 C#3\"}]",
-              "key": "Ab major"
+              "id": "maple-leaf-rag"
+            }
+          },
+          {
+            "tool": "song_info",
+            "arguments": {
+              "id": "pathetique-mvt2"
+            }
+          },
+          {
+            "tool": "compare_songs",
+            "arguments": {
+              "song_a": "maple-leaf-rag",
+              "song_b": "pathetique-mvt2"
             }
           }
         ]
@@ -115,18 +109,36 @@
       {
         "turn": 3,
         "role": "tool",
-        "tool": "verify_harmony",
+        "tool": "song_info",
         "content": {
-          "intended": "C#",
-          "detected": "C#",
-          "chromatic": 0,
-          "scored": 6
+          "id": "maple-leaf-rag",
+          "title": "Maple Leaf Rag",
+          "key": "Ab major"
         }
       },
       {
         "turn": 4,
+        "role": "tool",
+        "tool": "song_info",
+        "content": {
+          "id": "pathetique-mvt2",
+          "title": "Pathetique Sonata, 2nd Movement (Adagio cantabile)",
+          "key": "Ab major"
+        }
+      },
+      {
+        "turn": 5,
+        "role": "tool",
+        "tool": "compare_songs",
+        "content": {
+          "key_a": "Ab major",
+          "key_b": "Ab major"
+        }
+      },
+      {
+        "turn": 6,
         "role": "assistant",
-        "content": "intended C#, detected C#: same; chromatic 0/6 = 0.000 − 0.2 = −0.200, inside: verified"
+        "content": "Ab major, Ab major: same: same_key"
       }
     ]
   },
@@ -136,7 +148,7 @@
     "leakage_check": "passed",
     "eval_eligibility": [
       "tool_use",
-      "harmony"
+      "compare"
     ],
     "phrase_continuation_eligible": false,
     "phrase_continuation_eligible_reason": "standalone tool-use items"

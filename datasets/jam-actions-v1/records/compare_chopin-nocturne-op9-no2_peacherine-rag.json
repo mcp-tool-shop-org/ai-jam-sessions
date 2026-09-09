@@ -1,5 +1,5 @@
 {
-  "id": "compare:chopin-nocturne-op9-no2|danny-boy",
+  "id": "compare:chopin-nocturne-op9-no2|peacherine-rag",
   "schema_version": "jam-actions-v1/1.0.0",
   "family": "compare",
   "provenance": {
@@ -22,7 +22,7 @@
     "training_use_permitted": true
   },
   "scope": {
-    "song_id": "chopin-nocturne-op9-no2|danny-boy",
+    "song_id": "chopin-nocturne-op9-no2|peacherine-rag",
     "phrase_window": "full:123",
     "instrument": "piano",
     "key": "Eb major",
@@ -78,7 +78,7 @@
       {
         "turn": 1,
         "role": "user",
-        "content": "Do \"Nocturne in Eb Major, Op. 9 No. 2\" and \"Danny Boy\" share a key signature? Answer with exactly one of: same_key, different_key."
+        "content": "Do \"Nocturne in Eb Major, Op. 9 No. 2\" and \"Peacherine Rag\" share a key signature? Answer with exactly one of: same_key, different_key."
       },
       {
         "turn": 2,
@@ -94,14 +94,14 @@
           {
             "tool": "song_info",
             "arguments": {
-              "id": "danny-boy"
+              "id": "peacherine-rag"
             }
           },
           {
             "tool": "compare_songs",
             "arguments": {
               "song_a": "chopin-nocturne-op9-no2",
-              "song_b": "danny-boy"
+              "song_b": "peacherine-rag"
             }
           }
         ]
@@ -121,8 +121,8 @@
         "role": "tool",
         "tool": "song_info",
         "content": {
-          "id": "danny-boy",
-          "title": "Danny Boy",
+          "id": "peacherine-rag",
+          "title": "Peacherine Rag",
           "key": "Eb major"
         }
       },
