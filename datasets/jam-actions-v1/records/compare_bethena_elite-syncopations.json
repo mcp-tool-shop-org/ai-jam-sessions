@@ -1,7 +1,7 @@
 {
-  "id": "harmony:bethena:m9:fail",
+  "id": "compare:bethena|elite-syncopations",
   "schema_version": "jam-actions-v1/1.0.0",
-  "family": "harmony",
+  "family": "compare",
   "provenance": {
     "source_url": "library:bethena",
     "source_collected_at": "library-scan",
@@ -22,7 +22,7 @@
     "training_use_permitted": true
   },
   "scope": {
-    "song_id": "bethena",
+    "song_id": "bethena|elite-syncopations",
     "phrase_window": "full:219",
     "instrument": "piano",
     "key": "Bb major",
@@ -32,28 +32,12 @@
   },
   "observation": {
     "thresholds": {
-      "max_chromatic_ratio": 0.2
+      "min_pitch_classes": 2
     },
     "gold": {
-      "family": "harmony",
-      "answer": "rejected",
-      "engine": "verifyHarmony"
-    },
-    "harmony": {
-      "melody": [
-        {
-          "number": 9,
-          "rightHand": "G3:q B4:q D4:q G4:q D4:q G4:q"
-        }
-      ],
-      "reharmonization": [
-        {
-          "measure": 9,
-          "intendedChord": "G",
-          "voicing": "G#2 C4 D#3 G#3 D#3 G#3"
-        }
-      ],
-      "key": "Bb major"
+      "family": "compare",
+      "answer": "same_key",
+      "engine": "song.key"
     }
   },
   "annotation_target": {
@@ -88,26 +72,36 @@
     ]
   },
   "target_trace": {
-    "task_family": "harmony",
+    "task_family": "compare",
     "objective": "Answer using tools. Do not guess from the question text.",
     "session": [
       {
         "turn": 1,
         "role": "user",
-        "content": "Proposed reharmonization of measure 9 of \"Bethena\": [{\"measure\":9,\"intendedChord\":\"G\",\"voicing\":\"G#2 C4 D#3 G#3 D#3 G#3\"}]\nDoes it clear the harmony verifier? Answer with exactly one of: verified, rejected."
+        "content": "Do \"Bethena\" and \"Elite Syncopations\" share a key signature? Answer with exactly one of: same_key, different_key."
       },
       {
         "turn": 2,
         "role": "assistant",
-        "content": "Running the deterministic harmony verifier.",
+        "content": "Comparing the two library entries.",
         "tool_calls": [
           {
-            "tool": "verify_harmony",
+            "tool": "song_info",
             "arguments": {
-              "songId": "bethena",
-              "measures": "9-9",
-              "reharmonization": "[{\"measure\":9,\"intendedChord\":\"G\",\"voicing\":\"G#2 C4 D#3 G#3 D#3 G#3\"}]",
-              "key": "Bb major"
+              "id": "bethena"
+            }
+          },
+          {
+            "tool": "song_info",
+            "arguments": {
+              "id": "elite-syncopations"
+            }
+          },
+          {
+            "tool": "compare_songs",
+            "arguments": {
+              "song_a": "bethena",
+              "song_b": "elite-syncopations"
             }
           }
         ]
@@ -115,18 +109,36 @@
       {
         "turn": 3,
         "role": "tool",
-        "tool": "verify_harmony",
+        "tool": "song_info",
         "content": {
-          "intended": "G",
-          "detected": "Ab",
-          "chromatic": 0,
-          "scored": 6
+          "id": "bethena",
+          "title": "Bethena",
+          "key": "Bb major"
         }
       },
       {
         "turn": 4,
+        "role": "tool",
+        "tool": "song_info",
+        "content": {
+          "id": "elite-syncopations",
+          "title": "Elite Syncopations",
+          "key": "Bb major"
+        }
+      },
+      {
+        "turn": 5,
+        "role": "tool",
+        "tool": "compare_songs",
+        "content": {
+          "key_a": "Bb major",
+          "key_b": "Bb major"
+        }
+      },
+      {
+        "turn": 6,
         "role": "assistant",
-        "content": "intended G, detected Ab: different; chromatic 0/6 = 0.000 − 0.2 = −0.200, inside: rejected"
+        "content": "Bb major, Bb major: same: same_key"
       }
     ]
   },
@@ -136,7 +148,7 @@
     "leakage_check": "passed",
     "eval_eligibility": [
       "tool_use",
-      "harmony"
+      "compare"
     ],
     "phrase_continuation_eligible": false,
     "phrase_continuation_eligible_reason": "standalone tool-use items"

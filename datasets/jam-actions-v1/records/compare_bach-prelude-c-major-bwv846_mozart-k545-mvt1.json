@@ -1,7 +1,7 @@
 {
-  "id": "harmony:bach-prelude-c-major-bwv846:m17:fail",
+  "id": "compare:bach-prelude-c-major-bwv846|mozart-k545-mvt1",
   "schema_version": "jam-actions-v1/1.0.0",
-  "family": "harmony",
+  "family": "compare",
   "provenance": {
     "source_url": "Bernd Krueger, Source: piano-midi.de (CC BY-SA)",
     "source_collected_at": "library-scan",
@@ -22,7 +22,7 @@
     "training_use_permitted": true
   },
   "scope": {
-    "song_id": "bach-prelude-c-major-bwv846",
+    "song_id": "bach-prelude-c-major-bwv846|mozart-k545-mvt1",
     "phrase_window": "full:62",
     "instrument": "piano",
     "key": "C major",
@@ -32,28 +32,12 @@
   },
   "observation": {
     "thresholds": {
-      "max_chromatic_ratio": 0.2
+      "min_pitch_classes": 2
     },
     "gold": {
-      "family": "harmony",
-      "answer": "rejected",
-      "engine": "verifyHarmony"
-    },
-    "harmony": {
-      "melody": [
-        {
-          "number": 17,
-          "rightHand": "D4:q F4:q A4:q A4:q D4:q F4:q A4:q A4:q"
-        }
-      ],
-      "reharmonization": [
-        {
-          "measure": 17,
-          "intendedChord": "Dm",
-          "voicing": "D#3 F#3 A#3 A#3 D#3 F#3 A#3 A#3"
-        }
-      ],
-      "key": "C major"
+      "family": "compare",
+      "answer": "same_key",
+      "engine": "song.key"
     }
   },
   "annotation_target": {
@@ -88,26 +72,36 @@
     ]
   },
   "target_trace": {
-    "task_family": "harmony",
+    "task_family": "compare",
     "objective": "Answer using tools. Do not guess from the question text.",
     "session": [
       {
         "turn": 1,
         "role": "user",
-        "content": "Proposed reharmonization of measure 17 of \"Prelude in C Major, BWV 846 (Well-Tempered Clavier)\": [{\"measure\":17,\"intendedChord\":\"Dm\",\"voicing\":\"D#3 F#3 A#3 A#3 D#3 F#3 A#3 A#3\"}]\nDoes it clear the harmony verifier? Answer with exactly one of: verified, rejected."
+        "content": "Do \"Prelude in C Major, BWV 846 (Well-Tempered Clavier)\" and \"Piano Sonata No. 16 in C Major, K. 545, I. Allegro\" share a key signature? Answer with exactly one of: same_key, different_key."
       },
       {
         "turn": 2,
         "role": "assistant",
-        "content": "Running the deterministic harmony verifier.",
+        "content": "Comparing the two library entries.",
         "tool_calls": [
           {
-            "tool": "verify_harmony",
+            "tool": "song_info",
             "arguments": {
-              "songId": "bach-prelude-c-major-bwv846",
-              "measures": "17-17",
-              "reharmonization": "[{\"measure\":17,\"intendedChord\":\"Dm\",\"voicing\":\"D#3 F#3 A#3 A#3 D#3 F#3 A#3 A#3\"}]",
-              "key": "C major"
+              "id": "bach-prelude-c-major-bwv846"
+            }
+          },
+          {
+            "tool": "song_info",
+            "arguments": {
+              "id": "mozart-k545-mvt1"
+            }
+          },
+          {
+            "tool": "compare_songs",
+            "arguments": {
+              "song_a": "bach-prelude-c-major-bwv846",
+              "song_b": "mozart-k545-mvt1"
             }
           }
         ]
@@ -115,18 +109,36 @@
       {
         "turn": 3,
         "role": "tool",
-        "tool": "verify_harmony",
+        "tool": "song_info",
         "content": {
-          "intended": "Dm",
-          "detected": "Ebm",
-          "chromatic": 0,
-          "scored": 8
+          "id": "bach-prelude-c-major-bwv846",
+          "title": "Prelude in C Major, BWV 846 (Well-Tempered Clavier)",
+          "key": "C major"
         }
       },
       {
         "turn": 4,
+        "role": "tool",
+        "tool": "song_info",
+        "content": {
+          "id": "mozart-k545-mvt1",
+          "title": "Piano Sonata No. 16 in C Major, K. 545, I. Allegro",
+          "key": "C major"
+        }
+      },
+      {
+        "turn": 5,
+        "role": "tool",
+        "tool": "compare_songs",
+        "content": {
+          "key_a": "C major",
+          "key_b": "C major"
+        }
+      },
+      {
+        "turn": 6,
         "role": "assistant",
-        "content": "intended Dm, detected Ebm: different; chromatic 0/8 = 0.000 − 0.2 = −0.200, inside: rejected"
+        "content": "C major, C major: same: same_key"
       }
     ]
   },
@@ -136,7 +148,7 @@
     "leakage_check": "passed",
     "eval_eligibility": [
       "tool_use",
-      "harmony"
+      "compare"
     ],
     "phrase_continuation_eligible": false,
     "phrase_continuation_eligible_reason": "standalone tool-use items"
