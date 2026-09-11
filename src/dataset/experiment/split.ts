@@ -25,3 +25,36 @@ export function assertNoStraddle<T>(
     }
   }
 }
+
+/**
+ * A family whose gold never varies on a split has no gradient. The v1
+ * corpus spent a week with five constant-gold families; this is that gate
+ * as a function rather than a one-off test.
+ */
+export function assertGoldVaries<T>(
+  items: readonly T[],
+  goldOf: (c: T) => string,
+  splitOf: (c: T) => "train" | "test",
+  familyOf: (c: T) => string = () => "all",
+): void {
+  for (const side of ["train", "test"] as const) {
+    const byFamily = new Map<string, Set<string>>();
+    for (const c of items) {
+      if (splitOf(c) !== side) continue;
+      const f = familyOf(c);
+      let set = byFamily.get(f);
+      if (!set) {
+        set = new Set();
+        byFamily.set(f, set);
+      }
+      set.add(goldOf(c));
+    }
+    for (const [f, answers] of byFamily) {
+      if (answers.size < 2) {
+        throw new Error(
+          `gold does not vary in ${f} ${side} (${[...answers].join(", ") || "empty"}). A constant label has no gradient.`,
+        );
+      }
+    }
+  }
+}
