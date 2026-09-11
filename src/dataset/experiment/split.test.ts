@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { assertNoStraddle } from "./split.js";
+import { assertNoStraddle, assertGoldVaries } from "./split.js";
 import { acousticTask, acousticCases } from "../acoustic/task.js";
 import { TEST_SONG_ID, TRAIN_SONG_IDS } from "../acoustic/phrases.js";
 
@@ -27,6 +27,37 @@ describe("assertNoStraddle", () => {
           { key: "b", split: "test" as const },
         ],
         (c) => c.key,
+        (c) => c.split,
+      ),
+    ).not.toThrow();
+  });
+});
+
+describe("assertGoldVaries", () => {
+  it("throws when a split has only one gold value", () => {
+    expect(() =>
+      assertGoldVaries(
+        [
+          { gold: "6", split: "train" as const },
+          { gold: "8", split: "train" as const },
+          { gold: "6", split: "test" as const },
+        ],
+        (c) => c.gold,
+        (c) => c.split,
+      ),
+    ).toThrow(/does not vary in all test/);
+  });
+
+  it("passes when both splits have at least two golds", () => {
+    expect(() =>
+      assertGoldVaries(
+        [
+          { gold: "6", split: "train" as const },
+          { gold: "8", split: "train" as const },
+          { gold: "7", split: "test" as const },
+          { gold: "9", split: "test" as const },
+        ],
+        (c) => c.gold,
         (c) => c.split,
       ),
     ).not.toThrow();
