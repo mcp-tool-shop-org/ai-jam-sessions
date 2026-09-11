@@ -1,0 +1,34 @@
+{
+  "phase": "P0",
+  "written_before_sampled_run": true,
+  "model": "qwen2.5:7b",
+  "model_note": "Ollama tag for Qwen2.5-7B-Instruct, already on the rig. Apache-2.0. Same family as the 7B SFT path. Qwen3-4B-Instruct-2507 (r52 base) is not installed locally; this pin is the 7B instruct checkpoint, not that 4B.",
+  "model_show": {
+    "architecture": "qwen2",
+    "parameters": "7.6B",
+    "quantization": "Q4_K_M",
+    "context_length": 32768
+  },
+  "n": 8,
+  "greedy": { "temperature": 0, "n": 1, "do_sample": false },
+  "sampled": { "temperature": 1, "n": 8, "seed": 0, "seed_per_attempt": "seed + attempt" },
+  "guess_test": { "temperature": 1, "n": 8, "seed": 0, "tools": "none", "keep_alive": "30m" },
+  "host": "http://127.0.0.1:11434",
+  "framework": "Ollama /api/chat (grader) and /api/generate (guess-test)",
+  "hardware": "local RTX 5090, 32 GB",
+  "data": "experiments/coverage-v1-sft/data-4draw",
+  "gold": "experiments/coverage-v1-sft/data-4draw/gold-test.jsonl",
+  "gold_n": 59,
+  "sha256": {
+    "gold-test.jsonl": "d9ab649e11453f1b9179cc8ad1f2a9678b1f5457721631617d108a9b396de10d",
+    "sft-test.jsonl": "327505ccee00529c027ceb76685e80799a435ccb929c45630ec1eaae28aba7d2",
+    "ollama-grade.mjs": "819d9ba0480ab338b539f4cc45f9a7b66706f6579c03961615fbbd61072d6a24"
+  },
+  "band": [0.125, 0.5],
+  "go_rule": {
+    "min_in_band_after_leak": 10,
+    "sampled_pass1_below": 0.8
+  },
+  "spend": 0,
+  "tool_executor": "none — P0 teacher-forces the gold transcript; it does not spawn dist/mcp-server.js"
+}

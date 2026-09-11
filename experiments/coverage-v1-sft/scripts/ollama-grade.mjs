@@ -36,10 +36,17 @@ const LISTEN_TOOLS = new Set([
   "ensemble_now",
 ]);
 
+export class UsageError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = "UsageError";
+  }
+}
+
 function usage(msg) {
   if (msg) process.stderr.write(msg + "\n");
   process.stderr.write(
-    "usage: node ollama-grade.mjs <sft-test.jsonl> <model> --out <preds.jsonl> [--host URL] [--tools full|listen] [--tools-file path] [--num-predict N] [--options k=v ...] [--raw] [--python path] [--hf-model id]\n",
+    "usage: node ollama-grade.mjs <sft-test.jsonl> <model> --out <preds.jsonl> [--host URL] [--tools full|listen] [--tools-file path] [--num-predict N] [--n K] [--seed N] [--keep-alive duration] [--options k=v ...] [--raw] [--python path] [--hf-model id]\n",
   );
   process.exit(1);
 }
@@ -49,7 +56,7 @@ function parseOptionsFlag(raw, dest) {
     const p = part.trim();
     if (!p) continue;
     const eq = p.indexOf("=");
-    if (eq < 1) usage(`--options expected k=v (got ${JSON.stringify(p)})`);
+    if (eq < 1) throw new UsageError(`--options expected k=v (got ${JSON.stringify(p)})`);
     const k = p.slice(0, eq);
     const v = p.slice(eq + 1);
     if (v === "true") dest[k] = true;
@@ -59,7 +66,7 @@ function parseOptionsFlag(raw, dest) {
   }
 }
 
-function parseArgs(argv) {
+export function parseArgs(argv) {
   const out = {
     data: null,
     model: null,
@@ -68,6 +75,9 @@ function parseArgs(argv) {
     tools: "full",
     toolsFile: DEFAULT_TOOLS,
     numPredict: 128,
+    n: 1,
+    seed: null,
+    keepAlive: null,
     extraOptions: {},
     raw: false,
     python: process.env.OLLAMA_GRADE_PYTHON || join(EXP, ".venv-gguf", "Scripts", "python.exe"),
@@ -81,18 +91,40 @@ function parseArgs(argv) {
     else if (a === "--tools") out.tools = argv[++i];
     else if (a === "--tools-file") out.toolsFile = argv[++i];
     else if (a === "--num-predict") out.numPredict = Number(argv[++i]);
+    else if (a === "--n") out.n = Number(argv[++i]);
+    else if (a === "--seed") out.seed = Number(argv[++i]);
+    else if (a === "--keep-alive") out.keepAlive = argv[++i];
     else if (a === "--options") parseOptionsFlag(argv[++i], out.extraOptions);
     else if (a === "--raw") out.raw = true;
     else if (a === "--python") out.python = argv[++i];
     else if (a === "--hf-model") out.hfModel = argv[++i];
-    else if (a.startsWith("-")) usage(`unknown flag ${a}`);
+    else if (a.startsWith("-")) throw new UsageError(`unknown flag ${a}`);
     else rest.push(a);
   }
   out.data = rest[0];
   out.model = rest[1];
-  if (!out.data || !out.model || !out.out) usage();
-  if (out.tools !== "full" && out.tools !== "listen") usage(`--tools must be full or listen`);
-  if (!Number.isFinite(out.numPredict) || out.numPredict < 1) usage(`--num-predict must be a positive integer`);
+  if (!out.data || !out.model || !out.out) {
+    throw new UsageError("expected <sft-test.jsonl> <model> --out <preds.jsonl>");
+  }
+  if (out.tools !== "full" && out.tools !== "listen") {
+    throw new UsageError(`--tools must be full or listen`);
+  }
+  if (!Number.isFinite(out.numPredict) || out.numPredict < 1 || !Number.isInteger(out.numPredict)) {
+    throw new UsageError(`--num-predict must be a positive integer`);
+  }
+  if (!Number.isFinite(out.n) || out.n < 1 || !Number.isInteger(out.n)) {
+    throw new UsageError(`--n must be a positive integer`);
+  }
+  if (out.seed != null && (!Number.isFinite(out.seed) || !Number.isInteger(out.seed))) {
+    throw new UsageError(`--seed must be an integer`);
+  }
+  if (out.n > 1 && out.seed == null) out.seed = 0;
+  if (out.n > 1) {
+    const t = out.extraOptions.temperature;
+    if (t === undefined || t === 0) {
+      throw new UsageError(`--n ${out.n} requires --options temperature=... with temperature > 0 (greedy repeats are identical)`);
+    }
+  }
   if (out.host.endsWith("/")) out.host = out.host.slice(0, -1);
   return out;
 }
@@ -168,7 +200,7 @@ function firstLine(text) {
 }
 
 /** Port of predict_v1.py extract_answer. */
-function extractAnswer(text) {
+export function extractAnswer(text) {
   const line = firstLine(text);
   if (line.includes(":")) {
     const tail = line.split(":").pop().trim();
@@ -190,8 +222,16 @@ async function postJson(host, path, body) {
   return JSON.parse(raw);
 }
 
-function decodeOptions(args) {
-  return { temperature: 0, num_predict: args.numPredict, ...args.extraOptions };
+function requestBody(args, fields) {
+  const body = { ...fields };
+  if (args.keepAlive != null) body.keep_alive = args.keepAlive;
+  return body;
+}
+
+export function decodeOptions(args, attempt = 0) {
+  const options = { temperature: 0, num_predict: args.numPredict, ...args.extraOptions };
+  if (args.seed != null) options.seed = args.seed + attempt;
+  return options;
 }
 
 function renderHfPrompts(args, ids) {
@@ -224,17 +264,68 @@ function nsToS(ns) {
   return ns / 1e9;
 }
 
+async function gradeOne(args, tools, line, hfById, attempt) {
+  const options = decodeOptions(args, attempt);
+  let result;
+  let content;
+  if (args.raw) {
+    const rec = hfById.get(line.id);
+    if (!rec) throw new Error(`${line.id}: missing HF render`);
+    result = await postJson(args.host, "/api/generate", requestBody(args, {
+      model: args.model,
+      prompt: rec.prompt,
+      raw: true,
+      stream: false,
+      options,
+    }));
+    content = result.response ?? "";
+  } else {
+    const tmpl = toTemplateMessages(line.messages);
+    let lastAssistant = -1;
+    for (let idx = 0; idx < tmpl.length; idx++) {
+      if (tmpl[idx].role === "assistant") lastAssistant = idx;
+    }
+    if (lastAssistant < 0) throw new Error(`${line.id}: no assistant turn`);
+    const promptMsgs = toOllamaMessages(tmpl.slice(0, lastAssistant));
+    result = await postJson(args.host, "/api/chat", requestBody(args, {
+      model: args.model,
+      messages: promptMsgs,
+      tools,
+      stream: false,
+      options,
+    }));
+    content = result.message?.content ?? "";
+  }
+  const rec = {
+    id: line.id,
+    family: line.kind,
+    answer: extractAnswer(content),
+    raw: String(content).trim().slice(0, 600),
+  };
+  if (args.n > 1) {
+    rec.attempt = attempt;
+    rec.seed = options.seed;
+  }
+  return { rec, result };
+}
+
 async function main() {
-  const args = parseArgs(process.argv.slice(2));
+  let args;
+  try {
+    args = parseArgs(process.argv.slice(2));
+  } catch (err) {
+    if (err instanceof UsageError) usage(err.message);
+    throw err;
+  }
   const tools = loadTools(args.toolsFile, args.tools);
   const lines = readFileSync(args.data, "utf8")
     .split(/\n/)
     .filter((l) => l.trim())
     .map((l) => JSON.parse(l));
 
-  const options = decodeOptions(args);
+  const options0 = decodeOptions(args, 0);
   process.stderr.write(
-    `[ollama-grade] model=${args.model} n=${lines.length} tools=${args.tools} (${tools.length}) host=${args.host} raw=${args.raw} options=${JSON.stringify(options)}\n`,
+    `[ollama-grade] model=${args.model} cases=${lines.length} n=${args.n} tools=${args.tools} (${tools.length}) host=${args.host} raw=${args.raw} options=${JSON.stringify(options0)}\n`,
   );
 
   const hfById = args.raw ? renderHfPrompts(args, lines.map((l) => l.id)) : null;
@@ -246,53 +337,23 @@ async function main() {
   let promptTokens = 0;
   let promptSeconds = 0;
   const t0 = Date.now();
+  const total = lines.length * args.n;
+  let done = 0;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    let result;
-    let content;
-    if (args.raw) {
-      const rec = hfById.get(line.id);
-      if (!rec) throw new Error(`${line.id}: missing HF render`);
-      result = await postJson(args.host, "/api/generate", {
-        model: args.model,
-        prompt: rec.prompt,
-        raw: true,
-        stream: false,
-        options,
-      });
-      content = result.response ?? "";
-    } else {
-      const tmpl = toTemplateMessages(line.messages);
-      let lastAssistant = -1;
-      for (let idx = 0; idx < tmpl.length; idx++) {
-        if (tmpl[idx].role === "assistant") lastAssistant = idx;
+    for (let attempt = 0; attempt < args.n; attempt++) {
+      const { rec, result } = await gradeOne(args, tools, line, hfById, attempt);
+      outLines.push(JSON.stringify(rec));
+      evalTokens += result.eval_count ?? 0;
+      evalSeconds += nsToS(result.eval_duration);
+      promptTokens += result.prompt_eval_count ?? 0;
+      promptSeconds += nsToS(result.prompt_eval_duration);
+      done++;
+      if (done % 5 === 0 || done === total) {
+        const genTps = evalSeconds ? (evalTokens / evalSeconds).toFixed(1) : "?";
+        process.stderr.write(`  ${done}/${total} gen ${genTps} tok/s last=${rec.id} attempt=${attempt}\n`);
       }
-      if (lastAssistant < 0) throw new Error(`${line.id}: no assistant turn`);
-      const promptMsgs = toOllamaMessages(tmpl.slice(0, lastAssistant));
-      result = await postJson(args.host, "/api/chat", {
-        model: args.model,
-        messages: promptMsgs,
-        tools,
-        stream: false,
-        options,
-      });
-      content = result.message?.content ?? "";
-    }
-    const rec = {
-      id: line.id,
-      family: line.kind,
-      answer: extractAnswer(content),
-      raw: String(content).trim().slice(0, 600),
-    };
-    outLines.push(JSON.stringify(rec));
-    evalTokens += result.eval_count ?? 0;
-    evalSeconds += nsToS(result.eval_duration);
-    promptTokens += result.prompt_eval_count ?? 0;
-    promptSeconds += nsToS(result.prompt_eval_duration);
-    if ((i + 1) % 5 === 0 || i + 1 === lines.length) {
-      const genTps = evalSeconds ? (evalTokens / evalSeconds).toFixed(1) : "?";
-      process.stderr.write(`  ${i + 1}/${lines.length} gen ${genTps} tok/s last=${rec.id}\n`);
     }
   }
 
