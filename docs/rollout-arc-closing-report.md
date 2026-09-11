@@ -1,8 +1,12 @@
 # Rollout Arc — closing report (the null branch, shipped)
 
-**Date:** 2026-09-11 · **Verdict:** the arc closes on a **NO-GO**. No reinforcement-learning
-training run was authorised, and none should be on the current task surface.
+**Date:** 2026-09-11 · **Corrected same day** (§3 and §5.1 — the original "task supply is the binding
+constraint" finding was wrong; the error and its replacement are kept in place rather than rewritten
+away). · **Verdict:** the arc closes on a **NO-GO** on the three families measured. No
+reinforcement-learning training run was authorised, and none is authorised now.
 **Total spend: $0.** No GPU was rented at any point.
+**Status of the underlying question after the correction:** narrower and still open — see §5.3.
+Reopening is the director's decision and has not been made.
 **Design lock:** [rollout-layer-dispatch.md](rollout-layer-dispatch.md) · **Closed by:** the director,
 2026-09-11, under dispatch §8 gate 3.
 
@@ -69,22 +73,45 @@ cases to 91, moved the counts and left the curve where it was.
 
 ---
 
-## 3. The transferable finding: the prerequisite is task supply
+## 3. The transferable finding: a publishing constraint was inherited into a training environment
 
-The band the arc gated on, pass@8 in [12.5%, 50%], is imported from INTELLECT-2
-(arXiv:2505.07291), which reached it by filtering **285,000 candidate tasks** down to the slice that
-sat inside it, discarding everything above 50% and below 12.5%. Kimi k1.5 (arXiv:2501.12599) and
-DAPO (arXiv:2503.14476) do the same thing by different means: they *oversample and throw away*.
+> **CORRECTED 2026-09-11, same day, after the director challenged it.** This section first claimed
+> the binding constraint was task supply and that this corpus structurally lacks it. **That was
+> wrong**, and the error is recorded here rather than quietly rewritten, because it is a better
+> lesson than the claim it replaces.
 
-A band is a filter, and a filter needs a pool. This repo's entire publishable shelf is **11 songs**,
-yielding **18 plant occurrences** at cap 32. At that scale there is nothing to filter; the band has to
-be where the typical case happens to land, by luck. Three families landed outside it in three
-different directions — over the ceiling, below the floor from a broken instrument, and below the
-floor for real.
+The band the arc gated on, pass@8 in [12.5%, 50%], is imported from INTELLECT-2 (arXiv:2505.07291),
+which reached it by filtering **285,000 candidate tasks** down to the slice inside it. Kimi k1.5
+(arXiv:2501.12599) and DAPO (arXiv:2503.14476) oversample and discard by different means. A band is a
+filter, and a filter needs a pool. That much holds.
 
-**So the finding is not that any one family was badly designed. It is that the method's precondition
-is task supply, and this corpus does not have it.** That is a statement about when reinforcement
-learning with verifiable rewards is reachable at all, and it generalises past this repo.
+What does **not** hold is the inference that this repo cannot supply one. `search-v0` draws its plants
+from `loadPublishableSongs()`, giving 18 occurrences over 11 songs, and the first version of this
+report treated that ceiling as the domain. It is not. **It is a publishing constraint, inherited by
+accident.**
+
+Both verifiers are pure functions over raw input:
+
+| Verifier | Signature | Needs the library? |
+|---|---|---|
+| `inferChord` | `(leftHand: string) => string` | no |
+| `detectChord` | `(midiNotes: number[]) => string \| null` | no |
+
+Measured on eight invented voicings that touched no song: **7 of 8 produced agreeing, constructible
+gold across 7 distinct chords.** The single miss was an enharmonic spelling, `Bb` against `A#`, which
+is a filter case and not a failure.
+
+So a synthetic measure generator emits unbounded sequences with planted chords, scored exactly by the
+engines already in the tree. That is rule 1 of the experiment contract — build a known thing, perturb
+it, the perturbation is the answer — and it never required a real song.
+
+**The real lesson is about reuse.** Every prior corpus here was built to be *published*: checksummed,
+licensed, allowlisted to a curated shelf. Reusing that pipeline to generate *training* tasks silently
+imported an 11-song ceiling that the task never had. Dataset machinery and environment machinery look
+alike and are not: one must be publishable, the other only has to be scorable.
+
+**The question to ask is what the verifier can score, not what the corpus contains.** The verifier's
+domain is the task domain. Asked that way, supply was never the blocker.
 
 ### The second blocker, which never had to fire
 
@@ -134,15 +161,21 @@ the divergence direction CI cannot catch.
 Preregistered here so it cannot be moved later. The arc reopens if, and only if, one of these becomes
 true:
 
-1. **Task supply.** A pool large enough to filter — order 10³ candidate cases, not 10¹ — from a
-   widened shelf or a genuinely different generator. This is the binding constraint and it is a
-   licensing and annotation project, not a reinforcement-learning one.
+1. ~~**Task supply.**~~ **WITHDRAWN 2026-09-11** — this condition said supply was the binding
+   constraint and "a licensing and annotation project, not a reinforcement-learning one." Both halves
+   are wrong; see §3. A synthetic generator over the existing pure-function verifiers supplies
+   unbounded scorable tasks and is a small piece of work. **Supply is no longer a blocker and is no
+   longer a reopening condition.**
 2. **A base model that carries state across observations.** The distance cliff is a property of the
    policy, not of music. A base that answers correctly from a second page at any nonzero rate turns
    the step back into a slope, and the existing environment measures that in an afternoon for $0.
-3. **A task whose difficulty is graded within a case rather than across cases.** Everything measured
-   here was deterministic given the case, so variance came only from sampling noise around a near-0
-   or near-1 mean. A genuine band needs tasks the policy solves *sometimes*.
+3. **A difficulty axis graded *inside* the policy's competence.** ⭐ **With §3 corrected, this is the
+   whole remaining question.** Everything measured in this arc was deterministic given the case, and
+   `distance` crosses the capability cliff rather than grading below it. A synthetic generator can
+   vary difficulty on axes that stay inside the band where the policy already scores 0.52–0.66 at
+   distance 1–3 — distractor density, near-miss voicings, enharmonic ambiguity — instead of on the
+   one axis that steps to zero. **Whether such an axis produces a real in-band population is open,
+   unproven, and cheap to measure with the equipment already merged.**
 
 **Explicitly not a reopening condition: inventing further families until one lands in the band.** P1c
 refused the small version of that error, declining to filter to distance 1–3 after seeing the
@@ -174,8 +207,16 @@ measuring instrument the repo lacked, used that instrument to rule out its own c
 purpose-built family, and diagnosed each failure to a mechanism rather than stopping at a number.
 
 The dispatch pre-wrote the null as shippable precisely so this outcome could be reported without
-embarrassment. It is reported. Reinforcement learning with verifiable rewards is not currently
-reachable on this repo's task surface, the reason is task supply rather than any defect in the design,
-and the equipment to re-answer the question is sitting in the tree the day a larger pool exists.
+embarrassment. It is reported.
+
+It also got its own headline wrong on the first pass, and that correction is the most useful thing
+here. The three families failed, and that stands. The stated *reason* — that this repo cannot supply
+tasks — did not survive one challenge, because the verifiers are pure functions and the eleven-song
+ceiling was a publishing constraint the environment inherited without anyone asking whether it
+applied. What remains open is narrower and sharper than what the arc set out to test: not whether
+tasks exist, but whether difficulty can be graded inside the band where the policy is already
+competent, rather than along an axis that steps off a cliff.
+
+The equipment to answer that is merged, tested, and costs nothing to run.
 
 **P2 never started. No paid run was authorised. $0.**
