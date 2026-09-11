@@ -1,6 +1,6 @@
 # Rollout Layer — design dispatch (the environment the experiment contract is missing)
 
-**Date:** 2026-09-11 · **Author:** advisor (Opus 5) · **Status:** DESIGN, nothing built, nothing spent.
+**Date:** 2026-09-11 · **Author:** advisor (Opus 5) · **Status:** DESIGN lock in force. P0 measured 2026-09-11: existing corpus **NO-GO**. P1 (env + search-v0 + local harness) is in tree; still $0. Receipt: [`experiments/rollout-arc/p0/RESULTS.md`](../experiments/rollout-arc/p0/RESULTS.md). No GPU rental.
 **Predecessor:** [finetune-arc-dispatch.md](finetune-arc-dispatch.md) (the SFT arc's design lock).
 **Contract this extends:** [`experiments/_template/README.md`](../experiments/_template/README.md) and `src/dataset/experiment/`.
 **Research grounding:** 5-agent study-swarm, 2026-09-11, ~50 retrieved sources. Citation gate receipt: `docs/rollout-layer-dispatch.citation-receipt.json`.
@@ -268,7 +268,7 @@ The instrument the repo does not have yet: **sampled** evaluation. Both graders 
 1. Add `--n <k>` and sampling options to `ollama-grade.mjs` (it already accepts `--options temperature=…`; it has no repeat flag).
 2. Measure base pass@1 and pass@8 per family on the 59 held-out cases, plus the trivial baselines, using a pinned reference model.
 3. Report the learnability histogram: how many cases fall in [12.5%, 50%] pass@8 (finding 24).
-4. Run Kimi's guess-test: how many cases a no-tool baseline answers within 8 attempts (finding 24). `experiments/coverage-v1-sft/scripts/toolless-baseline.mjs` already exists and is the seed of this.
+4. Run Kimi's guess-test: how many cases a no-tool baseline answers within 8 attempts (finding 24). `src/dataset/acoustic-v1/toolless-baseline.mjs` already exists and is the seed of this (the coverage-v1-sft/scripts/ path in an earlier draft of this line did not exist).
 
 **GO requires a population of cases with pass@8 in the band and pass@1 well below ceiling.** The
 expectation from §2 is that the *existing* families largely fail this — acoustic is solved, five
