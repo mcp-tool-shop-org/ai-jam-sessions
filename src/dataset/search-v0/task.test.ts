@@ -48,6 +48,7 @@ describe("search-v0 task", () => {
     assertNoStraddle(cases, (c) => searchTask.splitKey(c), splitOf);
     const testSongs = new Set(cases.filter((c) => splitOf(c) === "test").map((c) => c.song_id));
     expect([...testSongs].sort()).toEqual([...TEST_SONG_IDS].sort());
+    expect(testSongs.size, "test song clusters").toBeGreaterThanOrEqual(3);
   });
 
   it("gold varies in train and in test", () => {
@@ -58,6 +59,7 @@ describe("search-v0 task", () => {
     expect(SEARCH_SCHEMA_VERSION).not.toBe("jam-actions-v1/1.0.0");
     expect(SEARCH_SCHEMA_VERSION).not.toBe("jam-actions-acoustic-v0/1.0.0");
     expect(SEARCH_SCHEMA_VERSION).not.toBe("jam-actions-search-v0/1.0.0");
+    expect(SEARCH_SCHEMA_VERSION).not.toBe("jam-actions-search-v0/1.1.0");
     expect(() => assertSchemaOwner(searchTask)).not.toThrow();
   });
 
@@ -75,8 +77,8 @@ describe("search-v0 task", () => {
 
   it("declares the closed measure set, including unused numbers", () => {
     expect(searchTask.verdicts).toContain("1");
-    expect(searchTask.verdicts).toContain("16");
-    expect(searchTask.verdicts).toHaveLength(16);
+    expect(searchTask.verdicts).toContain("32");
+    expect(searchTask.verdicts).toHaveLength(32);
     const used = new Set(plants().map((c) => String(c.measure)));
     expect(used.has("1")).toBe(false);
   });
