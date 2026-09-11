@@ -3,7 +3,15 @@
 The RL environment the experiment contract was missing. Design lock:
 [`docs/rollout-layer-dispatch.md`](../../docs/rollout-layer-dispatch.md).
 
-> ⛔ **ARC CLOSED 2026-09-11 on the null branch. Total spend $0. No GPU was ever rented.**
+> ⭐ **ARC REOPEN 2026-09-11 (director). Live phase: P1d, the `synth-v0` generated family —
+> [`docs/rollout-arc-p1d-kickoff.md`](../../docs/rollout-arc-p1d-kickoff.md).**
+> The closure below rested on a "task supply" argument that did not survive, and the
+> cluster-count backup blocker dissolves the same way: a synthetic generator emits as many
+> independent clusters as it is asked for. P1d holds `distance` fixed at 1–3, where the policy
+> already scores 0.52–0.66, and grades difficulty by distractor confusability inside the page
+> instead. Still $0, still gated, P2 still does not start without an in-band population.
+>
+> ⛔ **P0–P1c record (the three no-gos). Total spend $0. No GPU was ever rented.**
 >
 > Three families were measured against bars frozen before any model call, and all three
 > failed. The mechanism for the last one: the policy pages but never uses the second
