@@ -10,9 +10,13 @@ name: Zenodo edit record metadata
 # workflow_dispatch input is replaced by its default. Detaching it from the
 # concept is Zenodo support's job; saying what the record is (an evaluation
 # companion, cited by its own DOI) is ours, and that is a metadata edit.
+# Outcome (2026-09-10): the probe was re-deposited under its own concept as
+# record 22699571 and the owner deleted 22675251 (its DOI is a tombstone). The
+# edit file under docs/zenodo/ stays as the record of the edit that was applied;
+# record_id has no default any more so a blind dispatch cannot hit the tombstone.
 #
 # Inputs:
-#   record_id             published Zenodo record id; default 22675251
+#   record_id             published Zenodo record id (no default)
 #   edit_file             repo path of a JSON object whose keys replace the same
 #                         keys of the live metadata (allowed: title, description,
 #                         notes, keywords, related_identifiers, references, version);
@@ -54,9 +58,8 @@ on:
   workflow_dispatch:
     inputs:
       record_id:
-        description: "Published Zenodo record id"
+        description: "Published Zenodo record id (digits only)"
         required: true
-        default: "22675251"
       edit_file:
         description: "Repo path of the JSON object with the fields to replace"
         required: true
