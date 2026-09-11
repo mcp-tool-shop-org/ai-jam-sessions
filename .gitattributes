@@ -53,6 +53,15 @@ experiments/**/data/*.jsonl text eol=lf
 # same scripts travel together and there is no reason for them to differ.
 *.sh text eol=lf
 *.py text eol=lf
+# Same class, found the expensive way on 2026-09-11. Our .mjs scripts carry
+# `#!/usr/bin/env node` shebangs, and several are imported by .test.ts files so
+# vitest transforms them. A shebang followed by CRLF makes that transform throw
+# `SyntaxError: Invalid or unexpected token`; the identical file with LF passes.
+# Linux checks out LF, so CI is green on it forever and cannot see the problem,
+# while every Windows checkout has three permanently red test files. That is a
+# local/CI divergence pointing the wrong way — the direction CI can never catch.
+# The shebang reason above applies too: these scripts also travel to pod hosts.
+*.mjs text eol=lf
 # Third checksummed corpus, same pin for the same reason as the two above. Its
 # checksums.sha256 covers 180 files computed against canonical LF content; a
 # Windows clone converting them on checkout fails every entry. This tree was

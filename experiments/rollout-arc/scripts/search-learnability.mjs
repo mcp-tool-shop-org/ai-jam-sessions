@@ -17,13 +17,13 @@ import { buildRecord } from "../../../src/dataset/search-v0/generate.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, "../../..");
-const OUT_DIR = join(REPO, "experiments", "rollout-arc", "p1b");
+const OUT_DIR = join(REPO, "experiments", "rollout-arc", "p1c");
 const TOOLS_PATH = join(REPO, "src", "dataset", "tool-schemas.json");
 const HOST = (process.env.OLLAMA_HOST || "http://127.0.0.1:11434").replace(/\/$/, "");
 
 function parseArgs(argv) {
   const out = {
-    model: "qwen2.5:7b",
+    model: "qwen3:4b-instruct-2507-q4_K_M",
     n: 8,
     seed: 0,
     split: "test",
@@ -104,6 +104,7 @@ async function guessTest(args, cases, goldRows) {
         prompt,
         stream: false,
         keep_alive: "30m",
+        think: false,
         options: { temperature: 1, num_predict: 40, seed: args.seed + attempt },
       });
       const content = result.response ?? "";
@@ -146,6 +147,7 @@ async function rolloutPassk(args, cases) {
             tools,
             stream: false,
             keep_alive: "30m",
+            think: false,
             options: { temperature: args.n === 1 ? 0 : 1, num_predict: 256, seed },
           });
           const msg = result.message ?? {};
@@ -198,7 +200,7 @@ async function main() {
   writeFileSync(goldPath, goldRows.map((g) => JSON.stringify(g)).join("\n") + "\n");
 
   const pin = {
-    phase: "P1b",
+    phase: "P1c",
     written_before_sampled_run: true,
     model: args.model,
     n: args.n,

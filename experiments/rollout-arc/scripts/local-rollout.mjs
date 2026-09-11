@@ -13,7 +13,7 @@ import { plants } from "../../../src/dataset/search-v0/task.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, "../../..");
-const MODEL = process.argv[2] ?? "qwen2.5:7b";
+const MODEL = process.argv[2] ?? "qwen3:4b-instruct-2507-q4_K_M";
 const HOST = (process.env.OLLAMA_HOST || "http://127.0.0.1:11434").replace(/\/$/, "");
 const TOOLS_PATH = join(REPO, "src", "dataset", "tool-schemas.json");
 
