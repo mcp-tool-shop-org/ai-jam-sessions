@@ -1,0 +1,705 @@
+{
+  "pin": {
+    "phase": "P1b",
+    "written_before_sampled_run": true,
+    "model": "qwen2.5:7b",
+    "n": 8,
+    "split": "test",
+    "seed": 0,
+    "sampled": {
+      "temperature": 1,
+      "n": 8,
+      "seed": 0
+    },
+    "guess_test": {
+      "temperature": 1,
+      "n": 8,
+      "tools": "none"
+    },
+    "host": "http://127.0.0.1:11434",
+    "framework": "Ollama /api/chat through SearchEnv.runEpisode (not ollama-grade)",
+    "hardware": "local RTX 5090, 32 GB",
+    "gold_n": 47,
+    "train_n": 58,
+    "test_n": 47,
+    "occurrences": 12,
+    "test_clusters": 2,
+    "band": [
+      0.125,
+      0.5
+    ],
+    "go_rule": {
+      "min_in_band_after_leak": 10,
+      "sampled_pass1_below": 0.8
+    },
+    "spend": 0
+  },
+  "band": {
+    "lo": 0.125,
+    "hi": 0.5
+  },
+  "go_rule": {
+    "min_in_band_after_leak": 10,
+    "sampled_pass1_below": 0.8
+  },
+  "baselines": {
+    "overall": {
+      "majority_class": "13",
+      "majority": 0.2553191489361702,
+      "n": 47
+    },
+    "per_family": {
+      "search": {
+        "majority_class": "13",
+        "majority": 0.2553191489361702,
+        "n": 47
+      }
+    }
+  },
+  "greedy": null,
+  "sampled": {
+    "overall": {
+      "n": 47,
+      "pass1": 0.02925531914893617,
+      "pass8": 0.10638297872340426,
+      "greedy_pass1": 0.02127659574468085,
+      "histogram": {
+        "below": 42,
+        "in_band": 5,
+        "above": 0
+      }
+    },
+    "per_family": {
+      "search": {
+        "n": 47,
+        "pass1": 0.02925531914893617,
+        "pass8": 0.10638297872340426,
+        "greedy_pass1": 0.02127659574468085,
+        "histogram": {
+          "below": 42,
+          "in_band": 5,
+          "above": 0
+        }
+      }
+    },
+    "constant_gold_families": []
+  },
+  "guess_test": {
+    "overall": {
+      "n": 47,
+      "pass1": 0.07180851063829788,
+      "pass8": 0.2127659574468085,
+      "greedy_pass1": 0.0851063829787234,
+      "histogram": {
+        "below": 37,
+        "in_band": 9,
+        "above": 1
+      }
+    },
+    "per_family": {
+      "search": {
+        "n": 47,
+        "pass1": 0.07180851063829788,
+        "pass8": 0.2127659574468085,
+        "greedy_pass1": 0.0851063829787234,
+        "histogram": {
+          "below": 37,
+          "in_band": 9,
+          "above": 1
+        }
+      }
+    },
+    "leak_n": 10,
+    "leak_ids": [
+      "search:bethena:C:from10:m13",
+      "search:bethena:C:from11:m13",
+      "search:bethena:C:from9:m13",
+      "search:bethena:D:from10:m11",
+      "search:bethena:D:from7:m11",
+      "search:bethena:D:from8:m11",
+      "search:bethena:D:from9:m11",
+      "search:bethena:Em:from10:m12",
+      "search:bethena:Em:from8:m12",
+      "search:bethena:G:from7:m9"
+    ]
+  },
+  "learnability": {
+    "in_band_raw": 5,
+    "in_band_after_leak": 4,
+    "below": 42,
+    "above": 0
+  },
+  "verdict": {
+    "existing_corpus": "NO-GO",
+    "new_family": "GO-candidate",
+    "reasons": [
+      "in-band after leak-filter is 4 (need ≥ 10 of 47)"
+    ]
+  },
+  "cases": [
+    {
+      "id": "search:bethena:G:from1:m9",
+      "family": "search",
+      "gold": "9",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:G:from2:m9",
+      "family": "search",
+      "gold": "9",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:G:from3:m9",
+      "family": "search",
+      "gold": "9",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:G:from4:m9",
+      "family": "search",
+      "gold": "9",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:G:from5:m9",
+      "family": "search",
+      "gold": "9",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:G:from6:m9",
+      "family": "search",
+      "gold": "9",
+      "n": 8,
+      "correct": 1,
+      "pass1": 0.125,
+      "pass8": 1,
+      "rate": 0.125,
+      "band": "in_band",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:G:from7:m9",
+      "family": "search",
+      "gold": "9",
+      "n": 8,
+      "correct": 3,
+      "pass1": 0.375,
+      "pass8": 1,
+      "rate": 0.375,
+      "band": "in_band",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:G:from8:m9",
+      "family": "search",
+      "gold": "9",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from1:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from2:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from3:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from4:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from5:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from6:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from7:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from8:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from9:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:D:from10:m11",
+      "family": "search",
+      "gold": "11",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from1:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from2:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from3:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from4:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from5:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from6:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from7:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from8:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from9:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from10:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:Em:from11:m12",
+      "family": "search",
+      "gold": "12",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from1:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from2:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from3:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from4:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from5:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from6:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from7:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from8:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from9:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from10:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from11:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:bethena:C:from12:m13",
+      "family": "search",
+      "gold": "13",
+      "n": 8,
+      "correct": 4,
+      "pass1": 0.5,
+      "pass8": 1,
+      "rate": 0.5,
+      "band": "in_band",
+      "greedy_hit": true
+    },
+    {
+      "id": "search:the-easy-winners:C#:from1:m7",
+      "family": "search",
+      "gold": "7",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:the-easy-winners:C#:from2:m7",
+      "family": "search",
+      "gold": "7",
+      "n": 8,
+      "correct": 2,
+      "pass1": 0.25,
+      "pass8": 1,
+      "rate": 0.25,
+      "band": "in_band",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:the-easy-winners:C#:from3:m7",
+      "family": "search",
+      "gold": "7",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:the-easy-winners:C#:from4:m7",
+      "family": "search",
+      "gold": "7",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:the-easy-winners:C#:from5:m7",
+      "family": "search",
+      "gold": "7",
+      "n": 8,
+      "correct": 0,
+      "pass1": 0,
+      "pass8": 0,
+      "rate": 0,
+      "band": "below",
+      "greedy_hit": false
+    },
+    {
+      "id": "search:the-easy-winners:C#:from6:m7",
+      "family": "search",
+      "gold": "7",
+      "n": 8,
+      "correct": 1,
+      "pass1": 0.125,
+      "pass8": 1,
+      "rate": 0.125,
+      "band": "in_band",
+      "greedy_hit": false
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "model": "qwen2.5:7b",
+  "id": "search:solace:Gaug:m6",
+  "gold": "6",
+  "reward": {
+    "format_ok": false,
+    "verdict": "42",
+    "gold": "6",
+    "correct": false,
+    "format": 0,
+    "outcome": 0,
+    "turn_penalty": 0,
+    "tool_turns": 1,
+    "reward": 0
+  },
+  "tool_names": ["list_measures"],
+  "assistant_final": "42",
+  "spend": 0,
+  "note": "Harness proof, not a capability claim. The policy guessed 42 (outside the closed 1–16 set) after one list_measures call. Scripted policy against the same env scores 1.0 in src/dataset/search-v0/env.test.ts."
+}

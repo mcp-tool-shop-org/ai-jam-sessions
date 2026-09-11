@@ -1,0 +1,35 @@
+{
+  "phase": "P1b",
+  "written_before_sampled_run": true,
+  "model": "qwen2.5:7b",
+  "n": 8,
+  "split": "test",
+  "seed": 0,
+  "sampled": {
+    "temperature": 1,
+    "n": 8,
+    "seed": 0
+  },
+  "guess_test": {
+    "temperature": 1,
+    "n": 8,
+    "tools": "none"
+  },
+  "host": "http://127.0.0.1:11434",
+  "framework": "Ollama /api/chat through SearchEnv.runEpisode (not ollama-grade)",
+  "hardware": "local RTX 5090, 32 GB",
+  "gold_n": 47,
+  "train_n": 58,
+  "test_n": 47,
+  "occurrences": 12,
+  "test_clusters": 2,
+  "band": [
+    0.125,
+    0.5
+  ],
+  "go_rule": {
+    "min_in_band_after_leak": 10,
+    "sampled_pass1_below": 0.8
+  },
+  "spend": 0
+}
