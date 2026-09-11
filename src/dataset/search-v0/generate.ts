@@ -21,7 +21,7 @@ export interface SearchRecord {
   kind: "search";
   thresholds: Readonly<Record<string, number>>;
   observation: {
-    gold: { verdict: string; chord: string; measure: number };
+    gold: { verdict: string; chord: string; measure: number; after: number; distance: number };
   };
   user: string;
 }
@@ -42,6 +42,9 @@ export function rederivePlant(c: SearchCase): { measure: number; chord: string; 
 }
 
 export function buildRecord(c: SearchCase): SearchRecord {
+  if (c.after < 1 || c.after >= c.measure) {
+    throw new Error(`${c.song_id} ${c.chord}: after ${c.after} is not strictly before plant ${c.measure}`);
+  }
   const measured = rederivePlant(c);
   if (measured.measure !== c.measure || measured.chord !== c.chord) {
     throw new Error(
@@ -50,12 +53,20 @@ export function buildRecord(c: SearchCase): SearchRecord {
   }
   return {
     schema_version: SEARCH_SCHEMA_VERSION,
-    id: `search:${c.song_id}:${c.chord}:m${c.measure}`,
+    id: `search:${c.song_id}:${c.chord}:from${c.after}:m${c.measure}`,
     split: splitOf(c),
     song_id: c.song_id,
     kind: "search",
     thresholds: { ...searchTask.thresholds },
-    observation: { gold: { verdict: String(c.measure), chord: c.chord, measure: c.measure } },
+    observation: {
+      gold: {
+        verdict: String(c.measure),
+        chord: c.chord,
+        measure: c.measure,
+        after: c.after,
+        distance: c.distance,
+      },
+    },
     user: userPrompt(c),
   };
 }
