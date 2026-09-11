@@ -9,6 +9,7 @@ import {
 } from "../experiment/env.js";
 import type { McpStdioExecutor } from "../experiment/mcp-executor.js";
 import { searchTask, splitOf, userPrompt, type SearchCase } from "./task.js";
+import { boundListMeasures } from "./window.js";
 
 export const SEARCH_SYSTEM =
   `${DEFAULT_SYSTEM_TEXT} Use the tools to inspect the library. Your final turn is the answer alone, with no explanation.`;
@@ -48,6 +49,16 @@ export class SearchEnv implements ExperimentEnv<SearchCase, SearchState> {
           name: call.name,
           content: `parallel call cap is ${MAX_PARALLEL}; this call was not executed`,
         });
+        continue;
+      }
+      if (call.name === "list_measures") {
+        const bound = boundListMeasures(call.arguments);
+        if (!bound.ok) {
+          turns.push({ role: "tool", name: call.name, content: bound.reason });
+          continue;
+        }
+        const obs = await this.executor.call(call.name, bound.arguments);
+        turns.push({ role: "tool", name: call.name, content: obs.text });
         continue;
       }
       const obs = await this.executor.call(call.name, call.arguments);

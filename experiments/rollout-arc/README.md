@@ -46,12 +46,12 @@ See [`p0/RESULTS.md`](p0/RESULTS.md).
 ## P1 — environment + local harness ($0)
 
 New family `search-v0`: first measure **at or after N** whose left hand is a
-planted chord. 12 occurrences windowed to **105 cases** (train 58 / test 47,
-4 / 2 song clusters). Verdicts stay `1`–`16`. `distance = M-N` is the L9 knob,
-not a curriculum.
+planted chord. Cap 32, 18 occurrences, windowed cases, ≥3 test song clusters.
+`list_measures` is bounded in `SearchEnv` (page of 4). Pin is
+`qwen3:4b-instruct-2507-q4_K_M`.
 
 ```text
 pnpm exec vitest run src/dataset/experiment src/dataset/search-v0
-pnpm exec tsx experiments/rollout-arc/scripts/local-rollout.mjs qwen2.5:7b
-pnpm exec tsx experiments/rollout-arc/scripts/search-learnability.mjs --model qwen2.5:7b --n 8 --split test
+pnpm exec tsx experiments/rollout-arc/scripts/local-rollout.mjs
+pnpm exec tsx experiments/rollout-arc/scripts/search-learnability.mjs --n 8 --split test
 ```
