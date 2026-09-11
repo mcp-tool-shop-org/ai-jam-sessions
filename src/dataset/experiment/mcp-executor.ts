@@ -11,6 +11,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { saveSong } from "../../songs/loader.js";
+import type { SongEntry } from "../../songs/types.js";
 import { ROLLOUT_TOOLS } from "./env.js";
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -59,12 +61,21 @@ export class McpStdioExecutor {
     return this.childPid;
   }
 
-  async start(): Promise<void> {
+  /**
+   * Isolated AI_JAM_HOME. seedSongs are written to <home>/songs/ before the
+   * server process starts so initializeFromLibrary sees them. The real
+   * library is never touched.
+   */
+  async start(opts?: { seedSongs?: readonly SongEntry[] }): Promise<void> {
     if (this.client) return;
     if (!existsSync(this.serverEntry)) {
       throw new Error(`${this.serverEntry} not found — run pnpm build first`);
     }
     this.home = mkdtempSync(join(tmpdir(), "jam-rollout-"));
+    if (opts?.seedSongs?.length) {
+      const dir = join(this.home, "songs");
+      for (const song of opts.seedSongs) saveSong(song, dir);
+    }
     this.transport = new StdioClientTransport({
       command: process.execPath,
       args: [this.serverEntry],
