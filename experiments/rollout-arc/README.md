@@ -8,9 +8,15 @@ The RL environment the experiment contract was missing. Design lock:
 > Three families were measured against bars frozen before any model call, and all three
 > failed. The mechanism for the last one: the policy pages but never uses the second
 > page — all 480 in-range answers at distance ≥ 4 landed inside the *first* window — so
-> distance is a step function with no trainable middle. The binding constraint is **task
-> supply**: the `[12.5%, 50%]` band is a filter, and this shelf yields 18 plant
-> occurrences where INTELLECT-2 filtered 285,000 candidates to reach it.
+> distance is a step function with no trainable middle.
+>
+> ⚠ **The report's original "binding constraint is task supply" finding was WRONG and was
+> corrected the same day.** `inferChord` and `detectChord` are pure functions over a
+> string and a number array; neither needs the song library. The 18-occurrence ceiling
+> came from `loadPublishableSongs()` — a *publishing* constraint the environment
+> inherited by accident. A synthetic generator supplies unbounded scorable tasks.
+> **The open question is narrower: whether difficulty can be graded inside the band where
+> the policy already scores 0.52–0.66, instead of along an axis that steps to zero.**
 >
 > **Read [`docs/rollout-arc-closing-report.md`](../../docs/rollout-arc-closing-report.md) first** —
 > verdict, mechanism, what survives the null, and the preregistered conditions that
