@@ -97,4 +97,4 @@ set is Zenodo record [`10.5281/zenodo.22699571`](https://doi.org/10.5281/zenodo.
 own concept DOI, [`10.5281/zenodo.22699570`](https://doi.org/10.5281/zenodo.22699570); cite either, not
 the jam-actions-v1 concept DOI — the probe is an evaluation companion, not a version of the training
 corpus. An earlier deposit of the same files, record 22675251, was minted as a version under the
-jam-actions-v1 concept by mistake and is being withdrawn; do not cite it.
+jam-actions-v1 concept by mistake and was deleted on 2026-09-10; its DOI resolves to a tombstone. Do not cite it.
