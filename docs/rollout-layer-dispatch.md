@@ -1,6 +1,6 @@
 # Rollout Layer — design dispatch (the environment the experiment contract is missing)
 
-**Date:** 2026-09-11 · **Author:** advisor (Opus 5) · **Status:** DESIGN lock in force. P0 measured 2026-09-11: existing corpus **NO-GO**. P1 (env + search-v0 + local harness) is in tree; still $0. Receipt: [`experiments/rollout-arc/p0/RESULTS.md`](../experiments/rollout-arc/p0/RESULTS.md). No GPU rental.
+**Date:** 2026-09-11 · **Author:** advisor (Opus 5) · **Status:** ⛔ **ARC CLOSED 2026-09-11 on the NULL branch** — three frozen-bar NO-GOs (P0, P1b, P1c), P2 never started, no paid run, **$0 total**. Closing report: [`rollout-arc-closing-report.md`](rollout-arc-closing-report.md). This document remains the design lock of record and the reopening conditions live in the report §5.
 **Predecessor:** [finetune-arc-dispatch.md](finetune-arc-dispatch.md) (the SFT arc's design lock).
 **Contract this extends:** [`experiments/_template/README.md`](../experiments/_template/README.md) and `src/dataset/experiment/`.
 **Research grounding:** 5-agent study-swarm, 2026-09-11, ~50 retrieved sources. Citation gate receipt: `docs/rollout-layer-dispatch.citation-receipt.json`.
