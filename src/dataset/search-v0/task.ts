@@ -10,19 +10,24 @@ import { inferChord } from "../../songs/jam.js";
 import { detectChord } from "../../chord-detect.js";
 import { MAX_TURNS } from "../experiment/env.js";
 import { defineTask } from "../experiment/registry.js";
+import { MAX_LIST_WINDOW } from "./window.js";
 
-export const SEARCH_SCHEMA_VERSION = "jam-actions-search-v0/1.1.0";
-export const MAX_MEASURE = 16;
+export const SEARCH_SCHEMA_VERSION = "jam-actions-search-v0/1.2.0";
+export const MAX_MEASURE = 32;
 export const SEARCH_VERDICTS: readonly string[] = Array.from({ length: MAX_MEASURE }, (_, i) => String(i + 1));
 
 export const SEARCH_THRESHOLDS = {
   max_measure: MAX_MEASURE,
   max_turns: MAX_TURNS,
   max_parallel: 2,
+  max_list_window: MAX_LIST_WINDOW,
 } as const;
 
-/** Hold out these songs. Split by song_id, never by record. */
-export const TEST_SONG_IDS = ["bethena", "the-easy-winners"] as const;
+/**
+ * Hold out these songs. Split by song_id, never by record.
+ * Three clusters (was two at cap 16). Frozen after counting cap-32 plants.
+ */
+export const TEST_SONG_IDS = ["bethena", "the-easy-winners", "peacherine-rag"] as const;
 
 export interface SearchOccurrence {
   song_id: string;

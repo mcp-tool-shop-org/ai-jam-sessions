@@ -68,6 +68,27 @@ describe.skipIf(!haveServer)("SearchEnv against the real MCP server", () => {
     expect(reward.reward).toBe(0);
   });
 
+  it("does not dump a whole song when list_measures omits the window", async () => {
+    const c = solace();
+    const state = await env.setupState(c);
+    const { turns } = await env.envResponse(state, [
+      { name: "list_measures", arguments: { id: "bethena" } },
+    ]);
+    expect(turns).toHaveLength(1);
+    expect(turns[0]!.content).toMatch(/requires startMeasure and endMeasure/);
+    expect(turns[0]!.content).not.toMatch(/Measure 50/);
+  });
+
+  it("executes a paged list_measures window against the real server", async () => {
+    const c = solace();
+    const state = await env.setupState(c);
+    const { turns } = await env.envResponse(state, [
+      { name: "list_measures", arguments: { id: "solace", startMeasure: 6, endMeasure: 6 } },
+    ]);
+    expect(turns[0]!.content).toMatch(/Measure 6/);
+    expect(turns[0]!.content).not.toMatch(/Measure 7/);
+  });
+
   it("drops calls past the parallel cap as observations", async () => {
     const c = solace();
     const state = await env.setupState(c);
