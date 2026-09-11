@@ -1,4 +1,20 @@
-# Rollout Arc — closing report (the null branch, shipped)
+# Rollout Arc — P0–P1c report (superseded as a *closing* report; the arc is REOPEN)
+
+> ⭐ **ARC REOPENED 2026-09-11 by the director.** This document is no longer a closing
+> report. It is the accurate record of P0 through P1c and of a wrong conclusion drawn from
+> them, both kept in place.
+>
+> **Why the closure did not survive.** It rested on two legs: three failed measurements,
+> and a structural argument that no further family could land either. The measurements
+> stand. The structural argument was "task supply," it was wrong (§3), and **a second leg
+> went with it that the first correction missed** — the backup blocker in §3 was three test
+> song clusters being too few for the clustered bootstrap, and a synthetic generator emits
+> as many independent clusters as it is asked for. Both blockers dissolve the same way.
+> What survives is one finding about one axis (§2), not about the family or the domain.
+>
+> **Live work:** [`rollout-arc-p1d-kickoff.md`](rollout-arc-p1d-kickoff.md) — the `synth-v0`
+> generated family, where difficulty is graded *inside* the band the policy is already
+> competent in. Still $0, still gated, P2 still does not start without an in-band population.
 
 **Date:** 2026-09-11 · **Corrected same day** (§3 and §5.1 — the original "task supply is the binding
 constraint" finding was wrong; the error and its replacement are kept in place rather than rewritten
