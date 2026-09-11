@@ -11,8 +11,8 @@ describe.skipIf(!haveServer)("SearchEnv against the real MCP server", () => {
   const exec = new McpStdioExecutor();
   let env: SearchEnv;
   const solace = () => {
-    const c = plants().find((x) => x.song_id === "solace" && x.chord === "Gaug");
-    if (!c) throw new Error("solace Gaug plant missing");
+    const c = plants().find((x) => x.song_id === "solace" && x.chord === "Gaug" && x.after === 1);
+    if (!c) throw new Error("solace Gaug from-1 plant missing");
     return c;
   };
 
