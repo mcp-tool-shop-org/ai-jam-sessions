@@ -1,0 +1,64 @@
+{
+  "stage": "P2-dry",
+  "generator_seed": 2026091103,
+  "train_per_level": 256,
+  "test_per_level": 64,
+  "songs": 1280,
+  "cases": {
+    "total": 1280,
+    "train": 1024,
+    "test": 256
+  },
+  "per_level": {
+    "D0": 256,
+    "D1": 256,
+    "D2": 256,
+    "D3": 256
+  },
+  "per_distance": {
+    "1": 329,
+    "2": 352,
+    "3": 343
+  },
+  "distinct_gold_train": 111,
+  "gates": [
+    {
+      "name": "gold re-derives from both engines on every TRAIN case",
+      "pass": true,
+      "detail": "1024 cases re-derived"
+    },
+    {
+      "name": "no song_id straddles train/test",
+      "pass": true,
+      "detail": "1280 distinct song ids"
+    },
+    {
+      "name": "gold varies on both splits, per level",
+      "pass": true,
+      "detail": "111 distinct gold values on train"
+    },
+    {
+      "name": "schemaVersion is not a published owner's",
+      "pass": true,
+      "detail": "jam-actions-synth-v0/1.1.0 unregistered"
+    },
+    {
+      "name": "prompt names neither the measure nor the song id",
+      "pass": true,
+      "detail": "1024 prompts clean"
+    },
+    {
+      "name": "every synthetic id is namespaced and kebab-case",
+      "pass": true,
+      "detail": "1280 ids"
+    }
+  ],
+  "all_pass": true,
+  "projected": {
+    "non_degenerate_rate_prior": 0.32,
+    "expected_trainable": 328,
+    "expected_generation_multiplier": 3.13
+  },
+  "generation_ms": 53,
+  "spend": 0
+}
