@@ -80,3 +80,72 @@ The remaining levers are no longer about data:
 
 **None of this restores the arc's original 27.1% / 32.0%.** Those were measured on a 4-bit
 model and remain void.
+
+---
+
+# CORRECTION — "closed" is too strong, and the algorithmic pivot is not supported
+
+Written after computing what the band actually requires. **Both the conclusion above and the
+proposed pivot away from GRPO rest on an assumption neither of us checked.**
+
+## How much harder does the task need to be?
+
+At the **measured** ρ = 0.714 and G = 8, beta-binomial:
+
+| accuracy | non-degenerate | in band? |
+|---|---|---|
+| **0.96** (what we have) | 0.056 | |
+| **0.90** | **0.131** | **yes** |
+| 0.85 | 0.185 | yes |
+| 0.80 | 0.231 | yes |
+
+*(model check: it predicts 0.059 at p = 0.958 against 0.065 measured — the fit is good)*
+
+**The band needs accuracy ≈ 0.90. We are at 0.958. That is six points, not a chasm.**
+
+I wrote "no configuration inside this corpus reaches the band" and it reads as though the gap
+were hopeless. It is not. **It is the narrowest it has ever looked**, and I closed the line
+without computing the target — the same over-claim shape as "harden the corpus is finished"
+four hours ago, which the G=8 run then reversed.
+
+## What has never been tried: combining knobs
+
+Every axis was measured **alone**:
+
+| knob | measured alone |
+|---|---|
+| `parallelOnly` | accuracy 0.958 |
+| `decoyBeforeBound` | never measured at G=8 — the one 2×2 that tried was population-confounded, 3 of 32 shared cases |
+| `octaves` (one chord name, several spellings) | **never measured at all, at any G** |
+| `varyRightHand` | never measured at all |
+| distance 4 — the boundary where 14 of 55 answers reached | **never measured** |
+
+Four knobs exist, built and tested, and **three of them have never been run against bf16.**
+Each is weak alone; nobody has asked what they do together. Six accuracy points is exactly
+the scale at which stacking weak effects is worth one run.
+
+## Why the pivot away from GRPO is not supported by these numbers
+
+The premise is that GRPO "discards 91.5% of the corpus." What a batch-level or value baseline
+would actually see on this run:
+
+| | n | advantage each |
+|---|---|---|
+| all-right groups | 366 | **+0.042** — a push to keep doing what it already does |
+| all-wrong groups | **8** | −0.958 |
+| split groups | 26 | within-case contrast, which **GRPO already uses** |
+
+**The extra signal is 8 cases out of 400 — 2.0%.** The other 366 contribute a nudge toward
+the existing policy. And a cross-prompt baseline reintroduces prompt-difficulty as a nuisance
+variable, which is the specific thing group-relative advantage removes.
+
+So the pivot trades GRPO's variance reduction for signal concentrated in 2% of cases.
+**That is not an obviously good trade, and it is a large change to a trainer that is
+working.** It may become right if the corpus cannot be moved. It is not the next step.
+
+## Restated honestly
+
+**Not closed. Narrowed to a specific, cheap, unrun experiment:** all four difficulty knobs
+on at once, at G = 8, against bf16 — targeting accuracy ≤ 0.90 rather than any particular
+mechanism. If stacking cannot move 0.958 to 0.90, *then* the corpus is exhausted and the
+algorithmic question is live on evidence rather than on assumption.
