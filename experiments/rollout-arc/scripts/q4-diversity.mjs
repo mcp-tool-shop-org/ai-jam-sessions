@@ -111,8 +111,11 @@ async function main() {
       ];
       const transcript = [...messages];
       let text = "";
+      let errored = null;
       for (let turn = 0; turn <= MAX_TURNS; turn++) {
-        const r = await chat({
+        let r;
+        try {
+          r = await chat({
           model: args.model,
           messages,
           tools,
@@ -120,8 +123,15 @@ async function main() {
           think: false,
           // MATCHED TO TRL: top_k 0 and top_p 1.0 disable truncation. Ollama's
           // defaults (40 / 0.9) would truncate and make the comparison invalid.
-          options: { temperature: 1, top_p: 1, top_k: 0, num_predict: 512, seed: s },
-        });
+            options: { temperature: 1, top_p: 1, top_k: 0, num_predict: 512, seed: s },
+          });
+        } catch (e) {
+          // q4 sometimes emits tool-call arguments the server cannot parse
+          // ("unexpected end of JSON input"). That is a property of the policy
+          // worth counting, not a reason to lose the run.
+          errored = String(e.message).slice(0, 120);
+          break;
+        }
         const m = r.message ?? {};
         text += (m.content ?? "") + JSON.stringify(m.tool_calls ?? []);
         messages.push(m);
@@ -145,18 +155,25 @@ async function main() {
           transcript.push({ role: "tool", name, content: obs.text });
         }
       }
-      const reward = scoreReward({ gold: String(c.measure), transcript, verdicts: synthTask.verdicts, maxTurns: MAX_TURNS });
-      completions.push({ text, reward: reward.reward, verdict: reward.verdict ?? null });
+      const reward = errored
+        ? { reward: 0, verdict: null }
+        : scoreReward({ gold: String(c.measure), transcript, verdicts: synthTask.verdicts, maxTurns: MAX_TURNS });
+      completions.push({ text: errored ? `__ERROR__${errored}` : text, reward: reward.reward, verdict: reward.verdict ?? null, errored: Boolean(errored) });
     }
-    const distinct = new Set(completions.map((x) => x.text)).size;
+    const errs = completions.filter((x) => x.errored).length;
+    // Diversity is measured on the completions that actually returned. A group
+    // whose only "variety" is server errors is not a branching group.
+    const ok = completions.filter((x) => !x.errored);
+    const distinct = new Set(ok.map((x) => x.text)).size;
     const k = completions.filter((x) => x.reward >= 1).length;
-    groups.push({ id: c.song_id, level: c.level, k, distinct, identical: distinct === 1 });
+    groups.push({ id: c.song_id, level: c.level, k, distinct, errors: errs, identical: ok.length > 1 && distinct === 1 });
     if ((gi + 1) % 8 === 0) console.log(`[q4] ${gi + 1}/${cases.length}  identical-so-far ${groups.filter((g) => g.identical).length}/${groups.length}`);
   }
   await exec.close();
 
   const n = groups.length;
   const identical = groups.filter((g) => g.identical).length;
+  const totalErrors = groups.reduce((a, g) => a + g.errors, 0);
   const nondegen = groups.filter((g) => g.k > 0 && g.k < args.n).length;
   const summary = {
     model: args.model,
@@ -169,6 +186,9 @@ async function main() {
     non_degenerate: nondegen,
     non_degenerate_rate: nondegen / n,
     mean_distinct_completions: groups.reduce((s, g) => s + g.distinct, 0) / n,
+    malformed_tool_call_completions: totalErrors,
+    malformed_rate: totalErrors / (n * args.n),
+    malformed_note: "q4 emits tool-call arguments Ollama cannot parse; counted, excluded from the distinct-completion count, and scored 0",
     k_spread: groups.reduce((m, g) => ((m[g.k] = (m[g.k] ?? 0) + 1), m), {}),
     bf16_reference: { byte_identical_rate: 0.922, non_degenerate_rate: 0.0625, accuracy: 0.835, note: "same corpus, TRL/transformers" },
   };
