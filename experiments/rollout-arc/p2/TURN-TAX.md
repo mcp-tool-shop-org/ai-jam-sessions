@@ -78,3 +78,60 @@ it may.
 before/after on the same cases, which is free and local. The right comparison is `control`
 and `treatment` re-run with the defaulting fix and **no** system hint, paired against the
 cells already recorded.
+
+---
+
+# Result — the fix works, and distance 5–11 was never a turn-budget artifact
+
+Paired re-measure, same seed, same 32 cases per arm, no system hint. Only
+`boundListMeasures` moved.
+
+| cell | acc | non-degen | refusals | max offset | ≥ +5 | `turn_cap` | tool turns | entropy |
+|---|---|---|---|---|---|---|---|---|
+| control | 0.719 | 0.125 | **97%** | 14 | 2 | 0.50 | 2.0–4.0 | 5.3e-3 |
+| **control-fixed** | 0.781 | 0.062 | **0%** | 21 | 1 | **0.00** | **1.0–3.5** | 4.8e-3 |
+| treatment | 0.000 | 0.000 | **100%** | **4** | **0** | 0.00 | 2.0–4.0 | 1.5e-2 |
+| **treatment-fixed** | 0.000 | 0.000 | **0%** | **4** | **0** | 0.50 | 1.0–3.0 | **5.5e-2** |
+
+## The fix does what it was built to do
+
+Refusals **97% → 0%**, `list_measures` calls per episode **2.48 → 1.06**, turn cap on
+control **0.50 → 0.00**, tool turns **2.0–4.0 → 1.0–3.5**. The wasted turn is gone.
+
+**The accuracy gain is not claimed.** Paired: better on 6, worse on 3, unchanged 23,
+**sign test p = 0.51**. 0.719 → 0.781 is not distinguishable from noise at n = 32.
+
+## Distance 5–11 was not a turn-budget artifact
+
+**Paired: 0 better, 0 worse, 32 of 32 unchanged.** Accuracy stays at exactly **0.000**, and
+the maximum answer offset stays at exactly **+4** with **zero** answers at ≥ +5.
+
+Give the policy back a fifth of its turn budget and it does not spend it searching further.
+It spends it the same way and stops in the same place.
+
+## Which resolves the +4 ceiling, across three measurements
+
+| condition | max offset | ≥ +5 | accuracy |
+|---|---|---|---|
+| baseline | +4 | 0 / 121 | 0.000 |
+| **turn tax removed** | **+4** | **0** | 0.000 |
+| **told explicitly to page** | **+12** | **13** | 0.016 |
+
+**The policy has the turns, has the tokens, and is told the window is 4 — and does not page.
+Only an explicit instruction moves it, and then it still fails.** Not a budget problem, not a
+capability problem, and not a documentation problem: the constraint is stated and the
+behaviour it implies is not derived.
+
+## Guards
+
+`control-fixed` clean: 0 of 32 steps clipped, completions 37–175 against a 1024 budget.
+
+**`treatment-fixed` had 1 of 32 steps clipped** (`clipped_ratio` 0.50 on that step — one of
+its two completions). Under the standing rule that is a strike against reading its accuracy.
+It does not change the reading here: the paired comparison is **32 of 32 unchanged**, so no
+case moved in either direction and a single truncated completion cannot account for a null
+that complete. Recorded rather than waved off.
+
+Worth noting the fix *caused* that: removing the refusal turn let episodes run longer, mean
+length 79–244 → **37–466**, max 250 → **895**. Entropy also rose **1.5e-2 → 5.5e-2**, 3.6×.
+**The policy behaves differently and lands in exactly the same place.**
