@@ -1,12 +1,15 @@
 # P2 BUILD — the GRPO trainer bundle
 
-**Date:** 2026-09-11 · **Spend: $0. No GPU rented. No pod launched.**
+**Built 2026-09-11 · smoke run 2026-09-12.**
+**Spend to date: $1.10 of the $10 authorised.** One pod, A100 80GB PCIe, 0.92 h, terminated;
+`runpod.mjs list` reports **"No pods. Nothing is billing."** Training has not started.
 **Lock:** [`docs/rollout-arc-p2-lock.md`](../../../docs/rollout-arc-p2-lock.md) ·
 **Handoff:** [`docs/rollout-arc-p2-build-handoff.md`](../../../docs/rollout-arc-p2-build-handoff.md)
 **Predecessor:** [P1f](../p1f/RESULTS.md) · **Dry stage:** [`dry-report.json`](dry-report.json), 6/6 gates.
 
-Stages A–D are built. Stage C ran locally on the rig's RTX 5090 and **passed both of its
-gates**. Nothing here claims a training result, and nothing here authorises a dollar.
+Stages A–D are built, Stage C passed locally on the rig's RTX 5090, and the smoke run has now
+executed on a rented A100. **Nothing here claims a training result**, and nothing here
+authorises the training run — that is a fresh director decision against what is left.
 
 ---
 
@@ -20,10 +23,11 @@ gates**. Nothing here claims a training result, and nothing here authorises a do
 | [`trainer/reward.py`](trainer/reward.py) | The reward function (forwards to `/score`) and the lock §6 random-reward control arm. Logs lock §3's three series. |
 | [`trainer/train.py`](trainer/train.py) | The GRPO trainer, the §0 mitigations, the mask probe and the step timer. `--dry` is Stage C. |
 | [`trainer/requirements.lock.txt`](trainer/requirements.lock.txt) | The exact 59-package pin the Stage C receipt was produced with. |
-| [`scripts/pod_run_p2.sh`](scripts/pod_run_p2.sh) | Stage D. `dry → smoke → train`, stage-0 fail-fast, DONE markers, **stops before `train` unless `TRAIN=1`**. Never launched. |
+| [`scripts/pod_run_p2.sh`](scripts/pod_run_p2.sh) | Stage D. `dry → smoke → train`, stage-0 fail-fast, DONE markers, **stops before `train` unless `TRAIN=1`**. Ran once, smoke only; it stopped itself before train. |
 | [`scripts/babysit-p2.sh`](scripts/babysit-p2.sh) | The fetcher + watchdog. Streams on DONE markers, verifies `artifacts.sha256`, API-terminates on ALL.DONE, disarms the dead-man. |
-| [`scripts/deadman-p2.ps1`](scripts/deadman-p2.ps1) | The absolute cap. Detached, 12 h, force-terminates unless the cancel file appears. |
-| [`scripts/compensator-drill.mjs`](scripts/compensator-drill.mjs) | Exercises both against a **fake pod id and a mock API**. 7 scenarios, 17 checks. |
+| [`scripts/deadman-p2.ps1`](scripts/deadman-p2.ps1) | The absolute cap. Detached, stage-scoped, force-terminates unless the cancel file appears. |
+| [`scripts/compensator-drill.mjs`](scripts/compensator-drill.mjs) | Exercises both against a **fake pod id and a mock API**. 10 scenarios, 29 checks. |
+| [`artifacts/`](artifacts/) | The smoke run's receipts, streamed off the pod by the babysitter. |
 | [`compensator-drill.json`](compensator-drill.json) | The drill receipt. |
 | [`stage-c-receipt.json`](stage-c-receipt.json) | The Stage C receipt, copied out of the gitignored `runs/` tree. |
 
@@ -92,6 +96,79 @@ hardware: **32 GB is not enough headroom for this configuration**, which corrobo
 (48 GB is ample) and R3.15 (the failure appears once the backward pass has to coexist with
 generation). The production step time must be measured on the pod's 48 GB card during the
 smoke run — which is exactly where §5 puts it.
+
+---
+
+## The smoke run — measured, 2026-09-12
+
+Run by `ai-5e`; numbers below re-read from
+[`artifacts/smoke-run.json`](artifacts/smoke-run.json) and
+[`artifacts/stage-timings.jsonl`](artifacts/stage-timings.jsonl) rather than transcribed.
+
+| | Measured |
+|---|---|
+| Card | NVIDIA A100 80GB PCIe (the cheap 48 GB tier was **entirely out of stock** on community) |
+| Shape | 1 prompt × 8 generations, `max_completion_length` 1024, `use_vllm=False` |
+| Step time | **mean 38.5 s**, range 33.1–49.2 over 8 steps |
+| Stage timings | 17 s / 137 s / 330 s, **484 s** to ALL.DONE |
+| Mask | **65.2%** — 64 of 64 completions with zero spans, 10,965 masked vs 5,856 trained |
+| Bridge | 151 tool calls, 68 rewards scored (cumulative over stages 1–2) |
+| Spend | **$1.10**, 0.92 h at $1.19/hr |
+
+**The mask claim is now measured twice, on two machines, at two shapes** — 59.3% at dry shape on
+the 5090, 65.2% at production shape on the A100. R1.1 said TRL masks tool tokens automatically;
+it does, and two thirds of every rollout is our own library output being kept out of the loss.
+
+The compensators behaved as drilled: markers and `stage-timings.jsonl` streamed per stage, the
+manifest verified, the pod terminated, the dead-man disarmed. `runpod.mjs list` independently
+reports nothing billing.
+
+### Two caveats on these numbers
+
+**Stage 0's 17 seconds is a WARM number, not a cold one.** Five launch blockers were fixed on
+the same pod, so by the successful attempt the clone, the 3 GB torch wheel, the node modules and
+the HF checkpoint were all already present. A cold stage 0 has never been timed. **Do not size a
+future cap from 17 s** — that is the one number in this table that does not mean what it looks
+like.
+
+**38.5 s/step is an UNFILTERED step**, and that turns out to matter more than it first appears.
+
+### TRL 1.13.0 has no dynamic sampling, and the lock assumes it does
+
+Lock §2 specifies the training population as non-degenerate groups, citing NVIDIA's production
+DAPO — *"filter prompt groups where `std > 0`"*. **`GRPOTrainer` does not implement that.**
+Verified against the installed package: there is no `dynamic_sampling` knob, no resample loop and
+no `std > 0` filter anywhere in `grpo_trainer.py`. `frac_reward_zero_std` is *logged as a metric*
+(line 2856) — degenerate groups are **measured, not discarded and refilled**.
+(`train_sampling_strategy` is KTO's dataset-ordering option, not this.)
+
+Two consequences, and they point in opposite directions:
+
+**On cost, the training run is cheaper than feared.** With no filtering there is no ~3.7×
+generation multiplier: 200 steps × 38.5 s = 7,706 s ≈ **2.1 h ≈ $2.55** on the A100. That fits
+what is left with room to spare.
+
+**On what those steps buy, it is worse than it looks.** The smoke ran **one prompt group per
+step** (`per_device_train_batch_size` 8 = `num_generations` 8 = a single group). A group whose
+rollouts all agree has zero advantage and therefore zero gradient — so at the 27.1%
+non-degenerate rate the train split measured, roughly **three optimizer steps in four are
+no-ops**. A 200-step run would deliver on the order of **54 effective updates**, against R2.10's
+200–500 window which is presumably counting effective ones.
+
+**The lever is batch composition, not filtering.** Filtering and extra steps cost almost exactly
+the same per *useful* group, because generation dominates either way (3.7 × 38.5 s ≈ 142 s
+either as one filtered step or as 3.7 unfiltered ones). What actually helps is putting more than
+one prompt group in a step, so a step is rarely all-degenerate: at 27.1%, the chance every group
+in a step is degenerate is 0.729^g — **28% at 4 groups, 8% at 8 groups**, against 73% at one.
+
+That is a config change (`per_device_train_batch_size` at a fixed `num_generations`), not new
+code. **Its memory cost is unmeasured**: the A100 held one group of 8×1024 comfortably, and four
+groups is four times the activation footprint. That is the next thing worth measuring, and it is
+measurable in a handful of steps rather than a full run.
+
+**None of this is a recommendation to launch.** It is the arithmetic the launch decision needs,
+and the open number is no longer "the filtered step time" — it is **how many prompt groups per
+step the card will hold**.
 
 ---
 

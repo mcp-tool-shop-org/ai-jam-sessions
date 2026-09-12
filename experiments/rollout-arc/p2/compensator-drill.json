@@ -1,15 +1,15 @@
 {
   "drill": "P2 compensators",
-  "date": "2026-09-12T03:03:23.473Z",
+  "date": "2026-09-12T04:18:03.586Z",
   "spend": 0,
   "pod": "FAKE — no pod was rented, no real API was called",
-  "api_mock": "http://127.0.0.1:61840/graphql",
+  "api_mock": "http://127.0.0.1:51377/graphql",
   "fake_pod_id": "fake-pod-000000000000",
   "checks": [
     {
       "name": "cap reached -> podTerminate posted",
       "pass": true,
-      "detail": "recorded [{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T03:02:33.389Z\"}]"
+      "detail": "recorded [{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T04:17:13.477Z\"}]"
     },
     {
       "name": "dead-man exits 0 after terminating",
@@ -39,7 +39,7 @@
     {
       "name": "ALL.DONE -> podTerminate posted for the pod id",
       "pass": true,
-      "detail": "[{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T03:02:46.347Z\"}]"
+      "detail": "[{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T04:17:26.437Z\"}]"
     },
     {
       "name": "dead-man cancel file dropped",
@@ -94,7 +94,7 @@
     {
       "name": "mid-run cap -> exactly one terminate (the dead-man's)",
       "pass": true,
-      "detail": "[{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T03:03:11.897Z\"}]"
+      "detail": "[{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T04:17:51.908Z\"}]"
     },
     {
       "name": "dead-man exits 0 after a mid-run terminate",
@@ -158,15 +158,15 @@
   "terminate_calls_recorded": [
     {
       "podId": "fake-pod-000000000000",
-      "at": "2026-09-12T03:02:33.389Z"
+      "at": "2026-09-12T04:17:13.477Z"
     },
     {
       "podId": "fake-pod-000000000000",
-      "at": "2026-09-12T03:02:46.347Z"
+      "at": "2026-09-12T04:17:26.437Z"
     },
     {
       "podId": "fake-pod-000000000000",
-      "at": "2026-09-12T03:03:11.897Z"
+      "at": "2026-09-12T04:17:51.908Z"
     }
   ],
   "terminate_calls_expected": 3,
