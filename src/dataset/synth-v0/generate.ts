@@ -14,6 +14,11 @@ export const GENERATOR_SEED = 20260911;
 export const TEST_PER_LEVEL = 32;
 export const TRAIN_PER_LEVEL = 48;
 export const DISTANCES = [1, 2, 3] as const;
+/** v0 built every triad at octave 3. */
+export const DEFAULT_OCTAVES = [3] as const;
+/** v0 wrote the same right hand into all 120 measures of all 320 songs. */
+export const DEFAULT_RIGHT_HAND = "C4:q";
+const RIGHT_HANDS = ["C4:q", "D4:q", "E4:q", "F4:q", "G4:q", "A4:q", "B4:q"] as const;
 export const LEVELS: readonly DifficultyLevel[] = ["D0", "D1", "D2", "D3"];
 
 const SHARP = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"] as const;
@@ -99,12 +104,24 @@ function voicingOf(midis: number[]): Voicing | null {
   };
 }
 
-export function catalog(): Voicing[] {
+/**
+ * The voicing pool. One octave (the v0 default) makes every instance of a chord
+ * name the same literal string, so "find the C major measure" degenerates into
+ * a substring match. Several octaves give one chord name several spellings and
+ * the policy has to identify the chord rather than match the text.
+ *
+ * Measured 2026-09-12: the three pitch classes the two engines spell
+ * differently (D#, G#, A#) are the same at every octave from 1 to 5, so
+ * AGREEING_PCS is octave-invariant and no per-octave filter is needed.
+ */
+export function catalog(octaves: readonly number[] = DEFAULT_OCTAVES): Voicing[] {
   const out: Voicing[] = [];
-  for (const pc of AGREEING_PCS) {
-    for (const minor of [false, true]) {
-      const v = voicingOf(triadMidi(pc, minor, 3));
-      if (v) out.push(v);
+  for (const octave of octaves) {
+    for (const pc of AGREEING_PCS) {
+      for (const minor of [false, true]) {
+        const v = voicingOf(triadMidi(pc, minor, octave));
+        if (v) out.push(v);
+      }
     }
   }
   return out;
@@ -157,8 +174,8 @@ function semitoneAway(rng: () => number, cat: Voicing[], target: Voicing): Voici
   return pool[pickInt(rng, 0, pool.length - 1)]!;
 }
 
-function measure(n: number, lh: string): Measure {
-  return { number: n, rightHand: "C4:q", leftHand: lh };
+function measure(n: number, lh: string, rh: string = DEFAULT_RIGHT_HAND): Measure {
+  return { number: n, rightHand: rh, leftHand: lh };
 }
 
 export function makeSong(opts: {
@@ -168,12 +185,31 @@ export function makeSong(opts: {
   pageStart: number;
   pageLh: string[];
   fillerLh: string;
+  /**
+   * One occurrence of the target chord planted strictly BEFORE the prompt's
+   * bound. It never moves gold, because gold is re-derived from `after`; it
+   * only gives a wrong answer to a policy that ignores "at or after".
+   */
+  decoy?: { measure: number; lh: string };
+  /** Right hand per measure. Omitted, every measure gets DEFAULT_RIGHT_HAND. */
+  rightHandAt?: (measureNumber: number) => string;
 }): SongEntry {
+  if (opts.decoy) {
+    const d = opts.decoy.measure;
+    const offPage = d < opts.pageStart || d > opts.pageStart + 3;
+    if (d < 1 || d > opts.nMeasures || !offPage) {
+      throw new Error(
+        `${opts.id}: decoy at measure ${d} must be inside the song and off the ` +
+          `planted page [${opts.pageStart}, ${opts.pageStart + 3}]`,
+      );
+    }
+  }
   const measures: Measure[] = [];
   for (let i = 1; i <= opts.nMeasures; i++) {
     const pageIdx = i - opts.pageStart;
-    const lh = pageIdx >= 0 && pageIdx < 4 ? opts.pageLh[pageIdx]! : opts.fillerLh;
-    measures.push(measure(i, lh));
+    let lh = pageIdx >= 0 && pageIdx < 4 ? opts.pageLh[pageIdx]! : opts.fillerLh;
+    if (opts.decoy && i === opts.decoy.measure) lh = opts.decoy.lh;
+    measures.push(measure(i, lh, opts.rightHandAt?.(i)));
   }
   const song: SongEntry = {
     id: opts.id,
@@ -262,6 +298,33 @@ export interface CorpusOptions {
   testPerLevel?: number;
   /** Train cases (one song each) per level. Default TRAIN_PER_LEVEL. */
   trainPerLevel?: number;
+  /**
+   * Octaves the triad catalog is built at. Default DEFAULT_OCTAVES ([3]).
+   * More octaves means one chord name has several spellings, so matching the
+   * literal left-hand text stops being a winning policy.
+   */
+  octaves?: readonly number[];
+  /**
+   * Distances from the prompt's bound to the gold measure. Default DISTANCES
+   * ([1,2,3]), which is inside one 4-measure window: the answer is always in
+   * the first page and the task is a single lookup. A distance past 3 forces
+   * the policy to page forward.
+   */
+  distances?: readonly number[];
+  /**
+   * Plant one occurrence of the target chord strictly before the bound.
+   * Default false. With it off, every measure before the bound shares no pitch
+   * class with the target, so a policy that ignores "at or after" and scans
+   * from measure 1 gets the right answer anyway — the bound is inert and
+   * instruction-following is never tested.
+   */
+  decoyBeforeBound?: boolean;
+  /**
+   * Vary the right hand measure to measure. Default false, which writes the
+   * same DEFAULT_RIGHT_HAND into every measure and leaves the left hand as the
+   * only field that ever changes.
+   */
+  varyRightHand?: boolean;
 }
 
 export function generateCorpus(
@@ -270,6 +333,17 @@ export function generateCorpus(
 ): SynthCorpus {
   const testPerLevel = opts.testPerLevel ?? TEST_PER_LEVEL;
   const trainPerLevel = opts.trainPerLevel ?? TRAIN_PER_LEVEL;
+  const octaves = opts.octaves ?? DEFAULT_OCTAVES;
+  const distances = opts.distances ?? DISTANCES;
+  const decoyBeforeBound = opts.decoyBeforeBound ?? false;
+  const varyRightHand = opts.varyRightHand ?? false;
+  if (!octaves.length) throw new Error("octaves must not be empty");
+  if (!distances.length) throw new Error("distances must not be empty");
+  for (const d of distances) {
+    if (!Number.isInteger(d) || d < 0) {
+      throw new Error(`distance must be a non-negative integer, got ${d}`);
+    }
+  }
   if (!Number.isInteger(testPerLevel) || testPerLevel < 1) {
     throw new Error(`testPerLevel must be a positive integer, got ${testPerLevel}`);
   }
@@ -278,13 +352,20 @@ export function generateCorpus(
   }
   // Only the default shape is cached. A P1f-style corpus (fresh seed, wider
   // test split) must never be served from — or written into — that cache.
+  // Every knob, not just the two sizing ones. A harder corpus served from — or
+  // written into — the default cache would silently swap the population out
+  // from under anything that asked for the v0 shape.
   const isDefault =
     seed === GENERATOR_SEED &&
     testPerLevel === TEST_PER_LEVEL &&
-    trainPerLevel === TRAIN_PER_LEVEL;
+    trainPerLevel === TRAIN_PER_LEVEL &&
+    octaves === DEFAULT_OCTAVES &&
+    distances === DISTANCES &&
+    !decoyBeforeBound &&
+    !varyRightHand;
   if (cached && isDefault) return cached;
   const rng = mulberry32(seed);
-  const cat = catalog();
+  const cat = catalog(octaves);
   if (cat.length < 8) throw new Error(`agreeing catalog too small: ${cat.length}`);
   const songs: SongEntry[] = [];
   const cases: SynthCase[] = [];
@@ -296,20 +377,40 @@ export function generateCorpus(
     while (kept < need && attempts < need * 20) {
       attempts++;
       const target = cat[pickInt(rng, 0, cat.length - 1)]!;
-      const distance = DISTANCES[pickInt(rng, 0, DISTANCES.length - 1)]!;
+      const distance = distances[pickInt(rng, 0, distances.length - 1)]!;
       const nMeasures = pickInt(rng, 40, 120);
       const maxN = nMeasures - 3;
       if (maxN < 1) continue;
       const after = pickInt(rng, 1, maxN);
       const measureN = after + distance;
       if (measureN > nMeasures) continue;
-      const pageStart = after;
-      const targetSlot = distance;
+      // The page holds gold at `targetSlot`. At distance 1-3 the slot IS the
+      // distance, which pins the page to `after` and puts the answer in the
+      // first window the policy fetches — the v0 shape, one tool call. Past the
+      // window the slot is free and the page moves out to meet gold, so the
+      // policy has to page forward to reach it.
+      const targetSlot = distance <= 3 ? distance : pickInt(rng, 0, 3);
+      const pageStart = measureN - targetSlot;
+      if (pageStart < 1 || pageStart + 3 > nMeasures) continue;
       const page = pageFor(rng, cat, level, target, targetSlot);
       if (!page) continue;
       page[targetSlot] = target.lh;
       const fillerV = filler(rng, cat, new Set([target.name]), target.pcs);
       if (!fillerV) continue;
+      // A bound is only load-bearing when answering it wrong is possible.
+      let decoy: { measure: number; lh: string } | undefined;
+      if (decoyBeforeBound) {
+        if (after < 2) continue;
+        decoy = { measure: pickInt(rng, 1, after - 1), lh: target.lh };
+      }
+      // Drawn ONLY when the knob is on. An unconditional draw here consumed a
+      // number from the shared stream and shifted every later decision, which
+      // moved the v0 default population while all 13 tests stayed green.
+      let rightHandAt: ((n: number) => string) | undefined;
+      if (varyRightHand) {
+        const rhOffset = pickInt(rng, 0, RIGHT_HANDS.length - 1);
+        rightHandAt = (n: number) => RIGHT_HANDS[(n + rhOffset) % RIGHT_HANDS.length]!;
+      }
       serial++;
       const title = `Synth ${level} Study ${letters(serial)}`;
       const id = kebab(title);
@@ -323,9 +424,19 @@ export function generateCorpus(
         pageStart,
         pageLh: page,
         fillerLh: fillerV.lh,
+        decoy,
+        rightHandAt,
       });
       const hit = rederiveOnSong(song, target.name, after);
       if (!hit || hit.measure !== measureN || hit.chord !== target.name) continue;
+      // Prove the trap is live rather than trusting that it is: the same search
+      // run from measure 1 must land on the decoy, so a policy that drops the
+      // bound is measurably wrong on this case. A decoy the engines decline to
+      // re-derive would be a silently inert distractor.
+      if (decoy) {
+        const unbounded = rederiveOnSong(song, target.name, 1);
+        if (!unbounded || unbounded.measure !== decoy.measure) continue;
+      }
       const split: "train" | "test" = kept < testPerLevel ? "test" : "train";
       songs.push(song);
       cases.push({
@@ -338,6 +449,7 @@ export function generateCorpus(
         distance,
         level,
         split,
+        decoy: decoy?.measure,
       });
       kept++;
     }

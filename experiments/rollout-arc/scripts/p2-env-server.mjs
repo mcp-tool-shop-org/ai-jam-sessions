@@ -38,6 +38,18 @@ const REPO = resolve(HERE, "../../..");
 /** The dry stage's seed. Train and test here share no case with P1f (2026091102). */
 export const P2_GENERATOR_SEED = 2026091103;
 
+/** "2,3,4" -> [2,3,4]. Rejects anything that is not a list of integers. */
+function numberList(raw, flag) {
+  if (raw == null) throw new Error(`${flag} requires a comma-separated list`);
+  const parts = String(raw).split(",").map((x) => x.trim()).filter((x) => x.length);
+  if (!parts.length) throw new Error(`${flag} requires at least one value`);
+  return parts.map((x) => {
+    const n = Number(x);
+    if (!Number.isInteger(n)) throw new Error(`${flag} takes integers, got ${JSON.stringify(x)}`);
+    return n;
+  });
+}
+
 export function parseArgs(argv) {
   const out = {
     port: 8765,
@@ -46,6 +58,12 @@ export function parseArgs(argv) {
     trainPerLevel: 256,
     testPerLevel: 64,
     emit: null,
+    // Difficulty. The defaults are the v0 population, so omitting all four
+    // flags reproduces every earlier P2 run byte for byte.
+    octaves: null,
+    distances: null,
+    decoyBeforeBound: false,
+    varyRightHand: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -55,6 +73,10 @@ export function parseArgs(argv) {
     else if (a === "--train-per-level") out.trainPerLevel = Number(argv[++i]);
     else if (a === "--test-per-level") out.testPerLevel = Number(argv[++i]);
     else if (a === "--emit") out.emit = resolve(argv[++i]);
+    else if (a === "--octaves") out.octaves = numberList(argv[++i], "--octaves");
+    else if (a === "--distances") out.distances = numberList(argv[++i], "--distances");
+    else if (a === "--decoy") out.decoyBeforeBound = true;
+    else if (a === "--vary-right-hand") out.varyRightHand = true;
     else throw new Error(`unknown flag ${a}`);
   }
   if (!Number.isInteger(out.port) || out.port < 0 || out.port > 65535) throw new Error("--port must be 0-65535");
@@ -169,11 +191,28 @@ function readBody(req) {
 }
 
 export async function startEnvServer(opts = {}) {
-  const args = { port: 8765, host: "127.0.0.1", seed: P2_GENERATOR_SEED, trainPerLevel: 256, testPerLevel: 64, ...opts };
-  const corpus = generateCorpus(args.seed, {
-    testPerLevel: args.testPerLevel,
-    trainPerLevel: args.trainPerLevel,
-  });
+  const args = {
+    port: 8765,
+    host: "127.0.0.1",
+    seed: P2_GENERATOR_SEED,
+    trainPerLevel: 256,
+    testPerLevel: 64,
+    octaves: null,
+    distances: null,
+    decoyBeforeBound: false,
+    varyRightHand: false,
+    ...opts,
+  };
+  // Only pass a knob that was actually asked for. Passing `octaves: undefined`
+  // is harmless, but passing a fresh array equal to the default is NOT: the
+  // generator's cache key compares by identity, so it would quietly build a
+  // second copy of the default corpus instead of serving the cached one.
+  const difficulty = { testPerLevel: args.testPerLevel, trainPerLevel: args.trainPerLevel };
+  if (args.octaves) difficulty.octaves = args.octaves;
+  if (args.distances) difficulty.distances = args.distances;
+  if (args.decoyBeforeBound) difficulty.decoyBeforeBound = true;
+  if (args.varyRightHand) difficulty.varyRightHand = true;
+  const corpus = generateCorpus(args.seed, difficulty);
   const rows = corpus.cases.map(caseRow);
   const executor = new McpStdioExecutor();
   await executor.start({ seedSongs: corpus.songs });
@@ -192,6 +231,14 @@ export async function startEnvServer(opts = {}) {
           mcp_pid: executor.pid,
           schema_version: SYNTH_SCHEMA_VERSION,
           generator_seed: args.seed,
+          // Echoed so a receipt records which population it was measured against
+          // rather than leaving it to be inferred from the launch string.
+          difficulty: {
+            octaves: args.octaves ?? "default",
+            distances: args.distances ?? "default",
+            decoy_before_bound: args.decoyBeforeBound,
+            vary_right_hand: args.varyRightHand,
+          },
           library_songs: corpus.songs.length,
           cases: { total: rows.length, train: rows.filter((r) => r.split === "train").length, test: rows.filter((r) => r.split === "test").length },
           tools: [...ROLLOUT_TOOLS],
