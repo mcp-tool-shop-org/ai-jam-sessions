@@ -51,3 +51,10 @@ __pycache__/
 # that check is why this line exists.
 experiments/**/runs/**/epoch*/
 experiments/**/runs/**/hf-out/
+
+# P2 GRPO trainer venv (local only; requirements.txt is the reproducible artifact)
+experiments/rollout-arc/p2/trainer/.venv/
+
+# P2 run artifacts: adapters are weights (lock §8 keeps them local and unpublished);
+# the committed receipt is experiments/rollout-arc/p2/stage-c-receipt.json
+experiments/rollout-arc/p2/runs/
