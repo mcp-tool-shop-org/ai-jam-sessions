@@ -1,0 +1,103 @@
+{
+  "stage": "dry",
+  "shape": {
+    "prompts_per_step": 1,
+    "generations_per_prompt": 8,
+    "completions_per_step": 8
+  },
+  "spend": 0,
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "steps_requested": 8,
+  "steps_timed": 8,
+  "step_seconds": [
+    34.231,
+    49.187,
+    42.672,
+    33.449,
+    40.934,
+    33.076,
+    33.801,
+    40.874
+  ],
+  "mean_step_seconds": 38.528,
+  "wall_seconds": 309.605,
+  "mask": {
+    "batches": 8,
+    "completions": 64,
+    "with_zero_span": 64,
+    "zeros": 10965,
+    "ones": 5856,
+    "zero_fraction": 0.6519
+  },
+  "config": {
+    "num_generations": 8,
+    "per_device_train_batch_size": 8,
+    "gradient_accumulation_steps": 1,
+    "learning_rate": 1e-05,
+    "beta": 0.0001,
+    "epsilon": 0.2,
+    "epsilon_high": 0.28,
+    "max_completion_length": 1024,
+    "max_tool_calling_iterations": 5,
+    "use_vllm": false,
+    "vllm_importance_sampling_mode": "token_truncate",
+    "vllm_importance_sampling_clip_max": 3.0,
+    "lora": {
+      "r": 16,
+      "alpha": 32,
+      "target_modules": "all-linear",
+      "dropout": 0.0
+    },
+    "random_reward_arm": false
+  },
+  "versions": {
+    "python": "3.12.3",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.17.0",
+    "trl": "1.13.0",
+    "peft": "0.20.0",
+    "accelerate": "1.15.0",
+    "cuda": "12.8",
+    "device": "NVIDIA A100 80GB PCIe",
+    "capability": [
+      8,
+      0
+    ]
+  },
+  "bridge": {
+    "before": {
+      "tool_calls": 11,
+      "scored": 4,
+      "episodes": 0
+    },
+    "after": {
+      "tool_calls": 151,
+      "scored": 68,
+      "episodes": 0
+    },
+    "library_songs": 1280,
+    "generator_seed": 2026091103,
+    "schema_version": "jam-actions-synth-v0/1.1.0",
+    "tools": [
+      "score_audio_take",
+      "transcribe_audio",
+      "song_info",
+      "list_measures",
+      "verify_harmony",
+      "detect_chord",
+      "ensemble_now",
+      "list_songs",
+      "transpose_song"
+    ],
+    "limits": {
+      "max_turns": 5,
+      "max_parallel": 2,
+      "max_list_window": 4
+    }
+  },
+  "environment": {
+    "instances": 8,
+    "resets": 64
+  },
+  "dataset_rows": 2
+}

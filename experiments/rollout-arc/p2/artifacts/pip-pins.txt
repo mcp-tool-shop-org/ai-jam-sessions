@@ -1,0 +1,7 @@
+accelerate==1.15.0
+datasets==5.0.1
+httpx==0.28.1
+peft==0.20.0
+torch==2.11.0+cu128
+transformers==5.17.0
+trl==1.13.0

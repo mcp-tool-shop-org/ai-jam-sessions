@@ -147,7 +147,33 @@ git rev-parse HEAD | tee "$ART/repo-commit.txt"
 say "stage0c clone done"
 
 say "stage0d python deps (this is the ~3 GB torch download; progress is the liveness signal)"
-pip install -r "$TRAINER/requirements.lock.txt"
+# --break-system-packages: the RunPod image ships a Debian-managed python3 that
+# refuses system-wide installs under PEP 668. A venv is the usual answer, but the
+# image's torch lives in THAT interpreter and re-resolving a CUDA build inside a
+# venv on a billing host is the wrong trade. The pod is disposable; installing
+# beside its torch is the point. This lesson was paid for by the acoustic arc
+# (experiments/acoustic-sft/scripts/pod-bootstrap.sh:45) and not inherited here —
+# the first P2 launch died on it at stage 0d.
+# --extra-index-url: the lock pins torch==2.11.0+cu128, and a `+cuXXX` local
+# version only exists on PyTorch's own index, never on PyPI. Without this the
+# resolver reports "No matching distribution found for torch==2.11.0+cu128" while
+# happily listing every plain PyPI torch, which reads like a bad pin rather than
+# a missing index. Installing the PINNED torch rather than falling back to the
+# image's is deliberate: the Stage C receipt was produced against 2.11.0+cu128,
+# and PIN_PER_STEP is worth a 3 GB download.
+pip install --break-system-packages \
+  --extra-index-url https://download.pytorch.org/whl/cu128 \
+  -r "$TRAINER/requirements.lock.txt"
+
+# The image ships torchvision/torchaudio compiled against ITS torch (2.8.0). We
+# just installed 2.11.0+cu128 over the top, and those extensions are ABI-bound to
+# the torch they were built for, so torchvision's op registration dies with
+# "RuntimeError: operator torchvision::nms does not exist". transformers imports
+# torchvision whenever it is importable — image_utils does it unconditionally
+# once is_torchvision_available() passes — so a broken torchvision takes down
+# `import peft` and the entire trainer. This is a TEXT-only workload: neither
+# package is used, and removing them makes the availability check answer no.
+pip uninstall --break-system-packages -y torchvision torchaudio 2>/dev/null || true
 pip list --format=freeze | grep -Ei "^(torch|transformers|trl|peft|accelerate|datasets|httpx)=" > "$ART/pip-pins.txt"
 cat "$ART/pip-pins.txt"
 say "stage0d python deps done"
@@ -169,7 +195,15 @@ test -f "$REPO/dist/mcp-server.js" || { echo "FAIL: dist/mcp-server.js missing a
 say "stage0e build done"
 
 say "stage0c bridge health"
-node "$REPO/experiments/rollout-arc/scripts/p2-env-server.mjs" --port "$PORT" \
+# pnpm exec tsx, NOT bare node. The bridge imports the TypeScript env and
+# executor directly, and SynthEnv/SearchEnv use a parameter property
+# (`constructor(private readonly executor: ...)`). Node's built-in TypeScript is
+# STRIP-ONLY: it erases types but cannot emit the constructor assignment a
+# parameter property implies, so it throws
+# ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX and the bridge never binds its port. On the
+# rig every path into this code runs through tsx or vitest, which transpile
+# fully, so the divergence only appears on the pod. Found on the first launch.
+pnpm exec tsx "$REPO/experiments/rollout-arc/scripts/p2-env-server.mjs" --port "$PORT" \
   --train-per-level "${TRAIN_PER_LEVEL:-256}" --test-per-level "${TEST_PER_LEVEL:-64}" \
   > "$ART/env-server.log" 2>&1 &
 BRIDGE_PID=$!
@@ -184,8 +218,15 @@ test -s "$ART/bridge-health.json" || { echo "FAIL: bridge never answered /health
 cat "$ART/bridge-health.json"
 
 # One real tool call through the real server, before any weights are touched.
+# NOT `curl ... | head -c 200`. head closes the pipe at 200 bytes, curl cannot
+# write the rest and exits 23 ("Failure writing output to destination"), and
+# under `set -o pipefail` that non-zero kills the whole run. The tool call had
+# already SUCCEEDED — the response was arriving when head hung up. Capture to a
+# file, then truncate for display; the artifact is worth keeping anyway.
 curl -fsS -X POST "http://127.0.0.1:${PORT}/tool" -H 'Content-Type: application/json' \
-  -d '{"name":"list_songs","arguments":{"genre":"classical"}}' | head -c 200
+  -d '{"name":"list_songs","arguments":{"genre":"classical"}}' \
+  -o "$ART/tool-smoke.json"
+head -c 200 "$ART/tool-smoke.json" || true
 printf '\n'
 mark STAGE0
 
