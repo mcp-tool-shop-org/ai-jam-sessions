@@ -111,6 +111,10 @@ async function main() {
       ];
       const transcript = [...messages];
       let text = "";
+      // Model-authored only: the assistant's prose plus the tool ARGUMENTS it
+      // chose, with no JSON punctuation, no key order, no tool output. Sorted
+      // keys so serialisation cannot manufacture difference.
+      let span = "";
       let errored = null;
       for (let turn = 0; turn <= MAX_TURNS; turn++) {
         let r;
@@ -134,6 +138,12 @@ async function main() {
         }
         const m = r.message ?? {};
         text += (m.content ?? "") + JSON.stringify(m.tool_calls ?? []);
+        span += (m.content ?? "").trim() + " ";
+        for (const t of m.tool_calls ?? []) {
+          const args = t.function?.arguments ?? {};
+          span += `${t.function?.name} ` +
+            Object.keys(args).sort().map((k) => `${k}=${args[k]}`).join(" ") + " ";
+        }
         messages.push(m);
         transcript.push({ role: "assistant", content: m.content ?? "", tool_calls: (m.tool_calls ?? []).map((t) => ({ name: t.function?.name, arguments: t.function?.arguments ?? {} })) });
         const calls = (m.tool_calls ?? []).slice(0, MAX_PARALLEL);
@@ -158,15 +168,26 @@ async function main() {
       const reward = errored
         ? { reward: 0, verdict: null }
         : scoreReward({ gold: String(c.measure), transcript, verdicts: synthTask.verdicts, maxTurns: MAX_TURNS });
-      completions.push({ text: errored ? `__ERROR__${errored}` : text, reward: reward.reward, verdict: reward.verdict ?? null, errored: Boolean(errored) });
+      completions.push({
+        text: errored ? `__ERROR__${errored}` : text,
+        span: errored ? `__ERROR__${errored}` : span.replace(/\s+/g, " ").trim(),
+        reward: reward.reward,
+        verdict: reward.verdict ?? null,
+        errored: Boolean(errored),
+      });
     }
     const errs = completions.filter((x) => x.errored).length;
     // Diversity is measured on the completions that actually returned. A group
     // whose only "variety" is server errors is not a branching group.
     const ok = completions.filter((x) => !x.errored);
     const distinct = new Set(ok.map((x) => x.text)).size;
+    const distinctSpans = new Set(ok.map((x) => x.span)).size;
     const k = completions.filter((x) => x.reward >= 1).length;
-    groups.push({ id: c.song_id, level: c.level, k, distinct, errors: errs, identical: ok.length > 1 && distinct === 1 });
+    groups.push({
+      id: c.song_id, level: c.level, k, distinct, distinctSpans, errors: errs,
+      identical: ok.length > 1 && distinct === 1,
+      identicalSpans: ok.length > 1 && distinctSpans === 1,
+    });
     if ((gi + 1) % 8 === 0) console.log(`[q4] ${gi + 1}/${cases.length}  identical-so-far ${groups.filter((g) => g.identical).length}/${groups.length}`);
   }
   await exec.close();
@@ -186,6 +207,11 @@ async function main() {
     non_degenerate: nondegen,
     non_degenerate_rate: nondegen / n,
     mean_distinct_completions: groups.reduce((s, g) => s + g.distinct, 0) / n,
+    // The comparison that matters: TRL's collapsed groups are collapsed in the
+    // model spans too (92.2% full-text == 92.2% span-only on its parquets).
+    span_identical_groups: groups.filter((g) => g.identicalSpans).length,
+    span_identical_rate: groups.filter((g) => g.identicalSpans).length / n,
+    mean_distinct_spans: groups.reduce((s, g) => s + g.distinctSpans, 0) / n,
     malformed_tool_call_completions: totalErrors,
     malformed_rate: totalErrors / (n * args.n),
     malformed_note: "q4 emits tool-call arguments Ollama cannot parse; counted, excluded from the distinct-completion count, and scored 0",
