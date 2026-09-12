@@ -81,6 +81,45 @@ looks best is the error this arc has refused at every phase.
 
 ---
 
+## 2a. Source check and the measured histogram — neither changes a criterion above
+
+**Citation verified 2026-09-11, against the paper rather than the blog.** INTELLECT-2's own
+HTML §3.3.1 reads *"filtering out problems in which the base model's pass@8 rate was above 50%,
+and below 12.5%"*. **Finding 24 quotes it correctly and the primary bar is faithful to its
+source.** The Prime Intellect blog's looser phrasing — *"only use problems with a solve rate of
+75% or lower"* — is **not** corroborated by the paper, so **no 75% bound is adopted here.**
+
+Worth recording because it is the honest half of the same check: the rationale the blog gives
+for filtering is *"problems for which all completions have received the same reward carry no
+training signal."* **That rationale justifies excluding only c=0 and c=8.** The paper's 50%
+upper bound is tighter than its own stated reason requires, which is exactly the gap §0
+describes. Both facts now sit on the record; the bar does not move.
+
+**The exact `c/8` histogram over P1e's 128 cases**, leak-free row computed by scoring guess
+answers against gold:
+
+| c of 8 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 24 | 2 | 0 | 17 | 11 | **26** | 1 | 2 | 45 |
+| leak-free | 16 | 2 | 0 | 14 | 6 | **17** | 1 | 1 | 33 |
+
+Two things follow, and both are diagnostic rather than decisive.
+
+**The distribution is lumpy, not smooth.** Spikes at 0, 3, 5 and 8 with near-empty buckets at
+2, 6 and 7. A graded difficulty axis would not look like this. A small number of discrete
+policy behaviours over a three-way positional choice would, which is independent support for
+P1e's contradiction finding.
+
+**The entire primary-versus-secondary argument reduces to `c=5`.** Buckets 6 and 7 hold three
+cases between them, two of them leak-free, so pure non-degeneracy `[1,7]` and a hypothetical
+`[1,6]` differ by **one case**. `c=5` holds 26 raw and 17 leak-free. So the real question is
+not "does 87.5% dilute the gradient" but **"does 62.5% count."** At c=5 the GRPO advantages are
+`+0.775` for each correct rollout and `−1.29` for each incorrect one — well-scaled, and nothing
+resembling collapse. **P1f reports the buckets separately so this stays answerable from the
+data rather than from argument.**
+
+---
+
 ## 3. The stopping rule, declared now
 
 This arc has iterated four times. A stopping rule belongs in the lock, not in a later argument.
