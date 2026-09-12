@@ -371,3 +371,53 @@ Unchanged: **read cells on accuracy, report entropy beside it, and treat
 "accuracy down with entropy flat" as a failure.** The *k*-of-8 spread is added to
 what each cell reports, since it distinguishes replication from independent error
 more sharply than any rate does.
+
+## v3 addendum 3 — the degeneracy derivation is withdrawn
+
+**The v3 repair told this grid to "read cells on accuracy and derive degeneracy at G=8 from
+*p*." That derivation is withdrawn.** It uses P(degenerate) = *p*^G + (1−*p*)^G, which assumes
+the G rollouts are **independent draws** — and addendum 2's own evidence says they are not. The
+repair was inconsistent with the finding recorded one section above it.
+
+Quantified from the abort run's *k*-of-8 spread `8, 5, 8, 8, 4, 8, 8, 8, 8, 8`:
+
+| | value |
+|---|---|
+| mean *k* | 7.30 (*p* = 0.9125) |
+| observed variance | 2.233 |
+| binomial variance at that *p* | 0.639 |
+| **overdispersion ratio** | **3.50** |
+| **intra-group correlation ρ** | **0.357** |
+| **effective draws** | **2.29 of 8** |
+
+The eight rollouts are worth about two and a third independent samples.
+
+**The bias is not uniform in G, which is fatal for the comparison the repair existed to make.**
+Beta-binomial at ρ = 0.357 against the independence formula:
+
+| G | independent | ρ-corrected | understated by |
+|---|---|---|---|
+| 2 | 0.840 | 0.897 | 0.057 |
+| **8** | **0.481** | **0.735** | **0.254** |
+
+Independence understates degeneracy **4.5× more at G=8 than at G=2** — and G=8 is the
+production shape this grid was supposed to predict. A derivation that flatters the production
+shape is worse than no derivation. (Sanity check: ρ-corrected predicts 0.735 against the 0.800
+actually observed at G=8; independence predicts 0.481.)
+
+### The rule, restated
+
+1. **Accuracy *p* remains the primary reading.** It is a per-completion quantity and genuinely
+   G-invariant. Unchanged.
+2. **The independence formula may be quoted only as a stated lower bound on degeneracy**, never
+   as a prediction, and never without ρ beside it.
+3. **Report ρ per cell**, estimated from that cell's own *k*-of-2 spread, alongside accuracy and
+   entropy. At G=2, *k* ∈ {0,1,2} and the overdispersion is still estimable.
+4. **Degeneracy at G=8 is not derivable from this grid and will not be claimed from it.** If a
+   G=8 number is needed, it gets measured at G=8. That is a pod question with a price already
+   computed — n=256 groups at 44.6 s/step is 3.2 h, $3.77 — not something to infer from 32
+   groups at the wrong G.
+
+This is the fourth thing in this arc that was wrong because a population was assumed rather than
+read: the q4 pin, the 2-row dataset, the 2-prompt smoke, and now the independence assumption
+inside the repair for the first three.
