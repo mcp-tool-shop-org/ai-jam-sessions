@@ -21,6 +21,10 @@ gates**. Nothing here claims a training result, and nothing here authorises a do
 | [`trainer/train.py`](trainer/train.py) | The GRPO trainer, the §0 mitigations, the mask probe and the step timer. `--dry` is Stage C. |
 | [`trainer/requirements.lock.txt`](trainer/requirements.lock.txt) | The exact 59-package pin the Stage C receipt was produced with. |
 | [`scripts/pod_run_p2.sh`](scripts/pod_run_p2.sh) | Stage D. `dry → smoke → train`, stage-0 fail-fast, DONE markers, **stops before `train` unless `TRAIN=1`**. Never launched. |
+| [`scripts/babysit-p2.sh`](scripts/babysit-p2.sh) | The fetcher + watchdog. Streams on DONE markers, verifies `artifacts.sha256`, API-terminates on ALL.DONE, disarms the dead-man. |
+| [`scripts/deadman-p2.ps1`](scripts/deadman-p2.ps1) | The absolute cap. Detached, 12 h, force-terminates unless the cancel file appears. |
+| [`scripts/compensator-drill.mjs`](scripts/compensator-drill.mjs) | Exercises both against a **fake pod id and a mock API**. 7 scenarios, 17 checks. |
+| [`compensator-drill.json`](compensator-drill.json) | The drill receipt. |
 | [`stage-c-receipt.json`](stage-c-receipt.json) | The Stage C receipt, copied out of the gitignored `runs/` tree. |
 
 Deviations from the handoff's letter, both deliberate:
@@ -204,10 +208,86 @@ The venv is local-only and gitignored; `requirements.lock.txt` is the reproducib
 | MCP child + isolated `AI_JAM_HOME` | `executor.close()` kills the child and `rmSync`s the home; the pod script traps EXIT | ✅ held on every clean exit — **but see the leak below** |
 | Bridge process | `POST /shutdown`, SIGINT/SIGTERM handlers, `trap` on the pod | ✅ |
 | Adapter artifacts | gitignored; nothing published | ✅ 127 MB step-0 adapter stayed local |
-| RunPod pod | `babysit-pod.sh` + `deadman.ps1` + `runpod.mjs down` — inherited, not rewritten | ⏸ unused; no pod launched |
+| RunPod pod, clean path | [`babysit-p2.sh`](scripts/babysit-p2.sh) verifies checksums, API-terminates on ALL.DONE, drops the dead-man cancel file | ✅ **armed + drilled** (scenario C) |
+| RunPod pod, babysitter dies | [`deadman-p2.ps1`](scripts/deadman-p2.ps1), detached, 12 h absolute cap = $9.48 worst case | ✅ **armed + drilled** (scenarios A, B) |
+| RunPod pod, bad fetch | mismatch leaves the pod RUNNING and the dead-man ARMED for a manual fetch; `runpod.mjs down <id>` is the manual lever | ✅ **drilled** (scenario D) |
+| Isolated home after a `SIGKILL` | `close()` cannot run, so `$TMPDIR/jam-rollout-*` survives; remedy is to list and remove it after any aborted run | ⚠ **known gap**, see below — found and cleaned once during this build |
 | Spend | none authorised | ✅ **$0** |
 
 ---
+
+## Compensators, armed and drilled (lock §7 item 4)
+
+§7 requires four things before a pod. Three were already done — dry passes at $0, a measured
+local step time, and a director ceiling of **$10**. This is the fourth.
+
+### The dead-man cap, derived from the ceiling rather than guessed
+
+```
+director ceiling                    $10.00
+L40S community rate (R3.14)         $0.79 / hr
+-> pure-GPU runway                  10.00 / 0.79        = 12.66 hr
+-> cap chosen                       12 hr               = 43,200 s
+-> worst-case GPU spend             12 x 0.79           = $9.48
+-> storage headroom remaining       10.00 - 9.48        = $0.52
+   (a 100 GB volume at ~$0.10/GB/month is ~$0.014/hr ~= $0.17 over 12 hr)
+-> worst case, everything included                      ~= $9.65  < $10.00  ✓
+```
+
+On the RTX PRO 6000 Blackwell at $1.69/hr the same ceiling buys 5.92 hr, so the cap would be
+**5 hr (18,000 s) = $8.45**. **The L40S is the recommendation**: it doubles the runway on the
+same $10, 48 GB is ample for 4B + LoRA (R3.11), and it sidesteps the vLLM sm_120 arch-flag
+problem (vllm#35432) entirely. The corroborating evidence is in this document — the production
+shape sat at **31.9 GB of 32.6 GB** on the 5090 and made no progress.
+
+**The cap is a backstop, not a budget.** The babysitter terminates on ALL.DONE within minutes of
+the smoke run finishing; the dead-man only fires if the babysitter itself dies.
+
+### The drill — both compensators fired against a fake pod
+
+```
+node experiments/rollout-arc/p2/scripts/compensator-drill.mjs
+```
+
+No pod, no real API, no dollar: a mock RunPod endpoint on localhost records every
+`podTerminate`, a fake `ssh`/`scp` pair stands in for the pod, and the pod id is
+`fake-pod-000000000000`.
+
+| # | Scenario | Expected | Result |
+|---|---|---|---|
+| A | dead-man reaches the cap | terminate posted, exit 0 | ✅ |
+| B | cancel file appears first | **no** terminate, exit 0 | ✅ |
+| C | markers → fetch → verify → ALL.DONE | artifacts streamed, terminate posted, cancel dropped, exit 0 | ✅ |
+| D | checksum mismatch | **no** terminate, dead-man stays armed, exit 4 | ✅ |
+| E | silent log but GPU at 97% | **no** false stall | ✅ |
+| F | idle GPU + static log | exit 2, **no** terminate | ✅ |
+| G | ssh unreachable | exit 3, **no** terminate | ✅ |
+
+**17 / 17 checks passed**, and the mock recorded **exactly 2** `podTerminate` calls — scenario A
+and scenario C. The five scenarios that must not terminate did not. Receipt:
+[`compensator-drill.json`](compensator-drill.json).
+
+Scenario E is the one that matters most and is easiest to get wrong: liveness counts a **busy
+GPU**, not just a growing log, because Python block-buffers stdout under `nohup` and a log-only
+window false-stalled podA at 11:03 on 2026-07-11 while the sweep ran at 97% utilization.
+
+### What the drill caught
+
+Running it was not a formality. **`pod_run_p2.sh` touched `ALL.DONE` on the smoke-only path
+without ever writing `artifacts.sha256`** — and `babysit-p2.sh` treats a missing manifest as a
+failed verification. A perfectly good smoke run would have been reported as exit 4 and left the
+pod billing until the dead-man fired twelve hours later. Both exit paths now go through a
+`finish()` that writes the manifest first.
+
+### Launch discipline carried forward (v1, paid for)
+
+- **scp the bundle, then launch the scp'd launcher.** Never an inline env-prefixed `nohup` over
+  ssh — that is the v1 hung-channel lesson.
+- **Be patient with the direct SSH port**: 2–5 minutes to route after the pod shows Running.
+  Poll it; do not churn into terminate.
+- **Verify the SSH key before deploying.** RunPod injects account keys at pod *start*.
+- **No `pkill` anywhere**, deliberately: a pattern broad enough to match the run also matches
+  the ssh command carrying it.
 
 ### The one compensator gap, found by checking rather than by assuming
 

@@ -1,0 +1,108 @@
+{
+  "drill": "P2 compensators",
+  "date": "2026-09-12T02:42:02.656Z",
+  "spend": 0,
+  "pod": "FAKE — no pod was rented, no real API was called",
+  "api_mock": "http://127.0.0.1:65136/graphql",
+  "fake_pod_id": "fake-pod-000000000000",
+  "checks": [
+    {
+      "name": "cap reached -> podTerminate posted",
+      "pass": true,
+      "detail": "recorded [{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T02:41:29.774Z\"}]"
+    },
+    {
+      "name": "dead-man exits 0 after terminating",
+      "pass": true,
+      "detail": "exit 0"
+    },
+    {
+      "name": "cancel file -> NO podTerminate",
+      "pass": true,
+      "detail": "0 recorded"
+    },
+    {
+      "name": "dead-man exits 0 when disarmed",
+      "pass": true,
+      "detail": "exit 0"
+    },
+    {
+      "name": "babysitter exits 0 on a verified fetch",
+      "pass": true,
+      "detail": "exit 0"
+    },
+    {
+      "name": "every staged artifact was streamed off the pod",
+      "pass": true,
+      "detail": "artifacts.sha256, babysit.log, bridge-health.json, DEADMAN_CANCEL_drillC, dry-run.json, gpu.txt, node-version.txt, pip-pins.txt, smoke-run.json, smoke.tar.gz"
+    },
+    {
+      "name": "ALL.DONE -> podTerminate posted for the pod id",
+      "pass": true,
+      "detail": "[{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T02:41:42.521Z\"}]"
+    },
+    {
+      "name": "dead-man cancel file dropped",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "babysitter exits 4 on a mismatch",
+      "pass": true,
+      "detail": "exit 4"
+    },
+    {
+      "name": "mismatch -> NO podTerminate (pod left for manual fetch)",
+      "pass": true,
+      "detail": "0 recorded"
+    },
+    {
+      "name": "mismatch -> dead-man stays ARMED (no cancel file)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "busy GPU prevents a false stall",
+      "pass": true,
+      "detail": "exit null signal SIGKILL"
+    },
+    {
+      "name": "no terminate while merely waiting",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "babysitter exits 2 on a stall",
+      "pass": true,
+      "detail": "exit 2"
+    },
+    {
+      "name": "stall -> NO podTerminate, dead-man still armed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "babysitter exits 3 when unreachable",
+      "pass": true,
+      "detail": "exit 3"
+    },
+    {
+      "name": "unreachable -> NO podTerminate, dead-man still armed",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 17,
+  "total": 17,
+  "all_pass": true,
+  "terminate_calls_recorded": [
+    {
+      "podId": "fake-pod-000000000000",
+      "at": "2026-09-12T02:41:29.774Z"
+    },
+    {
+      "podId": "fake-pod-000000000000",
+      "at": "2026-09-12T02:41:42.521Z"
+    }
+  ]
+}
