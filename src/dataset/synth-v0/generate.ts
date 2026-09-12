@@ -158,8 +158,40 @@ function filler(rng: () => number, cat: Voicing[], forbiddenNames: Set<string>, 
   return pool[pickInt(rng, 0, pool.length - 1)]!;
 }
 
-function share2(rng: () => number, cat: Voicing[], target: Voicing): Voicing | null {
-  const pool = cat.filter((v) => v.name !== target.name && shared(v.pcs, target.pcs) === 2);
+/** "Cm" -> "C". A triad's root, with the quality suffix removed. */
+export function chordRoot(name: string): string {
+  return name.replace(/m$/, "");
+}
+
+/**
+ * D1's distractor: a DIFFERENT chord sharing 2 of 3 pitch classes.
+ *
+ * Measured 2026-09-12 at G=8 on 128 fresh cases: that description covers two
+ * populations with very different difficulty, split 53/47 in every seed tried.
+ *
+ *   parallel (same root, third flipped: C vs Cm)   accuracy 0.862, 6 of 6 of the
+ *                                                  run's all-wrong groups
+ *   other   (relative and friends: A vs C#m)       accuracy 0.986, zero all-wrong
+ *
+ * Fisher p = 0.028 on the all-wrong split. The policy treats relative pairs as
+ * nearly free and fails specifically on parallel major/minor. `parallelOnly`
+ * isolates that axis instead of diluting it with the easy half.
+ *
+ * Draw count is unchanged either way — one pickInt over the filtered pool — so
+ * the default stream, and the v0 population, do not move.
+ */
+function share2(
+  rng: () => number,
+  cat: Voicing[],
+  target: Voicing,
+  parallelOnly = false,
+): Voicing | null {
+  const pool = cat.filter(
+    (v) =>
+      v.name !== target.name &&
+      shared(v.pcs, target.pcs) === 2 &&
+      (!parallelOnly || chordRoot(v.name) === chordRoot(target.name)),
+  );
   if (!pool.length) return null;
   return pool[pickInt(rng, 0, pool.length - 1)]!;
 }
@@ -254,6 +286,7 @@ function pageFor(
   level: DifficultyLevel,
   target: Voicing,
   targetSlot: number,
+  parallelOnly = false,
 ): string[] | null {
   const free = [0, 1, 2, 3].filter((i) => i !== targetSlot);
   const slots: Array<Voicing | undefined> = [undefined, undefined, undefined, undefined];
@@ -264,7 +297,7 @@ function pageFor(
     used.add(v.name);
   };
   if (level === "D1") {
-    const d = share2(rng, cat, target);
+    const d = share2(rng, cat, target, parallelOnly);
     if (!d) return null;
     place(free[0]!, d);
   } else if (level === "D2") {
@@ -325,6 +358,12 @@ export interface CorpusOptions {
    * only field that ever changes.
    */
   varyRightHand?: boolean;
+  /**
+   * Restrict D1's share-2 distractor to the PARALLEL chord — same root, third
+   * flipped. Default false, which draws from all share-2 chords and lands about
+   * 53% parallel by accident. See share2's note for the measured difference.
+   */
+  parallelOnly?: boolean;
 }
 
 export function generateCorpus(
@@ -337,6 +376,7 @@ export function generateCorpus(
   const distances = opts.distances ?? DISTANCES;
   const decoyBeforeBound = opts.decoyBeforeBound ?? false;
   const varyRightHand = opts.varyRightHand ?? false;
+  const parallelOnly = opts.parallelOnly ?? false;
   if (!octaves.length) throw new Error("octaves must not be empty");
   if (!distances.length) throw new Error("distances must not be empty");
   for (const d of distances) {
@@ -362,7 +402,8 @@ export function generateCorpus(
     octaves === DEFAULT_OCTAVES &&
     distances === DISTANCES &&
     !decoyBeforeBound &&
-    !varyRightHand;
+    !varyRightHand &&
+    !parallelOnly;
   if (cached && isDefault) return cached;
   const rng = mulberry32(seed);
   const cat = catalog(octaves);
@@ -392,7 +433,7 @@ export function generateCorpus(
       const targetSlot = distance <= 3 ? distance : pickInt(rng, 0, 3);
       const pageStart = measureN - targetSlot;
       if (pageStart < 1 || pageStart + 3 > nMeasures) continue;
-      const page = pageFor(rng, cat, level, target, targetSlot);
+      const page = pageFor(rng, cat, level, target, targetSlot, parallelOnly);
       if (!page) continue;
       page[targetSlot] = target.lh;
       const fillerV = filler(rng, cat, new Set([target.name]), target.pcs);
