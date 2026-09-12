@@ -149,3 +149,88 @@ Readings 1–4, the truncation guard, the throughput guard and the population
 guard from v1 carry forward unchanged, restated at n = 32: reading 1 becomes
 64/64 correct in `treatment`, reading 2 becomes 0/64, reading 3 becomes at least
 8 of 32 groups non-degenerate while control has at most 1.
+
+---
+
+# Amendment v3 — read accuracy, not degeneracy
+
+**Written with `control` at 13 of 32 steps and the other three cells not started.
+No grid reward has been read.** Prompted by the peer recovering the abort run's
+actual metric rows, which contradict the abort receipt's headline and expose a
+confound in the v1/v2 reading rules.
+
+## What the abort log actually shows
+
+`artifacts/train-abort.log` from line 7404 (the `1024 training rows` block), ten
+logged steps, `clipped_ratio` 0 on all ten so this is not the truncation confound:
+
+| step | acc_joint | frac_reward_zero_std | grad_norm | entropy |
+|---|---|---|---|---|
+| 1 | 1 | 1 | 0 | 2.9e-4 |
+| **2** | **0.625** | **0** | **4.616** | 6.6e-3 |
+| 3 | 1 | 1 | 5.5e-6 | 6.0e-2 |
+| 4 | 1 | 1 | 1.2e-11 | 3.2e-4 |
+| **5** | **0.5** | **0** | **0.986** | 8.9e-3 |
+| 6–10 | 1 | 1 | 1e-7 … 3e-13 | ~3e-4 |
+
+**Two of ten steps were non-degenerate with real gradients.** Mean
+`frac_reward_zero_std` is **0.80, not 1.0**. TRAIN-ABORT.md's "1.0 sustained",
+"sat at 1.0 from the first logged step" and "zero gradient on every step" are
+wrong and are mine to correct.
+
+**The abort itself is untouched** — eight of ten steps dead with gradients at
+1e-11 to 1e-13 and entropy ~3e-4. Killing 600 steps of that was right.
+
+## The claim that does not survive
+
+Observed non-degenerate rate 2/10 = 0.200. Exact 95% intervals on every bf16
+measurement we have:
+
+| measurement | rate | 95% CI | contains the 0.271 gate figure? |
+|---|---|---|---|
+| abort run, n=10 | 0.200 | [0.025, 0.556] | **yes** |
+| peer local, n=6 | 0.000 | [0.000, 0.459] | **yes** |
+| my bf16-check, n=8 | 0.125 | [0.003, 0.527] | **yes** |
+
+**Not one of them distinguishes bf16 from the 27.1% the arc gated on.** So
+"every difficulty rate in this arc describes the wrong artifact" is overstated.
+What the data supports is *bf16 is much stronger than q4, and most groups are
+degenerate* — a methodology failure, not a demonstrated difficulty collapse.
+
+## Two confounds that change how this grid must be read
+
+**1. Generations. The grid runs `num_generations` 2; production and the abort run
+use 8.** Non-degeneracy is not a property of the task alone —
+P(degenerate) = *p*^G + (1−*p*)^G. At *p* = 0.90 that is 0.82 at G=2 and 0.43 at
+G=8. **A non-degenerate rate measured at G=2 is not comparable to the 27.1% gate
+figure, to the abort run's 2/10, or to the learnability band.** The v1 and v2
+rules compared them anyway. That was wrong.
+
+**Per-completion accuracy *p* is the G-invariant quantity.** So:
+
+> **Read each cell on accuracy. Derive expected degeneracy at G=8 from it; never
+> compare this grid's raw non-degenerate rate to a G=8 figure.**
+
+Readings 1 and 2 (64/64 and 0/64) are accuracy statements and stand unchanged.
+Reading 3 is restated: **treatment is a lever if its accuracy is materially below
+control's**, with the degeneracy consequence computed from *p*, not measured
+directly.
+
+**2. Entropy. Degeneracy here may be driven by near-deterministic sampling rather
+than by task difficulty.** Entropy is ~3e-4 on every degenerate step and 30x
+higher (6.6e-3, 8.9e-3, 6.0e-2) on all three steps with a real gradient. At that
+entropy, eight samples are eight copies, and **a group collapses regardless of how
+hard the task is** — a harder corpus would produce all-wrong groups, which carry
+exactly as little gradient as all-right ones. The trainer never sets
+`temperature`; it takes TRL's default. **Entropy per cell is therefore recorded
+and reported alongside accuracy, and no difficulty conclusion may be drawn from a
+cell whose entropy is ~1e-4 without saying that sampling, not difficulty, may be
+the binding constraint.**
+
+## What this grid can no longer claim to settle
+
+At n=32 the Wilson half-width on a rate near 0.235 is ±0.147. **This grid cannot
+resolve 0.20 from 0.271.** Separating those needs n in the hundreds (±0.052 at
+n=256). The grid answers the *distance and bound* questions it was built for. It
+does not answer "is the pinned population already trainable for bf16", and must
+not be reported as if it does.
