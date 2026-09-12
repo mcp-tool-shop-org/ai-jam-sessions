@@ -190,20 +190,36 @@ def main() -> int:
             return result
 
     step_times: list[float] = []
+    step_peak_mib: list[float] = []
 
     class StepTimer(TrainerCallback):
         """The measured local step time is what prices the smoke run. It
-        replaces every estimate, per the handoff's §4."""
+        replaces every estimate, per the handoff's §4.
+
+        It also records PEAK RESERVED VRAM per step, and that was a gap the
+        first smoke run walked straight into: we measured step time and mask
+        coverage, then the very next question was how many prompt groups the
+        card could hold, and the receipt could not answer it. `nvidia-smi`
+        sampled after the fact reads ~0 because the process has exited; the
+        only honest number is torch's own high-water mark, reset each step so
+        the figure is per-step rather than cumulative.
+
+        Reserved, not allocated: the allocator's reservation is what actually
+        has to fit, and OOM is thrown against it."""
 
         def __init__(self) -> None:
             self._t0: float | None = None
 
         def on_step_begin(self, *_a, **_k):
+            if torch.cuda.is_available():
+                torch.cuda.reset_peak_memory_stats()
             self._t0 = time.perf_counter()
 
         def on_step_end(self, *_a, **_k):
             if self._t0 is not None:
                 step_times.append(time.perf_counter() - self._t0)
+            if torch.cuda.is_available():
+                step_peak_mib.append(torch.cuda.max_memory_reserved() / (1024 ** 2))
 
     reward_funcs = [make_random_reward(args.seed) if args.random_reward else make_score_reward(args.base_url)]
 
@@ -291,6 +307,22 @@ def main() -> int:
         "step_seconds": [round(s, 3) for s in step_times],
         "mean_step_seconds": round(sum(step_times) / len(step_times), 3) if step_times else None,
         "wall_seconds": round(wall, 3),
+        # Peak RESERVED VRAM, per step and at the high-water mark, against the
+        # card's own total. `headroom_mib` is the number that decides how many
+        # prompt groups fit — the first smoke run could not answer that because
+        # it recorded no memory at all.
+        "memory": {
+            "peak_reserved_mib_per_step": [round(m, 1) for m in step_peak_mib],
+            "peak_reserved_mib": round(max(step_peak_mib), 1) if step_peak_mib else None,
+            "total_mib": round(torch.cuda.get_device_properties(0).total_memory / (1024 ** 2), 1)
+            if torch.cuda.is_available()
+            else None,
+            "headroom_mib": round(
+                torch.cuda.get_device_properties(0).total_memory / (1024 ** 2) - max(step_peak_mib), 1
+            )
+            if (step_peak_mib and torch.cuda.is_available())
+            else None,
+        },
         "mask": {
             **{k: int(v) for k, v in mask_stats.items()},
             "zero_fraction": round(mask_stats["zeros"] / max(1.0, mask_stats["zeros"] + mask_stats["ones"]), 4),
@@ -338,6 +370,13 @@ def main() -> int:
     print(f"[p2-train] shape {receipt['shape']} -> {receipt['mean_step_seconds']}s/step")
     print(json.dumps(receipt["mask"], indent=2))
     print(f"[p2-train] steps={len(step_times)} mean_step={receipt['mean_step_seconds']}s wall={receipt['wall_seconds']}s")
+    _mem = receipt["memory"]
+    if _mem["peak_reserved_mib"] is not None:
+        print(
+            f"[p2-train] peak_reserved={_mem['peak_reserved_mib']} MiB of {_mem['total_mib']} MiB"
+            f"  headroom={_mem['headroom_mib']} MiB"
+            f"  ({receipt['shape']['completions_per_step']} completions/step)"
+        )
     print(f"[p2-train] bridge tool_calls={health_after['counters']['tool_calls']} scored={health_after['counters']['scored']} "
           f"env instances={ENV_COUNTERS['instances']} resets={ENV_COUNTERS['resets']}")
 
