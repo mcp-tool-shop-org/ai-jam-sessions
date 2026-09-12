@@ -38,7 +38,7 @@ The RL environment the experiment contract was missing. Design lock:
 | P1 | `search-v0` built; 12 occurrences, 7 train / 5 test | — | harness proven, split too small | [`p1/RESULTS.md`](p1/RESULTS.md) |
 | P1b | windowed, unbounded observation, `qwen2.5:7b` | ≥ 10 / 47 | **4**, pass@1 0.029 | [`p1b/RESULTS.md`](p1b/RESULTS.md) |
 | P1c | bounded observation, `qwen3:4b-instruct-2507` | ≥ 10 / 91 | **1**, pass@1 0.133 | [`p1c/RESULTS.md`](p1c/RESULTS.md) |
-| P1d | `synth-v0` D0–D3, distance 1–3 | ≥ 10 in-band at any level | **sweep blocked** (local GPU in use) | [`p1d/RESULTS.md`](p1d/RESULTS.md) |
+| P1d | `synth-v0` D0–D3, distance 1–3 | ≥ 10 in-band at any level | **0 / 0 / 0 / 1**, all NO-GO | [`p1d/RESULTS.md`](p1d/RESULTS.md) |
 
 P1b was an instrument fault, not a family result: `list_measures` defaulted to the whole
 song, so 376 of 376 rollouts took a single turn and the no-tool guess-test *beat* tool use
