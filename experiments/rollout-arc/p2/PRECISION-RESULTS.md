@@ -68,3 +68,63 @@ followed from it — the premise that GRPO discards 91.5% of groups was measurin
 **Eleventh instance of this arc's failure class, and the largest: a number was recorded, and
 nobody read what produced it.** This one is mine, it was the session's headline finding, and
 it survived three hours and a committed conclusion before a $0 control caught it.
+
+---
+
+## Further isolation — three more candidates ruled out, one left standing
+
+**Not the batching shape.** TRL does not use `num_return_sequences`; it repeats each prompt
+`num_generations` times into the batch (`mini_repeat_count`, lines 1240/1283). Tested both
+shapes in plain transformers:
+
+| how the 8 samples are requested | byte-identical | distinct of 8 |
+|---|---|---|
+| `num_return_sequences=8` | 0 / 16 | 8.00 |
+| **8 duplicate prompt rows** (TRL's actual shape) | **0 / 16** | **8.00** |
+
+**Not a one-off.** Byte-identical rate across every TRL run in this arc:
+
+| run | shape | groups | byte-identical | mean distinct |
+|---|---|---|---|---|
+| grid-v2 control / treatment | G=2 local | 32 / 32 | 75.0% / 78.1% | 1.25 / 1.22 |
+| hint-probe | G=2 local | 32 | 78.1% | 1.22 |
+| turnfix | G=2 local | 32 | 90.6% | 1.09 |
+| levels | G=2 local | 64 | 95.3% | 1.05 |
+| levels-g8 | G=8 pod | 64 | 67.2% | 1.56 |
+| parallel-pin | G=8 pod | 400 | 88.0% | 1.16 |
+| stack | G=8 pod | 128 | 92.2% | 1.09 |
+
+**67–95%, both group sizes, both hardware types, eight runs.** Systematic.
+
+**Not an apples-to-oranges comparison.** I checked what TRL actually stores as a
+"completion": it is the **full multi-turn transcript** — tool calls, tool responses and the
+final answer, 366 characters with 2 tool calls. That is the same kind of object my Ollama
+probe concatenated. The comparison holds.
+
+**Not tools or multi-turn as such** — the Ollama probe ran the same tool loop against the
+same MCP server and produced 0/128 identical.
+
+### What that leaves, stated as narrowly as the evidence allows
+
+The collapse is specific to **TRL's `environment_factory` multi-turn generation path**. That
+is now the only untested difference between the arms — but *untested* is the operative word:
+**my transformers control was single-turn and tool-free.** I have not run GRPO with tools
+passed through TRL's plain `tools` parameter instead of `environment_factory`, and until I
+do, "environment_factory is the cause" remains the leading hypothesis rather than a result.
+
+**The one discriminating run:** same task, same corpus, `tools=` instead of
+`environment_factory=`, G=2, a handful of steps, local and free. If it branches,
+`environment_factory` is the cause. If it collapses, the cause is in GRPOTrainer's generation
+path generally and the fix is different.
+
+## What I am not doing
+
+An external reviewer's read of this was to **drop `environment_factory` and rewrite the
+trainer** to pre-generate trajectories and score them through `reward_funcs`. **No** — not on
+a hypothesis with one untested discriminator between it and a competing explanation. That is
+a large rewrite of a trainer whose only demonstrated fault is a collapse nobody has yet
+localised to a line.
+
+The same reviewer called corpus hardening "completely vindicated." It is **reopened**, not
+vindicated: we do not know what the difficulty numbers are through a harness that samples
+properly, because that measurement has never been taken.
