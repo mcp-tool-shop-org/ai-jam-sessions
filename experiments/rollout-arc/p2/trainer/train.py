@@ -41,7 +41,7 @@ import httpx
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
-from env import COUNTERS as ENV_COUNTERS, make_environment_factory  # noqa: E402
+from env import COUNTERS as ENV_COUNTERS, make_environment_factory, make_plain_tools  # noqa: E402
 from reward import make_random_reward, make_score_reward  # noqa: E402
 
 DEFAULT_BASE_URL = os.environ.get("P2_ENV_URL", "http://127.0.0.1:8765")
@@ -70,6 +70,13 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--use-vllm", action="store_true", help="earned, never a default (see module docstring)")
     p.add_argument("--random-reward", action="store_true", help="lock §6 spurious-reward control arm")
+    p.add_argument(
+        "--plain-tools",
+        action="store_true",
+        help="drive the same nine tools through TRL's `tools=` path instead of "
+        "`environment_factory=`. The rollout-collapse discriminator: everything "
+        "else is held identical.",
+    )
     p.add_argument("--save-init-adapter", default=None, help="write the step-0 adapter here (#6688b)")
     p.add_argument("--init-adapter", default=None, help="load a step-0 adapter so both arms share LoRA init")
     return p.parse_args()
@@ -266,7 +273,11 @@ def main() -> int:
         processing_class=tokenizer,
         peft_config=peft_config,
         reward_funcs=reward_funcs,
-        environment_factory=make_environment_factory(args.base_url),
+        **(
+            {"tools": make_plain_tools(args.base_url)}
+            if args.plain_tools
+            else {"environment_factory": make_environment_factory(args.base_url)}
+        ),
         callbacks=[StepTimer()],
     )
 

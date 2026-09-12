@@ -128,3 +128,53 @@ localised to a line.
 The same reviewer called corpus hardening "completely vindicated." It is **reopened**, not
 vindicated: we do not know what the difficulty numbers are through a harness that samples
 properly, because that measurement has never been taken.
+
+---
+
+## The discriminator ran. `environment_factory` is NOT the cause.
+
+Same corpus, same sampler, same G=2, 16 groups each. The only thing that moved is which TRL
+multi-turn path drives the same nine bound methods.
+
+| arm | byte-identical | mean distinct of 2 | accuracy |
+|---|---|---|---|
+| `environment_factory=` | **100%** | 1.00 | 0.938 |
+| **`tools=`** | **100%** | **1.00** | 1.000 |
+
+**Both collapse completely.** The leading hypothesis is refuted, and the external
+recommendation built on it — *drop `environment_factory`, rewrite around pre-generated
+trajectories* — **would not have fixed anything.** Testing it cost ~4 minutes and no money.
+
+### What is established
+
+- The collapse is in **`GRPOTrainer`'s generation path**, not in `environment_factory`, not
+  in the environment wrapper, not in our tool surface.
+- **Not precision**: q4 and fp16 both 0/128 identical, accuracy 0.657 vs 0.656.
+- **Not the model**: plain `transformers.generate`, same weights, same sampler kwargs TRL
+  builds — 0/16 identical, 8.00 distinct, under **both** `num_return_sequences` and
+  duplicate-row batching.
+- **Not tools or multi-turn**: Ollama ran the same tool loop against the same MCP server and
+  branched fully.
+- **Not our sampling config**: `GRPOConfig` is left at defaults — temperature 1.0, `top_p`
+  1.0, `top_k` 0 — verified against the installed dataclass, and `train.py` overrides none of
+  them.
+
+### What is NOT established, and I am stopping rather than guessing
+
+**The mechanism.** Candidates remain: RNG state shared across batch rows during multi-turn
+re-entry, KV-cache reuse on the post-tool continuation, state rebuilt from a canonical
+transcript rather than per-row, or an interaction with PEFT/gradient-checkpointing under
+`generate`. **I have not read `_generate_single_turn`'s re-entry path closely enough to name
+one, and a guessed mechanism in an upstream issue wastes a maintainer's time.**
+
+There is also a possibility I have not excluded: **that some interaction of our own config
+with TRL produces it**, rather than TRL alone. Ruling that out needs a minimal reproduction
+with a stock model, stock reward and no MCP — which is the right next piece of work and is a
+different job from this arc.
+
+### Status of every difficulty number in this arc
+
+**Unmeasured.** Not "closed", not "vindicated". Seven corpus configurations returned
+non-degenerate ≈ 0.06 through a harness that collapses rollouts, and the same corpus through a
+working sampler yields **0.46–0.54**. Nothing in this arc has yet measured task difficulty; it
+measured the harness.
