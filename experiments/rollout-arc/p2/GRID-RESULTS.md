@@ -117,3 +117,74 @@ The prereg's middle row — *accuracy down, entropy flat at ~1e-4, groups agreei
 answer* — is **not** what happens here. When this model is wrong it is also uncertain, at
 more than twice the entropy of the cases it gets right. Confident wrongness was the failure
 mode that would have made the difficulty knobs useless, and control shows no sign of it.
+
+---
+
+# Treatment cell — P1c's mechanism reproduces on bf16
+
+**Distance 5–11, decoy off, D0/D1 only, G=2.** Read after the control cell, under the
+pre-registered rule.
+
+## Guards — all passed, so the result is not an artifact
+
+| guard | treatment | control |
+|---|---|---|
+| `completions/clipped_ratio` | **0.000 on all steps** | 0.000 |
+| completion length vs 1024 budget | 79–171 mean, **209 max** | 79–175 |
+| `turn_cap_rate` | **0.00 — never hit the 5-turn cap** | 0.50 max |
+| `mean_tool_turns` | 2.00–4.00 | 2.00–4.00 |
+
+**The model had the tokens and the turns and did not use them.** Control actually hit the
+turn cap; treatment never did.
+
+## Result
+
+**Accuracy 0.000. Every group entirely wrong.** By the pre-registered rule this is
+**reading 2 — overshoot — and it is explicitly NOT a success**: an all-wrong population is
+exactly as degenerate as an all-right one and carries the same zero gradient.
+
+## Where the wrong answers land — the finding
+
+Answer offset from the prompt's bound, with gold at +5, +7, +9 or +11:
+
+| offset | n | |
+|---|---|---|
+| +0 | 5 | inside the first page |
+| +1 | 4 | inside the first page |
+| +3 | 32 | inside the first page |
+| **+4** | **14** | first measure of the *second* page |
+| ≥ +5 | **0** | — |
+
+- **41 of 55 numeric answers (74.5%) land inside the first 4-measure page.**
+- **The maximum offset answered anywhere is +4.**
+- **0 of 55 land at a legal gold distance.**
+
+**P1c's mechanism reproduces on the model we would train.** "The policy pages but never
+uses the second page" was recorded as a 4-bit finding and marked *unverified for bf16* after
+the precision defect surfaced — correctly, because every case in the pinned corpus sits
+inside the first page by construction, so bf16 had never been tested past it. **It has now.**
+The refinement is that the policy pages at most once and never answers beyond +4, while
+having both turns and tokens to spare.
+
+## What this settles, and what it costs
+
+1. **The distance pin at 1–3 is load-bearing and survives the precision correction.** It is
+   not a quantization artifact.
+2. **Distance is not a usable difficulty lever.** It goes from solved (0.719) to unsolvable
+   (0.000) with nothing between at 5–11. That is the overshoot the rule named in advance.
+3. **The boundary is at +4, and it is measurable.** 14 of 55 answers reached +4, so the
+   second page is not wholly out of reach — the model gets one measure into it. **Distance
+   4, and possibly 5, is the only place a learnable band could live**, and it is a free
+   local probe.
+
+## On correlation — the question the external review asked
+
+Entropy is **higher** in treatment than control: mean 9.86e-3 against 5.29e-3, nearly 2×.
+**The model is not confidently wrong; it is uncertain and wrong.** So the confident-wrongness
+failure mode is absent here too.
+
+But ρ **cannot be estimated from this cell**: with every group at 0/2 correct there is no
+variance in the correct-count, and the overdispersion ratio is undefined. The rollouts do
+vary — they disagree about *which* wrong answer to give — but that diversity never crosses
+into correctness. **Diversity without correctness buys nothing**, and it means a larger G
+here would purchase more varied wrong answers, not more gradient.
