@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { McpStdioExecutor } from "../../../src/dataset/experiment/mcp-executor.js";
 import { MAX_TURNS, scoreReward } from "../../../src/dataset/experiment/env.js";
-import { boundListMeasures } from "../../../src/dataset/search-v0/window.js";
+import { boundListMeasures, MAX_LIST_WINDOW } from "../../../src/dataset/search-v0/window.js";
 import { synthTask } from "../../../src/dataset/synth-v0/task.js";
 import { caseRow, normaliseMessages, startEnvServer } from "./p2-env-server.mjs";
 
@@ -92,12 +92,20 @@ describe("/tool forwards to the real MCP server", () => {
     expect(unbounded.text.length).toBeGreaterThan(mine.body.text.length);
   });
 
-  it("refuses a window with no bounds at all, with the bound's own words", async () => {
+  // Was: "refuses a window with no bounds at all". The bound no longer refuses a
+  // call the tool's own signature declares legal — it fills the window in. The
+  // property that matters is unchanged and still asserted here: the bridge and
+  // the bound agree, and a windowless call yields ONE page rather than the song.
+  it("fills in a window with no bounds at all, agreeing with the bound", async () => {
     const c = env.corpus.cases[0];
     const mine = await post("/tool", { name: "list_measures", arguments: { id: c.song_id } });
     const bound = boundListMeasures({ id: c.song_id });
-    expect(mine.body.text).toBe((bound as { ok: false; reason: string }).reason);
-    expect(mine.body.executed).toBe(false);
+    expect(bound.ok).toBe(true);
+    if (bound.ok) {
+      expect(bound.arguments).toMatchObject({ startMeasure: 1, endMeasure: MAX_LIST_WINDOW });
+    }
+    expect(mine.body.executed).toBe(true);
+    expect(mine.body.text).toMatch(new RegExp(`Measures 1 to ${MAX_LIST_WINDOW}`));
   });
 
   it("the wrong argument name is a -32602, which is why the happy paths assert on isError", async () => {
