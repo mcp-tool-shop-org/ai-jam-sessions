@@ -8,6 +8,19 @@ WHAT IT SHOWS
 
     arm A  transformers.generate, N duplicate prompt rows
     arm B  TRL GRPOTrainer, num_generations=N, log_completions
+    arm C  TRL GRPOTrainer with a tool available — the missing cell
+
+ARM C IS THE POINT. Measured: TRL branches fine on generic prompts WITHOUT tools
+(arm B, 0/64 identical), and collapses on our music task WITH tools (92.2%
+identical, via both `tools=` and `environment_factory=`). The untested cell is
+tools + high-entropy prompts. If arm C collapses, TRL's tool path constrains
+sampling regardless of task. If it branches, the collapse needs our task AND the
+tool path together.
+
+RUN THIS ON A POD, NOT A WORKSTATION. There is no `peft_config` here — kept out
+so the reproduction has no PEFT dependency — which makes it a FULL fine-tune of a
+4B model in bf16: gradients plus Adam states over all 4B params, ~48 GB before
+activations. It fits a 96 GB card. It does not fit a 32 GB one.
 
 Both arms use the SAME prompts and the SAME sampler values — and the sampler
 values are READ OFF the constructed GRPOConfig rather than hardcoded, so arm A
@@ -37,6 +50,15 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import GRPOConfig, GRPOTrainer
 
 MODEL = "Qwen/Qwen3-4B-Instruct-2507"
+
+def lookup_detail(topic: str) -> str:
+    """Look up one concrete detail to use in a story.
+
+    Args:
+        topic: what to look up.
+    """
+    return f"detail about {topic}: it was unseasonably warm, and the bells were out of tune."
+
 
 SUBJECTS = [
     "an unexpected storm", "a lighthouse keeper", "a misplaced key", "the last train",
@@ -129,17 +151,23 @@ def main() -> int:
     a_stats = rate(arm_a)
     print(f"[repro] arm A transformers.generate: {a_stats}")
 
-    # ── arm B: GRPOTrainer over the SAME prompts ───────────────────────────────
+    # ── arms B and C: GRPOTrainer over the SAME prompts, without and with a tool ─
     ds = Dataset.from_dict({"prompt": [[{"role": "user", "content": q}] for q in prompts]})
-    GRPOTrainer(model=a.model, reward_funcs=[reward_len], args=cfg, train_dataset=ds).train()
 
-    files = sorted(glob.glob(str(out / "hf" / "completions" / "*.parquet")))
-    if not files:
-        print("NO COMPLETIONS LOGGED")
-        return 1
-    df = pd.concat([pd.read_parquet(f) for f in files], ignore_index=True)
-    arm_b = [[str(x) for x in d["completion"]] for _, d in df.groupby("step")]
-    b_stats = rate(arm_b)
+    def run_trl(tag: str, tools=None) -> dict:
+        c = GRPOConfig(**{**cfg.to_dict(), "output_dir": str(out / tag)})
+        kw = {"tools": tools} if tools else {}
+        GRPOTrainer(model=a.model, reward_funcs=[reward_len], args=c, train_dataset=ds, **kw).train()
+        fs = sorted(glob.glob(str(out / tag / "completions" / "*.parquet")))
+        if not fs:
+            return {"error": "no completions logged"}
+        d = pd.concat([pd.read_parquet(f) for f in fs], ignore_index=True)
+        return rate([[str(x) for x in g["completion"]] for _, g in d.groupby("step")])
+
+    b_stats = run_trl("hf")
+    print(f"[repro] arm B TRL no tools: {b_stats}")
+    c_stats = run_trl("hf-tools", tools=[lookup_detail])
+    print(f"[repro] arm C TRL with tool: {c_stats}")
 
     summary = {
         "model": a.model,
@@ -148,7 +176,8 @@ def main() -> int:
         "generations_per_prompt": a.gens,
         "sampler_read_off_GRPOConfig": sampler,
         "arm_A_transformers_generate": a_stats,
-        "arm_B_TRL_GRPOTrainer": b_stats,
+        "arm_B_TRL_GRPOTrainer_no_tools": b_stats,
+        "arm_C_TRL_GRPOTrainer_with_tool": c_stats,
         "versions": {},
     }
     import transformers, trl, peft  # noqa: E402
