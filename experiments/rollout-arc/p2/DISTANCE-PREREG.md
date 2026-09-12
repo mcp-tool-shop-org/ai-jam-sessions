@@ -234,3 +234,62 @@ resolve 0.20 from 0.271.** Separating those needs n in the hundreds (±0.052 at
 n=256). The grid answers the *distance and bound* questions it was built for. It
 does not answer "is the pinned population already trainable for bf16", and must
 not be reported as if it does.
+
+## v3 addendum — the sampler hypothesis is dead; entropy becomes the diagnostic
+
+**Written with `control` at 21 of 32 and the other three cells not started.**
+
+The v3 section above floated that "sampling, not difficulty, may be the binding
+constraint." **That is withdrawn.** Read directly off the installed
+`GRPOConfig` (TRL 1.13.0):
+
+| | default | set in train.py? |
+|---|---|---|
+| `temperature` | 1.0 | no |
+| `top_p` | 1.0 | no |
+| `top_k` | 0 (disabled) | no |
+| `min_p` | None | no |
+| `repetition_penalty` | 1.0 | no |
+
+**There is no diversity suppression anywhere in the path.** The sampler draws
+from the model's raw, untruncated distribution. So entropy ~3e-4 is not a
+conservative sampler — it is the model's own output distribution being nearly a
+point mass on those inputs. There is no sampler to have been measuring.
+
+**And the data runs against the inference I drew from it.** I framed the
+collapse as happening "regardless of task difficulty," which would make
+difficulty the wrong lever. But entropy moved *with* the thing I called
+irrelevant: 3e-4 on the eight degenerate steps, 6.6e-3 / 8.9e-3 / 6.0e-2 on the
+three that produced a gradient — 30× to 200× higher, exactly where the group
+disagreed. That is entropy **tracking** difficulty, not masking it, and it is
+evidence *for* the difficulty knobs rather than against them. Caveat, stated with
+it: a correlation over ten steps, three of them. Suggestive, not established. The
+clean test is entropy per *case* against that case's difficulty, not per step.
+
+**Raising `temperature` above 1.0 is therefore off the table as a fix**, and not
+merely as unnecessary. Above the model's own distribution you manufacture
+disagreement rather than reveal it, which trains the policy to avoid randomly
+induced errors — not the capability we want, and adjacent to lock §6's
+spurious-reward concern. If diversity is ever the lever it gets argued on its own
+terms.
+
+### What survives, and what the grid now tests
+
+One piece of the worry stands and is not ruled out by anything above:
+**confidently wrong.** If a harder case makes the model confidently *incorrect*,
+entropy stays low, all samples agree on a wrong answer, and the group is
+degenerate at zero — carrying exactly as little gradient as an all-right group.
+None of the three gradient-producing steps shows this (all were partial, acc
+0.5–0.625), but nothing observed rules it out either.
+
+**So entropy is the diagnostic that separates the two hypotheses, and the
+treatment cell is the test:**
+
+| treatment shows | reading |
+|---|---|
+| accuracy down, **entropy up**, groups disagree | the knobs work — difficulty produces genuine uncertainty |
+| accuracy down, **entropy flat at ~1e-4**, groups agree on wrong answers | **overshoot into confident wrongness** — reading 2, not a success |
+| accuracy unchanged, entropy unchanged | distance is decoration — reading 1 |
+
+This is pre-committed: **entropy per cell is reported beside accuracy, and the
+middle row is a failure even though its accuracy looks like progress.**
