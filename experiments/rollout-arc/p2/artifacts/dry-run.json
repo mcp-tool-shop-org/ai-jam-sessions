@@ -10,11 +10,20 @@
   "steps_requested": 2,
   "steps_timed": 2,
   "step_seconds": [
-    16.091,
-    23.522
+    16.094,
+    16.44
   ],
-  "mean_step_seconds": 19.806,
-  "wall_seconds": 40.543,
+  "mean_step_seconds": 16.267,
+  "wall_seconds": 33.491,
+  "memory": {
+    "peak_reserved_mib_per_step": [
+      19150.0,
+      19160.0
+    ],
+    "peak_reserved_mib": 19160.0,
+    "total_mib": 81037.8,
+    "headroom_mib": 61877.8
+  },
   "mask": {
     "batches": 2,
     "completions": 4,
@@ -60,12 +69,12 @@
   },
   "bridge": {
     "before": {
-      "tool_calls": 2,
+      "tool_calls": 1,
       "scored": 0,
       "episodes": 0
     },
     "after": {
-      "tool_calls": 11,
+      "tool_calls": 10,
       "scored": 4,
       "episodes": 0
     },

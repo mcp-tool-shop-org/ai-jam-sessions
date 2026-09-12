@@ -36,7 +36,10 @@ ART="${ART:-/workspace/arc/artifacts}"
 RUNS="${RUNS:-/workspace/arc/runs}"
 STEPS="${STEPS:-3}"
 GENS="${GENS:-8}"
-GROUPS="${GROUPS:-1 2 4 8}"
+# NOT `GROUPS`: bash predefines it as an ARRAY of the caller's group IDs, so
+# ${GROUPS:-...} expands to its first element (0 for root) and the default is
+# never reached. The sweep ran one rung at g=0 before this was caught.
+PROBE_GROUPS="${PROBE_GROUPS:-1 2 4 8}"
 
 mkdir -p "$ART" "$RUNS"
 OUT="$ART/groups-probe.jsonl"
@@ -47,7 +50,7 @@ say() { printf '\n=== [probe] %s ===\n' "$*"; }
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader > "$ART/probe-gpu.txt"
 say "card: $(cat "$ART/probe-gpu.txt")"
 
-for g in $GROUPS; do
+for g in $PROBE_GROUPS; do
   batch=$(( g * GENS ))
   say "g=$g  (per-device-batch $batch = $g group(s) x $GENS generations)  steps=$STEPS"
   rundir="$RUNS/probe-g$g"
