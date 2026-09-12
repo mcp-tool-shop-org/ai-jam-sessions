@@ -238,3 +238,88 @@ the unbounded server would dump all 219 measures of `bethena`, which was the P1b
 **orthogonal to the corpus**: narrowing it makes even distance 1–3 require paging; widening
 it makes distance 5–11 reachable in one call. Difficulty has been treated as a property of
 the generated data for this whole arc. Half of it lives in the environment.
+
+---
+
+# All four cells — and the 2×2 is not a controlled 2×2
+
+| cell | distance | decoy | accuracy | non-degenerate | all-right | all-wrong | harness |
+|---|---|---|---|---|---|---|---|
+| control | 1–3 | off | 0.719 | 0.125 | 21/32 | 7/32 | OK |
+| treatment | 5–11 | off | **0.000** | 0.000 | 0/32 | 32/32 | OK |
+| decoy-near | 1–3 | **on** | **0.875** | 0.062 | 27/32 | 3/32 | OK |
+| decoy-far | 5–11 | **on** | **0.000** | 0.000 | 0/32 | 32/32 | OK |
+
+All four passed every harness gate: 32 rows, 32 distinct prompts, `clipped_ratio` **0.000**
+on every step of every cell, completions far inside the 1024 budget.
+
+## The cells are not comparable to each other
+
+`decoy-near` scored **higher** than control — 0.875 against 0.719 — when planting a decoy
+before the bound was supposed to make it *harder*. The explanation is not a surprising
+result about decoys. **It is that the two cells ran different cases.**
+
+Generated both populations at the identical seed and shape and compared the case keys:
+
+    shared cases between control and decoy-near: 3 / 32
+
+**Three.** The decoy knob draws its decoy measure from the shared RNG stream and rejects any
+case with `after < 2`, so the stream shifts and a different 32 cases come out. The distance
+knob does the same — past 3 it draws a free `targetSlot` — and changing the distance set
+necessarily changes which measures are gold anyway.
+
+**So neither axis of this 2×2 is controlled.** Every cell-to-cell rate comparison in the
+table above is confounded with population, and the 0.875-vs-0.719 difference is exactly the
+size that confounding produces. It is not interpretable.
+
+**This is the eighth instance of this arc's failure class and the third I have caused.** It
+is also the same mechanism as the `rhOffset` bug I caught before committing — a knob that
+moves the population rather than only the property — except there it was a bug and here it
+is *inherent to how the knobs are built*, which I did not think through.
+
+**The design fix** is to separate case *selection* from song *construction*: draw the case
+set once from a stream the knobs cannot touch, then apply decoy / right-hand / octave as a
+post-hoc transformation of the same cases. A distance contrast needs a further step — hold
+`(song, chord, after)` fixed and vary only the gold offset — otherwise "same case" is not
+even definable across distances.
+
+## What survives, because it is not a rate comparison
+
+**The policy never answers beyond +4 from the bound.** Answer offsets, gold at +5/+7/+9/+11:
+
+| cell | numeric answers | inside first page | at +4 | **at ≥ +5** |
+|---|---|---|---|---|
+| treatment | 59 | 45 (76%) | 14 | **0** |
+| decoy-far | 62 | 45 (73%) | 17 | **0** |
+
+**0 of 121, across two independently-drawn populations.** This is an absolute statement
+about where answers land, not a comparison of rates between cells, so the population
+confound does not touch it. Both far cells had `turn_cap_rate` **0.00** — the policy never
+exhausted its 5 turns — and `clipped_ratio` 0. **It had the turns and the tokens and stopped
+anyway.**
+
+That replication is what makes the P1c mechanism finding stand: the policy pages at most
+once and never answers past the first measure of the second page.
+
+## Entropy — consistent across all four cells
+
+| cell | all-right | all-wrong | non-degenerate |
+|---|---|---|---|
+| control | 3.64e-3 (21) | 7.88e-3 (7) | 9.42e-3 (4) |
+| decoy-near | 2.03e-3 (27) | 3.36e-3 (3) | 2.13e-2 (2) |
+| treatment | — | 1.50e-2 (32) | — |
+| decoy-far | — | 7.79e-3 (32) | — |
+
+**Ordering holds everywhere it can be measured: all-right < all-wrong < non-degenerate.**
+And the two far cells, where the policy fails completely, carry the highest mean entropy of
+any cell — treatment at 1.50e-2 is nearly 3× control.
+
+**The policy is most uncertain exactly where it fails hardest. It is never confidently
+wrong.** Since entropy is not confounded by *which* cases were drawn in the way a rate is —
+it is measured per step against that step's own outcome — this is the most robust signal in
+the grid.
+
+**But ρ is undefined on both far cells.** With every group at 0 of 2 correct there is no
+variance in the correct-count. The rollouts do diversify — entropy says so — they just never
+diversify *into correctness*. **Diversity that never crosses into a correct answer buys no
+gradient**, so a larger G on this population would purchase more varied wrong answers.

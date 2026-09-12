@@ -32,6 +32,26 @@ import { generateCorpus, buildRecord } from "../../../src/dataset/synth-v0/gener
 import { SYNTH_SCHEMA_VERSION, splitOf, synthTask, userPrompt } from "../../../src/dataset/synth-v0/task.ts";
 import { SYNTH_SYSTEM } from "../../../src/dataset/synth-v0/env.ts";
 
+/**
+ * States what the environment actually enforces, and nothing else.
+ *
+ * The policy is currently misinformed about its own search surface: the MCP
+ * tool describes list_measures as "an overview of ALL measures in a song" and
+ * documents endMeasure as defaulting to "last", while boundListMeasures refuses
+ * any window over MAX_LIST_WINDOW. So a policy that believes its own tool
+ * description has no reason to page a second time — it thinks it already has
+ * the song.
+ *
+ * This hint leaks NOTHING about any answer: not the distance, not the measure,
+ * not which page. It states the cap, which the environment already tells the
+ * policy in a refusal message, and that the answer may lie past the first
+ * window, which is a property of the task rather than of any case.
+ */
+const SYSTEM_HINT =
+  ` list_measures returns at most ${MAX_LIST_WINDOW} measures per call in this` +
+  ` environment, regardless of the range you request. The measure you are looking` +
+  ` for may lie beyond the first window you fetch; page forward until you find it.`;
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, "../../..");
 
@@ -64,6 +84,7 @@ export function parseArgs(argv) {
     distances: null,
     decoyBeforeBound: false,
     varyRightHand: false,
+    systemHint: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -77,6 +98,7 @@ export function parseArgs(argv) {
     else if (a === "--distances") out.distances = numberList(argv[++i], "--distances");
     else if (a === "--decoy") out.decoyBeforeBound = true;
     else if (a === "--vary-right-hand") out.varyRightHand = true;
+    else if (a === "--system-hint") out.systemHint = true;
     else throw new Error(`unknown flag ${a}`);
   }
   if (!Number.isInteger(out.port) || out.port < 0 || out.port > 65535) throw new Error("--port must be 0-65535");
@@ -96,7 +118,7 @@ export function parseArgs(argv) {
  * `gold` is what /score is called with. The measure and the song id appear in
  * neither, which is the dry stage's gate 5.
  */
-export function caseRow(c) {
+export function caseRow(c, systemText = SYNTH_SYSTEM) {
   const rec = buildRecord(c);
   return {
     id: rec.id,
@@ -106,10 +128,10 @@ export function caseRow(c) {
     after: c.after,
     distance: c.distance,
     gold: rec.observation.gold.verdict,
-    system: SYNTH_SYSTEM,
+    system: systemText,
     user: userPrompt(c),
     prompt: [
-      { role: "system", content: SYNTH_SYSTEM },
+      { role: "system", content: systemText },
       { role: "user", content: userPrompt(c) },
     ],
   };
@@ -201,8 +223,10 @@ export async function startEnvServer(opts = {}) {
     distances: null,
     decoyBeforeBound: false,
     varyRightHand: false,
+    systemHint: false,
     ...opts,
   };
+  const systemText = args.systemHint ? SYNTH_SYSTEM + SYSTEM_HINT : SYNTH_SYSTEM;
   // Only pass a knob that was actually asked for. Passing `octaves: undefined`
   // is harmless, but passing a fresh array equal to the default is NOT: the
   // generator's cache key compares by identity, so it would quietly build a
@@ -213,7 +237,7 @@ export async function startEnvServer(opts = {}) {
   if (args.decoyBeforeBound) difficulty.decoyBeforeBound = true;
   if (args.varyRightHand) difficulty.varyRightHand = true;
   const corpus = generateCorpus(args.seed, difficulty);
-  const rows = corpus.cases.map(caseRow);
+  const rows = corpus.cases.map((c) => caseRow(c, systemText));
   const executor = new McpStdioExecutor();
   await executor.start({ seedSongs: corpus.songs });
 
@@ -238,6 +262,7 @@ export async function startEnvServer(opts = {}) {
             distances: args.distances ?? "default",
             decoy_before_bound: args.decoyBeforeBound,
             vary_right_hand: args.varyRightHand,
+            system_hint: args.systemHint,
           },
           library_songs: corpus.songs.length,
           cases: { total: rows.length, train: rows.filter((r) => r.split === "train").length, test: rows.filter((r) => r.split === "test").length },
