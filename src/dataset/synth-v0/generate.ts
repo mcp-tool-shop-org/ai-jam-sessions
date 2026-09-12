@@ -257,8 +257,32 @@ export interface SynthCorpus {
 
 let cached: SynthCorpus | null = null;
 
-export function generateCorpus(seed: number = GENERATOR_SEED): SynthCorpus {
-  if (cached && seed === GENERATOR_SEED) return cached;
+export interface CorpusOptions {
+  /** Test cases (one song each) per level. Default TEST_PER_LEVEL. */
+  testPerLevel?: number;
+  /** Train cases (one song each) per level. Default TRAIN_PER_LEVEL. */
+  trainPerLevel?: number;
+}
+
+export function generateCorpus(
+  seed: number = GENERATOR_SEED,
+  opts: CorpusOptions = {},
+): SynthCorpus {
+  const testPerLevel = opts.testPerLevel ?? TEST_PER_LEVEL;
+  const trainPerLevel = opts.trainPerLevel ?? TRAIN_PER_LEVEL;
+  if (!Number.isInteger(testPerLevel) || testPerLevel < 1) {
+    throw new Error(`testPerLevel must be a positive integer, got ${testPerLevel}`);
+  }
+  if (!Number.isInteger(trainPerLevel) || trainPerLevel < 0) {
+    throw new Error(`trainPerLevel must be a non-negative integer, got ${trainPerLevel}`);
+  }
+  // Only the default shape is cached. A P1f-style corpus (fresh seed, wider
+  // test split) must never be served from — or written into — that cache.
+  const isDefault =
+    seed === GENERATOR_SEED &&
+    testPerLevel === TEST_PER_LEVEL &&
+    trainPerLevel === TRAIN_PER_LEVEL;
+  if (cached && isDefault) return cached;
   const rng = mulberry32(seed);
   const cat = catalog();
   if (cat.length < 8) throw new Error(`agreeing catalog too small: ${cat.length}`);
@@ -268,7 +292,7 @@ export function generateCorpus(seed: number = GENERATOR_SEED): SynthCorpus {
   for (const level of LEVELS) {
     let kept = 0;
     let attempts = 0;
-    const need = TEST_PER_LEVEL + TRAIN_PER_LEVEL;
+    const need = testPerLevel + trainPerLevel;
     while (kept < need && attempts < need * 20) {
       attempts++;
       const target = cat[pickInt(rng, 0, cat.length - 1)]!;
@@ -302,7 +326,7 @@ export function generateCorpus(seed: number = GENERATOR_SEED): SynthCorpus {
       });
       const hit = rederiveOnSong(song, target.name, after);
       if (!hit || hit.measure !== measureN || hit.chord !== target.name) continue;
-      const split: "train" | "test" = kept < TEST_PER_LEVEL ? "test" : "train";
+      const split: "train" | "test" = kept < testPerLevel ? "test" : "train";
       songs.push(song);
       cases.push({
         song_id: id,
@@ -320,7 +344,7 @@ export function generateCorpus(seed: number = GENERATOR_SEED): SynthCorpus {
     if (kept < need) throw new Error(`${level}: only constructed ${kept}/${need}`);
   }
   const corpus = { songs, cases };
-  if (seed === GENERATOR_SEED) cached = corpus;
+  if (isDefault) cached = corpus;
   return corpus;
 }
 

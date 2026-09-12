@@ -4,6 +4,13 @@
 **Predecessor:** [P1e](../experiments/rollout-arc/p1e/RESULTS.md) (commit `67732fb`) — kebab-parity fixed the lookup confound, 607 hits of 1024, tools help, **NO-GO on the frozen bar at all four levels.**
 **Design lock:** [rollout-layer-dispatch.md](rollout-layer-dispatch.md). **P2 remains held.**
 
+> ⛔ **EXECUTED 2026-09-11 — receipts: [`experiments/rollout-arc/p1f/RESULTS.md`](../experiments/rollout-arc/p1f/RESULTS.md).**
+> Ran as written: n = 64 per level, fresh generator seed `2026091102`, both criteria reported at
+> every level, no bar moved. **Primary clears at D0 (18) and D3 (14); secondary clears at all
+> four.** §3's first branch fires — P2 unlocks under a **director gate**, and P1f did not start
+> it. The GO is about corpus size: the leak-free in-band rate is 17.6% against P1e's 17.2%, and
+> given that rate the bar was ~99% likely to clear at n = 64. §7 did not fire and is moot.
+
 ---
 
 ## 0. Why there is a P1f and not a null report
