@@ -85,6 +85,18 @@ export function parseArgs(argv) {
     decoyBeforeBound: false,
     varyRightHand: false,
     systemHint: false,
+    /**
+     * Restrict /cases to these difficulty tiers. Default null = all of them.
+     *
+     * Measured 2026-09-12 at production G=8: D1 yields 0.250 non-degenerate
+     * groups against 0.062 for D0, D2 and D3 alike, with mean grad_norm 6.40 on
+     * its split steps against 0.83-1.42 elsewhere. D1 is the only tier whose
+     * distractor survives the gold-re-derivation check, because it plants a
+     * DIFFERENT chord sharing 2 of 3 pitch classes rather than an inversion of
+     * the target -- an inversion would become the first match at-or-after the
+     * bound, move gold, and get the case dropped.
+     */
+    levels: null,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -99,6 +111,7 @@ export function parseArgs(argv) {
     else if (a === "--decoy") out.decoyBeforeBound = true;
     else if (a === "--vary-right-hand") out.varyRightHand = true;
     else if (a === "--system-hint") out.systemHint = true;
+    else if (a === "--levels") out.levels = String(argv[++i]).split(",").map((x) => x.trim().toUpperCase()).filter(Boolean);
     else throw new Error(`unknown flag ${a}`);
   }
   if (!Number.isInteger(out.port) || out.port < 0 || out.port > 65535) throw new Error("--port must be 0-65535");
@@ -224,6 +237,7 @@ export async function startEnvServer(opts = {}) {
     decoyBeforeBound: false,
     varyRightHand: false,
     systemHint: false,
+    levels: null,
     ...opts,
   };
   const systemText = args.systemHint ? SYNTH_SYSTEM + SYSTEM_HINT : SYNTH_SYSTEM;
@@ -237,7 +251,11 @@ export async function startEnvServer(opts = {}) {
   if (args.decoyBeforeBound) difficulty.decoyBeforeBound = true;
   if (args.varyRightHand) difficulty.varyRightHand = true;
   const corpus = generateCorpus(args.seed, difficulty);
-  const rows = corpus.cases.map((c) => caseRow(c, systemText));
+  const allRows = corpus.cases.map((c) => caseRow(c, systemText));
+  const rows = args.levels ? allRows.filter((r) => args.levels.includes(r.level)) : allRows;
+  if (args.levels && !rows.length) {
+    throw new Error(`--levels ${args.levels.join(",")} matched no cases`);
+  }
   const executor = new McpStdioExecutor();
   await executor.start({ seedSongs: corpus.songs });
 
@@ -263,6 +281,7 @@ export async function startEnvServer(opts = {}) {
             decoy_before_bound: args.decoyBeforeBound,
             vary_right_hand: args.varyRightHand,
             system_hint: args.systemHint,
+            levels: args.levels ?? "all",
           },
           library_songs: corpus.songs.length,
           cases: { total: rows.length, train: rows.filter((r) => r.split === "train").length, test: rows.filter((r) => r.split === "test").length },
