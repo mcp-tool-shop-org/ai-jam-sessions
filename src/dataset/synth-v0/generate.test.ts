@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { describe, it, expect } from "vitest";
 import { validateSong } from "../../songs/registry.js";
+import { leftHandToMidi } from "../acoustic-v1/builder.js";
 import { assertGoldVaries, assertNoStraddle, assertSchemaOwner } from "../experiment/index.js";
 import { MAX_LIST_WINDOW } from "../search-v0/window.js";
 import {
@@ -13,6 +14,7 @@ import {
   TRAIN_PER_LEVEL,
   agree,
   catalog,
+  chordRoot,
   generateCorpus,
   kebab,
   lhOf,
@@ -312,5 +314,72 @@ describe("synth-v0 difficulty knobs", () => {
     generateCorpus(GENERATOR_SEED, { varyRightHand: true });
     expect(generateCorpus()).toBe(base);
     for (const k of generateCorpus().cases) expect(k.decoy).toBeUndefined();
+  });
+});
+
+// ─── parallelOnly ────────────────────────────────────────────────────────────
+//
+// Measured at G=8 on 128 fresh cases (2026-09-12): D1's "shares 2 of 3 pitch
+// classes" covers two populations split 53/47 in every seed tried, and only one
+// of them is hard — parallel (same root) accuracy 0.862 and ALL SIX of the run's
+// all-wrong groups, against 0.986 and zero for the rest, Fisher p = 0.028.
+describe("synth-v0 parallelOnly", () => {
+  const SHAPE = { testPerLevel: 4, trainPerLevel: 8 } as const;
+  const root = (n: string) => n.replace(/m$/, "");
+
+  const d1Distractors = (c: ReturnType<typeof generateCorpus>) => {
+    const byId = new Map(c.songs.map((s) => [s.id, s]));
+    const out: Array<{ target: string; distractor: string }> = [];
+    for (const k of c.cases.filter((x) => x.level === "D1")) {
+      const song = byId.get(k.song_id)!;
+      for (let n = k.after; n <= k.after + 3; n++) {
+        if (n === k.measure) continue;
+        const m = song.measures.find((x) => x.number === n);
+        if (!m) continue;
+        const name = agree(m.leftHand);
+        if (!name) continue;
+        const pcs = new Set(leftHandToMidi(m.leftHand).map((x) => ((x % 12) + 12) % 12));
+        const tgt = new Set(k.midi.map((x) => ((x % 12) + 12) % 12));
+        if ([...pcs].filter((x) => tgt.has(x)).length !== 2) continue;
+        out.push({ target: k.chord, distractor: name });
+      }
+    }
+    return out;
+  };
+
+  it("chordRoot strips the quality suffix", () => {
+    expect(chordRoot("C")).toBe("C");
+    expect(chordRoot("Cm")).toBe("C");
+    expect(chordRoot("F#m")).toBe("F#");
+  });
+
+  it("restricts every D1 distractor to the target's parallel", () => {
+    const c = generateCorpus(777, { ...SHAPE, parallelOnly: true });
+    const ds = d1Distractors(c);
+    expect(ds.length).toBeGreaterThan(0);
+    for (const d of ds) {
+      expect(chordRoot(d.distractor)).toBe(chordRoot(d.target));
+      // Same root, different quality — that IS the parallel, and it must still
+      // be a different chord or it would be the target and move gold.
+      expect(d.distractor).not.toBe(d.target);
+    }
+  });
+
+  it("the default draws both kinds, which is why it dilutes the axis", () => {
+    const ds = d1Distractors(generateCorpus(777, SHAPE));
+    expect(ds.length).toBeGreaterThan(0);
+    expect(ds.some((d) => root(d.distractor) !== root(d.target))).toBe(true);
+  });
+
+  it("does not move gold, and does not poison the default cache", () => {
+    const c = generateCorpus(777, { ...SHAPE, parallelOnly: true });
+    const byId = new Map(c.songs.map((s) => [s.id, s]));
+    for (const k of c.cases) {
+      expect(rederivePlant(k, byId.get(k.song_id)!).measure).toBe(k.measure);
+      expect(validateSong(byId.get(k.song_id)!)).toEqual([]);
+    }
+    const base = generateCorpus();
+    generateCorpus(GENERATOR_SEED, { parallelOnly: true });
+    expect(generateCorpus()).toBe(base);
   });
 });
