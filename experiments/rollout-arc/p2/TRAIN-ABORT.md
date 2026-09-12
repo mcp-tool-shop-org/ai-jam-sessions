@@ -80,17 +80,35 @@ runs full precision.**
 | P1c, P1e, P1f, train-parity | `qwen3:4b-instruct-2507-q4_K_M` (Ollama GGUF, 4-bit) |
 | P2 smoke, P2 train | `Qwen/Qwen3-4B-Instruct-2507` (HF, **bf16**) |
 
-Same weights by name. Different precision. The bf16 model solves the task outright.
+Same weights by name. Different precision.
 
-**So every rate this arc gated on describes the quantized model's difficulty, and none of it
-transfers to the model we train.** That includes the 27.1% non-degenerate rate on train, the
-32.0% on test that replicated twice, the entire in-band population, and the GO that unlocked P2.
-The replication was real — we measured the same quantized model twice and got the same answer.
-It was a stable measurement of the wrong thing.
+**The defect is that the gate never ran the artifact we train.** That is measured, it is not in
+dispute, and it is the whole lesson of this document. Everything below is about how far the
+consequence can be pushed, and the answer is: less far than this section originally claimed.
 
-It also retires P1c's mechanism finding. "The policy pages but never uses the second page,"
-480 of 480 in-range answers landing inside the first window, is a **quantization artifact**, not
-a property of this model family.
+> **CORRECTED 2026-09-12.** This section originally read *"The bf16 model solves the task
+> outright"* and *"every rate this arc gated on describes the quantized model's difficulty, and
+> none of it transfers to the model we train … a stable measurement of the wrong thing."*
+> **Both are overstated** — see the correction at *What happened* above. bf16's measured
+> non-degenerate rate is 2/10 = 0.200 with a 95% interval of [0.025, 0.556], which **contains**
+> the 27.1% the arc gated on; so do the other two bf16 measurements (0/6 and 1/8). The rates may
+> or may not transfer. **Nothing measured so far can tell us**, and settling it needs n in the
+> hundreds. The original wording is quoted rather than deleted.
+
+What the precision mismatch licenses is that the 27.1% on train, the 32.0% on test, the in-band
+population and the GO that unlocked P2 were all **measured on a model nobody will train** — so
+they are unverified for bf16, not disproven. The replication was real: we measured the same
+quantized model twice and got the same answer.
+
+> **CORRECTED 2026-09-12.** This paragraph originally said the mismatch *"retires P1c's
+> mechanism finding"* — that "the policy pages but never uses the second page" is *"a
+> quantization artifact, not a property of this model family."* **That is inference, not
+> measurement**, and the peer flagged it before the correction above was written. Every case in
+> this corpus is pinned to distance 1–3, so the answer is inside the first window **by
+> construction** and answering from page one is correct behaviour, not a defect. **bf16 has
+> never been run at distance ≥ 4.** The honest status is *unverified for the model we would
+> train*, not *retired as an artifact*. It matters because the distance pin exists because of
+> that finding. See the fuller treatment in *Independently reproduced* below.
 
 ## What was ruled out first, and how
 
@@ -107,16 +125,32 @@ The dataset and the reward are sound. The model is simply better than the one we
 Everything built, and everything measured **about the machinery** rather than about difficulty:
 
 - the bridge, the environment, the reward, the executor, the compensators (29/29, drilled)
-- **tool-token masking at 65.2%**, measured on two machines at two shapes — a property of TRL, not of the policy
-- step times, the memory curve, the g=4 ceiling at 97.7% utilisation, cold stage 0 at 220 s
+- **tool-token masking — the mechanism**, a property of TRL rather than of the policy: every
+  completion carried a zero span, 4/4 and 64/64. **The 65.2% figure itself is weak** and the
+  earlier "measured on two machines at two shapes" is withdrawn: that run had `dataset_rows: 2`,
+  so it is an average over **two distinct prompts**, and masked fraction moves with how many
+  pages a rollout fetches. The mechanism survives; the percentage does not.
+- the memory curve, the g=4 ceiling at 97.7% utilisation, cold stage 0 at 220 s
+- **step times, with one qualification**: the A100's **44.6 s/step** over 10 distinct prompts at
+  `num_generations` 8 is the only throughput figure here that means anything. The 5090's local
+  times are **withdrawn as throughput** — reserved memory crosses the card's physical total and
+  Windows spills to shared memory rather than failing, at 3.5× the cost. The smoke's 38.5 s/step
+  is likewise a 2-prompt sample.
 - the andon itself, which fired exactly as written and cost $0.49 instead of $8.60
 
 ## What this does NOT license
 
-**Do not re-run against the same bars with the bf16 model and expect a different answer.** The
-task is solved by this policy. A trainable population would have to come from harder cases, not
-from a different pin — and "harder" now has to be defined against bf16, which no measurement in
-this repo has ever used.
+**Do not re-run against the same bars and treat the old numbers as still standing.** They were
+measured on a model nobody will train, so every bar in this arc is unverified until re-measured
+against bf16 — which no measurement in this repo has ever used.
+
+> **CORRECTED 2026-09-12.** This section originally read *"The task is solved by this policy"*
+> and concluded that a trainable population *"would have to come from harder cases."* **Not
+> established.** bf16 answered 0.9125 of completions and left 2 of 10 groups non-degenerate;
+> that is consistent with the task being solved, and equally consistent with the 27.1% the arc
+> gated on. Harder cases are **one** hypothesis. The other is that the pinned population already
+> carries a usable rate and was never measured properly against bf16 — which is cheaper to test
+> than to rebuild the corpus, and is the live question.
 
 ## Independently reproduced, on different hardware — 2026-09-12
 
