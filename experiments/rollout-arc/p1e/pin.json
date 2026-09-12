@@ -1,0 +1,44 @@
+{
+  "phase": "P1e",
+  "kebab_parity": true,
+  "written_before_sampled_run": true,
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "model_note": "Same pin as P1c. think:false. Local Ollama, not Comfy Cloud.",
+  "n": 8,
+  "split": "test",
+  "seed": 0,
+  "generator_seed": 20260911,
+  "sampled": {
+    "temperature": 1,
+    "n": 8,
+    "seed": 0
+  },
+  "guess_test": {
+    "temperature": 1,
+    "n": 8,
+    "tools": "none"
+  },
+  "host": "http://127.0.0.1:11434",
+  "framework": "Ollama /api/chat through SynthEnv.runEpisode",
+  "hardware": "local RTX 5090, 32 GB",
+  "gold_n": 128,
+  "train_n": 192,
+  "test_n": 128,
+  "test_clusters": 128,
+  "levels": [
+    "D0",
+    "D1",
+    "D2",
+    "D3"
+  ],
+  "band": [
+    0.125,
+    0.5
+  ],
+  "go_rule": {
+    "min_in_band_after_leak": 10,
+    "sampled_pass1_below": 0.8,
+    "any_level": true
+  },
+  "spend": 0
+}
