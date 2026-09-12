@@ -7,7 +7,7 @@ import { defineTask } from "../experiment/registry.js";
 import { MAX_LIST_WINDOW } from "../search-v0/window.js";
 import { generateCorpus } from "./generate.js";
 
-export const SYNTH_SCHEMA_VERSION = "jam-actions-synth-v0/1.0.0";
+export const SYNTH_SCHEMA_VERSION = "jam-actions-synth-v0/1.1.0";
 export const MAX_MEASURE = 120;
 export const SYNTH_VERDICTS: readonly string[] = Array.from({ length: MAX_MEASURE }, (_, i) => String(i + 1));
 
