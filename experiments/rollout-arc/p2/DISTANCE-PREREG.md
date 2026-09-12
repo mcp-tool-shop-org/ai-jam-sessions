@@ -293,3 +293,81 @@ treatment cell is the test:**
 
 This is pre-committed: **entropy per cell is reported beside accuracy, and the
 middle row is a failure even though its accuracy looks like progress.**
+
+## v3 addendum 2 — the rollouts are correlated, and it is not the sampler
+
+**Written with `control` at 25 of 32 and the other three cells not started.**
+
+An external review proposed that entropy collapse is the binding constraint and
+that the fix is setting `temperature` to 0.7–0.9. **The mechanism is real and now
+has hard evidence; the proposed fix is backwards and the arithmetic behind it
+rests on a category error.**
+
+### The category error
+
+The review computed degeneracy as *p*^G + (1−*p*)^G with **p = 0.271**, calling
+0.271 "measured base accuracy." It is not an accuracy. `groups-probe.sh:10` and
+lock §84 both define it as a **group-level non-degenerate rate** — the fraction of
+prompt groups whose rollouts disagreed. Feeding a group rate into a per-sample
+formula is a type mismatch, and the "8.2% mathematical floor" it produced is void.
+
+**Measured per-completion accuracy for bf16 is p = 0.9125** (mean `acc_joint`
+over the abort run's ten logged steps). The floors that follow:
+
+| | binomial floor | observed |
+|---|---|---|
+| G=8 | 0.481 degenerate | **0.800** |
+| G=2 | 0.840 degenerate | — |
+
+So the excess over the independence floor is **0.319**, not the 0.72 the review's
+figure implies. The direction is right; the magnitude is not.
+
+### The evidence that the rollouts are correlated
+
+Stronger than the rate itself. Per-step `acc_joint` at G=8, as *k* of 8 correct:
+
+`8, 5, 8, 8, 4, 8, 8, 8, 8, 8`
+
+Under independent sampling at *p* = 0.9125 the most likely **non-perfect** outcome
+is 7 of 8, at probability 0.369. **It occurred zero times in ten steps** —
+P(zero) = 0.010. Nor did 6 of 8 (p = 0.124). The only non-perfect outcomes were
+5/8 and 4/8, whose independent probabilities are 0.024 and 0.003.
+
+Groups are not "eight draws, most of them right." They are **a few distinct
+trajectories, each replicated** — 8×1, or 5+3, or 4+4. That is a direct
+observation, not an inference from an aggregate rate.
+
+### Why the proposed fix is backwards
+
+`temperature` is **already 1.0**, with `top_p` 1.0, `top_k` disabled and
+`min_p` None (verified against the installed `GRPOConfig`; `train.py` sets none
+of them). Sampling is already from the raw, untruncated distribution.
+
+**Setting temperature to 0.7 or 0.9 would sharpen the distribution and make
+collapse worse, not better.** Only a value *above* 1.0 increases diversity — and
+that is the option already ruled out above, because manufacturing disagreement
+above the model's own distribution trains the policy against randomly induced
+errors (lock §6). `do_sample` is not a lever here; TRL's GRPO always samples.
+
+To answer the review's direct question: yes, there is a path —
+`GRPOConfig.generation_kwargs` exists and is `None`, unset by `train.py`. The path
+is open. It is the *direction* that is wrong, so **no pod spend is authorised for
+this sweep as specified.**
+
+### What this does to the difficulty question — unresolved, both ways
+
+This does **not** restore "sampling, not difficulty, is the constraint." There is
+no sampler restriction to relieve; the peakedness is the model's own, and the
+peakedness is *input-dependent*. Both readings survive and the treatment cell
+still separates them:
+
+- The two steps that broke into 5/8 and 4/8 are the two with entropy 30–200×
+  higher. On those inputs the model **did** produce varied trajectories — evidence
+  that a harder case can generate genuine disagreement, which is the knobs working.
+- Equally, a harder case the model is confidently *wrong* about would give 8×1
+  at zero reward. Still not ruled out.
+
+Unchanged: **read cells on accuracy, report entropy beside it, and treat
+"accuracy down with entropy flat" as a failure.** The *k*-of-8 spread is added to
+what each cell reports, since it distinguishes replication from independent error
+more sharply than any rate does.
