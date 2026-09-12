@@ -216,7 +216,7 @@ say "stage0c bridge health"
 pnpm exec tsx "$REPO/experiments/rollout-arc/scripts/p2-env-server.mjs" --port "$PORT" \
   --seed "${P2_SEED:-2026091204}" \
   --train-per-level "${TRAIN_PER_LEVEL:-16}" --test-per-level "${TEST_PER_LEVEL:-16}" \
-  ${LEVELS:+--levels "$LEVELS"} \
+  ${LEVELS:+--levels "$LEVELS"} ${PARALLEL_ONLY:+--parallel-only} \
   > "$ART/env-server.log" 2>&1 &
 BRIDGE_PID=$!
 # Compensator: the bridge owns an MCP child with an isolated AI_JAM_HOME. Kill
