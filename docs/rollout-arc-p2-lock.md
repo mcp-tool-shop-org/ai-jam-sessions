@@ -1,5 +1,25 @@
 # P2 — the first training run, and the one confound that would make it uninterpretable
 
+> ⛔ **THE TRAIN RUN ABORTED 2026-09-12 AT STEP 15, AND THIS LOCK'S POPULATION PREMISE IS VOID.**
+> **Every learnability measurement this lock rests on used `qwen3:4b-instruct-2507-q4_K_M`, a
+> 4-bit GGUF served through Ollama. The trainer runs `Qwen/Qwen3-4B-Instruct-2507` in bf16.**
+> The bf16 model solves the task outright: `acc_joint` 1.0, `frac_reward_zero_std` 1.0, entropy
+> 0.0005. Zero gradient on every step. Killed under §4's preregistered andon for **$0.49**.
+>
+> **So §2's population rule, the 27.1% / 32.0% non-degenerate rates, the in-band counts, and the
+> P1f GO all describe the QUANTIZED model and do not transfer.** They replicated because we
+> measured the same wrong thing twice. P1c's "never uses the second page" mechanism is likewise a
+> quantization artifact.
+>
+> **What survives:** the bridge, environment, reward, executor and compensators; the 65.2% mask
+> measurement (a property of TRL, not the policy); the step/memory curves and the g=4 ceiling.
+> **What does not:** every difficulty claim in this arc.
+>
+> Receipt: [`experiments/rollout-arc/p2/TRAIN-ABORT.md`](../experiments/rollout-arc/p2/TRAIN-ABORT.md).
+> **The lesson, for every future arc: a learnability gate must run the exact artifact that will be
+> trained — same weights, same precision, same serving path.**
+
+
 **Date:** 2026-09-11 · **Status:** DESIGN LOCK. **Nothing built. No spend authorised.**
 **Unlocked by:** [P1f](../experiments/rollout-arc/p1f/RESULTS.md) — primary clears at D0 (18) and D3 (14), secondary clears at all four levels.
 **Design lock of record:** [rollout-layer-dispatch.md](rollout-layer-dispatch.md). **This document does not authorise a dollar.** §7 is the only spend gate and it is the director's.
