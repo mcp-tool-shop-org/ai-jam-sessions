@@ -215,6 +215,52 @@ all of them tested. Novel code is the thing we have the least budget for.
 
 ---
 
+## 8a. The target, and the inversion check — added 2026-09-11
+
+**Measure pass@8 before AND after, not just pass@1.** This is a new mandatory measurement and it
+exists because of a paper found while *failing* to verify something else.
+
+**Pass@k inversion is a named, published failure mode.** Zhou 2026, *When RLVR Shrinks the
+Reasoning Boundary: Diagnosing Pass@k Inversion* (arXiv:2607.20543): RLVR can raise pass@1 **while
+degrading pass@k**, an "absence-of-evidence failure" in which "rare correct trajectories may
+disappear before RLVR samples and reinforces them often enough." Our entire evaluation plan was
+pass@1 against a base. **A run that lifts pass@1 while dropping pass@8 has narrowed the model's
+reach, and under the current plan we would have reported it as a win.**
+
+**ANDON:** post-training pass@8 below the base's pass@8, pooled, is an **inversion result** — it
+is reported as one, and it is not a victory regardless of what pass@1 did.
+
+### The target is pooled, and it is a floor plus a ceiling — not a fraction
+
+Our base, over P1f's 256 held-out cases:
+
+| | pooled |
+|---|---|
+| base pass@1 | ≈ 0.557 |
+| base pass@8 | ≈ 0.747 |
+| headroom | ≈ 19 pts |
+
+**Ceiling:** Yue et al. (arXiv:2504.13837) — RLVR concentrates probability inside the base's
+reach rather than extending it, so **base pass@8 is the wall**, not a stretch goal.
+
+**Floor:** the observed pooled gain must exceed seed noise. Hochlehnert et al. (arXiv:2504.07086)
+measured 5–15 pp pass@1 std over 20 seeds and recommend ≥10 seeds. **A gain under ~5 pp pooled is
+not distinguishable from a seed draw at any run size we can afford.**
+
+**Not adopted: a preregistered "fraction of the gap closed."** A 60–85% closure range was
+proposed externally with a concrete per-tier target table. The arithmetic checked; **the range
+is not in the paper cited for it** (arXiv:2607.20543 reports no such figure, and is in fact the
+inversion paper above), and the supporting "70% of gains are formatting" and "6–14 points true
+capability" figures carried no citation at all. **We do not preregister an invented rate.**
+
+**Per-tier targets are rejected on our own evidence.** The level index has never ordered
+consistently across three independent draws (ρ = −0.60 between P1e and P1f; the train split
+reordered it again). A per-tier bar treats noise as strata, and lock §2 already forbids it.
+The D1 tier makes the point concretely: its headroom is 11.7 pts, so a 60%-closure target is
+7 pts — inside the seed noise above, and uninterpretable by construction.
+
+---
+
 ## 9. Reporting, and the two shippable nulls
 
 Report `acc_conditional`, `acc_joint` and `format_rate` as three series against a base model
