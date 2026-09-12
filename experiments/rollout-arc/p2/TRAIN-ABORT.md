@@ -7,16 +7,68 @@ Pod terminated, dead-man disarmed cleanly, nothing billing. Log: [`artifacts/tra
 
 The run was killed under the lock's preregistered andon at step 15 of 600:
 
-| metric | value | meaning |
-|---|---|---|
-| `frac_reward_zero_std` | **1.0** sustained | every group's rollouts agree — zero advantage, zero gradient |
-| `acc_joint` / `acc_conditional` | **1.0** | the model answers every training case correctly |
-| `format_rate` | 1.0 | the gate is never the limiter |
-| `entropy` | 0.0005 | policy is effectively deterministic |
-| `kl` | 2.4e-07 | no drift, because there is no gradient |
+> **CORRECTED 2026-09-12.** The table in this section originally read
+> `frac_reward_zero_std` **1.0 sustained**, `acc_joint` **1.0** — "the model answers every
+> training case correctly" — and said it "sat at 1.0 from the first logged step." **That is not
+> what the run did**, and the error is the receipt author's. The log was re-read line by line
+> after the peer flagged the discrepancy. The corrected numbers are below; the abort itself is
+> unaffected and the original wording is quoted here rather than deleted.
 
-Lock §4 preregistered a kill on `frac_reward_zero_std` sustained above 0.9. It sat at 1.0
-from the first logged step. **600 steps of that would have cost ~$8.60 and produced nothing.**
+Every logged step from `artifacts/train-abort.log` line 7404 onward (the `1024 training rows`
+block — the training stage, at `num_generations` 8, one group per step):
+
+| step | `acc_joint` | `frac_reward_zero_std` | `grad_norm` | `entropy` | `clipped_ratio` |
+|---|---|---|---|---|---|
+| 1 | 1 | 1 | 0 | 2.9e-4 | 0 |
+| **2** | **0.625** | **0** | **4.616** | 6.6e-3 | 0 |
+| 3 | 1 | 1 | 5.5e-6 | 6.0e-2 | 0 |
+| 4 | 1 | 1 | 1.2e-11 | 3.2e-4 | 0 |
+| **5** | **0.5** | **0** | **0.986** | 8.9e-3 | 0 |
+| 6 | 1 | 1 | 1.1e-7 | 1.2e-3 | 0 |
+| 7 | 1 | 1 | 1.4e-12 | 9.5e-3 | 0 |
+| 8 | 1 | 1 | 2.2e-12 | 3.3e-4 | 0 |
+| 9 | 1 | 1 | 3.2e-13 | 2.7e-4 | 0 |
+| 10 | 1 | 1 | 8.8e-9 | 4.7e-4 | 0 |
+
+| metric | corrected value | meaning |
+|---|---|---|
+| `frac_reward_zero_std` | **0.80 mean**, 1.0 on 8 of 10 steps | **two steps were non-degenerate**, not zero |
+| `grad_norm` on those two | **4.616 and 0.986** | real gradients, against 1e-11 to 1e-13 elsewhere |
+| `acc_joint` | **0.9125 mean**, 1.0 on 8 of 10 | the model does **not** answer every case correctly |
+| `format_rate` | 1.0 | the gate is never the limiter |
+| `entropy` | 2.9e-4 to **6.0e-2** | ~3e-4 when degenerate, 30–200× higher on the two live steps |
+| `clipped_ratio` | 0 throughout | **not** the truncation confound |
+
+**The abort stands.** Eight of ten steps carried gradients between 1e-11 and 1e-13 against
+entropy ~3e-4 — arithmetically zero updates. Lock §4's kill is on `frac_reward_zero_std`
+sustained above 0.9, and steps 6–10 were five consecutive steps at 1.0. **600 steps of that
+would have cost ~$8.60 and produced nothing.** Killing it for $0.49 was correct.
+
+**What does not survive is the headline.** The observed non-degenerate rate is **2/10 = 0.200**,
+and its exact 95% interval is **[0.025, 0.556]** — which *contains* the 27.1% this arc gated on.
+So does every other bf16 measurement taken since:
+
+| measurement | non-degenerate | 95% CI (Clopper–Pearson) | contains 0.271? |
+|---|---|---|---|
+| this run, n=10 | 0.200 | [0.025, 0.556] | **yes** |
+| local reproduction, n=6 | 0.000 | [0.000, 0.459] | **yes** |
+| `runs/bf16-check`, n=8 | 0.125 | [0.003, 0.527] | **yes** |
+
+**Not one of them distinguishes bf16 from the rate the arc gated on.** The supportable claim is
+*bf16 is much stronger than the 4-bit model and most groups are degenerate* — a methodology
+failure, which is real and is the subject of the next section. A demonstrated collapse of the
+difficulty rates is **not** established, and "every difficulty rate in this arc describes the
+wrong artifact" is overstated wherever it appears. Settling it needs n in the hundreds: at
+n=32 the half-width on a rate near 0.235 is ±0.147; at n=256 it is ±0.052.
+
+**One further observation, from the same ten rows.** As *k* of 8 correct they read
+`8, 5, 8, 8, 4, 8, 8, 8, 8, 8`. Under independent sampling at p = 0.9125 the most likely
+non-perfect outcome is 7 of 8, at probability 0.369 — **it occurred zero times** (P = 0.010),
+as did 6 of 8. The only non-perfect outcomes were 5/8 and 4/8. The eight rollouts in a group are
+not eight draws; they are **a few trajectories replicated**. Sampling is unrestricted
+(`temperature` 1.0, `top_p` 1.0, `top_k` disabled, none set by `train.py`), so this is the
+model's own distribution being near a point mass on these inputs — and it is input-dependent,
+since the two steps that broke apart are the two with 30–200× the entropy.
 
 ## Root cause — an arc-level defect, not a run-level one
 
