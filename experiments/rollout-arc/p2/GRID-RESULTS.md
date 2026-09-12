@@ -188,3 +188,53 @@ variance in the correct-count, and the overdispersion ratio is undefined. The ro
 vary — they disagree about *which* wrong answer to give — but that diversity never crosses
 into correctness. **Diversity without correctness buys nothing**, and it means a larger G
 here would purchase more varied wrong answers, not more gradient.
+
+## Caveat on the treatment finding — the environment misinforms the policy
+
+Raised by the director: *is there a knowledge base informing the policy during training, and
+isn't that a crucial lever?* There is, and checking it exposed a confound in the finding above.
+
+**The KB is the MCP-served song library**, reached through nine tools (`list_songs`,
+`song_info`, `list_measures`, `detect_chord`, `verify_harmony`, and four audio tools
+irrelevant here). It is complete: it contains the answer to every case. **Knowledge is not
+the bottleneck. Search persistence is.**
+
+But the policy's *model* of that KB is wrong, and we made it wrong:
+
+| what the policy is told | what is true here |
+|---|---|
+| `list_measures` — *"Get an overview of **all** measures in a song"* (the tool's own description, `mcp-server.ts:691`) | the environment refuses any window > **4** (`boundListMeasures`) |
+| `endMeasure` — *"End measure (1-based, default: **last**)"* | a default-last call is rejected |
+| system prompt, in full: *"You are operating AI Jam Sessions, a music education platform. Use the tools to inspect the library. Your final turn is the answer alone, with no explanation."* | never mentions the 4-measure cap, that paging may be required, or how long the song is |
+
+The song's length is discoverable **only by triggering an out-of-range error**. Nothing in
+the normal path tells the policy the answer might lie beyond the window it just fetched — and
+its tool description says that window *was* the whole song.
+
+**So the +4 ceiling has two competing explanations and this grid cannot separate them:**
+
+1. **Capability** — the policy cannot sustain multi-page search. (What the finding above assumed.)
+2. **Information** — the policy does not know it *should* page, because the tool description
+   says it already has everything and nothing states the cap up front.
+
+If (2), then "distance is not a usable difficulty lever" is wrong, P1c's mechanism is an
+artifact of *our environment's* description layer rather than of any model, and the same
+confound sits under the original 4-bit P1c measurement too.
+
+**The discriminating probe is free and local:** re-run the treatment cell unchanged except
+for a system prompt that states the 4-measure cap, that the answer may lie past the first
+window, and the song's measure count. If accuracy moves off 0.000, the ceiling is
+informational.
+
+**This does not touch the control cell or the decoy cells** — their answers lie inside the
+first window, so the cap never binds on them.
+
+### The environment layer as a difficulty lever
+
+Independent of the confound, the director's framing is right and this arc has not used it.
+`MAX_LIST_WINDOW` is **ours**, imposed in the environment rather than in the MCP server —
+the unbounded server would dump all 219 measures of `bethena`, which was the P1b failure
+(one observation, one guess, no search). It is a continuous dial on search depth that is
+**orthogonal to the corpus**: narrowing it makes even distance 1–3 require paging; widening
+it makes distance 5–11 reachable in one call. Difficulty has been treated as a property of
+the generated data for this whole arc. Half of it lives in the environment.
