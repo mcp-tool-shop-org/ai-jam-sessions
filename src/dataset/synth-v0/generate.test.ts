@@ -3,6 +3,7 @@ import { validateSong } from "../../songs/registry.js";
 import { assertGoldVaries, assertNoStraddle, assertSchemaOwner } from "../experiment/index.js";
 import {
   GENERATOR_SEED,
+  LEVELS,
   TEST_PER_LEVEL,
   TRAIN_PER_LEVEL,
   agree,
@@ -93,5 +94,48 @@ describe("kebab", () => {
 describe("lhOf", () => {
   it("writes a parseable triad", () => {
     expect(lhOf([48, 52, 55])).toBe("C3+E3+G3:q");
+  });
+});
+
+// P1f widens the test split from 32 to 64 songs per level on a fresh seed.
+// The default shape, and the cache that serves it, must not move.
+describe("corpus sizing options (P1f)", () => {
+  it("widens the test split without touching the train split or the defaults", () => {
+    const wide = generateCorpus(2026091102, { testPerLevel: 64 });
+    const test = wide.cases.filter((c) => c.split === "test");
+    const train = wide.cases.filter((c) => c.split === "train");
+    expect(test.length).toBe(64 * 4);
+    expect(train.length).toBe(TRAIN_PER_LEVEL * 4);
+    expect(wide.songs.length).toBe(wide.cases.length);
+    for (const level of LEVELS) {
+      expect(test.filter((c) => c.level === level).length).toBe(64);
+    }
+    // One song per case, and every id still round-trips from its title.
+    expect(new Set(wide.songs.map((s) => s.id)).size).toBe(wide.songs.length);
+    for (const c of test) expect(kebab(c.title)).toBe(c.song_id);
+  });
+
+  it("does not serve, or poison, the default cache", () => {
+    const wide = generateCorpus(2026091102, { testPerLevel: 64 });
+    const base = generateCorpus();
+    expect(base.cases.filter((c) => c.split === "test").length).toBe(TEST_PER_LEVEL * 4);
+    expect(base.cases.length).not.toBe(wide.cases.length);
+    expect(generateCorpus()).toBe(base);
+    expect(generateCorpus(GENERATOR_SEED)).toBe(base);
+  });
+
+  it("a fresh seed produces different cases at the same shape", () => {
+    const a = generateCorpus(2026091102, { testPerLevel: 8, trainPerLevel: 4 });
+    const b = generateCorpus(2026091103, { testPerLevel: 8, trainPerLevel: 4 });
+    expect(a.cases.length).toBe(b.cases.length);
+    const key = (c: { chord: string; after: number; measure: number }) =>
+      `${c.chord}:${c.after}:${c.measure}`;
+    expect(a.cases.map(key)).not.toEqual(b.cases.map(key));
+  });
+
+  it("rejects a non-integer or empty test split", () => {
+    expect(() => generateCorpus(1, { testPerLevel: 0 })).toThrow(/positive integer/);
+    expect(() => generateCorpus(1, { testPerLevel: 2.5 })).toThrow(/positive integer/);
+    expect(() => generateCorpus(1, { trainPerLevel: -1 })).toThrow(/non-negative integer/);
   });
 });

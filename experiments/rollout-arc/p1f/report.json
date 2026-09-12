@@ -1,0 +1,4245 @@
+{
+  "pin": {
+    "phase": "P1f",
+    "kebab_parity": true,
+    "written_before_sampled_run": true,
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "model_note": "Same pin as P1c/P1e. think:false. Local Ollama, not Comfy Cloud.",
+    "n": 8,
+    "split": "test",
+    "seed": 0,
+    "generator_seed": 2026091102,
+    "generator_seed_note": "Fresh. P1e ran 20260911, so every case measured here is new. P1f is a replication of the secondary criterion on cases it was not derived from.",
+    "songs_per_level": 64,
+    "songs_per_level_note": "Preregistered from P1e's measured rates, not chosen after the fact. At the primary bar's 17.2% leak-free in-band, n >= 59 is needed to expect 10, so 64 is the smallest round n that clears it; at 32.0% non-degenerate the expectation is 20.5.",
+    "train_per_level": 48,
+    "library_songs": 448,
+    "library_note": "One song per case, so doubling the test split grows the isolated library (P1e 320 -> P1f 448). Train-per-level is unchanged at 48. Library size is not a control the lock names, and lookup is by kebab id; the tool-turn histogram is the check that search did not change shape.",
+    "sampled": {
+      "temperature": 1,
+      "n": 8,
+      "seed": 0
+    },
+    "guess_test": {
+      "temperature": 1,
+      "n": 8,
+      "tools": "none"
+    },
+    "host": "http://127.0.0.1:11434",
+    "framework": "Ollama /api/chat through SynthEnv.runEpisode",
+    "hardware": "local RTX 5090, 32 GB",
+    "gold_n": 256,
+    "train_n": 192,
+    "test_n": 256,
+    "test_clusters": 256,
+    "levels": [
+      "D0",
+      "D1",
+      "D2",
+      "D3"
+    ],
+    "band": [
+      0.125,
+      0.5
+    ],
+    "go_rule": {
+      "min_in_band_after_leak": 10,
+      "sampled_pass1_below": 0.8,
+      "any_level": true,
+      "finding": "24 - INTELLECT-2, arXiv:2505.07291 (pass@8 in [12.5%, 50%])",
+      "unchanged_since": "P0"
+    },
+    "secondary_rule": {
+      "min_non_degenerate_after_leak": 10,
+      "definition": "0 < c < n; at the pinned n = 8, 1 <= c <= 7",
+      "sampled_pass1_below": 0.8,
+      "any_level": true,
+      "findings": "22 - DAPO, arXiv:2503.14476; 23 - Foster et al., arXiv:2502.12272; 26 - Absolute Zero, arXiv:2505.03335",
+      "declared_before_run": true,
+      "first_use": "P1f",
+      "note": "Reported beside the primary bar, never in place of it. A CLEAR here is not a GO: the P1f lock sends that to a director gate.",
+      "disclosure": "Recomputed from P1e's committed receipts with its own leak filter, this criterion already clears at D2 (11) and D3 (12). It is frozen here before P1f runs so this is a replication on fresh cases at double n, not a discovery announced from the run that motivated it."
+    },
+    "stopping_rule": "Primary clears -> GO, P2 unlocks under a director gate. Primary fails and secondary clears -> reported as exactly that, and the decision to train is a director gate. Both fail -> the arc ships the null; there is no P1g.",
+    "spend": 0
+  },
+  "summary": {
+    "rollouts": 2048,
+    "hits": 1141,
+    "any_primary_go": true,
+    "any_secondary_clear": true,
+    "levels": {
+      "D0": {
+        "n": 64,
+        "pass1": 0.5527,
+        "pass8": 0.8125,
+        "band_hist": {
+          "below": 12,
+          "in_band": 19,
+          "above": 33
+        },
+        "correct_hist": {
+          "c0": 12,
+          "c1_4": 19,
+          "c5_7": 14,
+          "c8": 19,
+          "by_c": {
+            "0": 12,
+            "1": 2,
+            "2": 2,
+            "3": 7,
+            "4": 8,
+            "5": 13,
+            "7": 1,
+            "8": 19
+          }
+        },
+        "correct_hist_leak_free": {
+          "c0": 8,
+          "c1_4": 18,
+          "c5_7": 12,
+          "c8": 14,
+          "by_c": {
+            "0": 8,
+            "1": 2,
+            "2": 1,
+            "3": 7,
+            "4": 8,
+            "5": 11,
+            "7": 1,
+            "8": 14
+          }
+        },
+        "leak_n": 12,
+        "guess_pass8": 0.1875,
+        "in_band_after_leak": 18,
+        "non_degenerate_after_leak": 30,
+        "primary": "GO",
+        "secondary": "CLEAR",
+        "tool_turns": {
+          "0": 18,
+          "2": 280,
+          "3": 112,
+          "4": 71,
+          "5": 31
+        },
+        "mean_tool_turns": 2.6074
+      },
+      "D1": {
+        "n": 64,
+        "pass1": 0.4766,
+        "pass8": 0.5938,
+        "band_hist": {
+          "below": 26,
+          "in_band": 9,
+          "above": 29
+        },
+        "correct_hist": {
+          "c0": 26,
+          "c1_4": 9,
+          "c5_7": 6,
+          "c8": 23,
+          "by_c": {
+            "0": 26,
+            "2": 1,
+            "3": 4,
+            "4": 4,
+            "5": 6,
+            "8": 23
+          }
+        },
+        "correct_hist_leak_free": {
+          "c0": 20,
+          "c1_4": 6,
+          "c5_7": 6,
+          "c8": 18,
+          "by_c": {
+            "0": 20,
+            "3": 3,
+            "4": 3,
+            "5": 6,
+            "8": 18
+          }
+        },
+        "leak_n": 14,
+        "guess_pass8": 0.2188,
+        "in_band_after_leak": 6,
+        "non_degenerate_after_leak": 12,
+        "primary": "NO-GO",
+        "secondary": "CLEAR",
+        "tool_turns": {
+          "0": 31,
+          "2": 286,
+          "3": 134,
+          "4": 44,
+          "5": 17
+        },
+        "mean_tool_turns": 2.4121
+      },
+      "D2": {
+        "n": 64,
+        "pass1": 0.6543,
+        "pass8": 0.8125,
+        "band_hist": {
+          "below": 12,
+          "in_band": 10,
+          "above": 42
+        },
+        "correct_hist": {
+          "c0": 12,
+          "c1_4": 10,
+          "c5_7": 12,
+          "c8": 30,
+          "by_c": {
+            "0": 12,
+            "2": 1,
+            "3": 3,
+            "4": 6,
+            "5": 12,
+            "8": 30
+          }
+        },
+        "correct_hist_leak_free": {
+          "c0": 8,
+          "c1_4": 7,
+          "c5_7": 9,
+          "c8": 19,
+          "by_c": {
+            "0": 8,
+            "3": 2,
+            "4": 5,
+            "5": 9,
+            "8": 19
+          }
+        },
+        "leak_n": 21,
+        "guess_pass8": 0.3281,
+        "in_band_after_leak": 7,
+        "non_degenerate_after_leak": 16,
+        "primary": "NO-GO",
+        "secondary": "CLEAR",
+        "tool_turns": {
+          "0": 21,
+          "2": 281,
+          "3": 146,
+          "4": 44,
+          "5": 20
+        },
+        "mean_tool_turns": 2.4922
+      },
+      "D3": {
+        "n": 64,
+        "pass1": 0.5449,
+        "pass8": 0.7656,
+        "band_hist": {
+          "below": 15,
+          "in_band": 17,
+          "above": 32
+        },
+        "correct_hist": {
+          "c0": 15,
+          "c1_4": 17,
+          "c5_7": 13,
+          "c8": 19,
+          "by_c": {
+            "0": 15,
+            "3": 9,
+            "4": 8,
+            "5": 11,
+            "6": 1,
+            "7": 1,
+            "8": 19
+          }
+        },
+        "correct_hist_leak_free": {
+          "c0": 13,
+          "c1_4": 14,
+          "c5_7": 10,
+          "c8": 11,
+          "by_c": {
+            "0": 13,
+            "3": 7,
+            "4": 7,
+            "5": 8,
+            "6": 1,
+            "7": 1,
+            "8": 11
+          }
+        },
+        "leak_n": 16,
+        "guess_pass8": 0.25,
+        "in_band_after_leak": 14,
+        "non_degenerate_after_leak": 24,
+        "primary": "GO",
+        "secondary": "CLEAR",
+        "tool_turns": {
+          "0": 61,
+          "1": 2,
+          "2": 235,
+          "3": 141,
+          "4": 48,
+          "5": 25
+        },
+        "mean_tool_turns": 2.3672
+      }
+    },
+    "tool_turns": {
+      "0": 131,
+      "1": 2,
+      "2": 1082,
+      "3": 533,
+      "4": 207,
+      "5": 93
+    },
+    "mean_tool_turns": 2.4697
+  },
+  "levels": {
+    "D0": {
+      "pin": {
+        "phase": "P1f",
+        "kebab_parity": true,
+        "written_before_sampled_run": true,
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "model_note": "Same pin as P1c/P1e. think:false. Local Ollama, not Comfy Cloud.",
+        "n": 8,
+        "split": "test",
+        "seed": 0,
+        "generator_seed": 2026091102,
+        "generator_seed_note": "Fresh. P1e ran 20260911, so every case measured here is new. P1f is a replication of the secondary criterion on cases it was not derived from.",
+        "songs_per_level": 64,
+        "songs_per_level_note": "Preregistered from P1e's measured rates, not chosen after the fact. At the primary bar's 17.2% leak-free in-band, n >= 59 is needed to expect 10, so 64 is the smallest round n that clears it; at 32.0% non-degenerate the expectation is 20.5.",
+        "train_per_level": 48,
+        "library_songs": 448,
+        "library_note": "One song per case, so doubling the test split grows the isolated library (P1e 320 -> P1f 448). Train-per-level is unchanged at 48. Library size is not a control the lock names, and lookup is by kebab id; the tool-turn histogram is the check that search did not change shape.",
+        "sampled": {
+          "temperature": 1,
+          "n": 8,
+          "seed": 0
+        },
+        "guess_test": {
+          "temperature": 1,
+          "n": 8,
+          "tools": "none"
+        },
+        "host": "http://127.0.0.1:11434",
+        "framework": "Ollama /api/chat through SynthEnv.runEpisode",
+        "hardware": "local RTX 5090, 32 GB",
+        "gold_n": 256,
+        "train_n": 192,
+        "test_n": 256,
+        "test_clusters": 256,
+        "levels": [
+          "D0",
+          "D1",
+          "D2",
+          "D3"
+        ],
+        "band": [
+          0.125,
+          0.5
+        ],
+        "go_rule": {
+          "min_in_band_after_leak": 10,
+          "sampled_pass1_below": 0.8,
+          "any_level": true,
+          "finding": "24 - INTELLECT-2, arXiv:2505.07291 (pass@8 in [12.5%, 50%])",
+          "unchanged_since": "P0"
+        },
+        "secondary_rule": {
+          "min_non_degenerate_after_leak": 10,
+          "definition": "0 < c < n; at the pinned n = 8, 1 <= c <= 7",
+          "sampled_pass1_below": 0.8,
+          "any_level": true,
+          "findings": "22 - DAPO, arXiv:2503.14476; 23 - Foster et al., arXiv:2502.12272; 26 - Absolute Zero, arXiv:2505.03335",
+          "declared_before_run": true,
+          "first_use": "P1f",
+          "note": "Reported beside the primary bar, never in place of it. A CLEAR here is not a GO: the P1f lock sends that to a director gate.",
+          "disclosure": "Recomputed from P1e's committed receipts with its own leak filter, this criterion already clears at D2 (11) and D3 (12). It is frozen here before P1f runs so this is a replication on fresh cases at double n, not a discovery announced from the run that motivated it."
+        },
+        "stopping_rule": "Primary clears -> GO, P2 unlocks under a director gate. Primary fails and secondary clears -> reported as exactly that, and the decision to train is a director gate. Both fail -> the arc ships the null; there is no P1g.",
+        "spend": 0
+      },
+      "band": {
+        "lo": 0.125,
+        "hi": 0.5
+      },
+      "go_rule": {
+        "min_in_band_after_leak": 10,
+        "sampled_pass1_below": 0.8
+      },
+      "secondary_rule": {
+        "min_non_degenerate_after_leak": 10,
+        "sampled_pass1_below": 0.8,
+        "definition": "0 < c < n (findings 22 / 23 / 26); at n = 8, 1 ≤ c ≤ 7"
+      },
+      "baselines": {
+        "overall": {
+          "majority_class": "6",
+          "majority": 0.046875,
+          "n": 64
+        },
+        "per_family": {
+          "D0": {
+            "majority_class": "6",
+            "majority": 0.046875,
+            "n": 64
+          }
+        }
+      },
+      "greedy": null,
+      "sampled": {
+        "overall": {
+          "n": 64,
+          "pass1": 0.552734375,
+          "pass8": 0.8125,
+          "greedy_pass1": 0.609375,
+          "histogram": {
+            "below": 12,
+            "in_band": 19,
+            "above": 33
+          }
+        },
+        "per_family": {
+          "D0": {
+            "n": 64,
+            "pass1": 0.552734375,
+            "pass8": 0.8125,
+            "greedy_pass1": 0.609375,
+            "histogram": {
+              "below": 12,
+              "in_band": 19,
+              "above": 33
+            }
+          }
+        },
+        "constant_gold_families": []
+      },
+      "guess_test": {
+        "overall": {
+          "n": 64,
+          "pass1": 0.08984375,
+          "pass8": 0.1875,
+          "greedy_pass1": 0.09375,
+          "histogram": {
+            "below": 52,
+            "in_band": 7,
+            "above": 5
+          }
+        },
+        "per_family": {
+          "D0": {
+            "n": 64,
+            "pass1": 0.08984375,
+            "pass8": 0.1875,
+            "greedy_pass1": 0.09375,
+            "histogram": {
+              "below": 52,
+              "in_band": 7,
+              "above": 5
+            }
+          }
+        },
+        "leak_n": 12,
+        "leak_ids": [
+          "synth:D0:synth-d0-study-aab:from32:m33",
+          "synth:D0:synth-d0-study-aag:from55:m57",
+          "synth:D0:synth-d0-study-aai:from2:m4",
+          "synth:D0:synth-d0-study-aan:from92:m93",
+          "synth:D0:synth-d0-study-abd:from38:m41",
+          "synth:D0:synth-d0-study-abg:from25:m26",
+          "synth:D0:synth-d0-study-abr:from50:m52",
+          "synth:D0:synth-d0-study-abt:from82:m83",
+          "synth:D0:synth-d0-study-aby:from30:m33",
+          "synth:D0:synth-d0-study-acc:from20:m22",
+          "synth:D0:synth-d0-study-acf:from53:m55",
+          "synth:D0:synth-d0-study-acl:from15:m17"
+        ]
+      },
+      "learnability": {
+        "in_band_raw": 19,
+        "in_band_after_leak": 18,
+        "below": 12,
+        "above": 33,
+        "non_degenerate_raw": 33,
+        "non_degenerate_after_leak": 30,
+        "correct_histogram": {
+          "c0": 12,
+          "c1_4": 19,
+          "c5_7": 14,
+          "c8": 19,
+          "by_c": {
+            "0": 12,
+            "1": 2,
+            "2": 2,
+            "3": 7,
+            "4": 8,
+            "5": 13,
+            "7": 1,
+            "8": 19
+          }
+        },
+        "correct_histogram_leak_free": {
+          "c0": 8,
+          "c1_4": 18,
+          "c5_7": 12,
+          "c8": 14,
+          "by_c": {
+            "0": 8,
+            "1": 2,
+            "2": 1,
+            "3": 7,
+            "4": 8,
+            "5": 11,
+            "7": 1,
+            "8": 14
+          }
+        }
+      },
+      "verdict": {
+        "existing_corpus": "GO",
+        "reasons": [
+          "18 cases in pass@8 [0.125, 0.5] after leak-filter",
+          "sampled pass@1 0.553 < 0.8"
+        ]
+      },
+      "secondary_verdict": {
+        "non_degenerate": "CLEAR",
+        "reasons": [
+          "30 cases with 1 ≤ c ≤ 7 of 8 after leak-filter",
+          "sampled pass@1 0.553 < 0.8"
+        ]
+      },
+      "cases": [
+        {
+          "id": "synth:D0:synth-d0-study-aab:from32:m33",
+          "family": "D0",
+          "gold": "33",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aac:from3:m6",
+          "family": "D0",
+          "gold": "6",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aad:from6:m8",
+          "family": "D0",
+          "gold": "8",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aae:from28:m30",
+          "family": "D0",
+          "gold": "30",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aaf:from74:m76",
+          "family": "D0",
+          "gold": "76",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aag:from55:m57",
+          "family": "D0",
+          "gold": "57",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aah:from3:m6",
+          "family": "D0",
+          "gold": "6",
+          "n": 8,
+          "correct": 7,
+          "pass1": 0.875,
+          "pass8": 1,
+          "rate": 0.875,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aai:from2:m4",
+          "family": "D0",
+          "gold": "4",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aaj:from39:m40",
+          "family": "D0",
+          "gold": "40",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aak:from49:m52",
+          "family": "D0",
+          "gold": "52",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aal:from3:m5",
+          "family": "D0",
+          "gold": "5",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aam:from29:m32",
+          "family": "D0",
+          "gold": "32",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aan:from92:m93",
+          "family": "D0",
+          "gold": "93",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aao:from61:m64",
+          "family": "D0",
+          "gold": "64",
+          "n": 8,
+          "correct": 1,
+          "pass1": 0.125,
+          "pass8": 1,
+          "rate": 0.125,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aap:from46:m49",
+          "family": "D0",
+          "gold": "49",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aaq:from2:m5",
+          "family": "D0",
+          "gold": "5",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aar:from48:m51",
+          "family": "D0",
+          "gold": "51",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aas:from24:m27",
+          "family": "D0",
+          "gold": "27",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aat:from3:m6",
+          "family": "D0",
+          "gold": "6",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aau:from8:m9",
+          "family": "D0",
+          "gold": "9",
+          "n": 8,
+          "correct": 1,
+          "pass1": 0.125,
+          "pass8": 1,
+          "rate": 0.125,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aav:from9:m11",
+          "family": "D0",
+          "gold": "11",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aaw:from2:m5",
+          "family": "D0",
+          "gold": "5",
+          "n": 8,
+          "correct": 2,
+          "pass1": 0.25,
+          "pass8": 1,
+          "rate": 0.25,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aax:from55:m58",
+          "family": "D0",
+          "gold": "58",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aay:from103:m104",
+          "family": "D0",
+          "gold": "104",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aaz:from35:m37",
+          "family": "D0",
+          "gold": "37",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aba:from14:m16",
+          "family": "D0",
+          "gold": "16",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abb:from60:m62",
+          "family": "D0",
+          "gold": "62",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abc:from12:m13",
+          "family": "D0",
+          "gold": "13",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abd:from38:m41",
+          "family": "D0",
+          "gold": "41",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abe:from32:m35",
+          "family": "D0",
+          "gold": "35",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abf:from62:m65",
+          "family": "D0",
+          "gold": "65",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abg:from25:m26",
+          "family": "D0",
+          "gold": "26",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abh:from28:m31",
+          "family": "D0",
+          "gold": "31",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abi:from35:m38",
+          "family": "D0",
+          "gold": "38",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abj:from28:m30",
+          "family": "D0",
+          "gold": "30",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abk:from33:m36",
+          "family": "D0",
+          "gold": "36",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abl:from49:m50",
+          "family": "D0",
+          "gold": "50",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abm:from59:m61",
+          "family": "D0",
+          "gold": "61",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abn:from11:m13",
+          "family": "D0",
+          "gold": "13",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abo:from28:m31",
+          "family": "D0",
+          "gold": "31",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abp:from42:m45",
+          "family": "D0",
+          "gold": "45",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abq:from83:m84",
+          "family": "D0",
+          "gold": "84",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abr:from50:m52",
+          "family": "D0",
+          "gold": "52",
+          "n": 8,
+          "correct": 2,
+          "pass1": 0.25,
+          "pass8": 1,
+          "rate": 0.25,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abs:from59:m60",
+          "family": "D0",
+          "gold": "60",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abt:from82:m83",
+          "family": "D0",
+          "gold": "83",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abu:from53:m54",
+          "family": "D0",
+          "gold": "54",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abv:from56:m58",
+          "family": "D0",
+          "gold": "58",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abw:from18:m21",
+          "family": "D0",
+          "gold": "21",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abx:from7:m8",
+          "family": "D0",
+          "gold": "8",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aby:from30:m33",
+          "family": "D0",
+          "gold": "33",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-abz:from17:m20",
+          "family": "D0",
+          "gold": "20",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aca:from19:m22",
+          "family": "D0",
+          "gold": "22",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-acb:from106:m109",
+          "family": "D0",
+          "gold": "109",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-acc:from20:m22",
+          "family": "D0",
+          "gold": "22",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-acd:from22:m23",
+          "family": "D0",
+          "gold": "23",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-ace:from90:m92",
+          "family": "D0",
+          "gold": "92",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-acf:from53:m55",
+          "family": "D0",
+          "gold": "55",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-acg:from37:m39",
+          "family": "D0",
+          "gold": "39",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-ach:from22:m25",
+          "family": "D0",
+          "gold": "25",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-aci:from48:m49",
+          "family": "D0",
+          "gold": "49",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-acj:from52:m53",
+          "family": "D0",
+          "gold": "53",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-ack:from77:m78",
+          "family": "D0",
+          "gold": "78",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D0:synth-d0-study-acl:from15:m17",
+          "family": "D0",
+          "gold": "17",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D0:synth-d0-study-acm:from16:m19",
+          "family": "D0",
+          "gold": "19",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        }
+      ]
+    },
+    "D1": {
+      "pin": {
+        "phase": "P1f",
+        "kebab_parity": true,
+        "written_before_sampled_run": true,
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "model_note": "Same pin as P1c/P1e. think:false. Local Ollama, not Comfy Cloud.",
+        "n": 8,
+        "split": "test",
+        "seed": 0,
+        "generator_seed": 2026091102,
+        "generator_seed_note": "Fresh. P1e ran 20260911, so every case measured here is new. P1f is a replication of the secondary criterion on cases it was not derived from.",
+        "songs_per_level": 64,
+        "songs_per_level_note": "Preregistered from P1e's measured rates, not chosen after the fact. At the primary bar's 17.2% leak-free in-band, n >= 59 is needed to expect 10, so 64 is the smallest round n that clears it; at 32.0% non-degenerate the expectation is 20.5.",
+        "train_per_level": 48,
+        "library_songs": 448,
+        "library_note": "One song per case, so doubling the test split grows the isolated library (P1e 320 -> P1f 448). Train-per-level is unchanged at 48. Library size is not a control the lock names, and lookup is by kebab id; the tool-turn histogram is the check that search did not change shape.",
+        "sampled": {
+          "temperature": 1,
+          "n": 8,
+          "seed": 0
+        },
+        "guess_test": {
+          "temperature": 1,
+          "n": 8,
+          "tools": "none"
+        },
+        "host": "http://127.0.0.1:11434",
+        "framework": "Ollama /api/chat through SynthEnv.runEpisode",
+        "hardware": "local RTX 5090, 32 GB",
+        "gold_n": 256,
+        "train_n": 192,
+        "test_n": 256,
+        "test_clusters": 256,
+        "levels": [
+          "D0",
+          "D1",
+          "D2",
+          "D3"
+        ],
+        "band": [
+          0.125,
+          0.5
+        ],
+        "go_rule": {
+          "min_in_band_after_leak": 10,
+          "sampled_pass1_below": 0.8,
+          "any_level": true,
+          "finding": "24 - INTELLECT-2, arXiv:2505.07291 (pass@8 in [12.5%, 50%])",
+          "unchanged_since": "P0"
+        },
+        "secondary_rule": {
+          "min_non_degenerate_after_leak": 10,
+          "definition": "0 < c < n; at the pinned n = 8, 1 <= c <= 7",
+          "sampled_pass1_below": 0.8,
+          "any_level": true,
+          "findings": "22 - DAPO, arXiv:2503.14476; 23 - Foster et al., arXiv:2502.12272; 26 - Absolute Zero, arXiv:2505.03335",
+          "declared_before_run": true,
+          "first_use": "P1f",
+          "note": "Reported beside the primary bar, never in place of it. A CLEAR here is not a GO: the P1f lock sends that to a director gate.",
+          "disclosure": "Recomputed from P1e's committed receipts with its own leak filter, this criterion already clears at D2 (11) and D3 (12). It is frozen here before P1f runs so this is a replication on fresh cases at double n, not a discovery announced from the run that motivated it."
+        },
+        "stopping_rule": "Primary clears -> GO, P2 unlocks under a director gate. Primary fails and secondary clears -> reported as exactly that, and the decision to train is a director gate. Both fail -> the arc ships the null; there is no P1g.",
+        "spend": 0
+      },
+      "band": {
+        "lo": 0.125,
+        "hi": 0.5
+      },
+      "go_rule": {
+        "min_in_band_after_leak": 10,
+        "sampled_pass1_below": 0.8
+      },
+      "secondary_rule": {
+        "min_non_degenerate_after_leak": 10,
+        "sampled_pass1_below": 0.8,
+        "definition": "0 < c < n (findings 22 / 23 / 26); at n = 8, 1 ≤ c ≤ 7"
+      },
+      "baselines": {
+        "overall": {
+          "majority_class": "37",
+          "majority": 0.0625,
+          "n": 64
+        },
+        "per_family": {
+          "D1": {
+            "majority_class": "37",
+            "majority": 0.0625,
+            "n": 64
+          }
+        }
+      },
+      "greedy": null,
+      "sampled": {
+        "overall": {
+          "n": 64,
+          "pass1": 0.4765625,
+          "pass8": 0.59375,
+          "greedy_pass1": 0.484375,
+          "histogram": {
+            "below": 26,
+            "in_band": 9,
+            "above": 29
+          }
+        },
+        "per_family": {
+          "D1": {
+            "n": 64,
+            "pass1": 0.4765625,
+            "pass8": 0.59375,
+            "greedy_pass1": 0.484375,
+            "histogram": {
+              "below": 26,
+              "in_band": 9,
+              "above": 29
+            }
+          }
+        },
+        "constant_gold_families": []
+      },
+      "guess_test": {
+        "overall": {
+          "n": 64,
+          "pass1": 0.1171875,
+          "pass8": 0.21875,
+          "greedy_pass1": 0.125,
+          "histogram": {
+            "below": 50,
+            "in_band": 8,
+            "above": 6
+          }
+        },
+        "per_family": {
+          "D1": {
+            "n": 64,
+            "pass1": 0.1171875,
+            "pass8": 0.21875,
+            "greedy_pass1": 0.125,
+            "histogram": {
+              "below": 50,
+              "in_band": 8,
+              "above": 6
+            }
+          }
+        },
+        "leak_n": 14,
+        "leak_ids": [
+          "synth:D1:synth-d1-study-aej:from43:m44",
+          "synth:D1:synth-d1-study-aen:from41:m44",
+          "synth:D1:synth-d1-study-aez:from19:m21",
+          "synth:D1:synth-d1-study-afc:from16:m17",
+          "synth:D1:synth-d1-study-afh:from35:m37",
+          "synth:D1:synth-d1-study-afn:from2:m3",
+          "synth:D1:synth-d1-study-afr:from25:m26",
+          "synth:D1:synth-d1-study-afz:from51:m53",
+          "synth:D1:synth-d1-study-agc:from85:m86",
+          "synth:D1:synth-d1-study-agd:from11:m13",
+          "synth:D1:synth-d1-study-agj:from32:m33",
+          "synth:D1:synth-d1-study-agk:from61:m63",
+          "synth:D1:synth-d1-study-agr:from27:m28",
+          "synth:D1:synth-d1-study-agt:from35:m37"
+        ]
+      },
+      "learnability": {
+        "in_band_raw": 9,
+        "in_band_after_leak": 6,
+        "below": 26,
+        "above": 29,
+        "non_degenerate_raw": 15,
+        "non_degenerate_after_leak": 12,
+        "correct_histogram": {
+          "c0": 26,
+          "c1_4": 9,
+          "c5_7": 6,
+          "c8": 23,
+          "by_c": {
+            "0": 26,
+            "2": 1,
+            "3": 4,
+            "4": 4,
+            "5": 6,
+            "8": 23
+          }
+        },
+        "correct_histogram_leak_free": {
+          "c0": 20,
+          "c1_4": 6,
+          "c5_7": 6,
+          "c8": 18,
+          "by_c": {
+            "0": 20,
+            "3": 3,
+            "4": 3,
+            "5": 6,
+            "8": 18
+          }
+        }
+      },
+      "verdict": {
+        "existing_corpus": "NO-GO",
+        "new_family": "GO-candidate",
+        "reasons": [
+          "in-band after leak-filter is 6 (need ≥ 10 of 64)"
+        ]
+      },
+      "secondary_verdict": {
+        "non_degenerate": "CLEAR",
+        "reasons": [
+          "12 cases with 1 ≤ c ≤ 7 of 8 after leak-filter",
+          "sampled pass@1 0.477 < 0.8"
+        ]
+      },
+      "cases": [
+        {
+          "id": "synth:D1:synth-d1-study-aej:from43:m44",
+          "family": "D1",
+          "gold": "44",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aek:from17:m18",
+          "family": "D1",
+          "gold": "18",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-ael:from57:m60",
+          "family": "D1",
+          "gold": "60",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aem:from34:m35",
+          "family": "D1",
+          "gold": "35",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aen:from41:m44",
+          "family": "D1",
+          "gold": "44",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aeo:from15:m16",
+          "family": "D1",
+          "gold": "16",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aep:from40:m41",
+          "family": "D1",
+          "gold": "41",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aeq:from68:m69",
+          "family": "D1",
+          "gold": "69",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aer:from32:m33",
+          "family": "D1",
+          "gold": "33",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aes:from7:m10",
+          "family": "D1",
+          "gold": "10",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aet:from35:m37",
+          "family": "D1",
+          "gold": "37",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aeu:from47:m49",
+          "family": "D1",
+          "gold": "49",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aev:from6:m9",
+          "family": "D1",
+          "gold": "9",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aew:from34:m35",
+          "family": "D1",
+          "gold": "35",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aex:from56:m58",
+          "family": "D1",
+          "gold": "58",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aey:from3:m4",
+          "family": "D1",
+          "gold": "4",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aez:from19:m21",
+          "family": "D1",
+          "gold": "21",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afa:from3:m6",
+          "family": "D1",
+          "gold": "6",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afb:from83:m84",
+          "family": "D1",
+          "gold": "84",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afc:from16:m17",
+          "family": "D1",
+          "gold": "17",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afd:from10:m11",
+          "family": "D1",
+          "gold": "11",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afe:from49:m52",
+          "family": "D1",
+          "gold": "52",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aff:from28:m29",
+          "family": "D1",
+          "gold": "29",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afg:from34:m36",
+          "family": "D1",
+          "gold": "36",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afh:from35:m37",
+          "family": "D1",
+          "gold": "37",
+          "n": 8,
+          "correct": 2,
+          "pass1": 0.25,
+          "pass8": 1,
+          "rate": 0.25,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afi:from39:m40",
+          "family": "D1",
+          "gold": "40",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afj:from53:m54",
+          "family": "D1",
+          "gold": "54",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afk:from29:m31",
+          "family": "D1",
+          "gold": "31",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afl:from9:m10",
+          "family": "D1",
+          "gold": "10",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afm:from45:m47",
+          "family": "D1",
+          "gold": "47",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afn:from2:m3",
+          "family": "D1",
+          "gold": "3",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afo:from57:m59",
+          "family": "D1",
+          "gold": "59",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afp:from54:m56",
+          "family": "D1",
+          "gold": "56",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afq:from8:m9",
+          "family": "D1",
+          "gold": "9",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afr:from25:m26",
+          "family": "D1",
+          "gold": "26",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afs:from84:m87",
+          "family": "D1",
+          "gold": "87",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aft:from78:m79",
+          "family": "D1",
+          "gold": "79",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afu:from27:m30",
+          "family": "D1",
+          "gold": "30",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afv:from5:m8",
+          "family": "D1",
+          "gold": "8",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afw:from73:m75",
+          "family": "D1",
+          "gold": "75",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afx:from10:m11",
+          "family": "D1",
+          "gold": "11",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afy:from31:m34",
+          "family": "D1",
+          "gold": "34",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-afz:from51:m53",
+          "family": "D1",
+          "gold": "53",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-aga:from35:m38",
+          "family": "D1",
+          "gold": "38",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agb:from37:m38",
+          "family": "D1",
+          "gold": "38",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agc:from85:m86",
+          "family": "D1",
+          "gold": "86",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agd:from11:m13",
+          "family": "D1",
+          "gold": "13",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-age:from33:m36",
+          "family": "D1",
+          "gold": "36",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agf:from20:m21",
+          "family": "D1",
+          "gold": "21",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agg:from42:m45",
+          "family": "D1",
+          "gold": "45",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agh:from30:m31",
+          "family": "D1",
+          "gold": "31",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agi:from38:m41",
+          "family": "D1",
+          "gold": "41",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agj:from32:m33",
+          "family": "D1",
+          "gold": "33",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agk:from61:m63",
+          "family": "D1",
+          "gold": "63",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agl:from96:m98",
+          "family": "D1",
+          "gold": "98",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agm:from36:m37",
+          "family": "D1",
+          "gold": "37",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agn:from7:m9",
+          "family": "D1",
+          "gold": "9",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-ago:from90:m92",
+          "family": "D1",
+          "gold": "92",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agp:from79:m80",
+          "family": "D1",
+          "gold": "80",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agq:from31:m32",
+          "family": "D1",
+          "gold": "32",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agr:from27:m28",
+          "family": "D1",
+          "gold": "28",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-ags:from98:m101",
+          "family": "D1",
+          "gold": "101",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agt:from35:m37",
+          "family": "D1",
+          "gold": "37",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D1:synth-d1-study-agu:from56:m59",
+          "family": "D1",
+          "gold": "59",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        }
+      ]
+    },
+    "D2": {
+      "pin": {
+        "phase": "P1f",
+        "kebab_parity": true,
+        "written_before_sampled_run": true,
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "model_note": "Same pin as P1c/P1e. think:false. Local Ollama, not Comfy Cloud.",
+        "n": 8,
+        "split": "test",
+        "seed": 0,
+        "generator_seed": 2026091102,
+        "generator_seed_note": "Fresh. P1e ran 20260911, so every case measured here is new. P1f is a replication of the secondary criterion on cases it was not derived from.",
+        "songs_per_level": 64,
+        "songs_per_level_note": "Preregistered from P1e's measured rates, not chosen after the fact. At the primary bar's 17.2% leak-free in-band, n >= 59 is needed to expect 10, so 64 is the smallest round n that clears it; at 32.0% non-degenerate the expectation is 20.5.",
+        "train_per_level": 48,
+        "library_songs": 448,
+        "library_note": "One song per case, so doubling the test split grows the isolated library (P1e 320 -> P1f 448). Train-per-level is unchanged at 48. Library size is not a control the lock names, and lookup is by kebab id; the tool-turn histogram is the check that search did not change shape.",
+        "sampled": {
+          "temperature": 1,
+          "n": 8,
+          "seed": 0
+        },
+        "guess_test": {
+          "temperature": 1,
+          "n": 8,
+          "tools": "none"
+        },
+        "host": "http://127.0.0.1:11434",
+        "framework": "Ollama /api/chat through SynthEnv.runEpisode",
+        "hardware": "local RTX 5090, 32 GB",
+        "gold_n": 256,
+        "train_n": 192,
+        "test_n": 256,
+        "test_clusters": 256,
+        "levels": [
+          "D0",
+          "D1",
+          "D2",
+          "D3"
+        ],
+        "band": [
+          0.125,
+          0.5
+        ],
+        "go_rule": {
+          "min_in_band_after_leak": 10,
+          "sampled_pass1_below": 0.8,
+          "any_level": true,
+          "finding": "24 - INTELLECT-2, arXiv:2505.07291 (pass@8 in [12.5%, 50%])",
+          "unchanged_since": "P0"
+        },
+        "secondary_rule": {
+          "min_non_degenerate_after_leak": 10,
+          "definition": "0 < c < n; at the pinned n = 8, 1 <= c <= 7",
+          "sampled_pass1_below": 0.8,
+          "any_level": true,
+          "findings": "22 - DAPO, arXiv:2503.14476; 23 - Foster et al., arXiv:2502.12272; 26 - Absolute Zero, arXiv:2505.03335",
+          "declared_before_run": true,
+          "first_use": "P1f",
+          "note": "Reported beside the primary bar, never in place of it. A CLEAR here is not a GO: the P1f lock sends that to a director gate.",
+          "disclosure": "Recomputed from P1e's committed receipts with its own leak filter, this criterion already clears at D2 (11) and D3 (12). It is frozen here before P1f runs so this is a replication on fresh cases at double n, not a discovery announced from the run that motivated it."
+        },
+        "stopping_rule": "Primary clears -> GO, P2 unlocks under a director gate. Primary fails and secondary clears -> reported as exactly that, and the decision to train is a director gate. Both fail -> the arc ships the null; there is no P1g.",
+        "spend": 0
+      },
+      "band": {
+        "lo": 0.125,
+        "hi": 0.5
+      },
+      "go_rule": {
+        "min_in_band_after_leak": 10,
+        "sampled_pass1_below": 0.8
+      },
+      "secondary_rule": {
+        "min_non_degenerate_after_leak": 10,
+        "sampled_pass1_below": 0.8,
+        "definition": "0 < c < n (findings 22 / 23 / 26); at n = 8, 1 ≤ c ≤ 7"
+      },
+      "baselines": {
+        "overall": {
+          "majority_class": "17",
+          "majority": 0.046875,
+          "n": 64
+        },
+        "per_family": {
+          "D2": {
+            "majority_class": "17",
+            "majority": 0.046875,
+            "n": 64
+          }
+        }
+      },
+      "greedy": null,
+      "sampled": {
+        "overall": {
+          "n": 64,
+          "pass1": 0.654296875,
+          "pass8": 0.8125,
+          "greedy_pass1": 0.75,
+          "histogram": {
+            "below": 12,
+            "in_band": 10,
+            "above": 42
+          }
+        },
+        "per_family": {
+          "D2": {
+            "n": 64,
+            "pass1": 0.654296875,
+            "pass8": 0.8125,
+            "greedy_pass1": 0.75,
+            "histogram": {
+              "below": 12,
+              "in_band": 10,
+              "above": 42
+            }
+          }
+        },
+        "constant_gold_families": []
+      },
+      "guess_test": {
+        "overall": {
+          "n": 64,
+          "pass1": 0.1640625,
+          "pass8": 0.328125,
+          "greedy_pass1": 0.171875,
+          "histogram": {
+            "below": 43,
+            "in_band": 13,
+            "above": 8
+          }
+        },
+        "per_family": {
+          "D2": {
+            "n": 64,
+            "pass1": 0.1640625,
+            "pass8": 0.328125,
+            "greedy_pass1": 0.171875,
+            "histogram": {
+              "below": 43,
+              "in_band": 13,
+              "above": 8
+            }
+          }
+        },
+        "leak_n": 21,
+        "leak_ids": [
+          "synth:D2:synth-d2-study-air:from10:m13",
+          "synth:D2:synth-d2-study-aiw:from23:m24",
+          "synth:D2:synth-d2-study-aiy:from16:m17",
+          "synth:D2:synth-d2-study-aja:from54:m55",
+          "synth:D2:synth-d2-study-ajd:from71:m73",
+          "synth:D2:synth-d2-study-ajf:from82:m83",
+          "synth:D2:synth-d2-study-ajh:from50:m52",
+          "synth:D2:synth-d2-study-aji:from76:m78",
+          "synth:D2:synth-d2-study-ajk:from39:m42",
+          "synth:D2:synth-d2-study-ajp:from82:m84",
+          "synth:D2:synth-d2-study-aka:from30:m33",
+          "synth:D2:synth-d2-study-akb:from25:m26",
+          "synth:D2:synth-d2-study-akc:from54:m55",
+          "synth:D2:synth-d2-study-akg:from32:m34",
+          "synth:D2:synth-d2-study-akm:from26:m27",
+          "synth:D2:synth-d2-study-ako:from45:m46",
+          "synth:D2:synth-d2-study-akq:from31:m33",
+          "synth:D2:synth-d2-study-akr:from102:m104",
+          "synth:D2:synth-d2-study-akw:from42:m44",
+          "synth:D2:synth-d2-study-akz:from40:m43",
+          "synth:D2:synth-d2-study-alb:from50:m53"
+        ]
+      },
+      "learnability": {
+        "in_band_raw": 10,
+        "in_band_after_leak": 7,
+        "below": 12,
+        "above": 42,
+        "non_degenerate_raw": 22,
+        "non_degenerate_after_leak": 16,
+        "correct_histogram": {
+          "c0": 12,
+          "c1_4": 10,
+          "c5_7": 12,
+          "c8": 30,
+          "by_c": {
+            "0": 12,
+            "2": 1,
+            "3": 3,
+            "4": 6,
+            "5": 12,
+            "8": 30
+          }
+        },
+        "correct_histogram_leak_free": {
+          "c0": 8,
+          "c1_4": 7,
+          "c5_7": 9,
+          "c8": 19,
+          "by_c": {
+            "0": 8,
+            "3": 2,
+            "4": 5,
+            "5": 9,
+            "8": 19
+          }
+        }
+      },
+      "verdict": {
+        "existing_corpus": "NO-GO",
+        "new_family": "GO-candidate",
+        "reasons": [
+          "in-band after leak-filter is 7 (need ≥ 10 of 64)"
+        ]
+      },
+      "secondary_verdict": {
+        "non_degenerate": "CLEAR",
+        "reasons": [
+          "16 cases with 1 ≤ c ≤ 7 of 8 after leak-filter",
+          "sampled pass@1 0.654 < 0.8"
+        ]
+      },
+      "cases": [
+        {
+          "id": "synth:D2:synth-d2-study-air:from10:m13",
+          "family": "D2",
+          "gold": "13",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ais:from14:m17",
+          "family": "D2",
+          "gold": "17",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ait:from15:m18",
+          "family": "D2",
+          "gold": "18",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aiu:from24:m26",
+          "family": "D2",
+          "gold": "26",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aiv:from21:m22",
+          "family": "D2",
+          "gold": "22",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aiw:from23:m24",
+          "family": "D2",
+          "gold": "24",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aix:from83:m85",
+          "family": "D2",
+          "gold": "85",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aiy:from16:m17",
+          "family": "D2",
+          "gold": "17",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aiz:from16:m19",
+          "family": "D2",
+          "gold": "19",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aja:from54:m55",
+          "family": "D2",
+          "gold": "55",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajb:from73:m74",
+          "family": "D2",
+          "gold": "74",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajc:from24:m26",
+          "family": "D2",
+          "gold": "26",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajd:from71:m73",
+          "family": "D2",
+          "gold": "73",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aje:from35:m38",
+          "family": "D2",
+          "gold": "38",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajf:from82:m83",
+          "family": "D2",
+          "gold": "83",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajg:from38:m40",
+          "family": "D2",
+          "gold": "40",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajh:from50:m52",
+          "family": "D2",
+          "gold": "52",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aji:from76:m78",
+          "family": "D2",
+          "gold": "78",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajj:from86:m89",
+          "family": "D2",
+          "gold": "89",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajk:from39:m42",
+          "family": "D2",
+          "gold": "42",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajl:from77:m78",
+          "family": "D2",
+          "gold": "78",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajm:from4:m6",
+          "family": "D2",
+          "gold": "6",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajn:from49:m52",
+          "family": "D2",
+          "gold": "52",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajo:from34:m35",
+          "family": "D2",
+          "gold": "35",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajp:from82:m84",
+          "family": "D2",
+          "gold": "84",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajq:from55:m58",
+          "family": "D2",
+          "gold": "58",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajr:from63:m65",
+          "family": "D2",
+          "gold": "65",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajs:from88:m89",
+          "family": "D2",
+          "gold": "89",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajt:from21:m22",
+          "family": "D2",
+          "gold": "22",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aju:from14:m17",
+          "family": "D2",
+          "gold": "17",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajv:from9:m11",
+          "family": "D2",
+          "gold": "11",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajw:from85:m88",
+          "family": "D2",
+          "gold": "88",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajx:from51:m54",
+          "family": "D2",
+          "gold": "54",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajy:from64:m65",
+          "family": "D2",
+          "gold": "65",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ajz:from57:m59",
+          "family": "D2",
+          "gold": "59",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aka:from30:m33",
+          "family": "D2",
+          "gold": "33",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akb:from25:m26",
+          "family": "D2",
+          "gold": "26",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akc:from54:m55",
+          "family": "D2",
+          "gold": "55",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akd:from5:m7",
+          "family": "D2",
+          "gold": "7",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ake:from49:m50",
+          "family": "D2",
+          "gold": "50",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akf:from10:m11",
+          "family": "D2",
+          "gold": "11",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akg:from32:m34",
+          "family": "D2",
+          "gold": "34",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akh:from20:m21",
+          "family": "D2",
+          "gold": "21",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aki:from79:m82",
+          "family": "D2",
+          "gold": "82",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akj:from17:m18",
+          "family": "D2",
+          "gold": "18",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akk:from34:m36",
+          "family": "D2",
+          "gold": "36",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akl:from14:m15",
+          "family": "D2",
+          "gold": "15",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akm:from26:m27",
+          "family": "D2",
+          "gold": "27",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akn:from49:m52",
+          "family": "D2",
+          "gold": "52",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ako:from45:m46",
+          "family": "D2",
+          "gold": "46",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akp:from87:m89",
+          "family": "D2",
+          "gold": "89",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akq:from31:m33",
+          "family": "D2",
+          "gold": "33",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akr:from102:m104",
+          "family": "D2",
+          "gold": "104",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aks:from36:m38",
+          "family": "D2",
+          "gold": "38",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akt:from33:m35",
+          "family": "D2",
+          "gold": "35",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aku:from27:m30",
+          "family": "D2",
+          "gold": "30",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akv:from43:m45",
+          "family": "D2",
+          "gold": "45",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akw:from42:m44",
+          "family": "D2",
+          "gold": "44",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akx:from55:m56",
+          "family": "D2",
+          "gold": "56",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-aky:from75:m78",
+          "family": "D2",
+          "gold": "78",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D2:synth-d2-study-akz:from40:m43",
+          "family": "D2",
+          "gold": "43",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-ala:from78:m81",
+          "family": "D2",
+          "gold": "81",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-alb:from50:m53",
+          "family": "D2",
+          "gold": "53",
+          "n": 8,
+          "correct": 2,
+          "pass1": 0.25,
+          "pass8": 1,
+          "rate": 0.25,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D2:synth-d2-study-alc:from66:m69",
+          "family": "D2",
+          "gold": "69",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        }
+      ]
+    },
+    "D3": {
+      "pin": {
+        "phase": "P1f",
+        "kebab_parity": true,
+        "written_before_sampled_run": true,
+        "model": "qwen3:4b-instruct-2507-q4_K_M",
+        "model_note": "Same pin as P1c/P1e. think:false. Local Ollama, not Comfy Cloud.",
+        "n": 8,
+        "split": "test",
+        "seed": 0,
+        "generator_seed": 2026091102,
+        "generator_seed_note": "Fresh. P1e ran 20260911, so every case measured here is new. P1f is a replication of the secondary criterion on cases it was not derived from.",
+        "songs_per_level": 64,
+        "songs_per_level_note": "Preregistered from P1e's measured rates, not chosen after the fact. At the primary bar's 17.2% leak-free in-band, n >= 59 is needed to expect 10, so 64 is the smallest round n that clears it; at 32.0% non-degenerate the expectation is 20.5.",
+        "train_per_level": 48,
+        "library_songs": 448,
+        "library_note": "One song per case, so doubling the test split grows the isolated library (P1e 320 -> P1f 448). Train-per-level is unchanged at 48. Library size is not a control the lock names, and lookup is by kebab id; the tool-turn histogram is the check that search did not change shape.",
+        "sampled": {
+          "temperature": 1,
+          "n": 8,
+          "seed": 0
+        },
+        "guess_test": {
+          "temperature": 1,
+          "n": 8,
+          "tools": "none"
+        },
+        "host": "http://127.0.0.1:11434",
+        "framework": "Ollama /api/chat through SynthEnv.runEpisode",
+        "hardware": "local RTX 5090, 32 GB",
+        "gold_n": 256,
+        "train_n": 192,
+        "test_n": 256,
+        "test_clusters": 256,
+        "levels": [
+          "D0",
+          "D1",
+          "D2",
+          "D3"
+        ],
+        "band": [
+          0.125,
+          0.5
+        ],
+        "go_rule": {
+          "min_in_band_after_leak": 10,
+          "sampled_pass1_below": 0.8,
+          "any_level": true,
+          "finding": "24 - INTELLECT-2, arXiv:2505.07291 (pass@8 in [12.5%, 50%])",
+          "unchanged_since": "P0"
+        },
+        "secondary_rule": {
+          "min_non_degenerate_after_leak": 10,
+          "definition": "0 < c < n; at the pinned n = 8, 1 <= c <= 7",
+          "sampled_pass1_below": 0.8,
+          "any_level": true,
+          "findings": "22 - DAPO, arXiv:2503.14476; 23 - Foster et al., arXiv:2502.12272; 26 - Absolute Zero, arXiv:2505.03335",
+          "declared_before_run": true,
+          "first_use": "P1f",
+          "note": "Reported beside the primary bar, never in place of it. A CLEAR here is not a GO: the P1f lock sends that to a director gate.",
+          "disclosure": "Recomputed from P1e's committed receipts with its own leak filter, this criterion already clears at D2 (11) and D3 (12). It is frozen here before P1f runs so this is a replication on fresh cases at double n, not a discovery announced from the run that motivated it."
+        },
+        "stopping_rule": "Primary clears -> GO, P2 unlocks under a director gate. Primary fails and secondary clears -> reported as exactly that, and the decision to train is a director gate. Both fail -> the arc ships the null; there is no P1g.",
+        "spend": 0
+      },
+      "band": {
+        "lo": 0.125,
+        "hi": 0.5
+      },
+      "go_rule": {
+        "min_in_band_after_leak": 10,
+        "sampled_pass1_below": 0.8
+      },
+      "secondary_rule": {
+        "min_non_degenerate_after_leak": 10,
+        "sampled_pass1_below": 0.8,
+        "definition": "0 < c < n (findings 22 / 23 / 26); at n = 8, 1 ≤ c ≤ 7"
+      },
+      "baselines": {
+        "overall": {
+          "majority_class": "41",
+          "majority": 0.046875,
+          "n": 64
+        },
+        "per_family": {
+          "D3": {
+            "majority_class": "41",
+            "majority": 0.046875,
+            "n": 64
+          }
+        }
+      },
+      "greedy": null,
+      "sampled": {
+        "overall": {
+          "n": 64,
+          "pass1": 0.544921875,
+          "pass8": 0.765625,
+          "greedy_pass1": 0.578125,
+          "histogram": {
+            "below": 15,
+            "in_band": 17,
+            "above": 32
+          }
+        },
+        "per_family": {
+          "D3": {
+            "n": 64,
+            "pass1": 0.544921875,
+            "pass8": 0.765625,
+            "greedy_pass1": 0.578125,
+            "histogram": {
+              "below": 15,
+              "in_band": 17,
+              "above": 32
+            }
+          }
+        },
+        "constant_gold_families": []
+      },
+      "guess_test": {
+        "overall": {
+          "n": 64,
+          "pass1": 0.111328125,
+          "pass8": 0.25,
+          "greedy_pass1": 0.09375,
+          "histogram": {
+            "below": 48,
+            "in_band": 10,
+            "above": 6
+          }
+        },
+        "per_family": {
+          "D3": {
+            "n": 64,
+            "pass1": 0.111328125,
+            "pass8": 0.25,
+            "greedy_pass1": 0.09375,
+            "histogram": {
+              "below": 48,
+              "in_band": 10,
+              "above": 6
+            }
+          }
+        },
+        "leak_n": 16,
+        "leak_ids": [
+          "synth:D3:synth-d3-study-amz:from12:m14",
+          "synth:D3:synth-d3-study-anc:from52:m54",
+          "synth:D3:synth-d3-study-ang:from39:m42",
+          "synth:D3:synth-d3-study-anq:from53:m55",
+          "synth:D3:synth-d3-study-anr:from17:m19",
+          "synth:D3:synth-d3-study-ans:from39:m41",
+          "synth:D3:synth-d3-study-ant:from102:m105",
+          "synth:D3:synth-d3-study-anw:from23:m25",
+          "synth:D3:synth-d3-study-anz:from80:m82",
+          "synth:D3:synth-d3-study-aod:from32:m34",
+          "synth:D3:synth-d3-study-aof:from10:m13",
+          "synth:D3:synth-d3-study-aoi:from51:m53",
+          "synth:D3:synth-d3-study-aol:from23:m24",
+          "synth:D3:synth-d3-study-aon:from45:m47",
+          "synth:D3:synth-d3-study-aot:from70:m72",
+          "synth:D3:synth-d3-study-apg:from45:m46"
+        ]
+      },
+      "learnability": {
+        "in_band_raw": 17,
+        "in_band_after_leak": 14,
+        "below": 15,
+        "above": 32,
+        "non_degenerate_raw": 30,
+        "non_degenerate_after_leak": 24,
+        "correct_histogram": {
+          "c0": 15,
+          "c1_4": 17,
+          "c5_7": 13,
+          "c8": 19,
+          "by_c": {
+            "0": 15,
+            "3": 9,
+            "4": 8,
+            "5": 11,
+            "6": 1,
+            "7": 1,
+            "8": 19
+          }
+        },
+        "correct_histogram_leak_free": {
+          "c0": 13,
+          "c1_4": 14,
+          "c5_7": 10,
+          "c8": 11,
+          "by_c": {
+            "0": 13,
+            "3": 7,
+            "4": 7,
+            "5": 8,
+            "6": 1,
+            "7": 1,
+            "8": 11
+          }
+        }
+      },
+      "verdict": {
+        "existing_corpus": "GO",
+        "reasons": [
+          "14 cases in pass@8 [0.125, 0.5] after leak-filter",
+          "sampled pass@1 0.545 < 0.8"
+        ]
+      },
+      "secondary_verdict": {
+        "non_degenerate": "CLEAR",
+        "reasons": [
+          "24 cases with 1 ≤ c ≤ 7 of 8 after leak-filter",
+          "sampled pass@1 0.545 < 0.8"
+        ]
+      },
+      "cases": [
+        {
+          "id": "synth:D3:synth-d3-study-amz:from12:m14",
+          "family": "D3",
+          "gold": "14",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ana:from62:m65",
+          "family": "D3",
+          "gold": "65",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anb:from45:m48",
+          "family": "D3",
+          "gold": "48",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anc:from52:m54",
+          "family": "D3",
+          "gold": "54",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-and:from34:m35",
+          "family": "D3",
+          "gold": "35",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ane:from4:m5",
+          "family": "D3",
+          "gold": "5",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anf:from28:m31",
+          "family": "D3",
+          "gold": "31",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ang:from39:m42",
+          "family": "D3",
+          "gold": "42",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anh:from77:m80",
+          "family": "D3",
+          "gold": "80",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ani:from62:m63",
+          "family": "D3",
+          "gold": "63",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anj:from26:m29",
+          "family": "D3",
+          "gold": "29",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ank:from15:m18",
+          "family": "D3",
+          "gold": "18",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anl:from40:m41",
+          "family": "D3",
+          "gold": "41",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anm:from72:m75",
+          "family": "D3",
+          "gold": "75",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ann:from25:m26",
+          "family": "D3",
+          "gold": "26",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ano:from30:m31",
+          "family": "D3",
+          "gold": "31",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anp:from6:m8",
+          "family": "D3",
+          "gold": "8",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anq:from53:m55",
+          "family": "D3",
+          "gold": "55",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anr:from17:m19",
+          "family": "D3",
+          "gold": "19",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ans:from39:m41",
+          "family": "D3",
+          "gold": "41",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ant:from102:m105",
+          "family": "D3",
+          "gold": "105",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anu:from38:m41",
+          "family": "D3",
+          "gold": "41",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anv:from20:m21",
+          "family": "D3",
+          "gold": "21",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anw:from23:m25",
+          "family": "D3",
+          "gold": "25",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anx:from109:m110",
+          "family": "D3",
+          "gold": "110",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-any:from37:m40",
+          "family": "D3",
+          "gold": "40",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-anz:from80:m82",
+          "family": "D3",
+          "gold": "82",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoa:from24:m25",
+          "family": "D3",
+          "gold": "25",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aob:from50:m51",
+          "family": "D3",
+          "gold": "51",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoc:from21:m22",
+          "family": "D3",
+          "gold": "22",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aod:from32:m34",
+          "family": "D3",
+          "gold": "34",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoe:from47:m50",
+          "family": "D3",
+          "gold": "50",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aof:from10:m13",
+          "family": "D3",
+          "gold": "13",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aog:from19:m22",
+          "family": "D3",
+          "gold": "22",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoh:from67:m69",
+          "family": "D3",
+          "gold": "69",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoi:from51:m53",
+          "family": "D3",
+          "gold": "53",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoj:from39:m40",
+          "family": "D3",
+          "gold": "40",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aok:from99:m101",
+          "family": "D3",
+          "gold": "101",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aol:from23:m24",
+          "family": "D3",
+          "gold": "24",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aom:from50:m52",
+          "family": "D3",
+          "gold": "52",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aon:from45:m47",
+          "family": "D3",
+          "gold": "47",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoo:from17:m19",
+          "family": "D3",
+          "gold": "19",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aop:from67:m68",
+          "family": "D3",
+          "gold": "68",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoq:from35:m38",
+          "family": "D3",
+          "gold": "38",
+          "n": 8,
+          "correct": 6,
+          "pass1": 0.75,
+          "pass8": 1,
+          "rate": 0.75,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aor:from16:m19",
+          "family": "D3",
+          "gold": "19",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aos:from11:m14",
+          "family": "D3",
+          "gold": "14",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aot:from70:m72",
+          "family": "D3",
+          "gold": "72",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aou:from35:m36",
+          "family": "D3",
+          "gold": "36",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aov:from51:m52",
+          "family": "D3",
+          "gold": "52",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aow:from2:m4",
+          "family": "D3",
+          "gold": "4",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aox:from13:m16",
+          "family": "D3",
+          "gold": "16",
+          "n": 8,
+          "correct": 7,
+          "pass1": 0.875,
+          "pass8": 1,
+          "rate": 0.875,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoy:from81:m82",
+          "family": "D3",
+          "gold": "82",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aoz:from9:m12",
+          "family": "D3",
+          "gold": "12",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-apa:from50:m51",
+          "family": "D3",
+          "gold": "51",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-apb:from40:m42",
+          "family": "D3",
+          "gold": "42",
+          "n": 8,
+          "correct": 5,
+          "pass1": 0.625,
+          "pass8": 1,
+          "rate": 0.625,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-apc:from43:m46",
+          "family": "D3",
+          "gold": "46",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-apd:from97:m100",
+          "family": "D3",
+          "gold": "100",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-ape:from97:m100",
+          "family": "D3",
+          "gold": "100",
+          "n": 8,
+          "correct": 3,
+          "pass1": 0.375,
+          "pass8": 1,
+          "rate": 0.375,
+          "band": "in_band",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-apf:from58:m60",
+          "family": "D3",
+          "gold": "60",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-apg:from45:m46",
+          "family": "D3",
+          "gold": "46",
+          "n": 8,
+          "correct": 4,
+          "pass1": 0.5,
+          "pass8": 1,
+          "rate": 0.5,
+          "band": "in_band",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-aph:from49:m52",
+          "family": "D3",
+          "gold": "52",
+          "n": 8,
+          "correct": 8,
+          "pass1": 1,
+          "pass8": 1,
+          "rate": 1,
+          "band": "above",
+          "greedy_hit": true
+        },
+        {
+          "id": "synth:D3:synth-d3-study-api:from47:m48",
+          "family": "D3",
+          "gold": "48",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-apj:from6:m9",
+          "family": "D3",
+          "gold": "9",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        },
+        {
+          "id": "synth:D3:synth-d3-study-apk:from69:m72",
+          "family": "D3",
+          "gold": "72",
+          "n": 8,
+          "correct": 0,
+          "pass1": 0,
+          "pass8": 0,
+          "rate": 0,
+          "band": "below",
+          "greedy_hit": false
+        }
+      ]
+    }
+  }
+}
