@@ -106,9 +106,10 @@ finish() {
 say "stage0 environment"
 nvidia-smi --query-gpu=name,memory.total,compute_cap --format=csv,noheader | tee "$ART/gpu.txt"
 
-# Blackwell (sm_120) needs CUDA >= 12.8, and prebuilt vLLM wheels have shipped
-# without SM120 arch flags (vllm#35432). We do not use vLLM on this ladder, but
-# the arch check is free and a wrong card is cheaper to find here than at step 2.
+# A first CUDA check against the IMAGE's torch, before the long downloads: a
+# dead or wrong card is cheaper to find in the first ten seconds than after a
+# 3 GB wheel and a 7.6 GB checkpoint. The pinned torch is re-checked after
+# install below — this one is a smoke test, not the pin.
 python - <<'PY'
 import torch
 assert torch.cuda.is_available(), "no CUDA"
@@ -117,32 +118,55 @@ print(f"ENV-OK torch {torch.__version__} cuda {torch.version.cuda} {torch.cuda.g
 assert (torch.ones(4, device="cuda") * 2).sum().item() == 8.0
 PY
 
-pip install -q -r "$TRAINER/requirements.lock.txt"
-pip list --format=freeze | grep -Ei "^(torch|transformers|trl|peft|accelerate|datasets|httpx)=" > "$ART/pip-pins.txt"
-cat "$ART/pip-pins.txt"
-
-# The tool surface is Node, and it is the REAL one — not a Python reimplementation.
-say "stage0b node + the real MCP server"
+# ORDER MATTERS: requirements.lock.txt lives inside the repo, so the clone comes
+# BEFORE pip. (It did not, briefly, and stage 0 would have failed on every launch
+# with a missing requirements file.)
+#
+# NOTHING BELOW IS SILENCED, and that is deliberate. The babysitter's three
+# liveness signals are log growth, a new marker, and a busy GPU — and during
+# setup the GPU is IDLE and there are no markers, so the log is the only one
+# left. A `-q` here is a false stall on a healthy run: the watchdog gives up,
+# stops fetching, and the pod then bills to the dead-man cap. Per-substep `say`
+# lines keep progress honest rather than heartbeating: if a substep really hangs,
+# the log stops growing and the stall detector still fires.
+say "stage0b node"
 if ! command -v node >/dev/null 2>&1; then
-  curl -fsSL https://deb.nodesource.com/setup_22.x | bash - >/dev/null
-  apt-get install -y -qq nodejs >/dev/null
+  curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+  apt-get install -y -qq nodejs
 fi
 node --version | tee "$ART/node-version.txt"
 
-# Clone rather than scp: 130 MB of tracked tree is a slow push and a mutable
-# one, where a commit sha is reproducible and is what PIN_PER_STEP asks for.
+say "stage0c clone $P2_REPO_URL at $P2_COMMIT"
 if [ ! -d "$REPO/.git" ]; then
-  say "cloning $P2_REPO_URL"
-  git clone -q "$P2_REPO_URL" "$REPO"
+  git clone --progress "$P2_REPO_URL" "$REPO"
 fi
 cd "$REPO"
-git fetch -q origin "$P2_COMMIT" 2>/dev/null || git fetch -q origin
-git checkout -q --detach "$P2_COMMIT"
+git fetch origin "$P2_COMMIT" 2>/dev/null || git fetch origin
+git checkout --detach "$P2_COMMIT"
 git rev-parse HEAD | tee "$ART/repo-commit.txt"
-corepack enable >/dev/null 2>&1 || npm i -g pnpm >/dev/null
-pnpm install --frozen-lockfile >/dev/null
-pnpm build >/dev/null
+say "stage0c clone done"
+
+say "stage0d python deps (this is the ~3 GB torch download; progress is the liveness signal)"
+pip install -r "$TRAINER/requirements.lock.txt"
+pip list --format=freeze | grep -Ei "^(torch|transformers|trl|peft|accelerate|datasets|httpx)=" > "$ART/pip-pins.txt"
+cat "$ART/pip-pins.txt"
+say "stage0d python deps done"
+
+# Re-check CUDA against the torch we just INSTALLED, not the image's.
+python - <<'PY'
+import torch
+assert torch.cuda.is_available(), "no CUDA after install"
+cap = torch.cuda.get_device_capability(0)
+print(f"ENV-OK torch {torch.__version__} cuda {torch.version.cuda} {torch.cuda.get_device_name(0)} sm_{cap[0]}{cap[1]}", flush=True)
+assert (torch.ones(4, device="cuda") * 2).sum().item() == 8.0
+PY
+
+say "stage0e node deps + build"
+corepack enable >/dev/null 2>&1 || npm i -g pnpm
+pnpm install --frozen-lockfile
+pnpm build
 test -f "$REPO/dist/mcp-server.js" || { echo "FAIL: dist/mcp-server.js missing after build"; exit 1; }
+say "stage0e build done"
 
 say "stage0c bridge health"
 node "$REPO/experiments/rollout-arc/scripts/p2-env-server.mjs" --port "$PORT" \

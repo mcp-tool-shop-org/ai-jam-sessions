@@ -247,10 +247,21 @@ shape sat at **31.9 GB of 32.6 GB** on the 5090 and made no progress.
 mandatory parameter of `deadman-p2.ps1`; nothing is baked in, so this is a launch-time argument
 and not a code change.
 
-| Stage | Cap | Worst case on an L40S | Attempts left inside $10 |
+| Stage | Cap | Worst case on an A6000 ($0.33/hr) | Attempts left inside $10 |
 |---|---|---|---|
-| `smoke` | **3 hr** (10,800 s) | **$2.37** | 3 more |
-| `train` | 12 hr (43,200 s) | $9.48 | — (derive from what is left) |
+| `smoke` | **8 hr** (28,800 s) | **$2.64** | 2–3 more |
+| `train` | derive from what is left | — | — |
+
+**Card and cap were re-derived together** (rates fetched by `ai-5e`, not by me): the A6000 at
+$0.33/hr carries 768 GB/s against the L40S's 864 GB/s at $0.79 — 12.5% more bandwidth for 2.4×
+the price. For a run whose only output is a measurement, a 12.5% slower measurement is still the
+measurement. The 4090 is the best bandwidth-per-dollar on that board and loses on our own
+evidence: 24 GB cannot hold the production shape, which this document measured at 31.9 GB.
+
+The cheaper card also dissolves the tension in my earlier caveat. **8 hours at $0.33 costs less
+than 4 hours at $0.79** — double the margin for less money — so a cap can no longer bite a
+working first run on a path that has never run. That is buying margin rather than speed on the
+attempt whose entire purpose is to find out what we got wrong.
 
 The usual argument for this is retry budget, and it holds: a smoke run's whole job is to
 discover what we got wrong, so a first attempt failing is the *expected* outcome, and a 12-hour
@@ -300,8 +311,10 @@ No pod, no real API, no dollar: a mock RunPod endpoint on localhost records ever
 | F | idle GPU + static log | exit 2, **no** terminate | ✅ |
 | G | ssh unreachable | exit 3, **no** terminate | ✅ |
 | H | **dead-man fires mid-run, under a live babysitter** | exactly one terminate, babysitter exits 3 rather than claiming success, no cancel file, half-fetched artifact not reported as good | ✅ |
+| I | **a fetch interrupted mid-transfer** | the already-good local artifact survives untouched, no temp files left, no terminate | ✅ |
+| J | dead-man's default `-ArtDir` vs babysitter's default cancel dir | same directory | ✅ |
 
-**23 / 23 checks passed**, and the mock recorded **exactly 3** `podTerminate` calls — scenarios A,
+**29 / 29 checks passed**, and the mock recorded **exactly 3** `podTerminate` calls — scenarios A,
 C and H. The five scenarios that must not terminate did not. Receipt:
 [`compensator-drill.json`](compensator-drill.json).
 
@@ -364,13 +377,17 @@ residual exposure is local development, and the remedy is one line: list
 #    keys at pod START, so a key added afterwards needs a restart.
 node experiments/acoustic-sft/runpod.mjs verify
 
-# 1. deploy one L40S on the community tier ($0.79/hr).
-RUNPOD_GPU="NVIDIA L40S" node experiments/acoustic-sft/runpod.mjs up
+# 1. deploy one A6000 on the community tier ($0.33/hr). RUNPOD_GPU pins a SINGLE
+#    type, so the fallback is manual: if it reports out of stock, re-run with the
+#    next name. Do NOT edit runpod.mjs's built-in chain — that file belongs to
+#    the acoustic arc and its chain is Blackwell-first for that arc's reasons.
+RUNPOD_GPU="NVIDIA RTX A6000" node experiments/acoustic-sft/runpod.mjs up
+#    out of stock? in order: "NVIDIA A40" -> "NVIDIA L40" -> "NVIDIA L40S"
 #    prints podId / publicIp / sshPort; also written to ~/.ssh/runpod_acoustic_pod.json
 
 # 2. ARM THE DEAD-MAN BEFORE THE RUN STARTS (lock §7 item 4).
-#    4 h = 14400 s = $3.16 worst case. Detached, so it outlives this session.
-powershell -NoProfile -Command "Start-Process powershell -ArgumentList '-NoProfile','-File','E:\AI\ai-jam-sessions\experiments\rollout-arc\p2\scripts\deadman-p2.ps1','-PodId','<podId>','-CapSeconds','14400','-Label','p2smoke' -WindowStyle Hidden"
+#    8 h = 28800 s = $2.64 worst case on the A6000. Detached, outlives this session.
+powershell -NoProfile -Command "Start-Process powershell -ArgumentList '-NoProfile','-File','E:\AI\ai-jam-sessions\experiments\rollout-arc\p2\scripts\deadman-p2.ps1','-PodId','<podId>','-CapSeconds','28800','-Label','p2smoke' -WindowStyle Hidden"
 
 # 3. wait for the direct SSH port to route. 2-5 minutes is normal. Poll it.
 #    Do not churn into terminate — that is how the 2026-07-13 attempt died.
@@ -412,6 +429,41 @@ is unparseable where a half-written JSONL loses only its last line.
 
 `repo-commit.txt` ships beside it: stage 0 fails in its first second if `P2_COMMIT` is unset, and
 records the resolved sha it actually checked out.
+
+### Does an 8-hour cap trip anything? Two things, and both are now fixed
+
+**The stall window does not assume a shorter run.** `P2_STALL_SECONDS` (1800) measures time since
+the last *progress*, not since start, and `P2_POLL_SECONDS` (60) is 480 polls over 8 hours —
+neither scales with run length. So the cap length itself is fine.
+
+**But stage 0 was silent, and that is a false-stall generator at any cap.** The babysitter's
+three liveness signals are log growth, a new marker, and a busy GPU. During setup there are no
+markers and **the GPU is idle** — so the log is the only signal left, and stage 0 had `pip
+install -q`, `git clone -q`, `pnpm install >/dev/null` and `pnpm build >/dev/null`. A 3 GB torch
+wheel on a slow pod could have crossed 30 minutes in silence, at which point the babysitter
+declares a stall, exits 2, stops fetching — **and because the stall path deliberately does not
+terminate, the pod then bills to the full cap.** Our own quietness would have bought the entire
+worst case.
+
+Fixed by making the progress real rather than by widening the window: nothing in stage 0 is
+silenced any more, and each substep brackets itself with a `say` line. That preserves the
+watchdog — if a substep genuinely hangs, the log stops growing and the stall still fires — where
+a heartbeat timer would have made the stall detector unable to ever fire.
+
+**Also found while checking this:** `pip install -r "$TRAINER/requirements.lock.txt"` ran
+*before* the clone that creates `$TRAINER`. Stage 0 would have failed on every launch with a
+missing requirements file. Clone now precedes pip, and the CUDA check runs twice — once against
+the image's torch as a ten-second smoke test before the long downloads, once against the pinned
+torch after install.
+
+**On a half-fetched `stage-timings.jsonl`:** a longer cap does not change its shape, but the
+question exposed a real hole. `fetch()` wrote straight into the destination, and the babysitter
+re-fetches the same names on every marker — so an scp interrupted by the pod vanishing would
+**truncate an artifact that had already arrived intact**. It now fetches to `.fetch.$$.<name>`
+and renames only on success, so a partial transfer can never replace a whole file. Scenario I
+proves it: a good `stage-timings.jsonl` survives a transfer that dies mid-write, with no temp
+files left behind. JSONL still earns its keep for the pod-side write, where an interrupted
+append costs one line instead of the file.
 
 ## What this does not do
 

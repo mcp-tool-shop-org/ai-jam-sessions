@@ -47,7 +47,21 @@ fi
 mkdir -p "$ART" "$CANCEL_DIR"
 LOG="$ART/babysit.log"
 log() { echo "$(date -Is) $*" | tee -a "$LOG"; }
-fetch() { "${SCP_BASE[@]}" "root@$IP:$REMOTE_ART/$1" "$ART/" >>"$LOG" 2>&1; }
+# Fetch through a temp file and rename on success. scp writes straight into the
+# destination, so an scp interrupted by the pod vanishing mid-transfer TRUNCATES
+# whatever good copy was already there — and this fetcher re-fetches the same
+# names on every marker. A half-written artifact must never replace a whole one.
+fetch() {
+  local name tmp
+  name=$(basename "$1")
+  tmp="$ART/.fetch.$$.$name"
+  if "${SCP_BASE[@]}" "root@$IP:$REMOTE_ART/$1" "$tmp" >>"$LOG" 2>&1; then
+    mv -f "$tmp" "$ART/$name"
+  else
+    rm -f "$tmp"
+    return 1
+  fi
+}
 
 terminate_pod() {
   curl -s -X POST "$API_URL" \
