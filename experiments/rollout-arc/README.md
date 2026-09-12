@@ -3,32 +3,22 @@
 The RL environment the experiment contract was missing. Design lock:
 [`docs/rollout-layer-dispatch.md`](../../docs/rollout-layer-dispatch.md).
 
-> ⭐ **ARC REOPEN 2026-09-11 (director). Live phase: P1d, the `synth-v0` generated family —
-> [`docs/rollout-arc-p1d-kickoff.md`](../../docs/rollout-arc-p1d-kickoff.md).**
-> The closure below rested on a "task supply" argument that did not survive, and the
-> cluster-count backup blocker dissolves the same way: a synthetic generator emits as many
-> independent clusters as it is asked for. P1d holds `distance` fixed at 1–3, where the policy
-> already scores 0.52–0.66, and grades difficulty by distractor confusability inside the page
-> instead. Still $0, still gated, P2 still does not start without an in-band population.
+> ⭐ **ARC REOPEN. Live phase: P1f — [`docs/rollout-arc-p1f-kickoff.md`](../../docs/rollout-arc-p1f-kickoff.md).**
+> P1d/P1e ran the `synth-v0` sweep: kebab-parity fixed the lookup confound (607 hits of 1024,
+> tools help), but **NO-GO on the frozen bar at all four levels**, and D3 came out *easier*
+> than D0 — distractor density does not grade. P1f changes only n (32→64 per level) and adds a
+> **second criterion declared before the run**: the dispatch has four findings on what a
+> trainable case is (22 DAPO, 23 Foster, 26 Absolute Zero all say **non-degenerate**; 24
+> INTELLECT-2 gives the narrow band) and **P0 froze the GO rule on 24 alone**. Recomputed from
+> P1e receipts: leak-free in-band 22/128, leak-free non-degenerate **41/128**. A stopping rule
+> is in the lock: if neither criterion clears, the arc ships the null and there is no P1g.
 >
-> ⛔ **P0–P1c record (the three no-gos). Total spend $0. No GPU was ever rented.**
+> **Superseded kickoffs, kept as record:** [P1d](../../docs/rollout-arc-p1d-kickoff.md)
+> (the generator, and the "task supply" closure that did not survive).
+> **Prior record:** [P0–P1c report](../../docs/rollout-arc-closing-report.md) — three
+> frozen-bar no-gos, and a wrong conclusion drawn from them, both kept in place.
 >
-> Three families were measured against bars frozen before any model call, and all three
-> failed. The mechanism for the last one: the policy pages but never uses the second
-> page — all 480 in-range answers at distance ≥ 4 landed inside the *first* window — so
-> distance is a step function with no trainable middle.
->
-> ⚠ **The report's original "binding constraint is task supply" finding was WRONG and was
-> corrected the same day.** `inferChord` and `detectChord` are pure functions over a
-> string and a number array; neither needs the song library. The 18-occurrence ceiling
-> came from `loadPublishableSongs()` — a *publishing* constraint the environment
-> inherited by accident. A synthetic generator supplies unbounded scorable tasks.
-> **The open question is narrower: whether difficulty can be graded inside the band where
-> the policy already scores 0.52–0.66, instead of along an axis that steps to zero.**
->
-> **Read [`docs/rollout-arc-closing-report.md`](../../docs/rollout-arc-closing-report.md) first** —
-> verdict, mechanism, what survives the null, and the preregistered conditions that
-> would reopen the arc. **P2 never started. No paid run was authorised.**
+> **Running totals: $0. No GPU has ever been rented. P2 has never started.**
 
 ## Results
 
@@ -43,9 +33,21 @@ The RL environment the experiment contract was missing. Design lock:
 
 P1b was an instrument fault, not a family result: `list_measures` defaulted to the whole
 song, so 376 of 376 rollouts took a single turn and the no-tool guess-test *beat* tool use
-(0.213 against 0.106). **P1c is the measurement of record** — bounded observation, preferred
-base, cap 32. Search happened there (6 of 728 one-turn, mean 2.20 turns) and tools helped
-(guess-test 0.088 against tool-using 0.154). The bars still failed.
+(0.213 against 0.106). P1d was a second instrument fault: song titles did not match their
+kebab ids, so lookups missed and the sweep returned 1 hit in 1024.
+
+**P1c and P1e are the two measurements of record.** P1c established the distance cliff: the
+policy pages but answers from the first page, so that axis steps to zero rather than grading.
+P1e established that distractor density does not grade either, and in fact runs backwards —
+D3 is *easier* than D0. Both failed the frozen bar.
+
+**P1e also surfaced a defect in the bar itself.** The dispatch carries four findings on what a
+trainable case is. Findings 22 (DAPO), 23 (Foster) and 26 (Absolute Zero) all say
+**non-degenerate**, meaning any case the policy neither always nor never solves. Finding 24
+(INTELLECT-2) gives the narrow `[12.5%, 50%]` band, which is a selectivity filter for a
+285,000-case pool. **P0 froze the GO rule on finding 24 alone.** Recomputed from P1e's own
+receipts with its own leak filter, leak-free in-band is 22 of 128 while leak-free
+non-degenerate is 41 of 128. P1f reports both, with the second declared before the run.
 
 ## What this directory is for now
 
