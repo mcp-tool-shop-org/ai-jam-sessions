@@ -130,6 +130,11 @@ function letters(n: number): string {
   return s;
 }
 
+/** Title → id the way Bethena → bethena. The policy kebab-cases the title. */
+export function kebab(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
 function filler(rng: () => number, cat: Voicing[], forbiddenNames: Set<string>, forbiddenPcs: number[]): Voicing | null {
   const pool = cat.filter((v) => !forbiddenNames.has(v.name) && shared(v.pcs, forbiddenPcs) === 0);
   if (!pool.length) return null;
@@ -198,8 +203,8 @@ export function smokeSong(): SongEntry {
   const c = voicingOf(triadMidi(0, false, 3));
   if (!c) throw new Error("C major voicing does not re-derive");
   return makeSong({
-    id: "synth-smoke-one",
-    title: "Amber Canon aaa",
+    id: kebab("Synth Smoke One"),
+    title: "Synth Smoke One",
     nMeasures: 48,
     pageStart: 1,
     pageLh: [c.lh, c.lh, c.lh, c.lh],
@@ -281,9 +286,12 @@ export function generateCorpus(seed: number = GENERATOR_SEED): SynthCorpus {
       page[targetSlot] = target.lh;
       const fillerV = filler(rng, cat, new Set([target.name]), target.pcs);
       if (!fillerV) continue;
-      const id = `synth-${level.toLowerCase()}-${String(serial).padStart(4, "0")}`;
       serial++;
-      const title = `Quiet Study ${letters(serial)}`;
+      const title = `Synth ${level} Study ${letters(serial)}`;
+      const id = kebab(title);
+      if (!id.startsWith("synth-") || id !== kebab(title)) {
+        throw new Error(`kebab-parity failed for title ${JSON.stringify(title)}`);
+      }
       const song = makeSong({
         id,
         title,

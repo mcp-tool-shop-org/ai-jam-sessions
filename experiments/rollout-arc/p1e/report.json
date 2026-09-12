@@ -1,0 +1,175 @@
+{
+  "pin": {
+    "phase": "P1e",
+    "kebab_parity": true,
+    "written_before_sampled_run": true,
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "model_note": "Same pin as P1c. think:false. Local Ollama, not Comfy Cloud.",
+    "n": 8,
+    "split": "test",
+    "seed": 0,
+    "generator_seed": 20260911,
+    "sampled": {
+      "temperature": 1,
+      "n": 8,
+      "seed": 0
+    },
+    "guess_test": {
+      "temperature": 1,
+      "n": 8,
+      "tools": "none"
+    },
+    "host": "http://127.0.0.1:11434",
+    "framework": "Ollama /api/chat through SynthEnv.runEpisode",
+    "hardware": "local RTX 5090, 32 GB",
+    "gold_n": 128,
+    "train_n": 192,
+    "test_n": 128,
+    "test_clusters": 128,
+    "levels": [
+      "D0",
+      "D1",
+      "D2",
+      "D3"
+    ],
+    "band": [
+      0.125,
+      0.5
+    ],
+    "go_rule": {
+      "min_in_band_after_leak": 10,
+      "sampled_pass1_below": 0.8,
+      "any_level": true
+    },
+    "spend": 0
+  },
+  "levels": {
+    "D0": {
+      "n": 32,
+      "pass1": 0.4766,
+      "pass8": 0.6875,
+      "hist": {
+        "below": 10,
+        "in_band": 9,
+        "above": 13
+      },
+      "in_band_after_leak": 6,
+      "leak_n": 10,
+      "guess_pass8": 0.3125,
+      "go": false
+    },
+    "D1": {
+      "n": 32,
+      "pass1": 0.6445,
+      "pass8": 0.7813,
+      "hist": {
+        "below": 7,
+        "in_band": 4,
+        "above": 21
+      },
+      "in_band_after_leak": 4,
+      "leak_n": 7,
+      "guess_pass8": 0.2188,
+      "go": false
+    },
+    "D2": {
+      "n": 32,
+      "pass1": 0.5664,
+      "pass8": 0.8125,
+      "hist": {
+        "below": 6,
+        "in_band": 10,
+        "above": 16
+      },
+      "in_band_after_leak": 7,
+      "leak_n": 11,
+      "guess_pass8": 0.3438,
+      "go": false
+    },
+    "D3": {
+      "n": 32,
+      "pass1": 0.6836,
+      "pass8": 0.9688,
+      "hist": {
+        "below": 1,
+        "in_band": 7,
+        "above": 24
+      },
+      "in_band_after_leak": 5,
+      "leak_n": 10,
+      "guess_pass8": 0.3125,
+      "go": false
+    }
+  },
+  "summary": {
+    "anyGo": false,
+    "hits": 607,
+    "levels": {
+      "D0": {
+        "n": 32,
+        "pass1": 0.4766,
+        "pass8": 0.6875,
+        "hist": {
+          "below": 10,
+          "in_band": 9,
+          "above": 13
+        },
+        "in_band_after_leak": 6,
+        "leak_n": 10,
+        "guess_pass8": 0.3125,
+        "go": false
+      },
+      "D1": {
+        "n": 32,
+        "pass1": 0.6445,
+        "pass8": 0.7813,
+        "hist": {
+          "below": 7,
+          "in_band": 4,
+          "above": 21
+        },
+        "in_band_after_leak": 4,
+        "leak_n": 7,
+        "guess_pass8": 0.2188,
+        "go": false
+      },
+      "D2": {
+        "n": 32,
+        "pass1": 0.5664,
+        "pass8": 0.8125,
+        "hist": {
+          "below": 6,
+          "in_band": 10,
+          "above": 16
+        },
+        "in_band_after_leak": 7,
+        "leak_n": 11,
+        "guess_pass8": 0.3438,
+        "go": false
+      },
+      "D3": {
+        "n": 32,
+        "pass1": 0.6836,
+        "pass8": 0.9688,
+        "hist": {
+          "below": 1,
+          "in_band": 7,
+          "above": 24
+        },
+        "in_band_after_leak": 5,
+        "leak_n": 10,
+        "guess_pass8": 0.3125,
+        "go": false
+      }
+    },
+    "rollouts": 1024,
+    "tool_turns": {
+      "0": 48,
+      "2": 570,
+      "3": 286,
+      "4": 87,
+      "5": 33
+    },
+    "mean_tool_turns": 2.452
+  }
+}
