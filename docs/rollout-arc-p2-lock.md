@@ -133,6 +133,64 @@ byte-for-byte from its receipt. This is what takes PIN_PER_STEP from 2 to 3.
 
 ---
 
+## 6a. The build — verified 2026-09-11, and it is much smaller than it looked
+
+The blocker after P1f was that **no GRPO trainer exists in this repo** and our environment,
+reward and tool executor are all TypeScript while training is Python. External advice
+recommended writing a **custom PyTorch/Accelerate loop** because "no mainstream framework
+natively supports multi-turn tool-use GRPO," marking TRL as a FAIL that "assumes standard text
+generation with no environment interaction."
+
+**Checked against the TRL documentation. That verdict is out of date, and acting on it would
+have been the highest-risk path available.** GRPOTrainer now carries two relevant surfaces:
+
+| Surface | Contract (verbatim from the docs) | LoRA |
+|---|---|---|
+| `environment_factory` | a class "whose public methods auto-register as discoverable tools — the trainer then handles the multi-turn generation loop for you"; `reset()` / `get_reward()`; `max_tool_calling_iterations` | "Fully compatible with `peft_config`" |
+| `rollout_func` | `(prompts: list[str], trainer) -> dict` returning `prompt_ids`, `completion_ids`, `logprobs`; "Any other fields are forwarded to the reward functions" | same |
+
+**Both are marked experimental** — *"may change or be removed at any time without prior
+notice."* That is a real risk for a paid run and the mitigation is the one PIN_PER_STEP already
+requires: **pin the exact TRL version in the pod bundle and record it in the receipt.**
+
+### The architecture this licenses
+
+The external advice's *instinct* was right — keep the logic in TypeScript and let Python be a
+tensor calculator — but it proposed bridging the **whole rollout** over HTTP and rebuilding the
+training loop. With `environment_factory` the trainer owns the loop and the bridge shrinks to
+two thin forwarders:
+
+```
+[TRL GRPOTrainer + peft_config]         Python: tensors, optimizer, LoRA
+        │  environment_factory
+        ▼
+[wrapper class, 9 public methods]  ──stdio──>  [dist/mcp-server.js]   the REAL tool surface (L2)
+        │  get_reward()
+        └──────────HTTP───────────────────>  [Node scorer]  the REAL scoreReward (one impl)
+```
+
+**Why `get_reward()` must forward rather than reimplement.** Our reward is the L4 lock: binary
+outcome behind a format gate, with the verdict extractor and the turn penalty already written
+and tested in `src/dataset/experiment/env.ts`. A Python reimplementation is a **second
+implementation that will drift**, which is the exact failure the experiment contract's template
+README was written about. **One reward, in TypeScript, called over the boundary.**
+
+### What we are not adopting, and why
+
+**Hugging Face OpenEnv's `MCPEnvironment`** states our situation precisely — *"MCP earns its
+complexity when the tool surface has to exist as a process boundary, not a function call"* — and
+its `CallToolAction` / `ListToolsAction` shape is a clean fit. But its own docs say **"MCP
+adoption in OpenEnv is still in flight,"** RFC 003 is **In Review**, and only a handful of envs
+are MCP-backed. Its canonical path also builds a `FastMCP` server **in Python**, which is the
+wrong direction for us: our tools already exist in Node. **Not a dependency for P2.** Revisit if
+RFC 003 lands.
+
+**Not writing a custom PyTorch GRPO loop.** Advantage computation, tool-token masking, PPO
+clipping, LoRA wiring and checkpointing are each a place a paid run dies silently, and TRL has
+all of them tested. Novel code is the thing we have the least budget for.
+
+---
+
 ## 7. The spend gate — director only
 
 **This document authorises nothing.** Before any pod:
