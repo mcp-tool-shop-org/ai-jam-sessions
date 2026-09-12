@@ -111,19 +111,27 @@ def main() -> int:
 
     # Build the config FIRST so arm A can read its sampler values. Hardcoding
     # them would let the control drift from what TRL actually uses.
-    cfg = GRPOConfig(
-        output_dir=str(out / "hf"),
-        max_steps=a.prompts,
-        per_device_train_batch_size=a.gens,
-        num_generations=a.gens,
-        max_completion_length=a.max_new_tokens,
-        logging_steps=1,
-        save_strategy="no",
-        report_to="none",
-        bf16=torch.cuda.is_available(),
-        log_completions=True,
-        num_completions_to_print=0,
-    )
+    #
+    # A factory, NOT `GRPOConfig(**cfg.to_dict())`: to_dict() emits derived fields
+    # (generation_batch_size AND steps_per_generation) that the constructor
+    # refuses together. Round-tripping a config through its own dict is not
+    # guaranteed to reconstruct it.
+    def make_cfg(tag: str) -> GRPOConfig:
+        return GRPOConfig(
+            output_dir=str(out / tag),
+            max_steps=a.prompts,
+            per_device_train_batch_size=a.gens,
+            num_generations=a.gens,
+            max_completion_length=a.max_new_tokens,
+            logging_steps=1,
+            save_strategy="no",
+            report_to="none",
+            bf16=torch.cuda.is_available(),
+            log_completions=True,
+            num_completions_to_print=0,
+        )
+
+    cfg = make_cfg("hf")
     sampler = {
         "temperature": cfg.temperature,
         "top_p": cfg.top_p,
@@ -155,7 +163,7 @@ def main() -> int:
     ds = Dataset.from_dict({"prompt": [[{"role": "user", "content": q}] for q in prompts]})
 
     def run_trl(tag: str, tools=None) -> dict:
-        c = GRPOConfig(**{**cfg.to_dict(), "output_dir": str(out / tag)})
+        c = make_cfg(tag)
         kw = {"tools": tools} if tools else {}
         GRPOTrainer(model=a.model, reward_funcs=[reward_len], args=c, train_dataset=ds, **kw).train()
         fs = sorted(glob.glob(str(out / tag / "completions" / "*.parquet")))
