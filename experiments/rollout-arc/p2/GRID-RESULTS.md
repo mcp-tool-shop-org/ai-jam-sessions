@@ -18,7 +18,37 @@ The `--limit` defect that voided v1 is fixed and verified. **Truncation is ruled
 the accuracy below is valid — this is not the confound that made a 0.69 look like a
 falsification.
 
-## Control result — bf16, distance 1–3, `num_generations` 2, 32 groups
+## A seventh gate the harness did NOT have — `--limit` does not stratify
+
+**Found after the control cell was read. Every cell in this grid measures D0 and D1 only.**
+
+`GET /cases?limit=32` takes the **first** 32 rows, and the generator emits level by level.
+With `trainPerLevel` 16 the train split is 64 rows ordered D0,D0…D1,D1…D2,D2…D3,D3 — so
+`--limit 32` takes exactly D0 and D1 and drops D2 and D3 entirely. Confirmed from the
+parquets, by parsing the level out of each distinct prompt's song title:
+
+    distinct prompts: 32     level distribution: {'D0': 16, 'D1': 16}
+
+**D2 = 0, D3 = 0.** D0 and D1 are the *least* confusable distractor tiers — the two easiest
+levels in the family.
+
+This defect was already known in this arc: the first train-parity run drew D0 (48) and D1
+(16) with D2/D3 at n=0. **I passed `--limit` explicitly to fix the v1 dataset bug and
+walked straight into the stratification bug it has always had.** Sixth instance of a
+population assumed rather than read, and the second one I have caused personally.
+
+**Consequence:** all four cells share the same truncation, so the grid's **internal**
+contrasts remain valid — they compare like with like on D0/D1. But nothing here describes
+the D0–D3 family, and the control cell is **not** a positive control for the abort run,
+which saw all four levels across 1024 rows. The bridge to the arc's numbers was already
+void; this is a second, independent reason.
+
+The grid is being allowed to finish rather than restarted, on the same reasoning as before:
+changing the row selection mid-grid would make cells 1–2 and 3–4 incomparable, which is the
+one property the 2×2 has. Stratified selection is a fix for the follow-up run, not for this
+one.
+
+## Control result — bf16, distance 1–3, D0/D1 only, `num_generations` 2, 32 groups
 
 | | |
 |---|---|
@@ -69,9 +99,11 @@ positive control specified against a corpus it was never going to match.
 
 ## The finding that does not depend on the halt
 
-**bf16 scores 0.719 on a distance-1–3 population with 4 of 32 groups non-degenerate.**
-That is not "solves the task outright." Whatever else this grid shows, the pinned-distance
-family is *not* uniformly trivial for the model we would train.
+**bf16 scores 0.719 with 4 of 32 groups non-degenerate on the two easiest distractor tiers
+of a distance-1–3 population.** That is not "solves the task outright." And the direction is
+worth noting: D0/D1 are the *least* confusable tiers, yet this scored **lower** than the
+abort run's 0.9125 across all four levels. Either the level labels do not track difficulty
+for bf16, or the seed difference dominates them. Both are measurable; neither is measured.
 
 **And the model is not confidently wrong.** Entropy by group outcome:
 
