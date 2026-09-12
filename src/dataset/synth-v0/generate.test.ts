@@ -8,6 +8,7 @@ import {
   agree,
   catalog,
   generateCorpus,
+  kebab,
   lhOf,
   rederivePlant,
   smokeSong,
@@ -55,6 +56,8 @@ describe("synth-v0 generator", () => {
       expect(user).toContain(String(c.after));
       expect(user).not.toMatch(new RegExp(`\\b${c.measure}\\b`));
       expect(user).not.toContain(c.song_id);
+      expect(kebab(c.title)).toBe(c.song_id);
+      expect(c.song_id.startsWith("synth-")).toBe(true);
       expect(validateSong(song)).toEqual([]);
     }
   });
@@ -70,12 +73,20 @@ describe("synth-v0 generator", () => {
   it("does not claim a published schema_version", () => {
     expect(SYNTH_SCHEMA_VERSION).not.toBe("jam-actions-v1/1.0.0");
     expect(SYNTH_SCHEMA_VERSION).not.toBe("jam-actions-search-v0/1.2.0");
+    expect(SYNTH_SCHEMA_VERSION).not.toBe("jam-actions-synth-v0/1.0.0");
     expect(() => assertSchemaOwner(synthTask)).not.toThrow();
   });
 
   it("smoke song validates", () => {
     expect(validateSong(smokeSong())).toEqual([]);
     expect(smokeSong().id.startsWith("synth-")).toBe(true);
+  });
+});
+
+describe("kebab", () => {
+  it("matches Bethena → bethena and a spaced synth title", () => {
+    expect(kebab("Bethena")).toBe("bethena");
+    expect(kebab("Synth D0 Study aac")).toBe("synth-d0-study-aac");
   });
 });
 

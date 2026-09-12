@@ -16,7 +16,7 @@ import { buildP0Report } from "./p0-report.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, "../../..");
-const OUT_DIR = join(REPO, "experiments", "rollout-arc", "p1d");
+const OUT_DIR_DEFAULT = join(REPO, "experiments", "rollout-arc", "p1e");
 const TOOLS_PATH = join(REPO, "src", "dataset", "tool-schemas.json");
 const HOST = (process.env.OLLAMA_HOST || "http://127.0.0.1:11434").replace(/\/$/, "");
 
@@ -29,10 +29,12 @@ function parseArgs(argv) {
     limit: Infinity,
     skipGuess: false,
     skipRollout: false,
+    out: OUT_DIR_DEFAULT,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--model") out.model = argv[++i];
+    else if (a === "--out") out.out = resolve(argv[++i]);
     else if (a === "--n") out.n = Number(argv[++i]);
     else if (a === "--seed") out.seed = Number(argv[++i]);
     else if (a === "--split") out.split = argv[++i];
@@ -116,7 +118,7 @@ async function guessTest(args, cases) {
       if (done % 10 === 0 || done === total) process.stderr.write(`  guess ${done}/${total} last=${rec.id}\n`);
     }
   }
-  const path = join(OUT_DIR, "preds-guess.jsonl");
+  const path = join(args.out, "preds-guess.jsonl");
   writeFileSync(path, lines.join("\n") + "\n");
   return path;
 }
@@ -189,7 +191,7 @@ async function rolloutPassk(args, cases) {
   } finally {
     await exec.close();
   }
-  const path = join(OUT_DIR, "preds-pass8.jsonl");
+  const path = join(args.out, "preds-pass8.jsonl");
   writeFileSync(path, lines.join("\n") + "\n");
   return path;
 }
@@ -200,7 +202,7 @@ function readJsonl(p) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  mkdirSync(OUT_DIR, { recursive: true });
+  mkdirSync(args.out, { recursive: true });
   const cases = selectedCases(args.split, args.limit);
   const goldRows = cases.map((c) => {
     const rec = buildRecord(c);
@@ -213,10 +215,11 @@ async function main() {
       distance: c.distance,
     };
   });
-  writeFileSync(join(OUT_DIR, "gold.jsonl"), goldRows.map((g) => JSON.stringify(g)).join("\n") + "\n");
+  writeFileSync(join(args.out, "gold.jsonl"), goldRows.map((g) => JSON.stringify(g)).join("\n") + "\n");
 
   const pin = {
-    phase: "P1d",
+    phase: "P1e",
+    kebab_parity: true,
     written_before_sampled_run: true,
     model: args.model,
     model_note: "Same pin as P1c. think:false. Local Ollama, not Comfy Cloud.",
@@ -238,8 +241,8 @@ async function main() {
     go_rule: { min_in_band_after_leak: 10, sampled_pass1_below: 0.8, any_level: true },
     spend: 0,
   };
-  writeFileSync(join(OUT_DIR, "pin.json"), JSON.stringify(pin, null, 2) + "\n");
-  process.stderr.write(`[synth-learnability] model=${args.model} cases=${cases.length} n=${args.n} clusters=${pin.test_clusters}\n`);
+  writeFileSync(join(args.out, "pin.json"), JSON.stringify(pin, null, 2) + "\n");
+  process.stderr.write(`[synth-learnability] out=${args.out} model=${args.model} cases=${cases.length} n=${args.n} clusters=${pin.test_clusters}\n`);
 
   const guessPath = args.skipGuess ? null : await guessTest(args, cases);
   const sampledPath = args.skipRollout ? null : await rolloutPassk(args, cases);
@@ -253,9 +256,9 @@ async function main() {
       const k = guess ? guess.filter((p) => g.some((x) => x.id === p.id)) : null;
       levels[level] = buildP0Report({ goldRows: g, greedyPreds: null, sampledPreds: s, guessPreds: k, pin });
     }
-    writeFileSync(join(OUT_DIR, "report.json"), JSON.stringify({ pin, levels }, null, 2) + "\n");
+    writeFileSync(join(args.out, "report.json"), JSON.stringify({ pin, levels }, null, 2) + "\n");
   }
-  process.stdout.write(JSON.stringify({ pin, gold: join(OUT_DIR, "gold.jsonl"), guess: guessPath, sampled: sampledPath }, null, 2) + "\n");
+  process.stdout.write(JSON.stringify({ pin, gold: join(args.out, "gold.jsonl"), guess: guessPath, sampled: sampledPath }, null, 2) + "\n");
 }
 
 main().catch((err) => {
