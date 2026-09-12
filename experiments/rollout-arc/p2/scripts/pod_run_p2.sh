@@ -15,10 +15,24 @@
 #   * printf-delimited progress lines (the stall detector requires them).
 #   * one linear script, no queued waiters, no self-matching pkill patterns.
 #
-# Local side (unchanged, already written and paid for):
+# Local side — runpod.mjs is inherited unchanged; the two compensators are P2
+# adaptations of the v1 pair and are DRILLED against a fake pod id:
 #   node experiments/acoustic-sft/runpod.mjs verify|up|sync|fetch|list|down
-#   experiments/finetune-arc-v1/scripts/babysit-pod.sh   <- fetcher + watchdog
-#   experiments/finetune-arc-v1/scripts/deadman.ps1      <- absolute cap
+#   experiments/rollout-arc/p2/scripts/babysit-p2.sh      <- fetcher + watchdog
+#   experiments/rollout-arc/p2/scripts/deadman-p2.ps1     <- absolute cap (12 h = $9.48)
+#   experiments/rollout-arc/p2/scripts/compensator-drill.mjs  <- proves both fire
+#
+# LAUNCH DISCIPLINE (paid for by v1, do not shortcut):
+#   * scp the bundle, then launch THE SCP'D LAUNCHER — never an inline
+#     env-prefixed nohup over ssh (the v1 hung-channel lesson):
+#       ssh … root@<ip> "cd /workspace/arc && nohup bash scripts/pod_run_p2.sh > /workspace/arc/run.log 2>&1 &"
+#   * be patient with the direct SSH port: it can take 2-5 minutes to route
+#     after the pod shows Running. Poll it. Do not churn into terminate.
+#   * verify the SSH key is registered BEFORE deploying — RunPod injects account
+#     keys at pod START, so a key added afterwards needs a restart.
+#   * there is no pkill in this script or in the babysitter, deliberately: a
+#     pattern broad enough to match the run also matches the ssh command
+#     carrying it.
 #
 #   SMOKE_STEPS=8 bash pod_run_p2.sh
 #   TRAIN=1 TRAIN_STEPS=200 bash pod_run_p2.sh   # director-gated only
@@ -38,6 +52,15 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
 mkdir -p "$ART" "$RUNS"
 say() { printf '=== [p2] %s ===\n' "$*"; }
+
+# Every exit path that reaches ALL.DONE must leave a manifest behind first:
+# babysit-p2.sh verifies artifacts.sha256 before it terminates anything, and a
+# missing manifest is an exit-4 "mismatch" that leaves the pod billing.
+finish() {
+  ( cd "$ART" && sha256sum ./*.tar.gz ./*.json ./*.txt 2>/dev/null > artifacts.sha256 ) || true
+  touch "$ART/ALL.DONE"
+  say "ALL.DONE (manifest: $(wc -l < "$ART/artifacts.sha256" 2>/dev/null || echo 0) entries)"
+}
 
 # ─── stage0: retire every environment risk, before any gradient ──────────────
 say "stage0 environment"
@@ -115,7 +138,7 @@ touch "$ART/STAGE2.DONE"
 say "smoke measured — cost per step is in $ART/smoke-run.json"
 if [ "${TRAIN:-0}" != "1" ]; then
   say "STOPPING before train: lock §7 makes the full run a director gate"
-  touch "$ART/ALL.DONE"
+  finish
   exit 0
 fi
 
@@ -134,6 +157,4 @@ cp "$RUNS/control/run.json" "$ART/control-run.json"
 tar -czf "$ART/control.tar.gz" -C "$RUNS" control
 touch "$ART/STAGE3B.DONE"
 
-cd "$ART" && sha256sum ./*.tar.gz ./*.json > artifacts.sha256
-touch "$ART/ALL.DONE"
-say "ALL.DONE"
+finish
