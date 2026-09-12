@@ -353,6 +353,66 @@ residual exposure is local development, and the remedy is one line: list
 
 ---
 
+## The launch sequence, exactly
+
+**Not run. This is the string, not a description of one.** L40S, 4-hour cap, smoke-only.
+
+```bash
+# 0. preconditions, all $0 and read-only.
+#    RUNPOD_API_KEY in env. runpod_rustline.pub registered at
+#    console.runpod.io/user/settings BEFORE deploying — RunPod injects account
+#    keys at pod START, so a key added afterwards needs a restart.
+node experiments/acoustic-sft/runpod.mjs verify
+
+# 1. deploy one L40S on the community tier ($0.79/hr).
+RUNPOD_GPU="NVIDIA L40S" node experiments/acoustic-sft/runpod.mjs up
+#    prints podId / publicIp / sshPort; also written to ~/.ssh/runpod_acoustic_pod.json
+
+# 2. ARM THE DEAD-MAN BEFORE THE RUN STARTS (lock §7 item 4).
+#    4 h = 14400 s = $3.16 worst case. Detached, so it outlives this session.
+powershell -NoProfile -Command "Start-Process powershell -ArgumentList '-NoProfile','-File','E:\AI\ai-jam-sessions\experiments\rollout-arc\p2\scripts\deadman-p2.ps1','-PodId','<podId>','-CapSeconds','14400','-Label','p2smoke' -WindowStyle Hidden"
+
+# 3. wait for the direct SSH port to route. 2-5 minutes is normal. Poll it.
+#    Do not churn into terminate — that is how the 2026-07-13 attempt died.
+
+# 4. push the launcher and its config. No repo scp: stage 0 clones the pinned
+#    commit itself, which is 130 MB of tracked tree we do not have to push.
+ssh -i ~/.ssh/runpod_rustline -p <port> root@<ip> "mkdir -p /workspace/arc/scripts"
+printf 'export P2_COMMIT=da0c57df3199b136e217c1332351de2746d9cb33\nexport SMOKE_STEPS=8\n' > /tmp/p2-env.sh
+scp -i ~/.ssh/runpod_rustline -P <port> /tmp/p2-env.sh root@<ip>:/workspace/arc/p2-env.sh
+scp -i ~/.ssh/runpod_rustline -P <port> experiments/rollout-arc/p2/scripts/pod_run_p2.sh root@<ip>:/workspace/arc/scripts/pod_run_p2.sh
+
+# 5. launch the scp'd launcher. NOTE: no env assignments on this line, by design
+#    — `ssh host "FOO=bar nohup bash script &"` is the v1 hung-channel lesson,
+#    which is why the config went over as a file in step 4.
+ssh -i ~/.ssh/runpod_rustline -p <port> root@<ip> "cd /workspace/arc && nohup bash scripts/pod_run_p2.sh > /workspace/arc/run.log 2>&1 &"
+
+# 6. arm the babysitter (foreground; it exits 0 on a verified fetch).
+bash experiments/rollout-arc/p2/scripts/babysit-p2.sh p2smoke <podId> <ip> <port> experiments/rollout-arc/p2/artifacts
+```
+
+**`runpod.mjs sync` and `runpod.mjs fetch` are NOT usable here, and the earlier claim in this
+document that the whole CLI was inherited was too broad.** They are acoustic-bound: `WORK` is
+`/workspace/acoustic-sft`, the payload is a hardcoded acoustic file list, and `fetch` pulls that
+tree's `runs/`. Running them for P2 would push the wrong files to the wrong path. What *is*
+generic and used above: `verify`, `up`, `list`, `down`. `sync` is replaced by the stage-0 clone,
+and `fetch` by the babysitter. Note also that `up` writes its state to
+`~/.ssh/runpod_acoustic_pod.json`, which it shares with the acoustic arc — harmless unless an
+acoustic pod is live, in which case deploy from the console instead.
+
+### Per-stage timing comes back for free
+
+Markers used to be a bare `touch` — an empty file, with an mtime that `scp` does not preserve.
+Attempt 1 would have bought a measurement it could not report. Each marker now carries its own
+timestamp, and `stage-timings.jsonl` accumulates `{stage, at, epoch, since_start_s, since_prev_s}`
+per stage. **The babysitter fetches it on every marker, not just at the end**, so a run that dies
+at stage 2 still hands back how long stages 0 and 1 took — which is exactly what sizes attempt
+2's cap. JSONL rather than JSON because this file can be interrupted, and a half-written array
+is unparseable where a half-written JSONL loses only its last line.
+
+`repo-commit.txt` ships beside it: stage 0 fails in its first second if `P2_COMMIT` is unset, and
+records the resolved sha it actually checked out.
+
 ## What this does not do
 
 - **It does not launch a pod.** `pod_run_p2.sh` stops after `smoke` unless `TRAIN=1`, and §7 of
