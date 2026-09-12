@@ -66,6 +66,72 @@ task is solved by this policy. A trainable population would have to come from ha
 from a different pin — and "harder" now has to be defined against bf16, which no measurement in
 this repo has ever used.
 
+## Independently reproduced, on different hardware — 2026-09-12
+
+The claim above invalidates six phases of receipts, so it was checked rather than accepted.
+Reproduced on the rig's RTX 5090 against a local bridge, through the same `train.py` path, on
+**train** cases from the same corpus:
+
+| completion budget | prompts | result |
+|---|---|---|
+| 256 tokens | 8 | acc_joint **0.69**, `frac_reward_zero_std` 0.875 — one non-degenerate group |
+| **1024 tokens** (the production budget) | 6 | acc_joint **1.0** on every step, `frac_reward_zero_std` **1.0**, tool turns 2–3 |
+
+**The 256-token run looked like a falsification and was not one.** Its two failures were
+`format_rate` 0 with `completions/clipped_ratio` 1 — the model was truncated mid-answer, so
+those were an artifact of the test's token budget, not the model missing the case. At the
+production budget the effect vanishes and the finding above reproduces exactly: bf16 solves
+these cases, every group degenerate, on a second machine and a second GPU architecture.
+
+That is worth keeping for its own sake, because it is lock §3's confound in miniature: at 256
+tokens this model's apparent accuracy is 0.69 and at 1024 it is 1.0, and **none of that
+difference is skill.**
+
+### One claim above is inference, not measurement
+
+> *"It also retires P1c's mechanism finding … a quantization artifact, not a property of this
+> model family."*
+
+**Plausible, and not established.** What is measured is that bf16 answers *these* cases
+correctly. P1c's finding was about **distance ≥ 4**, where the answer lies outside the first
+4-measure page — and every case in this corpus is pinned to distance 1–3, so the answer is
+*inside* the first page by construction. Answering from the first page is correct behaviour
+here, not a defect.
+
+**bf16 has never been run at distance ≥ 4.** Whether it pages properly is untested, and the
+honest status of P1c's mechanism is *unverified for the model we would train*, not *retired as
+an artifact*. The distinction matters because that finding is load-bearing: the distance pin of
+1–3 exists because of it, and relaxing the pin is one of the few routes to "harder cases"
+this document says a future population would need.
+
+## A second, independent hole: the prompt's bound was never load-bearing
+
+Checked 2026-09-12 while reviewing the `decoyBeforeBound` knob, because the rationale behind it
+is a claim about **every corpus this arc measured**. It is true, and stronger than it was put.
+
+Deterministic re-derivation — no model involved — asking whether a policy that **ignores** "at or
+after measure N" and scans from measure 1 lands on the same measure as the bounded search:
+
+| corpus | pin | same answer ignoring the bound |
+|---|---|---|
+| v0 default | seed 20260911 | **320 / 320 (100%)** |
+| P1f test | seed 2026091102, 64/level | **448 / 448 (100%)** |
+| P2 train | seed 2026091103, 256/level | **1280 / 1280 (100%)** |
+
+Zero cases discriminate, on any pin, ever. The cause is in `makeSong`: every measure outside the
+planted 4-measure page takes a filler voicing drawn with `shared(v.pcs, target.pcs) === 0`, so
+**nothing before the bound can match the target chord**. The clause is unfalsifiable by
+construction.
+
+The task the arc actually measured was *"find the first measure whose left hand is chord X"* —
+the bound was decoration, and **instruction-following was never under test**. This is
+independent of the precision defect: even with the pin correct, the task had this second hole,
+and a policy that ignored half the prompt would have scored identically.
+
+It also sharpens what P1c's mechanism can mean. "Answers from the first window" was never
+evidence about paging on these corpora, because the first window is both where the answer is
+*and* where an unbounded scan would find it.
+
 ## The reusable lesson
 
 **A learnability gate must run the exact artifact that will be trained — same weights, same
