@@ -1,8 +1,17 @@
 # P2 BUILD — the GRPO trainer bundle
 
-**Built 2026-09-11 · smoke run 2026-09-12.**
-**Spend to date: $1.10 of the $10 authorised.** One pod, A100 80GB PCIe, 0.92 h, terminated;
-`runpod.mjs list` reports **"No pods. Nothing is billing."** Training has not started.
+**Built 2026-09-11 · smoke run and aborted train run 2026-09-12.**
+**Spend to date: $2.77.** Training was started and **aborted at step 15 under the preregistered
+andon** — see [`TRAIN-ABORT.md`](TRAIN-ABORT.md). The learnability gate measured a 4-bit GGUF
+through Ollama while the trainer runs bf16 through transformers, and the bf16 model solves the
+task outright. **Every difficulty rate in this arc describes the wrong artifact.**
+
+What survives is the machinery, not the difficulty claims: the bridge, environment, reward,
+executor and compensators all behaved, and tool-token masking is confirmed as a property of TRL
+rather than of the policy. The population rates do not survive; neither do the local step times
+(measured on an overcommitted card) nor the *percentages* attached to the mask and throughput
+figures (measured over a 2-prompt dataset — see the corrections in place below). The masking
+*mechanism* and the compensator drill are what stand without qualification.
 **Lock:** [`docs/rollout-arc-p2-lock.md`](../../../docs/rollout-arc-p2-lock.md) ·
 **Handoff:** [`docs/rollout-arc-p2-build-handoff.md`](../../../docs/rollout-arc-p2-build-handoff.md)
 **Predecessor:** [P1f](../p1f/RESULTS.md) · **Dry stage:** [`dry-report.json`](dry-report.json), 6/6 gates.
@@ -60,26 +69,45 @@ completion tokens in a rollout are our own tool output**, and every one of them 
 out of the loss by `loss_mask = completion_mask * tool_mask`. Hand-rolling a mask here would
 have been wasted work; *not* having one would have trained the policy on its own library.
 
-### Measured local step time
+### Local step time — WITHDRAWN as a throughput number
 
-**This replaces every estimate in the handoff — and the honest form of it is a range, not a
-point.**
+> ⚠ **CORRECTED 2026-09-12. Every step time measured on this rig was taken on a card that
+> reserves more memory than it physically has, so none of them mean what they appear to mean.
+> The A100's 38.5 s/step from the smoke run is the only valid throughput figure in this
+> document.**
 
 | Run | prompts × generations | max completion | per-step seconds | mean |
 |---|---|---|---|---|
 | Stage C dry, run 1 | 1 × 2 | 256 | 83.2, 76.9 | 80.0 s |
 | Stage C dry, run 2 | 1 × 2 | 256 | 35.8, 113.7 | 74.7 s |
-| **Stage C dry, run 3** (GPU otherwise idle) | 1 × 2 | 256 | 32.0, 40.9 | **36.5 s** |
+| Stage C dry, run 3 | 1 × 2 | 256 | 32.0, 40.9 | 36.5 s |
 
 Measured on an RTX 5090 (sm_120, 32 GB), `use_vllm=False`, HF generate, LoRA r=16 all-linear,
-gradient checkpointing on, bf16. Run 3 is the committed receipt
-([`stage-c-receipt.json`](stage-c-receipt.json)); runs 1 and 2 shared the card with other work.
+gradient checkpointing on, bf16.
 
-**Do not price a pod off two steps.** Step time is dominated by generation, and generation
-length is set by how many tool iterations the rollouts take — 35.8 s and 113.7 s were
-consecutive steps of the *same* run. This number's job is to say the loop runs in **minutes,
-not hours**, and it does. Bounding the variance is what §5 means by "cost is derived from the
-smoke run, never estimated."
+**What this section originally said was wrong in its explanation.** It attributed the 35.8 s vs
+113.7 s spread to tool-iteration count, and blamed runs 1 and 2 on "sharing the card with other
+work." The real cause is allocator spill, and a later run with memory instrumentation shows it
+directly — same model, same 1 × 2 shape, same 256-token budget:
+
+| step | peak reserved MiB | over the card's 32,579? | seconds |
+|---|---|---|---|
+| 1–4 | 24,340 → 30,546 | no | 18.3, 9.9, 10.7, 18.7 — **mean 14.4 s** |
+| 5 | **33,658** | **yes** | **117.1 s** |
+| 6–8 | 33,658 | yes | 20.0, 38.3, 27.3 |
+
+The step where reserved memory first crosses the physical total *is* the 117-second step.
+Under-commit mean 14.4 s, over-commit mean 50.7 s — **3.5× slower**, and 8× on the transition.
+Windows does not fail an over-reservation; it spills into shared system memory and thrashes.
+
+**Note the shape: this is the 256-token dry shape, not the production one.** The overcommit is
+not a big-budget phenomenon — it happens at the smallest configuration this bundle ever ran, and
+`headroom_mib` is **−1078.6**. The Stage C receipt predates the memory instrumentation so it
+cannot be proven step by step, but it is the identical configuration, and "run 3 was clean" was
+an inference from a low number rather than a measurement. **It is withdrawn.**
+
+Accuracy is unaffected by spill, which is why the bf16 findings below still stand. Throughput is
+not, so no local number here may be used for sizing.
 
 The mask counts (601 / 412) were **byte-identical across all three runs**, so the dry harness is
 deterministic at a fixed seed even where step time is not.
@@ -115,7 +143,16 @@ Run by `ai-5e`; numbers below re-read from
 | Bridge | 151 tool calls, 68 rewards scored (cumulative over stages 1–2) |
 | Spend | **$1.10**, 0.92 h at $1.19/hr |
 
-**The mask claim is now measured twice, on two machines, at two shapes** — 59.3% at dry shape on
+> ⚠ **CORRECTED 2026-09-12 — read the mask PERCENTAGES as a 2-prompt sample.** Both receipts
+> report `dataset_rows: 2`. A defect in this file's own `--dry` block (below) capped the dataset
+> to two rows while `--steps 8` cycled them four times, so "64 completions" is **8 repeats of 2
+> distinct prompts**, not 64 independent ones. What survives unweakened is the *mechanism* —
+> every completion in both runs carried a zero span, which is what R1.1 was about. What is
+> weakened is the *number*: tool-output volume varies with how many pages a rollout fetches, and
+> 65.2% is an average over two prompts. The same applies to the 38.5 s/step throughput figure —
+> 8 steps, 2 prompts.
+
+**The mask mechanism is confirmed twice, on two machines, at two shapes** — 59.3% at dry shape on
 the 5090, 65.2% at production shape on the A100. R1.1 said TRL masks tool tokens automatically;
 it does, and two thirds of every rollout is our own library output being kept out of the loss.
 
