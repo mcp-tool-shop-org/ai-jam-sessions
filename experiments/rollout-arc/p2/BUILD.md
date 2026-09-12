@@ -1,0 +1,233 @@
+# P2 BUILD — the GRPO trainer bundle
+
+**Date:** 2026-09-11 · **Spend: $0. No GPU rented. No pod launched.**
+**Lock:** [`docs/rollout-arc-p2-lock.md`](../../../docs/rollout-arc-p2-lock.md) ·
+**Handoff:** [`docs/rollout-arc-p2-build-handoff.md`](../../../docs/rollout-arc-p2-build-handoff.md)
+**Predecessor:** [P1f](../p1f/RESULTS.md) · **Dry stage:** [`dry-report.json`](dry-report.json), 6/6 gates.
+
+Stages A–D are built. Stage C ran locally on the rig's RTX 5090 and **passed both of its
+gates**. Nothing here claims a training result, and nothing here authorises a dollar.
+
+---
+
+## What was built
+
+| Path | What it is |
+|---|---|
+| [`experiments/rollout-arc/scripts/p2-env-server.mjs`](../scripts/p2-env-server.mjs) | Stage A. The two forwarders: `POST /tool` (page bound → real `dist/mcp-server.js`) and `POST /score` (the one `scoreReward`). Plus `/health`, `/cases`, `/reset`, `/shutdown`. |
+| [`experiments/rollout-arc/scripts/p2-env-server.test.ts`](../scripts/p2-env-server.test.ts) | 16 tests. Byte-identical forwarding against a live MCP server, and reward reproduction over **all 2048 P1f rollouts**. |
+| [`trainer/env.py`](trainer/env.py) | Stage B. The `environment_factory` class: nine async public methods, one per `ROLLOUT_TOOLS` entry, each forwarding to the bridge. |
+| [`trainer/reward.py`](trainer/reward.py) | The reward function (forwards to `/score`) and the lock §6 random-reward control arm. Logs lock §3's three series. |
+| [`trainer/train.py`](trainer/train.py) | The GRPO trainer, the §0 mitigations, the mask probe and the step timer. `--dry` is Stage C. |
+| [`trainer/requirements.lock.txt`](trainer/requirements.lock.txt) | The exact 59-package pin the Stage C receipt was produced with. |
+| [`scripts/pod_run_p2.sh`](scripts/pod_run_p2.sh) | Stage D. `dry → smoke → train`, stage-0 fail-fast, DONE markers, **stops before `train` unless `TRAIN=1`**. Never launched. |
+| [`stage-c-receipt.json`](stage-c-receipt.json) | The Stage C receipt, copied out of the gitignored `runs/` tree. |
+
+Deviations from the handoff's letter, both deliberate:
+
+- The bridge lives at `experiments/rollout-arc/scripts/p2-env-server.mjs`, not repo-root
+  `scripts/`, so it sits beside `p2-dry.mjs` where an arc reader will look for it.
+- The handoff's §0 asked for the lock's §6a `peft_config` cell to be amended. **It already was**,
+  in commit `269193f`, before this build started. Verified, not redone.
+
+---
+
+## Stage C — the two gates, measured
+
+```
+python train.py --dry --out ../runs/dry --save-init-adapter ../runs/init-adapter
+```
+
+| Gate | Required | Measured |
+|---|---|---|
+| **Two optimizer steps complete** (R3.15: OOM shows up in the *backward* pass, so one step proves nothing) | ≥ 2 | **2** |
+| **The tool mask is real** (an all-ones mask means training on our own MCP output) | ≥ 1 completion with a zero span | **4 of 4**, 601 masked tokens vs 412 trained — **59.3%** of completion tokens are tool output |
+| Bridge actually served the rollouts | tool calls > 0 | **15 in run 3** (33 cumulative), through the real `dist/mcp-server.js` |
+| Reward actually came from `scoreReward` | scored > 0 | **6 in run 3** (14 cumulative) |
+| Pooled environments are reset | resets > 0 | **2 instances, 4 resets** |
+
+The mask number is the one that matters. R1.1 said TRL masks tool tokens automatically on the
+`environment_factory` path; this is that claim measured rather than read — **59.3% of the
+completion tokens in a rollout are our own tool output**, and every one of them is multiplied
+out of the loss by `loss_mask = completion_mask * tool_mask`. Hand-rolling a mask here would
+have been wasted work; *not* having one would have trained the policy on its own library.
+
+### Measured local step time
+
+**This replaces every estimate in the handoff — and the honest form of it is a range, not a
+point.**
+
+| Run | prompts × generations | max completion | per-step seconds | mean |
+|---|---|---|---|---|
+| Stage C dry, run 1 | 1 × 2 | 256 | 83.2, 76.9 | 80.0 s |
+| Stage C dry, run 2 | 1 × 2 | 256 | 35.8, 113.7 | 74.7 s |
+| **Stage C dry, run 3** (GPU otherwise idle) | 1 × 2 | 256 | 32.0, 40.9 | **36.5 s** |
+
+Measured on an RTX 5090 (sm_120, 32 GB), `use_vllm=False`, HF generate, LoRA r=16 all-linear,
+gradient checkpointing on, bf16. Run 3 is the committed receipt
+([`stage-c-receipt.json`](stage-c-receipt.json)); runs 1 and 2 shared the card with other work.
+
+**Do not price a pod off two steps.** Step time is dominated by generation, and generation
+length is set by how many tool iterations the rollouts take — 35.8 s and 113.7 s were
+consecutive steps of the *same* run. This number's job is to say the loop runs in **minutes,
+not hours**, and it does. Bounding the variance is what §5 means by "cost is derived from the
+smoke run, never estimated."
+
+The mask counts (601 / 412) were **byte-identical across all three runs**, so the dry harness is
+deterministic at a fixed seed even where step time is not.
+
+### The production shape does not fit this card
+
+A fourth run was attempted at the §2 shape — 8 generations, `max_completion_length=1024` — to
+get a step time closer to the real thing. It was **stopped after 14 minutes without completing a
+single tool call**, sitting at **31.9 GB of 32.6 GB (97%)** with the GPU pinned at 100%. The
+dry shape completes two entire steps in 73 s on the same card.
+
+That is not a throughput measurement, and it is not reported as one. It is an argument about
+hardware: **32 GB is not enough headroom for this configuration**, which corroborates R3.11
+(48 GB is ample) and R3.15 (the failure appears once the backward pass has to coexist with
+generation). The production step time must be measured on the pod's 48 GB card during the
+smoke run — which is exactly where §5 puts it.
+
+---
+
+## Versions, pinned
+
+| Package | Version |
+|---|---|
+| python | 3.12.13 |
+| torch | 2.11.0+cu128 |
+| transformers | 5.17.0 |
+| trl | 1.13.0 |
+| peft | 0.20.0 |
+| accelerate | 1.15.0 |
+| datasets | 5.0.1 |
+| CUDA | 12.8 |
+| device | NVIDIA GeForce RTX 5090, capability (12, 0) |
+
+| **vLLM** | **not installed, deliberately** |
+
+`torch` is the `cu128` build; its arch list includes `sm_120`, which is what Blackwell needs
+(R3.13). The full 59-package pin is in `trainer/requirements.lock.txt` and stage 0 of the pod
+script installs from it.
+
+**vLLM has no pinned version because it is not a dependency yet.** §0 of the handoff makes it an
+optimisation to be earned rather than a default: three of the four #6688 mechanisms (adapter
+merge drift, sequence-level importance sampling, the skipped test matrix) only bite on the vLLM
+path, and prebuilt wheels have shipped without SM120 arch flags (vllm#35432). The ladder runs on
+HF generate until a smoke run says throughput requires otherwise.
+
+---
+
+## What the handoff claimed, and what the installed source says
+
+Every §R claim that touches code was re-checked against the installed package rather than
+taken forward. **Line numbers drift between versions; substance held in every case.**
+
+| Claim | Verdict | Evidence in `trl 1.13.0` |
+|---|---|---|
+| R1.1 — tool tokens are masked automatically under `environment_factory` | **CONFIRMED** | `tool_mask = [[1] * len(ids) for ids in completion_ids]` at `grpo_trainer.py:1990`; `loss_mask = completion_mask if tool_mask is None else completion_mask * tool_mask` at `:2519`. Measured non-trivial in Stage C. |
+| R1.2 — with `rollout_func` the mask is ours via an undocumented `env_mask` key | **CONFIRMED** | `tool_mask = extra_fields.pop("env_mask", None)` at `:2295`. |
+| §0a — `merge_adapter`/`unmerge_adapter` are called without `safe_merge` | **CONFIRMED, lines differ** | `model.merge_adapter()` at `generation/vllm_generation.py:448`, `unmerge_adapter()` at `:469` (handoff said 467/488). Both bare. Only on the vLLM path. |
+| §0c — sequence-level IS against a fixed clip of 3.0 silently zeroes long rollouts | **CONFIRMED, and worse than stated** | Default `vllm_importance_sampling_mode="sequence_mask"`, `vllm_importance_sampling_clip_max=3.0`. `*_mask` modes don't clip the ratio, they **zero the whole sequence**. We set `token_truncate`. |
+| R2/§2 — `environment_factory` is configured on `GRPOConfig` | **CORRECTED** | It is a **`GRPOTrainer` constructor kwarg**, as is `rollout_func`. `max_tool_calling_iterations` *is* a `GRPOConfig` field (default `None`). |
+| Stage B — reward functions receive the full message list including `role: "tool"` turns | **CORRECTED, harmlessly** | `completions` holds the **assistant** turns only; tool results are not appended. `scoreReward` reads the last assistant turn and counts assistant turns carrying `tool_calls`, so the reward is computable either way, and the bridge accepts both shapes. |
+| Handoff §1 — `examples/grpo_sql_agent/grpo_sql_agent.py` as the worked example | **NOT AVAILABLE** | Not shipped in the wheel (examples live in the GitHub tree only). `train.py` was written against the verified source instead. Its `signal.SIGALRM` warning is moot for the same reason. |
+| R4.9/R4.18 — at `beta=0` TRL does not log KL | **CONSISTENT** | `beta` defaults to `0.0`. We set `1e-4` purely for observability, as the handoff prescribes. |
+
+Additional facts found while verifying, which the handoff did not carry and which change how
+`env.py` must be written:
+
+1. **Every public method becomes a tool.** `inspect.getmembers(..., predicate=inspect.ismethod)`
+   minus `reset`/`get_reward` minus `_`-prefixed (`:2396`). A stray public helper silently
+   becomes a callable tool. Every internal in `env.py` is underscored for this reason.
+2. **`reset(**row)` receives every dataset column as a keyword argument** (`:2411`), so the
+   dataset schema *is* `reset`'s signature. Measured: 4 resets across 2 pooled instances.
+3. **`get_reward()` cannot see the verdict.** It takes no arguments and reads environment state
+   only; our verdict is in the model's final message. That is why scoring is a reward function
+   and not the environment's own method.
+4. **`log_metric` and `log_extra` are passed to reward functions**, which is where lock §3's
+   three series are emitted from — the only place that sees the format gate and the outcome for
+   every rollout at once.
+5. **`max_prompt_length` does not exist** in this GRPOConfig.
+
+---
+
+## Parity with P1c–P1f, and the one place it breaks
+
+The environment the policy trains in must be the environment P1f measured, or the GO does not
+transfer. Held:
+
+- The **same page bound** — `boundListMeasures`, 4 measures per call, applied in the bridge
+  before the MCP call, refusals returned unexecuted. Tested against `list_measures` directly.
+- The **same nine tools** with the **same parameter names**. (`list_measures` takes `id`; a call
+  with `songId` is a `-32602` validation error. An early version of the bridge test compared two
+  identical error strings and proved nothing — it now asserts `isError === false` on every
+  happy path, with a regression test for the wrong-key case.)
+- The **same reward** — one `scoreReward`, forwarded, reproducing all 2048 P1f rollout rewards.
+- The **same isolated `AI_JAM_HOME`**, removed on close. The real library is never written.
+
+**Broken, and it must be:** the tool *schema rendering*. P1c–P1f presented the catalog through
+Ollama's `/api/chat` tool format; P2 presents it through the Qwen3 chat template, rendered by
+transformers. Same tools, same names, same arguments — different prompt bytes. So **the base
+model for lock §3's comparison must be re-measured through this path**, not carried over from
+P1f's numbers. P1f's 35.0% format-failure rate is a prior, not a baseline.
+
+**Not yet resolved:** `MAX_PARALLEL = 2` is a per-assistant-turn cap in `SynthEnv`, and a single
+`POST /tool` cannot see turn boundaries. The bridge publishes the limit in `/health` and
+`env.py` carries the constant, but nothing enforces it yet. Whether it needs enforcing depends
+on whether TRL's loop can emit more than two tool calls in one assistant turn — answerable from
+a smoke transcript, and recorded here so it is not discovered later.
+
+---
+
+## Running it
+
+```bash
+# 1. the bridge ($0, local)
+pnpm exec tsx experiments/rollout-arc/scripts/p2-env-server.mjs --port 8765
+
+# 2. Stage C ($0, local, needs the 4B weights)
+cd experiments/rollout-arc/p2/trainer
+HF_HOME=E:/AI-Models/hf-cache ./.venv/Scripts/python.exe train.py --dry --out ../runs/dry
+```
+
+The venv is local-only and gitignored; `requirements.lock.txt` is the reproducible artifact.
+`runs/` is gitignored too — adapters are weights, and lock §8 keeps them local and unpublished.
+
+---
+
+## Compensators (lock §8, no skip)
+
+| Action | Compensator | State |
+|---|---|---|
+| MCP child + isolated `AI_JAM_HOME` | `executor.close()` kills the child and `rmSync`s the home; the pod script traps EXIT | ✅ held on every clean exit — **but see the leak below** |
+| Bridge process | `POST /shutdown`, SIGINT/SIGTERM handlers, `trap` on the pod | ✅ |
+| Adapter artifacts | gitignored; nothing published | ✅ 127 MB step-0 adapter stayed local |
+| RunPod pod | `babysit-pod.sh` + `deadman.ps1` + `runpod.mjs down` — inherited, not rewritten | ⏸ unused; no pod launched |
+| Spend | none authorised | ✅ **$0** |
+
+---
+
+### The one compensator gap, found by checking rather than by assuming
+
+`close()` removes the isolated home, so every clean exit is clean. **A `SIGKILL` is not a clean
+exit**, and an aborted bridge left a `jam-rollout-*` home behind in the system temp directory
+with its 24 seeded songs. Found by listing the directory after the run, removed by hand.
+
+It is contained — the songs are synthetic, the real library is never written, and the directory
+is under the OS temp sweep — but the compensator as written is only true for exits it controls.
+On the pod, `pod_run_p2.sh` traps `EXIT` (which covers `set -e` failures and Ctrl-C, not
+`SIGKILL`), and the babysitter terminates the whole pod, which takes the filesystem with it. The
+residual exposure is local development, and the remedy is one line: list
+`$TMPDIR/jam-rollout-*` after an aborted run.
+
+---
+
+## What this does not do
+
+- **It does not launch a pod.** `pod_run_p2.sh` stops after `smoke` unless `TRAIN=1`, and §7 of
+  the lock makes that the director's call.
+- **It does not claim a result.** Stage C proves the loop closes and the mask is real. That is
+  all it proves.
+- **It does not measure cost.** The smoke run does that, on the pod, under §7.
