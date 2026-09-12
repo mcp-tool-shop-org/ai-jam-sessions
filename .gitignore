@@ -58,3 +58,8 @@ experiments/rollout-arc/p2/trainer/.venv/
 # P2 run artifacts: adapters are weights (lock §8 keeps them local and unpublished);
 # the committed receipt is experiments/rollout-arc/p2/stage-c-receipt.json
 experiments/rollout-arc/p2/runs/
+
+# P2 pod artifacts: JSON receipts are committable, tarballs/logs/cancel-files are not
+experiments/rollout-arc/p2/artifacts/*.tar.gz
+experiments/rollout-arc/p2/artifacts/*.log
+experiments/rollout-arc/p2/artifacts/DEADMAN_CANCEL_*
