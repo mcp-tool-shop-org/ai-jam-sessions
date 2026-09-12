@@ -135,22 +135,34 @@ async function rolloutPassk(args, cases) {
       for (let attempt = 0; attempt < args.n; attempt++) {
         const seed = args.seed + attempt;
         const policy = async (messages) => {
-          const result = await post("/api/chat", {
-            model: args.model,
-            messages: toOllama(messages),
-            tools,
-            stream: false,
-            keep_alive: "30m",
-            think: false,
-            options: { temperature: args.n === 1 ? 0 : 1, num_predict: 256, seed },
-          });
+          let result;
+          try {
+            result = await post("/api/chat", {
+              model: args.model,
+              messages: toOllama(messages),
+              tools,
+              stream: false,
+              keep_alive: "30m",
+              think: false,
+              options: { temperature: args.n === 1 ? 0 : 1, num_predict: 256, seed },
+            });
+          } catch (err) {
+            // Ollama 500s on truncated tool-call JSON. That is a failed
+            // attempt, not a harness crash.
+            return { role: "assistant", content: "" };
+          }
           const msg = result.message ?? {};
-          const calls = (msg.tool_calls ?? []).map((tc) => ({
-            name: tc.function?.name ?? tc.name,
-            arguments: typeof tc.function?.arguments === "string"
-              ? JSON.parse(tc.function.arguments || "{}")
-              : (tc.function?.arguments ?? {}),
-          }));
+          const calls = [];
+          for (const tc of msg.tool_calls ?? []) {
+            let arguments_ = {};
+            const raw = tc.function?.arguments ?? tc.arguments;
+            try {
+              arguments_ = typeof raw === "string" ? JSON.parse(raw || "{}") : (raw ?? {});
+            } catch {
+              arguments_ = {};
+            }
+            calls.push({ name: tc.function?.name ?? tc.name, arguments: arguments_ });
+          }
           if (calls.length) {
             return { role: "assistant", content: msg.content ?? "", tool_calls: calls };
           }
