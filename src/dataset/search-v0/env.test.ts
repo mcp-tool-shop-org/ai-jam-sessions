@@ -68,15 +68,20 @@ describe.skipIf(!haveServer)("SearchEnv against the real MCP server", () => {
     expect(reward.reward).toBe(0);
   });
 
-  it("does not dump a whole song when list_measures omits the window", async () => {
+  // bethena has 219 measures. A windowless call used to be refused; it is now
+  // filled in to the first page. Either way the P1b failure — one observation,
+  // one guess, no search — must stay impossible. The refusal cost a turn; the
+  // default does not.
+  it("pages a windowless list_measures instead of dumping the whole song", async () => {
     const c = solace();
     const state = await env.setupState(c);
     const { turns } = await env.envResponse(state, [
       { name: "list_measures", arguments: { id: "bethena" } },
     ]);
     expect(turns).toHaveLength(1);
-    expect(turns[0]!.content).toMatch(/requires startMeasure and endMeasure/);
+    expect(turns[0]!.content).toMatch(/Measures 1 to 4/);
     expect(turns[0]!.content).not.toMatch(/Measure 50/);
+    expect(turns[0]!.content).not.toMatch(/requires startMeasure and endMeasure/);
   });
 
   it("executes a paged list_measures window against the real server", async () => {
