@@ -78,3 +78,54 @@ already demonstrated at n=64.
 **Caveat, stated because this arc has been bitten by it repeatedly:** one seed, one shape,
 16 per tier (±0.245 at p≈0.5). The *non-monotonicity* and the *1-in-64 split rate* are large
 enough to read at this n. The individual tier rates are not.
+
+---
+
+## CORRECTION — "one split in 64" does not support the conclusion I drew from it
+
+**This run used `num_generations` 2. Production and the abort run use 8.** I flagged exactly
+this confound in an external review earlier tonight — that a non-degenerate rate at one G is
+not comparable to a rate at another — and then built a conclusion on it myself.
+
+Split rate is not a property of the task. It is P(0 < *k* < G), which depends on G:
+
+| | split rate | gradient-bearing groups per 64 steps |
+|---|---|---|
+| this run, **G=2**, measured | **0.016** | **1.0** |
+| abort run, **G=8**, measured (different corpus) | **0.200** | ~12.8 |
+
+**The only direct measurement at production G is 2 of 10 — a 20% split rate**, whose 95%
+interval [0.025, 0.556] contains the 27.1% this arc originally gated on.
+
+And the projection that would reconcile them does not survive scrutiny. Solving for ρ from
+this run's split rate gives **ρ ≈ 0.932**, which would predict only 4% splits at G=8 — a 5×
+disagreement with the measured 20%. **But that ρ is estimated from a single non-degenerate
+group.** One observation. It is not an estimate.
+
+### What survives, and what does not
+
+**Survives — these are accuracy or deterministic facts, and G-invariant:**
+
+- the tiers do not order by difficulty: D0 0.938, **D1 0.625**, D2 0.938, D3 0.969
+- the survivorship mechanism, verified with no model in the loop: **0/32 in every tier** has a
+  non-gold window measure re-deriving to the target, so D2 and D3 cannot distract by
+  construction
+- D1 moves accuracy by a large margin, so **within-window confusability does work as a
+  difficulty axis** where the filter lets it function
+
+**Does not survive:**
+
+- **"one non-degenerate group in 64"** as a statement about training. It is a G=2 number.
+- **"harden the corpus is finished as a strategy."** Overreach. The accuracy axis demonstrably
+  works; whether that converts to gradient at G=8 is **unmeasured**, and the one G=8
+  measurement we have is 20%, not 1.6%.
+
+### The measurement that would settle it
+
+**D0–D3 stratified, distance 1–3, at `num_generations` 8** — the production shape, on the
+tier axis, with the stratification fix in place. That is the cell this arc has never run: every
+G=8 measurement was on the pre-fix truncated population, and every tier measurement was at G=2.
+
+Free and local. Roughly 4× the rollouts per step, so ~40–85 minutes depending on step count.
+Until it runs, the honest status of the difficulty axis is **unknown at production G**, not
+dead.
