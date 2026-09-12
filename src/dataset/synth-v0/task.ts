@@ -32,6 +32,12 @@ export interface SynthCase {
   distance: number;
   level: DifficultyLevel;
   split: "train" | "test";
+  /**
+   * The measure a policy that ignores "at or after" would answer, when the
+   * corpus was generated with a decoy. Never in the prompt and never gold — it
+   * is how a bound-dropping failure is told apart from a wrong chord.
+   */
+  decoy?: number;
 }
 
 export function splitOf(c: SynthCase): "train" | "test" {
