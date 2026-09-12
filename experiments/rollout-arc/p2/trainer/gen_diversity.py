@@ -41,6 +41,9 @@ def main() -> int:
     p.add_argument("--n", type=int, default=8, help="sequences per prompt, as num_generations")
     p.add_argument("--prompts", type=int, default=16)
     p.add_argument("--max-new-tokens", type=int, default=128)
+    p.add_argument("--mode", default="return-sequences", choices=["return-sequences", "duplicate-rows"],
+                   help="how the N samples are asked for: one prompt with num_return_sequences=N (my first test), "
+                        "or N duplicate prompt rows in a batch (what TRL actually does, mini_repeat_count)")
     p.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / "runs" / "precision" / "bf16-transformers.json"))
     a = p.parse_args()
 
@@ -63,18 +66,25 @@ def main() -> int:
         ]
         enc = tok.apply_chat_template(msgs, add_generation_prompt=True, return_tensors="pt", return_dict=True)
         ids = enc["input_ids"].to("cuda")
+        # TRL does NOT use num_return_sequences. It repeats the prompt N times into
+        # the batch (grpo_trainer.py:1240/1283, mini_repeat_count=num_generations)
+        # and generates the rows together. Those are different code paths through
+        # transformers, and this flag tests whether that difference is the cause.
+        if a.mode == "duplicate-rows":
+            ids = ids.repeat(a.n, 1)
+        kwargs = dict(
+            max_new_tokens=a.max_new_tokens,
+            # EXACTLY the kwargs TRL's non-vLLM path builds (grpo_trainer.py:1126)
+            do_sample=True,
+            temperature=1.0,
+            top_p=1.0,
+            top_k=0,
+            pad_token_id=tok.pad_token_id or tok.eos_token_id,
+        )
+        if a.mode == "return-sequences":
+            kwargs["num_return_sequences"] = a.n
         with torch.no_grad():
-            out = model.generate(
-                ids,
-                max_new_tokens=a.max_new_tokens,
-                # EXACTLY the kwargs TRL's non-vLLM path builds (grpo_trainer.py:1126)
-                do_sample=True,
-                temperature=1.0,
-                top_p=1.0,
-                top_k=0,
-                num_return_sequences=a.n,
-                pad_token_id=tok.pad_token_id or tok.eos_token_id,
-            )
+            out = model.generate(ids, **kwargs)
         completions = [tok.decode(o[ids.shape[1]:], skip_special_tokens=True) for o in out]
         distinct = len(set(completions))
         groups.append({"distinct": distinct, "identical": distinct == 1})
@@ -84,7 +94,7 @@ def main() -> int:
     summary = {
         "model": a.model,
         "dtype": "bfloat16",
-        "stack": "transformers.generate, no TRL, no tools",
+        "stack": f"transformers.generate ({a.mode}), no TRL, no tools",
         "sampling": {"do_sample": True, "temperature": 1.0, "top_p": 1.0, "top_k": 0, "num_return_sequences": a.n},
         "prompts": n,
         "byte_identical_groups": ident,
