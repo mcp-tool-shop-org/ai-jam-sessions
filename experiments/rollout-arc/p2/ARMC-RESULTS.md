@@ -55,3 +55,34 @@ non-degenerate ≈ 0.06 were measuring the task, not a broken harness. Which res
 
 **Corpus hardening is closed after all** — and this time the harness has been independently
 cleared, which is the check that was missing the first time I said it.
+
+---
+
+## Correction to my own rejection of the algorithmic pivot
+
+I rejected a baseline-based method earlier on the grounds that *"the extra signal is 8 of 400
+cases — 2.0%."* **That was computed on the parallel-only run, which is the wrong one.**
+
+| run | accuracy | all-wrong | advantage on all-right | advantage on all-wrong |
+|---|---|---|---|---|
+| parallel-only, n=400 | 0.958 | **2.0%** | +0.042 | −0.958 |
+| **all-knobs stack, n=128** | 0.835 | **15.6%** | **+0.165** | −0.835 |
+
+**The hardened corpus has nearly 8× the negative-advantage mass.** And under a baseline
+scheme every group registers something, weighted by |r − baseline|, against **≈8 of 128**
+groups under GRPO.
+
+So the pivot is **more defensible than I said**, and the objection that still stands is the
+narrower one: a cross-prompt baseline reintroduces prompt-difficulty as a nuisance variable,
+which is the specific thing group-relative advantage removes. That is a real cost, not a veto.
+
+**It is also a decision, not a measurement** — it changes the algorithm rather than answering
+a question, and this arc has no evidence about whether it would train. Which makes it exactly
+the kind of thing that belongs to the director, not to me or to an external reviewer.
+
+## Three corrections to the external summary
+
+- **HEAD is `76362e6`**, not `5fcef57` — roughly fifteen commits stale.
+- **Spend is ≈$10.40**, not $9.70; the arm-C attempt that died on my config bug still billed.
+- **"Sign off on the archive when ready"** — that is the director's call. The receipts are
+  committed; whether the arc closes is not mine to declare.
