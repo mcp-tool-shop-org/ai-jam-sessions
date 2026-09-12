@@ -5,6 +5,7 @@
 **Design lock:** [rollout-arc-p2-lock.md](rollout-arc-p2-lock.md) — read it first; §3 (format/skill separation) is the reason P2 exists.
 **Unlocked by:** [P1f](../experiments/rollout-arc/p1f/RESULTS.md). **Dry stage:** [p2/dry-report.json](../experiments/rollout-arc/p2/dry-report.json), 6/6 gates.
 **Research grounding:** 5-agent study-swarm, 2026-09-11, ~40 retrieved sources. §R below.
+⚠ **The citation gate ESCALATED — it did not pass. See §R0 before relying on §R.**
 
 ---
 
@@ -32,6 +33,35 @@ check first; this is what that means here.
 `environment_factory` is *"fully compatible with `peft_config`"* and attributes it to the docs.
 **That sentence could not be retrieved on re-check.** `peft_config` is a generic trainer argument
 and #6688 shows the combination is untested. **Amend the lock as part of this build.**
+
+---
+
+## R0. The citation gate escalated — read this before §R
+
+Step 4 of the study-swarm protocol requires a different-model-family verifier with a
+**retrieval oracle** to confirm every citation exists and supports its claim, and it says
+plainly: *"HALT-and-escalate if the verifier or retrieval oracle is unavailable — never read
+absence as 'citations fine'."*
+
+**Run 2026-09-11:** `prism verify --type citations --provider ollama --caller-family anthropic`
+over the 13 load-bearing citations below. **Verdict: `escalate`.** Every entry came back
+`existence: "unresolvable"` with `action: "RETRIEVE MANUALLY"` — prism's retrieval oracle could
+not reach arXiv from this rig. Receipt is replayable, `kid ed25519-611e3cc65671873e`,
+schema 5. **This is an oracle failure, not a clean bill of health, and §R is NOT gate-passed.**
+
+**What verification did happen, stated at its real strength:**
+
+| Layer | Status |
+|---|---|
+| Each research agent retrieved its own sources and returned a verification list | done — but agents are protocol *inputs*, not verifiers; this is the weakest layer |
+| The advisor independently re-fetched the load-bearing ones | done for arXiv:2605.21125, INTELLECT-2 §3.3.1 (arXiv:2505.07291), the TRL GRPO docs, TRL issue #4543, and the OpenEnv MCP tutorial |
+| The build session re-checked §R against **installed TRL 1.13.0** rather than carrying it forward | done — and it found three of my §R claims wrong (see §0) |
+| Different-family oracle check | **FAILED TO RUN** |
+
+**So: treat §R as retrieved-but-not-gated.** The build session's re-check against installed
+source is the strongest verification any of it received, and it is the reason three errors in
+this document were caught. **Before §R grounds anything beyond this build, re-run the gate from
+a host whose oracle can reach arXiv.**
 
 ---
 
