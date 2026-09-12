@@ -19,6 +19,15 @@
 //   E babysitter liveness counts a busy GPU      -> does NOT stall while GPU > 10%
 //   F babysitter stall (idle GPU, static log)    -> exit 2, NO terminate
 //   G babysitter unreachable ssh                 -> exit 3, NO terminate
+//   H dead-man fires MID-RUN under a live babysitter -> exactly one terminate,
+//     babysitter exits 3 rather than claiming success, no cancel file, and a
+//     half-fetched artifact is never reported as verified
+//
+// REQUIRES BASH. Five of the eight scenarios run babysit-p2.sh, so this must be
+// invoked from a shell that resolves `bash` (Git Bash, WSL, or any Linux shell).
+// It preflights that and refuses to run rather than reporting partial passes:
+// a run from PowerShell without the preflight scores 9/17 with exit 127 on every
+// babysitter scenario, which reads exactly like broken compensators.
 
 import { spawn } from "node:child_process";
 import { createServer } from "node:http";
@@ -126,6 +135,28 @@ const run = (cmd, args, opts = {}) =>
   });
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// A missing bash produces exit 127 per scenario, which looks like a compensator
+// failure and invites "fixing" something that is not broken. Fail loudly here.
+{
+  const probe = await new Promise((res) => {
+    const c = spawn("bash", ["-c", "echo ok"], { stdio: ["ignore", "pipe", "pipe"] });
+    c.on("error", () => res(null));
+    let out = "";
+    c.stdout?.on("data", (d) => (out += d));
+    c.on("close", (code) => res(code === 0 ? out.trim() : null));
+  });
+  if (probe !== "ok") {
+    console.error(
+      "HALT: this drill needs bash, and it is not resolvable from this shell.\n" +
+        "      Five of the eight scenarios run babysit-p2.sh. Without bash they exit 127,\n" +
+        "      which scores 9/17 and reads like broken compensators rather than a wrong shell.\n" +
+        "      Run it from Git Bash / WSL, or put bash on PATH, then re-run.",
+    );
+    api.close();
+    process.exit(2);
+  }
+}
 const results = [];
 const check = (name, pass, detail) => {
   results.push({ name, pass, detail });
@@ -290,6 +321,49 @@ console.log("\nG. babysitter: ssh unreachable");
   check("unreachable -> NO podTerminate, dead-man still armed", terminated.length === before, "");
 }
 
+// ── H: the two compensators interacting ──────────────────────────────────────
+// A-G exercise each compensator alone. The real question a short cap raises is
+// what happens when the dead-man fires while the babysitter is still working.
+console.log("\nH. dead-man fires mid-run, under a live babysitter");
+{
+  const art = freshArt("bothH");
+  clearRemote();
+  setGpu(97); // busy, so the babysitter is waiting rather than stalling
+  setLogSize(10);
+  setSshDead(false);
+  const before = terminated.length;
+
+  // A half-fetched artifact, as an interrupted scp would leave behind.
+  writeFileSync(join(art, "smoke.tar.gz"), "truncated");
+
+  writeFileSync(join(REMOTE_ART, "gpu.txt"), "L40S\n");
+  writeFileSync(join(REMOTE_ART, "STAGE0.DONE"), "");
+
+  const baby = run("bash", [BABYSIT, "drillH", FAKE_POD, "1.2.3.4", "22", art], {
+    env: env({ P2_CANCEL_DIR: sh(art) }),
+  });
+  await sleep(1500);
+
+  const dead = await run(
+    "powershell",
+    ["-NoProfile", "-File", DEADMAN, "-PodId", FAKE_POD, "-CapSeconds", "2", "-Label", "drillH", "-ArtDir", art, "-ApiUrl", API_URL, "-TickSeconds", "1"],
+    { env: env() },
+  );
+  // The pod is gone the moment the dead-man terminates it.
+  setSshDead(true);
+  const r = await baby;
+  setSshDead(false);
+
+  const fired = terminated.slice(before);
+  const log = existsSync(join(art, "babysit.log")) ? readFileSync(join(art, "babysit.log"), "utf8") : "";
+  check("mid-run cap -> exactly one terminate (the dead-man's)", fired.length === 1 && fired[0].podId === FAKE_POD, JSON.stringify(fired));
+  check("dead-man exits 0 after a mid-run terminate", dead.code === 0, `exit ${dead.code}`);
+  check("babysitter notices the pod vanished and exits 3", r.code === 3, `exit ${r.code}`);
+  check("babysitter never claims a verified fetch", !/checksums VERIFIED/.test(log), "");
+  check("no cancel file from an interrupted run", !existsSync(join(art, "DEADMAN_CANCEL_drillH")), "");
+  check("a half-fetched artifact is left, not reported as good", existsSync(join(art, "smoke.tar.gz")) && !/VERIFIED/.test(log), "");
+}
+
 // ── receipt ──────────────────────────────────────────────────────────────────
 api.close();
 const passed = results.filter((r) => r.pass).length;
@@ -305,10 +379,12 @@ const receipt = {
   total: results.length,
   all_pass: passed === results.length,
   terminate_calls_recorded: terminated,
+  terminate_calls_expected: 3,
+  requires: "bash (5 of 8 scenarios run babysit-p2.sh); preflighted",
 };
 const outPath = join(HERE, "..", "compensator-drill.json");
 writeFileSync(outPath, JSON.stringify(receipt, null, 2) + "\n");
 console.log(`\n${passed}/${results.length} checks passed — receipt: ${sh(outPath)}`);
-console.log(`podTerminate calls the mock recorded: ${terminated.length} (expected exactly 2: scenario A and scenario C)`);
+console.log(`podTerminate calls the mock recorded: ${terminated.length} (expected exactly 3: scenarios A, C and H)`);
 rmSync(ROOT, { recursive: true, force: true });
-process.exit(receipt.all_pass && terminated.length === 2 ? 0 : 1);
+process.exit(receipt.all_pass && terminated.length === 3 ? 0 : 1);
