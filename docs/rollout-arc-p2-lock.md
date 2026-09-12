@@ -51,7 +51,21 @@ dispatch before the next arc inherits it.
 ## 2. The training population
 
 - **Pooled across D0–D3. Never selected by level.** P1f measured the level index's pass@1 rank correlation against P1e at **ρ = −0.60**; P1e's "D3 easier than D0" did not reproduce, and reversed. D0's 18 and D1's 6 are tails of one rate. **The level index is noise and must not be a population selector.**
-- **Non-degenerate, not the narrow band.** Verified from primary source: NVIDIA's production DAPO implementation filters, verbatim, *"Filter prompt groups where `std > 0`."* That is `1 ≤ c ≤ 7`, our secondary criterion, not `[12.5%, 50%]`. INTELLECT-2's offline band exists to avoid wasting generation on a **fixed** 285k pool; with a generator plus online filtering there is nothing to pre-filter.
+- **Non-degenerate, not the narrow band** — as a *population* criterion. INTELLECT-2's offline band exists to avoid wasting generation on a **fixed** 285k pool; with a generator there is nothing to pre-filter.
+
+  ⚠ **CORRECTED 2026-09-12. This bullet originally said online filtering would do the discarding, citing NVIDIA's production DAPO — verbatim *"Filter prompt groups where `std > 0`."* That is true of NeMo. It is NOT true of the trainer we are actually using, and the gap has been in this lock since it was written.**
+
+  **Verified against the installed TRL 1.13.0 `grpo_trainer.py` (3184 lines): there is no `dynamic_sampling` option, no `batch_multiplier`, no resample-and-refill loop, and no `std > 0` filter.** `frac_reward_zero_std` at line 2856 is `is_std_zero.float().mean().item()` — degenerate groups are **measured and logged, never discarded and replaced**. (`generate_every` is a generation-frequency knob; `train_sampling_strategy` belongs to KTO's dataset ordering.)
+
+  **Two consequences, and they point opposite ways.**
+
+  *Cheaper than feared:* no filtering means no ~3.7× generation multiplier. 200 steps × 38.5 s = 2.14 h ≈ **$2.55** on the A100, which fits the remaining budget comfortably.
+
+  *But the steps buy far less than they look like.* A group whose rollouts all agree has zero advantage and therefore zero gradient. The smoke ran **one prompt group per step** (`per_device_train_batch_size` 8 = `num_generations` 8). At the measured 27.1% non-degenerate rate, **P(all degenerate) = 0.729, so roughly three optimizer steps in four are no-ops** and 200 steps delivers about **54 effective updates** — well under the 200–500 window R2.10 reports, which is presumably counting effective ones.
+
+  **The lever is batch composition, not filtering.** Filtering and extra unfiltered steps cost almost identically per useful group, because generation dominates either way. What helps is more than one prompt group per step: **P(all degenerate) = 0.729^g** — 73% at g=1, 53% at 2, **28% at 4**, 8% at 8. That is a config change at fixed `num_generations`, not new code.
+
+  **So the open number is no longer "the filtered step time." It is how many prompt groups per step the card will hold**, since g=4 is four times the activation footprint and the 5090 already found this configuration's VRAM ceiling the hard way. Measurable in a handful of steps.
 - **Generate fresh training cases at scale.** The P1f test split stays **sealed** and is never trained on. Train and test share no `song_id`.
 - **Leak filter applies to training too.** A case a no-tool baseline solves in 8 attempts teaches guessing.
 
