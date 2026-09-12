@@ -368,7 +368,7 @@ residual exposure is local development, and the remedy is one line: list
 
 ## The launch sequence, exactly
 
-**Not run. This is the string, not a description of one.** L40S, 4-hour cap, smoke-only.
+**This is the string, not a description of one.** RTX A6000, 8-hour cap (28800 s, $2.64 worst case), smoke-only.
 
 ```bash
 # 0. preconditions, all $0 and read-only.
@@ -395,7 +395,7 @@ powershell -NoProfile -Command "Start-Process powershell -ArgumentList '-NoProfi
 # 4. push the launcher and its config. No repo scp: stage 0 clones the pinned
 #    commit itself, which is 130 MB of tracked tree we do not have to push.
 ssh -i ~/.ssh/runpod_rustline -p <port> root@<ip> "mkdir -p /workspace/arc/scripts"
-printf 'export P2_COMMIT=da0c57df3199b136e217c1332351de2746d9cb33\nexport SMOKE_STEPS=8\n' > /tmp/p2-env.sh
+printf 'export P2_COMMIT=d2d4088b6740cd168b88cc8256cbbb845e29e36b\nexport SMOKE_STEPS=8\n' > /tmp/p2-env.sh
 scp -i ~/.ssh/runpod_rustline -P <port> /tmp/p2-env.sh root@<ip>:/workspace/arc/p2-env.sh
 scp -i ~/.ssh/runpod_rustline -P <port> experiments/rollout-arc/p2/scripts/pod_run_p2.sh root@<ip>:/workspace/arc/scripts/pod_run_p2.sh
 
