@@ -84,6 +84,7 @@ export function parseArgs(argv) {
     distances: null,
     decoyBeforeBound: false,
     varyRightHand: false,
+    parallelOnly: false,
     systemHint: false,
     /**
      * Restrict /cases to these difficulty tiers. Default null = all of them.
@@ -110,6 +111,7 @@ export function parseArgs(argv) {
     else if (a === "--distances") out.distances = numberList(argv[++i], "--distances");
     else if (a === "--decoy") out.decoyBeforeBound = true;
     else if (a === "--vary-right-hand") out.varyRightHand = true;
+    else if (a === "--parallel-only") out.parallelOnly = true;
     else if (a === "--system-hint") out.systemHint = true;
     else if (a === "--levels") out.levels = String(argv[++i]).split(",").map((x) => x.trim().toUpperCase()).filter(Boolean);
     else throw new Error(`unknown flag ${a}`);
@@ -236,6 +238,7 @@ export async function startEnvServer(opts = {}) {
     distances: null,
     decoyBeforeBound: false,
     varyRightHand: false,
+    parallelOnly: false,
     systemHint: false,
     levels: null,
     ...opts,
@@ -250,6 +253,7 @@ export async function startEnvServer(opts = {}) {
   if (args.distances) difficulty.distances = args.distances;
   if (args.decoyBeforeBound) difficulty.decoyBeforeBound = true;
   if (args.varyRightHand) difficulty.varyRightHand = true;
+  if (args.parallelOnly) difficulty.parallelOnly = true;
   const corpus = generateCorpus(args.seed, difficulty);
   const allRows = corpus.cases.map((c) => caseRow(c, systemText));
   const rows = args.levels ? allRows.filter((r) => args.levels.includes(r.level)) : allRows;
@@ -280,6 +284,7 @@ export async function startEnvServer(opts = {}) {
             distances: args.distances ?? "default",
             decoy_before_bound: args.decoyBeforeBound,
             vary_right_hand: args.varyRightHand,
+            parallel_only: args.parallelOnly,
             system_hint: args.systemHint,
             levels: args.levels ?? "all",
           },
