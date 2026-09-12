@@ -1,15 +1,15 @@
 {
   "drill": "P2 compensators",
-  "date": "2026-09-12T02:51:47.371Z",
+  "date": "2026-09-12T03:03:23.473Z",
   "spend": 0,
   "pod": "FAKE — no pod was rented, no real API was called",
-  "api_mock": "http://127.0.0.1:60715/graphql",
+  "api_mock": "http://127.0.0.1:61840/graphql",
   "fake_pod_id": "fake-pod-000000000000",
   "checks": [
     {
       "name": "cap reached -> podTerminate posted",
       "pass": true,
-      "detail": "recorded [{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T02:51:06.431Z\"}]"
+      "detail": "recorded [{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T03:02:33.389Z\"}]"
     },
     {
       "name": "dead-man exits 0 after terminating",
@@ -39,7 +39,7 @@
     {
       "name": "ALL.DONE -> podTerminate posted for the pod id",
       "pass": true,
-      "detail": "[{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T02:51:19.213Z\"}]"
+      "detail": "[{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T03:02:46.347Z\"}]"
     },
     {
       "name": "dead-man cancel file dropped",
@@ -94,7 +94,7 @@
     {
       "name": "mid-run cap -> exactly one terminate (the dead-man's)",
       "pass": true,
-      "detail": "[{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T02:51:43.858Z\"}]"
+      "detail": "[{\"podId\":\"fake-pod-000000000000\",\"at\":\"2026-09-12T03:03:11.897Z\"}]"
     },
     {
       "name": "dead-man exits 0 after a mid-run terminate",
@@ -120,23 +120,53 @@
       "name": "a half-fetched artifact is left, not reported as good",
       "pass": true,
       "detail": ""
+    },
+    {
+      "name": "the first fetch lands intact",
+      "pass": true,
+      "detail": "\"{\\\"stage\\\":\\\"STAGE0\\\",\\\"since_prev_s\\\":11}\\n\""
+    },
+    {
+      "name": "a truncated transfer does NOT replace it",
+      "pass": true,
+      "detail": "\"{\\\"stage\\\":\\\"STAGE0\\\",\\\"since_prev_s\\\":11}\\n\""
+    },
+    {
+      "name": "no .fetch temp files left behind",
+      "pass": true,
+      "detail": "babysit.log, gpu.txt, stage-timings.jsonl"
+    },
+    {
+      "name": "no terminate from a failed fetch",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "both defaults parse out of the scripts",
+      "pass": true,
+      "detail": "E:/AI/ai-jam-sessions/experiments/rollout-arc/p2/artifacts | E:\\AI\\ai-jam-sessions\\experiments\\rollout-arc\\p2\\artifacts"
+    },
+    {
+      "name": "and they are the same directory",
+      "pass": true,
+      "detail": "e:/ai/ai-jam-sessions/experiments/rollout-arc/p2/artifacts vs e:/ai/ai-jam-sessions/experiments/rollout-arc/p2/artifacts"
     }
   ],
-  "passed": 23,
-  "total": 23,
+  "passed": 29,
+  "total": 29,
   "all_pass": true,
   "terminate_calls_recorded": [
     {
       "podId": "fake-pod-000000000000",
-      "at": "2026-09-12T02:51:06.431Z"
+      "at": "2026-09-12T03:02:33.389Z"
     },
     {
       "podId": "fake-pod-000000000000",
-      "at": "2026-09-12T02:51:19.213Z"
+      "at": "2026-09-12T03:02:46.347Z"
     },
     {
       "podId": "fake-pod-000000000000",
-      "at": "2026-09-12T02:51:43.858Z"
+      "at": "2026-09-12T03:03:11.897Z"
     }
   ],
   "terminate_calls_expected": 3,
