@@ -146,7 +146,7 @@ have been the highest-risk path available.** GRPOTrainer now carries two relevan
 
 | Surface | Contract (verbatim from the docs) | LoRA |
 |---|---|---|
-| `environment_factory` | a class "whose public methods auto-register as discoverable tools — the trainer then handles the multi-turn generation loop for you"; `reset()` / `get_reward()`; `max_tool_calling_iterations` | "Fully compatible with `peft_config`" |
+| `environment_factory` | a class "whose public methods auto-register as discoverable tools — the trainer then handles the multi-turn generation loop for you"; `reset()` / `get_reward()`; `max_tool_calling_iterations` | ⚠ **CORRECTED 2026-09-11** — this cell originally read "fully compatible with `peft_config`" and attributed it to the docs. **That sentence could not be retrieved on re-check.** `peft_config` is a generic trainer argument, and TRL issue #6688 reports our exact configuration (Qwen3-4B, LoRA r32, environment_factory, colocate) collapsing 0.66→0.40 against the plain-generate arm. **Treat the combination as untested.** See the build handoff §0. |
 | `rollout_func` | `(prompts: list[str], trainer) -> dict` returning `prompt_ids`, `completion_ids`, `logprobs`; "Any other fields are forwarded to the reward functions" | same |
 
 **Both are marked experimental** — *"may change or be removed at any time without prior
