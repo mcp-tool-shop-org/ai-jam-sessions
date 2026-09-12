@@ -209,7 +209,8 @@ The venv is local-only and gitignored; `requirements.lock.txt` is the reproducib
 | Bridge process | `POST /shutdown`, SIGINT/SIGTERM handlers, `trap` on the pod | ✅ |
 | Adapter artifacts | gitignored; nothing published | ✅ 127 MB step-0 adapter stayed local |
 | RunPod pod, clean path | [`babysit-p2.sh`](scripts/babysit-p2.sh) verifies checksums, API-terminates on ALL.DONE, drops the dead-man cancel file | ✅ **armed + drilled** (scenario C) |
-| RunPod pod, babysitter dies | [`deadman-p2.ps1`](scripts/deadman-p2.ps1), detached, 12 h absolute cap = $9.48 worst case | ✅ **armed + drilled** (scenarios A, B) |
+| RunPod pod, babysitter dies | [`deadman-p2.ps1`](scripts/deadman-p2.ps1), detached, absolute cap — **3 h for smoke ($2.37)**, 12 h for train ($9.48) | ✅ **armed + drilled** (scenarios A, B, H) |
+| RunPod pod, run hangs | the babysitter stalls at exit 2 **without** terminating, so the dead-man cap is what bounds this — which is why it is sized per stage | ✅ **drilled** (scenarios F, H) |
 | RunPod pod, bad fetch | mismatch leaves the pod RUNNING and the dead-man ARMED for a manual fetch; `runpod.mjs down <id>` is the manual lever | ✅ **drilled** (scenario D) |
 | Isolated home after a `SIGKILL` | `close()` cannot run, so `$TMPDIR/jam-rollout-*` survives; remedy is to list and remove it after any aborted run | ⚠ **known gap**, see below — found and cleaned once during this build |
 | Spend | none authorised | ✅ **$0** |
@@ -240,8 +241,44 @@ same $10, 48 GB is ample for 4B + LoRA (R3.11), and it sidesteps the vLLM sm_120
 problem (vllm#35432) entirely. The corroborating evidence is in this document — the production
 shape sat at **31.9 GB of 32.6 GB** on the 5090 and made no progress.
 
-**The cap is a backstop, not a budget.** The babysitter terminates on ALL.DONE within minutes of
-the smoke run finishing; the dead-man only fires if the babysitter itself dies.
+### Size the cap to the stage, not to the wallet
+
+**The 12-hour figure above is the `train` cap. Do not use it for `smoke`.** `-CapSeconds` is a
+mandatory parameter of `deadman-p2.ps1`; nothing is baked in, so this is a launch-time argument
+and not a code change.
+
+| Stage | Cap | Worst case on an L40S | Attempts left inside $10 |
+|---|---|---|---|
+| `smoke` | **3 hr** (10,800 s) | **$2.37** | 3 more |
+| `train` | 12 hr (43,200 s) | $9.48 | — (derive from what is left) |
+
+The usual argument for this is retry budget, and it holds: a smoke run's whole job is to
+discover what we got wrong, so a first attempt failing is the *expected* outcome, and a 12-hour
+cap on a hung smoke run spends the entire ceiling on nothing.
+
+**There is a stronger reason, and it comes out of this bundle's own code.** The babysitter's
+stall path logs and exits 2 — it deliberately does **not** terminate, so a human can inspect a
+possibly-recoverable run. Scenario F proves it. That means a hung run bills until the *dead-man*
+fires: the cap is not merely a disaster backstop, it **is** the budget for the most likely
+failure mode. A stall at minute 30 under a 12-hour cap costs about $9 and ends the experiment.
+Sizing to the stage makes the likely failure cost $2.37 instead.
+
+For `train`, derive the cap from what is **left**, not from the original ceiling:
+
+```
+cap_seconds = floor((remaining_budget - storage_allowance) / hourly_rate * 3600)
+e.g. after one $2.37 smoke: (10.00 - 2.37 - 0.20) / 0.79 * 3600 = 33,835 s  (~9.4 hr)
+```
+
+One caveat worth stating rather than discovering: 3 hours is roughly 2× a plausible worst case,
+not 10×. Stage 0 on a cold pod downloads 7.6 GB of weights, runs `pnpm install` and builds
+TypeScript before a single gradient, and the production step time is still unmeasured — that is
+what the smoke run exists to find out. If stage 0 is slower than expected the cap could bite a
+working run. It would be visible rather than silent: `STAGE0.DONE` streams within minutes of
+setup finishing, so a run that has not reached it is diagnosable while it is still cheap.
+
+**The cap is a backstop for a dead babysitter, and the budget for a hung run.** On the clean
+path the babysitter terminates on ALL.DONE within minutes and the dead-man never fires at all.
 
 ### The drill — both compensators fired against a fake pod
 
@@ -262,10 +299,22 @@ No pod, no real API, no dollar: a mock RunPod endpoint on localhost records ever
 | E | silent log but GPU at 97% | **no** false stall | ✅ |
 | F | idle GPU + static log | exit 2, **no** terminate | ✅ |
 | G | ssh unreachable | exit 3, **no** terminate | ✅ |
+| H | **dead-man fires mid-run, under a live babysitter** | exactly one terminate, babysitter exits 3 rather than claiming success, no cancel file, half-fetched artifact not reported as good | ✅ |
 
-**17 / 17 checks passed**, and the mock recorded **exactly 2** `podTerminate` calls — scenario A
-and scenario C. The five scenarios that must not terminate did not. Receipt:
+**23 / 23 checks passed**, and the mock recorded **exactly 3** `podTerminate` calls — scenarios A,
+C and H. The five scenarios that must not terminate did not. Receipt:
 [`compensator-drill.json`](compensator-drill.json).
+
+**The drill needs `bash`** — five of the eight scenarios run `babysit-p2.sh`. Run from PowerShell
+it scored 9/17 with exit 127 on every babysitter scenario, which reads exactly like broken
+compensators and invites "fixing" something that is not wrong. It now **preflights bash and
+refuses to run**, naming the cause, rather than reporting a partial pass.
+
+Scenario H exists because A–G each test one compensator alone, and the question a shorter cap
+raises is what the two do *to each other*. Answer: cleanly. The dead-man terminates, the
+babysitter sees the pod vanish and exits 3 — it does not mistake a dead pod for a finished run —
+no cancel file is dropped, and a half-written artifact is left on disk without ever being
+reported as verified.
 
 Scenario E is the one that matters most and is easiest to get wrong: liveness counts a **busy
 GPU**, not just a growing log, because Python block-buffers stdout under `nohup` and a log-only
