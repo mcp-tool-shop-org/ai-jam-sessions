@@ -225,6 +225,29 @@ class JamSearchEnv:
         return await self._tool("score_audio_take", path=path, song_id=song_id, bpm=bpm)
 
 
+def make_plain_tools(base_url: str = DEFAULT_BASE_URL):
+    """The SAME nine tools, as standalone callables for TRL's `tools=` path.
+
+    The discriminator for the rollout-collapse question. Measured 2026-09-12:
+    TRL's `environment_factory` path returns eight BYTE-IDENTICAL completions in
+    67-95% of groups across eight runs, while the same weights branch fully
+    (0% identical, 8.00 distinct of 8) under plain `transformers.generate` at the
+    same sampler settings, and under Ollama at q4 AND fp16 with the same tool
+    loop against the same MCP server.
+
+    So the collapse is not precision, not the model, not the batching shape, and
+    not tools-or-multi-turn as such. `environment_factory` is the only untested
+    difference left — and `tools=` is the way to test it, because it drives the
+    same nine tools through TRL's OTHER multi-turn path.
+
+    One shared client, because these are module-level functions rather than
+    methods on a pooled instance: the bridge is stateless per call (it forwards
+    to one MCP server), so sharing it changes nothing the rollout can observe.
+    """
+    shared = JamSearchEnv(base_url=base_url)
+    return [getattr(shared, name) for name in ROLLOUT_TOOL_NAMES]
+
+
 def make_environment_factory(base_url: str = DEFAULT_BASE_URL):
     """TRL calls this with no arguments, once per pooled instance."""
 
