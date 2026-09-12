@@ -1,0 +1,97 @@
+{
+  "stage": "dry",
+  "shape": {
+    "prompts_per_step": 1,
+    "generations_per_prompt": 2,
+    "completions_per_step": 2
+  },
+  "spend": 0,
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "steps_requested": 2,
+  "steps_timed": 2,
+  "step_seconds": [
+    16.091,
+    23.522
+  ],
+  "mean_step_seconds": 19.806,
+  "wall_seconds": 40.543,
+  "mask": {
+    "batches": 2,
+    "completions": 4,
+    "with_zero_span": 4,
+    "zeros": 601,
+    "ones": 412,
+    "zero_fraction": 0.5933
+  },
+  "config": {
+    "num_generations": 2,
+    "per_device_train_batch_size": 2,
+    "gradient_accumulation_steps": 1,
+    "learning_rate": 1e-05,
+    "beta": 0.0001,
+    "epsilon": 0.2,
+    "epsilon_high": 0.28,
+    "max_completion_length": 256,
+    "max_tool_calling_iterations": 5,
+    "use_vllm": false,
+    "vllm_importance_sampling_mode": "token_truncate",
+    "vllm_importance_sampling_clip_max": 3.0,
+    "lora": {
+      "r": 16,
+      "alpha": 32,
+      "target_modules": "all-linear",
+      "dropout": 0.0
+    },
+    "random_reward_arm": false
+  },
+  "versions": {
+    "python": "3.12.3",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.17.0",
+    "trl": "1.13.0",
+    "peft": "0.20.0",
+    "accelerate": "1.15.0",
+    "cuda": "12.8",
+    "device": "NVIDIA A100 80GB PCIe",
+    "capability": [
+      8,
+      0
+    ]
+  },
+  "bridge": {
+    "before": {
+      "tool_calls": 2,
+      "scored": 0,
+      "episodes": 0
+    },
+    "after": {
+      "tool_calls": 11,
+      "scored": 4,
+      "episodes": 0
+    },
+    "library_songs": 1280,
+    "generator_seed": 2026091103,
+    "schema_version": "jam-actions-synth-v0/1.1.0",
+    "tools": [
+      "score_audio_take",
+      "transcribe_audio",
+      "song_info",
+      "list_measures",
+      "verify_harmony",
+      "detect_chord",
+      "ensemble_now",
+      "list_songs",
+      "transpose_song"
+    ],
+    "limits": {
+      "max_turns": 5,
+      "max_parallel": 2,
+      "max_list_window": 4
+    }
+  },
+  "environment": {
+    "instances": 2,
+    "resets": 4
+  },
+  "dataset_rows": 2
+}
