@@ -272,15 +272,38 @@ export async function startEnvServer(opts = {}) {
           counters: { tool_calls: toolCalls, scored, episodes },
         });
       }
+      // Round-robin across levels so a --limit draws evenly from D0..D3 instead of
+      // truncating. `--limit 32` on a level-ordered split took D0(16)+D1(16) and
+      // left D2 and D3 at n=0 in EVERY cell of the P2 grid — the difficulty tiers
+      // the corpus was built to test were never measured.
       if (req.method === "GET" && url.pathname === "/cases") {
         const split = url.searchParams.get("split");
         if (split && !["train", "test", "all"].includes(split)) {
           return json(res, 400, { error: "split must be train|test|all" });
         }
-        const picked = !split || split === "all" ? rows : rows.filter((r) => r.split === split);
+        let picked = !split || split === "all" ? rows : rows.filter((r) => r.split === split);
         const limit = url.searchParams.get("limit");
         const n = limit == null ? picked.length : Number(limit);
         if (!Number.isInteger(n) || n < 0) return json(res, 400, { error: "limit must be a non-negative integer" });
+        // Interleave by level before the limit is applied. Deterministic: the
+        // per-level order is the corpus order, and levels cycle in LEVELS order.
+        if (n < picked.length) {
+          const byLevel = new Map();
+          for (const r of picked) {
+            if (!byLevel.has(r.level)) byLevel.set(r.level, []);
+            byLevel.get(r.level).push(r);
+          }
+          const queues = [...byLevel.keys()].sort().map((k) => byLevel.get(k));
+          const woven = [];
+          for (let i = 0; woven.length < picked.length; i++) {
+            let moved = false;
+            for (const q of queues) {
+              if (i < q.length) { woven.push(q[i]); moved = true; }
+            }
+            if (!moved) break;
+          }
+          picked = woven;
+        }
         return json(res, 200, { n: Math.min(n, picked.length), cases: picked.slice(0, n) });
       }
       if (req.method === "POST" && url.pathname === "/reset") {
