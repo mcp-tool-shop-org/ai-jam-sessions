@@ -91,16 +91,24 @@ fi
 `,
 );
 
-// fake scp: last two args are "root@ip:/remote/path" and the local dest dir.
+// fake scp: last two args are "root@ip:/remote/path" and the local destination.
+// With scp_fail set it does what an scp killed mid-transfer does — leaves a
+// partial file at the destination and exits non-zero.
 writeFileSync(
   join(ROOT, "fake-scp.sh"),
   `#!/usr/bin/env bash
 DEST="\${@: -1}"
 SRC="\${@: -2:1}"
 SRC="\${SRC#*:}"
+if [ "$(cat ${sh(join(STATE, "scp_fail"))} 2>/dev/null)" = "1" ]; then
+  printf 'PARTIAL-TRUNCATED' > "$DEST"
+  exit 1
+fi
 cp "$SRC" "$DEST" 2>/dev/null || exit 1
 `,
 );
+const setScpFail = (fail) => writeFileSync(join(STATE, "scp_fail"), fail ? "1" : "0");
+setScpFail(false);
 
 const env = (extra = {}) => ({
   ...process.env,
@@ -362,6 +370,62 @@ console.log("\nH. dead-man fires mid-run, under a live babysitter");
   check("babysitter never claims a verified fetch", !/checksums VERIFIED/.test(log), "");
   check("no cancel file from an interrupted run", !existsSync(join(art, "DEADMAN_CANCEL_drillH")), "");
   check("a half-fetched artifact is left, not reported as good", existsSync(join(art, "smoke.tar.gz")) && !/VERIFIED/.test(log), "");
+}
+
+// ── I: an interrupted fetch must not destroy a good artifact ─────────────────
+// The babysitter re-fetches the same names on every marker, and scp writes
+// straight into the destination. A pod terminated mid-transfer would otherwise
+// truncate an artifact that had already arrived intact — which is exactly what
+// a half-written stage-timings.jsonl on the cancel path would look like.
+console.log("\nI. a fetch interrupted mid-transfer leaves the good copy alone");
+{
+  const art = freshArt("fetchI");
+  clearRemote();
+  setGpu(97);
+  setLogSize(10);
+  setSshDead(false);
+  setScpFail(false);
+  const before = terminated.length;
+
+  writeFileSync(join(REMOTE_ART, "stage-timings.jsonl"), '{"stage":"STAGE0","since_prev_s":11}\n');
+  writeFileSync(join(REMOTE_ART, "gpu.txt"), "A6000\n");
+  writeFileSync(join(REMOTE_ART, "STAGE0.DONE"), "2026-09-11T00:00:00Z +11s\n");
+
+  const p = run("bash", [BABYSIT, "drillI", FAKE_POD, "1.2.3.4", "22", art], {
+    env: env({ P2_CANCEL_DIR: sh(art) }),
+    killAfter: 9000,
+  });
+  await sleep(2500);
+  const good = existsSync(join(art, "stage-timings.jsonl"))
+    ? readFileSync(join(art, "stage-timings.jsonl"), "utf8")
+    : "";
+  check("the first fetch lands intact", good.includes("STAGE0"), JSON.stringify(good));
+
+  // Now every transfer dies mid-write, and a new marker forces a re-fetch.
+  setScpFail(true);
+  writeFileSync(join(REMOTE_ART, "STAGE1.DONE"), "2026-09-11T00:05:00Z +300s\n");
+  await sleep(3000);
+  const after = readFileSync(join(art, "stage-timings.jsonl"), "utf8");
+  check("a truncated transfer does NOT replace it", after === good, JSON.stringify(after));
+  check("no .fetch temp files left behind", readdirSync(art).every((f) => !f.startsWith(".fetch.")), readdirSync(art).join(", "));
+  setScpFail(false);
+  await p;
+  check("no terminate from a failed fetch", terminated.length === before, "");
+}
+
+// ── J: the two compensators agree on where the cancel file lives ─────────────
+// Drilled scenarios pass both paths explicitly, so the DEFAULTS are never
+// exercised together. A typo in either would mean the babysitter disarms
+// nothing and the dead-man fires on a finished run.
+console.log("\nJ. the dead-man's default ArtDir is the babysitter's default cancel dir");
+{
+  const norm = (x) => x.replace(/\\\\/g, "/").replace(/\\/g, "/").replace(/\/+$/, "").toLowerCase();
+  const babySrc = readFileSync(BABYSIT, "utf8");
+  const deadSrc = readFileSync(DEADMAN, "utf8");
+  const babyDefault = /CANCEL_DIR=\$\{P2_CANCEL_DIR:-([^}]+)\}/.exec(babySrc)?.[1] ?? "";
+  const deadDefault = /\[string\]\$ArtDir\s*=\s*"([^"]+)"/.exec(deadSrc)?.[1] ?? "";
+  check("both defaults parse out of the scripts", !!babyDefault && !!deadDefault, `${babyDefault} | ${deadDefault}`);
+  check("and they are the same directory", norm(babyDefault) === norm(deadDefault), `${norm(babyDefault)} vs ${norm(deadDefault)}`);
 }
 
 // ── receipt ──────────────────────────────────────────────────────────────────
