@@ -129,7 +129,37 @@ and the tool-turn histogram to confirm search still happens as it did in P1e (me
 
 ---
 
-## 7. Reporting back
+## 7. If the stopping rule fires — task-shape directions, with what our data already says
+
+Recorded so a null hands the director something evaluated rather than a blank page. **None of
+this is authorised by this lock, and none of it happens if P1f clears either criterion.**
+Four directions were proposed externally (Google, 2026-09-11) on the premise that the task is
+all-or-nothing once the song is found. Our own receipts already rule on three of them.
+
+| Direction | Our evidence | Verdict |
+|---|---|---|
+| **Decoy overlap** — distractors sharing the search signature, forcing cross-examination | **This is exactly D1–D3.** P1e measured it and it runs *backwards*: D3 pass@1 0.68 against D0's 0.48. Confusability made the root-position target the odd one out. | **Already falsified.** Do not rebuild it. |
+| **Structural multi-hop** — distance between two unindexed anomalies | Requires holding one find while making another. P1c measured that capability as absent: **480 of 480** in-range answers at distance ≥ 4 came from the first window. | **Predicted floor of zeros.** Would reproduce P1c, not escape it. |
+| **Combinatorial target** — compound answer over several retrieved facts | Same dependency as above wherever the components span pages. Survives *only* if every component is visible in one page. | **Conditionally viable**, single-page only. |
+| **Transposition layer** — ask about a hypothetically mutated piece | Gold stays constructible (mutate, then re-derive with the same two engines), and no lookup can shortcut it. Cost: it stops being a *search* task and becomes a transformation task. | **Viable, but a different question.** A new arc, not a knob. |
+
+**The premise itself needs correcting.** "All-or-nothing once the song is found" is partly an
+artifact of how P0 binned, not a property of the task. The full `c/8` histogram over P1e's 128
+cases is `c=0` 24, `1–4` 30, `5–7` 29, `c=8` 45. **Forty-six percent of cases sit in the
+interior** and carry gradient. The narrow band sees 23% of them. A shape that looks bimodal
+under finding 24's bins is substantially graded under findings 22, 23 and 26 — which is the
+whole reason §2 reports both.
+
+**The one genuinely open design problem** is the one P1e named and Google reached
+independently: guess-resistance wants a large answer space, and single-page competence wants a
+small one. Pinning distance to 1–3 satisfies the second and breaks the first. Any future shape
+has to widen the answer space without spanning pages — a value *read from* the found measure
+rather than its position. Note the tension is real but bounded: it costs a 30% leak tax, and
+32% of cases survive it.
+
+---
+
+## 8. Reporting back
 
 `experiments/rollout-arc/p1f/RESULTS.md`, receipts committed beside it, verdict framed
 contrastively as the dispatch requires. State plainly whether the secondary replicated at D2
