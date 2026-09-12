@@ -196,6 +196,33 @@ has to widen the answer space without spanning pages — a value *read from* the
 rather than its position. Note the tension is real but bounded: it costs a 30% leak tax, and
 32% of cases survive it.
 
+### Structural value-read — the leading candidate, and the number it has to beat
+
+Proposed externally after the arithmetic objection landed: *"find the first measure containing
+X, read the highest pitch in that measure, output its note name."* Conditional extraction, no
+offsets, no modulo, single page. **The mechanism is right and it is the best external
+contribution to this arc.** It is recorded here as the leading candidate if the stopping rule
+fires. It also does not work as stated, for a reason specific to our generator.
+
+**Priced against `generate.ts` as it exists.** The catalog is 9 agreeing pitch classes × major
+and minor, all built by `triadMidi(pc, minor, octave = 3)` at **a single octave**. Root-position
+tops are `root + 7` over 9 roots; the once-inverted tops are `root + 12`. The union is about
+**13 distinct highest-note values**. A uniform guesser over 13 gets pass@8 ≈ **48%** — *worse*
+than the 30% positional leak it was proposed to fix. Note names are only a wide answer space in
+a corpus with a wide tessitura, and ours has one octave.
+
+**The fix is in the generator, not the task shape, and the parameter already exists.**
+`triadMidi` takes `octave` and defaults to 3. Spanning octaves 1–5 takes the top-note vocabulary
+past 40 values and a uniform guesser to roughly 18%. Reading a full voicing string rather than a
+single note widens it further, at the cost of a harder format gate.
+
+**What it still would not do on its own.** Widening the answer space reduces *leaks*; it does
+not by itself move probability mass into the band. Those are separate failures and P1e has both.
+There is a plausible mechanism by which it might — with two independent ways to fail, locating
+the measure and reading it, the success rate becomes a product and the lumpy 0/3/5/8 histogram
+could smooth — but that is a hypothesis, not a result, and it would need its own preregistered
+measurement.
+
 ---
 
 ## 8. Reporting back
