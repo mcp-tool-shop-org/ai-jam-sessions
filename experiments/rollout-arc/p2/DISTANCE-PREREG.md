@@ -82,3 +82,70 @@ Only the extremes are decidable at n = 8. Each of these is a statement about the
   is the defect that invalidated six phases of this arc.
 - **Generalisation.** These are four cells at one seed and one shape. Nothing here
   licenses a claim about the corpus at production scale.
+
+---
+
+# VOID — and the amended rule (v2)
+
+**The screen above is void. It ran 2 distinct prompts per cell, not 8.**
+
+Found by reading the completions rather than the summary: all 16 completions in
+`control` carry exactly **two** distinct prompts, each repeated four times. The
+cause is in `train.py`, and it is the one line in the `--dry` block with no
+explicit-flag guard:
+
+```python
+args.limit = args.limit or max(2, args.per_device_batch // max(1, args.num_generations) * 2)
+```
+
+Every other override in that block checks whether the caller asked for the value.
+This one does not — it fires unless `--limit` was passed non-zero. At
+`--per-device-batch 2 --num-generations 2` it evaluates to **2**, so `--steps 8`
+cycled two rows four times and reported eight "groups."
+
+**Why this matters more than the small n.** Eight groups over eight distinct
+prompts is a weak measurement. Eight groups over *two* prompts is not a weak
+measurement of difficulty — it is a measurement of two songs. The control cell's
+tidy `acc 0.500` is one prompt answered right four times and one answered wrong
+four times; the `0.000` non-degenerate rate is the same two answers repeating,
+not a property of the population. No reading from the rule above can be applied.
+
+**This is the arc's own failure class again**, in a third place: a number whose
+population could not be read off the receipt. The `dataset_rows: 2` field was
+sitting in `dry-run.json` the whole time and I wrote a prereg around "8 groups"
+without checking it against the completions.
+
+## Correction to the v1 header
+
+The v1 header says the rule was written "before any reward from these arms was
+read." That is **overstated and is corrected here rather than left standing.**
+No parquet had been opened and treatment had produced nothing — both true, and
+independently confirmed against file mtimes. But TRL logs `acc_joint` per step
+to stdout, and I had read step 4's metrics line in the live log and quoted its
+`acc_joint 0` before writing the rule. So v1 was **blind to treatment and
+partially sighted on control.** A prereg that oversells its own blindness is
+worth less than one that does not.
+
+## v2 — what changes
+
+1. **`--limit 32 --steps 32` on every cell.** 32 distinct prompts, 32 groups, 64
+   completions per cell. `--limit` is now passed explicitly in the runner so the
+   unguarded default can never fire again.
+2. **Every cell's receipt must report `dataset_rows` equal to `--limit`**, and
+   the distinct-prompt count in its parquets must equal it too. A cell failing
+   that check is void before it is read. This is a harness check, not a result.
+3. **A halt condition for the positive control**, which v1 lacked — raised by the
+   peer before either of us had opened a cell. Readings 1–3 all compare treatment
+   *against* control, and reading 3 requires control to have at most 1
+   non-degenerate group, but nothing said what happens if control itself comes
+   back wrong. That outcome is not a statement about distance at all; it means
+   the premise is broken and all four cells measure something else.
+
+   **Control must reproduce the abort's finding — at least 30 of 32 groups fully
+   correct, at most 1 non-degenerate — or the screen is VOID and the next step is
+   diagnosing the harness, not confirming at higher n.**
+
+Readings 1–4, the truncation guard, the throughput guard and the population
+guard from v1 carry forward unchanged, restated at n = 32: reading 1 becomes
+64/64 correct in `treatment`, reading 2 becomes 0/64, reading 3 becomes at least
+8 of 32 groups non-degenerate while control has at most 1.
