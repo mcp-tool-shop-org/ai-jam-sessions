@@ -29,6 +29,31 @@ hint. Without it, the treatment result would have been read as a clean gain.
 
 ## The +4 ceiling was informational — reading 3 is refuted
 
+> **CORRECTED — the description does NOT lie to the policy.** This section originally said the
+> policy is misinformed because `list_measures` describes itself as *"an overview of **all**
+> measures in a song."* **That string is in `src/mcp-server.ts`, which the policy never
+> reads.** TRL registers tools from the docstrings in `experiments/rollout-arc/p2/trainer/env.py`,
+> and that docstring says: *"Get an overview of measures in a song… **This environment pages at
+> most 4 measures per call.**"* It has said so since commit `33abf85` — present for every cell
+> of the grid and the probe. **The policy was always told the cap, accurately.**
+>
+> **Ninth instance of this arc's failure class, and the fourth I have caused**: I read a
+> property off one surface and attributed it to a subject that reads a different surface —
+> the same shape as measuring a 4-bit model and attributing the result to bf16.
+>
+> **What the finding becomes.** The policy *knows* the window is 4 and still stops after one
+> page. The hint's effect came from what it **added** — *"the measure you are looking for may
+> lie beyond the first window; page forward until you find it"* — not from correcting a lie.
+> So this is not a documentation bug with a cheap fix. It is a gap between **stating a
+> constraint and prompting the search behaviour the constraint implies**, which is a
+> substantially more interesting result and a harder one to engineer away.
+>
+> The `mcp-server.ts` inconsistency is real but is a *product* matter: there the server
+> genuinely returns all measures, so its description is correct and must not be changed to
+> claim a cap that only this experiment's wrapper imposes.
+
+
+
 The pre-registered diagnostic was built to separate "ignored the hint" from "tried and
 failed," because accuracy alone cannot. It answers unambiguously:
 
