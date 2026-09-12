@@ -9,16 +9,17 @@ export type BoundWindow =
   | { ok: false; reason: string };
 
 export function boundListMeasures(args: Record<string, unknown>): BoundWindow {
-  const start = args.startMeasure;
-  const end = args.endMeasure;
-  if (start == null || end == null) {
-    return {
-      ok: false,
-      reason:
-        `list_measures requires startMeasure and endMeasure; ` +
-        `this environment pages at most ${MAX_LIST_WINDOW} measures per call`,
-    };
-  }
+  // Both bounds are DECLARED OPTIONAL on the tool the policy actually reads
+  // (trainer/env.py: `startMeasure: int | None = None`), and the MCP schema
+  // documents startMeasure as defaulting to 1 and endMeasure to last. Refusing
+  // a call that omits them punished the policy for calling the tool exactly as
+  // its own signature permits — measured at 97-100% of episodes across every
+  // cell of the P2 grid, burning ~20% of a 5-turn budget before any search
+  // began. Enforcement now matches the declared contract: the window still
+  // caps at MAX_LIST_WINDOW, but omitting a bound fills it in rather than
+  // costing a turn.
+  const start = args.startMeasure ?? 1;
+  const end = args.endMeasure ?? Number(start) + MAX_LIST_WINDOW - 1;
   const s = Number(start);
   const e = Number(end);
   if (!Number.isInteger(s) || !Number.isInteger(e) || s < 1 || e < s) {
