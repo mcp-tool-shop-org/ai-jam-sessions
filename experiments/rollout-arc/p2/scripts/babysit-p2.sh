@@ -81,10 +81,13 @@ while true; do
   for m in $markers; do
     if [ -z "${FETCHED[$m]:-}" ]; then
       last_progress=$(date +%s)
+      # Timing first, on EVERY marker: if the pod dies mid-run the per-stage
+      # breakdown that sizes the next attempt's cap is already local.
+      fetch "stage-timings.jsonl"
       case "$m" in
         STAGE0.DONE)
           log "stage0 complete — environment retired, fetching pins"
-          fetch "gpu.txt"; fetch "pip-pins.txt"; fetch "node-version.txt"; fetch "bridge-health.json"
+          fetch "gpu.txt"; fetch "pip-pins.txt"; fetch "node-version.txt"; fetch "bridge-health.json"; fetch "repo-commit.txt"
           ;;
         STAGE1.DONE)
           log "stage1 dry complete — fetching the Stage C receipt"
