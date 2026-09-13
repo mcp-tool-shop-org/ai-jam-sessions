@@ -9,6 +9,9 @@
 # billable minutes exceed wall time — many short jobs cost more than one long
 # one. This number is measured, never estimated; re-measure after any change:
 #   gh api repos/mcp-tool-shop-org/ai-jam-sessions/actions/runs/<id>/jobs
+# STALE as of 2026-09-12: the pnpm10-install job gained a `pnpm build` step
+# (~25 s) so tests can reach dist/mcp-server.js. Re-measure on the next push
+# with the command above before quoting 33 min again.
 # ---------------------------------------------------------------------------
 name: CI
 
@@ -98,6 +101,15 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      # Build BEFORE test. src/dataset/{search,synth}-v0/env.test.ts and
+      # mcp-executor.test.ts drive the real server through McpExecutor, which
+      # requires dist/mcp-server.js and throws "run pnpm build first" without
+      # it. dist/ exists on a dev rig but not on a fresh runner, so the suite
+      # was green locally and red here — the local-green-lies trap. In the ci
+      # job this costs nothing: the build already ran, just later in the list.
+      - name: Build
+        run: pnpm build
+
       - name: Test
         run: pnpm test
 
@@ -123,9 +135,6 @@ jobs:
         with:
           files: ./coverage/coverage-final.json
           fail_ci_if_error: false
-
-      - name: Build
-        run: pnpm build
 
       - name: Smoke
         run: pnpm smoke
@@ -158,6 +167,16 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
+
+      # Build BEFORE test. src/dataset/{search,synth}-v0/env.test.ts and
+      # mcp-executor.test.ts drive the real server through McpExecutor, which
+      # requires dist/mcp-server.js and throws "run pnpm build first" without
+      # it. dist/ exists on a dev rig but not on a fresh runner, so the suite
+      # was green locally and red here — the local-green-lies trap. In the ci
+      # job this is NEW work, ~25 s, because this job never built at all. That
+      # is the honest cost of covering the cold-start path with the same suite.
+      - name: Build
+        run: pnpm build
 
       - name: Test
         run: pnpm test
