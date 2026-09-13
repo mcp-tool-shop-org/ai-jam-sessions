@@ -11,6 +11,7 @@ import { fileURLToPath } from "node:url";
 import { parseAbcChords } from "../../../../src/maker/abc-chord-proposer.js";
 import { renderReharmonization } from "../../../../src/maker/voicer.js";
 import { scoreERProposal, type ERItem } from "../../../../src/maker/er-gate.js";
+import { validateAbcBody } from "../../../../src/maker/abc-syntax.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const runs = join(__dirname, "..", "runs");
@@ -28,10 +29,16 @@ type Cell = { passes: boolean; verified: boolean; consonance: boolean; nonTrivia
  *  carry pitch stacks (C4+E4) and duration suffixes (:w :h :q :e :s :qt), which
  *  never appear in ABC note syntax. */
 function wellFormedAbc(abc: string): boolean {
-  const body = abc.split(/K:[^\n]*\n/)[1] ?? abc;
-  if (!body.includes("|")) return false;
-  return !/[A-G]#?\d\+|:(w|h|q|e|s|qt|ht|et)/.test(body);
+  return abcReason(abc) === null;
 }
+
+/** null when the body parses; otherwise the first unconsumable construct. */
+function abcReason(abc: string): string | null {
+  const body = abc.split(/K:[^\n]*\n/)[1] ?? abc;
+  const r = validateAbcBody(body);
+  return r.ok ? null : r.reason;
+}
+const reasons = new Map<string, number>();
 const groups: Array<{ itemId: string; G: number; distinct: number; entropy: number | null; cells: Cell[] }> = [];
 
 for (const r of rows) {
@@ -42,7 +49,9 @@ for (const r of rows) {
     const chords = parseAbcChords(abc, measureNumbers);
     const rehar = renderReharmonization(chords, { rootOctave: 2 });
     const s = scoreERProposal(item, { measures: rehar, status: rehar.length ? "clean" : "unrecoverable" });
-    const wf = wellFormedAbc(abc);
+    const why = abcReason(abc);
+    const wf = why === null;
+    if (why) reasons.set(why, (reasons.get(why) ?? 0) + 1);
     return {
       passes: s.passes, verified: s.verified,
       consonance: s.consonance.pass, nonTrivial: s.nonTriviality.passes,
@@ -79,6 +88,7 @@ const ratio = vb > 0 ? v / vb : NaN, rho = (ratio - 1) / (G - 1);
 const distinct = groups.reduce((a, g) => a + g.distinct, 0) / groups.length;
 const ents = groups.map((g) => g.entropy).filter((e): e is number => typeof e === "number");
 
+const rejectHistogram = [...reasons.entries()].sort((a, b) => b[1] - a[1]);
 const summary = {
   groups: groups.length, G, completions: n,
   distinct_spans_mean: Number(distinct.toFixed(3)),
@@ -97,6 +107,7 @@ const summary = {
   non_degenerate: `${nd}/${ks.length} = ${(nd / ks.length).toFixed(3)}`,
   rho: Number(rho.toFixed(3)),
   effective_draws: Number((G / (1 + (G - 1) * rho)).toFixed(2)),
+  abc_reject_reasons: rejectHistogram,
   strict: {
     single_shot: Number((strictK / n).toFixed(4)),
     ci95: [Number(ciS[0].toFixed(4)), Number(ciS[1].toFixed(4))],
