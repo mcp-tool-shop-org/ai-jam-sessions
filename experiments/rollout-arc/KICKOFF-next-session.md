@@ -1,5 +1,15 @@
 # Rollout arc — paste-ready kickoff for the next session
 
+> ⛔ **SUPERSEDED 2026-09-12 at `5648f2c`. The build this file asks for is DONE.** Prefix
+> forcing runs inside a live `GRPOTrainer` batch, asserted against all five silent failures,
+> three local dry runs at `STAGE C PASS`, $0. The architecture fork it leaves open —
+> heterogeneous vs stratified groups — was settled by a preregistered measurement, not by
+> taste. **Read `HANDOFF.md` (rewritten), then `p4/PREFIX-PREREG.md`, `p4/PREFIX-BUILD.md`
+> and `p4/SAME-OPENING-RESULTS.md`.** What survives below unchanged: the three gates, the
+> numbers, the falsifier and the five failure modes — which are now assertions with receipts
+> rather than warnings. `main` at `5648f2c`, suite 189 files / 4,125 tests green, tsc clean,
+> spend still $11.25 of $25, no pods.
+
 **Repo:** `mcp-tool-shop-org/ai-jam-sessions` · **`main` at `6edfd89`** (plus this file)
 **Spend:** $11.25 of $25 · no pods · suite 188 files / 4,116 tests green · tsc clean
 **Read `experiments/rollout-arc/HANDOFF.md` first — it opens with the two traps that cost the most.**
