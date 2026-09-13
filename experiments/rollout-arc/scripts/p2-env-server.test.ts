@@ -1,8 +1,8 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { McpStdioExecutor } from "../../../src/dataset/experiment/mcp-executor.js";
+import { McpStdioExecutor, SERVER_ENTRY } from "../../../src/dataset/experiment/mcp-executor.js";
 import { MAX_TURNS, scoreReward } from "../../../src/dataset/experiment/env.js";
 import { boundListMeasures, MAX_LIST_WINDOW } from "../../../src/dataset/search-v0/window.js";
 import { synthTask } from "../../../src/dataset/synth-v0/task.js";
@@ -38,7 +38,17 @@ const get = async (path: string) => {
   return { status: res.status, body: await res.json() };
 };
 
+// This suite drives the REAL dist/mcp-server.js, which exists on a dev rig but
+// not on a fresh CI runner before `pnpm build`. Every sibling that does this
+// (mcp-executor.test.ts, search-v0/env.test.ts, synth-v0/env.test.ts) guards on
+// the entry and skips; this file did not, so it hard-failed the whole CI suite
+// instead of skipping — 1 failed against 182 passed and 3 skipped. CI now builds
+// before it tests, so these run; the guard keeps the failure mode a SKIP if that
+// ordering is ever changed back.
+const haveServer = existsSync(SERVER_ENTRY);
+
 beforeAll(async () => {
+  if (!haveServer) return;
   env = await startEnvServer({ port: 0, seed: SEED, trainPerLevel: TRAIN_PER_LEVEL, testPerLevel: TEST_PER_LEVEL });
   base = `http://${env.host}:${env.port}`;
   // A second, independent executor over the same library. Every /tool assertion
@@ -53,7 +63,7 @@ afterAll(async () => {
   await env?.close();
 });
 
-describe("/tool forwards to the real MCP server", () => {
+describe.skipIf(!haveServer)("/tool forwards to the real MCP server", () => {
   it("returns byte-identical text to a direct executor call", async () => {
     const c = env.corpus.cases[0];
     const args = { id: c.song_id, startMeasure: c.after, endMeasure: c.after + 3 };
@@ -123,7 +133,7 @@ describe("/tool forwards to the real MCP server", () => {
   });
 });
 
-describe("/score forwards to the one scoreReward", () => {
+describe.skipIf(!haveServer)("/score forwards to the one scoreReward", () => {
   const transcriptFor = (verdict: string, toolTurns: number) => {
     const messages: Array<Record<string, unknown>> = [
       { role: "system", content: "s" },
@@ -194,7 +204,7 @@ describe("/score forwards to the one scoreReward", () => {
   });
 });
 
-describe("the dataset the trainer reads", () => {
+describe.skipIf(!haveServer)("the dataset the trainer reads", () => {
   it("serves train and test from the same corpus the tools serve", async () => {
     const health = await get("/health");
     const train = await get("/cases?split=train");
@@ -231,7 +241,7 @@ describe("the dataset the trainer reads", () => {
   });
 });
 
-describe("normaliseMessages preserves exactly what scoreReward reads", () => {
+describe.skipIf(!haveServer)("normaliseMessages preserves exactly what scoreReward reads", () => {
   it("keeps tool_calls presence across both call shapes", () => {
     const openai = normaliseMessages([{ role: "assistant", content: "", tool_calls: [{ function: { name: "x", arguments: {} } }] }]);
     const inRepo = normaliseMessages([{ role: "assistant", content: "", tool_calls: [{ name: "x", arguments: {} }] }]);
