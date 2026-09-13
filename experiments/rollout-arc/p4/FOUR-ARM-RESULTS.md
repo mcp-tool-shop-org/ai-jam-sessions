@@ -82,16 +82,31 @@ and it is not, on this evidence, a capability that transfers to unseen items.
 Both A and B landed in reading 3, so the preregistered tiebreak applies: **effective updates
 per GPU dollar**, `(1 - frac_reward_zero_std) x steps / GPU-dollars`.
 
-| arm | `frac_reward_zero_std` | effective updates of 200 | wall | **eff / $** |
-|---|---|---|---|---|
-| A stratified | 0.545 | 91.0 | 2071 s | **160** |
-| B heterogeneous | 0.445 | 111.0 | 2084 s | **194** |
-| C unforced | 0.725 | 55.0 | 3552 s | 56 |
-| D random reward | 0.010 | 198.0 | 2138 s | 337 † |
+| arm | `frac_reward_zero_std` | effective updates of 200 | **training** wall | s/step | **eff / $** |
+|---|---|---|---|---|---|
+| A stratified | 0.545 | 91.0 | 1719 s | 8.57 | **192** |
+| B heterogeneous | 0.445 | 111.0 | 1701 s | 8.48 | **237** |
+| C unforced | 0.725 | 55.0 | 3170 s | **15.83** | 63 |
+| D random reward | 0.010 | 198.0 | 1759 s | 8.77 | 409 † |
+
+> ⚠ **Corrected 2026-09-13, found by the continuation session.** The first version of this
+> table used wall times of 2071/2084/3552/2138 s taken from **`.DONE` marker deltas, which
+> include each arm's unconditioned eval**, not from `wall_seconds` in the arm receipts. The
+> eff/$ figures published were 160/194/56/337. **B still wins and by a similar ratio (1.23x
+> against the reported 1.21x), so the conclusion is unchanged — but the numbers were wrong
+> and are corrected here rather than quietly.** Another wrong reference set: a timestamp
+> delta is not a training time.
+>
+> The real per-step figures also name something the old table hid: **C is 1.9x slower per
+> step than every other arm** (15.83 s against ~8.5) and reserves more VRAM (23,282 MiB
+> against 20,930). C is the unforced arm, so it generates the opening the others are handed —
+> more tokens per rollout. The same pattern appeared in the local dry runs (16.97 s/step and
+> 23,006 MiB unforced against 13.25 s and 21,260 forced at G=8). It is a property of the arm,
+> not of the hardware.
 
 † noise by construction; listed for completeness, not comparison.
 
-**B wins**, by 21%, and also wins on unconditioned pass rate. Heterogeneous — what
+**B wins**, by 23%, and also wins on unconditioned pass rate. Heterogeneous — what
 `PREFIX-PREREG.md` authorised before any of this — survives its own test.
 
 **But the reasoning used to justify it does not.** `SAME-OPENING-RESULTS.md` priced
