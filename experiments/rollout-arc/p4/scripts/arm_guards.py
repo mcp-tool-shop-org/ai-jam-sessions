@@ -62,11 +62,27 @@ def check(receipt: dict, mode: str, want_items: int) -> list[str]:
             bad.append("prefix forcing recorded zero rollouts: nothing was forced")
         if pfx.get("prefix_hits") != pfx.get("rollouts"):
             bad.append(f"prefix_hits {pfx.get('prefix_hits')} != rollouts {pfx.get('rollouts')}")
-        if pfx.get("masked_prefix_tokens") != pfx.get("prefix_tokens_total"):
-            bad.append(
-                f"masked_prefix_tokens {pfx.get('masked_prefix_tokens')} != "
-                f"prefix_tokens_total {pfx.get('prefix_tokens_total')}: prefix tokens took gradient"
-            )
+        # THE MASK CHECK IS DIRECTIONAL, and which direction is correct depends on the
+        # arm. This guard originally asserted masked == total unconditionally, because the
+        # only forced arms that existed masked the prefix out of the loss. --prefix-in-loss
+        # deliberately inverts that, and the unconditional form VOIDED a valid 200-step run
+        # (2026-09-13) with "prefix tokens took gradient" -- which was the entire point of
+        # the arm. Both directions are still enforced, just against the declared intent.
+        masked, total = pfx.get("masked_prefix_tokens"), pfx.get("prefix_tokens_total")
+        if pfx.get("prefix_in_loss"):
+            if not total:
+                bad.append("prefix_in_loss set but prefix_tokens_total is 0: nothing was forced")
+            if masked != 0:
+                bad.append(
+                    f"prefix_in_loss set but masked_prefix_tokens {masked} != 0: the mask is "
+                    f"still on, so this arm is silently identical to the masked one"
+                )
+        else:
+            if masked != total:
+                bad.append(
+                    f"masked_prefix_tokens {masked} != prefix_tokens_total {total}: "
+                    f"prefix tokens took gradient on an arm that did not ask for it"
+                )
         if not pfx.get("boundary_clean", False):
             bad.append("boundary_clean false: head+prefix tokenisation merged at the seam")
         # Coverage is a property of the POOL, not of any group (one group of G < n
