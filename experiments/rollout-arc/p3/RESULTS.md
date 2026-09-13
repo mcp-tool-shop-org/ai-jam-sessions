@@ -47,17 +47,18 @@ generative surface branches 7.98/8.
 | gate | single-shot *p* | 95% CI | in window |
 |---|---|---|---|
 | frozen E-R gate | 0.8977 | [0.862, 0.925] | **no — above ceiling** |
-| **+ ABC well-formedness** | **0.4886** | [0.437, 0.541] | **yes** |
+| **+ ABC well-formedness (regex)** | 0.4886 | [0.437, 0.541] | yes |
+| **+ ABC well-formedness (real parser)** | **0.4063** | [0.356, 0.458] | **yes** |
 
 Decomposition of the frozen gate: chords parsed 1.000, non-triviality 1.000, consonance 0.8977.
 Chord fidelity is true by construction (`renderReharmonization`), so **consonance alone binds**.
-Well-formed ABC: **0.528** [0.476, 0.580].
+Well-formed ABC: **0.4347** by the real parser (the regex said 0.528 — it was ~9 points too permissive).
 
 ### Group structure under the strict gate
 
-- **non-degenerate 31/44 = 0.705**, Wilson CI **[0.558, 0.818]** — against P2's best of 0.065
-- **ρ = 0.409**, effective draws **2.07** of 8 — against P2's 0.711–0.947 and 1.05–1.34
-- k-of-8: `0:6  1:6  2:4  3:5  4:5  5:4  6:2  7:5  8:7`
+- **non-degenerate 33/44 = 0.750** (parser) — against P2's best of 0.065
+- **ρ = 0.359**, effective draws **2.28** of 8 — against P2's 0.711–0.947 and 1.05–1.34
+- k-of-8: `0:7  1:8  2:4  3:9  4:3  5:2  6:3  7:4  8:4`
 
 The frozen gate for comparison: non-degenerate 23/44 = 0.523, ρ 0.054, k-of-8 `4:1 5:3 6:4 7:15 8:21`.
 
@@ -108,10 +109,13 @@ presence would pass 100% and measure nothing.
 
 ## P3 HARD RESTRICTIONS — binding on the next phase
 
-1. **Parser upgrade.** The current well-formedness test is a regex proxy and is unstable in both
-   directions — it has already failed once, silently, in this very file. It MUST be replaced by a
-   real ABC syntax validator — header structure, bar-line termination, valid pitch/octave
-   characters — before any training run launches. See `ABC-VALIDATOR-SPEC.md`.
+1. **Parser upgrade — DISCHARGED.** `src/maker/abc-syntax.ts` is a total tokenizer: a body is
+   well-formed iff every character is consumed, and the first that is not is reported with its
+   index. 19 tests including the dead-branch guard (one accept AND one reject per token type — the
+   test the 0x08 defect would have failed). Manual audit: 5 accepts and 7 rejects read
+   individually, all twelve verdicts correct per the ABC spec. Rejection census over 199 rejects:
+   151 stray `:` (melody-table durations), 23 pure `C#`-for-`^C` notation misses, 18 `+` pitch
+   stacks, 7 stray prose characters.
 2. **Rate-mismatch guard.** This was single-turn generation: no tool calls, no loss mask, no GRPO
    step. The arc's own lesson is that a rate measured one way is not a rate measured another
    (G=2 gave 1/64 where G=8 gave 7/64 on identical cases). The first smoke run MUST confirm that
@@ -129,3 +133,61 @@ at any corpus setting, and on this surface 70% of them do.
 
 `scripts/emit-er-prompts.mts` · `scripts/probe_generate.py` · `scripts/score-er-probe.mts`
 `runs/er-prompts.jsonl` · `runs/er-items.json` · `runs/er-g8.jsonl` · `runs/er-probe-summary.json` · `runs/smoke.jsonl`
+
+---
+
+# P3's verdict: the gates pass, and the difficulty is in the wrong place
+
+Both of the director's gates are met. **The task is still not the one to train on**, and the
+reason only became visible once the real parser was in place.
+
+## Accepted bodies do not carry a melody
+
+| measure | value |
+|---|---|
+| accepted bodies using ≤ 3 distinct pitches across all 8 bars | **94 / 153 = 61.4%** |
+| mean distinct pitches in an accepted tune body | **3.61** |
+| mean fraction of *written* notes that fit the model's *own written* chord | **0.530** |
+| accepted bodies reaching ≥ 0.75 self-consistency | **17 / 152 = 0.112** |
+
+A typical accepted body is `"Abmaj7"e2 g2 | "Dm7b5"e2 g2 | "G7b9"e2 g2 | …` — the same two notes
+under every chord. **The E-R gate reads the melody from the ITEM, never from the ABC body**, so
+consonance is checked against the real melody no matter what the tune contains. The chords are
+the genuine answer and they are strong (94.7% of bars changed, 6.99 distinct symbols per
+completion, idiomatic `ii–V–I` vocabulary, 197 symbols across the corpus). The body is decorative.
+
+A random pitch lands in a four-note chord set about a third of the time, so **0.530 is barely
+above chance**: the model writes good chords and arbitrary notes beneath them.
+
+This is a capability gap, **not an exploit** — no reward signal has ever been applied to this
+task. Nothing was gamed; the model simply does not transcribe the melody.
+
+## There is no setting of this gate that is musical AND in band
+
+| gate | *p* | where the difficulty lives |
+|---|---|---|
+| frozen E-R | 0.898 | harmony — **saturated** |
+| + ABC syntax (real parser) | **0.406** | **notation**, not music |
+| + self-consistency ≥ 0.75 | ≈ 0.048 | music — **below the band floor** |
+
+Tightening toward music overshoots; loosening lands on notation. Training the middle row would
+spend the gradient budget on "emit well-formed ABC", dominated by "stop pasting the melody
+table", while the harmonic capability sits at its existing 0.898 ceiling.
+
+Giving the model the melody pre-written as ABC — which removes both the transcription burden and
+the syntax confound — returns the task to 0.898. That experiment's answer is already known.
+
+**The underlying fact is that 8-bar reharmonization is a ~0.9 task for this model.** Notation
+confounds were hiding it. Constraints on output *format* cannot manufacture harmonic difficulty
+that is not there.
+
+## The third gate, named
+
+The director set two: the choice threshold, and the learning window. This phase establishes that
+a third is needed, and that it is not implied by the other two:
+
+> **Is the difficulty located in the capability you actually want?**
+
+P3 passes gates 1 and 2 and fails gate 3. That is the finding, and it is why P3 does not carry
+the arc either. The next surface to measure is voice-leading (`src/compose/`), where the output
+is JSON and notation cannot confound the gate — see `../p4/`.
