@@ -1,10 +1,11 @@
 # Rollout arc — paste-ready kickoff for the next session
 
-> ⛔⛔ **THE ARC IS CLOSED, 2026-09-13. There is no next session for it.** Prefix forcing
+> ⭐ **THE FORCING HYPOTHESIS IS CLOSED; THE RESEARCH LINE CONTINUES (Director, 2026-09-13).**
+> The next session is `KICKOFF-research-continuation.md`, not this file. Prefix forcing
 > contributes nothing (A-C +0.8pp, B-C +1.8pp on 75 unseen songs, neither distinguishable);
 > plain GRPO does the same job; the random-reward arm is flat so drift is not the
 > explanation; the prior never flattened. Read `p4/MATCHED-CELL-RESULTS.md`. Do not reopen
-> for seed 8 or 500 steps. $16.73 of $25 spent, nothing billing.
+> $16.73 of $25 spent, nothing billing.
 
 > ⛔ **SUPERSEDED 2026-09-12 at `5648f2c`. The build this file asks for is DONE.** Prefix
 > forcing runs inside a live `GRPOTrainer` batch, asserted against all five silent failures,
