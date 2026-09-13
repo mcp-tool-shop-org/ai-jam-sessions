@@ -1,0 +1,48 @@
+  HTTP 429 on 'Simpson's Paradox in Evaluation of Machine Learnin'
+
+QUERY: Simpson's Paradox in Evaluation of Machine Learning Models
+  - 2024  Anna S Boser  doi:10.1088/2515-7620/ad2e44
+    Validating spatio-temporal environmental machine learning models: Simpson’s paradox and data splits
+  - 2021  Fei Yuan  arXiv:2103.11795
+    Simpson's Bias in NLP Training
+  - 2019  Babak Salimi  doi:10.1145/3299869.3319901
+    Interventional Fairness: Causal Database Repair for Algorithmic Fairness
+  HTTP 429 on 'The Danger of Averaging in Benchmark Evaluations'
+
+QUERY: The Danger of Averaging in Benchmark Evaluations
+  - 2026  Leslie Moranta  arXiv:2608.24701
+    Improving the Physical Interpretability of Gaussian Processes in Stellar Activity Modeling: A Study Case on Photometric Variability Among Stellar Clusters
+  - 2026  C. C. A. Agarwal  arXiv:2606.01971
+    Demonstrating CBM Capabilities by $\Lambda$ Baryon Reconstruction in Ni+Ni Collisions with the mCBM Experiment at SIS18 of GSI/FAIR
+  - 2016  M. L. Ahnen  arXiv:1612.09472
+    Multiband variability studies and novel broadband SED modeling of Mrk 501 in 2009
+  HTTP 429 on 'Understanding Dataset Difficulty with V-Usable Inf'
+
+QUERY: Understanding Dataset Difficulty with V-Usable Information
+  - 2021  Kawin Ethayarajh  arXiv:2110.08420
+    Understanding Dataset Difficulty with V-Usable Information
+  - 2024  Yingya Li  arXiv:2410.12774
+    Identifying Task Groupings for Multi-Task Learning Using Pointwise V-Usable Information
+  - 2021  Kawin Ethayarajh  (no id)
+    Information-Theoretic Measures of Dataset Difficulty
+  HTTP 429 on 'A Theoretical Analysis of Mode Collapse in RLHF'
+  HTTP 429 on 'A Theoretical Analysis of Mode Collapse in RLHF'
+  HTTP 429 on 'A Theoretical Analysis of Mode Collapse in RLHF'
+  HTTP 429 on 'A Theoretical Analysis of Mode Collapse in RLHF'
+
+QUERY: A Theoretical Analysis of Mode Collapse in RLHF
+  UNVERIFIED -- transport failed, NOT a verdict
+  HTTP 429 on 'Gradient Starvation: A Learning Proclivity in Neur'
+  HTTP 429 on 'Gradient Starvation: A Learning Proclivity in Neur'
+  HTTP 429 on 'Gradient Starvation: A Learning Proclivity in Neur'
+  HTTP 429 on 'Gradient Starvation: A Learning Proclivity in Neur'
+
+QUERY: Gradient Starvation: A Learning Proclivity in Neural Networks
+  UNVERIFIED -- transport failed, NOT a verdict
+  HTTP 429 on 'Understanding the Effects of Freezing Parameters i'
+  HTTP 429 on 'Understanding the Effects of Freezing Parameters i'
+  HTTP 429 on 'Understanding the Effects of Freezing Parameters i'
+  HTTP 429 on 'Understanding the Effects of Freezing Parameters i'
+
+QUERY: Understanding the Effects of Freezing Parameters in Deep Learning
+  UNVERIFIED -- transport failed, NOT a verdict
