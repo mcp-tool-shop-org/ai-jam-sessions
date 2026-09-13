@@ -1,0 +1,100 @@
+{
+  "stage": "dry",
+  "shape": {
+    "prompts_per_step": 1,
+    "generations_per_prompt": 8,
+    "completions_per_step": 8
+  },
+  "spend": 0,
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "steps_requested": 2,
+  "steps_timed": 2,
+  "step_seconds": [
+    18.924,
+    15.014
+  ],
+  "mean_step_seconds": 16.969,
+  "wall_seconds": 34.296,
+  "memory": {
+    "peak_reserved_mib_per_step": [
+      23000.0,
+      23006.0
+    ],
+    "peak_reserved_mib": 23006.0,
+    "total_mib": 32579.4,
+    "headroom_mib": 9573.4
+  },
+  "mask": {
+    "batches": 0,
+    "completions": 0,
+    "with_zero_span": 0,
+    "zeros": 0,
+    "ones": 0,
+    "zero_fraction": 0.0
+  },
+  "config": {
+    "num_generations": 8,
+    "per_device_train_batch_size": 8,
+    "gradient_accumulation_steps": 1,
+    "learning_rate": 1e-05,
+    "beta": 0.0001,
+    "epsilon": 0.2,
+    "epsilon_high": 0.28,
+    "max_completion_length": 384,
+    "max_tool_calling_iterations": 5,
+    "use_vllm": false,
+    "vllm_importance_sampling_mode": "token_truncate",
+    "vllm_importance_sampling_clip_max": 3.0,
+    "lora": {
+      "r": 16,
+      "alpha": 32,
+      "target_modules": "all-linear",
+      "dropout": 0.0
+    },
+    "random_reward_arm": false
+  },
+  "versions": {
+    "python": "3.11.15",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.17.0",
+    "trl": "1.13.0",
+    "peft": "0.20.0",
+    "accelerate": "1.15.0",
+    "cuda": "12.8",
+    "device": "NVIDIA GeForce RTX 5090",
+    "capability": [
+      12,
+      0
+    ]
+  },
+  "bridge": {
+    "before": {
+      "scored": 40,
+      "unparsed": 0,
+      "first_measure_wrong": 0
+    },
+    "after": {
+      "scored": 56,
+      "unparsed": 0,
+      "first_measure_wrong": 8
+    },
+    "library_songs": null,
+    "generator_seed": null,
+    "schema_version": null,
+    "tools": [],
+    "limits": null
+  },
+  "environment": {
+    "instances": 0,
+    "resets": 0
+  },
+  "dataset_rows": 8,
+  "rollout_mode": "no-tools",
+  "prompt_repeats": 0.25,
+  "prefix": {
+    "mode": "none",
+    "prefix_in_loss": false,
+    "pool_items": 8,
+    "openings_per_item": {}
+  }
+}

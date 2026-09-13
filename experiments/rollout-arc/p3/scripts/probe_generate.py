@@ -24,6 +24,17 @@ ap.add_argument("--top-k", type=int, default=0)
 ap.add_argument("--seed", type=int, default=0)
 ap.add_argument("--limit", type=int, default=0)
 ap.add_argument("--entropy", action="store_true", help="also measure mean per-token entropy")
+ap.add_argument(
+    "--adapter",
+    default=None,
+    help=(
+        "path to a trained LoRA adapter. THE FALSIFIER NEEDS THIS. The preregistered "
+        "primary outcome of a prefix-forced training run is top_first_measure_share on an "
+        "UNCONDITIONED eval -- scaffolding off, nobody handing the model an opening -- and "
+        "this script is the unconditioned path. Without it the run's own falsifier would "
+        "have been unmeasurable after the spend."
+    ),
+)
 a = ap.parse_args()
 
 rows = [json.loads(l) for l in open(a.prompts, encoding="utf-8") if l.strip()]
@@ -33,7 +44,17 @@ print(f"prompts={len(rows)} G={a.generations} model={a.model}", flush=True)
 
 tok = AutoTokenizer.from_pretrained(a.model)
 model = AutoModelForCausalLM.from_pretrained(a.model, dtype=torch.bfloat16).to("cuda").eval()
-print(f"loaded | cuda mem {torch.cuda.memory_allocated()/2**30:.2f} GiB", flush=True)
+if a.adapter:
+    from peft import PeftModel
+
+    model = PeftModel.from_pretrained(model, a.adapter).eval()
+    # Say it loudly. A silent no-op here would compare the base model against itself and
+    # report "no change" as a finding -- the same run, twice, with a different label.
+    n_lora = sum(1 for n, _ in model.named_parameters() if "lora_" in n)
+    if n_lora == 0:
+        raise SystemExit(f"HALT: {a.adapter} loaded but contributed no LoRA parameters")
+    print(f"adapter {a.adapter} | {n_lora} lora tensors", flush=True)
+print(f"loaded | adapter={a.adapter or 'none (base)'} | cuda mem {torch.cuda.memory_allocated()/2**30:.2f} GiB", flush=True)
 
 torch.manual_seed(a.seed)
 out_f = open(a.out, "w", encoding="utf-8")
