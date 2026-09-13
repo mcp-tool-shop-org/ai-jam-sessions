@@ -21,12 +21,11 @@ const RUNS = join(dirname(fileURLToPath(import.meta.url)), "..", "runs");
 const STYLE = process.env.STYLE ?? "common-practice";
 const VOICES = Number(process.env.VOICES ?? 2);
 const PROMPTS = "prompts-heldout-v1.jsonl";
-const RUN_FILES: Array<[string, string]> = [
-  ["C7L", "mc64-heldout-C7L.jsonl"],
-  ["C8L", "mc64-heldout-C8L.jsonl"],
-  ["C9L", "mc64-heldout-C9L.jsonl"],
-];
-const BASE = "mc64-heldout-base.jsonl";
+// Overridable so the readout can be REHEARSED against existing receipts before the real
+// files exist. A readout first executed on the night its data lands is an untested path.
+const RUN_FILES: Array<[string, string]> = (process.env.GATE_RUNS ?? "C7L=mc64-heldout-C7L.jsonl,C8L=mc64-heldout-C8L.jsonl,C9L=mc64-heldout-C9L.jsonl")
+  .split(",").map((kv) => { const [a, b] = kv.split("="); return [a!, b!] as [string, string]; });
+const BASE = process.env.GATE_BASE ?? "mc64-heldout-base.jsonl";
 const POD_C = "mc-heldout-C.jsonl";      // seed 7 on the POD, G=16
 const POD_BASE = "mc-heldout-base.jsonl"; // its matched base, G=16
 
@@ -37,6 +36,7 @@ const firstDeg = (raw: string) => ((parseSpecResponse(raw)[0]?.degrees ?? []) as
 function perItem(file: string) {
   if (!existsSync(join(RUNS, file))) return null;
   const rate = new Map<string, number>();
+  const conc = new Map<string, number>();
   const hPass = new Map<string, number>(), hAll = new Map<string, number>();
   let nPass = 0, nAll = 0, G = 0;
   for (const l of readFileSync(join(RUNS, file), "utf8").trim().split("\n").filter(Boolean)) {
@@ -51,9 +51,14 @@ function perItem(file: string) {
       }
     }
     rate.set(r.itemId, k / r.completions.length);
+    // per-item opening concentration over ALL completions: share of this item's own
+    // modal opening. Composition-immune -- equal weight per item, same G per item.
+    const hi = new Map<string, number>();
+    for (const raw of r.completions) { const d = firstDeg(raw); hi.set(d, (hi.get(d) ?? 0) + 1); }
+    conc.set(r.itemId, Math.max(...hi.values()) / r.completions.length);
   }
   const share = (h: Map<string, number>, n: number) => (n ? Math.max(...h.values()) / n : 0);
-  return { rate, G, topFirstPass: share(hPass, nPass), topFirstAll: share(hAll, nAll), nPass, nAll };
+  return { rate, conc, G, topFirstPass: share(hPass, nPass), topFirstAll: share(hAll, nAll), nPass, nAll };
 }
 
 let seed = 20260913;
@@ -133,3 +138,22 @@ if (podC && podBase) {
 }
 console.log(`\n  'passing' counts only verifier-admitted completions and so blends the policy's prior`);
 console.log(`  with the rulebook's admissibility profile; 'ALL' is the policy's raw distribution.`);
+
+// ---- ITEM-WISE opening concentration: the composition-immune form of the prior claim ----
+// The pooled statistic moves when an arm passes on DIFFERENT items, without the policy
+// becoming more diverse on any single prompt. This weights each item equally.
+console.log(`\n  ITEM-WISE opening concentration, paired vs base, bootstrap over items`);
+console.log(`  ${"arm".padEnd(8)} ${"itemwise".padEnd(10)} ${"delta vs base".padEnd(15)} bootstrap 95%`);
+console.log(`  ${"base".padEnd(8)} ${mean(ids.map((i) => base.conc.get(i)!)).toFixed(4)}`);
+for (const [lab, s2] of runs) {
+  const d = ids.filter((i) => s2.conc.has(i)).map((i) => s2.conc.get(i)! - base.conc.get(i)!);
+  const bt: number[] = [];
+  for (let b = 0; b < 10000; b++) { let acc = 0; for (let j = 0; j < d.length; j++) acc += d[Math.floor(rand() * d.length)]!; bt.push(acc / d.length); }
+  bt.sort((x, y) => x - y);
+  const lo = bt[250]!, hi = bt[9750]!;
+  console.log(`  ${lab.padEnd(8)} ${mean(ids.map((i) => s2.conc.get(i)!)).toFixed(4).padEnd(10)} ${(pp(mean(d)) + "pp").padEnd(15)} [${pp(lo)}, ${pp(hi)}]  ${lo > 0 || hi < 0 ? "EXCLUDES 0" : "includes 0"}`);
+}
+console.log(`\n  SEALED PREDICTION P3 (GATE-SEALED-PREDICTIONS.md, commit 758c75f): if the -9.00pp`);
+console.log(`  drop is caused by unmasking, it must appear in ALL THREE seeds -- seed does not`);
+console.log(`  change which tokens are masked. If seed 8, which collapsed entropy 12x harder,`);
+console.log(`  shows a materially smaller drop, entropy dynamics compete and the claim weakens.`);
