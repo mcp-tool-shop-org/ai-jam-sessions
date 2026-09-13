@@ -35,9 +35,27 @@ alone.** The bridge additionally refuses to serve a short pool: `/cases` returns
 
 ## The answer
 
-**The substrate search is over. 2-voice part-writing is the one task family in this repo that
-clears all three gates, and a training run on it buys infrastructure validation, not musical
-capability.**
+**2-voice part-writing is the one task family that clears all three gates — but pure GRPO
+still fails on it, for want of EXPLORATION, and prefix forcing supplies it.**
+
+Written in order, because the answer moved twice after this file was first drafted:
+
+1. `film-ambient` looked best (*p* 0.449) and **violated gate 3**: `overlap` was 168 of 168
+   failures, which is collision avoidance, not part-writing. I recommended it anyway because
+   the number was better. That was wrong and is recorded in `p4/CURRICULUM-PREREG.md`.
+2. `common-practice` at 4 bars, G=16 improved **every headline metric** — *p* 0.160 → 0.389,
+   non-degeneracy 0.250 → 0.4375 — and **failed**. The funnel got worse: `[0,1]` opened
+   **87.4%** of passers, passing signatures fell to 22.1% unique, within-group uniqueness to
+   0.356. Shortening the horizon did not break the mode; it removed the chances to deviate
+   from it. `p4/CURRICULUM-RESULTS.md`.
+3. **Exploring starts fixed it.** Pre-fill each rollout with a different valid opening;
+   sampler untouched. Non-degeneracy 0.9375, within-group uniqueness **1.000**, passing
+   signatures 90.1% unique, and *p* HELD at 0.453 conditional. The policy completes correctly
+   from openings it never chooses: `[0,1]` was a prior, not a ceiling.
+   `p4/EXPLORING-STARTS-RESULTS.md`.
+
+**A training run still buys infrastructure validation, not musical capability** — nearest-tone
+scores 32/32 on the same pool for free.
 
 ---
 
@@ -131,20 +149,37 @@ against 0.592 from 32 randomized 11-genre songs single-turn. **Those are differe
 populations and the comparison is confounded.** No population has been measured both
 ways, which is exactly what the preregistered cell still has to do.
 
-## The next spend, and it is $1
+## The next work, and it is a BUILD not a run
 
-**Nothing in P3 or P4 touches the trainer path.** Every figure is single-turn `model.generate`
-through transformers. The live `GRPOTrainer` adds a loss mask, a tool loop and a different
-sampling path, and no measured branching statistic has been shown to survive into a training
-batch — P2's run aborted before producing one.
+**`pod_smoke_p4.sh` now validates a configuration that has been superseded.** It runs the
+standard bridge with no prefix forcing, and `train.py` has no mechanism to consume per-rollout
+prefixes. Running it would buy a receipt for a pipeline we are about to change.
 
-The smoke run's job: **confirm rho ~ 0.59 and non-degeneracy ~ 0.50 hold inside a live batch.**
-If they do not, every number in P4 describes a population the trainer never sees.
+Prefix-forced training needs: the bridge to serve per-rollout prefixes, and TRL to generate
+from them. That is a session, not a $1 smoke.
 
----
+**And preregister the falsifier BEFORE that run, because the pass rate is a trap here.** The
+primary outcome is `top_first_measure_share` on an **unconditioned** eval — scaffolding off,
+nobody handing the model an opening:
+
+- stays near **0.874** → the model learned to finish sentences; the scaffold was load-bearing
+  and the typicality peak never flattened.
+- drops materially → the peak genuinely flattened and the policy explores unaided.
+
+Pass rate will look fine either way, which is exactly why it must not be the primary metric.
+**Nothing measured so far touches this question**: exploring starts established that the valid
+region is *reachable*, not that training with the scaffold makes it *preferred* once removed.
 
 ## Traps — do not re-enter them
 
+0. **ρ WAS MEASURING THE POLICY'S PRIOR, NOT THE TASK.** It fell **0.710 → 0.221** with no
+   change to the task, gate, corpus or sampler — only to where rollouts started. When 87% of
+   rollouts open identically their rewards correlate because they evaluate one narrow slice
+   repeatedly. **This invalidates reasoning, not just figures.** Arguments in this arc that ran
+   *from* ρ — whether G=8 sufficed, whether effective draws were too few, whether the band was
+   reachable — were about the prior's grip. The measurements stand; the inferences need
+   re-deriving. Every ρ here (0.592, 0.639, 0.710 in P4; 0.711–0.947 in P2) means "ρ under this
+   policy's unforced sampling", never a constant of the environment.
 1. **`--limit` truncates, it does not stratify.** Fixed in the bridge. `train.py`'s dry block
    still hardcodes a step count into its default; always pass `--limit` explicitly. The paid
    smoke run has `dataset_rows: 2`; its 38.5 s/step and 65.2% mask figures are withdrawn.
