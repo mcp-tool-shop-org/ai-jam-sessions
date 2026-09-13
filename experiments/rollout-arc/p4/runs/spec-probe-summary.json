@@ -1,0 +1,93 @@
+{
+  "path": "spec (degrees — membership by construction)",
+  "groups": 32,
+  "G": 8,
+  "completions": 256,
+  "unparsed": 0,
+  "distinct_spans_exact": 5.656,
+  "distinct_voicing_sequences": 5.406,
+  "mean_entropy": 0.01622,
+  "common_practice_failing_rules": [
+    [
+      "overlap",
+      141
+    ],
+    [
+      "hidden",
+      135
+    ],
+    [
+      "tendencySeventh",
+      112
+    ],
+    [
+      "leap",
+      77
+    ],
+    [
+      "parallels",
+      23
+    ],
+    [
+      "tendencyLeadingTone",
+      7
+    ]
+  ],
+  "common-practice": {
+    "single_shot": 0.1602,
+    "ci95": [
+      0.1203,
+      0.2101
+    ],
+    "non_degenerate": "8/32 = 0.250",
+    "rho": 0.639,
+    "effective_draws": 1.46,
+    "k_hist": {
+      "0": 21,
+      "1": 4,
+      "2": 1,
+      "3": 1,
+      "4": 2,
+      "8": 3
+    }
+  },
+  "lead-sheet": {
+    "single_shot": 0.2578,
+    "ci95": [
+      0.2081,
+      0.3147
+    ],
+    "non_degenerate": "14/32 = 0.438",
+    "rho": 0.58,
+    "effective_draws": 1.58,
+    "k_hist": {
+      "0": 14,
+      "1": 6,
+      "2": 4,
+      "4": 2,
+      "5": 1,
+      "7": 1,
+      "8": 4
+    }
+  },
+  "film-ambient": {
+    "single_shot": 0.4492,
+    "ci95": [
+      0.3895,
+      0.5105
+    ],
+    "non_degenerate": "16/32 = 0.500",
+    "rho": 0.592,
+    "effective_draws": 1.56,
+    "k_hist": {
+      "0": 9,
+      "1": 5,
+      "3": 2,
+      "4": 3,
+      "5": 2,
+      "6": 2,
+      "7": 2,
+      "8": 7
+    }
+  }
+}
