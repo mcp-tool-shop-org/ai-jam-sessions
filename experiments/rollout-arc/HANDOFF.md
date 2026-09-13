@@ -222,9 +222,29 @@ anywhere.
 and **0.500 (B)**, with **C 0.391** and **D 0.389**. A clean 2x2: training alone does nothing,
 198 effective updates of pure noise do nothing (D's `frac_reward_zero_std` is 0.010 — a
 maximally *active* null), and both forcing and the real verifier are needed for the lift. That
-is the infrastructure validation that was preregistered as the honest purchase. It is **not**
-musical capability — nearest-tone still scores 32/32 for free — and **it is in-sample**: the
-eval pool IS the training pool, which `p4/HELDOUT-PREREG.md` measures on 29 unseen items.
+is the infrastructure validation that was preregistered as the honest purchase. Paired by item
+(n=32, base and every arm ran the same items): **A +6.4pp [+0.8, +12.3], B +11.1pp
+[+5.3, +17.8]**, both excluding zero; **C +0.2pp, D +0.0pp**, both flat.
+
+**And then it did not survive held-out.** `p4/HELDOUT-RESULTS.md`, preregistered before it ran,
+29 of 32 items unseen: **B fell from +11.1pp to +1.2pp** — between C's +0.6pp and D's +1.0pp
+and not distinguishable from either. **Reading 2, MEMORISATION, fires: the secondary finding
+does not survive.** B trained at `prompt_repeats` **6.25** and saw every eval item six times.
+A retained **+3.7pp**, clearing its preregistered bar with 9 items better / 2 worse, but its
+interval **includes zero** — consistent with partial generalisation and equally consistent with
+nothing. A trained at `prompt_repeats` **0.39** and could not memorise a row, which is a
+mechanism recorded *before* the run — and still confounded, because A differs from B in group
+construction **and** repetition and nothing here separates them.
+
+So: **not** musical capability (nearest-tone scores 32/32 for free), and on this evidence not a
+capability that transfers either. What was bought is a working loop.
+
+⚠ **The statistic was easy to get wrong in both directions.** 512 completions as 512
+independent draws makes intervals ~3.5x too narrow at ρ 0.62–0.74; a design-effect correction
+on *independent* samples gives n_eff ≈ 45 and ±20pp intervals that erase everything including
+B's in-sample result. Both wrong — the evals are **paired on the same items**, so n = 32 and
+item difficulty cancels. `p4/scripts/paired-readout.mts` is the statistic; the unpaired version
+is kept beside it so the difference is visible rather than asserted.
 
 **Tiebreak, preregistered: heterogeneous wins** — effective updates per GPU dollar, B **194** vs
 A **160**, and B also wins on pass rate. **But the argument that set it up was wrong**: the
