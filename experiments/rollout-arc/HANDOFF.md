@@ -1,5 +1,34 @@
 # Rollout arc — handoff
 
+> ⛔ **THE ARC IS CLOSED, 2026-09-13. The hypothesis failed; the experiment answered.**
+>
+> **Prefix forcing — the intervention the whole arc was built to test — contributes nothing.**
+> On a correctly-constructed held-out pool of 75 never-trained songs at the trained cell,
+> A−C is +0.8pp [−1.4, +3.2] and B−C is +1.8pp [−1.1, +4.8]: **not distinguishable, either
+> pool, either direction.** Plain GRPO (arm C) does the same job.
+>
+> **What does work is small and loses to free code.** All three real-reward arms lift
+> 2.0–3.8pp on unseen songs with intervals excluding zero; the **random-reward arm is flat**
+> (+0.3pp [−1.3, +1.8]) despite taking **198 effective updates against B's 111**, so drift is
+> not the explanation. But that is a model going 11% → 14% on a task where the nearest-tone
+> heuristic scores **32/32 for free**, at **one seed**, with no replication.
+>
+> **The prior never moved.** `top_first_measure_share` 0.889 → 0.841/0.848/0.820, and the
+> random-reward arm moved it **0.060 — more than either treatment.**
+>
+> Read `p4/MATCHED-CELL-RESULTS.md` for the close-out. Everything above it in this file is
+> the road there, including three withdrawn readings, all bannered in place.
+>
+> **Do not reopen for seed 8 or 500 steps.** Those sharpen a result whose ceiling is "loses
+> to fifty lines of deterministic code". Total spend **$16.73 of $25**; nothing billing.
+>
+> ⚡ **What transfers, and it is the reason the arc was not a waste:**
+> [[feedback-rl-substrate-three-gates]] (gate 3 — is the difficulty in the capability you
+> want) and [[feedback-checks-that-pass-for-the-wrong-reason]], now joined by the pathology
+> that produced every error in the final session: **every one was a comparison against the
+> wrong reference set**, and each produced a plausible number that shaped a reported
+> conclusion before it was withdrawn.
+
 **Written 2026-09-12; updated after the prefix-forcing BUILD session the same day.
 ~$11.25 of $25 spent, no pods running, `main` green, suite green, tsc clean.**
 Everything below is measured and committed; every retraction is attached to the file it retracts.
