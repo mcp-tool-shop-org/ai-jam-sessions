@@ -1,0 +1,24 @@
+  HTTP 429 on 'A Theoretical Analysis of Mode Collapse in RLHF'
+  HTTP 429 on 'A Theoretical Analysis of Mode Collapse in RLHF'
+  HTTP 429 on 'A Theoretical Analysis of Mode Collapse in RLHF'
+  HTTP 429 on 'A Theoretical Analysis of Mode Collapse in RLHF'
+
+QUERY: A Theoretical Analysis of Mode Collapse in RLHF
+  UNVERIFIED -- transport failed, NOT a verdict
+  HTTP 429 on 'Gradient Starvation: A Learning Proclivity in Neur'
+  HTTP 429 on 'Gradient Starvation: A Learning Proclivity in Neur'
+  HTTP 429 on 'Gradient Starvation: A Learning Proclivity in Neur'
+  HTTP 429 on 'Gradient Starvation: A Learning Proclivity in Neur'
+
+QUERY: Gradient Starvation: A Learning Proclivity in Neural Networks
+  UNVERIFIED -- transport failed, NOT a verdict
+  HTTP 429 on 'Transfusion: Understanding Transfer Learning for M'
+  HTTP 429 on 'Transfusion: Understanding Transfer Learning for M'
+
+QUERY: Transfusion: Understanding Transfer Learning for Medical Imaging
+  - 2019  M. Raghu  arXiv:1902.07208
+    Transfusion: Understanding Transfer Learning for Medical Imaging
+  - 2019  M. Raghu  (no id)
+    Transfusion: Understanding Transfer Learning with Applications to Medical Imaging
+  - 2025  R. Rajan  doi:10.1109/ICITIIT64777.2025.11041367
+    A Survey on Multimodal Transfer Learning for Medical Imaging and Speech
