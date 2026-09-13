@@ -64,3 +64,7 @@ experiments/rollout-arc/p2/artifacts/*.tar.gz
 experiments/rollout-arc/p2/artifacts/*.log
 experiments/rollout-arc/p2/artifacts/DEADMAN_CANCEL_*
 .venv-p4/
+experiments/rollout-arc/p4/runs/adapter-*/
+experiments/rollout-arc/p4/runs/init-adapter/
+experiments/rollout-arc/p4/runs/arm-rehearsal/
+experiments/rollout-arc/p4/runs/dry-prefix-*/hf/

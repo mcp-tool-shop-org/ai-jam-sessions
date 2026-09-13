@@ -52,15 +52,23 @@ pure noise do nothing (`frac_reward_zero_std` 0.010 — random binary rewards sp
 8 almost every time, so D is a *maximally* active null). Both forcing and the real verifier
 are necessary for the lift.
 
-That is the **infrastructure-validation** result the amendment preregistered as the honest
-purchase: the reward landscape is dense enough to teach a known-solvable capability through
-a live GRPO loop. **It is not musical capability.** The nearest-tone deterministic heuristic
-scores 32/32 on this pool for free, and a trained policy here still loses to code already in
-the repo.
+Paired by item (n = 32, the unit of independence — base and every arm ran on the same
+items, so item difficulty cancels): **A +6.4pp, bootstrap [+0.8, +12.3], 14 items better /
+3 worse. B +11.1pp, [+5.3, +17.8], 15/1.** Both exclude zero. **C +0.2pp [-4.5, +4.5], 7/6.
+D +0.0pp [-4.3, +4.5], 7/9.** Both flat.
 
-**And it is in-sample.** `spec-prompts-4bar-random.jsonl` *is* `fixtures/progressions-v1.json`
-— the same 32 items every arm trained on, seen 6.25 times each by B/C/D. Preregistered
-separately in `HELDOUT-PREREG.md` and measured on 29 unseen items; see that file's reading.
+**And then it did not survive held-out.** `spec-prompts-4bar-random.jsonl` *is*
+`fixtures/progressions-v1.json` — the same 32 items every arm trained on, seen 6.25 times
+each by B/C/D. On 29 unseen items (`HELDOUT-RESULTS.md`, preregistered before it ran):
+**B fell from +11.1pp to +1.2pp**, between C's +0.6pp and D's +1.0pp and not distinguishable
+from either. **Reading 2 — MEMORISATION — fires; the secondary finding does not survive.**
+A retained +3.7pp, clearing its preregistered bar, but with an interval that includes zero.
+
+So the in-sample 2x2 above is real as a *measurement* and does not license the conclusion it
+appears to license. It is **infrastructure validation and nothing more**: the loop runs, the
+verifier scores what was pinned, the gradient moves a metric. **It is not musical
+capability** — the nearest-tone deterministic heuristic scores 32/32 on this pool for free —
+and it is not, on this evidence, a capability that transfers to unseen items.
 
 ## The design tiebreak — and a correction to the argument that set it up
 
@@ -126,10 +134,16 @@ number in this table would have been identical.
 
 | | |
 |---|---|
-| four arms + five evals, 2h 50m | **$2.80** |
-| three pods terminated before their image finished pulling | **$0.245** |
-| held-out eval on the same pod | ~$0.38 |
-| **total** | **~$3.43 of $20 authorised** |
+| four arms + five evals, 2h 50m | ~$2.80 |
+| three pods terminated before their image finished pulling | $0.245 |
+| five held-out evals + fetch time on the same pod | ~$2.40 |
+| **total, measured against the account balance** | **$5.44 of $20 authorised** |
+
+Balance $24.0403 to $18.5980. The held-out evals were estimated at $0.38 and cost roughly
+six times that: the adapter arms ran **14.6 s/item against the base's 8.2 s** (PEFT adds a
+forward-pass cost the base eval does not pay), and the pod kept billing through the 490 MB
+adapter fetch. Estimating eval cost from a *base-model* rate is the same class of error as
+quoting a dead-group rate across G — a number measured in one condition, spent in another.
 
 The $0.245 was mine: routing took 19.7 minutes and I killed three pods on a 5-minute cap
 taken from a memory note that described a *warm* host. The same note says cold stage 0 is
@@ -140,10 +154,16 @@ wrong stage.
 
 - **The loop works.** Prefix forcing runs inside a live `GRPOTrainer` batch, the verifier
   scores what was pinned, the injected tokens stay out of the loss, and 200 steps move a
-  real metric.
+  real metric. That is the whole of what was bought.
 - **The exploration hypothesis is not supported.** Exploring starts made the policy better
   at completing from anywhere; they did not make it *choose* to start anywhere. The
-  typicality peak is a property of the prior that survives 200 steps of gradient against it.
-- **Both group designs work and heterogeneous is cheaper.** The structural argument for
-  stratification is sound and did not pay.
-- **Nothing here is musical capability**, and the free heuristic still wins.
+  typicality peak is a property of the prior that survives 200 steps of gradient against it,
+  and random rewards perturb it as much as the real one does.
+- **The in-sample gain was mostly memorisation.** B's +11.1pp became +1.2pp on unseen items,
+  inside the control band. A kept +3.7pp with an interval spanning zero. 200 steps over 32
+  items at 6.25 epochs teaches those 32 items.
+- **Heterogeneous is cheaper per effective update; stratified was the only arm whose gain
+  partly survived.** Those point in opposite directions and the comparison is confounded by
+  repetition anyway (0.39 vs 6.25 epochs). The design question is not settled and the run
+  that would settle it was not run.
+- **Nothing here is musical capability**, and the free heuristic still wins 32/32.
