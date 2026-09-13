@@ -571,7 +571,11 @@ def main() -> int:
             "prefix_in_loss": args.prefix_in_loss,
             "pool_items": pool_items,
             "openings_per_item": {str(k): v for k, v in sorted(openings_hist.items())},
-            **(prefix_stats or {}),
+            **{
+                k: (sorted(v) if isinstance(v, set) else v)
+                for k, v in (prefix_stats or {}).items()
+            },
+            "openings_covered": len(prefix_stats["opening_indices_seen"]) if prefix_stats else 0,
         },
     }
     (out / "dry-run.json" if args.dry else out / "run.json").write_text(json.dumps(receipt, indent=2) + "\n")

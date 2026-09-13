@@ -10,11 +10,11 @@
   "steps_requested": 2,
   "steps_timed": 2,
   "step_seconds": [
-    17.604,
-    8.892
+    10.301,
+    7.754
   ],
-  "mean_step_seconds": 13.248,
-  "wall_seconds": 26.785,
+  "mean_step_seconds": 9.028,
+  "wall_seconds": 18.339,
   "memory": {
     "peak_reserved_mib_per_step": [
       21254.0,
@@ -69,12 +69,12 @@
   },
   "bridge": {
     "before": {
-      "scored": 8,
+      "scored": 16,
       "unparsed": 0,
       "first_measure_wrong": 0
     },
     "after": {
-      "scored": 24,
+      "scored": 32,
       "unparsed": 0,
       "first_measure_wrong": 0
     },
@@ -108,6 +108,19 @@
     "openings_per_group_min": 8,
     "openings_per_group_max": 8,
     "max_new_tokens": 368,
-    "boundary_clean": true
+    "boundary_clean": true,
+    "opening_indices_seen": [
+      0,
+      2,
+      3,
+      5,
+      6,
+      8,
+      9,
+      12,
+      13,
+      15
+    ],
+    "openings_covered": 10
   }
 }
