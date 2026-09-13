@@ -45,6 +45,48 @@ The preregistration anticipated the argument that would be made here and refused
 advance: *"the arms still differ in-sample, and 'but the controls were null in-sample' is
 not a defence of a held-out null."* That still holds.
 
+## ⚠ CORRECTION, added after an arm-vs-arm test that should have been run first
+
+Everything below this section compares each arm **to base**. That answers "did this arm
+move?" and **not** "did these two arms differ?" — and the second question is the one the
+A-versus-B narrative rests on. `scripts/arm-vs-arm.mts`, paired by item:
+
+| held-out, paired | difference | bootstrap 95% | items +/-/= | |
+|---|---|---|---|---|
+| A stratified − B heterogeneous | +2.5pp | [-2.9, +9.2] | 6/3/23 | **not distinguishable** |
+| A stratified − C unforced | +3.1pp | [-2.5, +9.6] | 8/4/20 | **not distinguishable** |
+| B heterogeneous − C unforced | +0.6pp | [-5.1, +5.9] | 8/2/22 | **not distinguishable** |
+
+**On the held-out pool nothing is distinguishable from anything.** A is not distinguishable
+from B, and A is not distinguishable from the *unforced control* either. The preregistered
+verdict is unaffected — reading 2's trigger is B being indistinguishable from C and D, and it
+is met — but **the "A partly survived while B collapsed" contrast below is not supported by
+the data**, and it is my over-read. Two arm-vs-base numbers that look far apart are not a
+difference between arms.
+
+(In-sample the same test is informative rather than null: **A − C = +6.3pp [+2.1, +11.3]** and
+**B − C = +10.9pp [+4.5, +18.0]**, both excluding zero, while **A − B = −4.7pp [−11.7, +1.8]**
+does not. Forcing beats not-forcing in-sample for both designs; the two designs are not
+distinguishable from each other there either.)
+
+**And the mechanism offered below is factually wrong.** It claims A "could not memorise a row"
+because it trained at `prompt_repeats` 0.39. `prompt_repeats` counts **rows**, and a stratified
+row is an (item, opening) pair while a heterogeneous row is an item — so the number is not
+comparable across the two designs. Measured from the receipts:
+
+| | dataset rows | distinct **items** | draws per **item** | rollouts per **item** |
+|---|---|---|---|---|
+| A stratified | 512 | 32 | **6.25** | **50.0** |
+| B heterogeneous | 32 | 32 | **6.25** | **50.0** |
+
+**Item exposure was identical.** Both arms saw each of the 32 items 6.25 times and generated
+50 rollouts per item. There is no epoch-count difference between them, so there is no
+epoch-count confound — and a deconfounding run built to remove one would be removing a
+variable that was never unequal.
+
+The paragraphs below are kept as written, with these two defects named, rather than edited
+into agreement with the correction.
+
 ## What each arm actually did, without rescuing anything
 
 **B collapsed completely.** +11.1pp in-sample, +1.2pp held-out — 89% of the effect gone,
@@ -72,6 +114,13 @@ distinct contexts (0.39 vs 6.25). Nothing here separates them. If A's effect is 
 could be entirely the low repetition and nothing to do with stratification. The arm that
 would disentangle it — heterogeneous at matched low repetition, e.g. over an expanded item
 pool — was not run.
+
+> **This paragraph is wrong and the correction section above supersedes it.** 0.39 and 6.25
+> count *rows*, and a row is a different object in the two designs. Item exposure was
+> **identical at 6.25 draws and 50 rollouts per item**. There is no repetition confound, so
+> there is nothing for a matched-repetition arm to disentangle. What remains true is the
+> first sentence's spirit for a different reason: A and B are **not distinguishable from each
+> other** on the held-out pool, so there is no A-vs-B outcome to explain in the first place.
 
 ## `top_first_measure_share` on the held-out pool
 
