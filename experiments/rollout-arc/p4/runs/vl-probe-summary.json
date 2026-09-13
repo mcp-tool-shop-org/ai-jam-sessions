@@ -1,0 +1,47 @@
+{
+  "groups": 18,
+  "G": 8,
+  "completions": 144,
+  "distinct_spans_exact": 5.333,
+  "distinct_voicing_sequences": 5.278,
+  "mean_entropy": 0.0165,
+  "common-practice": {
+    "single_shot": 0,
+    "ci95": [
+      0,
+      0.026
+    ],
+    "non_degenerate": "0/18 = 0.000",
+    "rho": null,
+    "effective_draws": null,
+    "k_hist": {
+      "0": 18
+    }
+  },
+  "lead-sheet": {
+    "single_shot": 0,
+    "ci95": [
+      0,
+      0.026
+    ],
+    "non_degenerate": "0/18 = 0.000",
+    "rho": null,
+    "effective_draws": null,
+    "k_hist": {
+      "0": 18
+    }
+  },
+  "film-ambient": {
+    "single_shot": 0,
+    "ci95": [
+      0,
+      0.026
+    ],
+    "non_degenerate": "0/18 = 0.000",
+    "rho": null,
+    "effective_draws": null,
+    "k_hist": {
+      "0": 18
+    }
+  }
+}
