@@ -30,7 +30,7 @@ type Cell = { passes: boolean; verified: boolean; consonance: boolean; nonTrivia
 function wellFormedAbc(abc: string): boolean {
   const body = abc.split(/K:[^\n]*\n/)[1] ?? abc;
   if (!body.includes("|")) return false;
-  return !/[A-G]#?\d\+|:(w|h|q|e|s|qt|ht|et)/.test(body);
+  return !/[A-G]#?\d\+|:(w|h|q|e|s|qt|ht|et)/.test(body);
 }
 const groups: Array<{ itemId: string; G: number; distinct: number; entropy: number | null; cells: Cell[] }> = [];
 
