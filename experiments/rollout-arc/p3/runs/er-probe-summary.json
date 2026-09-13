@@ -1,0 +1,3649 @@
+{
+  "summary": {
+    "groups": 44,
+    "G": 8,
+    "completions": 352,
+    "distinct_spans_mean": 7.977,
+    "mean_entropy": 0.10697,
+    "gates": {
+      "chords_parsed": 1,
+      "consonance": 0.8977,
+      "non_trivial": 1,
+      "verified": 0.8977,
+      "full_gate_single_shot": 0.8977,
+      "wellformed_abc": 0.6818,
+      "strict_gate_single_shot": 0.625
+    },
+    "full_gate_ci95": [
+      0.8617,
+      0.9252
+    ],
+    "k_of_G": [
+      4,
+      5,
+      5,
+      5,
+      6,
+      6,
+      6,
+      6,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+    ],
+    "non_degenerate": "23/44 = 0.523",
+    "rho": 0.054,
+    "effective_draws": 5.8,
+    "strict": {
+      "single_shot": 0.625,
+      "ci95": [
+        0.5733,
+        0.674
+      ],
+      "k_of_G": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        6,
+        6,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "non_degenerate": "34/44 = 0.773",
+      "rho": 0.287,
+      "effective_draws": 2.66
+    }
+  },
+  "groups": [
+    {
+      "itemId": "all-the-things-you-are:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.06922078877687454,
+      "cells": [
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "autumn-leaves:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.0526195652782917,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "blue-bossa:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.15980668365955353,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "fly-me-to-the-moon:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.14527025818824768,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "a-thousand-years:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.09073548763990402,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "all-of-me:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.07283984869718552,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "bohemian-rhapsody:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.17064164578914642,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "clocks:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.0692853033542633,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 7,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 7,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 7,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 7,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "crossroad-blues:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.15560199320316315,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "everyday-i-have-the-blues:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.09646811336278915,
+      "cells": [
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "hoochie-coochie-man:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.1595689356327057,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "st-louis-blues:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.09935475140810013,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "baba-oriley:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.11890897154808044,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "bennie-and-the-jets:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.08748412877321243,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "dont-stop-believin:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.12819914519786835,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "dream-on:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.06112382933497429,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "fallin:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.09525904804468155,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "halo:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.05946497991681099,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 7,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 7,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "i-will-always-love-you:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.18665607273578644,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "if-i-aint-got-you:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.11924200505018234,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "a-change-is-gonna-come:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.07805490493774414,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "aint-no-sunshine:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.10714153200387955,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "dock-of-the-bay:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.11916831880807877,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "i-got-you:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.0767199918627739,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "agua-de-beber:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.13195869326591492,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "besame-mucho:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.049726348370313644,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "black-orpheus:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.09595499187707901,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "corcovado:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.17452822625637054,
+      "cells": [
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "comptine-dun-autre-ete:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.07671049982309341,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "forrest-gump:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.11724714189767838,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "hedwigs-theme:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.11501909047365189,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "mia-and-sebastians-theme:m1-8",
+      "G": 8,
+      "distinct": 7,
+      "entropy": 0.11571873724460602,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "bethena:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.11175354570150375,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "elite-syncopations:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.06517744809389114,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "gladiolus-rag:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.12620551884174347,
+      "cells": [
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "maple-leaf-rag:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.10681022703647614,
+      "cells": [
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "may-be:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.07914596050977707,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "metamorphosis-two:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.054675642400979996,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 7,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 7,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "nuvole-bianche-na:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.15007415413856506,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "river-flows-in-you:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.09520004689693451,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "amazing-grace:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.12638893723487854,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "auld-lang-syne:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.08349637687206268,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    },
+    {
+      "itemId": "danny-boy:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.1136881560087204,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "greensleeves:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.13848057389259338,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": true,
+          "strict": true
+        }
+      ]
+    }
+  ]
+}
