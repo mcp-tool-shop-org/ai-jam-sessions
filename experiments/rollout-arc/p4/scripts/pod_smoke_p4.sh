@@ -66,21 +66,62 @@ say "stage0 cuda check BEFORE anything is staged"
 nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader
 python3 -c "import torch;print('torch',torch.__version__,'cuda',torch.cuda.is_available())" 2>/dev/null || true
 
+# The image ships python and CUDA but NOT node. Without this the build stage
+# fails on `corepack: command not found`, and because a failure in the MIDDLE of
+# an && list is exempt from set -e, the script printed "build done" over a build
+# that never ran and only died later at the bridge health check.
+say "stage0b node"
+if ! command -v node >/dev/null 2>&1; then
+  curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+  apt-get install -y -qq nodejs
+fi
+node --version | tee "$ART/node-version.txt"
+corepack enable || npm i -g pnpm
+pnpm --version | tee "$ART/pnpm-version.txt"
+
 say "stage0b clone ${P4_REPO_URL:?set P4_REPO_URL} at ${P4_COMMIT:?set P4_COMMIT}"
-mkdir -p "$ARC" && cd "$ARC"
-git clone --filter=blob:none "$P4_REPO_URL" ai-jam-sessions
-cd "$REPO" && git checkout --detach "$P4_COMMIT"
+mkdir -p "$ARC"
+cd "$ARC"
+# Idempotent: a relaunch after a staging failure must not die on "destination
+# path already exists". The working P2 script guards this; the first revision of
+# this one did not, and a relaunch burned pod time failing at the clone.
+if [ ! -d "$REPO/.git" ]; then
+  rm -rf "$REPO"
+  git clone --filter=blob:none "$P4_REPO_URL" ai-jam-sessions
+fi
+cd "$REPO"
+git fetch --depth 1 origin "$P4_COMMIT" 2>/dev/null || true
+git checkout --detach "$P4_COMMIT"
 say "stage0b clone done ($(git rev-parse --short HEAD))"
 
 # The clone must exist before this line. An earlier revision installed from
 # "$TRAINER/requirements.lock.txt" BEFORE the clone that creates $TRAINER, which
 # would have failed every launch.
 say "stage0c python deps (the ~3 GB torch download; progress is the liveness signal)"
-pip install --break-system-packages -r "$TRAINER/requirements.lock.txt"
+# --extra-index-url is REQUIRED: torch==2.11.0+cu128 is a local version that does
+# not exist on PyPI, and pip reports it as "no matching distribution" rather than
+# as a missing index. Installing the PINNED torch rather than the image's 2.8.0
+# is deliberate — the local Stage C pass was produced against 2.11.0+cu128.
+pip install --break-system-packages \
+  --extra-index-url https://download.pytorch.org/whl/cu128 \
+  -r "$TRAINER/requirements.lock.txt"
+# The image ships torchvision/torchaudio COMPILED AGAINST torch 2.8.0+cu129. We
+# install torch 2.11.0+cu128 over the top, and pip reports the mismatch only as a
+# resolver warning -- which is easy to read as noise. It is not: transformers
+# touches torchvision when peft pulls in the model registry, the compiled op is
+# gone, and the import chain dies with
+#   RuntimeError: operator torchvision::nms does not exist
+# several minutes and one model load later. Neither package is needed for a text
+# model, so remove them rather than chase a matching build.
+pip uninstall -y --break-system-packages torchvision torchaudio 2>/dev/null || true
+python3 -c 'import torch, transformers, peft, trl; print("imports ok:", torch.__version__, transformers.__version__, peft.__version__, trl.__version__)'
+
 say "stage0c python deps done"
 
 say "stage0d node deps + build"
-cd "$REPO" && corepack enable && pnpm install --frozen-lockfile && pnpm build
+cd "$REPO"
+pnpm install --frozen-lockfile
+pnpm build
 say "stage0d build done"
 
 # ─── the voice-leading bridge ───────────────────────────────────────────────
@@ -89,8 +130,15 @@ say "stage0d build done"
 # the compose module.
 say "stage0e bridge: ${VOICES} voices, ${STYLE}, pool seed ${VL_SEED}"
 cd "$REPO"
+# --fixture is NOT optional on a pod. songs/library ships 14 redistributable songs;
+# the other 94 are fetched from source and never enter git, so a fresh clone builds
+# a 14-song pool where a dev rig builds 107. The first smoke run served 14 rows to a
+# trainer asking for 32 and produced prompt_repeats 2.29 -- a VOID cell that cost a
+# full stage-0 rebuild to discover. --require-pool turns that into a startup failure.
 pnpm exec tsx "$REPO/experiments/rollout-arc/scripts/p4-vl-server.mjs" \
   --port "$PORT" --voices "$VOICES" --style "$STYLE" --seed "$VL_SEED" \
+  --fixture "$REPO/experiments/rollout-arc/p4/fixtures/progressions-v1.json" \
+  --require-pool "$CELL_LIMIT" \
   > "$ART/vl-server.log" 2>&1 &
 BRIDGE_PID=$!
 trap 'kill "$BRIDGE_PID" 2>/dev/null || true' EXIT
