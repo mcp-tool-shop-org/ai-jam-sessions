@@ -11,8 +11,8 @@
       "non_trivial": 1,
       "verified": 0.8977,
       "full_gate_single_shot": 0.8977,
-      "wellformed_abc": 0.6818,
-      "strict_gate_single_shot": 0.625
+      "wellformed_abc": 0.5284,
+      "strict_gate_single_shot": 0.4886
     },
     "full_gate_ci95": [
       0.8617,
@@ -68,25 +68,33 @@
     "rho": 0.054,
     "effective_draws": 5.8,
     "strict": {
-      "single_shot": 0.625,
+      "single_shot": 0.4886,
       "ci95": [
-        0.5733,
-        0.674
+        0.4368,
+        0.5407
       ],
       "k_of_G": [
+        0,
+        0,
+        0,
+        0,
+        0,
         0,
         1,
         1,
         1,
         1,
+        1,
+        1,
         2,
         2,
         2,
+        2,
         3,
         3,
         3,
         3,
-        4,
+        3,
         4,
         4,
         4,
@@ -96,11 +104,6 @@
         5,
         5,
         5,
-        5,
-        5,
-        6,
-        6,
-        6,
         6,
         6,
         7,
@@ -108,9 +111,6 @@
         7,
         7,
         7,
-        7,
-        8,
-        8,
         8,
         8,
         8,
@@ -119,9 +119,9 @@
         8,
         8
       ],
-      "non_degenerate": "34/44 = 0.773",
-      "rho": 0.287,
-      "effective_draws": 2.66
+      "non_degenerate": "31/44 = 0.705",
+      "rho": 0.409,
+      "effective_draws": 2.07
     }
   },
   "groups": [
@@ -173,8 +173,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -315,8 +315,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": false,
@@ -386,8 +386,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -404,8 +404,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -440,8 +440,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         }
       ]
     },
@@ -591,8 +591,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": false,
@@ -697,24 +697,6 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 7,
-          "wellFormedAbc": false,
-          "strict": false
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
           "wellFormedAbc": false,
           "strict": false
         },
@@ -733,8 +715,26 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 7,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1062,8 +1062,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1204,8 +1204,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1222,8 +1222,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1240,7 +1240,7 @@
           "consonance": false,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
+          "wellFormedAbc": false,
           "strict": false
         }
       ]
@@ -1284,7 +1284,7 @@
           "consonance": false,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
+          "wellFormedAbc": false,
           "strict": false
         },
         {
@@ -1311,7 +1311,7 @@
           "consonance": false,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
+          "wellFormedAbc": false,
           "strict": false
         },
         {
@@ -1320,8 +1320,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         }
       ]
     },
@@ -1417,88 +1417,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": false,
-          "verified": false,
-          "consonance": false,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
+          "wellFormedAbc": false,
           "strict": false
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        }
-      ]
-    },
-    {
-      "itemId": "halo:m1-8",
-      "G": 8,
-      "distinct": 8,
-      "entropy": 0.05946497991681099,
-      "cells": [
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
         },
         {
           "passes": true,
@@ -1515,8 +1435,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1524,8 +1444,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1533,8 +1453,88 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": false,
+          "verified": false,
+          "consonance": false,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        }
+      ]
+    },
+    {
+      "itemId": "halo:m1-8",
+      "G": 8,
+      "distinct": 8,
+      "entropy": 0.05946497991681099,
+      "cells": [
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1657,8 +1657,35 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1675,35 +1702,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1844,8 +1844,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1853,8 +1853,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -1880,8 +1880,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         }
       ]
     },
@@ -1942,8 +1942,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -2004,17 +2004,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -2031,8 +2022,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -2040,8 +2031,17 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
         }
       ]
     },
@@ -2226,8 +2226,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -2342,7 +2342,7 @@
           "consonance": false,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
+          "wellFormedAbc": false,
           "strict": false
         },
         {
@@ -2617,8 +2617,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -2644,8 +2644,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -2902,8 +2902,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -2973,8 +2973,17 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
+        },
+        {
+          "passes": true,
+          "verified": true,
+          "consonance": true,
+          "nonTrivial": true,
+          "chords": 8,
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -2991,17 +3000,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
-        },
-        {
-          "passes": true,
-          "verified": true,
-          "consonance": true,
-          "nonTrivial": true,
-          "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         }
       ]
     },
@@ -3053,8 +3053,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -3062,8 +3062,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -3426,8 +3426,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": true,
@@ -3480,8 +3480,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         }
       ]
     },
@@ -3551,8 +3551,8 @@
           "consonance": true,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
-          "strict": true
+          "wellFormedAbc": false,
+          "strict": false
         },
         {
           "passes": false,
@@ -3560,7 +3560,7 @@
           "consonance": false,
           "nonTrivial": true,
           "chords": 8,
-          "wellFormedAbc": true,
+          "wellFormedAbc": false,
           "strict": false
         }
       ]
