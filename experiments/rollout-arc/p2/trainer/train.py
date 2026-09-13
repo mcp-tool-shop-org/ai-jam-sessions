@@ -116,6 +116,16 @@ def parse_args() -> argparse.Namespace:
         "else is held identical.",
     )
     p.add_argument("--save-init-adapter", default=None, help="write the step-0 adapter here (#6688b)")
+    p.add_argument(
+        "--save-final-adapter",
+        default=None,
+        help=(
+            "write the TRAINED adapter here when training finishes. `save_strategy=\"no\"` "
+            "means nothing else does, so without this a run that trains perfectly leaves no "
+            "weights and its own preregistered falsifier -- top_first_measure_share on an "
+            "UNCONDITIONED eval -- cannot be measured at all. Caught before the spend, not after."
+        ),
+    )
     p.add_argument("--init-adapter", default=None, help="load a step-0 adapter so both arms share LoRA init")
     return p.parse_args()
 
@@ -483,6 +493,14 @@ def main() -> int:
     trainer.train()
     wall = time.perf_counter() - t0
 
+    # The trained weights, written BEFORE the receipt and before any gate can halt:
+    # a run whose guards fail is still a run whose adapter is worth keeping, and a
+    # halt that also discarded the weights would turn one bad arm into a repeat.
+    if args.save_final_adapter:
+        Path(args.save_final_adapter).mkdir(parents=True, exist_ok=True)
+        trainer.model.save_pretrained(args.save_final_adapter)
+        print(f"[p2-train] saved trained adapter to {args.save_final_adapter}")
+
     # Re-read the bridge AFTER training: the counters are the proof that the
     # rollouts actually went through the real MCP server and the one scoreReward,
     # rather than through anything reimplemented in Python.
@@ -562,6 +580,7 @@ def main() -> int:
         "dataset_rows": len(dataset),
         "rollout_mode": ("no-tools" if args.no_tools else "plain-tools" if args.plain_tools else "environment-factory"),
         "prompt_repeats": round(prompt_repeats, 4),
+        "final_adapter": args.save_final_adapter,
         # Prefix forcing, recorded on EVERY run including the unforced ones, so no
         # receipt is ever ambiguous about which group design produced its numbers.
         # `openings_per_group` is the discriminator: G under heterogeneous forcing,
