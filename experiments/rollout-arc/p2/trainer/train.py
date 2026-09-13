@@ -67,6 +67,15 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--max-completion-length", type=int, default=1024)
     p.add_argument("--max-tool-iterations", type=int, default=5, help="default is unbounded; #6688 saw 46")
     p.add_argument("--limit", type=int, default=0, help="cap the training rows (0 = all)")
+    p.add_argument(
+        "--no-tools",
+        action="store_true",
+        help=(
+            "single-turn: pass NEITHER tools nor environment_factory. For the P4 "
+            "voice-leading surface, where the completion is the answer and there is "
+            "no tool loop to mask. Scoring still goes through --base-url /score."
+        ),
+    )
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--use-vllm", action="store_true", help="earned, never a default (see module docstring)")
     p.add_argument("--random-reward", action="store_true", help="lock §6 spurious-reward control arm")
@@ -91,8 +100,20 @@ def load_cases(base_url: str, split: str, limit: int = 0) -> list[dict]:
     rows = res.json()["cases"]
     # Keep only what reset() and the reward need. Every surviving column is
     # passed to reset(**row) AND to the reward function as a kwarg.
-    keep = ("id", "gold", "song_id", "level", "distance", "prompt")
-    return [{k: r[k] for k in keep} for r in rows]
+    #
+    # REQUIRED is the contract every bridge must satisfy; OPTIONAL is per-task
+    # metadata that rides along when the bridge supplies it. The old fixed tuple
+    # hard-coded the synth corpus (level/distance) and raised KeyError on any other
+    # task, which is what the P4 voice-leading bridge hit on its first dry pass.
+    required = ("id", "gold", "prompt")
+    optional = ("song_id", "level", "distance", "voices", "style", "chords")
+    missing = [k for k in required if not rows or k not in rows[0]]
+    if missing:
+        raise SystemExit(
+            f"HALT: the bridge at {base_url} returned rows without {missing}. "
+            f"Every /cases row needs id, gold and prompt."
+        )
+    return [{k: r[k] for k in required + optional if k in r} for r in rows]
 
 
 def assert_tool_calling_template(processing_class) -> str:
@@ -173,7 +194,19 @@ def main() -> int:
     from trl import GRPOConfig, GRPOTrainer
 
     health = httpx.get(f"{args.base_url.rstrip('/')}/health", timeout=60.0).json()
-    print(f"[p2-train] bridge ok: library={health['library_songs']} tools={len(health['tools'])} limits={health['limits']}")
+    # Two bridges speak this contract now and their /health shapes differ: the synth
+    # bridge reports library_songs/limits, the P4 voice-leading bridge reports a task,
+    # a pool_size and an EMPTY tool list. Print what is there rather than assuming one.
+    if "library_songs" in health:
+        print(
+            f"[p2-train] bridge ok: library={health['library_songs']} "
+            f"tools={len(health.get('tools', []))} limits={health.get('limits')}"
+        )
+    else:
+        print(
+            f"[p2-train] bridge ok: task={health.get('task')} pool={health.get('pool_size')} "
+            f"tools={len(health.get('tools', []))} voices={health.get('voices')} style={health.get('style')}"
+        )
 
     rows = load_cases(args.base_url, "train", args.limit)
     if not rows:
@@ -208,8 +241,16 @@ def main() -> int:
             )
 
     tokenizer = AutoTokenizer.from_pretrained(args.model)
-    assert_tool_calling_template(tokenizer)
-    print("[p2-train] chat template round-trips user -> assistant(tool_calls) -> tool")
+    # TRL refuses environment_factory unless the chat template can render a tool
+    # call, so this assertion is a precondition of THAT path — not of training in
+    # general. A single-turn run emits one assistant message and never renders a
+    # tool call, so asserting here would fail a valid configuration.
+    if not args.no_tools:
+        assert_tool_calling_template(tokenizer)
+    if not args.no_tools:
+        print("[p2-train] chat template round-trips user -> assistant(tool_calls) -> tool")
+    else:
+        print("[p2-train] single-turn: no tools, no environment_factory, no loss mask to check")
 
     # ── mask probe: Stage C step 7 ───────────────────────────────────────────
     mask_stats: dict[str, float] = {"batches": 0, "completions": 0, "with_zero_span": 0, "zeros": 0, "ones": 0}
@@ -311,8 +352,15 @@ def main() -> int:
         processing_class=tokenizer,
         peft_config=peft_config,
         reward_funcs=reward_funcs,
+        # Three modes, not two. --no-tools passes NEITHER key: vanilla GRPO over a
+        # single assistant turn. The P4 voice-leading task needs this — its completion
+        # is a JSON array of voicings with no tool call anywhere, so an
+        # environment_factory would wrap a loop that never runs and a `tools` list
+        # would advertise tools the prompt never mentions.
         **(
-            {"tools": make_plain_tools(args.base_url)}
+            {}
+            if args.no_tools
+            else {"tools": make_plain_tools(args.base_url)}
             if args.plain_tools
             else {"environment_factory": make_environment_factory(args.base_url)}
         ),
@@ -404,16 +452,17 @@ def main() -> int:
             "capability": list(torch.cuda.get_device_capability(0)) if torch.cuda.is_available() else None,
         },
         "bridge": {
-            "before": health["counters"],
+            "before": health.get("counters"),
             "after": health_after["counters"],
-            "library_songs": health["library_songs"],
-            "generator_seed": health["generator_seed"],
-            "schema_version": health["schema_version"],
-            "tools": health["tools"],
-            "limits": health["limits"],
+            "library_songs": health.get("library_songs"),  # None on non-synth bridges
+            "generator_seed": health.get("generator_seed"),
+            "schema_version": health.get("schema_version"),
+            "tools": health.get("tools", []),
+            "limits": health.get("limits"),
         },
         "environment": dict(ENV_COUNTERS),
         "dataset_rows": len(dataset),
+        "rollout_mode": ("no-tools" if args.no_tools else "plain-tools" if args.plain_tools else "environment-factory"),
         "prompt_repeats": round(prompt_repeats, 4),
     }
     (out / "dry-run.json" if args.dry else out / "run.json").write_text(json.dumps(receipt, indent=2) + "\n")
@@ -427,23 +476,41 @@ def main() -> int:
             f"  headroom={_mem['headroom_mib']} MiB"
             f"  ({receipt['shape']['completions_per_step']} completions/step)"
         )
-    print(f"[p2-train] bridge tool_calls={health_after['counters']['tool_calls']} scored={health_after['counters']['scored']} "
-          f"env instances={ENV_COUNTERS['instances']} resets={ENV_COUNTERS['resets']}")
+    _ca = health_after.get("counters", {})
+    if args.no_tools:
+        print(f"[p2-train] bridge scored={_ca.get('scored')} unparsed={_ca.get('unparsed')} (single-turn: no tool calls by design)")
+    else:
+        print(f"[p2-train] bridge tool_calls={_ca.get('tool_calls')} scored={_ca.get('scored')} "
+              f"env instances={ENV_COUNTERS['instances']} resets={ENV_COUNTERS['resets']}")
 
     if args.dry:
         # The two Stage C gates. A dry run that "passes" without these has
         # proved only that the process exited 0.
         if len(step_times) < 2:
             raise SystemExit(f"HALT: {len(step_times)} optimizer steps completed; step 2 is where OOM appears (R3.15)")
-        if mask_stats["with_zero_span"] == 0:
-            raise SystemExit("HALT: tool_mask is all ones — the loss would include our own MCP server's output")
-        if health_after["counters"]["tool_calls"] <= health["counters"]["tool_calls"]:
-            raise SystemExit("HALT: the bridge served no tool calls — the rollouts never reached the real MCP server")
-        if health_after["counters"]["scored"] <= health["counters"]["scored"]:
-            raise SystemExit("HALT: the bridge scored nothing — the reward did not come from scoreReward")
-        if ENV_COUNTERS["resets"] == 0:
-            raise SystemExit("HALT: reset() was never called; the pooled-environment contract does not hold here")
-        print("[p2-train] STAGE C PASS — two optimizer steps, non-trivial tool mask")
+        _cb = health.get("counters", {})
+        # The bridge must have scored, on EVERY path: it is the only proof the reward
+        # came from the real verifier rather than a default.
+        if _ca.get("scored", 0) <= _cb.get("scored", 0):
+            raise SystemExit("HALT: the bridge scored nothing — the reward did not come from the verifier")
+        if args.no_tools:
+            # THE TOOL GATES ARE NOT SKIPPED HERE, THEY ARE INAPPLICABLE. A single-turn
+            # run has no tool loop to mask, no MCP server to reach and no pooled
+            # environment to reset; asserting them would fail a valid configuration.
+            # What replaces them is the inverse assertion: nothing tool-shaped ran.
+            if _ca.get("tool_calls", 0) != 0:
+                raise SystemExit("HALT: --no-tools but the bridge served tool calls; this is not a single-turn run")
+            if ENV_COUNTERS["instances"] != 0:
+                raise SystemExit("HALT: --no-tools but an environment was instantiated")
+            print("[p2-train] STAGE C PASS (single-turn) — two optimizer steps, bridge scored, no tool path touched")
+        else:
+            if mask_stats["with_zero_span"] == 0:
+                raise SystemExit("HALT: tool_mask is all ones — the loss would include our own MCP server's output")
+            if _ca.get("tool_calls", 0) <= _cb.get("tool_calls", 0):
+                raise SystemExit("HALT: the bridge served no tool calls — the rollouts never reached the real MCP server")
+            if ENV_COUNTERS["resets"] == 0:
+                raise SystemExit("HALT: reset() was never called; the pooled-environment contract does not hold here")
+            print("[p2-train] STAGE C PASS — two optimizer steps, non-trivial tool mask")
     return 0
 
 

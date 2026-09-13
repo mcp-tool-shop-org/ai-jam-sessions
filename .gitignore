@@ -63,3 +63,4 @@ experiments/rollout-arc/p2/runs/
 experiments/rollout-arc/p2/artifacts/*.tar.gz
 experiments/rollout-arc/p2/artifacts/*.log
 experiments/rollout-arc/p2/artifacts/DEADMAN_CANCEL_*
+.venv-p4/
