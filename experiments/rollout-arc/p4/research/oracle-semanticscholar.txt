@@ -1,0 +1,96 @@
+[OK]       arXiv:1606.06565  2016  Dario Amodei (+5)
+           Concrete Problems in AI Safety
+[OK]       arXiv:1709.06560  2017  Peter Henderson (+5)
+           Deep Reinforcement Learning that Matters
+[OK]       arXiv:1801.01290  2018  Tuomas Haarnoja (+3)
+           Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor
+[OK]       arXiv:1806.08295  2018  Cédric Colas (+2)
+           How Many Random Seeds? Statistical Power Analysis in Deep Reinforcement Learning Experiments
+[OK]       arXiv:2002.06305  2020  Jesse Dodge (+5)
+           Fine-Tuning Pretrained Language Models: Weight Initializations, Data Orders, and Early Stopping
+[OK]       arXiv:2103.03098  2021  Xavier Bouthillier (+16)
+           Accounting for Variance in Machine Learning Benchmarks
+[OK]       arXiv:2107.03374  2021  Mark Chen (+52)
+           Evaluating Large Language Models Trained on Code
+[OK]       arXiv:2108.13264  2021  Rishabh Agarwal (+4)
+           Deep Reinforcement Learning at the Edge of the Statistical Precipice
+[OK]       arXiv:2202.03286  2022  Ethan Perez (+8)
+           Red Teaming Language Models with Language Models
+[OK]       arXiv:2203.02155  2022  Long Ouyang (+19)
+           Training language models to follow instructions with human feedback
+[OK]       arXiv:2206.08896  2022  J. Lehman (+5)
+           Evolution through Large Models
+[OK]       arXiv:2209.13085  2022  J. Skalse (+3)
+           Defining and Characterizing Reward Hacking
+[OK]       arXiv:2210.10760  2022  Leo Gao (+2)
+           Scaling Laws for Reward Model Overoptimization
+[OK]       arXiv:2305.11206  2023  Chunting Zhou (+14)
+           LIMA: Less Is More for Alignment
+[OK]       arXiv:2306.10882  2023  Timothée Mathieu (+6)
+           AdaStop: adaptive statistical testing for sound comparisons of Deep RL agents
+[OK]       arXiv:2310.04363  2023  Edward J. Hu (+6)
+           Amortizing intractable inference in large language models
+[OK]       arXiv:2402.14992  2024  Felipe Maia Polo (+5)
+           tinyBenchmarks: evaluating LLMs with fewer examples
+[OK]       arXiv:2405.19026  2024  Andrew Zhao (+6)
+           DiveR-CT: Diversity-enhanced Red Teaming Large Language Model Assistants with Relaxing Constraints
+[OK]       arXiv:2406.10229  2024  Lovish Madaan (+7)
+           Quantifying Variance in Evaluation Benchmarks
+[OK]       arXiv:2410.20147  2024  R. Takase (+3)
+           GFlowNet Fine-tuning for Diverse Correct Solutions in Mathematical Reasoning Tasks
+[OK]       arXiv:2411.00640  2024  E. Miller (+0)
+           Adding Error Bars to Evals: A Statistical Approach to Language Model Evaluations
+[OK]       arXiv:2412.01951  2024  Audrey Huang (+7)
+           Self-Improvement in Language Models: The Sharpening Mechanism
+[OK]       arXiv:2412.02968  2024  Christopher Homan (+3)
+           How Many Ratings per Item are Necessary for Reliable Significance Testing?
+[OK]       arXiv:2503.14476  2025  Qiying Yu (+34)
+           DAPO: An Open-Source LLM Reinforcement Learning System at Scale
+[OK]       arXiv:2504.07086  2025  Andreas Hochlehnert (+5)
+           A Sober Look at Progress in Language Model Reasoning: Pitfalls and Paths to Reproducibility
+[OK]       arXiv:2504.13837  2025  Yang Yue (+6)
+           Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?
+[OK]       arXiv:2505.22617  2025  Ganqu Cui (+16)
+           The Entropy Mechanism of Reinforcement Learning for Reasoning Language Models
+[OK]       arXiv:2505.24864  2025  Mingjie Liu (+7)
+           ProRL: Prolonged Reinforcement Learning Expands Reasoning Boundaries in Large Language Models
+[OK]       arXiv:2506.10947  2025  Rulin Shao (+13)
+           Spurious Rewards: Rethinking Training Signals in RLVR
+[OK]       arXiv:2507.14843  2025  Fang Wu (+6)
+           The Invisible Leash: Why RLVR May or May Not Escape Its Origin
+[OK]       arXiv:2509.02534  2025  Tianjian Li (+7)
+           Jointly Reinforcing Diversity and Quality in Language Model Generations
+[OK]       arXiv:2509.04784  2025  Yilei Chen (+4)
+           Post-training Large Language Models for Diverse High-Quality Responses
+[OK]       arXiv:2509.07430  2025  Long Li (+9)
+           The Choice of Divergence: A Neglected Key to Mitigating Diversity Collapse in Reinforcement Learning with Verifiable Reward
+[OK]       arXiv:2509.26114  2025  Jaesung R. Park (+6)
+           Clip-Low Increases Entropy and Clip-High Decreases Entropy in Reinforcement Learning of Large Language Models
+[OK]       arXiv:2509.26209  2025  Zican Hu (+9)
+           Diversity-Incentivized Exploration for Versatile Reasoning
+[OK]       arXiv:2510.01171  2025  Jiayi Zhang (+6)
+           Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity
+[OK]       arXiv:2510.06557  2025  Milad Aghajohari (+6)
+           The Markovian Thinker
+[OK]       arXiv:2510.20817  2025  Anthony GX-Chen (+4)
+           KL-Regularized Reinforcement Learning is Designed to Mode Collapse
+[OK]       arXiv:2602.08281  2026  Zhi-Lin Wang (+6)
+           New Skills or Sharper Primitives? A Probabilistic Perspective on the Emergence of Reasoning in RLVR
+[OK]       arXiv:2605.07689  2026  Wenhua Nie (+8)
+           Gradient Starvation in Binary-Reward GRPO: Why Group-Mean Centering Fails and Why the Simplest Fix Works
+[OK]       arXiv:2605.11461  2026  Hao-Xuan Chen (+3)
+           Breaking Winner-Takes-All: Cooperative Policy Optimization Improves Diverse LLM Reasoning
+[OK]       arXiv:2605.21125  2026  Xixiang He (+7)
+           Advantage Collapse in Group Relative Policy Optimization: Diagnosis and Mitigation
+[OK]       arXiv:2605.29190  2026  Mayug Maniparambil (+3)
+           When RL Suppresses Its Own Vocabulary: Recovering Reasoning Diversity in Puzzle-to-Math Transfer
+[OK]       arXiv:2605.30315  2026  Anany Kotawala (+0)
+           Resolution Diagnostics for Paired LLM Evaluation
+[OK]       arXiv:2606.15455  2026  Suqin Yuan (+8)
+           Understanding Diversity Collapse in RLVR via the Lens of Overtraining
+[OK]       arXiv:2607.13394  2026  Xiaodong Liu (+5)
+           GFlowRL: Scaling Distribution-Matching RL to Large Language Models
+[OK]       arXiv:2607.20543  2026  Todd Y. Zhou (+0)
+           When RLVR Shrinks the Reasoning Boundary: Diagnosing Pass@k Inversion
+
+resolved 47/47; no-match: none
