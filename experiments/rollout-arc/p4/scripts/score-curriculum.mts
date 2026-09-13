@@ -79,6 +79,13 @@ const ciN = wilson(nd, n);
 
 const summary = {
   cell: `${STYLE}, ${VOICES} voices, 4 bars, G=${G}`,
+  // SELF-DESCRIBING, and it is a repair not a nicety. This script wrote one shared
+  // `curriculum-summary.json` for every input, so the last run won: the file
+  // committed at f1ec03b is named for the curriculum cell and CONTAINS the
+  // exploring-starts numbers, and PREFIX-PREREG.md cited 0.874 from a file holding
+  // 0.078. A receipt that cannot say which run produced it is not a receipt.
+  generated_from: genFile,
+  prompts_from: promptsFile,
   groups: n,
   completions,
   single_shot_p: Number(p.toFixed(4)),
@@ -109,5 +116,10 @@ const summary = {
           : "AMBIGUOUS — between readings",
 };
 
+// Per-run file first: this one is stable and citable. The shared name is kept so
+// the older receipts that reference it still resolve, but it is last-run-wins and
+// `generated_from` is the only thing that says which run it holds.
+const stem = genFile.replace(/\.jsonl$/, "");
+writeFileSync(join(RUNS, `summary-${stem}.json`), JSON.stringify(summary, null, 2));
 writeFileSync(join(RUNS, "curriculum-summary.json"), JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));

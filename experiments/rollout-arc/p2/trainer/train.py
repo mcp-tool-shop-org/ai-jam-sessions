@@ -24,6 +24,13 @@ are handled:
 
 Usage (Stage C, $0, local):
     python train.py --dry --out ../dry-run
+
+ON WINDOWS, SET `PYTHONIOENCODING=utf-8`. `--dry` sets
+`num_completions_to_print=2`, and TRL prints that table through rich, which falls
+back to the legacy Windows console writer and raises `UnicodeEncodeError` on the
+first non-cp1252 character in a completion. The failure lands AFTER step 1 has
+already run, so the traceback points at `trainer.train()` and looks like a
+training bug rather than a console encoding one. Pods are Linux and never see it.
 """
 
 from __future__ import annotations
@@ -42,6 +49,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 from env import COUNTERS as ENV_COUNTERS, make_environment_factory, make_plain_tools  # noqa: E402
+from prefix_rollout import make_prefix_rollout, new_stats as new_prefix_stats  # noqa: E402
 from reward import make_random_reward, make_score_reward  # noqa: E402
 
 DEFAULT_BASE_URL = os.environ.get("P2_ENV_URL", "http://127.0.0.1:8765")
@@ -76,6 +84,27 @@ def parse_args() -> argparse.Namespace:
             "no tool loop to mask. Scoring still goes through --base-url /score."
         ),
     )
+    p.add_argument(
+        "--prefix-mode",
+        choices=("none", "heterogeneous", "stratified"),
+        default="none",
+        help=(
+            "exploring starts. `heterogeneous`: every rollout in a group is pre-filled "
+            "with a DIFFERENT valid opening, so the group spans the opening space. "
+            "`stratified`: one opening per group, carried in the group identity, so the "
+            "group-relative advantage stays exactly valid. PREFIX-PREREG.md Part 1 fixes "
+            "which one a run uses and why; the measured default is heterogeneous."
+        ),
+    )
+    p.add_argument(
+        "--prefix-in-loss",
+        action="store_true",
+        help=(
+            "let the forced opening's tokens receive gradient (Prefix-GRPO, arXiv "
+            "2607.19395). OFF by default: training on tokens the model did not choose "
+            "reinforces the diversity that was injected. Recorded on the receipt either way."
+        ),
+    )
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--use-vllm", action="store_true", help="earned, never a default (see module docstring)")
     p.add_argument("--random-reward", action="store_true", help="lock §6 spurious-reward control arm")
@@ -106,7 +135,9 @@ def load_cases(base_url: str, split: str, limit: int = 0) -> list[dict]:
     # hard-coded the synth corpus (level/distance) and raised KeyError on any other
     # task, which is what the P4 voice-leading bridge hit on its first dry pass.
     required = ("id", "gold", "prompt")
-    optional = ("song_id", "level", "distance", "voices", "style", "chords")
+    # `openings` / `prefixes` ride along from the P4 bridge for prefix forcing. They
+    # are ignored entirely when --prefix-mode is none.
+    optional = ("song_id", "level", "distance", "voices", "style", "chords", "openings", "prefixes")
     missing = [k for k in required if not rows or k not in rows[0]]
     if missing:
         raise SystemExit(
@@ -211,6 +242,52 @@ def main() -> int:
     rows = load_cases(args.base_url, "train", args.limit)
     if not rows:
         raise SystemExit("HALT: the bridge returned no training rows")
+
+    # ── prefix forcing (exploring starts) ────────────────────────────────────
+    # The base policy opens 87.4% of its passing completions on the same voicing,
+    # so a group of G is one strategy sampled G times. Pre-filling each rollout's
+    # assistant turn with a valid opening it would not have chosen breaks that.
+    # PREFIX-PREREG.md fixes which group design a run uses, and why.
+    prefix_stats = new_prefix_stats() if args.prefix_mode != "none" else None
+    pool_items = len(rows)
+    openings_hist: dict[int, int] = {}
+    if args.prefix_mode != "none":
+        if not args.no_tools:
+            raise SystemExit(
+                "HALT: prefix forcing pre-fills a single assistant turn and owns generation; "
+                "it cannot share a batch with the tool loop. Pass --no-tools."
+            )
+        if "prefixes" not in rows[0]:
+            raise SystemExit(
+                "HALT: --prefix-mode needs a `prefixes` column on every /cases row and this "
+                "bridge served none. The P4 voice-leading bridge derives the opening alphabet "
+                "by RENDERING each candidate; a trainer that guessed it would be guessing at "
+                "chord cardinality."
+            )
+        for r in rows:
+            n = len(r.get("prefixes") or [])
+            if n == 0:
+                raise SystemExit(f"HALT: item {r['id']!r} has no valid opening; it cannot be forced")
+            openings_hist[n] = openings_hist.get(n, 0) + 1
+
+        if args.prefix_mode == "stratified":
+            # One dataset row per (item, opening), so the opening is part of the GROUP
+            # IDENTITY and the group-relative advantage compares rollouts that share a
+            # conditioning context exactly. `gold` is untouched: the bridge still looks
+            # the progression up by song id.
+            expanded = []
+            for r in rows:
+                for j, pfx in enumerate(r["prefixes"]):
+                    row = {k: v for k, v in r.items() if k not in ("prefixes", "openings")}
+                    row["id"] = f"{r['id']}#o{j}"
+                    row["prefix"] = pfx
+                    row["opening_index"] = j
+                    expanded.append(row)
+            rows = expanded
+    # `openings` is receipt metadata, not training data: summarised above and dropped
+    # so it never reaches a reward kwarg or a completions table.
+    rows = [{k: v for k, v in r.items() if k != "openings"} for r in rows]
+
     dataset = Dataset.from_list(rows)
     print(f"[p2-train] {len(dataset)} training rows, columns={dataset.column_names}")
 
@@ -260,6 +337,16 @@ def main() -> int:
         (verified: grpo_trainer.py line 2345). Reading it here is the only way
         to prove the mask is real rather than all-ones, and an all-ones mask
         means we are training on our own MCP server's output."""
+
+        def _generate_and_score_completions(self, inputs):
+            # The rollout function needs the dataset ROW behind each rollout — the
+            # prompts alone cannot carry a prefix, and two rows of a stratified run
+            # share a prompt while differing in their forced opening. TRL hands the
+            # rows only to this method, so this is where they are recorded; they stay
+            # aligned 1:1 with the prompts `_generate` receives, which the rollout
+            # function asserts rather than assumes.
+            self._batch_inputs = inputs
+            return super()._generate_and_score_completions(inputs)
 
         def _generate(self, prompts):
             result = super()._generate(prompts)
@@ -364,6 +451,17 @@ def main() -> int:
             if args.plain_tools
             else {"environment_factory": make_environment_factory(args.base_url)}
         ),
+        # Prefix forcing owns tokenisation AND generation, because TRL cannot be asked
+        # to continue a partial assistant turn: `_tokenize_prompts` hardcodes
+        # `add_generation_prompt=True` and transformers refuses it together with
+        # `continue_final_message` (tokenization_utils_base.py:3099). `rollout_func` is
+        # the only seam, and its `env_mask` is what keeps the injected tokens out of
+        # the loss (grpo_trainer.py:2519).
+        **(
+            {}
+            if args.prefix_mode == "none"
+            else {"rollout_func": make_prefix_rollout(args.prefix_mode, args.prefix_in_loss, prefix_stats)}
+        ),
         callbacks=[StepTimer()],
     )
 
@@ -464,6 +562,17 @@ def main() -> int:
         "dataset_rows": len(dataset),
         "rollout_mode": ("no-tools" if args.no_tools else "plain-tools" if args.plain_tools else "environment-factory"),
         "prompt_repeats": round(prompt_repeats, 4),
+        # Prefix forcing, recorded on EVERY run including the unforced ones, so no
+        # receipt is ever ambiguous about which group design produced its numbers.
+        # `openings_per_group` is the discriminator: G under heterogeneous forcing,
+        # 1 under stratified, absent when nothing was forced.
+        "prefix": {
+            "mode": args.prefix_mode,
+            "prefix_in_loss": args.prefix_in_loss,
+            "pool_items": pool_items,
+            "openings_per_item": {str(k): v for k, v in sorted(openings_hist.items())},
+            **(prefix_stats or {}),
+        },
     }
     (out / "dry-run.json" if args.dry else out / "run.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(f"[p2-train] shape {receipt['shape']} -> {receipt['mean_step_seconds']}s/step")
@@ -482,6 +591,50 @@ def main() -> int:
     else:
         print(f"[p2-train] bridge tool_calls={_ca.get('tool_calls')} scored={_ca.get('scored')} "
               f"env instances={ENV_COUNTERS['instances']} resets={ENV_COUNTERS['resets']}")
+
+    # ── forcing gates, on every run and not only --dry ───────────────────────
+    # Each of these closes a failure that throws nothing. They run after the receipt
+    # is written so a halt still leaves the evidence behind.
+    if args.prefix_mode != "none":
+        if prefix_stats["rollouts"] == 0:
+            raise SystemExit(
+                "HALT: --prefix-mode was set and the rollout function never ran. TRL took a "
+                "different generation path and NOTHING was forced; the run is unforced and "
+                "its numbers are not what the flag claims."
+            )
+        # A2 again, at the level of the whole run rather than the batch.
+        if prefix_stats["prefix_hits"] != prefix_stats["rollouts"]:
+            raise SystemExit(
+                f"HALT: {prefix_stats['prefix_hits']} of {prefix_stats['rollouts']} completions "
+                f"started with their forced prefix."
+            )
+        # A3, and INDEPENDENT of the rollout function's own decode: the bridge counts
+        # completions whose first parsed measure is not the progression's first named
+        # measure. A forced run cannot produce one unless the prefix was lost between
+        # generation and scoring, which is the failure that would otherwise inflate
+        # rewards silently.
+        fmw_before = (health.get("counters") or {}).get("first_measure_wrong")
+        fmw_after = (health_after.get("counters") or {}).get("first_measure_wrong")
+        if fmw_before is None or fmw_after is None:
+            raise SystemExit(
+                "HALT: the bridge does not report `first_measure_wrong`, so there is no "
+                "independent check that the forced opening reached the scorer. Update the "
+                "bridge rather than trusting the trainer's own decode."
+            )
+        if fmw_after > fmw_before:
+            raise SystemExit(
+                f"HALT: the bridge scored {fmw_after - fmw_before} completion(s) whose first "
+                f"measure is not the progression's first. Under forcing that is impossible "
+                f"unless the prefix escaped scoring — the reward judged everything except the "
+                f"measure that was pinned."
+            )
+        print(
+            f"[p2-train] prefix forcing OK: mode={args.prefix_mode} "
+            f"rollouts={prefix_stats['rollouts']} groups={prefix_stats['groups']} "
+            f"openings/group={prefix_stats['openings_per_group_min']}..{prefix_stats['openings_per_group_max']} "
+            f"masked_prefix_tokens={prefix_stats['masked_prefix_tokens']} "
+            f"first_measure_wrong delta=0"
+        )
 
     if args.dry:
         # The two Stage C gates. A dry run that "passes" without these has

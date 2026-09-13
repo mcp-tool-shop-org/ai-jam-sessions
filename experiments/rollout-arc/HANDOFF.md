@@ -1,6 +1,7 @@
 # Rollout arc — handoff
 
-**Written 2026-09-12, updated after the smoke attempt. ~$11.25 of $25 spent, no pods running, `main` green.**
+**Written 2026-09-12; updated after the prefix-forcing BUILD session the same day.
+~$11.25 of $25 spent, no pods running, `main` green, suite green, tsc clean.**
 Everything below is measured and committed; every retraction is attached to the file it retracts.
 
 ---
@@ -149,28 +150,96 @@ against 0.592 from 32 randomized 11-genre songs single-turn. **Those are differe
 populations and the comparison is confounded.** No population has been measured both
 ways, which is exactly what the preregistered cell still has to do.
 
-## The next work, and it is a BUILD not a run
+## The build is DONE — prefix forcing runs inside a live GRPO batch
 
-**`pod_smoke_p4.sh` now validates a configuration that has been superseded.** It runs the
-standard bridge with no prefix forcing, and `train.py` has no mechanism to consume per-rollout
-prefixes. Running it would buy a receipt for a pipeline we are about to change.
+`p4/PREFIX-BUILD.md`. Three local dry runs, `STAGE C PASS` on all three, $0, no pod.
 
-Prefix-forced training needs: the bridge to serve per-rollout prefixes, and TRL to generate
-from them. That is a session, not a $1 smoke.
+**The only seam is `rollout_func`**, verified in the installed source rather than recalled:
+`_tokenize_prompts` hardcodes `add_generation_prompt=True`, and transformers refuses it
+together with `continue_final_message` (`tokenization_utils_base.py:3099`), so the
+partial-assistant-message route cannot exist in TRL 1.13.0. The forced opening goes in
+**`completion_ids`** so the reward judges it, with **`env_mask` 0 across every prefix token** so
+no gradient lands on tokens the model did not choose. `--prefix-in-loss` selects the Prefix-GRPO
+behaviour instead; both are defensible and only one is what we meant, so it is a flag with a
+receipt field.
 
-**And preregister the falsifier BEFORE that run, because the pass rate is a trap here.** The
-primary outcome is `top_first_measure_share` on an **unconditioned** eval — scaffolding off,
-nobody handing the model an opening:
+Measured, not asserted: `prefix_hits` **16/16** on every run; TRL's own mask probe saw a zero
+span on **16 of 16** completions; `masked_prefix_tokens` **256** = `prefix_tokens_total` **256**;
+the bridge's independent `first_measure_wrong` delta **0** over 48 scored rollouts;
+`boundary_clean` true; `openings_per_group` **8..8** heterogeneous and **1..1** stratified.
+13.25 s/step at G=8, 384-token completions, 21.3 GB reserved of 32.6 on a 5090.
+
+**One documented contract was wrong and is now asserted.** `rollout_func`'s docstring says it
+receives the prompt slice "with no duplication"; `_get_train_sampler` passes
+`mini_repeat_count=num_generations` unconditionally, so off the vLLM path the prompts arrive
+**already repeated G times**. Building to the docstring would have handed every rollout of a
+group the same opening — silently, with healthy-looking metrics.
+
+`pod_smoke_p4.sh` still runs the superseded no-forcing configuration and still must not be run
+unchanged.
+
+## The architecture fork, and the preregistered answer
+
+Exploring starts break GRPO's group: the advantage is valid because all G rollouts share a
+conditioning context, and G different openings are G different contexts. Opening difficulty is
+real — **0.219 to 0.563, range 0.344, sd 0.101** on the fully-crossed run — so part of each
+within-group advantage grades *which opening the rollout was handed*.
+
+`stratified` mode fixes that by making the opening part of the group identity, where per-group
+standardisation removes it exactly. Its risk is that a group sharing one opening may not split
+at all. **Measured** (`p4/SAME-OPENING-RESULTS.md`, 512 completions, $0): non-degeneracy
+**0.6250**, mean distinct completions per group **6.156 of 16**, conditional *p* **0.514**,
+rho 0.528.
+
+`p4/PREFIX-PREREG.md` required non-degeneracy >= 0.50 **and** distinct >= 8.0 for VIABLE. The
+second failed; the DEAD thresholds were not met either. The reading is **3 — AMBIGUOUS**, whose
+fixed consequence is **heterogeneous is the default and the ambiguity is reported as
+ambiguity**. That is followed. The cost of the alternative is on the record too: stratified
+leaves **12 of 32 groups (38%) with zero within-group reward variance** — rollouts the step
+pays for and learns nothing from — against 2 of 32 under heterogeneous forcing.
+
+Worth carrying separately: **pinning the opening produced MORE distinct completions per group
+(6.156) than letting the policy choose it (4.906 unforced)**. The unforced collapse is a
+collapse of the whole completion, not only of its first measure.
+
+## The next work: the preregistered run
+
+The falsifier is fixed in `p4/PREFIX-PREREG.md` Part 2, before the run that would be tempted to
+reinterpret it. Primary outcome is `top_first_measure_share` on an **unconditioned** eval —
+scaffolding off, nobody handing the model an opening:
 
 - stays near **0.874** → the model learned to finish sentences; the scaffold was load-bearing
   and the typicality peak never flattened.
-- drops materially → the peak genuinely flattened and the policy explores unaided.
+- **drops below 0.70** → the peak flattened and the policy explores unaided. Pre-committed:
+  0.874 to 0.70 is about a third of the way to the 0.438 that uniform sampling over the 16
+  valid openings would give, and anything smaller is inside a 32-item eval's noise.
 
-Pass rate will look fine either way, which is exactly why it must not be the primary metric.
-**Nothing measured so far touches this question**: exploring starts established that the valid
-region is *reachable*, not that training with the scaffold makes it *preferred* once removed.
+Pass rate will look fine either way, which is exactly why it is not the primary metric.
+`p3/scripts/probe_generate.py` now takes `--adapter` — it did not, and without it the run's own
+falsifier would have been unmeasurable after the spend.
 
 ## Traps — do not re-enter them
+
+0a. **ONE OUTPUT FILENAME FOR EVERY RUN OF A SCORING SCRIPT.** `score-curriculum.mts` wrote
+   `runs/curriculum-summary.json` whatever it scored, so the last run won. The file committed at
+   `f1ec03b` is **named for the curriculum cell and contained the exploring-starts numbers**, and
+   the first draft of `PREFIX-PREREG.md` cited `top_first_measure_share` **0.874** from a file
+   that said **0.078**. The citation would have passed review. Summaries are now per-run
+   (`summary-<stem>.json`) and every one carries `generated_from`. **A derived artifact that
+   cannot say which run produced it is not a receipt.**
+
+0b. **A SCRIPT WILL PRINT ITS VERDICT ON A DESIGN IT WAS NOT WRITTEN FOR.**
+   `opening-difficulty.mts` estimates opening difficulty from a **crossed** design, where every
+   item contributes one rollout to every opening. Pointed at the same-opening run — where each
+   opening is backed by 2 items and 16 correlated rollouts — it reported `range 0.688 sd 0.165
+   SEVERE` against the crossed run's `0.344 / 0.101 MATERIAL`, nearly double, and confidently.
+   It now refuses a verdict when the thinnest opening has fewer than 8 distinct items behind it.
+
+0c. **On Windows set `PYTHONIOENCODING=utf-8` before `train.py --dry`.** TRL prints the
+   completions table through rich, rich falls back to the legacy Windows console writer, and the
+   first non-cp1252 character raises `UnicodeEncodeError` — **after step 1 has already run**, so
+   the traceback points at `trainer.train()` and reads like a training bug. Linux pods never see
+   it.
 
 0. **ρ WAS MEASURING THE POLICY'S PRIOR, NOT THE TASK.** It fell **0.710 → 0.221** with no
    change to the task, gate, corpus or sampler — only to where rollouts started. When 87% of
@@ -226,13 +295,26 @@ region is *reachable*, not that training with the scaffold makes it *preferred* 
 
 ## Unfinished, in priority order
 
-1. **The $1 TRL smoke run** (above). Blocks everything.
-2. **The Ollama/transformers divergence** — 3.75 distinct spans vs 1.09 on the same corpus at
+1. **The preregistered prefix-forced run**, and it needs a decision before it needs a pod:
+   `--prefix-mode heterogeneous`, the cell from `SMOKE-PREREG.md` at the honest
+   `common-practice` style, and the falsifier in `PREFIX-PREREG.md` Part 2 measured *after* it
+   with `probe_generate.py --adapter`. `pod_smoke_p4.sh` must be updated to pass the forcing
+   flags and the `--fixture` pool before it is run — as committed it validates the superseded
+   no-forcing configuration.
+2. **G=16 memory on the target card** — never measured. G=8 reserved 21.3 GB of 32.6 on a 5090;
+   nothing here licenses extrapolating that to G=16, and the Blackwell is a different card.
+3. **The Ollama/transformers divergence** — 3.75 distinct spans vs 1.09 on the same corpus at
    matched sampler settings, at both q4 and fp16. A curiosity, not a blocker.
    `p2/SPAN-RESULTS.md`.
-3. **Distance 4** — never measured. The only untested point between "solved" and "unreachable".
-4. **`train.py`'s `--limit` default** — still unguarded. A one-line fix plus a `prompt_repeats`
-   receipt field that refuses rather than records.
+4. **Distance 4** — never measured. The only untested point between "solved" and "unreachable".
+5. **Stratified as an ablation.** It is implemented, it passes Stage C, and it is the only design
+   under which opening difficulty is removed exactly rather than absorbed as a nuisance. It costs
+   38% dead groups. Nothing measured decides which dominates during training, and only a training
+   comparison would.
+
+**Closed since the last handoff:** `train.py`'s `--limit` default (the dry block now sizes the
+draw from `steps x prompts_per_step` and `prompt_repeats` halts on an unchosen repeat), and the
+build that blocked everything.
 
 ---
 

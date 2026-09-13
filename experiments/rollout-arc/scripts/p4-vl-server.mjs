@@ -56,11 +56,64 @@ export function shuffled(items, seed) {
   return out;
 }
 
+/** The first chord that actually carries a symbol — the measure a forced opening
+ *  would pin. `N/C` measures render nothing, so they cannot be an opening. */
+function firstNamedChord(progression) {
+  return progression.chords.find((c) => c.chordSymbol && c.chordSymbol !== "N/C") ?? null;
+}
+
+/** Which degree tuples render `voices` real pitches on the first named measure?
+ *
+ *  Determined by RENDERING every candidate, never by guessing the chord's
+ *  cardinality: a triad voiced [0,3] has no fourth chord note to sing, and the
+ *  only authority on that is the renderer the verifier will see.
+ *
+ *  This is the OPENING ALPHABET and it must be identical wherever it is built —
+ *  the exploring-starts probe derived its own copy, so the two are held together
+ *  by a test against the committed run rather than by hoping they agree. */
+export function validOpenings(progression, voices, maxDegree = 3) {
+  const first = firstNamedChord(progression);
+  if (!first) return [];
+  const span = maxDegree + 1;
+  const ok = [];
+  for (let n = 0; n < span ** voices; n++) {
+    const degrees = new Array(voices);
+    let rest = n;
+    // degrees[0] is the slowest-varying digit, so the enumeration order is
+    // [0,0], [0,1], ... [1,0] — the order the probe used, which is what makes
+    // `openings[i % openings.length]` reproducible across scripts.
+    for (let v = voices - 1; v >= 0; v--) {
+      degrees[v] = rest % span;
+      rest = Math.floor(rest / span);
+    }
+    const real = renderSpecRealization(progression, [{ measure: first.measure, degrees }], voices);
+    const frame = real.frames.find((f) => f.measure === first.measure);
+    if (frame && frame.voices.length === voices) ok.push(degrees);
+  }
+  return ok;
+}
+
+/** The partial assistant turn a rollout is pre-filled with: valid JSON up to and
+ *  including the first measure's object, cut mid-array so the model CONTINUES the
+ *  answer rather than starting a new one. Built here because the bridge owns the
+ *  format `parseSpecResponse` will have to read back. */
+export function openingPrefix(progression, degrees) {
+  const first = firstNamedChord(progression);
+  if (!first) throw new Error("no named chord: this progression has no openable measure");
+  return `[{"measure": ${first.measure}, "degrees": [${degrees.join(", ")}]},`;
+}
+
 /** The dataset row the trainer reads. `gold` is the lookup key, not an answer —
- *  there is no single correct voicing, which is the point of the task. */
+ *  there is no single correct voicing, which is the point of the task.
+ *
+ *  `openings` / `prefixes` ride along on every row whether or not the run forces
+ *  them. They are derived from the same renderer the verifier uses, so a trainer
+ *  that wants exploring starts never has to reimplement validity, and a run that
+ *  does not force prefixes simply ignores two columns. */
 export function vlCaseRow(songId, progression, voices, style) {
   const system = specSystem(voices);
   const user = buildSpecUser(progression, voices);
+  const openings = validOpenings(progression, voices);
   return {
     id: songId,
     song_id: songId,
@@ -71,6 +124,8 @@ export function vlCaseRow(songId, progression, voices, style) {
     gold: songId,
     system,
     user,
+    openings,
+    prefixes: openings.map((d) => openingPrefix(progression, d)),
     prompt: [
       { role: "system", content: system },
       { role: "user", content: user },
@@ -95,6 +150,14 @@ export function scoreVoicing(progression, raw, voices, style) {
   const sounding = real.frames.filter((f) => Array.isArray(f.voices) && f.voices.length > 0);
   const structureOk = formatOk && sounding.length === named.length;
 
+  // Which measure the completion actually opens on. Under prefix forcing this is
+  // the INDEPENDENT check that the forced opening reached the scorer: if the prefix
+  // were stripped somewhere between generation and scoring, the first parsed spec
+  // would be measure 2 and the reward would be judging everything except the measure
+  // that was pinned. Nothing else in this file would notice.
+  const firstMeasure = specs.length ? specs[0].measure : null;
+  const expectedFirstMeasure = named.length ? named[0].measure : null;
+
   const verdict = verifyVoiceLeading(real, { style, requireVoiceCount: voices });
   const failing = Object.entries(verdict.hardGates)
     .filter(([, r]) => !r.pass)
@@ -108,6 +171,8 @@ export function scoreVoicing(progression, raw, voices, style) {
     failing_rules: structureOk ? failing : ['structure'],
     sounding_frames: sounding.length,
     expected_frames: named.length,
+    first_measure: firstMeasure,
+    first_measure_ok: firstMeasure !== null && firstMeasure === expectedFirstMeasure,
     voice_count: verdict.voiceCount,
     tool_turns: 0,
   };
@@ -200,6 +265,27 @@ export async function startVlServer(opts = {}) {
 
   let scored = 0;
   let unparsed = 0;
+  // Completions whose first parsed measure is not the progression's first named
+  // measure. Under prefix forcing this must stay at 0: a non-zero delta over a
+  // forced run means the forced opening never reached the scorer.
+  let firstMeasureWrong = 0;
+
+  /** Histogram of |valid openings| over the served pool, computed once. */
+  let _openings = null;
+  const openingsSummary = () => {
+    if (_openings) return _openings;
+    const hist = {};
+    let min = Infinity;
+    let max = 0;
+    for (const p of ordered) {
+      const n = validOpenings(p.progression, args.voices).length;
+      hist[n] = (hist[n] ?? 0) + 1;
+      if (n < min) min = n;
+      if (n > max) max = n;
+    }
+    _openings = { min: Number.isFinite(min) ? min : 0, max, histogram: hist };
+    return _openings;
+  };
 
   const json = (res, code, body) => {
     const s = JSON.stringify(body);
@@ -235,7 +321,12 @@ export async function startVlServer(opts = {}) {
           pool_size: ordered.length,
           pool_source: source,
           tools: [],
-          counters: { scored, unparsed },
+          // The opening alphabet, summarised. A prefix-forced run needs to record
+          // how many valid openings each item actually has: a group of G=16 that
+          // spans a 4-opening item is four rollouts per opening, not one, and the
+          // receipt must not leave that to be inferred later.
+          openings: openingsSummary(),
+          counters: { scored, unparsed, first_measure_wrong: firstMeasureWrong },
         });
       }
 
@@ -269,6 +360,7 @@ export async function startVlServer(opts = {}) {
         const out = scoreVoicing(progression, raw, args.voices, args.style);
         scored++;
         if (!out.format_ok) unparsed++;
+        if (!out.first_measure_ok) firstMeasureWrong++;
         return json(res, 200, out);
       }
 
