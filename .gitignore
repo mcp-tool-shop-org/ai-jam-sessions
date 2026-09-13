@@ -68,3 +68,11 @@ experiments/rollout-arc/p4/runs/adapter-*/
 experiments/rollout-arc/p4/runs/init-adapter/
 experiments/rollout-arc/p4/runs/arm-rehearsal/
 experiments/rollout-arc/p4/runs/dry-prefix-*/hf/
+
+# P4 replication gate (GATE-PREREG.md). Adapters here live under runs/gate/, which the
+# runs/adapter-*/ rule above does NOT match -- 122 MB each, three of them.
+experiments/rollout-arc/p4/runs/gate/adapter-*/
+# Third-party paper text cached for the citation groundedness lens. Re-fetchable
+# deterministically from research/ids-all.txt; the repo does not vendor it.
+experiments/rollout-arc/p4/research/abstracts.json
+experiments/rollout-arc/p4/research/*.html

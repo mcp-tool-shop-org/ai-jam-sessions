@@ -1,0 +1,9 @@
+  HTTP 429
+  backing off 20s (attempt 2)
+  HTTP 429
+  backing off 45s (attempt 3)
+  HTTP 429
+  backing off 90s (attempt 4)
+  HTTP 429
+
+ORACLE UNAVAILABLE -- transport failed after retries. NOT a verdict on any citation.
