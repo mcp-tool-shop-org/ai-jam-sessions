@@ -1,0 +1,20 @@
+{
+"2108.13264": "In the few-run regime, report stratified-bootstrap interval estimates aggregated over the run dimension and robust aggregates such as the interquartile mean, rather than per-run point estimates or binary thresholds.",
+"1806.08295": "A standard deviation estimated from a small pilot is biased low enough that a power analysis can prescribe far fewer seeds than are actually required.",
+"1709.06560": "Independent runs of the same algorithm differing only in random seed can be split into groups that differ at conventional significance levels, so a per-seed significance verdict can fire on seed alone.",
+"2504.07086": "Pass@1 standard deviation across seeds on small reasoning benchmarks is large enough that many reported RL gains fall inside the base model's seed variance band.",
+"2411.00640": "The variance of an evaluation score decomposes into between-item variance, which resampling cannot reduce, and within-item sampling variance, which shrinks with more generations per item; inference should be conducted on question-level paired differences.",
+"2107.03374": "The naive pass@k estimator is high-variance, and an unbiased estimator computed from n>=k samples per task should be used instead.",
+"2605.07689": "Under binary rewards, GRPO's group-mean-centered advantage is exactly zero when every response in a group is correct or every response is wrong, and a fixed-reference Sign advantage A=2r-1 substantially outperforms group-mean centering at small group size.",
+"2505.22617": "The entropy coefficient in LLM RL is highly sensitive, with small values barely affecting entropy and larger values causing entropy explosion, motivating selective covariance-gated alternatives.",
+"2509.26114": "Clip-low increases policy entropy and clip-high decreases it, and clip-high dominates under standard settings.",
+"2510.20817": "Under KL-regularized reinforcement learning, the optimal policy is by construction non-diverse under standard settings such as a low KL coefficient.",
+"2504.13837": "RLVR improves pass@1 over the base model but loses to the base model at large k, indicating the reasoning boundary is not expanded.",
+"2606.15455": "High-k pass@k is structurally biased against RLVR because it declines from overtraining on already-solved problems, and restricting updates to problems with no observed success can lift Pass@256 above the base model.",
+"2505.24864": "Prolonged RL over thousands of steps expands the reasoning boundary beyond the base model, with the largest gains where the base model is weakest.",
+"2509.04784": "When a group-level diversity reward is combined with outcome-only binary reward, the policy games the diversity term by producing a correct answer followed by irrelevant content.",
+"2509.26209": "Rewarding diversity on incorrect or on all responses degrades test performance, and the effective fix applies the diversity bonus only to verifier-passing rollouts.",
+"2510.01171": "Mode collapse in aligned language models can be substantially mitigated at inference time by prompting alone, without any training.",
+"2605.21125": "A large fraction of training batches under binary verification exhibit advantage collapse.",
+"2506.10947": "Random or spurious rewards produced large gains on Qwen math models but did not transfer to other model families."
+}

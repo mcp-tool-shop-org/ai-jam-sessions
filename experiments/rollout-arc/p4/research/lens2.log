@@ -1,0 +1,20 @@
+2108.13264  SUPPORTED      The abstract explicitly mentions advocating for "reporting interval estimates of aggregate performance" and proposes "robust and efficient aggregate metrics, su
+1806.08295  PARTIAL        The abstract discusses the importance of random seeds and statistical power in deep reinforcement learning experiments, but it does not directly address the use
+1709.06560  PARTIAL        The abstract discusses variability in results due to non-determinism and intrinsic variance, but it does not explicitly state that independent runs can be split
+2504.07086  SUPPORTED      The abstract explicitly mentions that performance gains reported in recent studies frequently hinge on unreported sources of variance, including random seeds, a
+2411.00640  PARTIAL        The abstract discusses analyzing evaluation data and measuring differences between models, but it does not explicitly mention the decomposition of evaluation sc
+2107.03374  NOT_SUPPORTED  The abstract does not discuss the pass@k estimator or any related estimation methods.
+2605.07689  SUPPORTED      The abstract explicitly states that "when every response in a group is correct or every response is wrong, the centered advantage is exactly zero" and that "Sig
+2505.22617  PARTIAL        The abstract discusses entropy dynamics and the need for entropy management in RL for LLMs, but it does not explicitly mention the sensitivity of the entropy co
+2509.26114  SUPPORTED      The abstract explicitly states that "clip-low increases entropy, while clip-high decreases it" and that "under standard clipping parameters, the effect of clip-
+2510.20817  SUPPORTED      The abstract explicitly states that "commonly used settings such as low regularization strength... tend to specify unimodal target distributions, meaning the op
+2504.13837  SUPPORTED      The abstract explicitly states that "RLVR-trained models outperform their base models at small k (e.g., k = 1)" but "the base models achieve a higher pass@k sco
+2606.15455  SUPPORTED      The abstract explicitly states that RLVR is structurally biased against high-k Pass@k due to overtraining on already-solved problems and that restricting update
+2505.24864  SUPPORTED      The abstract explicitly states that "RL-trained models consistently outperform base models across a wide range of pass@k evaluations, including scenarios where 
+2509.04784  NOT_SUPPORTED  The abstract does not discuss the combination of a group-level diversity reward with an outcome-only binary reward or the specific behavior of producing a corre
+2509.26209  NOT_SUPPORTED  The abstract does not discuss the impact of rewarding diversity on incorrect responses or the specific fix mentioned in the claim.
+2510.01171  SUPPORTED      The abstract states that Verbalized Sampling, a prompting strategy, significantly improves performance and mitigates mode collapse without requiring any trainin
+2605.21125  PARTIAL        The abstract discusses advantage collapse in the context of homogeneous rewards within a group, but it does not specify that this occurs in a large fraction of 
+2506.10947  SUPPORTED      The abstract explicitly states that "spurious rewards that are effective for Qwen models often fail to produce gains for other model families, such as Llama3 or
+
+[mistral-small:24b] 1709.06560=PARTIAL 1806.08295=PARTIAL 2107.03374=NOT_SUPPORTED 2108.13264=SUPPORTED 2411.00640=PARTIAL 2504.07086=SUPPORTED 2504.13837=SUPPORTED 2505.22617=PARTIAL 2505.24864=SUPPORTED 2506.10947=SUPPORTED 2509.04784=NOT_SUPPORTED 2509.26114=SUPPORTED 2509.26209=NOT_SUPPORTED 2510.01171=SUPPORTED 2510.20817=SUPPORTED 2605.07689=SUPPORTED 2605.21125=PARTIAL 2606.15455=SUPPORTED
