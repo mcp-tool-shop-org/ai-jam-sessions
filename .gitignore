@@ -76,3 +76,6 @@ experiments/rollout-arc/p4/runs/gate/adapter-*/
 # deterministically from research/ids-all.txt; the repo does not vendor it.
 experiments/rollout-arc/p4/research/abstracts.json
 experiments/rollout-arc/p4/research/*.html
+# Trainer HF output under the gate runs (optimizer/model state, megabytes, re-derivable).
+# run.json receipts under runs/gate/ are NOT ignored -- those are the evidence.
+experiments/rollout-arc/p4/runs/gate/**/hf/
