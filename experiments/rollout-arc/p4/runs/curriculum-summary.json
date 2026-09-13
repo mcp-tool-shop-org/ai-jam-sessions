@@ -1,0 +1,63 @@
+{
+  "cell": "common-practice, 2 voices, 4 bars, G=16",
+  "groups": 32,
+  "completions": 512,
+  "single_shot_p": 0.3887,
+  "p_ci95": [
+    0.3474,
+    0.4316
+  ],
+  "non_degenerate": "14/32 = 0.4375",
+  "nd_ci95": [
+    0.282,
+    0.607
+  ],
+  "rho": 0.71,
+  "effective_draws": 1.37,
+  "k_hist": {
+    "0": 13,
+    "1": 2,
+    "3": 2,
+    "4": 1,
+    "7": 1,
+    "9": 2,
+    "12": 1,
+    "13": 2,
+    "14": 1,
+    "15": 2,
+    "16": 5
+  },
+  "distinct_spans_mean": 4.906,
+  "mean_entropy": 0.01459,
+  "funnel": {
+    "passing": 199,
+    "distinct_passing_sigs": 44,
+    "passing_unique_pct": 22.1,
+    "failing_unique_pct": 22.4,
+    "within_group_uniqueness": 0.356,
+    "top_first_measure_share": 0.874,
+    "first_measure_hist": [
+      [
+        "0,1",
+        174
+      ],
+      [
+        "2,0",
+        14
+      ],
+      [
+        "1,0",
+        5
+      ],
+      [
+        "0,3",
+        5
+      ],
+      [
+        "0,2",
+        1
+      ]
+    ]
+  },
+  "prereg_reading": "2 SPLIT BUT COLLAPSED — not a pass"
+}
