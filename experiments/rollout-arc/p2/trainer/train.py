@@ -128,12 +128,18 @@ def assert_tool_calling_template(processing_class) -> str:
 
 def main() -> int:
     args = parse_args()
+    # Which flags the operator actually typed. Hoisted out of the dry block: the
+    # prompt-repeat guard below needs it, because a repeat the operator CHOSE (an
+    # explicit --limit, i.e. multiple epochs over a deliberate draw) is legitimate
+    # training, while a repeat produced by a DEFAULT is the defect that recorded
+    # dataset_rows: 2 on the paid smoke run.
+    explicit = {a.split("=", 1)[0] for a in sys.argv[1:] if a.startswith("--")}
+
     if args.dry:
         # --dry picks a shape small enough to close the loop in minutes, but it
         # must not silently override a shape the caller asked for: the same
         # harness measures step time at the production shape, which is what
         # prices the smoke run.
-        explicit = {a.split("=", 1)[0] for a in sys.argv[1:] if a.startswith("--")}
         if "--steps" not in explicit:
             args.steps = 2
         if "--num-generations" not in explicit:
@@ -144,7 +150,13 @@ def main() -> int:
             args.grad_accum = 1
         if "--max-completion-length" not in explicit:
             args.max_completion_length = min(args.max_completion_length, 256)
-        args.limit = args.limit or max(2, args.per_device_batch // max(1, args.num_generations) * 2)
+        # The old default here was `max(2, per_device_batch // num_generations * 2)`.
+        # Two lines above, per_device_batch is set EQUAL to num_generations, so that
+        # expression is max(2, 1 * 2) = 2 — ALWAYS 2, whatever --steps says. The paid
+        # smoke run recorded dataset_rows: 2 and cycled the same pair of prompts for
+        # every step. Size the draw from the run instead.
+        prompts_per_step = max(1, args.per_device_batch // max(1, args.num_generations))
+        args.limit = args.limit or max(2, args.steps * prompts_per_step)
         args.use_vllm = False
 
     out = Path(args.out)
@@ -168,6 +180,32 @@ def main() -> int:
         raise SystemExit("HALT: the bridge returned no training rows")
     dataset = Dataset.from_list(rows)
     print(f"[p2-train] {len(dataset)} training rows, columns={dataset.column_names}")
+
+    # A run that asks for more prompt-slots than it has rows silently REPEATS prompts,
+    # and every repeat is a group the optimizer sees twice. prompt_repeats is recorded on
+    # EVERY run, because the failure is invisible in the metrics: the loss curve of a 2-row
+    # dataset cycled 32 times looks exactly like training. It HALTS when nobody chose the
+    # repeat, and warns when an explicit --limit says the operator did.
+    prompts_per_step = max(1, args.per_device_batch // max(1, args.num_generations))
+    slots = args.steps * prompts_per_step
+    prompt_repeats = slots / len(dataset)
+    print(f"[p2-train] prompt_repeats={prompt_repeats:.2f} ({slots} slots / {len(dataset)} rows)")
+    if slots > len(dataset):
+        if "--limit" in explicit:
+            # The operator sized the draw. Repeats are epochs, which is a real training
+            # choice — record it loudly and proceed.
+            print(
+                f"[p2-train] WARNING: {slots} prompt slots over {len(dataset)} rows — "
+                f"each prompt is seen {prompt_repeats:.2f}x. Chosen via explicit --limit."
+            )
+        else:
+            raise SystemExit(
+                f"HALT: {args.steps} steps x {prompts_per_step} prompts/step = {slots} prompt "
+                f"slots but only {len(dataset)} rows were drawn "
+                f"(prompt_repeats={prompt_repeats:.2f}). Nobody chose this — the split is "
+                f"smaller than the run needs. Pass --limit explicitly to accept the repeat, "
+                f"or lower --steps."
+            )
 
     tokenizer = AutoTokenizer.from_pretrained(args.model)
     assert_tool_calling_template(tokenizer)
@@ -376,6 +414,7 @@ def main() -> int:
         },
         "environment": dict(ENV_COUNTERS),
         "dataset_rows": len(dataset),
+        "prompt_repeats": round(prompt_repeats, 4),
     }
     (out / "dry-run.json" if args.dry else out / "run.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(f"[p2-train] shape {receipt['shape']} -> {receipt['mean_step_seconds']}s/step")
