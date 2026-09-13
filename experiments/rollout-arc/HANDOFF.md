@@ -202,21 +202,44 @@ Worth carrying separately: **pinning the opening produced MORE distinct completi
 (6.156) than letting the policy choose it (4.906 unforced)**. The unforced collapse is a
 collapse of the whole completion, not only of its first measure.
 
-## The next work: the preregistered run
+## THE RUN HAPPENED. The peak did not flatten.
 
-The falsifier is fixed in `p4/PREFIX-PREREG.md` Part 2, before the run that would be tempted to
-reinterpret it. Primary outcome is `top_first_measure_share` on an **unconditioned** eval —
-scaffolding off, nobody handing the model an opening:
+`p4/FOUR-ARM-RESULTS.md`. RTX 5090, 4 arms x 200 steps at G=8, five unconditioned evals at
+G=16, 2h50m, **$2.80**. Commit `7ec619c`.
 
-- stays near **0.874** → the model learned to finish sentences; the scaffold was load-bearing
-  and the typicality peak never flattened.
-- **drops below 0.70** → the peak flattened and the policy explores unaided. Pre-committed:
-  0.874 to 0.70 is about a third of the way to the 0.438 that uniform sampling over the 16
-  valid openings would give, and anything smaller is inside a 32-item eval's noise.
+**Primary outcome, preregistered before the pod existed: reading 3, NOTHING FLATTENS.**
+`top_first_measure_share` unconditioned — base **0.889** (re-measured on the pod against 0.874
+locally), A stratified **0.841**, B heterogeneous **0.848**, C unforced **0.820**, D
+random-reward **0.829**. Flattening was pre-committed at **< 0.70**; every arm is above 0.80.
 
-Pass rate will look fine either way, which is exactly why it is not the primary metric.
-`p3/scripts/probe_generate.py` now takes `--adapter` — it did not, and without it the run's own
-falsifier would have been unmeasurable after the spend.
+**The D veto is why this is decisive rather than merely negative.** Random binary rewards moved
+`topFirst` by **0.060** — more than stratified's 0.048 and more than heterogeneous's 0.041. The
+movement that occurred is what *any* gradient does to the prior over 200 steps. Exploring starts
+made the policy better at completing from anywhere; they did not make it **choose** to start
+anywhere.
+
+**What did happen, and it is not the hypothesis.** Unconditioned pass rate 0.389 → **0.453 (A)**
+and **0.500 (B)**, with **C 0.391** and **D 0.389**. A clean 2x2: training alone does nothing,
+198 effective updates of pure noise do nothing (D's `frac_reward_zero_std` is 0.010 — a
+maximally *active* null), and both forcing and the real verifier are needed for the lift. That
+is the infrastructure validation that was preregistered as the honest purchase. It is **not**
+musical capability — nearest-tone still scores 32/32 for free — and **it is in-sample**: the
+eval pool IS the training pool, which `p4/HELDOUT-PREREG.md` measures on 29 unseen items.
+
+**Tiebreak, preregistered: heterogeneous wins** — effective updates per GPU dollar, B **194** vs
+A **160**, and B also wins on pass rate. **But the argument that set it up was wrong**: the
+38%-vs-6% dead-group pair was measured at **G=16** and the run trained at **G=8**, where it is
+**54.5% vs 44.5%** — 10 points, not 32. Trap 3 below says a rate at one `num_generations` is not
+a rate at another; it was quoted across G anyway.
+
+**Unexplained, and left that way:** A's *training* `acc_joint` was flat (0.235 → 0.242) while
+B's and C's roughly doubled — yet A gained 6.4pp on eval and C gained nothing. Training and eval
+accuracy moved in opposite directions for two different arms.
+
+All four arms passed every hard guard. `openings_covered = 16` on both forced arms at G=8 is the
+coprime-stride fix working in production; the build from two hours earlier would have read 8 and
+every other number in the table would have been identical. 27/27 artifacts verified against
+`artifacts.sha256`.
 
 ## Traps — do not re-enter them
 
