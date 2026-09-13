@@ -1,6 +1,13 @@
 # Rollout arc — handoff
 
-> ⛔ **THE ARC IS CLOSED, 2026-09-13. The hypothesis failed; the experiment answered.**
+> ⭐ **THE FORCING HYPOTHESIS IS CLOSED. THE RESEARCH LINE CONTINUES — Director, 2026-09-13.**
+> Next session: `KICKOFF-research-continuation.md` (paste-ready, assumes no context).
+>
+> I recommended closing the whole arc and the Director overruled it. The reasoning I gave
+> stands unchanged and is not re-litigated below: the ceiling here is a task a fifty-line
+> heuristic solves perfectly, and every number is single-seed. What the Director is buying
+> is knowledge and a **validated substrate**, which is a different purchase from a product,
+> and one this session made possible by answering "is it trainable" with controls.
 >
 > **Prefix forcing — the intervention the whole arc was built to test — contributes nothing.**
 > On a correctly-constructed held-out pool of 75 never-trained songs at the trained cell,
@@ -19,8 +26,9 @@
 > Read `p4/MATCHED-CELL-RESULTS.md` for the close-out. Everything above it in this file is
 > the road there, including three withdrawn readings, all bannered in place.
 >
-> **Do not reopen for seed 8 or 500 steps.** Those sharpen a result whose ceiling is "loses
-> to fifty lines of deterministic code". Total spend **$16.73 of $25**; nothing billing.
+> **Settled — do NOT re-test these.** Prefix forcing (dead), memorisation (ruled out),
+> drift (ruled out by the random-reward arm), and "is the substrate trainable" (yes, ~2-4pp
+> held-out). Total spend **$16.73 of $25**; nothing billing.
 >
 > ⚡ **What transfers, and it is the reason the arc was not a waste:**
 > [[feedback-rl-substrate-three-gates]] (gate 3 — is the difficulty in the capability you
