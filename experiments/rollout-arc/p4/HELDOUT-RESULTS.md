@@ -1,5 +1,17 @@
 # Held-out — reading 2, MEMORISATION. The secondary finding does not survive.
 
+> ⛔ **READING 2 IS WITHDRAWN. See `CORRECTION-the-pools-were-mislabelled.md`.** Both eval
+> pools were mislabelled: the pool called "in-sample" shares only 15 of 32 songs with the
+> training fixture and is a different cell (4 chords vs the trained 8 bars / 6-8 chords),
+> and the pool called "held-out" is 72% unseen, not the 91% stated here — that figure was
+> computed against the OTHER EVAL POOL instead of against the training fixture. The
+> memorisation verdict was a BETWEEN-pool inference confounding overlap with chord count.
+> Split WITHIN each pool, the lift is as large on untrained songs as on trained ones
+> (B +10.3pp vs +12.1pp; A +7.0pp vs +5.8pp), which is the opposite of a memorisation
+> signature. Kept as written below, with the defect named, rather than edited into
+> agreement.
+
+
 **2026-09-13, same pod, 29 of 32 items never trained on.** Readings were fixed in
 `HELDOUT-PREREG.md` before any held-out generation existed. They are applied here as
 written.
