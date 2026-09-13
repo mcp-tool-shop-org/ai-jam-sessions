@@ -1,5 +1,12 @@
 # The four-arm run — the peak did not flatten, and the controls are why we know
 
+> ⛔ **The SECONDARY reading below is superseded by
+> `CORRECTION-the-pools-were-mislabelled.md`.** The "in-sample vs held-out" contrast rests
+> on two pools that were both mislabelled and that differ in chord count as well as in
+> song overlap; the within-pool test does not support memorisation. **The PRIMARY outcome
+> — reading 3, nothing flattens — is unaffected and stands.**
+
+
 **2026-09-13. RunPod RTX 5090 (driver 580.126.20, 32607 MiB — the same card every local
 measurement was taken on), Qwen3-4B-Instruct-2507 bf16, torch 2.11.0+cu128, TRL 1.13.0.
 Commit `7ec619c`. 2h 50m wall, $2.80. Four arms x 200 steps at G=8, five unconditioned

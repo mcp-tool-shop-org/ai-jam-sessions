@@ -26,6 +26,13 @@ const REPO = join(HERE, "..", "..", "..", "..");
 const BARS = Number(process.env.BARS ?? 8);
 const SEED = Number(process.env.SEED ?? 20260913);
 const TAKE = Number(process.env.TAKE ?? 32);
+// SKIP is how the HELD-OUT fixture is built, and it is why it is trustworthy: the same
+// pool, the same shuffle, a later slice. Disjointness from the training set is then a
+// property of `slice(SKIP, SKIP + TAKE)` itself, not of set arithmetic done afterwards
+// against whichever file had a plausible name -- which is exactly how this arc came to
+// publish a held-out pool that shared 9 of its 32 songs with training.
+const SKIP = Number(process.env.SKIP ?? 0);
+const OUT_NAME = process.env.OUT_NAME ?? "progressions-v1.json";
 
 initializeFromLibrary(join(REPO, "songs", "library"));
 const songs = getAllSongs();
@@ -43,9 +50,9 @@ for (const song of songs) {
   pool.push({ songId: song.id, genre: song.genre, progression });
 }
 
-if (pool.length < TAKE) {
+if (pool.length < SKIP + TAKE) {
   throw new Error(
-    `HALT: only ${pool.length} progressions available, need ${TAKE}. This rig's song ` +
+    `HALT: only ${pool.length} progressions available, need ${SKIP + TAKE}. This rig's song ` +
       `library is not fully fetched — emit the fixture from a rig where it is.`
   );
 }
@@ -53,7 +60,7 @@ if (pool.length < TAKE) {
 // The SAME shuffle the bridge and the P4 probe use, so the frozen set is the set
 // that was measured, not a new draw that happens to be the same size.
 const ordered = shuffled(pool, SEED);
-const take = ordered.slice(0, TAKE);
+const take = ordered.slice(SKIP, SKIP + TAKE);
 const genres: Record<string, number> = {};
 for (const p of take) genres[p.genre] = (genres[p.genre] ?? 0) + 1;
 
@@ -67,6 +74,7 @@ const fixture = {
       "and every P4 figure is unreproducible.",
     pool_available_at_emit: pool.length,
     shuffle: `mulberry32(${SEED})`,
+    slice: `[${SKIP}, ${SKIP + TAKE})`,
     bars: BARS,
     note: "Derived chord symbols only — no MIDI, no audio, nothing licence-encumbered.",
   },
@@ -77,7 +85,7 @@ const fixture = {
 
 const out = join(HERE, "..", "fixtures");
 mkdirSync(out, { recursive: true });
-const path = join(out, "progressions-v1.json");
+const path = join(out, OUT_NAME);
 writeFileSync(path, JSON.stringify(fixture, null, 2) + "\n");
 
 console.log(`pool available: ${pool.length}`);
