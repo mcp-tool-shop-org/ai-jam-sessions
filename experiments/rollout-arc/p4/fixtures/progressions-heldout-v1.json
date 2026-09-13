@@ -1,0 +1,3104 @@
+{
+  "schema": "p4-progressions/1",
+  "provenance": {
+    "emitted": "2026-09-13",
+    "why": "songs/library ships only 14 redistributable songs; the other 94 are fetched from source and are not in git. Without this fixture a fresh clone builds a 14-song pool and every P4 figure is unreproducible.",
+    "pool_available_at_emit": 107,
+    "shuffle": "mulberry32(20260913)",
+    "slice": "[32, 107)",
+    "bars": 8,
+    "note": "Derived chord symbols only — no MIDI, no audio, nothing licence-encumbered."
+  },
+  "genres": {
+    "classical": 8,
+    "film": 4,
+    "rnb": 6,
+    "pop": 6,
+    "latin": 8,
+    "new-age": 5,
+    "ragtime": 5,
+    "soul": 7,
+    "rock": 7,
+    "blues": 5,
+    "jazz": 6,
+    "folk": 8
+  },
+  "n": 75,
+  "progressions": [
+    {
+      "songId": "satie-gymnopedie-no1",
+      "genre": "classical",
+      "progression": {
+        "key": "D major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Gmaj7"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Dmaj7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Gsus2"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Dmaj7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Gsus2"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Dmaj7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Gmaj9"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "D6"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "schindlers-list-theme",
+      "genre": "film",
+      "progression": {
+        "key": "D minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Asus4"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Dm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "killing-me-softly",
+      "genre": "rnb",
+      "progression": {
+        "key": "Db major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Ab6"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "C#6"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Eb7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Abmaj7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Fm"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Bb7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Eb"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "debussy-arabesque-no1",
+      "genre": "classical",
+      "progression": {
+        "key": "E major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C#7"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Aadd9"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "F#m"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C#sus2"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Emaj7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "E"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "piano-man",
+      "genre": "pop",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Em"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Fadd9"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "perfidia",
+      "genre": "latin",
+      "progression": {
+        "key": "G minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "F6"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Cadd9"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Dm"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Cmaj7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Dm7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "watermark",
+      "genre": "new-age",
+      "progression": {
+        "key": "E major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Esus2"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Emaj9"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Abm"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Ebm"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "C#m"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C#m"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "weeping-willow",
+      "genre": "ragtime",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "D"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "D"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "G"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "D"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "G"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "G"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Cadd9"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "G"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "my-girl",
+      "genre": "soul",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Cmaj7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "metamorphosis-two",
+      "genre": "new-age",
+      "progression": {
+        "key": "A minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Bsus4"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "B7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Bsus4"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Eadd9"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Bmaj7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Eadd9"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Eadd9"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bmaj7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "rocket-man",
+      "genre": "rock",
+      "progression": {
+        "key": "Bb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Gm7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C9"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Gm7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Cadd9"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Bb6"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Cm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "mia-and-sebastians-theme",
+      "genre": "film",
+      "progression": {
+        "key": "A minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "F#m"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F#m"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Faug"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "F#m"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "D"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "D"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "whats-going-on",
+      "genre": "soul",
+      "progression": {
+        "key": "E major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Emaj9"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Eadd9"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Eadd9"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Eaug"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Amaj7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Eaug"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F#m7b5"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "fur-elise",
+      "genre": "classical",
+      "progression": {
+        "key": "A minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Emaj7"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "E7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C6"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "E7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "E"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "corcovado",
+      "genre": "latin",
+      "progression": {
+        "key": "B minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "A6"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Bsus2"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Esus2"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F#sus4"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "st-louis-blues",
+      "genre": "blues",
+      "progression": {
+        "key": "G major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "G"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "G"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "blue-bossa",
+      "genre": "jazz",
+      "progression": {
+        "key": "C minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Cm"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Cm"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Cm"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Cm"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Cm"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Cm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "chopin-nocturne-op9-no2",
+      "genre": "classical",
+      "progression": {
+        "key": "Eb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Gm"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Bb6"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Ab6"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bb"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "my-funny-valentine",
+      "genre": "jazz",
+      "progression": {
+        "key": "C minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Fm7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Bbsus2"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Gsus4"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Cm"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "G"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "una-mattina",
+      "genre": "new-age",
+      "progression": {
+        "key": "C minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Csus2"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Eaug"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Bsus4"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Bsus4"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "E7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "sakura-sakura",
+      "genre": "folk",
+      "progression": {
+        "key": "A minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Dm"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Dm"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Bbmaj7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Dm"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Dm"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Dm"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Dmadd9"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Gm6"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "stairway-to-heaven",
+      "genre": "rock",
+      "progression": {
+        "key": "A minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Am7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "C6"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "clocks",
+      "genre": "pop",
+      "progression": {
+        "key": "Eb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C#6"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C#6"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Ab"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C#6"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "nuvole-bianche-na",
+      "genre": "new-age",
+      "progression": {
+        "key": "Ab major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C#maj7"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Ab"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "C#maj7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Eb6"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Fsus4"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C#"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Bb7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Absus4"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "schumann-traumerei",
+      "genre": "classical",
+      "progression": {
+        "key": "F major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "C6"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Fsus4"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Cadd9"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "the-thrill-is-gone",
+      "genre": "blues",
+      "progression": {
+        "key": "B minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Daug"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Bm"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Bm"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Bm7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "shenandoah",
+      "genre": "folk",
+      "progression": {
+        "key": "Eb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Ebmaj7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Ebm"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Ab9"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Eb6"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Gm7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Ebmaj9"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "fly-me-to-the-moon",
+      "genre": "jazz",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C#"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "C#m"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "F#m"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "D"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Adim7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "a-thousand-years",
+      "genre": "pop",
+      "progression": {
+        "key": "Bb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C#m"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Bsus4"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C#"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C#m"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Bsus4"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Absus4"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "halo",
+      "genre": "rnb",
+      "progression": {
+        "key": "A major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C#sus4"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Amadd9"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "B7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "B7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Amadd9"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "auld-lang-syne",
+      "genre": "folk",
+      "progression": {
+        "key": "F major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Cdim"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "if-i-aint-got-you",
+      "genre": "rnb",
+      "progression": {
+        "key": "G major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F#7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Em"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Em"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Am9"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Caug"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "B7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "autumn-leaves",
+      "genre": "jazz",
+      "progression": {
+        "key": "G minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "G"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Bb"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Faug"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Dm6"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Fmaj7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "tiny-dancer",
+      "genre": "rock",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C6"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Cadd9"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "el-condor-pasa",
+      "genre": "latin",
+      "progression": {
+        "key": "E minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "G6"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "dont-stop-believin",
+      "genre": "rock",
+      "progression": {
+        "key": "Db major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C#"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Abadd9"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Bbm7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C#"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Ab6"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Fm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "besame-mucho",
+      "genre": "latin",
+      "progression": {
+        "key": "D minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "D"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Dmaj7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Gm7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "let-it-be",
+      "genre": "pop",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Fmaj9"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "baba-oriley",
+      "genre": "rock",
+      "progression": {
+        "key": "F major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Cadd9"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Fmaj7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Fmaj7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Cadd9"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Cmaj7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Fmaj7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "desafinado",
+      "genre": "latin",
+      "progression": {
+        "key": "F major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Bmadd9"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Bm"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Bsus2"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "B"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bmadd9"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "lean-on-me",
+      "genre": "soul",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Gsus2"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "mas-que-nada",
+      "genre": "latin",
+      "progression": {
+        "key": "E minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C#"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Bbsus4"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Gm7b5"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C#maj7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Fm7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Abaug"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F#7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "stand-by-me",
+      "genre": "soul",
+      "progression": {
+        "key": "A major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Esus2"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "F#7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Dsus2"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "maple-leaf-rag",
+      "genre": "ragtime",
+      "progression": {
+        "key": "Ab major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Ab"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "A7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Ab"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "A7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Eb7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Ab"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Abm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "danny-boy",
+      "genre": "folk",
+      "progression": {
+        "key": "Eb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Bb7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Ebaug"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Gm7b5"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Absus2"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Gm7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Bbsus2"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "B"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "all-the-things-you-are",
+      "genre": "jazz",
+      "progression": {
+        "key": "Ab major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Dm"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "G9"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Dm"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Gm"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Dm"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Gm9"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "your-song",
+      "genre": "rock",
+      "progression": {
+        "key": "Eb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Bb7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Cm"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Am7b5"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bbsus4"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "house-of-the-rising-sun",
+      "genre": "folk",
+      "progression": {
+        "key": "A minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Amadd9"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Amadd9"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Amadd9"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "E"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "agua-de-beber",
+      "genre": "latin",
+      "progression": {
+        "key": "D minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Am7"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "D6"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Am7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "D6"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Am7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Bbmaj7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bbmaj7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "chopin-prelude-e-minor",
+      "genre": "classical",
+      "progression": {
+        "key": "E minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "B"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Em"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Cmaj7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "B7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Esus2"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "B7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "solace",
+      "genre": "ragtime",
+      "progression": {
+        "key": "G major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Gsus2"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Caug"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Fmaj9"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "D"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "G"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "crossroad-blues",
+      "genre": "blues",
+      "progression": {
+        "key": "A major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Dmaj7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Gsus4"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Daug"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "bach-prelude-c-major-bwv846",
+      "genre": "classical",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Csus2"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Bm"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Cadd9"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Cadd9"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Bm"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "the-entertainer",
+      "genre": "ragtime",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Dsus4"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Dsus4"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "G"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "G6"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "pathetique-mvt2",
+      "genre": "classical",
+      "progression": {
+        "key": "Ab major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Ab"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Ebsus4"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C#"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Gdim"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Bb7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Eb"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "greensleeves",
+      "genre": "folk",
+      "progression": {
+        "key": "E minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Dsus2"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "G"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "amazing-grace",
+      "genre": "folk",
+      "progression": {
+        "key": "Eb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Bb"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Ab"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Bbsus4"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "G7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bb"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "stormy-monday",
+      "genre": "blues",
+      "progression": {
+        "key": "G major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "D"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Daug"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "G7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Gsus2"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F#"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "black-orpheus",
+      "genre": "latin",
+      "progression": {
+        "key": "A minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Dsus2"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Esus4"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Asus4"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Asus2"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Am"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "aint-no-sunshine",
+      "genre": "soul",
+      "progression": {
+        "key": "A minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Em"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Am7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "D7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "i-will-always-love-you",
+      "genre": "rnb",
+      "progression": {
+        "key": "A major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Dsus2"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "E9"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Asus2"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "A"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Dsus2"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "respect",
+      "genre": "soul",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Bb6"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Fsus4"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Csus2"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Gmaj7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "viva-la-vida",
+      "genre": "pop",
+      "progression": {
+        "key": "Ab major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C#sus2"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Ebsus4"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Ab6"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Fm"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C#sus2"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Ebsus4"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Ab6"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Fm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "pink-panther",
+      "genre": "film",
+      "progression": {
+        "key": "E minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C#sus2"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "E"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "isnt-she-lovely",
+      "genre": "rnb",
+      "progression": {
+        "key": "E major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "E7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Abm"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "B6"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Bsus4"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "B9"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Bsus4"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Bmaj7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "simple-gifts",
+      "genre": "folk",
+      "progression": {
+        "key": "F major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Fmaj7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Gm"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "F6"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "C"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "bohemian-rhapsody",
+      "genre": "pop",
+      "progression": {
+        "key": "Bb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "C#6"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "C#6"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C#6"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Eb7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Ab7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Ab7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Ab"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "dream-on",
+      "genre": "rock",
+      "progression": {
+        "key": "F minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Fm"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Fm"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Fm"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Fm"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Fm"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Fm"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Fm"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Fm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "the-easy-winners",
+      "genre": "ragtime",
+      "progression": {
+        "key": "Ab major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "Eb6"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Fsus4"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Ab"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Ab"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Abm"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "C#maj9"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Ab"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "moon-river",
+      "genre": "film",
+      "progression": {
+        "key": "C major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Cmaj7"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Cmaj7"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "C"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "F"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Cmaj7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "F"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "may-be",
+      "genre": "new-age",
+      "progression": {
+        "key": "A major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Gm"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Gm"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Eb"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Bb"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Dm"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "misty",
+      "genre": "jazz",
+      "progression": {
+        "key": "Eb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Fsus4"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Bbadd9"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "Fm7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "Gm"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Dmadd9"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Ddim"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "hoochie-coochie-man",
+      "genre": "blues",
+      "progression": {
+        "key": "A major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "F#7"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "Am6"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Am"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "D7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "D7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "superstition",
+      "genre": "rnb",
+      "progression": {
+        "key": "Eb minor",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "N/C"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "F#"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "F#7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "F#7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "F#sus2"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "Ebm7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "Ebm7"
+          }
+        ]
+      }
+    },
+    {
+      "songId": "a-change-is-gonna-come",
+      "genre": "soul",
+      "progression": {
+        "key": "Bb major",
+        "chords": [
+          {
+            "measure": 1,
+            "chordSymbol": "C#"
+          },
+          {
+            "measure": 2,
+            "chordSymbol": "E"
+          },
+          {
+            "measure": 3,
+            "chordSymbol": "Bm9"
+          },
+          {
+            "measure": 4,
+            "chordSymbol": "Dmaj7"
+          },
+          {
+            "measure": 5,
+            "chordSymbol": "E7"
+          },
+          {
+            "measure": 6,
+            "chordSymbol": "D"
+          },
+          {
+            "measure": 7,
+            "chordSymbol": "E7"
+          },
+          {
+            "measure": 8,
+            "chordSymbol": "D"
+          }
+        ]
+      }
+    }
+  ]
+}
