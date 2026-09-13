@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -154,5 +154,83 @@ describe("the bridge agrees with the probe that produced the P4 numbers", () => 
     expect(checked).toBe(256);
     // The published P4 figure for this cell: p = 0.4492 (115 of 256).
     expect(admitted / checked).toBeCloseTo(0.4492, 3);
+  });
+});
+
+// THE PROVENANCE GATE. songs/library ships 14 redistributable songs; the other 94
+// are fetched from source and never enter git. A dev rig builds a 107-song pool, a
+// fresh clone builds 14 — and the P4 smoke run served 14 rows to a trainer asking
+// for 32, producing prompt_repeats 2.29 and a void cell. These tests exist so that
+// cannot happen quietly again.
+describe("frozen fixture: the population is rebuildable from the repo alone", () => {
+  const FIXTURE = join(HERE, "..", "p4", "fixtures", "progressions-v1.json");
+
+  it("the fixture is committed, well-formed, and carries its provenance", () => {
+    const fx = JSON.parse(readFileSync(FIXTURE, "utf8"));
+    expect(fx.schema).toBe("p4-progressions/1");
+    expect(fx.n).toBe(32);
+    expect(fx.progressions).toHaveLength(32);
+    // It must record that it was cut from a FULL library, or a future reader cannot
+    // tell whether it froze the real pool or a truncated one.
+    expect(fx.provenance.pool_available_at_emit).toBeGreaterThanOrEqual(100);
+    expect(Object.keys(fx.genres).length).toBeGreaterThanOrEqual(10);
+    for (const r of fx.progressions) {
+      expect(typeof r.songId).toBe("string");
+      expect(Array.isArray(r.progression.chords)).toBe(true);
+    }
+  });
+
+  it("serves the fixture population, and reports the source", async () => {
+    const srv = await startVlServer({ port: 0, voices: 2, style: "film-ambient", fixture: FIXTURE });
+    try {
+      const b = (await (await fetch(`http://${srv.host}:${srv.port}/health`)).json()) as Record<string, unknown>;
+      expect(b.pool_source).toBe("fixture");
+      expect(b.pool_size).toBe(32);
+    } finally {
+      await srv.close();
+    }
+  });
+
+  it("a fixture is NOT reshuffled — the frozen order IS the draw", async () => {
+    const fx = JSON.parse(readFileSync(FIXTURE, "utf8"));
+    const srv = await startVlServer({ port: 0, voices: 2, style: "film-ambient", fixture: FIXTURE });
+    try {
+      const r = (await (await fetch(`http://${srv.host}:${srv.port}/cases?limit=5`)).json()) as {
+        cases: Array<{ song_id: string }>;
+      };
+      expect(r.cases.map((c) => c.song_id)).toEqual(fx.progressions.slice(0, 5).map((p: { songId: string }) => p.songId));
+    } finally {
+      await srv.close();
+    }
+  });
+
+  it("REFUSES to serve fewer cases than asked for, rather than truncating", async () => {
+    const srv = await startVlServer({ port: 0, voices: 2, style: "film-ambient", fixture: FIXTURE });
+    try {
+      const res = await fetch(`http://${srv.host}:${srv.port}/cases?limit=64`);
+      expect(res.status).toBe(409);
+      const b = (await res.json()) as Record<string, unknown>;
+      expect(String(b.error)).toMatch(/pool has 32 cases but 64 were requested/);
+    } finally {
+      await srv.close();
+    }
+  });
+
+  it("--require-pool halts at startup instead of serving a short pool", async () => {
+    await expect(
+      startVlServer({ port: 0, voices: 2, style: "film-ambient", fixture: FIXTURE, requirePool: 64 }),
+    ).rejects.toThrow(/pool is 32 but --require-pool is 64/);
+  });
+
+  it("rejects a fixture with the wrong schema", async () => {
+    const bad = join(HERE, "..", "p4", "fixtures", "__bad-schema.json");
+    writeFileSync(bad, JSON.stringify({ schema: "nope/9", progressions: [] }));
+    try {
+      await expect(
+        startVlServer({ port: 0, voices: 2, style: "film-ambient", fixture: bad }),
+      ).rejects.toThrow(/is not p4-progressions\/1/);
+    } finally {
+      rmSync(bad, { force: true });
+    }
   });
 });

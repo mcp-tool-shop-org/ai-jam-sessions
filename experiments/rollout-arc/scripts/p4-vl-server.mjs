@@ -17,6 +17,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { createServer } from "node:http";
+import { readFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { initializeFromLibrary } from "../../../src/songs/library.ts";
@@ -128,6 +129,22 @@ export function lastAssistantText(messages) {
   return "";
 }
 
+/** Build the pool from the local song library. Only reachable without a fixture. */
+function buildFromLibrary(pool, bars) {
+  for (const song of getAllSongs()) {
+    let progression;
+    try {
+      progression = progressionFromAnalysis(analyzeHarmony(song, { measureRange: [1, bars] }));
+    } catch {
+      continue;
+    }
+    const named = progression.chords.filter((c) => c.chordSymbol && c.chordSymbol !== "N/C");
+    if (named.length < 4) continue;
+    pool.push({ songId: song.id, progression });
+  }
+  return pool;
+}
+
 export async function startVlServer(opts = {}) {
   const args = {
     port: 8766,
@@ -136,26 +153,49 @@ export async function startVlServer(opts = {}) {
     style: "film-ambient",
     bars: 8,
     seed: 20260913,
+    // Path to a frozen progression set. songs/library ships only 14 redistributable
+    // songs; the other 94 are fetched from source and never enter git, so a FRESH
+    // CLONE BUILDS A 14-SONG POOL where a dev rig builds 107. The P4 smoke run
+    // discovered this by serving 14 rows to a trainer asking for 32.
+    fixture: null,
+    // Hard floor. The bridge EXITS rather than serve a pool smaller than the run
+    // needs: a truncated pool is not a smaller experiment, it is a different one.
+    requirePool: 0,
     ...opts,
   };
   if (!VL_STYLES.includes(args.style)) {
     throw new Error(`style must be one of ${VL_STYLES.join("|")}, got ${args.style}`);
   }
 
-  initializeFromLibrary(join(REPO, "songs", "library"));
-  const pool = [];
-  for (const song of getAllSongs()) {
-    let progression;
-    try {
-      progression = progressionFromAnalysis(analyzeHarmony(song, { measureRange: [1, args.bars] }));
-    } catch {
-      continue;
+  let pool = [];
+  let source = "library";
+
+  if (args.fixture) {
+    if (!existsSync(args.fixture)) {
+      throw new Error(`HALT: fixture not found at ${args.fixture}`);
     }
-    const named = progression.chords.filter((c) => c.chordSymbol && c.chordSymbol !== "N/C");
-    if (named.length < 4) continue;
-    pool.push({ songId: song.id, progression });
+    const fx = JSON.parse(readFileSync(args.fixture, "utf8"));
+    if (fx.schema !== "p4-progressions/1") {
+      throw new Error(`HALT: fixture schema ${fx.schema} is not p4-progressions/1`);
+    }
+    pool = fx.progressions.map((r) => ({ songId: r.songId, progression: r.progression }));
+    source = "fixture";
+  } else {
+    initializeFromLibrary(join(REPO, "songs", "library"));
+    buildFromLibrary(pool, args.bars);
   }
-  const ordered = shuffled(pool, args.seed);
+
+  if (pool.length < args.requirePool) {
+    throw new Error(
+      `HALT: pool is ${pool.length} but --require-pool is ${args.requirePool}. ` +
+        (source === "library"
+          ? "This clone's song library is not fully fetched (14 songs ship; 94 are fetched " +
+            "from source). Pass --fixture to use the frozen set."
+          : "The fixture is smaller than the run needs.")
+    );
+  }
+  // A fixture is ALREADY the frozen draw; reshuffling it would defeat the point.
+  const ordered = source === "fixture" ? pool : shuffled(pool, args.seed);
   const byId = new Map(ordered.map((p) => [p.songId, p.progression]));
 
   let scored = 0;
@@ -193,6 +233,7 @@ export async function startVlServer(opts = {}) {
           bars: args.bars,
           seed: args.seed,
           pool_size: ordered.length,
+          pool_source: source,
           tools: [],
           counters: { scored, unparsed },
         });
@@ -204,6 +245,15 @@ export async function startVlServer(opts = {}) {
         if (!Number.isInteger(n) || n < 0) return json(res, 400, { error: "limit must be a non-negative integer" });
         // The pool is ALREADY shuffled across the full library, so a prefix here
         // is a random sample, not a genre block.
+        // Serving fewer rows than requested is how a 14-song pool reached a trainer
+        // asking for 32 and produced prompt_repeats 2.29. Refuse instead.
+        if (n > ordered.length) {
+          return json(res, 409, {
+            error: `pool has ${ordered.length} cases but ${n} were requested`,
+            pool_source: source,
+            hint: source === "library" ? "pass --fixture; this clone's library is partial" : "raise the fixture size",
+          });
+        }
         const cases = ordered
           .slice(0, Math.min(n, ordered.length))
           .map((p) => vlCaseRow(p.songId, p.progression, args.voices, args.style));
@@ -257,6 +307,8 @@ if (isMain) {
     style: flag("style", "film-ambient"),
     bars: Number(flag("bars", 8)),
     seed: Number(flag("seed", 20260913)),
+    fixture: flag("fixture", null),
+    requirePool: Number(flag("require-pool", 0)),
   });
   console.log(`[p4-vl] listening on http://${started.host}:${started.port} — pool ${started.pool.length}`);
 }

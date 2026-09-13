@@ -1,7 +1,35 @@
 # Rollout arc — handoff
 
-**Written 2026-09-12. $10.40 of $25 spent, no pods running, `main` green.**
+**Written 2026-09-12, updated after the smoke attempt. ~$11.25 of $25 spent, no pods running, `main` green.**
 Everything below is measured and committed; every retraction is attached to the file it retracts.
+
+---
+
+## Read this first — local state passing for repository state
+
+**Twice in one day, in unrelated subsystems, untracked local state stood in for
+repository state and every test passed.**
+
+1. `dist/mcp-server.js` exists on a dev rig and not on a fresh runner. Three test
+   files had been silently SKIPPING in CI for weeks, and a fourth hard-failed the
+   suite. Local was green the whole time.
+2. `songs/library` ships **14** redistributable songs; the other **94** are fetched
+   from source and never enter git. This rig has all 108 from months of prior work,
+   so P4's probe built a **107**-song pool. **A fresh clone builds 14.** The paid
+   smoke run discovered it by serving 14 rows to a trainer asking for 32.
+
+Neither was caught by a test, because **the tests ran where the state already
+existed.** A green suite on a developer machine is not evidence that the repository
+is complete. Before trusting any measurement, ask what it needs that is not in git,
+and verify in a cold container.
+
+Fixed for P4 by freezing the derived progressions into
+`p4/fixtures/progressions-v1.json` — chord symbols only, no MIDI, nothing
+licence-encumbered — and proving equivalence: same 32 songs, zero progression
+differences, zero verdict disagreements over all 256 committed completions, admit
+rate **0.4492**, the published figure. **P4's population is now rebuildable from git
+alone.** The bridge additionally refuses to serve a short pool: `/cases` returns 409,
+`--require-pool` fails at startup, and `/health` records `pool_source`.
 
 ---
 
@@ -84,6 +112,25 @@ one.
 
 ---
 
+## The smoke run: attempted, VOID, and what it did show
+
+Run 2026-09-12 on a Blackwell, ~$0.85. **The cell is VOID** — the pod's bridge built a
+14-song pool (see above), so `dataset_rows` was 14 against a required 32 and
+`prompt_repeats` was **2.29** against a required 1.00. Both are preregistered hard
+guards. It was terminated at 18 of 32 steps once the cause was known.
+
+Recorded as a DIAGNOSTIC, not a baseline, on a population nobody chose:
+
+    steps 18 of 32 · non-degenerate 7/18 = 0.389 · mean reward p = 0.222
+    k histogram {0:10, 1:1, 2:1, 3:2, 4:1, 5:1, 6:1, 8:1} · rho 0.472
+
+**The live GRPOTrainer loop does not collapse the population** — groups split, across
+k = 1..6. That rules out the ~0.9 collapse signature. It does **not** establish that
+the trainer preserves rho: 0.472 came from 14 classical-heavy songs at 2.29x repeat,
+against 0.592 from 32 randomized 11-genre songs single-turn. **Those are different
+populations and the comparison is confounded.** No population has been measured both
+ways, which is exactly what the preregistered cell still has to do.
+
 ## The next spend, and it is $1
 
 **Nothing in P3 or P4 touches the trainer path.** Every figure is single-turn `model.generate`
@@ -116,7 +163,26 @@ If they do not, every number in P4 describes a population the trainer never sees
    `src/maker/abc-syntax.ts` is the pattern, with a dead-branch test per token type.
 6. **Local green lies.** `dist/` exists on a dev rig and not on a fresh runner. CI now builds
    before it tests; three test files that had been silently skipping now execute there.
-7. **Pods:** `RUNPOD_GPU="NVIDIA RTX PRO 6000 Blackwell Workstation Edition"`. L40S hosts carry
+7. **STAGING IS ITS OWN TEST SURFACE, and a local dry run does not cover it.** The
+   local 2-step pass proved the TRAINING path end to end and could not prove the
+   staging path, because staging does not exist locally. Seven defects followed on a
+   billing pod, and **every one was reproducible in a CPU container**: missing
+   `--extra-index-url` for a `+cu128` local version; a literal `\n` instead of a line
+   continuation (`bash -n` accepted it); a missing Node install stage; a
+   non-idempotent `git clone` on relaunch; `pkill -f` matching its own SSH command
+   line; the image's torchvision compiled against a different torch
+   (`operator torchvision::nms does not exist`); and mangled quotes in an import
+   assertion. Rehearse stage 0 in `runpod/pytorch:1.1.0-cu1290-torch280-ubuntu2404`
+   before paying for a GPU to find them.
+8. **`set -e` does not fire mid-`&&`.** `a && b && c` exempts `a` and `b`, so a failed
+   `corepack enable` printed "build done" over a build that never ran and only
+   surfaced two stages later at a health check. Split setup chains so each command is
+   the last of its own list.
+9. **Never write script content through nested shell escaping.** `node -e` with quoted
+   payloads mangled a pip flag, a python assertion and a bash edit — three separate
+   failures in one session, after the lesson had been written down twice. Use a real
+   patch file.
+10. **Pods:** `RUNPOD_GPU="NVIDIA RTX PRO 6000 Blackwell Workstation Edition"`. L40S hosts carry
    driver 550, too old for the image's cu129 torch, and `nvidia-smi` looks healthy while
    `torch.cuda.is_available()` is False. SSH one line to check CUDA before staging. Dead-man
    armed BEFORE staging — the pod bills from creation.
