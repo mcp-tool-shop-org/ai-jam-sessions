@@ -1,0 +1,51 @@
+{
+  "cell": "common-practice, 2 voices, 4 bars, G=16",
+  "generated_from": "held-C.jsonl",
+  "prompts_from": "spec-prompts-v2-holdout.jsonl",
+  "groups": 32,
+  "completions": 512,
+  "single_shot_p": 0.1738,
+  "p_ci95": [
+    0.1435,
+    0.2091
+  ],
+  "non_degenerate": "8/32 = 0.2500",
+  "nd_ci95": [
+    0.133,
+    0.421
+  ],
+  "rho": 0.691,
+  "effective_draws": 1.41,
+  "k_hist": {
+    "0": 22,
+    "1": 1,
+    "3": 1,
+    "5": 2,
+    "6": 1,
+    "9": 1,
+    "13": 1,
+    "15": 1,
+    "16": 2
+  },
+  "distinct_spans_mean": 8.906,
+  "mean_entropy": null,
+  "funnel": {
+    "passing": 89,
+    "distinct_passing_sigs": 25,
+    "passing_unique_pct": 28.1,
+    "failing_unique_pct": 60.3,
+    "within_group_uniqueness": 0.397,
+    "top_first_measure_share": 0.854,
+    "first_measure_hist": [
+      [
+        "0,1",
+        76
+      ],
+      [
+        "0,2",
+        13
+      ]
+    ]
+  },
+  "prereg_reading": "2 SPLIT BUT COLLAPSED — not a pass"
+}
