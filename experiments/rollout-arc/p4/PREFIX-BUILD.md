@@ -79,6 +79,30 @@ generation and scoring, A2 could still pass and A3 would not. The structure gate
 doubly safe — a realization missing its first measure fails `sounding_frames == expected_frames`
 and scores 0, so a lost prefix *collapses* the reward rather than inflating it.
 
+### A7 — the coverage receipt, and the hole it found on its first run
+
+The six assertions above all passed while **half the intervention was not happening.**
+
+Heterogeneous forcing assigned rollout *i* the opening `i % |valid|`. At **G=8 with 16 valid
+openings that is openings 0-7, on every group of every item, forever** — openings 8-15 were
+never forced. Nothing threw. `openings_per_group` still read a healthy **8..8**. `prefix_hits`
+was still 16/16. The failure is invisible to every metric that was being watched, because each
+of them is about the rollouts that *did* get a prefix.
+
+It was caught by adding `opening_indices_seen` to the receipt — not by reasoning. The very
+first dry run with it reported `openings_covered: 8, indices: [1,3,5,7,9,11,13,15]`.
+
+The fix is not the obvious one either. Striding by `n // G` = 2 across a 16-opening alphabet
+locks every rollout of an item to **the parity of its offset**, so an item that starts odd can
+never be handed an even opening. **The stride must be coprime to n**: the smallest such stride
+(3 at G=8, n=16) reaches every residue, and with a stable per-item offset the pool covers
+16/16 — verified over a simulated 32-item pool at G=4, 8 and 16.
+
+One group of G < n cannot cover n openings, by pigeonhole. **Coverage is a property of the pool,
+not of any group** — which is exactly why it has to be counted rather than argued, and why
+`openings_covered` is a preregistered hard guard for the training run
+(`PREFIX-PREREG-AMENDMENT.md` §6).
+
 ## The three dry runs
 
 `--dry --no-tools --num-generations 8 --per-device-batch 8 --limit 8 --max-completion-length 384
@@ -116,9 +140,14 @@ the same reason the two conditions are not directly comparable on cost.
   arc's own position is that a trained policy on this pool would lose to a nearest-tone
   heuristic that already scores 32/32 for free. The purchase is infrastructure validation.
 - **The falsifier is unmeasured**, by definition: `top_first_measure_share` on an unconditioned
-  eval requires an adapter that does not exist. `p3/scripts/probe_generate.py` now takes
-  `--adapter` so the measurement will be possible after a run — it was not, before, and that
-  gap would have been discovered after the spend.
+  eval requires a *trained* adapter, and none exists. **The instrument itself is now proven
+  though**, which is a different claim and the one that matters before a spend: a step-0 adapter
+  was saved with `--save-init-adapter`, loaded through `probe_generate.py --adapter` (504 LoRA
+  tensors, reported not assumed), generated unconditioned completions, and scored end to end
+  through `score-curriculum.mts` to a `top_first_measure_share` — **1.000 on a 3-item slice with
+  `[0,1]` taking 8 of 8 passers**, the unforced collapse reproduced through the eval path. A
+  nonexistent adapter path fails loudly (`Can't find 'adapter_config.json'`). The chain that
+  measures the falsifier has been run; only the trained weights are missing.
 - **G=8 on a 5090, not G=16 on a Blackwell.** 21.3 GB reserved at G=8 leaves 11.3 GB headroom
   here; G=16 has not been measured on this card and must not be extrapolated from it.
 

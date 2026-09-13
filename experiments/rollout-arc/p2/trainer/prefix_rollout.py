@@ -40,7 +40,9 @@ headline metrics looking good. They halt; they do not warn.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
+import math
 from typing import Any
 
 import torch
@@ -66,6 +68,12 @@ def new_stats() -> dict[str, Any]:
         "openings_per_group_max": None,
         "max_new_tokens": None,
         "boundary_clean": True,
+        # WHICH openings were actually forced. One group of G < n cannot cover n
+        # openings (pigeonhole), so alphabet coverage is a property of the POOL, not
+        # of any group, and a property of the pool is exactly the kind of thing that
+        # should be measured rather than argued. This set caught a parity gap that
+        # halved the intervention while every other metric read healthy.
+        "opening_indices_seen": set(),
     }
 
 
@@ -101,7 +109,7 @@ def _group_blocks(prompts: list, group_size: int) -> list[list[int]]:
     return blocks
 
 
-def _prefix_for(row: dict, mode: str, index_in_group: int) -> str:
+def _prefix_for(row: dict, mode: str, index_in_group: int, group_size: int) -> tuple[str, int]:
     if mode == "stratified":
         prefix = row.get("prefix")
         if not isinstance(prefix, str) or not prefix:
@@ -109,7 +117,7 @@ def _prefix_for(row: dict, mode: str, index_in_group: int) -> str:
                 "HALT: --prefix-mode stratified needs a `prefix` column on every row; "
                 f"got {prefix!r}. The trainer expands (item x opening) rows before training."
             )
-        return prefix
+        return prefix, int(row.get("opening_index", -1))
     prefixes = row.get("prefixes")
     if not isinstance(prefixes, (list, tuple)) or not prefixes:
         raise PrefixForcingError(
@@ -117,10 +125,32 @@ def _prefix_for(row: dict, mode: str, index_in_group: int) -> str:
             f"every row; got {type(prefixes).__name__}. The bridge serves one prefix per "
             "valid opening on /cases."
         )
-    # Rollout i takes opening i mod |valid|, so a group SPANS the opening space by
-    # construction rather than by luck. With G=16 and 16 valid openings that is one
-    # rollout per opening exactly; with fewer valid openings it is a balanced repeat.
-    return str(prefixes[index_in_group % len(prefixes)])
+    # A group must SPAN the opening space, and `i % len` does not when G < |valid|:
+    # at G=8 with 16 valid openings it returns openings 0-7 on every group of every
+    # item, and openings 8-15 are NEVER FORCED. Nothing throws, `openings_per_group`
+    # still reads 8, and half the intervention silently does not happen.
+    #
+    # So: stride across the alphabet, and rotate the starting point per item with a
+    # STABLE hash (Python's `hash()` on str is salted per process, so it would make
+    # runs unreproducible).
+    #
+    # THE STRIDE MUST BE COPRIME TO n. The obvious stride n//G is 2 at G=8, n=16, and
+    # 2 shares a factor with 16: every rollout of an item then lands on the SAME
+    # PARITY as its offset, and that item can never be handed an even opening. The
+    # first two-item dry run drew two odd offsets and covered exactly
+    # [1,3,5,7,9,11,13,15] -- half the alphabet, with `openings_per_group` still
+    # reading a healthy 8. Measured, not imagined: `opening_indices_seen` on
+    # `runs/dry-prefix-het/dry-run.json` said so before this fix existed.
+    n = len(prefixes)
+    if group_size >= n:
+        idx = index_in_group % n  # exact cover, then a balanced repeat
+    else:
+        stride = n // group_size
+        while stride < n and math.gcd(stride, n) != 1:
+            stride += 1  # smallest spread-preserving stride that can reach every residue
+        offset = int(hashlib.sha1(str(row.get("id", "")).encode("utf-8")).hexdigest()[:8], 16)
+        idx = (offset + index_in_group * stride) % n
+    return str(prefixes[idx]), idx
 
 
 def make_prefix_rollout(mode: str, prefix_in_loss: bool, stats: dict[str, Any]):
@@ -160,7 +190,8 @@ def make_prefix_rollout(mode: str, prefix_in_loss: bool, stats: dict[str, Any]):
         prefixes: list[str] = [""] * len(prompts)
         for block in blocks:
             for slot, idx in enumerate(block):
-                prefixes[idx] = _prefix_for(rows[idx], mode, slot)
+                prefixes[idx], opening_idx = _prefix_for(rows[idx], mode, slot, group_size)
+                stats["opening_indices_seen"].add(opening_idx)
             distinct = len({prefixes[i] for i in block})
             lo, hi = stats["openings_per_group_min"], stats["openings_per_group_max"]
             stats["openings_per_group_min"] = distinct if lo is None else min(lo, distinct)
