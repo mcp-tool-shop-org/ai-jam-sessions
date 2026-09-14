@@ -225,3 +225,110 @@ UNVERIFIED is a statement about the network, NOT a verdict on any citation.
 CONFIRMED=3
 
 ALL CONFIRMED by at least two independent providers with agreeing titles.
+
+2501.12948  [CONFIRMED]
+  title   DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning
+  authors DeepSeek-AI; Guo, Daya; Yang, Dejian; Zhang, Haowei   year 2025
+  openalex         NOT_FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        FOUND
+
+2503.24290  [SINGLE-PROVIDER]
+  title   Open-Reasoner-Zero: An Open Source Approach to Scaling Up Reinforcement Learning on the Base Model
+  authors Hu, Jingcheng; Zhang, Yinmin; Han, Qi; Jiang, Daxin   year 2025
+  openalex         NOT_FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2503.18892  [CONFIRMED]
+  title   SimpleRL-Zoo: Investigating and Taming Zero Reinforcement Learning for Open Base Models in the Wild
+  authors Zeng, Weihao; Huang, Yuzhen; Liu, Qian; Liu, Wei   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2605.21125  [CONFIRMED]
+  title   Advantage Collapse in Group Relative Policy Optimization: Diagnosis and Mitigation
+  authors Xixiang He; Qiyao Sun; Ao Cheng; Xingming Li   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2505.21067  [CONFIRMED]
+  title   Why Distillation can Outperform Zero-RL: The Role of Flexible Reasoning
+  authors Xiaojun Hu; Xingyu Lu; Liyuan Mao; Yifan Zhang   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2607.01465  [CONFIRMED]
+  title   Beyond Next-Token Prediction: An RLVR Proof of Concept for Tool-Use Agents on Atlassian Workflows
+  authors Karthikeya Aditya Vissa; Sankalp Mane; Ananya Mantravadi; Harshit Rajgarhia   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+==========================================================================
+CONFIRMED=5  SINGLE-PROVIDER=1
+
+NOT CLEAN. Non-CONFIRMED ids: 2503.24290
+UNVERIFIED is a statement about the network, NOT a verdict on any citation.
+
+2510.01171  [CONFIRMED]
+  title   Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity
+  authors Jiayi Zhang; Simon C.H. Yu; Derek Chong; Anthony Sicilia   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2310.06452  [CONFIRMED]
+  title   Understanding the Effects of RLHF on LLM Generalisation and Diversity
+  authors Robert Kirk; Ishita Mediratta; Christoforos Nalmpantis; Jelena Luketina   year 2023
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2406.05587  [CONFIRMED]
+  title   Creativity Has Left the Chat: The Price of Debiasing Language Models
+  authors Behnam Mohammadi   year 2024
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2501.10868  [CONFIRMED]
+  title   JSONSchemaBench: A Rigorous Benchmark of Structured Outputs for Language Models
+  authors Saibo Geng; Hudson Cooper; Michał Moskal; Samuel Jenkins   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2506.10947  [CONFIRMED]
+  title   Spurious Rewards: Rethinking Training Signals in RLVR
+  authors Rulin Shao; Shuyue Stella Li; Rui Xin; Scott Geng   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2505.09388  [CONFIRMED]
+  title   Qwen3 Technical Report
+  authors An Yang; Anfeng Li; Baosong Yang; Beichen Zhang   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+==========================================================================
+CONFIRMED=6
+
+ALL CONFIRMED by at least two independent providers with agreeing titles.
