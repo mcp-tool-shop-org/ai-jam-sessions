@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.1] - 2026-09-14
+
+### Changed — the RL handbook chapter now reports what the arc actually found
+- `Reinforcement learning on the substrate` was written after three training runs and said the
+  training "works, is smaller than it looks, and does the opposite of what we expected." That is
+  still true and is still on the page. What it did not have was the measurement that explains it.
+- **The model being trained could only ever reach 39% of the problems.** Across 64 samples the
+  instruction-tuned checkpoint emits fewer than two distinct openings per item out of sixteen
+  admissible ones, and its favourite is inadmissible on 64% of them. The distribution was not
+  concentrated with a tail to move; it was degenerate. Six phases had been redistributing mass
+  that was not there.
+- **Training made coverage worse**, 39% → 37% → 33%. Using the pretrained checkpoint instead of
+  the instruction-tuned one, dropping the chat wrapper, and prepending one ~750-character worked
+  example takes it to **92%** — +51 points [+38.7, +62.7], paired by item, no training and no
+  rented GPU. Repeated on a second sampling seed; the two runs land within a tenth of a point.
+- The page keeps every caveat rather than the headline: the per-sample pass rate of the base
+  model is *lower*, this is re-weighting rather than new capability, a fifty-line heuristic still
+  scores 32/32, and the worked example itself is an untested knob.
+
 ## [2.6.0] - 2026-09-09
 
 ### Fixed — the song library's provenance
