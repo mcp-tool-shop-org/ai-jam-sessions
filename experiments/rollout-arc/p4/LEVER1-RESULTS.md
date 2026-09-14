@@ -57,20 +57,38 @@ computation.
 
 ## What that means against six phases of this arc
 
-The best replicated result the RL program produced was the gate's held-out pass lift:
-**+4.71pp [+0.46, +11.03]**, over three training runs, on rented and local GPUs, after six
-phases of design.
+**The finding is coverage.**
 
-**A 752-character prompt change on a different checkpoint returns +4.27pp [+0.44, +8.10] — the
-same effect, indistinguishable from it, for $0 and no training.**
+- **Coverage +50.67pp [+38.67, +62.67].** The RL program never moved this at all, and what
+  movement there was went the *wrong* way: instruct 40% → C7 37% → B07 33%. Six phases of
+  training reduced the fraction of items the model can reach. A checkpoint change plus an
+  envelope change plus 752 characters raised it by fifty-one points.
+- **Concentration −37.19pp [−41.56, −32.46].** Six phases fought over a prior that swung ±10pp
+  and never resolved; `GATE-RESULTS.md` reports plain GRPO *sharpening* it by +2.44pp. This
+  flattens it by nearly four times the largest effect the arc ever measured, in the direction
+  the arc wanted.
 
-And it moves two things the RL program never moved at all:
+**Pass@1 is the small row, and the comparison I first drew on it was wrong.**
 
-- **Coverage +50.67pp.** Training moved it the *wrong* way: instruct 40% → C7 37% → B07 33%.
-- **Concentration −37.19pp.** Six phases fought over a prior that swung ±10pp and never
-  resolved; `GATE-RESULTS.md` reports plain GRPO *sharpening* it by +2.44pp. This flattens it by
-  nearly four times the largest effect the arc ever measured, in the direction the arc wanted,
-  with an interval that excludes zero by a wide margin.
+> ⚠ **Retracted, same day, before anything was built on it.** The first version of this section
+> read: *"A 752-character prompt change on a different checkpoint returns +4.27pp — the same
+> effect, indistinguishable from it, for $0 and no training,"* set against the gate's
+> **+4.71pp [+0.46, +11.03]**.
+>
+> **Those are not the same contrast.** The gate's +4.71pp is **trained instruct minus
+> instruct** — a training effect on a fixed substrate. This +4.27pp is **few-shot base minus
+> instruct** — a substrate and envelope change. The intervals overlap because the magnitudes
+> happen to be similar, and **similar magnitude across two different contrasts is a coincidence
+> of scale, not a substitution test.** Nothing here shows a prompt can stand in for the
+> training, because nothing here ran the training on this substrate.
+>
+> What survives is narrower and does not need the comparison: pass@1 rises **+4.27pp
+> [+0.44, +8.10]** over the local instruct baseline, for $0.
+
+**The defensible sentence is about the binding constraint, not about substitution.** Six phases
+optimised a pass rate on a substrate that had already lost 60% of the item space, inside a
+wrapper that cost the rest. That is a statement about what was limiting, and it does not
+require the RL effect and the prompt effect to be commensurable — they are not.
 
 **The binding constraints were the checkpoint and the envelope, not the training.** That is not
 "RL does not work" — it is that six phases optimised a pass rate on a substrate which had
