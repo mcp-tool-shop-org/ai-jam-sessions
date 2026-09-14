@@ -1,0 +1,3 @@
+# Relayed to the Director by another assistant, with confident arXiv ids. Gate before use.
+2607.11699   # claimed: "Qwen-Music" / Qwen-Music-LLM 3B, melody chain-of-thought
+2511.03942   # claimed: "Midi-LLM", text-to-MIDI adapted from Qwen2.5
