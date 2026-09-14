@@ -1,0 +1,9 @@
+[b0] 6 adapters, 6 distinct SHA-256
+[b0] mc64-heldout-B07.jsonl: 75 rows x G=64, 0/4800 empty
+[b0] mc64-heldout-B08.jsonl: 75 rows x G=64, 0/4800 empty
+[b0] mc64-heldout-B09.jsonl: 75 rows x G=64, 0/4800 empty
+[b0] mc64-heldout-C7.jsonl: 75 rows x G=64, 0/4800 empty
+[b0] mc64-heldout-C8.jsonl: 75 rows x G=64, 0/4800 empty
+[b0] mc64-heldout-C9.jsonl: 75 rows x G=64, 0/4800 empty
+[b0] mc64-heldout-base.jsonl: 75 rows x G=64, 0/4800 empty
+[b0] beta guards ok

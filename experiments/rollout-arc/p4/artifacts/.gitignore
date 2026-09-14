@@ -1,5 +1,33 @@
-# Fetched artifacts for the B0 cell land here, and the dead-man watches this directory
-# for DEADMAN_CANCEL_b0cell. deadman-p2.ps1 -ArtDir and babysit-b0.sh B0_CANCEL_DIR must
-# BOTH point here or a clean finish will not disarm the cap.
+# Fetched artifacts for the B0 cell. The dead-man watches this directory for
+# DEADMAN_CANCEL_<label>; deadman-p2.ps1 -ArtDir and babysit-b0.sh B0_CANCEL_DIR must BOTH
+# point here, and the LABEL MUST BE PER-POD (a stale cancel file disarms the next dead-man at
+# its first tick -- see LAUNCH-b0.md).
+#
+# The SMALL TEXT RECEIPTS ARE TRACKED, matching how runs/gate/*/run.json and
+# runs/pod-4arm/*.DONE are tracked: B0-RESULTS.md cites them, and a citation a fresh clone
+# cannot open is not a receipt. The first version of this file ignored everything, which
+# would have made every receipt line in that write-up dead.
 *
+
 !.gitignore
+!arm-*.json
+!cell-guards.txt
+!stage-timings.jsonl
+!artifacts.sha256
+!babysit.log
+!deadman-*.log
+!gpu.txt
+!workspace-fs.txt
+!repo-commit.txt
+!bridge-health.json
+!score-smoke.json
+!node-version.txt
+!pnpm-version.txt
+!pip-pins.txt
+!pod-create.json
+
+# NOT tracked, deliberately:
+#   adapter-*.tar.gz        122 MB each -- six of them
+#   mc64-heldout-*.jsonl    2.4 MB each -- generation dumps, same policy as the gate's
+#   pod.json / pod.id       carries the rented host's ephemeral IP; no value once terminated
+#   DEADMAN_CANCEL_*        run-local state, never a receipt

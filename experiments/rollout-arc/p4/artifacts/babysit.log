@@ -1,0 +1,55 @@
+2026-09-13T23:11:33-04:00 babysitter armed: b0cell pod=7bsth3b01ilw9l 66.222.133.212:20562 -> /e/AI/ai-jam-sessions/experiments/rollout-arc/p4/artifacts (poll 60s, stall 4200s)
+2026-09-13T23:11:33-04:00 cancel file on clean finish: E:/AI/ai-jam-sessions/experiments/rollout-arc/p4/artifacts/DEADMAN_CANCEL_b0cell
+scp: /workspace/arc/artifacts/stage-timings.jsonl: No such file or directory
+scp: /workspace/arc/artifacts/stage-timings.jsonl: No such file or directory
+scp: /workspace/arc/artifacts/stage-timings.jsonl: No such file or directory
+scp: /workspace/arc/artifacts/stage-timings.jsonl: No such file or directory
+scp: /workspace/arc/artifacts/stage-timings.jsonl: No such file or directory
+2026-09-13T23:14:49-04:00 stage0 complete — fetching the environment pins
+2026-09-13T23:23:17-04:00 eval base complete — fetching generations
+2026-09-13T23:59:07-04:00 arm C7 complete — fetching receipt + adapter
+2026-09-14T00:35:05-04:00 arm C8 complete — fetching receipt + adapter
+2026-09-14T01:11:07-04:00 arm C9 complete — fetching receipt + adapter
+2026-09-14T01:47:05-04:00 arm B07 complete — fetching receipt + adapter
+2026-09-14T02:22:09-04:00 arm B08 complete — fetching receipt + adapter
+2026-09-14T02:57:12-04:00 arm B09 complete — fetching receipt + adapter
+2026-09-14T03:10:39-04:00 eval C7 complete — fetching generations
+2026-09-14T03:25:08-04:00 eval C8 complete — fetching generations
+2026-09-14T03:38:29-04:00 eval C9 complete — fetching generations
+2026-09-14T03:51:50-04:00 eval B07 complete — fetching generations
+2026-09-14T04:06:12-04:00 eval B08 complete — fetching generations
+2026-09-14T04:19:33-04:00 ALL.DONE — final fetch + verify
+2026-09-14T04:19:37-04:00 missing ./mc64-heldout-B09.jsonl — fetching
+2026-09-14T04:19:39-04:00 missing ./workspace-fs.txt — fetching
+./adapter-B07.tar.gz: OK
+./adapter-B08.tar.gz: OK
+./adapter-B09.tar.gz: OK
+./adapter-C7.tar.gz: OK
+./adapter-C8.tar.gz: OK
+./adapter-C9.tar.gz: OK
+./arm-B07.json: OK
+./arm-B08.json: OK
+./arm-B09.json: OK
+./arm-C7.json: OK
+./arm-C8.json: OK
+./arm-C9.json: OK
+./bridge-health.json: OK
+./score-smoke.json: OK
+./mc64-heldout-B07.jsonl: OK
+./mc64-heldout-B08.jsonl: OK
+./mc64-heldout-B09.jsonl: OK
+./mc64-heldout-C7.jsonl: OK
+./mc64-heldout-C8.jsonl: OK
+./mc64-heldout-C9.jsonl: OK
+./mc64-heldout-base.jsonl: OK
+./stage-timings.jsonl: OK
+./cell-guards.txt: OK
+./gpu.txt: OK
+./node-version.txt: OK
+./pip-pins.txt: OK
+./pnpm-version.txt: OK
+./repo-commit.txt: OK
+./workspace-fs.txt: OK
+2026-09-14T04:19:42-04:00 checksums VERIFIED — terminating pod 7bsth3b01ilw9l
+{"data":{"podTerminate":null}}
+2026-09-14T04:19:43-04:00 dead-man disarmed; clean exit 0
