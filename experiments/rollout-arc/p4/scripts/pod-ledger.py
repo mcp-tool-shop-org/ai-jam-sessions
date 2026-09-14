@@ -18,7 +18,14 @@ EVAL_ADP  = (2363 + 2367 + 2376 + 2405 + 2361 + 2365) / 6   # with adapter (PEFT
 EVAL_BASE = 2144                                            # no adapter
 # pod-vs-local throughput on the SAME card model: p4/runs/pod-4arm/arm-C.json 15.83 s/step
 # against the local C mean 14.76 s/step. The pod 5090 is ~7% slower.
-POD_FACTOR = 15.83 / ((14.80 + 14.27 + 15.22) / 3)
+# MEASURED WRONG, AND IN THE WRONG DIRECTION, by the B0 cell (2026-09-14). The four-arm
+# pod's 15.83 s/step gave 1.072 -- 'the pod is 7% slower'. The B0 pod ran the SAME arm-C
+# shape at 10.71 s/step against this rig's 14.76, and its G=64 eval took 833 s against the
+# local 2373 s. The rented 5090 is FASTER; local wall over-prices a pod run by roughly 1.9x,
+# which is why a $7.25 estimate settled at $3.86. The value is left UNCHANGED so every figure
+# this script has already published stays reproducible -- re-deriving it belongs in the next
+# cell's pricing, not in a silent edit to the one that priced the last.
+POD_FACTOR = 15.83 / ((14.80 + 14.27 + 15.22) / 3)   # conservative by ~1.9x, see above
 # staging + routing + termination tail, from the four-arm receipts:
 #   STAGE0.DONE +171 s warm; $0.245 lost to 19.7 min of routing across three killed pods;
 #   $0.0403 billed AFTER the balance was read (termination tail, see live API below).
@@ -29,6 +36,10 @@ PROJECT_BUDGET   = 25.00
 SPENT_PRE_P4POD  = 11.25   # rollout-arc/HANDOFF.md:41  (p2 $10.40 + p4 VOID Blackwell $0.85)
 FOURARM_MEASURED = 5.4423  # p4/FOUR-ARM-RESULTS.md:162-164, balance $24.0403 -> $18.5980
 BAL_AFTER_DOC    = 18.5980 # p4/FOUR-ARM-RESULTS.md:164
+FOURARM_TAIL     = 0.0403  # billed after that balance was read (POD-LEDGER.md section 1)
+# The B0 cell, measured as an account delta against the pre-create balance $18.5577:
+# $3.8566, of which ~$0.17 is the aborted first create (dockerStartCmd replaced sshd).
+B0CELL_MEASURED  = 3.8566  # p4/B0-RESULTS.md, pod 7bsth3b01ilw9l
 
 def live():
     k = os.environ.get("RUNPOD_API_KEY")
@@ -51,18 +62,23 @@ m = live()
 print("=" * 78)
 print("SPEND LEDGER -- reconciled from receipts, then against the live account")
 print("=" * 78)
-spent = SPENT_PRE_P4POD + FOURARM_MEASURED
+spent = SPENT_PRE_P4POD + FOURARM_MEASURED + FOURARM_TAIL + B0CELL_MEASURED
 print(f"  pre-four-arm (p2 $10.40 + p4 void Blackwell $0.85)   {SPENT_PRE_P4POD:>8.2f}")
 print(f"  four-arm session, measured as an account delta        {FOURARM_MEASURED:>8.4f}")
-print(f"  everything since (gate C7/8/9L, PIL7/8/9L, VS, all local 5090)   0.0000")
+print(f"  four-arm termination tail, billed after the read      {FOURARM_TAIL:>8.4f}")
+print(f"  local: gate C7/8/9L, PIL7/8/9L, VS (no pod)           {0.0:>8.4f}")
+print(f"  B0 cell, pod 7bsth3b01ilw9l (incl. $0.17 aborted)     {B0CELL_MEASURED:>8.4f}")
 print(f"  {'SPENT':<52} {spent:>8.4f}")
 print(f"  {'REMAINING of $25 project budget':<52} {PROJECT_BUDGET - spent:>8.4f}")
 if m:
-    tail = BAL_AFTER_DOC - m["clientBalance"]
+    # Reconciliation, not a new spend line: the live balance must equal the doc-recorded
+    # post-four-arm balance minus everything billed since. A residual here means a charge
+    # nobody wrote down.
+    tail = BAL_AFTER_DOC - m["clientBalance"] - FOURARM_TAIL - B0CELL_MEASURED
     print(f"\n  LIVE account balance                                  {m['clientBalance']:>8.4f}")
     print(f"  currentSpendPerHr                                     {m['currentSpendPerHr']:>8.4f}")
     print(f"  pods / network volumes                                {len(m['pods'])} / {len(m['networkVolumes'])}")
-    print(f"  billed after FOUR-ARM-RESULTS read the balance        {tail:>8.4f}  <- termination tail")
+    print(f"  UNEXPLAINED residual vs the recorded ledger           {tail:>8.4f}  <- must be ~0")
 REMAIN = PROJECT_BUDGET - spent
 
 # ---- live SKU prices ---------------------------------------------------------------

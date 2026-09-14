@@ -1,0 +1,4 @@
+2026-09-13T22:49:28.8676308-04:00 armed: pod=jvdjl9ybmbeok6 cap=57600s tick=60s cancel=E:\AI\ai-jam-sessions\experiments\rollout-arc\p4\artifacts\DEADMAN_CANCEL_b0cell api=https://api.runpod.io/graphql
+2026-09-13T23:05:29.0435883-04:00 cancel file present - disarmed cleanly
+2026-09-13T23:06:55.8010247-04:00 armed: pod=7bsth3b01ilw9l cap=57600s tick=60s cancel=E:\AI\ai-jam-sessions\experiments\rollout-arc\p4\artifacts\DEADMAN_CANCEL_b0cell api=https://api.runpod.io/graphql
+2026-09-14T04:19:58.2702855-04:00 cancel file present - disarmed cleanly
