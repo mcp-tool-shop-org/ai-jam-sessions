@@ -18,7 +18,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseSpecResponse } from "../../../../src/compose/index.js";
-import { scoreVoicing } from "../../scripts/p4-vl-server.mjs";
+import { scoreVoicing, validOpenings } from "../../scripts/p4-vl-server.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const RUNS = join(here, "..", "runs");
@@ -68,6 +68,19 @@ function shape(file: string, label: string) {
     `unparseable ${(100 * mean(unparseableShare)).toFixed(1)}%`,
   );
 }
+
+// The alphabet, measured on the HELD-OUT pool rather than carried over from the trained one.
+// arm_guards.py reads `openings_per_item` off the bridge for the 32-item TRAINING fixture
+// ({"16": 32}); the held-out prompts file has no `prefixes` column, so that 16 is NOT a
+// measurement of this pool. Deriving it here is the difference between a number and a
+// number's cousin -- which is the error class this arc keeps paying for.
+const alpha = new Map<number, number>();
+for (const r of prompts as Array<{ progression: unknown }>) {
+  const n = validOpenings(r.progression, 2).length;
+  alpha.set(n, (alpha.get(n) ?? 0) + 1);
+}
+console.log(`\n=== ADMISSIBLE OPENINGS PER HELD-OUT ITEM (2 voices), measured on THIS pool ===`);
+for (const [k, v] of [...alpha.entries()].sort((a, b) => a[0] - b[0])) console.log(`  ${k} openings: ${v} items`);
 
 console.log(`\n=== SHAPE OF THE OPENING PRIOR, n=${prompts.length} held-out items, G=64 ===`);
 console.log(`  support            = distinct first-chords emitted per item (out of 64 samples)`);
