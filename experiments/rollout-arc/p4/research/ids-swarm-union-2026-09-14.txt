@@ -1,0 +1,29 @@
+# Union gate: Grok's eight load-bearing ids + Claude's C1-C4 candidates.
+# Grok's eight (STUDY-SWARM-GROK.md)
+2505.22312   # Skywork-OR1
+2503.14476   # DAPO
+2505.22617   # Cui et al. entropy mechanism
+2511.05993   # Jin et al. adaptive entropy target
+2510.20817   # GX-Chen KL-regularized RL mode collapse
+2609.09075   # ThinkPrior
+2504.07086   # Hochlehnert reproducibility
+1709.06560   # Henderson Deep RL That Matters
+# Claude's earlier pack (third-path existence only so far)
+2607.19395   # Prefix-GRPO
+2509.10423   # Reid/Hafez/Nazeri mutual information
+# Claude's C1-C4 candidates
+2503.20783   # Dr.GRPO
+2504.13837   # Yue et al. does RL incentivize capacity
+2108.13264   # Agarwal et al. statistical precipice
+# Added from Claude's C1/C2/C4 agent returns, 2026-09-14
+2605.00365   # UCPO (C1)
+2511.19942   # Differential Smoothing (C1)
+2509.07430   # DPH-RL (C1)
+2510.10649   # UCAS (C1)
+2509.25808   # AR3PO (C2)
+2602.06375   # DEPO (C2)
+2510.04996   # Reinforce-Ada (C2)
+2506.09501   # Yuan et al. greedy nondeterminism (C4)
+2604.13413   # Fang et al. sample-level vs dataset-level (C4)
+2607.20543   # Zhou 2026 matched GRPO (C4)
+2505.22257   # Revisiting GRPO -- zero-variance masking (named by the TRL maintainer on #5588)
