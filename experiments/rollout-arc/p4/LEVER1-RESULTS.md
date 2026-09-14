@@ -90,9 +90,6 @@ optimised a pass rate on a substrate that had already lost 60% of the item space
 wrapper that cost the rest. That is a statement about what was limiting, and it does not
 require the RL effect and the prompt effect to be commensurable — they are not.
 
-**The binding constraints were the checkpoint and the envelope, not the training.** That is not
-"RL does not work" — it is that six phases optimised a pass rate on a substrate which had
-already lost 60% of the item space, inside a wrapper that cost the rest.
 
 ## What this does not license
 
@@ -100,10 +97,11 @@ already lost 60% of the item space, inside a wrapper that cost the rest.
   training a support-8.48 prior back down is how the instruct checkpoint was made.
 - **Not new capability.** Yue et al. still binds; this is re-weighting and re-enveloping what
   the base could already sample. The nearest-tone heuristic still scores 32/32 for free.
-- **Not a runs-and-items interval.** These bootstraps resample **items only**. There is one
-  generation seed and one run per arm, so the intervals price item heterogeneity and *not*
-  generation-seed variance. A second seed is the cheap way to check that, and it is not claimed
-  here.
+- **Not a runs-and-items interval.** These bootstraps resample **items only**, so they price
+  item heterogeneity and *not* generation-seed variance. ⚑ **Superseded in part:** a second
+  generation seed was drawn after this section was written — see *Second seed* below. It does
+  not convert these into runs-and-items intervals (K=2 estimates no variance), but it does
+  remove the specific worry that 91% coverage was a lucky draw.
 - **Not a comparison to the trained arms at matched platform.** C7/B07 ran on the pod against
   the pod's base; the contrast above is local-against-local. Their levels are shown for context,
   not as a paired test.
