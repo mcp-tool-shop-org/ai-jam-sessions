@@ -84,7 +84,34 @@ CELLS = [
     # this arc has already documented -- a pod arm's PRIMARY may not be scored against
     # the local C runs. A pod cell has to carry its own C control, and that is this row.
     ("(iv)  SAME, but carrying its own 3-seed C control",  6, TRAIN_C,    6),
+    # THE LOCKED CELL (PLANNING-LOCK.md): B0 (--beta 0.0) against C (--beta 1e-4), own-C on
+    # the same pod, K=3 each. Priced with BOTH arms at C's measured wall, which is
+    # conservative: at beta == 0 TRL skips the reference log-prob forward pass entirely
+    # (grpo_trainer.py:2732), so the three B0 trains should come in UNDER this line. The
+    # saving is deliberately not modelled -- it has never been measured on this cell.
+    ("(v)   LOCKED: B0 vs C, K=3 each, own-C, + base",    6, TRAIN_C,    6),
 ]
+
+# Minimum detectable effect at this K, fixed BEFORE the runs exist. z(.975)+z(.80)=2.8016.
+# The arm-vs-arm form multiplies by sqrt(2/K) rather than 1/sqrt(K): it is a difference of two
+# K-run means, which is the comparative test the readings are written against.
+K = 3
+Z = 1.959964 + 0.841621
+NL = chr(10)
+print(NL + "=" * 78)
+print(f"MINIMUM DETECTABLE EFFECT at K={K}, 80% power, two-sided 0.05 (fixed before any run)")
+print("=" * 78)
+for label, sd in (("C's own measured sd (1.14pp, the tight cluster)", 1.14),
+                  ("pooled C+PIL sd (2.91pp)", 2.91),
+                  ("PIL's own sd (3.95pp, the wide arm)", 3.95)):
+    one = Z * sd / (K ** 0.5)
+    ava = Z * sd * (2.0 / K) ** 0.5
+    print(f"  {label:48} one-sample {one:5.2f}pp   ARM-VS-ARM {ava:5.2f}pp")
+print("  The primary is ARM-VS-ARM. If B0's between-run spread resembles C's, this cell")
+print("  resolves ~2.6pp; if it resembles PIL's, nothing under ~9pp. Which one obtains is")
+print("  not knowable until the runs exist, so reading 2 (UNRESOLVED) is the modal outcome")
+print("  for any true effect below ~3pp and that is stated here, not discovered afterwards.")
+
 print("\n" + "=" * 78)
 print(f"PRICED CELLS   remaining ${REMAIN:.2f}   pod/local throughput factor {POD_FACTOR:.3f}")
 print(f"peak reserved 23,282 MiB on the four-arm pod's 5090 of 32,109 -- every SKU above fits")
@@ -104,14 +131,18 @@ for label, n_tr, tr_s, n_ev in CELLS:
 
 # ---- dead-man sizing, derived from the remaining budget not a legacy ceiling --------
 print("\n" + "=" * 78)
-print("DEAD-MAN CAP -- derived from REMAINING budget, not the retired $10 P2 ceiling")
+# The Director set the dead-man ceiling for this cell at $12 -- above the cell's $7.25 price
+# so a failed seed or a re-stage does not trip it, and far below the $18.56 live balance so a
+# runaway cannot spend the account. It is NOT the remaining project budget and NOT the balance.
+CEILING = float(sys.argv[sys.argv.index("--ceiling") + 1]) if "--ceiling" in sys.argv else REMAIN
+print(f"DEAD-MAN CAP -- derived from a ${CEILING:.2f} ceiling (not the balance, not the budget)")
 print("=" * 78)
 STORAGE_H = 0.014  # 100GB container/network volume ~= $0.10/GB/month (p2/BUILD.md:348)
 for sku, rate, gb, measured in SKUS:
-    runway_h = (REMAIN - 0.20) / (rate + STORAGE_H)   # $0.20 held back for the termination tail
+    runway_h = (CEILING - 0.20) / (rate + STORAGE_H)  # $0.20 held back for the termination tail
     cap_h = int(runway_h)                              # floor to a whole hour
     print(f"  {sku}  ${rate:>4.2f}/h  runway {runway_h:5.2f} h  -> cap {cap_h:>2} h "
-          f"({cap_h*3600:>6} s)  worst case ${cap_h*(rate+STORAGE_H)+0.20:>5.2f} of ${REMAIN:.2f}")
+          f"({cap_h*3600:>6} s)  worst case ${cap_h*(rate+STORAGE_H)+0.20:>5.2f} of ${CEILING:.2f}")
 print("\n  powershell -File p2/scripts/deadman-p2.ps1 -PodId <id> -CapSeconds <above> -Label <cell>")
 print("  NO network volume: none exists on the account today and an auto-created one bills")
 print("  after the pod dies (LoRA playbook). Container disk only.")
