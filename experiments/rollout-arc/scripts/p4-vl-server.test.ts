@@ -11,8 +11,26 @@ const RUNS = join(HERE, "..", "p4", "runs");
 let env: Awaited<ReturnType<typeof startVlServer>>;
 let base = "";
 
+// THE FROZEN FIXTURE, NOT THE LIBRARY. Without `fixture` the bridge builds its pool from
+// songs/library, and this test then measures the ENVIRONMENT rather than the bridge: a dev rig
+// has all 108 songs fetched and builds ~107 progressions, while a fresh clone — and CI, which
+// asserts it in a step literally named "Library is 14 loaded / 94 unfetched" — builds 14. The
+// server's own source says so at p4-vl-server.mjs:221.
+//
+// That is the same defect the P4 smoke run paid for once, when the bridge served 14 rows to a
+// trainer asking for 32 and the run was VOID. The trainer was fixed with --fixture and
+// --require-pool; this test never was, so it asserted pool_size > 50 and could only pass where
+// the fetched songs happened to be present.
+//
+// Pointing it at the tracked 32-progression fixture makes every number below deterministic on
+// any machine. It is not a weaker check — it is the same configuration every real run in this
+// arc used.
+const FIXTURE = join(HERE, "..", "p4", "fixtures", "progressions-v1.json");
+const POOL = 32;
+
 beforeAll(async () => {
-  env = await startVlServer({ port: 0, voices: 2, style: "film-ambient", seed: 20260913 });
+  env = await startVlServer({ port: 0, voices: 2, style: "film-ambient", seed: 20260913,
+                              fixture: FIXTURE, requirePool: POOL });
   base = `http://${env.host}:${env.port}`;
 }, 120_000);
 
@@ -42,7 +60,10 @@ describe("/health describes the task, and declares no tools", () => {
     expect(body.style).toBe("film-ambient");
     // The whole point of this surface: no tool loop to confound the measurement.
     expect(body.tools).toEqual([]);
-    expect(Number(body.pool_size)).toBeGreaterThan(50);
+    // Exact, not a floor: the fixture is frozen and tracked, so a drifting pool is a defect
+    // rather than something to tolerate with a `>`.
+    expect(body.pool_source).toBe("fixture");
+    expect(Number(body.pool_size)).toBe(POOL);
   });
 });
 
