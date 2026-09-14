@@ -35,6 +35,32 @@ ap.add_argument(
         "have been unmeasurable after the spend."
     ),
 )
+ap.add_argument(
+    "--eos-token-ids",
+    default=None,
+    help=(
+        "comma-separated token ids to stop on, overriding the checkpoint's generation_config. "
+        "THIS EXISTS BECAUSE OF A MEASURED TRAP. `generate()` below passes no eos_token_id, so "
+        "HF falls back to generation_config.json -- NOT to the tokenizer's eos_token. "
+        "Qwen3-4B-Instruct-2507 ships eos_token_id [151645, 151643] (<|im_end|>, <|endoftext|>); "
+        "Qwen3-4B-Base ships 151643 ALONE, while the ChatML template it also ships closes every "
+        "turn with <|im_end|>. Run the base checkpoint through our envelope without this flag "
+        "and it never stops at the turn boundary: every rollout runs to max_new_tokens and "
+        "trails continuation text past the JSON, which reads as 'the base model cannot emit the "
+        "format' when the truth is that nobody told it to stop. Default None = unchanged "
+        "behaviour, so every eval already published by this script is unaffected."
+    ),
+)
+ap.add_argument(
+    "--no-chat-template",
+    action="store_true",
+    help=(
+        "concatenate system and user as PLAIN TEXT instead of calling apply_chat_template. "
+        "Dr. GRPO (arXiv:2503.20783 Table 1) measures Qwen2.5 base checkpoints ~60%% better with "
+        "no template than with one, and scores them 0.0 under a mismatched template -- so the "
+        "un-enveloped prompt is a separate arm, not a fallback."
+    ),
+)
 a = ap.parse_args()
 
 rows = [json.loads(l) for l in open(a.prompts, encoding="utf-8") if l.strip()]
@@ -56,12 +82,24 @@ if a.adapter:
     print(f"adapter {a.adapter} | {n_lora} lora tensors", flush=True)
 print(f"loaded | adapter={a.adapter or 'none (base)'} | cuda mem {torch.cuda.memory_allocated()/2**30:.2f} GiB", flush=True)
 
+EOS_IDS = [int(x) for x in a.eos_token_ids.split(",")] if a.eos_token_ids else None
+if EOS_IDS is not None:
+    # Say it loudly and by NAME. An id that is not the token you think it is stops nothing,
+    # and the symptom (completions running to the cap) is the same as not passing it at all.
+    named = ", ".join(f"{i}={tok.convert_ids_to_tokens(i)!r}" for i in EOS_IDS)
+    print(f"eos override | {named} | generation_config said {model.generation_config.eos_token_id}", flush=True)
+print(f"prompt mode | {'PLAIN TEXT (no chat template)' if a.no_chat_template else 'chat template'}", flush=True)
+
 torch.manual_seed(a.seed)
 out_f = open(a.out, "w", encoding="utf-8")
 t0 = time.time()
 for i, r in enumerate(rows):
     msgs = [{"role": "system", "content": r["system"]}, {"role": "user", "content": r["user"]}]
-    text = tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
+    if a.no_chat_template:
+        # The un-enveloped arm: the same two strings, no role markers, no generation prompt.
+        text = f"{r['system']}\n\n{r['user']}\n\n"
+    else:
+        text = tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
     enc = tok([text], return_tensors="pt").to("cuda")
     with torch.no_grad():
         gen = model.generate(
@@ -73,6 +111,7 @@ for i, r in enumerate(rows):
             num_return_sequences=a.generations,
             max_new_tokens=a.max_new_tokens,
             pad_token_id=tok.pad_token_id or tok.eos_token_id,
+            **({} if not a.eos_token_ids else {"eos_token_id": EOS_IDS}),
         )
     plen = enc["input_ids"].shape[1]
     comps = [tok.decode(g[plen:], skip_special_tokens=True) for g in gen]
