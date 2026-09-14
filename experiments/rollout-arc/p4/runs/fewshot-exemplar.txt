@@ -1,0 +1,26 @@
+# Voice this progression in E major — 2 voices per chord, bass to soprano.
+
+| Measure | Chord |
+|---------|-------|
+| 1 | F# |
+| 2 | F# |
+| 3 | Bbaug |
+| 4 | Esus2 |
+| 5 | Daug |
+| 6 | Emadd9 |
+| 7 | Bbaug |
+| 8 | Bm7 |
+
+Return one JSON object per measure above with its "degrees" (2 chord-note numbers, low→high).
+
+[
+  {"measure": 1, "degrees": [0, 1], "bassOctave": 3},
+  {"measure": 2, "degrees": [0, 1], "bassOctave": 3},
+  {"measure": 3, "degrees": [1, 2], "bassOctave": 3},
+  {"measure": 4, "degrees": [1, 0], "bassOctave": 3},
+  {"measure": 5, "degrees": [0, 2], "bassOctave": 3},
+  {"measure": 6, "degrees": [0, 3], "bassOctave": 3},
+  {"measure": 7, "degrees": [1, 2], "bassOctave": 3},
+  {"measure": 8, "degrees": [1, 3], "bassOctave": 3}
+]
+

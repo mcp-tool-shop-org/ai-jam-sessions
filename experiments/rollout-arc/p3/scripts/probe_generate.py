@@ -61,6 +61,18 @@ ap.add_argument(
         "un-enveloped prompt is a separate arm, not a fallback."
     ),
 )
+ap.add_argument(
+    "--few-shot-file",
+    default=None,
+    help=(
+        "path to a file whose contents are prepended between the system block and the user "
+        "block (plain-text mode only). Lever 1 of FORMAT-CLAUSE.md: the measured non-truncated "
+        "failure of the un-enveloped base checkpoint is document continuation and a missing "
+        "array wrapper, which one worked example addresses. The exemplar must come from the "
+        "TRAINED pool and be verifier-correct -- see scripts/make-fewshot.mts, which refuses "
+        "any candidate that repeats one voicing or opens inadmissibly."
+    ),
+)
 a = ap.parse_args()
 
 rows = [json.loads(l) for l in open(a.prompts, encoding="utf-8") if l.strip()]
@@ -82,6 +94,14 @@ if a.adapter:
     print(f"adapter {a.adapter} | {n_lora} lora tensors", flush=True)
 print(f"loaded | adapter={a.adapter or 'none (base)'} | cuda mem {torch.cuda.memory_allocated()/2**30:.2f} GiB", flush=True)
 
+FEW_SHOT = ""
+if a.few_shot_file:
+    FEW_SHOT = open(a.few_shot_file, encoding="utf-8").read()
+    if not a.no_chat_template:
+        raise SystemExit("HALT: --few-shot-file is only wired for --no-chat-template; the "
+                         "ChatML arm fired the unbuyable clause and is closed")
+    print(f"few-shot | {a.few_shot_file} | {len(FEW_SHOT)} chars prepended", flush=True)
+
 EOS_IDS = [int(x) for x in a.eos_token_ids.split(",")] if a.eos_token_ids else None
 if EOS_IDS is not None:
     # Say it loudly and by NAME. An id that is not the token you think it is stops nothing,
@@ -97,7 +117,8 @@ for i, r in enumerate(rows):
     msgs = [{"role": "system", "content": r["system"]}, {"role": "user", "content": r["user"]}]
     if a.no_chat_template:
         # The un-enveloped arm: the same two strings, no role markers, no generation prompt.
-        text = f"{r['system']}\n\n{r['user']}\n\n"
+        # FEW_SHOT sits between them so the model sees a completed exchange before its own.
+        text = f"{r['system']}\n\n{FEW_SHOT}{r['user']}\n\n"
     else:
         text = tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
     enc = tok([text], return_tensors="pt").to("cuda")
