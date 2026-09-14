@@ -180,3 +180,6 @@ Two coincident point estimates are the claim; a spread is not.
   knob, and the first candidate the selector returned would have taught degeneracy. Nothing here
   says the result is robust to exemplar choice; it says it is robust to **generation seed**.
 - **One pool, one verifier, one style.** 75 held-out items, common-practice, 2 voices.
+
+**Raw generations published** (the files this section cites are ~51 MB and not in git):
+https://huggingface.co/datasets/mcp-tool-shop/jam-rollout-arc-evals

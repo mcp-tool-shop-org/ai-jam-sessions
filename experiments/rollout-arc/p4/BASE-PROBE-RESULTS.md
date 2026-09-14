@@ -116,3 +116,6 @@ them is a cell.
 `runs/mc64-heldout-q3base-{chatml,raw}.jsonl` · `runs/base-probe.log` (records the eos override
 firing) · `p3/scripts/probe_generate.py` (`--eos-token-ids`, `--no-chat-template`; default path
 byte-unchanged) · study `26d788f` · prior shape `f921785` / `d1116ab` / `3fea548`
+
+**Raw generations published** (the files this section cites are ~51 MB and not in git):
+https://huggingface.co/datasets/mcp-tool-shop/jam-rollout-arc-evals
