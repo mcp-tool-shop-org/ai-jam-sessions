@@ -69,7 +69,15 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--lr", type=float, default=1e-5, help="R2.6: LoRA LR is 10x the full-finetune rate")
     p.add_argument("--lora-r", type=int, default=16)
     p.add_argument("--lora-alpha", type=int, default=32)
-    p.add_argument("--beta", type=float, default=1e-4, help="R4.18: NOT 0, purely so KL is logged")
+    # TRL's own default is 0.0. This arc moved off it to 1e-4 for OBSERVABILITY (R4.9/R4.18,
+    # p2/BUILD.md:254) -- so that TRL would emit a `kl` series at all. The side effect was not
+    # costed at the time: with beta > 0 a zero-std group contributes NOTHING to the policy term
+    # and its KL term still carries gradient (huggingface/trl#5588, closed not_planned by the
+    # maintainer as the specified objective), and 46-76% of this cell's groups are zero-std.
+    # The default stays 1e-4 so the control arm is byte-identical to every prior run; the
+    # treatment arm passes --beta 0.0 explicitly.
+    p.add_argument("--beta", type=float, default=1e-4,
+                   help="R4.18: 1e-4 is an OBSERVABILITY choice, not a regularisation one")
     p.add_argument("--epsilon", type=float, default=0.2)
     p.add_argument("--epsilon-high", type=float, default=0.28, help="R2.9: clip-higher (DAPO)")
     p.add_argument("--max-completion-length", type=int, default=1024)
@@ -506,6 +514,20 @@ def main() -> int:
     # rather than through anything reimplemented in Python.
     health_after = httpx.get(f"{args.base_url.rstrip('/')}/health", timeout=60.0).json()
 
+    # Which metric series TRL actually emitted. This is the ONLY mechanical proof that the
+    # reference-KL path did or did not execute: `grpo_trainer.py:3360` appends the `kl` series
+    # only `if self.beta != 0.0`, and `:2732` skips the reference log-prob forward pass on the
+    # same condition. A receipt that recorded only `beta` would record the REQUEST; this
+    # records the CONSEQUENCE. `entropy_coef` appears only when an entropy bonus is enabled
+    # (`:3338`), which is the matching assertion for any future entropy arm.
+    _logged = sorted({k for e in trainer.state.log_history for k in e})
+    trl_metrics = {
+        "logged_series": _logged,
+        "kl_logged": any(k == "kl" or k.endswith("/kl") for k in _logged),
+        "entropy_coef_logged": any(k.endswith("entropy_coef") for k in _logged),
+        "log_history_entries": len(trainer.state.log_history),
+    }
+
     receipt = {
         "stage": "dry" if args.dry else "train",
         "shape": {
@@ -546,6 +568,17 @@ def main() -> int:
             "gradient_accumulation_steps": args.grad_accum,
             "learning_rate": args.lr,
             "beta": args.beta,
+            # Read off the resolved GRPOConfig, not off args: these were never passed, so the
+            # receipt has to record what TRL APPLIED. `loss_type` has silently defaulted to
+            # "dapo" for every run in this arc and was never written down -- a receipt that
+            # omits the loss formulation is not replayable, which is what PIN_PER_STEP is for.
+            "loss_type": config.loss_type,
+            "scale_rewards": config.scale_rewards,
+            "num_iterations": config.num_iterations,
+            "entropy_coef": config.entropy_coef,
+            "use_adaptive_entropy": config.use_adaptive_entropy,
+            "entropy_target": config.entropy_target,
+            "top_entropy_quantile": config.top_entropy_quantile,
             "epsilon": args.epsilon,
             "epsilon_high": args.epsilon_high,
             "max_completion_length": args.max_completion_length,
@@ -576,6 +609,7 @@ def main() -> int:
             "tools": health.get("tools", []),
             "limits": health.get("limits"),
         },
+        "trl_metrics": trl_metrics,
         "environment": dict(ENV_COUNTERS),
         "dataset_rows": len(dataset),
         "rollout_mode": ("no-tools" if args.no_tools else "plain-tools" if args.plain_tools else "environment-factory"),
