@@ -34,6 +34,7 @@ function read(f: string, label: string) {
 console.log(`\n=== PASS RATE, 75 held-out items, G=64 ===`);
 console.log(`  concentration(all) is the ORIGINAL all-completions form the arc published, kept here`);
 console.log(`  so these rows are comparable to every prior number. It is not the parseable-only form.\n`);
+read("mc64-heldout-q3base-fewshot.jsonl", "BASE no-tmpl +FEWSHOT");
 read("mc64-heldout-q3base-chatml.jsonl", "Qwen3-4B-BASE ChatML");
 read("mc64-heldout-q3base-raw.jsonl", "Qwen3-4B-BASE no-tmpl");
 console.log();

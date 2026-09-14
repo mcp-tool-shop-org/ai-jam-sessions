@@ -10,7 +10,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 const RUNS = join(here, "..", "runs"), ART = join(here, "..", "artifacts");
 const CAP = 384;
 const parses = (r: string) => ((parseSpecResponse(r)[0]?.degrees ?? []) as number[]).length > 0;
-for (const [f, label] of [["mc64-heldout-q3base-raw.jsonl", "BASE no-template"],
+for (const [f, label] of [["mc64-heldout-q3base-fewshot.jsonl", "BASE no-tmpl + FEW-SHOT (partial)"],
+                          ["mc64-heldout-q3base-raw.jsonl", "BASE no-template"],
                           ["mc64-heldout-q3base-chatml.jsonl", "BASE ChatML"]] as const) {
   const p = existsSync(join(RUNS, f)) ? join(RUNS, f) : join(ART, f);
   let bad = 0, badAtCap = 0, ok = 0, okAtCap = 0, total = 0;
