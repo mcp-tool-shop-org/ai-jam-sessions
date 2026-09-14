@@ -1,0 +1,227 @@
+
+2505.22312  [CONFIRMED]
+  title   Skywork Open Reasoner 1 Technical Report
+  authors Junming He; Liu, Jiacai; Liu, Chris Yuhao; Rui Yan   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2503.14476  [CONFIRMED]
+  title   DAPO: An Open-Source LLM Reinforcement Learning System at Scale
+  authors Yu, Qiying; Zhang, Zheng; Zhu, Ruofei; Yuan, Yufeng   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  FOUND
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2505.22617  [CONFIRMED]
+  title   The Entropy Mechanism of Reinforcement Learning for Reasoning Language Models
+  authors Ganqu Cui; Yuchen Zhang; Jiacheng Chen; Lifan Yuan   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  FOUND
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2511.05993  [SINGLE-PROVIDER]
+  title   Revisiting Entropy in Reinforcement Learning for Large Reasoning Models
+  authors Jin, Renren; Gao, Pengzhi; Ren, Yuqi; Han, Zhuowen   year 2025
+  openalex         NOT_FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2510.20817  [CONFIRMED]
+  title   KL-Regularized Reinforcement Learning is Designed to Mode Collapse
+  authors Anthony GX-Chen; Jatin Prakash; Jeff Guo; Rob Fergus   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2609.09075  [CONFIRMED]
+  title   ThinkPrior: Zero-Rollout Difficulty Priors for Cold-Start Prompt Selection in RLVR
+  authors Tommy Sha; Skylar Zhai; Siqi Zhao   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2504.07086  [CONFIRMED]
+  title   A Sober Look at Progress in Language Model Reasoning: Pitfalls and Paths to Reproducibility
+  authors Andreas Hochlehnert; Hardik Bhatnagar; Vishaal Udandarao; Samuel Albanie   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+1709.06560  [CONFIRMED]
+  title   Deep Reinforcement Learning that Matters
+  authors Peter Henderson; Riashat Islam; Philip Bachman; Joëlle Pineau   year 2017
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  FOUND
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2607.19395  [CONFIRMED]
+  title   From Trajectories to Prefixes: Reusing Teacher Trajectories via Replayed Prefixes and Online Continuation
+  authors Yihan Wang; Zhong Guan; Sun H; Jiale Huang   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  FOUND
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2509.10423  [CONFIRMED]
+  title   Mutual Information Tracks Policy Coherence in Reinforcement Learning
+  authors Cameron Reid; Wael Hafez; Nazeri, Amirhossein   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2503.20783  [CONFIRMED]
+  title   Understanding R1-Zero-Like Training: A Critical Perspective
+  authors Zichen Liu; Changyu Chen; Wenjun Li; Penghui Qi   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2504.13837  [CONFIRMED]
+  title   Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?
+  authors Yue, Yang; Chen, Zhiqi; Lu, Rui; Zhao, Andrew   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  FOUND
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2108.13264  [CONFIRMED]
+  title   Deep Reinforcement Learning at the Edge of the Statistical Precipice
+  authors Rishabh Agarwal; Max Schwarzer; Pablo Samuel Castro; Aaron Courville   year 2021
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2605.00365  [CONFIRMED]
+  title   Uniform-Correct Policy Optimization: Breaking RLVR's Indifference to Diversity
+  authors Anamika Lochab; Bolian Li; Ruqi Zhang   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2511.19942  [CONFIRMED]
+  title   Differential Smoothing Mitigates Sharpening and Improves LLM Reasoning
+  authors Jingchu Gai; Guanning Zeng; Huaqing Zhang; Aditi Raghunathan   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  FOUND
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2509.07430  [CONFIRMED]
+  title   The Choice of Divergence: A Neglected Key to Mitigating Diversity Collapse in Reinforcement Learning with Verifiable Reward
+  authors Li Long; Zhijian Zhou; Jiejie Hao; J Liu   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2510.10649  [CONFIRMED]
+  title   Unlocking Exploration in RLVR: Uncertainty-aware Advantage Shaping for Deeper Reasoning
+  authors Xie, Can; Pan, Ruotong; Wu, Xiangyu; Zhang, Yunfei   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2509.25808  [CONFIRMED]
+  title   Improving Sampling Efficiency in RLVR through Adaptive Rollout and Response Reuse
+  authors Zhang, Yuheng; Yao, Wenlin; Yu, Changlong; Liu, Yao   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2602.06375  [CONFIRMED]
+  title   Difficulty-Estimated Policy Optimization
+  authors Yu Zhao; Fan Jiang; Tianle Liu; Bo Zeng   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2510.04996  [CONFIRMED]
+  title   Reinforce-Ada: An Adaptive Sampling Framework under Non-linear RL Objectives
+  authors Wei Xiong; Chenlu Ye; Baohao Liao; Hanze Dong   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2506.09501  [CONFIRMED]
+  title   Understanding and Mitigating Numerical Sources of Nondeterminism in LLM Inference
+  authors Yuan, Jiayi; Li, Hao; Ding, Xinheng; Xie, Wenya   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2604.13413  [CONFIRMED]
+  title   Dataset-Level Metrics Attenuate Non-Determinism: A Fine-Grained Non-Determinism Evaluation in Diffusion Language Models
+  authors Zhengyu Fang; Zhimeng Jiang; Huiyuan Chen; Xiaoge Zhang   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+2607.20543  [CONFIRMED]
+  title   When RLVR Shrinks the Reasoning Boundary: Diagnosing Pass@k Inversion
+  authors Tao Zhou   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2505.22257  [CONFIRMED]
+  title   Revisiting Group Relative Policy Optimization: Insights into On-Policy and Off-Policy Training
+  authors Youssef Mroueh; Nicolas Dupuis; Brian Belgodere; Apoorva Nitsure   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+==========================================================================
+CONFIRMED=23  SINGLE-PROVIDER=1
+
+NOT CLEAN. Non-CONFIRMED ids: 2511.05993
+UNVERIFIED is a statement about the network, NOT a verdict on any citation.
+
+2508.08221  [CONFIRMED]
+  title   Part I: Tricks or Traps? A Deep Dive into RL for LLM Reasoning
+  authors Zihe Liu; Jiashun Liu; Yancheng He; Weixun Wang   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  FOUND
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2601.23135  [CONFIRMED]
+  title   Why GRPO Needs Normalization: A Local-Curvature Perspective on Adaptive Gradients
+  authors Cheng Ge; Caitlyn Heqi Yin; Hao Liang; Jiawei Zhang   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2607.00152  [CONFIRMED]
+  title   GRPO, Dr. GRPO, and DAPO Are Three Operations on One Number: The Group-Standard-Deviation Identity
+  authors Yong Yi Bay; Kathleen A. Yearick   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+==========================================================================
+CONFIRMED=3
+
+ALL CONFIRMED by at least two independent providers with agreeing titles.
