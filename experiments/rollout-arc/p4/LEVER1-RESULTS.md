@@ -117,3 +117,63 @@ already lost 60% of the item space, inside a wrapper that cost the rest.
 · `scripts/base-passrate.mts` · `scripts/why-unparseable.mts` · `scripts/make-fewshot.mts` ·
 `runs/fewshot-exemplar.txt` · `runs/mc64-heldout-q3base-fewshot.jsonl` · `runs/fewshot-probe.log`
 · clause `e5c7846` · probe results `4f6de00` · study `26d788f`
+
+---
+
+## Second seed — the replicate the first run could not price
+
+`FORMAT-CLAUSE.md` puts coverage at **≥ 90%** and seed 7 came in at **91%**, one point above the
+bar, on an **items-only** interval that prices item heterogeneity and *not* generation-seed
+variance. One draw could not tell a stable 91% from a lucky one. So a second was drawn: the same
+arm, the same 752-char exemplar, the same `--gen-chunk 16`, **one change — generation seed 8.**
+
+### The clause, scored again
+
+| row | bar | seed 7 | **seed 8** | |
+|---|---|---|---|---|
+| unparseable | ≤ 20% | 2.0% | **1.7%** | ✓ |
+| coverage | ≥ 90% | 91% | **92%** | ✓ |
+| distinct-passing | ≥ 2.0 | 2.79 | **2.72** | ✓ |
+
+**All three pass again, and the bar-adjacent row moved the good way.**
+
+The rest of the arm is near-identical across seeds: support 8.48 → 8.53, modal 56.9% → 56.6%,
+pass@1 16.27% → 16.19%, concentration 0.5577 → 0.5573.
+
+### Against the same local instruct baseline
+
+| | seed 7 | seed 8 |
+|---|---|---|
+| pass rate | +4.27pp [+0.44, +8.10] | **+4.19pp [+0.29, +8.04]** |
+| coverage | +50.67pp [+38.67, +62.67] | **+52.00pp [+40.00, +64.00]** |
+| concentration | −37.19pp [−41.56, −32.46] | **−37.23pp [−41.58, −32.54]** |
+
+All six intervals exclude zero.
+
+### Seed 8 minus seed 7, paired by item
+
+| contrast | mean | 95% | |
+|---|---|---|---|
+| pass rate | **−0.08pp** | [−1.06, +0.92] | includes 0 |
+| coverage | **+1.33pp** | [−6.67, +9.33] | includes 0 |
+| concentration | **−0.04pp** | [−2.00, +1.94] | includes 0 |
+
+**Seed variance on this arm is negligible.** Pass@1 moved eight hundredths of a point,
+concentration four hundredths. That is what the second draw was bought to establish, and it
+establishes it: **91% was not luck.**
+
+> **K=2, and no variance is claimed from it.** Two seeds cannot estimate a spread; the table
+> above is the spread, shown as a spread, with items-only intervals on the paired difference.
+> What it licenses is narrow and sufficient — the two point estimates land within 0.08pp,
+> 1.33pp and 0.04pp of each other, which is a demonstration of stability, not a variance
+> estimate.
+
+### Still unpriced, after two seeds
+
+- **Lever 2.** The cap stayed 384 on both. Truncation is unchanged and still the cost the
+  few-shot bought format with. A separate eval, unrun.
+- **⚑ The exemplar itself.** One exemplar was tried — `sweet-home-chicago`, 6 distinct voicings,
+  verifier-correct, `first_measure_ok`. A *different* valid exemplar is an entirely unmeasured
+  knob, and the first candidate the selector returned would have taught degeneracy. Nothing here
+  says the result is robust to exemplar choice; it says it is robust to **generation seed**.
+- **One pool, one verifier, one style.** 75 held-out items, common-practice, 2 voices.

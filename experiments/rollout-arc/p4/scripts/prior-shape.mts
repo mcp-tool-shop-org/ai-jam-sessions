@@ -109,6 +109,7 @@ console.log();
 // ARM A runs the base checkpoint through OUR envelope with the stopping rule made comparable
 // (--eos-token-ids 151645,151643); without that override it would never stop at the turn
 // boundary and would read as a format failure that was really a config mismatch.
+shape("mc64-heldout-q3base-fewshot-s8.jsonl", "BASE +FEWSHOT seed 8");
 shape("mc64-heldout-q3base-fewshot.jsonl", "BASE no-tmpl +FEWSHOT");
 shape("mc64-heldout-q3base-chatml.jsonl", "Qwen3-4B-BASE ChatML");
 shape("mc64-heldout-q3base-raw.jsonl", "Qwen3-4B-BASE no-tmpl");
