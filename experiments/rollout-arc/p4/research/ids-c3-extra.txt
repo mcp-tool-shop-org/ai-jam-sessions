@@ -1,0 +1,3 @@
+2508.08221   # Lite PPO (C3 finding 6)
+2601.23135   # "Why GRPO Needs Normalization" (C3 finding 7, counter-evidence)
+2607.00152   # Bay & Yearick, three settings of one dial (C3 finding 8)
