@@ -150,6 +150,13 @@ cheap.** `scripts/prior-shape.mts` already computes the two numbers that decide 
 | **B** `Qwen3-4B-Base`, **no template** (raw completion prompt) | Dr. GRPO says this is where Qwen bases really live; does support widen when the envelope comes off? |
 | C | already measured — instruct: **support 1.84 of 16, unparseable 0.0%** |
 
+> ⚑ **What the probe does NOT answer, added on review.** There is no
+> `Qwen3-4B-Instruct-2507-Base`. `Qwen3-4B-Base` is the pretrained sibling of the *original*
+> Qwen3-4B, **not** a pre-SFT ablation of the 2507 instruct recipe. So arm A answers *"does a
+> less-post-trained 4B Qwen3 have support?"* It does **not** answer *"what did 2507's
+> post-training do to the prior?"* — that comparison has no checkpoint to run it on. A null
+> here therefore narrows the hypothesis to this family; it does not falsify the mechanism in §1.
+
 **Decision rule, fixed now rather than after seeing it:**
 
 - **support ≥ 6 of 16 and unparseable ≤ 20%** → the hypothesis has legs and a training cell is
@@ -159,6 +166,11 @@ cheap.** `scripts/prior-shape.mts` already computes the two numbers that decide 
 - **unparseable ≥ 50%** → the hypothesis may be true and is unbuyable at our verifier: no
   gradient, on every step. Arm B then becomes a question about redesigning the envelope, which
   is a different project.
+- ⚑ **The landmine clause, added on review.** If an arm-A run **without** the eos override
+  reads ~80% unparseable while the overridden run reads like instruct, **the stop-token
+  mismatch fired and the run says nothing about the prior.** An un-overridden run must never be
+  scored as "the base cannot emit the format". Arm A is void unless the command carries
+  `--eos-token-ids 151645,151643`, and that belongs in the command, not in a footnote.
 
 **Cost.** Generation only — no training, no adapters, no prereg, because nothing is being
 claimed, only measured. One ~8 GB download, then two evals: **~70 min and $0 on this rig**, or
