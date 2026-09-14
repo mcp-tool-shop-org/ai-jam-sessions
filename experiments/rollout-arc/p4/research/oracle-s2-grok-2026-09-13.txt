@@ -1,0 +1,9 @@
+  HTTP 429
+  backing off 10s
+  HTTP 429
+  backing off 30s
+  HTTP 429
+  backing off 60s
+  HTTP 429
+
+ORACLE UNAVAILABLE (provider 2) -- NOT a verdict on any citation.
