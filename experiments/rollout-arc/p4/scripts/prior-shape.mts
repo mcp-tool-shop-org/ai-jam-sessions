@@ -88,13 +88,25 @@ console.log(`  modal              = share of the single most common one  <- the 
 console.log(`  distinct-passing   = how many DIFFERENT openings ever produced an admissible passage`);
 console.log(`  off-mode pass      = pass rate of the mass that is NOT the mode`);
 console.log();
-shape("mc64-heldout-base.jsonl", "BASE (pod)");
+// The director's hypothesis, measured. Same 75 items, same G=64, same generation seed.
+// ARM A runs the base checkpoint through OUR envelope with the stopping rule made comparable
+// (--eos-token-ids 151645,151643); without that override it would never stop at the turn
+// boundary and would read as a format failure that was really a config mismatch.
+shape("mc64-heldout-q3base-chatml.jsonl", "Qwen3-4B-BASE ChatML");
+shape("mc64-heldout-q3base-raw.jsonl", "Qwen3-4B-BASE no-tmpl");
+console.log();
+shape("mc64-heldout-base.jsonl", "INSTRUCT (pod)");
 shape("mc64-heldout-C7.jsonl", "C7  beta=1e-4");
 shape("mc64-heldout-C9.jsonl", "C9  the flattener");
 shape("mc64-heldout-B07.jsonl", "B07 beta=0");
 shape("mc64-heldout-B09.jsonl", "B09 beta=0");
-console.log();
-shape("mc64-heldout-base.jsonl", "BASE (local rig)");
+// ⚑ There WAS a second row here labelled "BASE (local rig)". It was a defect, caught on
+// review: `shape()` resolves ART before RUNS (line 33), and `mc64-heldout-base.jsonl` exists in
+// BOTH, so that row re-read the POD file and printed it twice under two labels. A reader would
+// have taken two identical rows as a local-vs-pod agreement check. The real cross-platform
+// comparison is `platform-concentration.mts` and it is already done: -0.40pp [-1.13, +0.27].
+// Removed rather than repaired: this script measures the SHAPE of a prior, and a
+// platform contrast belongs in the script that was written to make one.
 console.log(`\n  If support is ~1, the prior has no mass to redistribute and a flatter checkpoint is`);
 console.log(`  the only lever. If support is >1 with a dominant mode, the mass is already there and`);
 console.log(`  the question is why 200 steps of a verifier reward will not move it.`);
