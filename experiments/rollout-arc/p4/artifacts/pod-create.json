@@ -1,0 +1,39 @@
+{
+  "consumerUserId": "user_3FjDjYjYgbCl8cnUhYjMAZwi1gc",
+  "containerDiskInGb": 80,
+  "costPerHr": 0.69,
+  "createdAt": "2026-09-14 02:49:20.351 +0000 UTC",
+  "desiredStatus": "RUNNING",
+  "dockerStartCmd": [
+    "sleep",
+    "infinity"
+  ],
+  "env": {
+    "PUBLIC_KEY": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOrWuVt4EwqigycpklKEnn9z3UtJtD4hy2cJFEfhGSN rustline-train"
+  },
+  "gpuCount": 1,
+  "id": "jvdjl9ybmbeok6",
+  "imageName": "runpod/pytorch:1.1.0-cu1290-torch280-ubuntu2404",
+  "lastStartedAt": "2026-09-14 02:49:20.346 +0000 UTC",
+  "lastStatusChange": "Rented by User: Mon Sep 14 2026 02:49:20 GMT+0000 (Coordinated Universal Time)",
+  "machine": {
+    "diskThroughputMBps": 7159,
+    "gpuTypeId": "NVIDIA GeForce RTX 5090",
+    "location": "CA",
+    "maxDownloadSpeedMbps": 845,
+    "maxUploadSpeedMbps": 878,
+    "supportPublicIp": true,
+    "reservedCountVersion": 267678
+  },
+  "machineId": "r7ql1oh9x4k7",
+  "memoryInGb": 53,
+  "name": "b0cell-20260913-2249",
+  "ports": [
+    "22/tcp"
+  ],
+  "publicIp": "",
+  "templateId": "",
+  "vcpuCount": 27,
+  "volumeInGb": 20,
+  "volumeMountPath": "/workspace"
+}
