@@ -134,8 +134,17 @@ def check_cell(root: Path) -> list[str]:
         widths = {len(r.get("completions") or []) for r in rows}
         if widths != {EVAL_G}:
             bad.append(f"{e.name}: generations per item {sorted(widths)} != [{EVAL_G}] -- not a G=64 eval")
-        else:
-            print(f"[b0] {e.name}: {len(rows)} rows x G={EVAL_G}")
+        # The pod does not score; the readout runs locally. So the only silent-failure this
+        # file can catch on the pod is an eval that produced the right SHAPE and no CONTENT --
+        # 75 x 64 empty strings is a structurally perfect file worth nothing. An all-empty
+        # eval is void; a merely low-yield one is reported and left alone, because "the model
+        # emitted little" is a result and not a defect.
+        comps = [c for r in rows for c in (r.get("completions") or [])]
+        empty = sum(1 for c in comps if not (c or "").strip())
+        if comps and empty == len(comps):
+            bad.append(f"{e.name}: every one of {len(comps)} completions is empty -- generation produced nothing")
+        elif widths == {EVAL_G}:
+            print(f"[b0] {e.name}: {len(rows)} rows x G={EVAL_G}, {empty}/{len(comps)} empty")
     return bad
 
 
