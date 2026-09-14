@@ -25,7 +25,12 @@ export PYTHONUNBUFFERED=1
 
 echo "[eval] waiting for training to finish"
 while ! grep -q "ALL PIL TRAINING DONE" "$GATE/pil-train.log" 2>/dev/null; do
-  if grep -q "HALT" "$GATE/pil-train.log" 2>/dev/null; then
+  # HALT check reads only the lines SINCE THE LAST seed START. A whole-file grep stood
+  # down on a stale HALT from an earlier attempt that had already been fixed and
+  # relaunched (the train log is appended to, not truncated); a tail -25 window was
+  # still too wide because this log is short -- progress goes to the per-seed logs.
+  if awk '/=== seed .* START/{buf=""} {buf=buf $0 "
+"} END{printf "%s", buf}' "$GATE/pil-train.log" 2>/dev/null | grep -q "HALT"; then
     echo "[eval] training HALTED -- not starting evals"; exit 1
   fi
   sleep 30
