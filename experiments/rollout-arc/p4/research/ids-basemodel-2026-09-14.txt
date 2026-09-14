@@ -1,0 +1,7 @@
+# M2 (base-vs-instruct RLVR practice). Ids not already CONFIRMED in oracle-multi-2026-09-14.txt
+2501.12948   # DeepSeek-R1 / R1-Zero
+2503.24290   # Open-Reasoner-Zero
+2503.18892   # SimpleRL-Zoo
+2605.21125   # Advantage Collapse in GRPO
+2505.21067   # small-data distillation vs zero-RL
+2607.01465   # Atlassian schema tool-calling -- the id whose PDF summary FABRICATED quotes
