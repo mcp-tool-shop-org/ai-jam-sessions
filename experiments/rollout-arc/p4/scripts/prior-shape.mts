@@ -97,9 +97,11 @@ console.log(`\n=== ADMISSIBLE OPENINGS PER HELD-OUT ITEM (2 voices), measured on
 for (const [k, v] of [...alpha.entries()].sort((a, b) => a[0] - b[0])) console.log(`  ${k} openings: ${v} items`);
 
 console.log(`\n=== SHAPE OF THE OPENING PRIOR, n=${prompts.length} held-out items, G=64 ===`);
-console.log(`  support            = distinct first-chords emitted per item, PARSEABLE ONLY (alphabet is 16)`);
+console.log(`  support            = distinct first-chords EMITTED per item, parseable only. NOT "of 16":
+                       emitted openings need not be admissible, so this can exceed the alphabet.`);
 console.log(`  modal              = share of the most common one AMONG PARSEABLE  <- six phases reported only this`);
-console.log(`  distinct-passing   = how many DIFFERENT openings ever produced an admissible passage`);
+console.log(`  distinct-passing   = how many DIFFERENT openings ever produced an admissible passage.
+                       THIS is the one to compare against the 16-opening alphabet.`);
 console.log(`  off-mode pass      = pass rate of the parseable mass that is NOT the mode
   unparseable        = format compliance, reported SEPARATELY -- it is not an opening`);
 console.log();
