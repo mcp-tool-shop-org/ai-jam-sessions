@@ -152,3 +152,7 @@ reproduce every figure above live under
 [`experiments/rollout-arc/p4/`](https://github.com/mcp-tool-shop-org/ai-jam-sessions/tree/main/experiments/rollout-arc/p4)
 — including the decision rules fixed before each run, the failed predictions, and the
 retractions attached to the paragraphs they retract.
+
+**Every generation behind those numbers is published**, unfiltered, at
+[`mcp-tool-shop/jam-rollout-arc-evals`](https://huggingface.co/datasets/mcp-tool-shop/jam-rollout-arc-evals) — 51 MB across every arm, so the figures above can
+be recomputed by someone who does not have the hardware.
