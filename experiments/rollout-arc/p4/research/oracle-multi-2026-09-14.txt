@@ -332,3 +332,24 @@ UNVERIFIED is a statement about the network, NOT a verdict on any citation.
 CONFIRMED=6
 
 ALL CONFIRMED by at least two independent providers with agreeing titles.
+
+2607.11699  [CONFIRMED]
+  title   Qwen-Music Technical Report
+  authors Jin Xu; Kangdi Wang; Ruibin Yuan; Shun Lei   year 2026
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (HTTP 429)
+
+2511.03942  [CONFIRMED]
+  title   MIDI-LLM: Improving Text-to-MIDI Music Generation via Adapting Large Language Models
+  authors Shih-Lun Wu; Dave Carlton; Ryan Miyakawa; Yoon Jun Kim   year 2025
+  openalex         FOUND
+  datacite         FOUND
+  semanticscholar  TRANSPORT  (HTTP 429)
+  arxiv-api        TRANSPORT  (TimeoutError)
+
+==========================================================================
+CONFIRMED=2
+
+ALL CONFIRMED by at least two independent providers with agreeing titles.

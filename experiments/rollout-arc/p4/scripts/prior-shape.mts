@@ -47,16 +47,30 @@ function shape(file: string, label: string) {
       if (scoreVoicing(prog, raw, 2, "common-practice").correct) passed.set(d, (passed.get(d) ?? 0) + 1);
     }
     const n = r.completions.length;
+    // ⚑ THE UNPARSEABLE BUCKET IS NOT AN OPENING. `fd()` returns "(none)" for a completion the
+    // verifier cannot parse, and the first version of this script counted that as one of the
+    // distinct openings AND let it win the mode. On an arm with 0% unparseable (every instruct
+    // arm) that changes nothing. On a base checkpoint at ~58% unparseable it inflates support
+    // by one, reports the modal share OF THE GARBAGE as the prior's peak, and then scores
+    // "mode-is-admissible 0%" because the mode is not a chord at all. Comparing that against
+    // instruct's clean 1.84 is the wrong-reference-set error with a new coat on.
+    //
+    // So: SUPPORT AND MODE ARE COMPUTED OVER PARSEABLE COMPLETIONS ONLY, and the unparseable
+    // share is reported beside them as its own number. Format compliance and prior shape are
+    // two different questions and they get two different columns.
+    h.delete("(none)");
+    const parseable = [...h.values()].reduce((s, c) => s + c, 0);
+    if (parseable === 0) { support.push(0); modal.push(NaN); modalAdmissible.push(0); unparseableShare.push(1); continue; }
     const top = Math.max(...h.values());
     const mode = [...h.entries()].find(([, c]) => c === top)![0];
     support.push(h.size);
-    modal.push(top / n);
+    modal.push(top / parseable);
     admitSupport.push([...passed.keys()].filter((k) => (passed.get(k) ?? 0) > 0).length);
     modalAdmissible.push((passed.get(mode) ?? 0) > 0 ? 1 : 0);
     unparseableShare.push(unparseable / n);
     // of the mass NOT on the mode, how much of it is admissible?
-    const offMode = n - top;
-    const offModePass = [...passed.entries()].filter(([k]) => k !== mode).reduce((s, [, c]) => s + c, 0);
+    const offMode = parseable - top;   // parseable, not n -- same rule as support and mode
+    const offModePass = [...passed.entries()].filter(([k]) => k !== mode && k !== "(none)").reduce((s, [, c]) => s + c, 0);
     if (offMode > 0) nonModalAdmitRate.push(offModePass / offMode);
   }
   console.log(
@@ -83,10 +97,11 @@ console.log(`\n=== ADMISSIBLE OPENINGS PER HELD-OUT ITEM (2 voices), measured on
 for (const [k, v] of [...alpha.entries()].sort((a, b) => a[0] - b[0])) console.log(`  ${k} openings: ${v} items`);
 
 console.log(`\n=== SHAPE OF THE OPENING PRIOR, n=${prompts.length} held-out items, G=64 ===`);
-console.log(`  support            = distinct first-chords emitted per item (out of 64 samples)`);
-console.log(`  modal              = share of the single most common one  <- the only number six phases reported`);
+console.log(`  support            = distinct first-chords emitted per item, PARSEABLE ONLY (alphabet is 16)`);
+console.log(`  modal              = share of the most common one AMONG PARSEABLE  <- six phases reported only this`);
 console.log(`  distinct-passing   = how many DIFFERENT openings ever produced an admissible passage`);
-console.log(`  off-mode pass      = pass rate of the mass that is NOT the mode`);
+console.log(`  off-mode pass      = pass rate of the parseable mass that is NOT the mode
+  unparseable        = format compliance, reported SEPARATELY -- it is not an opening`);
 console.log();
 // The director's hypothesis, measured. Same 75 items, same G=64, same generation seed.
 // ARM A runs the base checkpoint through OUR envelope with the stopping rule made comparable
