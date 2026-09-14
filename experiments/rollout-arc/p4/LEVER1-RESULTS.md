@@ -156,9 +156,14 @@ All six intervals exclude zero.
 | coverage | **+1.33pp** | [−6.67, +9.33] | includes 0 |
 | concentration | **−0.04pp** | [−2.00, +1.94] | includes 0 |
 
-**Seed variance on this arm is negligible.** Pass@1 moved eight hundredths of a point,
+**The two draws land on top of each other.** Pass@1 moved eight hundredths of a point,
 concentration four hundredths. That is what the second draw was bought to establish, and it
 establishes it: **91% was not luck.**
+
+⚑ Not "seed variance is negligible" — that phrasing was used here first and is withdrawn. It
+reads as a variance estimate and none is available: the seed-vs-seed intervals above resample
+**items**, and the coverage one resamples a 0/1 indicator per item. Neither is a run-level σ.
+Two coincident point estimates are the claim; a spread is not.
 
 > **K=2, and no variance is claimed from it.** Two seeds cannot estimate a spread; the table
 > above is the spread, shown as a spread, with items-only intervals on the paired difference.
