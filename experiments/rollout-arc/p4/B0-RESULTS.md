@@ -223,3 +223,33 @@ not by anything in the design. **Had it not been, the second dead-man would have
 first tick and the whole cell would have run uncovered.** A reused label inherits the previous
 run's disarm. The fix is a per-pod label (`b0cell-<podid>`) or an explicit delete in the arm
 step; recorded here rather than left to be discovered by an uncovered run.
+
+### Display only: the two clean pairs agree to 0.02pp
+
+The arms share seeds 7/8/9, so the runs can be laid alongside each other. **This is a display,
+not a re-scoring** — the cell's reading is the arm-vs-arm interval above and it stands.
+
+| seed | C | B0 | B0 − C |
+|---|---|---|---|
+| 7 | +2.83 | +3.29 | **+0.46** |
+| 8 | +3.00 | +3.44 | **+0.44** |
+| 9 | −10.83 | −1.38 | +9.45 |
+
+Two of the three differences agree to **0.02pp**. The headline +3.45pp is C9's −10.83pp
+arriving in the mean. Dropping C9 would be post-hoc outlier removal and is not done.
+
+**What the pairing does establish is a design fact, not a result.** If *data order* drove C9,
+B09 would mirror it — it does not (−1.38 against −10.83). Data order is the thing `--seed`
+controls. The term `--seed` does **not** control is **LoRA init** (`train.py:15`, `#6688b`),
+and **no run in this cell pinned it**: `init_adapter` is `null` on all six receipts, even
+though `--save-init-adapter` / `--init-adapter` have existed in `train.py` since P2.
+
+So the six runs were six independent draws of adapter init, not replicates. Paired by seed the
+difference sd is 5.20pp (MDE 8.40pp) against the unpaired pooled 5.94pp (MDE 13.58pp) — and a
+design that pinned init and paired C against B0 **at the same init** would remove the term
+outright.
+
+**That is the instrument fix, and it is also the reason not to spend the remaining budget on
+it.** The two pairs where nothing went sideways put β's effect on concentration at about
+**+0.45pp**. Resolving that needs K in the tens at any level of pairing. The next cell to buy
+is not a better-measured β.
