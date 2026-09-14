@@ -1,0 +1,5 @@
+# Fetched artifacts for the B0 cell land here, and the dead-man watches this directory
+# for DEADMAN_CANCEL_b0cell. deadman-p2.ps1 -ArtDir and babysit-b0.sh B0_CANCEL_DIR must
+# BOTH point here or a clean finish will not disarm the cap.
+*
+!.gitignore
