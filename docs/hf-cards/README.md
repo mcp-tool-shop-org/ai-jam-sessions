@@ -84,3 +84,17 @@ Three options, for whoever decides:
 
 The acoustic corpus (`jam-actions-acoustic-v0`) does not have this problem: its card is generated
 from source, so the repository, the checksums and the Hugging Face copy cannot drift apart.
+
+## `jam-rollout-arc-evals.md` — tracked from the start
+
+Added 2026-09-14, the day the dataset was published. No workflow pushes it; it is uploaded by hand
+to `mcp-tool-shop/jam-rollout-arc-evals` as that repo's `README.md`, so the drift risk here runs the
+other way — an edit made on Hugging Face is the one that would go missing. Edit this file, upload,
+and the two stay equal.
+
+Its front matter is load-bearing rather than decorative. The dataset holds twenty JSONL files and
+nineteen of them share a schema; `prompts/prompts-heldout-v1.jsonl` does not. Without an explicit
+`configs:` block Hugging Face globs all twenty into one split, the Parquet conversion dies on a
+`CastError`, and the card shows **Preview** instead of **Viewer** — no row count, no search, no
+filter, no statistics, and `load_dataset` fails for everyone. Four configs, one per experiment
+family, each internally consistent, is what makes the viewer work.
