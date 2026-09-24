@@ -1,0 +1,58 @@
+summary: ""
+boundaries:
+  - name: .github
+    globs:
+      - .github/**
+    role: config
+  - name: cockpit
+    globs:
+      - apps/cockpit/**
+    role: code
+  - name: datasets
+    globs:
+      - datasets/**
+    role: data
+  - name: docs
+    globs:
+      - docs/**
+    role: docs
+  - name: experiments
+    globs:
+      - experiments/**
+    role: code
+  - name: plugin
+    globs:
+      - plugin/**
+    role: docs
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: samples
+    globs:
+      - samples/**
+    role: config
+  - name: scores
+    globs:
+      - scores/**
+    role: data
+  - name: scripts
+    globs:
+      - scripts/**
+    role: code
+  - name: site
+    globs:
+      - site/**
+    role: site
+  - name: songs
+    globs:
+      - songs/**
+    role: data
+  - name: spaces
+    globs:
+      - spaces/**
+    role: code
+  - name: src
+    globs:
+      - src/**
+    role: code
