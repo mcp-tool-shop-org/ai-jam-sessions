@@ -1,0 +1,1515 @@
+{
+  "authored": [
+    ".github/",
+    "plugin/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 6,
+      "importedBy": [
+        "cockpit",
+        "docs",
+        "experiments",
+        "scripts"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    },
+    {
+      "doors": 3,
+      "importedBy": [],
+      "importedByTests": [
+        "src"
+      ],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [
+        "src"
+      ],
+      "kind": "part",
+      "name": "cockpit",
+      "partLabel": "cockpit"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [
+        "src"
+      ],
+      "kind": "part",
+      "name": "experiments",
+      "partLabel": "experiments"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "root",
+      "partLabel": "the repository root"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "experiments"
+      ],
+      "target": "experiments/rollout-arc/p4/runs/",
+      "writers": [
+        "experiments"
+      ]
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "experiments",
+        "scripts",
+        "src"
+      ],
+      "target": "songs/library/",
+      "writers": [
+        "scripts"
+      ]
+    }
+  ],
+  "changes": {
+    "first": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "2 files changed together with their own tests, as expected.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 2,
+  "commit": "8734514e3d140be8776b5326332831e7091c395d",
+  "defaultBranch": "main",
+  "derived": "14 parts, mostly TypeScript (555 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
+  "doors": [
+    {
+      "checks": [
+        "LICENSE",
+        "README.md",
+        "logo.png",
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "samples/vocal/",
+        "songs/library/",
+        "src/",
+        "tsconfig.json",
+        "apps/cockpit/src/",
+        "scripts/analysis-chords.ts",
+        "scripts/analysis-patterns.ts",
+        "scripts/analysis-sections.ts",
+        "scripts/analysis-validate.ts",
+        "scripts/analyze-carriers.ts",
+        "scripts/annotate-batch.ts"
+      ],
+      "checksCount": 179,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [
+        "datasets/jam-actions-acoustic-v0/",
+        "datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md",
+        "datasets/jam-actions-v1-probe/README.md",
+        "datasets/jam-actions-v1-probe/applied.json",
+        "datasets/jam-actions-v1-probe/checksums.sha256",
+        "datasets/jam-actions-v1-probe/manifest.json",
+        "datasets/jam-actions-v1-probe/records/",
+        "datasets/jam-actions-v1-probe/records.jsonl",
+        "datasets/jam-actions-v1-probe/splits.json",
+        "experiments/acoustic-sft/data/sft-test.jsonl",
+        "experiments/acoustic-sft/data/sft-train.jsonl",
+        "experiments/acoustic-sft/runs/",
+        "songs/"
+      ],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "cockpit",
+          "depth": 0,
+          "files": 32
+        },
+        {
+          "boundary": "experiments",
+          "depth": 0,
+          "files": 19
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 11
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 366
+        }
+      ],
+      "runs": [
+        "src/mcp-server.ts",
+        "src/smoke.ts",
+        "apps/cockpit/src/capture.test.ts",
+        "apps/cockpit/src/clipboard.test.ts",
+        "apps/cockpit/src/gesture.test.ts",
+        "apps/cockpit/src/preview.test.ts",
+        "apps/cockpit/src/pure-logic.test.ts",
+        "apps/cockpit/src/ruler.test.ts",
+        "apps/cockpit/src/salamander-logic.test.ts",
+        "apps/cockpit/src/state.test.ts",
+        "apps/cockpit/src/time.test.ts",
+        "apps/cockpit/src/transport.test.ts",
+        "experiments/_template/task.test.ts",
+        "experiments/acoustic-sft/eval.test.ts",
+        "experiments/acoustic-sft/runpod.test.ts",
+        "experiments/rollout-arc/scripts/ollama-grade-args.test.ts",
+        "experiments/rollout-arc/scripts/p0-report.test.ts",
+        "experiments/rollout-arc/scripts/p2-env-server.test.ts",
+        "experiments/rollout-arc/scripts/p4-prefix-forcing.test.ts",
+        "experiments/rollout-arc/scripts/p4-vl-server.test.ts",
+        "experiments/rollout-arc/scripts/score-passk.test.ts",
+        "scripts/analysis-chords.test.ts",
+        "scripts/analysis-patterns.test.ts",
+        "scripts/analysis-sections.test.ts",
+        "scripts/annotate-batch.test.ts",
+        "src/analysis/analyze.test.ts",
+        "src/analysis/baseline.test.ts",
+        "src/analysis/chord-id.test.ts",
+        "src/analysis/events.test.ts",
+        "src/analysis/hcdf.test.ts",
+        "src/annotation-scorer.test.ts",
+        "src/audio/bridge.test.ts",
+        "src/audio/cqt.test.ts",
+        "src/audio/db.test.ts",
+        "src/audio/ensemble.test.ts",
+        "src/audio/fft.test.ts",
+        "src/chord-detect.test.ts",
+        "src/cli.test.ts",
+        "src/compose/bws.test.ts",
+        "src/compose/human-audio-panel.test.ts",
+        "src/compose/llm-panel.test.ts",
+        "src/dataset/abc-adapter.test.ts",
+        "src/dataset/acoustic-v1/allowlist.test.ts",
+        "src/dataset/acoustic-v1/probe.test.ts",
+        "src/dataset/acoustic/builder.test.ts",
+        "src/dataset/acoustic/corpus.test.ts",
+        "src/dataset/acoustic/measured.test.ts",
+        "src/dataset/acoustic/release-adapter.test.ts",
+        "src/dataset/acoustic/reproduce.test.ts",
+        "src/dataset/enrichment.test.ts",
+        "src/dataset/eval/annotation-grounding-tool.test.ts",
+        "src/dataset/eval/annotation-grounding.test.ts",
+        "src/dataset/eval/corpus-sampler.test.ts",
+        "src/dataset/eval/llm-runner.test.ts",
+        "src/dataset/eval/markov-foil.test.ts",
+        "src/dataset/experiment/env.test.ts",
+        "src/dataset/experiment/eval.test.ts",
+        "src/dataset/experiment/mcp-executor.test.ts",
+        "src/dataset/experiment/published-set.test.ts",
+        "src/dataset/experiment/registry.test.ts",
+        "src/dataset/package-public.test.ts",
+        "src/dataset/phrase-slicer.test.ts",
+        "src/dataset/provenance-url-verifier.test.ts",
+        "src/dataset/release/release-gate.test.ts",
+        "src/dataset/search-v0/env.test.ts",
+        "src/dataset/search-v0/task.test.ts",
+        "src/dataset/search-v0/window.test.ts",
+        "src/dataset/synth-v0/env.test.ts",
+        "src/dataset/synth-v0/generate.test.ts",
+        "src/errors.test.ts",
+        "src/maker/abc-chord-proposer.test.ts",
+        "src/maker/abc-syntax.test.ts",
+        "src/maker/auto-reharmonize-tool.test.ts",
+        "src/maker/chord-proposer.test.ts",
+        "src/maker/er-gate.test.ts",
+        "src/midi/parser.test.ts",
+        "src/playback/controls.test.ts",
+        "src/playback/engine.test.ts",
+        "src/playback/integration.test.ts",
+        "src/playback/metronome.test.ts",
+        "src/songs/config/loader.test.ts",
+        "src/songs/fetch.test.ts",
+        "src/songs/jam.regression.test.ts",
+        "src/songs/jam.test.ts",
+        "src/songs/library.test.ts",
+        "src/songs/loader.test.ts",
+        "src/songs/midi/ingest.test.ts",
+        "src/songs/midi/measures.test.ts",
+        "src/songs/midi/meta.test.ts",
+        "src/vocal/align-lyrics.test.ts",
+        "src/vocal/breath.test.ts",
+        "src/vocal/g2p.test.ts",
+        "src/vocal/kokoro-lead.test.ts",
+        "src/vocal/melody-notes.test.ts"
+      ],
+      "runsCount": 191,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 20 paths",
+        "on a push to main touching 20 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "LICENSE",
+        "README.md",
+        "logo.png",
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "samples/vocal/",
+        "songs/library/",
+        "src/",
+        "tsconfig.json"
+      ],
+      "checksCount": 119,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [
+        "datasets/jam-actions-acoustic-v0/",
+        "datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md",
+        "datasets/jam-actions-v1-probe/README.md",
+        "datasets/jam-actions-v1-probe/applied.json",
+        "datasets/jam-actions-v1-probe/checksums.sha256",
+        "datasets/jam-actions-v1-probe/manifest.json",
+        "datasets/jam-actions-v1-probe/records/",
+        "datasets/jam-actions-v1-probe/records.jsonl",
+        "datasets/jam-actions-v1-probe/splits.json",
+        "experiments/acoustic-sft/data/sft-test.jsonl",
+        "experiments/acoustic-sft/data/sft-train.jsonl",
+        "experiments/acoustic-sft/runs/",
+        "songs/"
+      ],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "cockpit",
+          "depth": 0,
+          "files": 24
+        },
+        {
+          "boundary": "experiments",
+          "depth": 0,
+          "files": 19
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 18
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 366
+        }
+      ],
+      "runs": [
+        "src/mcp-server.ts",
+        "apps/cockpit/src/capture.test.ts",
+        "apps/cockpit/src/clipboard.test.ts",
+        "apps/cockpit/src/gesture.test.ts",
+        "apps/cockpit/src/preview.test.ts",
+        "apps/cockpit/src/pure-logic.test.ts",
+        "apps/cockpit/src/ruler.test.ts",
+        "apps/cockpit/src/salamander-logic.test.ts",
+        "apps/cockpit/src/state.test.ts",
+        "apps/cockpit/src/time.test.ts",
+        "apps/cockpit/src/transport.test.ts",
+        "experiments/_template/task.test.ts",
+        "experiments/acoustic-sft/eval.test.ts",
+        "experiments/acoustic-sft/runpod.test.ts",
+        "experiments/rollout-arc/scripts/ollama-grade-args.test.ts",
+        "experiments/rollout-arc/scripts/p0-report.test.ts",
+        "experiments/rollout-arc/scripts/p2-env-server.test.ts",
+        "experiments/rollout-arc/scripts/p4-prefix-forcing.test.ts",
+        "experiments/rollout-arc/scripts/p4-vl-server.test.ts",
+        "experiments/rollout-arc/scripts/score-passk.test.ts",
+        "scripts/analysis-chords.test.ts",
+        "scripts/analysis-patterns.test.ts",
+        "scripts/analysis-sections.test.ts",
+        "scripts/annotate-batch.test.ts",
+        "scripts/check-release-gate.test.ts",
+        "scripts/library-write-guard.test.ts",
+        "scripts/prune-salamander.test.ts",
+        "scripts/salamander-prune-plan.test.ts",
+        "scripts/verify-public-package-checksums.test.ts",
+        "src/analysis/analyze.test.ts",
+        "src/analysis/baseline.test.ts",
+        "src/analysis/chord-id.test.ts",
+        "src/analysis/events.test.ts",
+        "src/analysis/hcdf.test.ts",
+        "src/annotation-scorer.test.ts",
+        "src/audio/bridge.test.ts",
+        "src/audio/cqt.test.ts",
+        "src/audio/db.test.ts",
+        "src/audio/ensemble.test.ts",
+        "src/audio/fft.test.ts",
+        "src/chord-detect.test.ts",
+        "src/cli.test.ts",
+        "src/compose/bws.test.ts",
+        "src/compose/human-audio-panel.test.ts",
+        "src/compose/llm-panel.test.ts",
+        "src/dataset/abc-adapter.test.ts",
+        "src/dataset/acoustic-v1/allowlist.test.ts",
+        "src/dataset/acoustic-v1/probe.test.ts",
+        "src/dataset/acoustic/builder.test.ts",
+        "src/dataset/acoustic/corpus.test.ts",
+        "src/dataset/acoustic/measured.test.ts",
+        "src/dataset/acoustic/release-adapter.test.ts",
+        "src/dataset/acoustic/reproduce.test.ts",
+        "src/dataset/enrichment.test.ts",
+        "src/dataset/eval/annotation-grounding-tool.test.ts",
+        "src/dataset/eval/annotation-grounding.test.ts",
+        "src/dataset/eval/corpus-sampler.test.ts",
+        "src/dataset/eval/llm-runner.test.ts",
+        "src/dataset/eval/markov-foil.test.ts",
+        "src/dataset/experiment/env.test.ts",
+        "src/dataset/experiment/eval.test.ts",
+        "src/dataset/experiment/mcp-executor.test.ts",
+        "src/dataset/experiment/published-set.test.ts",
+        "src/dataset/experiment/registry.test.ts",
+        "src/dataset/package-public.test.ts",
+        "src/dataset/phrase-slicer.test.ts",
+        "src/dataset/provenance-url-verifier.test.ts",
+        "src/dataset/release/release-gate.test.ts",
+        "src/dataset/search-v0/env.test.ts",
+        "src/dataset/search-v0/task.test.ts",
+        "src/dataset/search-v0/window.test.ts",
+        "src/dataset/synth-v0/env.test.ts",
+        "src/dataset/synth-v0/generate.test.ts",
+        "src/errors.test.ts",
+        "src/maker/abc-chord-proposer.test.ts",
+        "src/maker/abc-syntax.test.ts",
+        "src/maker/auto-reharmonize-tool.test.ts",
+        "src/maker/chord-proposer.test.ts",
+        "src/maker/er-gate.test.ts",
+        "src/midi/parser.test.ts",
+        "src/playback/controls.test.ts",
+        "src/playback/engine.test.ts",
+        "src/playback/integration.test.ts",
+        "src/playback/metronome.test.ts",
+        "src/songs/config/loader.test.ts",
+        "src/songs/fetch.test.ts",
+        "src/songs/jam.regression.test.ts",
+        "src/songs/jam.test.ts",
+        "src/songs/library.test.ts",
+        "src/songs/loader.test.ts",
+        "src/songs/midi/ingest.test.ts",
+        "src/songs/midi/measures.test.ts",
+        "src/songs/midi/meta.test.ts",
+        "src/vocal/align-lyrics.test.ts",
+        "src/vocal/breath.test.ts",
+        "src/vocal/g2p.test.ts",
+        "src/vocal/kokoro-lead.test.ts",
+        "src/vocal/melody-notes.test.ts"
+      ],
+      "runsCount": 190,
+      "sends": [
+        "publishes to npm and a container image"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/publish-jam-actions-v0.yml",
+      "id": ".github/workflows/publish-jam-actions-v0.yml",
+      "landings": [],
+      "name": "Publish jam-actions-v0",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 2
+        }
+      ],
+      "runs": [
+        "scripts/check-release-gate.ts",
+        "scripts/verify-public-package-checksums.ts"
+      ],
+      "runsCount": 2,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 3 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/push-adapters-hf.yml",
+      "id": ".github/workflows/push-adapters-hf.yml",
+      "landings": [],
+      "name": "Push jam-actions adapters to HuggingFace",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/push-jam-actions-v0-hf.yml",
+      "id": ".github/workflows/push-jam-actions-v0-hf.yml",
+      "landings": [],
+      "name": "Push jam-actions dataset to HuggingFace",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": ".github/workflows/zenodo-edit-record.yml",
+      "id": ".github/workflows/zenodo-edit-record.yml",
+      "landings": [],
+      "name": "Zenodo edit record metadata",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/ai-jam-sessions",
+      "kind": "package",
+      "landings": [
+        "songs/"
+      ],
+      "name": "@mcptoolshop/ai-jam-sessions",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 82
+        }
+      ],
+      "runs": [
+        "src/index.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#ai-jam-sessions",
+      "kind": "command",
+      "landings": [
+        "songs/"
+      ],
+      "name": "ai-jam-sessions",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 82
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "file": "package.json",
+      "id": "package.json#ai-jam-sessions-mcp",
+      "kind": "command",
+      "landings": [],
+      "name": "ai-jam-sessions-mcp",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "src/mcp-server.ts"
+      ],
+      "runsCount": 1,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [
+    {
+      "files": [
+        "experiments/_template/generate.ts",
+        "src/dataset/search-v0/generate.ts"
+      ],
+      "name": "buildAllRecords",
+      "partLabels": [
+        "experiments",
+        "src"
+      ],
+      "parts": [
+        "experiments",
+        "src"
+      ]
+    },
+    {
+      "files": [
+        "experiments/_template/generate.ts",
+        "src/dataset/search-v0/generate.ts"
+      ],
+      "name": "buildRecord",
+      "partLabels": [
+        "experiments",
+        "src"
+      ],
+      "parts": [
+        "experiments",
+        "src"
+      ]
+    },
+    {
+      "files": [
+        "experiments/_template/generate.ts",
+        "src/dataset/synth-v0/generate.ts"
+      ],
+      "name": "buildRecord",
+      "partLabels": [
+        "experiments",
+        "src"
+      ],
+      "parts": [
+        "experiments",
+        "src"
+      ]
+    },
+    {
+      "files": [
+        "experiments/acoustic-sft/eval.ts",
+        "src/dataset/experiment/eval.ts"
+      ],
+      "name": "scorePredictions",
+      "partLabels": [
+        "experiments",
+        "src"
+      ],
+      "parts": [
+        "experiments",
+        "src"
+      ]
+    },
+    {
+      "files": [
+        "experiments/acoustic-sft/format-sft.ts",
+        "src/dataset/experiment/format-sft.ts"
+      ],
+      "name": "toSftLine",
+      "partLabels": [
+        "experiments",
+        "src"
+      ],
+      "parts": [
+        "experiments",
+        "src"
+      ]
+    }
+  ],
+  "duplicatesLead": "These are candidates from names and call order, not a judgement.",
+  "duplicatesNote": [
+    "And 2 more pairs."
+  ],
+  "edges": [
+    {
+      "from": "cockpit",
+      "fromTests": false,
+      "to": "src"
+    },
+    {
+      "from": "experiments",
+      "fromTests": false,
+      "to": "src"
+    },
+    {
+      "from": "scripts",
+      "fromTests": false,
+      "to": "src"
+    },
+    {
+      "from": "src",
+      "fromTests": true,
+      "to": "cockpit"
+    },
+    {
+      "from": "src",
+      "fromTests": true,
+      "to": "experiments"
+    },
+    {
+      "from": "src",
+      "fromTests": true,
+      "to": "scripts"
+    }
+  ],
+  "generated": [
+    {
+      "place": "datasets/jam-actions-acoustic-v0/",
+      "writers": [
+        "src/dataset/acoustic/generate-corpus.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0-public/",
+      "writers": [
+        "scripts/package-jam-actions-public.ts",
+        "scripts/regenerate-public-package-checksums.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-results.json",
+      "writers": [
+        "scripts/build-slice19-unified-baseline.mjs"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json",
+      "writers": [
+        "scripts/build-slice19-unified-baseline.mjs"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/",
+      "writers": [
+        "scripts (6 files)"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/evals/e1-tool-use-results.json",
+      "writers": [
+        "scripts/eval-jam-actions-tool-use.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/evals/e2-notes-present-results.json",
+      "writers": [
+        "scripts/run-e2-notes-present-eval.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/evals/e2-phrase-continuation-results.json",
+      "writers": [
+        "scripts/eval-jam-actions-phrase-continuation.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/evals/e3-annotation-grounding-results.json",
+      "writers": [
+        "scripts/eval-jam-actions-annotation-grounding.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/evals/llm-in-the-loop-results.json",
+      "writers": [
+        "scripts/run-llm-eval.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/manifest.json",
+      "writers": [
+        "scripts/build-jam-actions-corpus.ts",
+        "scripts/verify-dataset-provenance-urls.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/pianoroll/bach-prelude-c-major-bwv846-m061-062.svg",
+      "writers": [
+        "scripts/revise-jam-actions-v0-r001-bach-window.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/pianoroll/fur-elise-m001-008.svg",
+      "writers": [
+        "scripts/build-record-fur-elise-m001-008.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/provenance-scan.json",
+      "writers": [
+        "scripts/scan-dataset-provenance.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/provenance-verification.json",
+      "writers": [
+        "scripts/verify-dataset-provenance-urls.ts"
+      ]
+    },
+    {
+      "block": true,
+      "place": "datasets/jam-actions-v0/records/bach-prelude-c-major-bwv846-m057-060.json",
+      "writers": [
+        "scripts/revise-jam-actions-v0-r001-bach-window.ts"
+      ]
+    },
+    {
+      "block": true,
+      "place": "datasets/jam-actions-v0/records/bach-prelude-c-major-bwv846-m061-062.json",
+      "writers": [
+        "scripts/revise-jam-actions-v0-r001-bach-window.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/revisions/r001-bach-m061-window/receipt.json",
+      "writers": [
+        "scripts/revise-jam-actions-v0-r001-bach-window.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/revisions/r002-bach-annotation-prose/receipt.json",
+      "writers": [
+        "scripts/revise-jam-actions-v0-r002-bach-annotation-prose.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/splits.json",
+      "writers": [
+        "scripts/build-jam-actions-corpus.ts",
+        "scripts/revise-jam-actions-v0-r001-bach-window.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/README.md",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/applied.json",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/checksums.sha256",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/manifest.json",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/records.jsonl",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/records/",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/splits.json",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1/PROVENANCE-NOTE.md",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-corpus.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1/README.md",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-corpus.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1/checksums.sha256",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-corpus.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1/coverage.json",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-corpus.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1/manifest.json",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-corpus.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1/records.jsonl",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-corpus.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1/records/",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-corpus.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1/splits.json",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-corpus.ts"
+      ]
+    },
+    {
+      "place": "docs/jam-actions-v0-provenance-scan.md",
+      "writers": [
+        "scripts/scan-dataset-provenance.ts"
+      ]
+    },
+    {
+      "place": "docs/jam-actions-v0-slice4-e1-eval.md",
+      "writers": [
+        "scripts/eval-jam-actions-tool-use.ts"
+      ]
+    },
+    {
+      "place": "docs/jam-actions-v0-slice6-e2-eval.md",
+      "writers": [
+        "scripts/eval-jam-actions-phrase-continuation.ts"
+      ]
+    },
+    {
+      "place": "docs/jam-actions-v0-slice7-5-llm-run.md",
+      "writers": [
+        "scripts/run-llm-eval.ts"
+      ]
+    },
+    {
+      "place": "docs/jam-actions-v0-slice7-e3-eval.md",
+      "writers": [
+        "scripts/eval-jam-actions-annotation-grounding.ts"
+      ]
+    },
+    {
+      "place": "experiments/acoustic-sft/data/sft-test.jsonl",
+      "writers": [
+        "experiments/acoustic-sft/format-sft.ts"
+      ]
+    },
+    {
+      "place": "experiments/acoustic-sft/data/sft-train.jsonl",
+      "writers": [
+        "experiments/acoustic-sft/format-sft.ts"
+      ]
+    },
+    {
+      "place": "experiments/acoustic-sft/runs/",
+      "writers": [
+        "experiments/acoustic-sft/runpod.mjs"
+      ]
+    },
+    {
+      "place": "experiments/analysis-arc/validation-results.json",
+      "writers": [
+        "scripts/analysis-validate.ts"
+      ]
+    },
+    {
+      "place": "experiments/coverage-v1-sft/data/gold-test.jsonl",
+      "writers": [
+        "experiments/coverage-v1-sft/format-sft.ts"
+      ]
+    },
+    {
+      "place": "experiments/coverage-v1-sft/data/sft-test.jsonl",
+      "writers": [
+        "experiments/coverage-v1-sft/format-sft.ts"
+      ]
+    },
+    {
+      "place": "experiments/coverage-v1-sft/data/sft-train.jsonl",
+      "writers": [
+        "experiments/coverage-v1-sft/format-sft.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/data/P1b2-gate-report.json",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/build-b2-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/data/rehearsal-b2-raw.jsonl",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/gen-rehearsal-b2.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/data/sft-train-b2.jsonl",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/build-b2-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/data/sft-val-abstention.jsonl",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/build-b2-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/data/sft-val-grounding.jsonl",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/build-b2-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/data/sft-val-jam.jsonl",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/build-b2-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/data/tools-inspector9.json",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/build-b2-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/data/tools-mcp41.json",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/build-b2-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/data/transfer-slice-b2.jsonl",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/transfer-slice-gen.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/evals/b2-prerun-gate.json",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/run-b2-evals.mjs"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-b2/evals/b2-run.log",
+      "writers": [
+        "experiments/finetune-arc-b2/scripts/run-b2-evals.mjs"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v1/data/P1v1-gate-report.json",
+      "writers": [
+        "experiments/finetune-arc-v1/scripts/build-v1-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v1/data/rehearsal-raw.jsonl",
+      "writers": [
+        "experiments/finetune-arc-v1/scripts/gen-rehearsal.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v1/data/sft-train-v1.jsonl",
+      "writers": [
+        "experiments/finetune-arc-v1/scripts/build-v1-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v1/data/sft-val-grounding.jsonl",
+      "writers": [
+        "experiments/finetune-arc-v1/scripts/build-v1-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v1/data/sft-val-jam.jsonl",
+      "writers": [
+        "experiments/finetune-arc-v1/scripts/build-v1-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v1/data/tools-inspector9.json",
+      "writers": [
+        "experiments/finetune-arc-v1/scripts/build-v1-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v1/data/tools-mcp41.json",
+      "writers": [
+        "experiments/finetune-arc-v1/scripts/build-v1-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v2/data/b1-cohort.json",
+      "writers": [
+        "experiments/finetune-arc-v2/scripts/derive-b1-cohort.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v2/evals/b1-prerun-gate.json",
+      "writers": [
+        "experiments/finetune-arc-v2/scripts/run-b1-evals.mjs"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc-v2/evals/b1-run.log",
+      "writers": [
+        "experiments/finetune-arc-v2/scripts/run-b1-evals.mjs"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc/data/P1-gate-report.json",
+      "writers": [
+        "experiments/finetune-arc/scripts/build-sft-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc/data/sft-inner-val.jsonl",
+      "writers": [
+        "experiments/finetune-arc/scripts/build-sft-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc/data/sft-train.jsonl",
+      "writers": [
+        "experiments/finetune-arc/scripts/build-sft-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/finetune-arc/data/tools.json",
+      "writers": [
+        "experiments/finetune-arc/scripts/build-sft-data.ts"
+      ]
+    },
+    {
+      "place": "experiments/jam-actions-v0-lora/train.jsonl",
+      "writers": [
+        "experiments/jam-actions-v0-lora/generate_train_jsonl.py"
+      ]
+    },
+    {
+      "place": "experiments/maker-arc/e2-gate/gate-summary.json",
+      "writers": [
+        "scripts/e2-gate-summary.ts"
+      ]
+    },
+    {
+      "place": "experiments/maker-arc/e2v2-gate/",
+      "writers": [
+        "scripts/e2v2-gate.ts"
+      ]
+    },
+    {
+      "place": "experiments/maker-arc/e2v2-premeasure/premeasure.json",
+      "writers": [
+        "scripts/e2v2-premeasure.ts"
+      ]
+    },
+    {
+      "place": "experiments/maker-arc/er-gate/gate-summary.json",
+      "writers": [
+        "scripts/er-gate-summary.ts"
+      ]
+    },
+    {
+      "place": "experiments/maker-arc/implied-chord-snapshot.json",
+      "writers": [
+        "scripts/implied-chord-snapshot.ts"
+      ]
+    },
+    {
+      "place": "experiments/maker-arc/phase-c-experiments/",
+      "writers": [
+        "scripts/bass-aware-completeness.ts",
+        "scripts/er-experiments.ts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p1c/gold.jsonl",
+      "writers": [
+        "experiments/rollout-arc/scripts/search-learnability.mjs"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p1c/pin.json",
+      "writers": [
+        "experiments/rollout-arc/scripts/search-learnability.mjs"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p1c/preds-guess.jsonl",
+      "writers": [
+        "experiments/rollout-arc/scripts/search-learnability.mjs"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p1c/preds-pass8.jsonl",
+      "writers": [
+        "experiments/rollout-arc/scripts/search-learnability.mjs"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p2/compensator-drill.json",
+      "writers": [
+        "experiments/rollout-arc/p2/scripts/compensator-drill.mjs"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p3/runs/er-items.json",
+      "writers": [
+        "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p3/runs/er-probe-summary.json",
+      "writers": [
+        "experiments/rollout-arc/p3/scripts/score-er-probe.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p3/runs/er-prompts.jsonl",
+      "writers": [
+        "experiments/rollout-arc/p3/scripts/emit-er-prompts.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/REVIEW-PACKET.md",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/emit-review-packet.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/fixtures/progressions-v1.json",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/score-curriculum.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/fewshot-exemplar.txt",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/make-fewshot.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/prompts-heldout-v1.jsonl",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/emit-prompts-from-fixture.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/prompts-vs-heldout.jsonl",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/emit-vs-prompts.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/spec-4bar-prefixed.jsonl",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/emit-exploring-starts.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/spec-4bar-same-opening.jsonl",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/emit-same-opening.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/spec-probe-summary.json",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/score-spec-probe.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/vl-probe-summary.json",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/score-vl-probe.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/vl-prompts.jsonl",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts"
+      ]
+    },
+    {
+      "place": "samples/vocal/",
+      "writers": [
+        "scripts/bake-carriers.ts",
+        "scripts/generate-carriers.ts",
+        "scripts/synth-carriers.ts"
+      ]
+    },
+    {
+      "block": true,
+      "place": "scores/amazing-grace.score-clock.v1.json",
+      "writers": [
+        "scripts/build-score-clock.mjs"
+      ]
+    },
+    {
+      "place": "songs/",
+      "writers": [
+        "scripts (4 files)",
+        "src/songs/loader.ts"
+      ]
+    },
+    {
+      "place": "spaces/jam-actions-live/demo_data.json",
+      "writers": [
+        "spaces/jam-actions-live/extract-demo-data.mjs"
+      ]
+    },
+    {
+      "place": "spaces/jam-actions-live/divergence.json",
+      "writers": [
+        "spaces/jam-actions-live/gen-divergence.mjs"
+      ]
+    },
+    {
+      "place": "src/dataset/tool-schemas.json",
+      "writers": [
+        "scripts/extract-mcp-tool-schemas.ts"
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-24T09:18:42.006Z",
+  "limits": [
+    "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
+    "11 import sites could not be resolved.",
+    "8 files use syntax the parser cannot read (scripts/compose-realize-demo.ts, scripts/run-jam-actions-corpus-eval.ts, src/dataset/acoustic-v1/generate-public.ts and 5 more), so what they import is not known: 6 in src (`typeof import(…)` as a type argument in 3, an import type followed by `[]` in 1, a NUL character inside a string in 1 and other syntax in 1), 2 in scripts (an import type followed by `[]`).",
+    "49 writes and 131 reads use paths built at run time and are not named here.",
+    "16 writes go to places this repository does not track, so they are not listed as generated.",
+    "97 writes and 343 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "18 commands are built at run time and not followed, 4 of them in tests.",
+    "Readers marked (found by text) come from scanning unparsed files.",
+    "CI runs or checks 459 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "cockpit": "cockpit",
+    "datasets": "datasets",
+    "docs": "docs",
+    "experiments": "experiments",
+    "plugin": "plugin",
+    "root": "the repository root",
+    "samples": "samples",
+    "scores": "scores",
+    "scripts": "scripts",
+    "site": "the site",
+    "songs": "songs",
+    "spaces": "spaces",
+    "src": "src"
+  },
+  "parts": 14,
+  "readers": [
+    {
+      "readers": [
+        "experiments/acoustic-sft/eval.ts",
+        "experiments/acoustic-sft/format-sft.ts"
+      ],
+      "target": "datasets/",
+      "tests": 2
+    },
+    {
+      "readers": [
+        "docs/dogfood-swarm-grok-w2-kickoff.md (found by text)",
+        "docs/dogfood-swarm-grok-w3-kickoff.md (found by text)",
+        "experiments (5 files)",
+        "scripts (19 files)",
+        "src (5 files)"
+      ],
+      "target": "songs/",
+      "tests": 6
+    }
+  ],
+  "repo": "mcp-tool-shop-org/ai-jam-sessions",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "src/mcp-server.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 191,
+  "testedBy": {
+    "cockpit": 13,
+    "experiments": 10,
+    "scripts": 11,
+    "spaces": 0,
+    "src": 168
+  },
+  "unnamedWrites": 49,
+  "unread": [
+    {
+      "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json",
+      "writers": [
+        "scripts/build-slice19-unified-baseline.mjs"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/evals/e1-tool-use-results.json",
+      "writers": [
+        "scripts/eval-jam-actions-tool-use.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/evals/e2-notes-present-results.json",
+      "writers": [
+        "scripts/run-e2-notes-present-eval.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/evals/e3-annotation-grounding-results.json",
+      "writers": [
+        "scripts/eval-jam-actions-annotation-grounding.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/evals/llm-in-the-loop-results.json",
+      "writers": [
+        "scripts/run-llm-eval.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/pianoroll/bach-prelude-c-major-bwv846-m061-062.svg",
+      "writers": [
+        "scripts/revise-jam-actions-v0-r001-bach-window.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v0/pianoroll/fur-elise-m001-008.svg",
+      "writers": [
+        "scripts/build-record-fur-elise-m001-008.ts"
+      ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
+    }
+  ],
+  "unreadFiles": 8,
+  "unreadNote": [
+    "And 61 more places."
+  ],
+  "untested": [
+    {
+      "part": "spaces",
+      "partLabel": "spaces",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [],
+  "written": 108
+}
