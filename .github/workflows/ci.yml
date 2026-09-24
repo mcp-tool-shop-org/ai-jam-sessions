@@ -46,6 +46,7 @@ on:
       - "docker-compose.yml"
       - "plugin/**"
       - ".github/workflows/**"
+      - "atlas/**"
       - "site/package.json"
       - "site/package-lock.json"
       - "site/astro.config.mjs"
@@ -68,6 +69,7 @@ on:
       - "docker-compose.yml"
       - "plugin/**"
       - ".github/workflows/**"
+      - "atlas/**"
       - "site/package.json"
       - "site/package-lock.json"
       - "site/astro.config.mjs"
@@ -101,6 +103,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
+
+      # Atlas requires Node 22 or later; both cells qualify, so it runs on the
+      # Node 22 cell only rather than repeating the same check on 24.
+      - name: Atlas check
+        if: matrix.node-version == 22
+        run: npx --yes @dogfood-lab/atlas@1.17.0 check
 
       - run: pnpm install --frozen-lockfile
 
