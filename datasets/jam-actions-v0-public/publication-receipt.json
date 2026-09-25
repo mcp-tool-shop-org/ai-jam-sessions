@@ -1,0 +1,68 @@
+{
+  "$schema_note": "v0.6.0 publication receipt. Machine-readable record of the public publication state. NO tokens, NO secrets, NO credentials. The 0.5.0 and 0.4.3 receipts remain in the source repository's history (tag jam-actions-v0-0.5.0-cut-2026-07-11).",
+  "version": "0.6.0",
+  "record_count": 57,
+  "license": "CC-BY-SA-3.0-DE",
+  "correction": {
+    "withdrawn_record_count": 58,
+    "withdrawn_songs": [
+      "chopin-nocturne-op9-no2",
+      "chopin-prelude-e-minor",
+      "pathetique-mvt2",
+      "schumann-traumerei"
+    ],
+    "reason": "The source files of these four songs came from midiworld.com and bitmidi.com and carry no established arrangement licence.",
+    "remaining_records_byte_identical_to": "0.5.0",
+    "audit": "docs/findings/published-dataset-licence-audit.md (source repository)"
+  },
+  "gates": {
+    "execution_verification_artifact": "evals/v0.6.0-execution-verification.json",
+    "library_evidence": "src/dataset/published-evidence.test.ts (source repository): 10/10 in the publish run, immediately before minting",
+    "historical_release_gate": "PASS, reproduced in the publish run from the sealed Slice-21 baseline and its three trace sources at tag jam-actions-v0-feature-marketed-2026-05-19, each pinned by sha256. Measured on the 0.4.3 composition; it makes no claim about 0.6.0."
+  },
+  "source_commit": "79c4fd1 (main after the publish-gate fix; the package is byte-identical to the tag)",
+  "source_tag": "jam-actions-v0-0.6.0",
+  "archives": {
+    "tar_gz": {
+      "name": "jam-actions-v0-public-0.6.0.tar.gz",
+      "sha256": "b00ddd9263aac30f6302d4ef986b2a12861f9db8cfa4854927afb2468a5626fd"
+    },
+    "zip": {
+      "name": "jam-actions-v0-public-0.6.0.zip",
+      "sha256": "431e164ac0df363ed6664279edf44b3b6b32a3b789c16097a902c8002cd4b02f"
+    }
+  },
+  "zenodo": {
+    "status": "published",
+    "deposit_id": 22961580,
+    "doi": "10.5281/zenodo.22961580",
+    "doi_url": "https://doi.org/10.5281/zenodo.22961580",
+    "concept_doi": "10.5281/zenodo.22961579",
+    "concept_doi_note": "A fresh deposit with its own concept DOI. The earlier concept (10.5281/zenodo.20279918) also holds versions of the separate jam-actions-v1 dataset. This record is linked to 0.5.0 (10.5281/zenodo.21313954) and 0.4.3 (10.5281/zenodo.20279919) by isNewVersionOf.",
+    "record_url": "https://zenodo.org/records/22961580",
+    "api_url": "https://zenodo.org/api/records/22961580",
+    "published_at": "2026-09-25",
+    "title": "jam-actions-v0 (public subset) — AI Jam Sessions tool-use traces, v0.6.0 correction release",
+    "license_slug": "cc-by-sa-3.0",
+    "creators": [
+      "mcp-tool-shop-org",
+      "Krueger, Bernd"
+    ],
+    "workflow_run": "https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/runs/36151244382"
+  },
+  "huggingface": {
+    "status": "published",
+    "repo_id": "mcp-tool-shop/jam-actions-v0",
+    "url": "https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0",
+    "pushed_at": "2026-09-25",
+    "commit": "9d69b474b8e7751106a5ab50f3f135fe10963b2b",
+    "workflow_run": "https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/runs/36149185705",
+    "note": "Pushed from tag jam-actions-v0-0.6.0 with delete_stale: the 150 files not in the 0.6.0 package were removed from the repository head, which then held exactly the package's 130 files."
+  },
+  "verification": {
+    "package_checksums": {
+      "verifier_script": "scripts/verify-public-package-checksums.ts",
+      "result": "PASS"
+    }
+  }
+}

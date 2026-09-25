@@ -24,6 +24,8 @@ Those records carried the arrangements note for note, so they were withdrawn. Do
 
 Audit: `docs/findings/published-dataset-licence-audit.md` in the source repository.
 
+**Published 2026-09-25.** Zenodo [`10.5281/zenodo.22961580`](https://doi.org/10.5281/zenodo.22961580) (concept `10.5281/zenodo.22961579`), deposited from `main` at `79c4fd1`, whose package is byte-identical to tag `jam-actions-v0-0.6.0`. Before minting, the run re-verified the historical release gate from its sealed sources and ran the library evidence test. The Hugging Face mirror was updated from the tag in the same session, with the files of the withdrawn records removed from the repository head. `publication-receipt.json` records both. Only this annotation, the DOI in `README.md` and `CITATION.cff`, the new receipt, `package-inputs.json` (which lists it) and the regenerated `checksums.sha256` differ from the deposited archive.
+
 ## Previous version: 0.5.1 (2026-09-08) — documentation only
 
 **No record, split, or eval artifact changed.** `records.jsonl` and every file under `records/`,
