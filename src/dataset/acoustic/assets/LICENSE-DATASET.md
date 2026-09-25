@@ -5,9 +5,8 @@ before redistributing.
 
 ## 1. Compositions — public domain
 
-The three phrases are drawn from compositions in the public domain in both the United States and
-the European Union: J. S. Bach's Prelude in C major BWV 846, Schumann's *Träumerei*, and
-Beethoven's *Für Elise*. Every composer died more than seventy years ago. No copyright restriction
+The two phrases are drawn from compositions in the public domain in both the United States and
+the European Union: J. S. Bach's Prelude in C major BWV 846 and Beethoven's *Für Elise*. Both composers died more than seventy years ago. No copyright restriction
 applies to the underlying music.
 
 ## 2. Arrangements (upstream MIDI) — CC-BY-SA-3.0-DE
