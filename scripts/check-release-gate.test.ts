@@ -33,6 +33,23 @@ describe("check-release-gate CLI parseArgs", () => {
     expect(a.baseline).toBe("datasets/jam-actions-v0-public/evals/slice21-fair-e3-baseline-results.json");
   });
 
+  it("resolves source artifacts against the working-tree package by default", () => {
+    expect(parseArgs([]).artifactsRoot.replace(/\\/g, "/")).toMatch(/datasets\/jam-actions-v0-public$/);
+  });
+
+  it("accepts --artifacts-root <dir> alongside a positional baseline", () => {
+    // The publish workflow's form: a 0.6.0+ package no longer ships the evals,
+    // so the gate reads them from a directory extracted from the sealed tag.
+    const a = parseArgs(["/tmp/slice21-fair-e3-baseline-results.json", "--artifacts-root", "/tmp/sealed-gate"]);
+    expect(a.baseline).toBe("/tmp/slice21-fair-e3-baseline-results.json");
+    expect(a.artifactsRoot).toBe("/tmp/sealed-gate");
+  });
+
+  it("rejects --artifacts-root without a directory", () => {
+    expect(() => parseArgs(["--artifacts-root"])).toThrow(CliArgsError);
+    expect(() => parseArgs(["--artifacts-root", "--quiet"])).toThrow(CliArgsError);
+  });
+
   it("accepts a single positional argument as the baseline path (Slice 23.5)", () => {
     // The Slice 23 audit caught this: a fresh contributor running
     //   tsx check-release-gate.ts datasets/.../slice21-baseline.json
