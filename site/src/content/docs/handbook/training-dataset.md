@@ -183,9 +183,9 @@ cat datasets/jam-actions-v0-public/CITATION.cff
 
 Or a plain-text form:
 
-> mcp-tool-shop-org & Krueger, B. (2026). *AI Jam Sessions — Tool-Use Traces v0 (Public Subset)*, Version 0.6.0. Zenodo. CC-BY-SA-3.0-DE.
+> mcp-tool-shop-org & Krueger, B. (2026). *AI Jam Sessions — Tool-Use Traces v0 (Public Subset)*, Version 0.6.0. Zenodo. CC-BY-SA-3.0-DE. https://doi.org/10.5281/zenodo.22961580
 
-Cite version 0.6.0 by the DOI in `CITATION.cff`. The earlier versions are 0.5.0 [`10.5281/zenodo.21313954`](https://doi.org/10.5281/zenodo.21313954) and 0.4.3 [`10.5281/zenodo.20279919`](https://doi.org/10.5281/zenodo.20279919); both contain the withdrawn records. Their concept DOI `10.5281/zenodo.20279918` also holds versions of the separate `jam-actions-v1` dataset, so cite a version DOI rather than the concept.
+Version 0.6.0 is [`10.5281/zenodo.22961580`](https://doi.org/10.5281/zenodo.22961580), a deposit with its own concept DOI [`10.5281/zenodo.22961579`](https://doi.org/10.5281/zenodo.22961579). The earlier versions are 0.5.0 [`10.5281/zenodo.21313954`](https://doi.org/10.5281/zenodo.21313954) and 0.4.3 [`10.5281/zenodo.20279919`](https://doi.org/10.5281/zenodo.20279919); both contain the withdrawn records. Their concept DOI `10.5281/zenodo.20279918` also holds versions of the separate `jam-actions-v1` dataset, so cite a version DOI rather than the concept.
 
 ## Where everything lives
 

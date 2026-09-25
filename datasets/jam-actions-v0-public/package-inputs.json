@@ -9,6 +9,7 @@
     "CITATION.cff",
     "RELEASE_NOTES.md",
     "zenodo-metadata.json",
+    "publication-receipt.json",
     "evals/v0.6.0-execution-verification.json"
   ],
   "generated_files": [
