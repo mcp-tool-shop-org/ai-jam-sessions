@@ -1,6 +1,6 @@
 ---
 title: Training dataset
-description: jam-actions-v0 — a public 115-record dataset of multi-turn MCP tool-use traces over classical piano, with a 7-axis release gate and cold-start reproducibility.
+description: jam-actions-v0 — a public 57-record dataset of multi-turn MCP tool-use traces over classical piano, with a 7-axis release gate and cold-start reproducibility.
 sidebar:
   order: 6
 ---
@@ -21,15 +21,21 @@ The training signal is not "generate text about music." It is "call the right to
 
 | | |
 |---|---|
-| Records (public subset) | 115 |
-| Canonical baseline | 16 records (post-repair E3) |
-| Compositions | 8 classical piano works |
-| Composers | Bach, Beethoven, Chopin, Debussy, Mozart, Schumann |
+| Records (public subset) | 57 (train 45, held-out test 12) |
+| Canonical baseline | 16 records (post-repair E3, measured on 0.4.3 records) |
+| Compositions | 4 classical piano works |
+| Composers | Bach, Beethoven, Debussy, Mozart |
 | Source MIDI | piano-midi.de — Bernd Krueger arrangements |
 | License | CC-BY-SA-3.0-DE |
-| Version | 0.5.0 (2026-07-11) — Bach BWV 846 correction release, errata 001 + 002 |
+| Version | 0.6.0 (2026-09-25) — correction release: 58 records from four songs withdrawn |
 | Schema | `release-gate-assessment/2.0.0` |
 | Repo test suite | 2930 passing (includes the dataset packagers, eval harnesses, and release-gate validator) |
+
+## The 0.6.0 correction
+
+Versions 0.4.x and 0.5.x held 115 records across 8 works, all attributed to Bernd Krueger under CC-BY-SA-3.0-DE. That attribution was checked against piano-midi.de's composer pages, not against the files. When the song library was audited from the MIDI bytes in September 2026, four of the songs turned out to have been built from files obtained from midiworld.com and bitmidi.com, with no established arrangement licence: Chopin's Nocturne Op. 9 No. 2 and Prelude Op. 28 No. 4, Beethoven's "Pathétique" II and Schumann's "Träumerei". Their 58 records carried those arrangements note for note, so version 0.6.0 withdraws them. The remaining 57 records are byte-identical to 0.5.0. Please do not redistribute the withdrawn records from earlier versions.
+
+The packager now enforces the lesson: a record ships only if its song's library provenance (re-derived from the MIDI bytes) names a redistributable arrangement licence and the record's source-file hash equals the evidenced file, and a test re-runs that check on every committed published package. The full account is in [`docs/findings/published-dataset-licence-audit.md`](https://github.com/mcp-tool-shop-org/ai-jam-sessions/blob/main/docs/findings/published-dataset-licence-audit.md).
 
 ## Does it actually train anything? — the fine-tuning receipts
 
@@ -48,7 +54,7 @@ Four things worth noticing:
 - **The pipeline audits the dataset back.** v1's execution-verification gate (every frozen tool call replayed against the live MCP server) caught a real defect in the published Bach records — the final window overshot BWV 846's actual 62 measures — fixed as revisions r001/r002 with public errata and shipped in v0.5.0, where execution verification is now a standing packaging gate.
 - **What did not improve is reported with equal weight.** Across all three arcs the prose-only surfaces stay below baseline (B-1: text_only −0.074, full −0.083) — the fine-tunes get better by *inspecting*, not by *recalling*. The published claim stops at the tool-grounded surface.
 
-**The five seed adapters are published** at [`mcp-tool-shop/jam-ft-v1-qwen25`](https://huggingface.co/mcp-tool-shop/jam-ft-v1-qwen25) with the claim tied to the all-seeds mean (per-seed numbers disclosed on the card; no best-of-seeds).
+**The adapters are withdrawn.** The five seed adapters were trained on records that include the four songs withdrawn in 0.6.0, so they cannot be offered under this dataset's terms. The measurements above stand as recorded; adapters trained only on licence-cleared material are published with the `jam-actions-v1` datasets.
 
 Full reports: [`finetune-arc-eval-report.md`](https://github.com/mcp-tool-shop-org/ai-jam-sessions/blob/main/docs/finetune-arc-eval-report.md) (v0), [`finetune-arc-v1-eval-report.md`](https://github.com/mcp-tool-shop-org/ai-jam-sessions/blob/main/docs/finetune-arc-v1-eval-report.md) (v1), and [`finetune-arc-v2-b1-eval-report.md`](https://github.com/mcp-tool-shop-org/ai-jam-sessions/blob/main/docs/finetune-arc-v2-b1-eval-report.md) (B-1), with preregistration locks, amendments, per-seed receipts, and replayable statistics under [`experiments/`](https://github.com/mcp-tool-shop-org/ai-jam-sessions/tree/main/experiments).
 
@@ -150,16 +156,16 @@ Expected: every command exits 0; the execution gate prints `VERDICT: PASS` (230 
 |-------------|----------|--------|-------------------|
 | Prelude in C major, BWV 846 (WTC I) | Bach | piano-midi.de (Krueger) | Yes — 16 records |
 | Für Elise | Beethoven | piano-midi.de (Krueger) | Yes — 13 records |
-| Pathétique mvt. 2 | Beethoven | piano-midi.de (Krueger) | Yes — 16 records |
-| Nocturne Op. 9 No. 2 | Chopin | piano-midi.de (Krueger) | Yes — 18 records |
-| Prelude in E minor, Op. 28 No. 4 | Chopin | piano-midi.de (Krueger) | Yes — 12 records |
 | Clair de lune | Debussy | piano-midi.de (Krueger) | Yes — 12 records (held-out test split) |
 | Sonata K545 mvt. 1 | Mozart | piano-midi.de (Krueger) | Yes — 16 records |
-| Kinderszenen No. 7 (Träumerei) | Schumann | piano-midi.de (Krueger) | Yes — 12 records |
-| Gymnopédie No. 1 | Satie | piano-midi.de | **No — Slice 2.5 URL verification failed** |
-| Arabesque No. 1 | Debussy | piano-midi.de | **No — Slice 2.5 URL verification failed** |
+| Pathétique mvt. 2 | Beethoven | midiworld.com file, no arrangement licence | **Withdrawn in 0.6.0** (16 records in 0.4.x–0.5.x) |
+| Nocturne Op. 9 No. 2 | Chopin | midiworld.com file, no arrangement licence | **Withdrawn in 0.6.0** (18 records in 0.4.x–0.5.x) |
+| Prelude in E minor, Op. 28 No. 4 | Chopin | bitmidi.com file, no arrangement licence | **Withdrawn in 0.6.0** (12 records in 0.4.x–0.5.x) |
+| Kinderszenen No. 7 (Träumerei) | Schumann | midiworld.com file, no arrangement licence | **Withdrawn in 0.6.0** (12 records in 0.4.x–0.5.x) |
+| Gymnopédie No. 1 | Satie | unverified | **No — Slice 2.5 URL verification failed** |
+| Arabesque No. 1 | Debussy | unverified | **No — Slice 2.5 URL verification failed** |
 
-The two excluded songs were *almost* included. The honest call was to leave them out: provenance against piano-midi.de could not be verified during URL audit, and rather than ship the dataset on faith we shipped what could be defended.
+Slice 2.5 checked piano-midi.de's pages; the 0.6.0 correction checked the files. Only the songs whose files carry Bernd Krueger's own copyright credit, and whose library provenance clears them, remain.
 
 ## License — share-alike, end to end
 
@@ -177,9 +183,9 @@ cat datasets/jam-actions-v0-public/CITATION.cff
 
 Or a plain-text form:
 
-> mcp-tool-shop-org & Krueger, B. (2026). *AI Jam Sessions — Tool-Use Traces v0 (Public Subset)*, Version 0.5.0. Zenodo. CC-BY-SA-3.0-DE. https://doi.org/10.5281/zenodo.20279918
+> mcp-tool-shop-org & Krueger, B. (2026). *AI Jam Sessions — Tool-Use Traces v0 (Public Subset)*, Version 0.6.0. Zenodo. CC-BY-SA-3.0-DE.
 
-The concept DOI [`10.5281/zenodo.20279918`](https://doi.org/10.5281/zenodo.20279918) always resolves to the latest published version and is the canonical citation handle recorded in `CITATION.cff`. v0.5.0 is published with version DOI [`10.5281/zenodo.21313954`](https://doi.org/10.5281/zenodo.21313954) (2026-07-11); the prior release v0.4.3 has version DOI [`10.5281/zenodo.20279919`](https://doi.org/10.5281/zenodo.20279919) (2026-05-19).
+Cite version 0.6.0 by the DOI in `CITATION.cff`. The earlier versions are 0.5.0 [`10.5281/zenodo.21313954`](https://doi.org/10.5281/zenodo.21313954) and 0.4.3 [`10.5281/zenodo.20279919`](https://doi.org/10.5281/zenodo.20279919); both contain the withdrawn records. Their concept DOI `10.5281/zenodo.20279918` also holds versions of the separate `jam-actions-v1` dataset, so cite a version DOI rather than the concept.
 
 ## Where everything lives
 
@@ -190,8 +196,9 @@ The concept DOI [`10.5281/zenodo.20279918`](https://doi.org/10.5281/zenodo.20279
 | Citation File Format | `datasets/jam-actions-v0-public/CITATION.cff` |
 | Release notes (per version) | `datasets/jam-actions-v0-public/RELEASE_NOTES.md` |
 | Attribution detail | `datasets/jam-actions-v0-public/ATTRIBUTION.md` |
-| Canonical PASS verdict (v0.5.0) | `datasets/jam-actions-v0-public/evals/v0.5.0-release-gate-assessment.json` |
-| Execution-verification receipt (v0.5.0) | `datasets/jam-actions-v0-public/evals/v0.5.0-execution-verification.json` |
+| Canonical PASS verdict (v0.5.0, 115-record composition) | git history, tag `jam-actions-v0-0.5.0-cut-2026-07-11`: `datasets/jam-actions-v0-public/evals/v0.5.0-release-gate-assessment.json` |
+| Execution-verification receipt (v0.5.0) | same tag: `datasets/jam-actions-v0-public/evals/v0.5.0-execution-verification.json` |
+| Licence audit and 0.6.0 correction | `docs/findings/published-dataset-licence-audit.md` |
 | Sealed E3 baseline (measured on v0.4.3 records) | v0.4.3 deposit + git history (`git show jam-actions-v0-feature-marketed-2026-05-19:datasets/jam-actions-v0-public/evals/slice21-fair-e3-baseline-results.json`) |
 | Records (JSONL) | `datasets/jam-actions-v0-public/records.jsonl` |
 | Records (per-file JSON) | `datasets/jam-actions-v0-public/records/` |
