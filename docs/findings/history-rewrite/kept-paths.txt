@@ -1,0 +1,27 @@
+# Paths whose historical versions hold uncleared content but are KEPT by the
+# dry-run configuration. Remove a line to include that path in the rewrite.
+#
+# sealed release-gate sources: restored by sha256 from tag
+# jam-actions-v0-feature-marketed-2026-05-19 by publish-jam-actions-v0.yml
+datasets/jam-actions-v0-public/evals/slice18-5-e3-post-repair-results.json
+datasets/jam-actions-v0-public/evals/slice19-e3-tool-fresh-results.json
+datasets/jam-actions-v0-public/evals/slice21-schumann-m045-rerun-results.json
+# not derived (see src/dataset/derived-content-exceptions.json)
+experiments/rollout-arc/p4/runs/vl-prompts.jsonl
+experiments/rollout-arc/p4/runs/vl-g8.jsonl
+experiments/rollout-arc/p4/runs/smoke.jsonl
+experiments/maker-arc/e2-gate/inputs/claude-ceiling-responses.json
+experiments/maker-arc/e2-gate/inputs/build-claude-ceiling-responses.mjs
+experiments/maker-arc/er-gate/inputs/claude-ceiling-responses.json
+songs/library/jazz/take-the-a-train.json
+docs/jam-actions-v0-slice16-rubric-guided-enrichment.md
+docs/jam-actions-v0-slice11-record-quality-enrichment.md
+docs/handoffs/audio-inspector-12-grok-to-claude.md
+docs/jam-actions-v0-slice21-schumann-remediation.md
+# held for the owner (Amazing Grace vocal route; GitHub Pages audio)
+scores/amazing-grace.score-clock.v1.json
+scores/receipts/amazing-grace/piano-bed.render-receipt.json
+scores/receipts/amazing-grace/soulx-01/pitch.json
+scores/receipts/amazing-grace/soulx-01/pitch-local.json
+scores/receipts/amazing-grace/soulx-01/pitch-placed.json
+scores/receipts/amazing-grace/soulx-syllables/pitch.json
