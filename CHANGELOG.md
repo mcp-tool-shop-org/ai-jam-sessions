@@ -15,6 +15,7 @@ The song-library audit of 2026-09-09 re-derived every song's provenance from the
 - **`jam-actions-acoustic-v0` 1.1.0** — withdraws the 36 "Träumerei" records. 72 records remain, byte-identical to 1.0.2.
 - **Library evidence gate** in `src/dataset/package-public.ts` — the packager now refuses any record whose song's library provenance does not name a redistributable arrangement licence, whose file title contradicts the catalogue, or whose `midi_sidecar.midi_sha256` differs from the evidenced file. It fails closed, and it refuses exactly the 58 withdrawn records when run against the 0.5.x package.
 - **`src/dataset/published-evidence.test.ts`** re-runs the evidence check on every committed published package (v0-public, acoustic-v0, v1, v1-probe), so a later provenance change fails the build on the published sets themselves.
+- **The Zenodo publish workflow** runs that evidence test immediately before minting, and its release-gate step now restores the sealed Slice-21 trace sources from their tag (each pinned by sha256, read through the new `check-release-gate.ts --artifacts-root`), since 0.6.0 no longer ships them. The historical gate verdict reproduces unchanged.
 - The working corpus marks the 58 records `record_verdict: "excluded"` with the reason; `PROVENANCE-NOTE.md`, the README, the handbook and the dataset cards describe the correction.
 - The `jam-ft-v1-qwen25` adapters are withdrawn, because their training data included records from the four songs. Their evaluation reports stand as recorded.
 
