@@ -97,12 +97,6 @@ export const PHRASE_SPECS: readonly PhraseSpec[] = [
     composition_year: 1722,
     phrase_window: "mm.1 RH 4-note reduction",
   }),
-  phraseFromRecord("schumann-traumerei-m001-004.json", {
-    title: "Träumerei from Kinderszenen",
-    composer: "Robert Schumann",
-    composition_year: 1838,
-    phrase_window: "mm.1-4 RH 4-note reduction",
-  }),
   phraseFromRecord("fur-elise-m001-008.json", {
     title: "Für Elise",
     composer: "Ludwig van Beethoven",
@@ -111,7 +105,9 @@ export const PHRASE_SPECS: readonly PhraseSpec[] = [
   }),
 ];
 
-export const TRAIN_SONG_IDS = ["bach-prelude-c-major-bwv846", "schumann-traumerei"] as const;
+// 1.1.0 (2026-09-25): schumann-traumerei withdrawn. Its library arrangement is a
+// midiworld file whose licence the 2026-09-09 provenance audit could not establish.
+export const TRAIN_SONG_IDS = ["bach-prelude-c-major-bwv846"] as const;
 export const TEST_SONG_ID = "fur-elise" as const;
 
 export function assertNoClairDeLune(songId: string): void {
