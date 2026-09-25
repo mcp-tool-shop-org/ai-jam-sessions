@@ -7,8 +7,11 @@
 //   2. not_computable state tests
 //   3. Shuffled-bars control tests (correctness + determinism)
 //   4. Paired-record integrity check tests (orphan detection, count mismatches)
-//   5. Corpus regression — 72 pairs from Slice 9b corpus (expanded from 22 in Slice 5):
-//      a. Integrity check passes (72 pairs, 0 orphans)
+//   5. Corpus regression — the cleared source corpus (57 records, 28 pairs). It was
+//      145 records / 72 pairs from Slice 9b until 2026-09-25, when the 88 records
+//      the library evidence gate refuses were removed from the tree
+//      (docs/findings/derived-content-inventory.md):
+//      a. Integrity check passes (28 pairs, 0 orphans)
 //      b. Gold vs shuffled diverges on rhythm/groove for ≥3 pairs
 //      c. Pitch-class OA gold vs shuffled ≈ 1.0 (sanity baseline)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -65,6 +68,7 @@ import {
   type ResolvedPair,
 } from "./phrase-continuation.js";
 import type { TimedEvent } from "../schema.js";
+import { evidenceRefusal, loadLibraryEvidence, type SourceRecord } from "../package-public.js";
 
 // Local alias for test clarity
 type TE = TimedEvent;
@@ -72,6 +76,9 @@ type TE = TimedEvent;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, "..", "..", "..");
 const RECORDS_DIR = join(REPO_ROOT, "datasets", "jam-actions-v0", "records");
+/** The cleared source corpus: 28 prompt/continuation pairs plus one standalone record. */
+const CORPUS_RECORDS = 57;
+const CORPUS_PAIRS = 28;
 
 // ─── Synthetic note factories ─────────────────────────────────────────────────
 
@@ -647,29 +654,34 @@ beforeAll(() => {
   });
 });
 
-describe("corpus integrity (72 pairs, 0 orphans)", () => {
-  it("loads 145 records total", () => {
-    expect(allCorpusRecords.length).toBe(145);
+describe("corpus integrity (28 pairs, 0 orphans)", () => {
+  it(`loads ${CORPUS_RECORDS} records total, every one cleared by the library evidence gate`, () => {
+    expect(allCorpusRecords.length).toBe(CORPUS_RECORDS);
+    const evidence = loadLibraryEvidence(REPO_ROOT);
+    const refused = allCorpusRecords
+      .map((r) => ({ id: r.id, reason: evidenceRefusal(r as unknown as SourceRecord, evidence) }))
+      .filter((x) => x.reason !== null);
+    expect(refused).toEqual([]);
   });
 
-  it("has exactly 72 prompt records", () => {
+  it(`has exactly ${CORPUS_PAIRS} prompt records`, () => {
     const prompts = allCorpusRecords.filter(
       (r) => r.scope.window_role === "prompt",
     );
-    expect(prompts.length).toBe(72);
+    expect(prompts.length).toBe(CORPUS_PAIRS);
   });
 
-  it("has exactly 72 continuation_target records", () => {
+  it(`has exactly ${CORPUS_PAIRS} continuation_target records`, () => {
     const targets = allCorpusRecords.filter(
       (r) => r.scope.window_role === "continuation_target",
     );
-    expect(targets.length).toBe(72);
+    expect(targets.length).toBe(CORPUS_PAIRS);
   });
 
-  it("paired integrity check passes (72 pairs, 0 orphans)", () => {
-    const result = checkPairedIntegrity(allCorpusRecords, 72);
+  it(`paired integrity check passes (${CORPUS_PAIRS} pairs, 0 orphans)`, () => {
+    const result = checkPairedIntegrity(allCorpusRecords, CORPUS_PAIRS);
     expect(result.passed).toBe(true);
-    expect(result.pairCount).toBe(72);
+    expect(result.pairCount).toBe(CORPUS_PAIRS);
     expect(result.orphanCount).toBe(0);
     expect(result.missingPairedIds.length).toBe(0);
   });
@@ -732,29 +744,29 @@ describe("corpus regression — gold vs shuffled diverges on rhythm/groove", () 
 });
 
 describe("runFullE2Eval on full corpus", () => {
-  it("runs without errors and returns 72 pair results", () => {
-    const run = runFullE2Eval(allCorpusRecords, 72);
+  it(`runs without errors and returns ${CORPUS_PAIRS} pair results`, () => {
+    const run = runFullE2Eval(allCorpusRecords, CORPUS_PAIRS);
     expect(run.integrityCheck.passed).toBe(true);
-    expect(run.pairResults.length).toBe(72);
+    expect(run.pairResults.length).toBe(CORPUS_PAIRS);
   });
 
   it("integrity gate passes", () => {
-    const run = runFullE2Eval(allCorpusRecords, 72);
+    const run = runFullE2Eval(allCorpusRecords, CORPUS_PAIRS);
     expect(run.hardGates.integrityPassed).toBe(true);
   });
 
   it("rhythm gate: ≥3 pairs where gold ≠ shuffled (rhythm diverges)", () => {
-    const run = runFullE2Eval(allCorpusRecords, 72);
+    const run = runFullE2Eval(allCorpusRecords, CORPUS_PAIRS);
     expect(run.hardGates.rhythmGoldBeatShuffledPairCount).toBeGreaterThanOrEqual(3);
   });
 
   it("groove gate: ≥3 pairs where gold ≠ shuffled (groove diverges)", () => {
-    const run = runFullE2Eval(allCorpusRecords, 72);
+    const run = runFullE2Eval(allCorpusRecords, CORPUS_PAIRS);
     expect(run.hardGates.grooveGoldBeatShuffledPairCount).toBeGreaterThanOrEqual(3);
   });
 
   it("grooveOAMeanDelta is defined (≥0 expected for shuffled control baseline)", () => {
-    const run = runFullE2Eval(allCorpusRecords, 72);
+    const run = runFullE2Eval(allCorpusRecords, CORPUS_PAIRS);
     // grooveOAMeanDelta = 1.0 - mean(grooveSim_goldVsShuffled).
     // This is the "distance" the shuffled baseline is from gold.
     // Locked future-model target: model's groove OA must beat this delta by ≥0.15.
@@ -770,7 +782,7 @@ describe("runFullE2Eval on full corpus", () => {
 
 describe("not_computable audit", () => {
   it("all not_computable entries have non-empty reason strings", () => {
-    const run = runFullE2Eval(allCorpusRecords, 72);
+    const run = runFullE2Eval(allCorpusRecords, CORPUS_PAIRS);
     for (const entry of run.hardGates.notComputableAudit) {
       expect(entry.reason.length).toBeGreaterThan(0);
       expect(entry.pairId.length).toBeGreaterThan(0);

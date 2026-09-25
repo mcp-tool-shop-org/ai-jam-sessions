@@ -1524,12 +1524,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 3, which pitch does the right hand play on beat 1.475?",
-          "options": [
-            "F#5",
-            "E5",
-            "F5",
-            "G5"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "F5",
@@ -1801,12 +1796,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 5, which pitch does the right hand play on beat 2.3083?",
-          "options": [
-            "D5",
-            "C5",
-            "C#5",
-            "D#5"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "C#5",
@@ -2078,12 +2068,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 11, which pitch does the right hand play on beat 1.6583?",
-          "options": [
-            "A#4",
-            "B4",
-            "A4",
-            "C5"
-          ],
+          "options": [],
           "correctOptionIndex": 0,
           "midiGrounded": true,
           "goldValue": "A#4",
@@ -2355,12 +2340,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 16, which pitch does the right hand play on beat 1.5292?",
-          "options": [
-            "D#4",
-            "C#4",
-            "E4",
-            "D4"
-          ],
+          "options": [],
           "correctOptionIndex": 3,
           "midiGrounded": true,
           "goldValue": "D4",
@@ -2632,12 +2612,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 17, which pitch does the right hand play on beat 3.0333?",
-          "options": [
-            "E4",
-            "D#4",
-            "D4",
-            "F4"
-          ],
+          "options": [],
           "correctOptionIndex": 1,
           "midiGrounded": true,
           "goldValue": "D#4",
@@ -2909,12 +2884,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 21, which pitch does the right hand play on beat 3.9833?",
-          "options": [
-            "F5",
-            "F#5",
-            "E5",
-            "G5"
-          ],
+          "options": [],
           "correctOptionIndex": 0,
           "midiGrounded": true,
           "goldValue": "F5",
@@ -3186,12 +3156,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 2, which pitch does the right hand play on beat 4.0365?",
-          "options": [
-            "C5",
-            "B4",
-            "A#4",
-            "C#5"
-          ],
+          "options": [],
           "correctOptionIndex": 1,
           "midiGrounded": true,
           "goldValue": "B4",
@@ -3463,12 +3428,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 8, which pitch does the right hand play on beat 1.0833?",
-          "options": [
-            "E4",
-            "D4",
-            "D#4",
-            "F4"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "D#4",
@@ -3740,12 +3700,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 9, which pitch does the right hand play on beat 1.8176999999999999?",
-          "options": [
-            "D#4",
-            "C#4",
-            "E4",
-            "D4"
-          ],
+          "options": [],
           "correctOptionIndex": 3,
           "midiGrounded": true,
           "goldValue": "D4",
@@ -4017,12 +3972,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 16, which pitch does the right hand play on beat 3.1927?",
-          "options": [
-            "C4",
-            "C#4",
-            "B3",
-            "D4"
-          ],
+          "options": [],
           "correctOptionIndex": 0,
           "midiGrounded": true,
           "goldValue": "C4",
@@ -5402,12 +5352,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 2, which pitch does the right hand play on beat 2.3333?",
-          "options": [
-            "F4",
-            "D#4",
-            "F#4",
-            "E4"
-          ],
+          "options": [],
           "correctOptionIndex": 3,
           "midiGrounded": true,
           "goldValue": "E4",
@@ -5679,12 +5624,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 6, which pitch does the right hand play on beat 3?",
-          "options": [
-            "G4",
-            "G#4",
-            "F#4",
-            "A4"
-          ],
+          "options": [],
           "correctOptionIndex": 0,
           "midiGrounded": true,
           "goldValue": "G4",
@@ -5956,12 +5896,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 12, which pitch does the right hand play on beat 3?",
-          "options": [
-            "F4",
-            "D#4",
-            "F#4",
-            "E4"
-          ],
+          "options": [],
           "correctOptionIndex": 3,
           "midiGrounded": true,
           "goldValue": "E4",
@@ -6233,12 +6168,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 13, which pitch does the right hand play on beat 4.6667000000000005?",
-          "options": [
-            "D4",
-            "C4",
-            "C#4",
-            "D#4"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "C#4",
@@ -8449,12 +8379,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 1, which pitch does the right hand play on beat 4.9979?",
-          "options": [
-            "C#4",
-            "B3",
-            "D4",
-            "C4"
-          ],
+          "options": [],
           "correctOptionIndex": 3,
           "midiGrounded": true,
           "goldValue": "C4",
@@ -8726,12 +8651,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 7, which pitch does the right hand play on beat 2.1063?",
-          "options": [
-            "D#4",
-            "C#4",
-            "D4",
-            "E4"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "D4",
@@ -9003,12 +8923,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 9, which pitch does the right hand play on beat 1.8479?",
-          "options": [
-            "E4",
-            "F4",
-            "D#4",
-            "F#4"
-          ],
+          "options": [],
           "correctOptionIndex": 0,
           "midiGrounded": true,
           "goldValue": "E4",
@@ -9280,12 +9195,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 13, which pitch does the right hand play on beat 3.7646?",
-          "options": [
-            "D4",
-            "C4",
-            "C#4",
-            "D#4"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "C#4",
@@ -9557,12 +9467,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 5, which pitch does the right hand play on beat 3?",
-          "options": [
-            "A#5",
-            "G#5",
-            "A5",
-            "B5"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "A5",
@@ -9834,12 +9739,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 7, which pitch does the right hand play on beat 1?",
-          "options": [
-            "C5",
-            "A#4",
-            "B4",
-            "C#5"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "B4",
@@ -10111,12 +10011,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 14, which pitch does the right hand play on beat 3?",
-          "options": [
-            "D5",
-            "C#5",
-            "C5",
-            "D#5"
-          ],
+          "options": [],
           "correctOptionIndex": 1,
           "midiGrounded": true,
           "goldValue": "C#5",
@@ -10388,12 +10283,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 17, which pitch does the right hand play on beat 1?",
-          "options": [
-            "C#5",
-            "D5",
-            "C5",
-            "D#5"
-          ],
+          "options": [],
           "correctOptionIndex": 0,
           "midiGrounded": true,
           "goldValue": "C#5",
@@ -10665,12 +10555,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 19, which pitch does the right hand play on beat 1?",
-          "options": [
-            "F4",
-            "D#4",
-            "E4",
-            "F#4"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "E4",
@@ -10942,12 +10827,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 26, which pitch does the right hand play on beat 2?",
-          "options": [
-            "D#4",
-            "C#4",
-            "E4",
-            "D4"
-          ],
+          "options": [],
           "correctOptionIndex": 3,
           "midiGrounded": true,
           "goldValue": "D4",
@@ -11219,12 +11099,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 1, which pitch does the right hand play on beat 3.25?",
-          "options": [
-            "C#4",
-            "B3",
-            "D4",
-            "C4"
-          ],
+          "options": [],
           "correctOptionIndex": 3,
           "midiGrounded": true,
           "goldValue": "C4",
@@ -11496,12 +11371,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 5, which pitch does the right hand play on beat 4.7707999999999995?",
-          "options": [
-            "F4",
-            "F#4",
-            "E4",
-            "G4"
-          ],
+          "options": [],
           "correctOptionIndex": 0,
           "midiGrounded": true,
           "goldValue": "F4",
@@ -11773,12 +11643,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 11, which pitch does the right hand play on beat 2.5208?",
-          "options": [
-            "C#5",
-            "B4",
-            "D5",
-            "C5"
-          ],
+          "options": [],
           "correctOptionIndex": 3,
           "midiGrounded": true,
           "goldValue": "C5",
@@ -12050,12 +11915,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 16, which pitch does the right hand play on beat 1.5417?",
-          "options": [
-            "F4",
-            "D#4",
-            "F#4",
-            "E4"
-          ],
+          "options": [],
           "correctOptionIndex": 3,
           "midiGrounded": true,
           "goldValue": "E4",
@@ -12327,12 +12187,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 19, which pitch does the right hand play on beat 2.7188?",
-          "options": [
-            "F4",
-            "F#4",
-            "E4",
-            "G4"
-          ],
+          "options": [],
           "correctOptionIndex": 0,
           "midiGrounded": true,
           "goldValue": "F4",
@@ -12604,12 +12459,7 @@
         {
           "questionType": "annotation_grounding",
           "questionText": "In measure 23, which pitch does the right hand play on beat 1.2292?",
-          "options": [
-            "G#4",
-            "F#4",
-            "G4",
-            "A4"
-          ],
+          "options": [],
           "correctOptionIndex": 2,
           "midiGrounded": true,
           "goldValue": "G4",

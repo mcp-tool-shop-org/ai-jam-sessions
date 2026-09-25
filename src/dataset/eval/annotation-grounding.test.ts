@@ -52,6 +52,14 @@ import {
   type E3Record,
   type MCQuestion,
 } from "./annotation-grounding.js";
+import { evidenceRefusal, loadLibraryEvidence, type SourceRecord } from "../package-public.js";
+
+/**
+ * The cleared source corpus (datasets/jam-actions-v0/records). It held 145
+ * records until 2026-09-25, when the 88 the library evidence gate refuses were
+ * removed from the tree (docs/findings/derived-content-inventory.md).
+ */
+const E3_CORPUS_RECORDS = 57;
 
 // ─── Minimal fixture records ───────────────────────────────────────────────────
 
@@ -682,48 +690,57 @@ describe("generateAnnotationGroundingQuestion", () => {
 // `get_pitch_at` consumes the same 0-indexed beat as stored in timed_events
 // and on `midiClaim`. The +1 shift caused the tool-inspected model to query a
 // beat one whole beat past the actual event, returning a different event whose
-// pitch was usually NOT in the MCQ options. This regression test pins the case
-// closed by asserting:
-//   1. The gold pitch A#4 lives at beat 0.6604 in m.19 right-hand (not 1.6604).
-//   2. The question text displays "beat 0.6604" (matching the actual event).
-//   3. A#4 is the gold answer in the generated options.
+// pitch was usually NOT in the MCQ options.
+//
+// That record was removed from the tree on 2026-09-25 with its work (licence of
+// the arrangement unknown; docs/findings/derived-content-inventory.md). The
+// same condition is reproduced on a cleared record: in bach m017-020 the
+// generator anchors on C4 at beat 0.7521 of m.20 right hand, and one beat
+// later that hand plays E4, so the pre-fix "+1" display would have read a
+// different pitch. This regression test pins the case closed by asserting:
+//   1. The gold pitch C4 lives at beat 0.7521 in m.20 right-hand (not 1.7521,
+//      where E4 sounds instead).
+//   2. The generator anchors on exactly that event.
+//   3. The question text displays "beat 0.7521" (matching the actual event).
 //   4. midiClaim.beat equals the displayed beat — single source of truth.
+//   5. C4 is the gold answer in the generated options.
 //
 // Slice 18.5 fix in `generateAnnotationGroundingQuestion` removed the +1.
-describe("Slice 18.5 regression — pathetique-mvt2:m017-020 off-by-one", () => {
-  it("A#4 is at beat 0.6604 in m.19 right-hand and the question text matches", () => {
-    const PATHETIQUE_M017 = "pathetique-mvt2-m017-020.json";
-    // Load the actual public record (canonical fixture).
+describe("Slice 18.5 regression — off-by-one, reproduced on bach-prelude-c-major-bwv846:m017-020", () => {
+  it("C4 is at beat 0.7521 in m.20 right-hand and the question text matches", () => {
+    const BACH_M017 = "bach-prelude-c-major-bwv846-m017-020.json";
+    // Load the actual record (canonical fixture).
     const recordsDir = join(
       new URL(".", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1"),
-      "../../../datasets/jam-actions-v0/records", // source corpus: this record was withdrawn from the public subset in 0.6.0
+      "../../../datasets/jam-actions-v0/records",
     );
-    const recordPath = join(recordsDir, PATHETIQUE_M017);
+    const recordPath = join(recordsDir, BACH_M017);
     const record = JSON.parse(readFileSync(recordPath, "utf-8")) as E3Record;
 
-    // (1) Sanity-check the event the original bug centered on: A#4 (MIDI 70)
-    //     lives at beat 0.6604 in measure 19 right-hand. NOT at beat 1.6604.
+    // (1) Sanity-check the event the bug class centers on: C4 (MIDI 60) lives
+    //     at beat 0.7521 in measure 20 right-hand. NOT at beat 1.7521, where
+    //     the right hand plays E4 (MIDI 64) — the note a "+1" query would get.
     const events = record.observation.midi_sidecar.timed_events;
-    const m19RH = events.filter((e) => e.measure === 19 && e.hand === "right");
-    const aSharp4 = m19RH.find((e) => e.note === 70);
-    expect(aSharp4).toBeDefined();
-    expect(aSharp4!.beat).toBeCloseTo(0.6604, 4);
-    // No A#4 event lives at the previously-displayed beat 1.6604.
-    const aSharp4At1p6604 = m19RH.find(
-      (e) => e.note === 70 && Math.abs(e.beat - 1.6604) < 0.01,
+    const m20RH = events.filter((e) => e.measure === 20 && e.hand === "right");
+    const c4 = m20RH.find((e) => e.note === 60 && Math.abs(e.beat - 0.7521) < 1e-4);
+    expect(c4).toBeDefined();
+    const c4At1p7521 = m20RH.find(
+      (e) => e.note === 60 && Math.abs(e.beat - 1.7521) < 0.01,
     );
-    expect(aSharp4At1p6604).toBeUndefined();
+    expect(c4At1p7521).toBeUndefined();
+    const plusOne = m20RH.find((e) => Math.abs(e.beat - 1.7521) < 0.01);
+    expect(plusOne?.note).toBe(64);
 
     // (2) Run the actual MCQ generator and verify question text + gold +
-    //     midiClaim ALL agree on beat 0.6604 (not 1.6604). The anchor LCG
-    //     for pathetique-mvt2:m017-020 may pick a different event entirely;
-    //     what we actually pin is the load-bearing invariant: question-text
-    //     beat == midiClaim.beat == real event beat (no +1 shift).
+    //     midiClaim ALL agree on beat 0.7521 (not 1.7521), and that the
+    //     anchor is exactly the event above.
     const q = generateAnnotationGroundingQuestion(record) as MCQuestion;
     expect(isNotComputable(q)).toBe(false);
     expect(q.midiClaim).toBeDefined();
 
     const claim = q.midiClaim!;
+    expect(claim).toMatchObject({ measure: 20, hand: "right", note: 60 });
+    expect(claim.beat).toBeCloseTo(0.7521, 4);
     // The midiClaim.beat must equal the real event's beat (sanity).
     const claimedEvent = events.find(
       (e) =>
@@ -1034,8 +1051,13 @@ describe("runFullE3Eval — corpus regression", () => {
     );
   }
 
-  it("loads 145 corpus records", () => {
-    expect(allRecords.length).toBe(145);
+  it(`loads ${E3_CORPUS_RECORDS} corpus records, every one cleared by the library evidence gate`, () => {
+    expect(allRecords.length).toBe(E3_CORPUS_RECORDS);
+    const evidence = loadLibraryEvidence(REPO_ROOT);
+    const refused = allRecords
+      .map((r) => ({ id: r.id, reason: evidenceRefusal(r as unknown as SourceRecord, evidence) }))
+      .filter((x) => x.reason !== null);
+    expect(refused).toEqual([]);
   });
 
   it("gold score is 1.0 across all records and all computable questions", () => {
@@ -1154,9 +1176,9 @@ describe("runFullE3Eval — corpus regression", () => {
     }
   });
 
-  it("145 partner assignments correspond to 145 records", () => {
+  it(`${E3_CORPUS_RECORDS} partner assignments correspond to ${E3_CORPUS_RECORDS} records`, () => {
     const run = runFullE3Eval(allRecords);
-    expect(run.partnerAssignments).toHaveLength(145);
+    expect(run.partnerAssignments).toHaveLength(E3_CORPUS_RECORDS);
     // No self-pairings.
     for (const pa of run.partnerAssignments) {
       expect(pa.recordId).not.toBe(pa.partnerId);
@@ -1238,12 +1260,12 @@ describe("Slice 8 hard gates — annotation_grounding per-type", () => {
     expect(agg.goldMinusRandomMidi!).toBeGreaterThanOrEqual(0.70);
   });
 
-  it("all 145 records produce a computable annotation_grounding question (no regressions)", () => {
+  it(`all ${E3_CORPUS_RECORDS} records produce a computable annotation_grounding question (no regressions)`, () => {
     const run = runFullE3Eval(allRecordsS8);
     const agg = run.perTypeAggregates.find(
       (a) => a.questionType === QUESTION_TYPES.ANNOTATION_GROUNDING,
     )!;
-    expect(agg.computedCount).toBe(145);
+    expect(agg.computedCount).toBe(E3_CORPUS_RECORDS);
     expect(agg.notComputedCount).toBe(0);
   });
 

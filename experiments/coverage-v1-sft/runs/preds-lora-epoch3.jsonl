@@ -1,4 +1,3 @@
-{"id": "acoustic:scarborough-fair:clean", "family": "acoustic", "answer": "Matching the raw measurements.", "raw": "Matching the raw measurements.\n<tool_call>\n{\"name\": \"compare_with_measurements\", \"arguments\": {\"measurements\": [{\"f0_hz\":440,\"cents_from_target\":0.0355332552"}
 {"id": "acoustic:scarborough-fair:late_fail", "family": "acoustic", "answer": "Timing failure", "raw": "Timing failure"}
 {"id": "acoustic:scarborough-fair:sharp_fail", "family": "acoustic", "answer": "0.3", "raw": "0.3"}
 {"id": "acoustic:schumann-traumerei:clean", "family": "acoustic", "answer": "Running the deterministic voice.", "raw": "Running the deterministic voice.\n<tool_call>\n{\"name\": \"verify_harmony\", \"arguments\": {\"songId\": \"schumann-traumerei\"}}\n</tool_call>"}
@@ -42,7 +41,6 @@
 {"id": "harmony:scarborough-fair:m1:fail", "family": "harmony", "answer": "rejected", "raw": "rejected"}
 {"id": "harmony:scarborough-fair:m1:pass", "family": "harmony", "answer": "rejected", "raw": "rejected"}
 {"id": "harmony:schumann-traumerei:m2:fail", "family": "harmony", "answer": "rejected", "raw": "rejected"}
-{"id": "harmony:schumann-traumerei:m2:pass", "family": "harmony", "answer": "{\"reharmonization\":\"[{\\\"measure\\\":2,\\\"intendedChord\\\":\\\"F\\\",\\\"voicing\\\":\\\"F2 C3 A3 F3\\\"}]\"}", "raw": "{\"reharmonization\":\"[{\\\"measure\\\":2,\\\"intendedChord\\\":\\\"F\\\",\\\"voicing\\\":\\\"F2 C3 A3 F3\\\"}]\"}"}
 {"id": "harmony:simple-gifts:m11:fail", "family": "harmony", "answer": "rejected", "raw": "rejected"}
 {"id": "harmony:simple-gifts:m11:pass", "family": "harmony", "answer": "{\"verified\"}", "raw": "{\"verified\"}"}
 {"id": "harmony:solace:m6:fail", "family": "harmony", "answer": "unverified", "raw": "unverified"}

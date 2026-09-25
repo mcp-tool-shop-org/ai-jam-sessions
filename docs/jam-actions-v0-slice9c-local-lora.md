@@ -147,19 +147,14 @@ Tempo: 120 BPM
 Instrument: piano
 
 REMI tokens for this prompt phrase:
-Bar_2 Position_0 Pitch_59 Velocity_56 Duration_9 Position_59 Pitch_71 Velocity_64 Duration_2 Position_73 Pitch_71 Velocity_84 Duration_29 Position_74 Pitch_55 Velocity_24 Duration_2 Pitch_59 Velocity_36 Duration_3 Pitch_64 Velocity_44 Duration_3 Bar_3 Position_8 Pitch_59 Velocity_24 Duration_1 Position_9 Pitch_55 Velocity_20 Duration_1 [...105 tokens total...]
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 
 Predict the continuation phrase for the next 4 measures. Use predict_continuation to output the tokens.
 ```
 
 **ASSISTANT message (first 20 tokens_remi shown):**
 ```json
-{"tokens_remi": ["Bar_5", "Position_9", "Pitch_71", "Velocity_76", "Duration_29",
-  "Position_10", "Pitch_54", "Velocity_32", "Duration_3",
-  "Pitch_64", "Velocity_48", "Duration_3",
-  "Position_11", "Pitch_57", "Velocity_24", "Duration_3",
-  "Position_42", "Pitch_54", "Velocity_24", "Duration_2", ...180 tokens total],
-"tokens_abc": "X:1\nT:Prelude in E Minor, Op. 28 No. 4 (mm. 5-8)\n..."}
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 ```
 
 ---
@@ -218,18 +213,14 @@ Tempo: 120 BPM
 Instrument: piano
 
 REMI tokens for this prompt phrase:
-Bar_1 Position_95 Pitch_60 Velocity_60 Duration_19 Bar_2 Position_0 Pitch_44 Velocity_24 Duration_18 Position_3 Pitch_56 Velocity_16 Duration_5 Position_31 Pitch_51 Velocity_20 Duration_4 [...76 tokens total...]
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 
 Predict the continuation phrase for the next 4 measures. Use predict_continuation to output the tokens.
 ```
 
 **ASSISTANT message:**
 ```json
-{"tokens_remi": ["Bar_5", "Position_0", "Pitch_43", "Velocity_32", "Duration_15",
-  "Position_1", "Pitch_58", "Velocity_12", "Duration_4",
-  "Position_23", "Pitch_51", "Velocity_24", "Duration_2",
-  "Position_43", "Pitch_61", "Velocity_60", "Duration_9", ...123 tokens total],
-"tokens_abc": "X:1\nT:Pathetique Sonata, 2nd Movement (Adagio cantabile) (mm. 5-8)\nM:4/4\nL:1/16\nQ:1/4=120\nK:Ab\n|z2_D2C2|_E_AC|_BD_E5|\n"}
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 ```
 
 ---
@@ -251,24 +242,14 @@ Tempo: 89 BPM
 Instrument: piano
 
 REMI tokens for this prompt phrase:
-Bar_3 Position_0 Pitch_43 Velocity_60 Duration_12 Position_24 Pitch_59 Velocity_56 Duration_8 Pitch_62 Velocity_56 Duration_8 Pitch_66 Velocity_56 Duration_8 Bar_4 Position_0 Pitch_38 Velocity_60 Duration_12 Position_24 Pitch_57 Velocity_56 Duration_8 [...77 tokens total...]
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 
 Predict the continuation phrase for the next 4 measures. Use predict_continuation to output the tokens.
 ```
 
 **ASSISTANT message:**
 ```json
-{"tokens_remi": ["Bar_7", "Position_0", "Pitch_43", "Velocity_60", "Duration_12",
-  "Pitch_71", "Velocity_76", "Duration_4",
-  "Position_24", "Pitch_59", "Velocity_60", "Duration_8",
-  "Pitch_62", "Velocity_60", "Duration_8",
-  "Pitch_66", "Velocity_60", "Duration_8",
-  "Pitch_73", "Velocity_72", "Duration_4",
-  "Position_48", "Pitch_74", "Velocity_72", "Duration_4",
-  "Bar_8", "Position_0", "Pitch_38", "Velocity_60", "Duration_12",
-  "Pitch_69", "Velocity_68", "Duration_12",
-  "Position_24", "Pitch_57", "Velocity_60", "Duration_8", ...76 tokens total],
-"tokens_abc": "X:1\nT:Gymnopedie No. 1 (mm. 7-10)\nM:3/4\nL:1/16\nQ:1/4=89\nK:D\n|B^cd|A3^F2|^F12^F2|z^F2|\n"}
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 ```
 
 ---
@@ -290,19 +271,14 @@ Tempo: 120 BPM
 Instrument: piano
 
 REMI tokens for this prompt phrase:
-Bar_1 Position_54 Pitch_60 Velocity_48 Duration_3 Bar_2 Position_0 Pitch_65 Velocity_56 Duration_15 Position_1 Pitch_41 Velocity_28 Duration_2 Position_47 Pitch_48 Velocity_28 Duration_14 [...71 tokens total...]
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 
 Predict the continuation phrase for the next 4 measures. Use predict_continuation to output the tokens.
 ```
 
 **ASSISTANT message (first 20 tokens_remi shown):**
 ```json
-{"tokens_remi": ["Bar_5", "Position_37", "Pitch_76", "Velocity_72", "Duration_4",
-  "Position_38", "Pitch_60", "Velocity_44", "Duration_6",
-  "Position_63", "Pitch_74", "Velocity_80", "Duration_2",
-  "Position_64", "Pitch_58", "Velocity_40", "Duration_1",
-  "Position_89", "Pitch_72", "Velocity_76", "Duration_4", ...168 tokens total],
-"tokens_abc": "X:1\nT:Traumerei (Dreaming) from Kinderszenen (mm. 5-8)\nM:4/4\nL:1/16\nQ:1/4=120\nK:F\n|e6C10d3z5c7F8C8|..."}
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 ```
 
 ---
@@ -324,20 +300,14 @@ Tempo: 120 BPM
 Instrument: piano
 
 REMI tokens for this prompt phrase:
-Bar_9 Position_13 Pitch_60 Velocity_64 Duration_6 Position_15 Pitch_43 Velocity_36 Duration_2 [...85 tokens total...]
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 
 Predict the continuation phrase for the next 4 measures. Use predict_continuation to output the tokens.
 ```
 
 **ASSISTANT message (first 20 tokens_remi shown):**
 ```json
-{"tokens_remi": ["Bar_13", "Position_1", "Pitch_77", "Velocity_80", "Duration_3",
-  "Position_20", "Pitch_76", "Velocity_80", "Duration_3",
-  "Position_41", "Pitch_50", "Velocity_32", "Duration_4",
-  "Pitch_62", "Velocity_28", "Duration_5",
-  "Pitch_69", "Velocity_36", "Duration_7",
-  "Pitch_77", "Velocity_80", "Duration_4", ...153 tokens total],
-"tokens_abc": "X:1\nT:Traumerei (Dreaming) from Kinderszenen (mm. 13-16)\n..."}
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 ```
 
 ---
@@ -359,20 +329,14 @@ Tempo: 120 BPM
 Instrument: piano
 
 REMI tokens for this prompt phrase:
-Bar_17 Position_19 Pitch_65 Velocity_56 Duration_5 [...109 tokens total...]
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 
 Predict the continuation phrase for the next 4 measures. Use predict_continuation to output the tokens.
 ```
 
 **ASSISTANT message (first 20 tokens_remi):**
 ```json
-{"tokens_remi": ["Bar_21", "Position_19", "Pitch_67", "Velocity_72", "Duration_3",
-  "Position_19", "Pitch_58", "Velocity_36", "Duration_2",
-  "Position_21", "Pitch_48", "Velocity_44", "Duration_10",
-  "Pitch_60", "Velocity_36", "Duration_10",
-  "Pitch_64", "Velocity_32", "Duration_11",
-  "Position_38", "Pitch_69", "Velocity_80", "Duration_2", ...155 tokens total],
-"tokens_abc": "X:1\nT:Traumerei (Dreaming) from Kinderszenen (mm. 21-24)\n..."}
+[removed 2026-09-25: note content of an arrangement outside the cleared set; see docs/findings/derived-content-inventory.md]
 ```
 
 ---

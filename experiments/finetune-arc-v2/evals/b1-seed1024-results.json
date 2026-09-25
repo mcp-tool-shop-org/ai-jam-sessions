@@ -20361,12 +20361,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 3.9979?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -20660,12 +20655,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 3.9979?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -20959,12 +20949,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 3.9979?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -21251,12 +21236,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 1, which pitch does the right hand play on beat 3.9979?",
               "correctOptionIndex": 3,
-              "options": [
-                "C#4",
-                "B3",
-                "D4",
-                "C4"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 1,
                 "text_only": 1,
@@ -21612,12 +21592,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 9, which pitch does the right hand play on beat 0.8479?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -21911,12 +21886,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 9, which pitch does the right hand play on beat 0.8479?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -22210,12 +22180,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 9, which pitch does the right hand play on beat 0.8479?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -22502,12 +22467,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 9, which pitch does the right hand play on beat 0.8479?",
               "correctOptionIndex": 0,
-              "options": [
-                "E4",
-                "F4",
-                "D#4",
-                "F#4"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 0,
                 "text_only": 0,
@@ -22863,12 +22823,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 19, which pitch does the right hand play on beat 0.6604?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B4",
-                    "A#4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 0,
@@ -23162,12 +23117,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 19, which pitch does the right hand play on beat 0.6604?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B4",
-                    "A#4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -23461,12 +23411,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 19, which pitch does the right hand play on beat 0.6604?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B4",
-                    "A#4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 0,
@@ -23753,12 +23698,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 19, which pitch does the right hand play on beat 0.6604?",
               "correctOptionIndex": 1,
-              "options": [
-                "B4",
-                "A#4",
-                "A4",
-                "C5"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 1,
                 "text_only": 0,
@@ -24114,12 +24054,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 26, which pitch does the right hand play on beat 3.4063?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "D#4",
-                    "E4",
-                    "D4",
-                    "F4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -24413,12 +24348,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 26, which pitch does the right hand play on beat 3.4063?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "D#4",
-                    "E4",
-                    "D4",
-                    "F4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -24712,12 +24642,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 26, which pitch does the right hand play on beat 3.4063?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "D#4",
-                    "E4",
-                    "D4",
-                    "F4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -25004,12 +24929,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 26, which pitch does the right hand play on beat 3.4063?",
               "correctOptionIndex": 0,
-              "options": [
-                "D#4",
-                "E4",
-                "D4",
-                "F4"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 1,
                 "text_only": 1,
@@ -25365,12 +25285,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 2.25?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -25664,12 +25579,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 2.25?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -25963,12 +25873,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 2.25?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -26255,12 +26160,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 1, which pitch does the right hand play on beat 2.25?",
               "correctOptionIndex": 3,
-              "options": [
-                "C#4",
-                "B3",
-                "D4",
-                "C4"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 1,
                 "text_only": 1,
@@ -26544,12 +26444,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 45, which pitch does the right hand play on beat 1.5313?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "A#4",
-                    "G#4",
-                    "B4",
-                    "A4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -26771,12 +26666,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 45, which pitch does the right hand play on beat 1.5313?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "A#4",
-                    "G#4",
-                    "B4",
-                    "A4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -26998,12 +26888,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 45, which pitch does the right hand play on beat 1.5313?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "A#4",
-                    "G#4",
-                    "B4",
-                    "A4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -27218,12 +27103,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 45, which pitch does the right hand play on beat 1.5313?",
               "correctOptionIndex": 3,
-              "options": [
-                "A#4",
-                "G#4",
-                "B4",
-                "A4"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 1,
                 "text_only": 1,
@@ -27579,12 +27459,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 11, which pitch does the right hand play on beat 0.6583?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "A#4",
-                    "B4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -27878,12 +27753,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 11, which pitch does the right hand play on beat 0.6583?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "A#4",
-                    "B4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -28177,12 +28047,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 11, which pitch does the right hand play on beat 0.6583?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "A#4",
-                    "B4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -28469,12 +28334,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 11, which pitch does the right hand play on beat 0.6583?",
               "correctOptionIndex": 0,
-              "options": [
-                "A#4",
-                "B4",
-                "A4",
-                "C5"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 1,
                 "text_only": 1,
@@ -28830,12 +28690,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 3, which pitch does the right hand play on beat 0.475?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "F#5",
-                    "E5",
-                    "F5",
-                    "G5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -29129,12 +28984,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 3, which pitch does the right hand play on beat 0.475?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "F#5",
-                    "E5",
-                    "F5",
-                    "G5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -29428,12 +29278,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 3, which pitch does the right hand play on beat 0.475?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "F#5",
-                    "E5",
-                    "F5",
-                    "G5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 0,
@@ -29720,12 +29565,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 3, which pitch does the right hand play on beat 0.475?",
               "correctOptionIndex": 2,
-              "options": [
-                "F#5",
-                "E5",
-                "F5",
-                "G5"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 1,
                 "text_only": 1,
@@ -30009,12 +29849,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 31, which pitch does the right hand play on beat 2.7104?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "D4",
-                    "C4",
-                    "C#4",
-                    "D#4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 1,
@@ -30236,12 +30071,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 31, which pitch does the right hand play on beat 2.7104?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "D4",
-                    "C4",
-                    "C#4",
-                    "D#4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -30463,12 +30293,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 31, which pitch does the right hand play on beat 2.7104?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "D4",
-                    "C4",
-                    "C#4",
-                    "D#4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -30683,12 +30508,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 31, which pitch does the right hand play on beat 2.7104?",
               "correctOptionIndex": 2,
-              "options": [
-                "D4",
-                "C4",
-                "C#4",
-                "D#4"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 1,
                 "text_only": 1,
@@ -36048,12 +35868,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 16, which pitch does the right hand play on beat 0.5292?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "D#4",
-                    "C#4",
-                    "E4",
-                    "D4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -36347,12 +36162,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 16, which pitch does the right hand play on beat 0.5292?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "D#4",
-                    "C#4",
-                    "E4",
-                    "D4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 1,
@@ -36646,12 +36456,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 16, which pitch does the right hand play on beat 0.5292?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "D#4",
-                    "C#4",
-                    "E4",
-                    "D4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 1,
@@ -36938,12 +36743,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 16, which pitch does the right hand play on beat 0.5292?",
               "correctOptionIndex": 3,
-              "options": [
-                "D#4",
-                "C#4",
-                "E4",
-                "D4"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 0,
                 "text_only": 0,
@@ -37299,12 +37099,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 40, which pitch does the right hand play on beat 3.7417?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -37598,12 +37393,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 40, which pitch does the right hand play on beat 3.7417?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 1,
@@ -37897,12 +37687,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 40, which pitch does the right hand play on beat 3.7417?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -38189,12 +37974,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 40, which pitch does the right hand play on beat 3.7417?",
               "correctOptionIndex": 0,
-              "options": [
-                "E4",
-                "F4",
-                "D#4",
-                "F#4"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 0,
                 "text_only": 0,
@@ -38550,12 +38330,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 0.7083?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#5",
-                    "B4",
-                    "D5",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -38849,12 +38624,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 0.7083?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#5",
-                    "B4",
-                    "D5",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 1,
@@ -39148,12 +38918,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 0.7083?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#5",
-                    "B4",
-                    "D5",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 0,
                     "text_only": 0,
@@ -39440,12 +39205,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 23, which pitch does the right hand play on beat 0.7083?",
               "correctOptionIndex": 3,
-              "options": [
-                "C#5",
-                "B4",
-                "D5",
-                "C5"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 0,
                 "text_only": 0,
@@ -43554,12 +43314,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 1.0438?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B5",
-                    "A#5",
-                    "A5",
-                    "C6"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 0,
@@ -43853,12 +43608,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 1.0438?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B5",
-                    "A#5",
-                    "A5",
-                    "C6"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 0,
@@ -44152,12 +43902,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 1.0438?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B5",
-                    "A#5",
-                    "A5",
-                    "C6"
-                  ],
+                  "options": [],
                   "majorityScore": {
                     "full": 1,
                     "text_only": 0,
@@ -44444,12 +44189,7 @@
               "questionType": "annotation_grounding",
               "questionText": "In measure 23, which pitch does the right hand play on beat 1.0438?",
               "correctOptionIndex": 1,
-              "options": [
-                "B5",
-                "A#5",
-                "A5",
-                "C6"
-              ],
+              "options": [],
               "majorityScore": {
                 "full": 1,
                 "text_only": 0,
@@ -61045,57 +60785,7 @@
                             "arguments": {},
                             "result": {
                               "count": 7,
-                              "events": [
-                                {
-                                  "hand": "left",
-                                  "measure": 2,
-                                  "beat": 0.0188,
-                                  "pitch": 44,
-                                  "name": "G#2"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 2,
-                                  "beat": 0.1271,
-                                  "pitch": 56,
-                                  "name": "G#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 3,
-                                  "beat": 0.0771,
-                                  "pitch": 58,
-                                  "name": "A#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 3,
-                                  "beat": 0.1438,
-                                  "pitch": 49,
-                                  "name": "C#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 3,
-                                  "beat": 0.2146,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 4,
-                                  "beat": 0.0229,
-                                  "pitch": 56,
-                                  "name": "G#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 4,
-                                  "beat": 0.0604,
-                                  "pitch": 48,
-                                  "name": "C3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -61110,12 +60800,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 3.9979?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -61149,13 +60834,7 @@
                               "beat": 3.9979,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 1,
-                              "beat": 3.9979,
-                              "pitch": 60,
-                              "name": "C4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -61324,57 +61003,7 @@
                             "arguments": {},
                             "result": {
                               "count": 7,
-                              "events": [
-                                {
-                                  "hand": "left",
-                                  "measure": 2,
-                                  "beat": 0.0188,
-                                  "pitch": 44,
-                                  "name": "G#2"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 2,
-                                  "beat": 0.1271,
-                                  "pitch": 56,
-                                  "name": "G#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 3,
-                                  "beat": 0.0771,
-                                  "pitch": 58,
-                                  "name": "A#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 3,
-                                  "beat": 0.1438,
-                                  "pitch": 49,
-                                  "name": "C#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 3,
-                                  "beat": 0.2146,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 4,
-                                  "beat": 0.0229,
-                                  "pitch": 56,
-                                  "name": "G#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 4,
-                                  "beat": 0.0604,
-                                  "pitch": 48,
-                                  "name": "C3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -61389,12 +61018,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 3.9979?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -61428,13 +61052,7 @@
                               "hand": "right",
                               "measure": 1
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 1,
-                              "beat": 3.9979,
-                              "pitch": 60,
-                              "name": "C4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -61603,57 +61221,7 @@
                             "arguments": {},
                             "result": {
                               "count": 7,
-                              "events": [
-                                {
-                                  "hand": "left",
-                                  "measure": 2,
-                                  "beat": 0.0188,
-                                  "pitch": 44,
-                                  "name": "G#2"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 2,
-                                  "beat": 0.1271,
-                                  "pitch": 56,
-                                  "name": "G#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 3,
-                                  "beat": 0.0771,
-                                  "pitch": 58,
-                                  "name": "A#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 3,
-                                  "beat": 0.1438,
-                                  "pitch": 49,
-                                  "name": "C#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 3,
-                                  "beat": 0.2146,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 4,
-                                  "beat": 0.0229,
-                                  "pitch": 56,
-                                  "name": "G#3"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 4,
-                                  "beat": 0.0604,
-                                  "pitch": 48,
-                                  "name": "C3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -61668,12 +61236,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 3.9979?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -61707,13 +61270,7 @@
                               "hand": "right",
                               "measure": 1
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 1,
-                              "beat": 3.9979,
-                              "pitch": 60,
-                              "name": "C4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -61936,15 +61493,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "left",
-                                  "measure": 9,
-                                  "beat": 0.0229,
-                                  "pitch": 58,
-                                  "name": "A#3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -61959,12 +61508,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 9, which pitch does the right hand play on beat 0.8479?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -61998,13 +61542,7 @@
                               "beat": 0.8479,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 9,
-                              "beat": 0.8479,
-                              "pitch": 64,
-                              "name": "E4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -62189,15 +61727,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "left",
-                                  "measure": 9,
-                                  "beat": 0.0229,
-                                  "pitch": 58,
-                                  "name": "A#3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -62212,12 +61742,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 9, which pitch does the right hand play on beat 0.8479?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -62251,13 +61776,7 @@
                               "measure": 9,
                               "beat": 0.8479
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 9,
-                              "beat": 0.8479,
-                              "pitch": 64,
-                              "name": "E4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -62442,15 +61961,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "left",
-                                  "measure": 9,
-                                  "beat": 0.0229,
-                                  "pitch": 58,
-                                  "name": "A#3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -62465,12 +61976,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 9, which pitch does the right hand play on beat 0.8479?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -62504,13 +62010,7 @@
                               "measure": 9,
                               "beat": 0.8479
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 9,
-                              "beat": 0.8479,
-                              "pitch": 64,
-                              "name": "E4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -62733,15 +62233,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 20,
-                                  "beat": 0.4563,
-                                  "pitch": 75,
-                                  "name": "D#5"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -62756,12 +62248,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 19, which pitch does the right hand play on beat 0.6604?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B4",
-                    "A#4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -62795,13 +62282,7 @@
                               "beat": 0.6604,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 19,
-                              "beat": 0.6604,
-                              "pitch": 70,
-                              "name": "A#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -62986,15 +62467,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 20,
-                                  "beat": 0.4563,
-                                  "pitch": 75,
-                                  "name": "D#5"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -63009,12 +62482,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 19, which pitch does the right hand play on beat 0.6604?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B4",
-                    "A#4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -63048,13 +62516,7 @@
                               "beat": 0.6604,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 19,
-                              "beat": 0.6604,
-                              "pitch": 70,
-                              "name": "A#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -63239,15 +62701,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 20,
-                                  "beat": 0.4563,
-                                  "pitch": 75,
-                                  "name": "D#5"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -63262,12 +62716,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 19, which pitch does the right hand play on beat 0.6604?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B4",
-                    "A#4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -63301,13 +62750,7 @@
                               "beat": 0.6604,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 19,
-                              "beat": 0.6604,
-                              "pitch": 70,
-                              "name": "A#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -63530,22 +62973,7 @@
                             "arguments": {},
                             "result": {
                               "count": 2,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 27,
-                                  "beat": 0.3813,
-                                  "pitch": 67,
-                                  "name": "G4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 27,
-                                  "beat": 0.4396,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -63560,12 +62988,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 26, which pitch does the right hand play on beat 3.4063?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "D#4",
-                    "E4",
-                    "D4",
-                    "F4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -63599,13 +63022,7 @@
                               "beat": 3.4063,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 26,
-                              "beat": 3.4063,
-                              "pitch": 63,
-                              "name": "D#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -63790,22 +63207,7 @@
                             "arguments": {},
                             "result": {
                               "count": 2,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 27,
-                                  "beat": 0.3813,
-                                  "pitch": 67,
-                                  "name": "G4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 27,
-                                  "beat": 0.4396,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -63820,12 +63222,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 26, which pitch does the right hand play on beat 3.4063?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "D#4",
-                    "E4",
-                    "D4",
-                    "F4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -63859,13 +63256,7 @@
                               "beat": 3.4063,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 26,
-                              "beat": 3.4063,
-                              "pitch": 63,
-                              "name": "D#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -64050,22 +63441,7 @@
                             "arguments": {},
                             "result": {
                               "count": 2,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 27,
-                                  "beat": 0.3813,
-                                  "pitch": 67,
-                                  "name": "G4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 27,
-                                  "beat": 0.4396,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -64080,12 +63456,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 26, which pitch does the right hand play on beat 3.4063?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "D#4",
-                    "E4",
-                    "D4",
-                    "F4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -64119,13 +63490,7 @@
                               "beat": 3.4063,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 26,
-                              "beat": 3.4063,
-                              "pitch": 63,
-                              "name": "D#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -64331,15 +63696,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 2,
-                                  "beat": 0,
-                                  "pitch": 65,
-                                  "name": "F4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -64354,12 +63711,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 2.25?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -64393,13 +63745,7 @@
                               "beat": 2.25,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 1,
-                              "beat": 2.25,
-                              "pitch": 60,
-                              "name": "C4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -64568,15 +63914,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 2,
-                                  "beat": 0,
-                                  "pitch": 65,
-                                  "name": "F4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -64591,12 +63929,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 2.25?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -64630,13 +63963,7 @@
                               "beat": 2.25,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 1,
-                              "beat": 2.25,
-                              "pitch": 60,
-                              "name": "C4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -64805,15 +64132,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 2,
-                                  "beat": 0,
-                                  "pitch": 65,
-                                  "name": "F4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -64828,12 +64147,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 1, which pitch does the right hand play on beat 2.25?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#4",
-                    "B3",
-                    "D4",
-                    "C4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -64867,13 +64181,7 @@
                               "beat": 2.25,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 1,
-                              "beat": 2.25,
-                              "pitch": 60,
-                              "name": "C4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -65040,12 +64348,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 45, which pitch does the right hand play on beat 1.5313?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "A#4",
-                    "G#4",
-                    "B4",
-                    "A4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -65079,13 +64382,7 @@
                               "measure": 45,
                               "beat": 1.5313
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 45,
-                              "beat": 1.5313,
-                              "pitch": 69,
-                              "name": "A4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -65216,12 +64513,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 45, which pitch does the right hand play on beat 1.5313?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "A#4",
-                    "G#4",
-                    "B4",
-                    "A4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -65255,13 +64547,7 @@
                               "beat": 1.5313,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 45,
-                              "beat": 1.5313,
-                              "pitch": 69,
-                              "name": "A4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -65392,12 +64678,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 45, which pitch does the right hand play on beat 1.5313?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "A#4",
-                    "G#4",
-                    "B4",
-                    "A4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -65431,13 +64712,7 @@
                               "beat": 1.5313,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 45,
-                              "beat": 1.5313,
-                              "pitch": 69,
-                              "name": "A4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -65660,15 +64935,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 9,
-                                  "beat": 1,
-                                  "pitch": 74,
-                                  "name": "D5"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -65683,12 +64950,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 11, which pitch does the right hand play on beat 0.6583?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "A#4",
-                    "B4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -65722,13 +64984,7 @@
                               "beat": 0.6583,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 11,
-                              "beat": 0.6583,
-                              "pitch": 70,
-                              "name": "A#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -65913,15 +65169,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 9,
-                                  "beat": 1,
-                                  "pitch": 74,
-                                  "name": "D5"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -65936,12 +65184,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 11, which pitch does the right hand play on beat 0.6583?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "A#4",
-                    "B4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -65975,13 +65218,7 @@
                               "hand": "right",
                               "measure": 11
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 11,
-                              "beat": 0.6583,
-                              "pitch": 70,
-                              "name": "A#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -66166,15 +65403,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 9,
-                                  "beat": 1,
-                                  "pitch": 74,
-                                  "name": "D5"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -66189,12 +65418,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 11, which pitch does the right hand play on beat 0.6583?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "A#4",
-                    "B4",
-                    "A4",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -66228,13 +65452,7 @@
                               "beat": 0.6583,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 11,
-                              "beat": 0.6583,
-                              "pitch": 70,
-                              "name": "A#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -66457,15 +65675,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 1,
-                                  "beat": 0,
-                                  "pitch": 70,
-                                  "name": "A#4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -66480,12 +65690,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 3, which pitch does the right hand play on beat 0.475?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "F#5",
-                    "E5",
-                    "F5",
-                    "G5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -66519,13 +65724,7 @@
                               "beat": 0.475,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 3,
-                              "beat": 0.475,
-                              "pitch": 77,
-                              "name": "F5"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -66710,15 +65909,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 1,
-                                  "beat": 0,
-                                  "pitch": 70,
-                                  "name": "A#4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -66733,12 +65924,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 3, which pitch does the right hand play on beat 0.475?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "F#5",
-                    "E5",
-                    "F5",
-                    "G5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -66772,13 +65958,7 @@
                               "beat": 0.475,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 3,
-                              "beat": 0.475,
-                              "pitch": 77,
-                              "name": "F5"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -66963,15 +66143,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 1,
-                                  "beat": 0,
-                                  "pitch": 70,
-                                  "name": "A#4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -66986,12 +66158,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 3, which pitch does the right hand play on beat 0.475?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "F#5",
-                    "E5",
-                    "F5",
-                    "G5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -67025,13 +66192,7 @@
                               "beat": 0.475,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 3,
-                              "beat": 0.475,
-                              "pitch": 77,
-                              "name": "F5"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -67215,12 +66376,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 31, which pitch does the right hand play on beat 2.7104?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "D4",
-                    "C4",
-                    "C#4",
-                    "D#4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -67254,13 +66410,7 @@
                               "beat": 2.7104,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 31,
-                              "beat": 2.7104,
-                              "pitch": 61,
-                              "name": "C#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -67407,12 +66557,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 31, which pitch does the right hand play on beat 2.7104?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "D4",
-                    "C4",
-                    "C#4",
-                    "D#4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -67446,13 +66591,7 @@
                               "beat": 2.7104,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 31,
-                              "beat": 2.7104,
-                              "pitch": 61,
-                              "name": "C#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -67583,12 +66722,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 31, which pitch does the right hand play on beat 2.7104?",
                   "correctOptionIndex": 2,
-                  "options": [
-                    "D4",
-                    "C4",
-                    "C#4",
-                    "D#4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -67622,13 +66756,7 @@
                               "beat": 2.7104,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 31,
-                              "beat": 2.7104,
-                              "pitch": 61,
-                              "name": "C#4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -71879,50 +71007,7 @@
                             "arguments": {},
                             "result": {
                               "count": 6,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 13,
-                                  "beat": 0.225,
-                                  "pitch": 75,
-                                  "name": "D#5"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 13,
-                                  "beat": 0.25,
-                                  "pitch": 39,
-                                  "name": "D#2"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 15,
-                                  "beat": 0.325,
-                                  "pitch": 63,
-                                  "name": "D#4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 15,
-                                  "beat": 0.3542,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 16,
-                                  "beat": 0.0292,
-                                  "pitch": 76,
-                                  "name": "E5"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 16,
-                                  "beat": 0.4958,
-                                  "pitch": 68,
-                                  "name": "G#4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -71937,12 +71022,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 16, which pitch does the right hand play on beat 0.5292?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "D#4",
-                    "C#4",
-                    "E4",
-                    "D4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -71976,13 +71056,7 @@
                               "beat": 0.5292,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 16,
-                              "beat": 0.5292,
-                              "pitch": 62,
-                              "name": "D4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -72167,50 +71241,7 @@
                             "arguments": {},
                             "result": {
                               "count": 6,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 13,
-                                  "beat": 0.225,
-                                  "pitch": 75,
-                                  "name": "D#5"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 13,
-                                  "beat": 0.25,
-                                  "pitch": 39,
-                                  "name": "D#2"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 15,
-                                  "beat": 0.325,
-                                  "pitch": 63,
-                                  "name": "D#4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 15,
-                                  "beat": 0.3542,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 16,
-                                  "beat": 0.0292,
-                                  "pitch": 76,
-                                  "name": "E5"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 16,
-                                  "beat": 0.4958,
-                                  "pitch": 68,
-                                  "name": "G#4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -72225,12 +71256,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 16, which pitch does the right hand play on beat 0.5292?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "D#4",
-                    "C#4",
-                    "E4",
-                    "D4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -72264,13 +71290,7 @@
                               "beat": 0.5292,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 16,
-                              "beat": 0.5292,
-                              "pitch": 62,
-                              "name": "D4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -72455,50 +71475,7 @@
                             "arguments": {},
                             "result": {
                               "count": 6,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 13,
-                                  "beat": 0.225,
-                                  "pitch": 75,
-                                  "name": "D#5"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 13,
-                                  "beat": 0.25,
-                                  "pitch": 39,
-                                  "name": "D#2"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 15,
-                                  "beat": 0.325,
-                                  "pitch": 63,
-                                  "name": "D#4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 15,
-                                  "beat": 0.3542,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 16,
-                                  "beat": 0.0292,
-                                  "pitch": 76,
-                                  "name": "E5"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 16,
-                                  "beat": 0.4958,
-                                  "pitch": 68,
-                                  "name": "G#4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -72513,12 +71490,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 16, which pitch does the right hand play on beat 0.5292?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "D#4",
-                    "C#4",
-                    "E4",
-                    "D4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -72552,13 +71524,7 @@
                               "beat": 0.5292,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 16,
-                              "beat": 0.5292,
-                              "pitch": 62,
-                              "name": "D4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -72781,29 +71747,7 @@
                             "arguments": {},
                             "result": {
                               "count": 3,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 38,
-                                  "beat": 0.2375,
-                                  "pitch": 62,
-                                  "name": "D4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 38,
-                                  "beat": 0.2667,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 40,
-                                  "beat": 0.475,
-                                  "pitch": 70,
-                                  "name": "A#4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -72818,12 +71762,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 40, which pitch does the right hand play on beat 3.7417?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -72857,13 +71796,7 @@
                               "beat": 3.7417,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 40,
-                              "beat": 3.7417,
-                              "pitch": 64,
-                              "name": "E4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -73048,29 +71981,7 @@
                             "arguments": {},
                             "result": {
                               "count": 3,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 38,
-                                  "beat": 0.2375,
-                                  "pitch": 62,
-                                  "name": "D4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 38,
-                                  "beat": 0.2667,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 40,
-                                  "beat": 0.475,
-                                  "pitch": 70,
-                                  "name": "A#4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -73085,12 +71996,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 40, which pitch does the right hand play on beat 3.7417?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -73124,13 +72030,7 @@
                               "beat": 3.7417,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 40,
-                              "beat": 3.7417,
-                              "pitch": 64,
-                              "name": "E4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -73315,29 +72215,7 @@
                             "arguments": {},
                             "result": {
                               "count": 3,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 38,
-                                  "beat": 0.2375,
-                                  "pitch": 62,
-                                  "name": "D4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 38,
-                                  "beat": 0.2667,
-                                  "pitch": 55,
-                                  "name": "G3"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 40,
-                                  "beat": 0.475,
-                                  "pitch": 70,
-                                  "name": "A#4"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -73352,12 +72230,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 40, which pitch does the right hand play on beat 3.7417?",
                   "correctOptionIndex": 0,
-                  "options": [
-                    "E4",
-                    "F4",
-                    "D#4",
-                    "F#4"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -73391,13 +72264,7 @@
                               "hand": "right",
                               "measure": 40
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 40,
-                              "beat": 3.7417,
-                              "pitch": 64,
-                              "name": "E4"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -73620,15 +72487,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "left",
-                                  "measure": 21,
-                                  "beat": 1,
-                                  "pitch": 50,
-                                  "name": "D3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -73643,12 +72502,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 0.7083?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#5",
-                    "B4",
-                    "D5",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -73682,13 +72536,7 @@
                               "beat": 0.7083,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 23,
-                              "beat": 0.7083,
-                              "pitch": 72,
-                              "name": "C5"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -73873,15 +72721,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "left",
-                                  "measure": 21,
-                                  "beat": 1,
-                                  "pitch": 50,
-                                  "name": "D3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -73896,12 +72736,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 0.7083?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#5",
-                    "B4",
-                    "D5",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -73935,13 +72770,7 @@
                               "beat": 0.7083,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 23,
-                              "beat": 0.7083,
-                              "pitch": 72,
-                              "name": "C5"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -74126,15 +72955,7 @@
                             "arguments": {},
                             "result": {
                               "count": 1,
-                              "events": [
-                                {
-                                  "hand": "left",
-                                  "measure": 21,
-                                  "beat": 1,
-                                  "pitch": 50,
-                                  "name": "D3"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -74149,12 +72970,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 0.7083?",
                   "correctOptionIndex": 3,
-                  "options": [
-                    "C#5",
-                    "B4",
-                    "D5",
-                    "C5"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -74188,13 +73004,7 @@
                               "beat": 0.7083,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 23,
-                              "beat": 0.7083,
-                              "pitch": 72,
-                              "name": "C5"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -77441,50 +76251,7 @@
                             "arguments": {},
                             "result": {
                               "count": 6,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 21,
-                                  "beat": 0.2896,
-                                  "pitch": 63,
-                                  "name": "D#4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 21,
-                                  "beat": 0.2563,
-                                  "pitch": 43,
-                                  "name": "G2"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 23,
-                                  "beat": 0.0896,
-                                  "pitch": 72,
-                                  "name": "C5"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 23,
-                                  "beat": 0.0396,
-                                  "pitch": 44,
-                                  "name": "G#2"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 24,
-                                  "beat": 0.3688,
-                                  "pitch": 70,
-                                  "name": "A#4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 24,
-                                  "beat": 0.3854,
-                                  "pitch": 43,
-                                  "name": "G2"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -77499,12 +76266,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 1.0438?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B5",
-                    "A#5",
-                    "A5",
-                    "C6"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -77538,13 +76300,7 @@
                               "beat": 1.0438,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 23,
-                              "beat": 1.0438,
-                              "pitch": 82,
-                              "name": "A#5"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -77729,50 +76485,7 @@
                             "arguments": {},
                             "result": {
                               "count": 6,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 21,
-                                  "beat": 0.2896,
-                                  "pitch": 63,
-                                  "name": "D#4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 21,
-                                  "beat": 0.2563,
-                                  "pitch": 43,
-                                  "name": "G2"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 23,
-                                  "beat": 0.0896,
-                                  "pitch": 72,
-                                  "name": "C5"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 23,
-                                  "beat": 0.0396,
-                                  "pitch": 44,
-                                  "name": "G#2"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 24,
-                                  "beat": 0.3688,
-                                  "pitch": 70,
-                                  "name": "A#4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 24,
-                                  "beat": 0.3854,
-                                  "pitch": 43,
-                                  "name": "G2"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -77787,12 +76500,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 1.0438?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B5",
-                    "A#5",
-                    "A5",
-                    "C6"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -77826,13 +76534,7 @@
                               "beat": 1.0438,
                               "hand": "right"
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 23,
-                              "beat": 1.0438,
-                              "pitch": 82,
-                              "name": "A#5"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
@@ -78017,50 +76719,7 @@
                             "arguments": {},
                             "result": {
                               "count": 6,
-                              "events": [
-                                {
-                                  "hand": "right",
-                                  "measure": 21,
-                                  "beat": 0.2896,
-                                  "pitch": 63,
-                                  "name": "D#4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 21,
-                                  "beat": 0.2563,
-                                  "pitch": 43,
-                                  "name": "G2"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 23,
-                                  "beat": 0.0896,
-                                  "pitch": 72,
-                                  "name": "C5"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 23,
-                                  "beat": 0.0396,
-                                  "pitch": 44,
-                                  "name": "G#2"
-                                },
-                                {
-                                  "hand": "right",
-                                  "measure": 24,
-                                  "beat": 0.3688,
-                                  "pitch": 70,
-                                  "name": "A#4"
-                                },
-                                {
-                                  "hand": "left",
-                                  "measure": 24,
-                                  "beat": 0.3854,
-                                  "pitch": 43,
-                                  "name": "G2"
-                                }
-                              ]
+                              "events": []
                             },
                             "is_error": false,
                             "error_reason": null
@@ -78075,12 +76734,7 @@
                   "questionType": "annotation_grounding",
                   "questionText": "In measure 23, which pitch does the right hand play on beat 1.0438?",
                   "correctOptionIndex": 1,
-                  "options": [
-                    "B5",
-                    "A#5",
-                    "A5",
-                    "C6"
-                  ],
+                  "options": [],
                   "majorityScore": 1,
                   "runs": [
                     {
@@ -78114,13 +76768,7 @@
                               "measure": 23,
                               "beat": 1.0438
                             },
-                            "result": {
-                              "hand": "right",
-                              "measure": 23,
-                              "beat": 1.0438,
-                              "pitch": 82,
-                              "name": "A#5"
-                            },
+                            "result": "[removed 2026-09-25: note content of an arrangement outside the cleared set]",
                             "is_error": false,
                             "error_reason": null
                           }
