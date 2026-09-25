@@ -2,7 +2,29 @@
 
 This file is the human-readable history of the package's version arc. Each entry names the version, the date, the slice that produced it, and a one-paragraph summary of what changed. For machine-readable metadata, see `manifest.json` (current state) and `CITATION.cff` (citation entry).
 
-## Current version: 0.5.1 (2026-09-08) — documentation only
+## Current version: 0.6.0 (2026-09-25) — correction release
+
+**58 records withdrawn; 57 records unchanged.** Versions 0.4.x and 0.5.x attributed all 115 records to Bernd Krueger / piano-midi.de under CC-BY-SA-3.0-DE, on the strength of piano-midi.de's composer pages. On 2026-09-09 the source repository audited its song library from the MIDI bytes and found that four songs had been built from files obtained elsewhere, with no established arrangement licence:
+
+| Song | Records | Source of the file |
+|---|---|---|
+| `chopin-nocturne-op9-no2` | 18 | midiworld.com |
+| `chopin-prelude-e-minor` | 12 | bitmidi.com |
+| `pathetique-mvt2` | 16 | midiworld.com |
+| `schumann-traumerei` | 12 | midiworld.com |
+
+Those records carried the arrangements note for note, so they were withdrawn. Do not redistribute them from 0.4.x or 0.5.x.
+
+- **Remaining:** 57 records (train 45, test 12 — `clair-de-lune`), byte-identical to 0.5.0.
+- **Execution gate:** `evals/v0.6.0-execution-verification.json` — 114 unique frozen tool calls replayed against the live MCP server, 0 failures.
+- **No longer shipped:** the historical `evals/` artifacts, `publication-receipt.json` (the 0.5.0 deposit receipt) and `hf-dataset-card-check.md`. They describe the 115-record composition and remain in the source repository at tag `jam-actions-v0-0.5.0-cut-2026-07-11`.
+- **New packaging gate:** a record ships only if its song's library provenance (re-derived from the MIDI bytes) names a redistributable arrangement licence and the record's `midi_sidecar.midi_sha256` equals the evidenced file's hash. It fails closed.
+- **Deposit:** a fresh Zenodo deposit, related to 0.5.0 and 0.4.3 by `isNewVersionOf`, because the earlier concept DOI (10.5281/zenodo.20279918) also holds versions of the separate `jam-actions-v1` dataset.
+- **Adapters:** the fine-tuned adapters trained on 0.5.x records (`jam-ft-v1-qwen25`) are withdrawn.
+
+Audit: `docs/findings/published-dataset-licence-audit.md` in the source repository.
+
+## Previous version: 0.5.1 (2026-09-08) — documentation only
 
 **No record, split, or eval artifact changed.** `records.jsonl` and every file under `records/`,
 `pianoroll/` and `evals/` are byte-identical to 0.5.0. The record cut is still
@@ -30,7 +52,7 @@ is not separately deposited, so the Zenodo deposit and this package differ only 
 
 ---
 
-## Current version: 0.5.0 (2026-07-11)
+## Earlier version: 0.5.0 (2026-07-11)
 
 ### PUBLISHED 2026-07-11
 
@@ -67,7 +89,7 @@ Published from tag `jam-actions-v0-0.5.0-cut-2026-07-11` via the operator-gated 
 
 **Counts.** 115 records (unchanged), 57 pairs + 1 standalone, 8 songs, splits discipline preserved (`clair-de-lune` held out, never trained on). The only id change is the Bach `m061-064` → `m061-062` rename (other songs' `m061-064` windows are legitimate 4-measure windows within longer pieces and are untouched).
 
-## Previous version: 0.4.3 (2026-05-19)
+## Earlier version: 0.4.3 (2026-05-19)
 
 ### Slice 25 — Publication Execution (PUBLISHED 2026-05-19)
 

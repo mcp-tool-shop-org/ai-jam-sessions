@@ -35,6 +35,10 @@ on:
         description: "Discard a card edited on HuggingFace (default: halt instead)"
         required: false
         default: "false"
+      delete_stale:
+        description: 'Type exactly "yes-delete-stale" to also delete remote files the package no longer contains (a correction release that removes records). Default keeps them.'
+        required: false
+        default: "no"
 
 concurrency:
   group: push-dataset-hf-${{ github.event.inputs.hf_repo_id }}
@@ -184,6 +188,7 @@ jobs:
           HF_REPO_ID: ${{ github.event.inputs.hf_repo_id }}
           HF_COMMIT_MSG: ${{ github.event.inputs.commit_message }}
           DATASET_DIR: ${{ github.event.inputs.dataset_dir }}
+          DELETE_STALE: ${{ github.event.inputs.delete_stale }}
         run: |
           set -euo pipefail
           if [ -z "${HF_TOKEN:-}" ]; then
@@ -192,6 +197,7 @@ jobs:
           fi
           python3 << 'PY'
           import os
+          from pathlib import Path
           from huggingface_hub import HfApi
           from huggingface_hub.utils import RepositoryNotFoundError
 
@@ -199,6 +205,10 @@ jobs:
           repo_id = os.environ["HF_REPO_ID"]
           commit_msg = os.environ["HF_COMMIT_MSG"]
           api = HfApi(token=token)
+          # upload_folder alone only adds and overwrites. A correction release
+          # that REMOVES records must also delete them remotely, or the withdrawn
+          # files stay served beside the new version. Opt-in by exact phrase.
+          delete_stale = os.environ.get("DELETE_STALE", "") == "yes-delete-stale"
 
           try:
               api.repo_info(repo_id=repo_id, repo_type="dataset")
@@ -207,11 +217,21 @@ jobs:
               api.create_repo(repo_id=repo_id, repo_type="dataset", private=False)
               print(f"Created HF dataset repo: {repo_id}")
 
+          if delete_stale:
+              local = {p.relative_to(os.environ["DATASET_DIR"]).as_posix()
+                       for p in Path(os.environ["DATASET_DIR"]).rglob("*") if p.is_file()}
+              remote = set(api.list_repo_files(repo_id=repo_id, repo_type="dataset"))
+              stale = sorted(f for f in remote - local if f != ".gitattributes")
+              print(f"delete_stale: {len(stale)} remote file(s) not in the package will be deleted")
+              for f in stale:
+                  print(f"  - {f}")
+
           commit = api.upload_folder(
               folder_path=os.environ["DATASET_DIR"],
               repo_id=repo_id,
               repo_type="dataset",
               commit_message=commit_msg,
+              delete_patterns=(["*"] if delete_stale else None),
           )
           print(f"HF push commit: {commit}")
           print(f"HF URL: https://huggingface.co/datasets/{repo_id}")

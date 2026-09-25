@@ -1,19 +1,18 @@
 {
   "dataset_name": "jam-actions-acoustic-v0",
   "schema_version": "jam-actions-acoustic-v0/1.0.0",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "built_at": "reproducible",
   "license": "CC-BY-SA-3.0-DE",
-  "record_count": 108,
+  "record_count": 72,
   "records_per_phrase": 36,
-  "phrase_count": 3,
+  "phrase_count": 2,
   "songs_included": [
     "bach-prelude-c-major-bwv846",
-    "schumann-traumerei",
     "fur-elise"
   ],
   "splits": {
-    "train": 72,
+    "train": 36,
     "test": 36
   },
   "test_song": "fur-elise",

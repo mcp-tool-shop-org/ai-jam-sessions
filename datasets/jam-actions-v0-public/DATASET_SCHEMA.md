@@ -232,7 +232,7 @@ Example (`bach-prelude-c-major-bwv846:m001-004:...`):
 }
 ```
 
-**Annotation density varies across records.** Some annotations (Bach mm. 1-4, Mozart K545 mm. 1-4) are richly detailed; others (Pathétique mm. 29-32, Schumann Träumerei mm. 45-48) are sparser, with shorter `key_moments` and a single `teaching_note`. See `KNOWN_LIMITATIONS.md` for the candid disclosure and Slice 11 enrichment targets.
+**Annotation density varies across records.** Some annotations (Bach mm. 1-4, Mozart K545 mm. 1-4) are richly detailed; others (for example late-Bach windows) are sparser, with shorter `key_moments` and a single `teaching_note`. See `KNOWN_LIMITATIONS.md` for the candid disclosure and Slice 11 enrichment targets.
 
 ---
 
@@ -311,9 +311,9 @@ E2 eligibility key:
 
 ## Splits
 
-Two splits ship in this package: `"train"` (103 records) and `"test"` (12 records). The full list is in `splits.json`. The held-out test set is the **complete `clair-de-lune` song** (all 12 records). It is **never** used for training.
+Two splits ship in this package: `"train"` (45 records) and `"test"` (12 records). The full list is in `splits.json`. The held-out test set is the **complete `clair-de-lune` song** (all 12 records). It is **never** used for training.
 
-The held-out choice is stratified by composer + style era: Debussy's Impressionist (1905) writing is distinct from every training-set composer's idiom (Bach Baroque, Mozart Classical, Beethoven Classical/early Romantic, Chopin/Schumann Romantic), giving structurally low leakage from train to test.
+The held-out choice is stratified by composer + style era: Debussy's Impressionist (1905) writing is distinct from every training-set composer's idiom (Bach Baroque, Mozart Classical, Beethoven Classical/early Romantic), giving structurally low leakage from train to test.
 
 Pair-lock discipline: every E2 prompt-continuation pair is in the same split. There are no orphans (every continuation_target has a real, in-corpus, same-split prompt mate). The pair lock means a future LoRA fine-tune cannot accidentally train on a continuation whose prompt is in test.
 
@@ -323,9 +323,9 @@ Pair-lock discipline: every E2 prompt-continuation pair is in the same split. Th
 
 | Eval | What it tests | Eligible records | Threshold |
 |---|---|---|---|
-| E1 — Tool-use correctness | Does the model emit valid MCP tool calls in the right order with right args? | All 115 records | Per-record gold pass rate ≥ 0.70 |
+| E1 — Tool-use correctness | Does the model emit valid MCP tool calls in the right order with right args? | All records | Per-record gold pass rate ≥ 0.70 |
 | E2 — Phrase continuation | Given a prompt phrase, does the model produce a continuation with matching groove? | 57 prompt-continuation pairs (114 records) | grooveOA ≥ 0.797 vs gold (locked ≥0.15 margin over shuffled baseline) |
-| E3 — Annotation grounding | Does the model use MIDI evidence (not text priors) when answering MCQs about the phrase? | All 115 records | Margins ≥ +0.10 over text-only and random-MIDI controls |
+| E3 — Annotation grounding | Does the model use MIDI evidence (not text priors) when answering MCQs about the phrase? | All records | Margins ≥ +0.10 over text-only and random-MIDI controls |
 
 See README.md for the current qwen2.5:7b baseline numbers. See KNOWN_LIMITATIONS.md for what the baselines mean.
 

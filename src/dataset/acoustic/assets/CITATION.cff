@@ -7,19 +7,20 @@ authors:
   - family-names: "Krueger"
     given-names: "Bernd"
     affiliation: "piano-midi.de (upstream MIDI arrangements; CC-BY-SA-3.0-DE)"
-version: "1.0.2"
-date-released: "2026-09-08"
+version: "1.1.0"
+date-released: "2026-09-25"
 license: "CC-BY-SA-3.0-DE"
 repository-code: "https://github.com/mcp-tool-shop-org/ai-jam-sessions"
 abstract: >-
-  108 multi-turn tool-use records over ACOUSTIC music analysis, the counterpart to
+  72 multi-turn tool-use records over ACOUSTIC music analysis, the counterpart to
   jam-actions-v0's symbolic-music traces. Each record pairs a deliberately
   perturbed synthetic rendering of a public-domain phrase with the verdict the
   analysis tools actually return, so every label is checked against the
   instrument rather than only against itself. Nine perturbation kinds per phrase
   per target note, including the two cases a naive model answers confidently and
   wrongly: a vibrato note whose correct verdict is in tune, and silence whose
-  correct verdict is nothing to grade. Held out by phrase, not by record.
+  correct verdict is nothing to grade. Held out by phrase, not by record. Version 1.1.0 withdrew the 36 Träumerei
+  records of earlier versions, whose source arrangement has no established licence.
 keywords:
   - music-information-retrieval
   - tool-use
