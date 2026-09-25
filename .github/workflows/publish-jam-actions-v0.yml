@@ -222,14 +222,21 @@ jobs:
       # The RC gate still recomputes here at publish time: restore the sealed
       # baseline bytes from git history (fetch-depth: 0 above makes every
       # commit available), assert the exact sha256 the finetune-arc locks pin,
-      # then run the pure validator against it. The per-record trace sources it
-      # resolves (slice18-5 / slice19-tool-fresh / slice21-schumann-rerun) still
-      # ship in the package.
+      # then run the pure validator against it.
+      #
+      # Since v0.6.0 the per-record trace sources it resolves (slice18-5 /
+      # slice19-tool-fresh / slice21-schumann-rerun) no longer ship either:
+      # 0.6.0 withdrew the Schumann work, and the evals described the 115-record
+      # composition. They are restored from the same sealed tag, each pinned by
+      # sha256, and the validator is pointed at them with --artifacts-root. This
+      # re-verifies the historical gate verdict; it makes no claim about the
+      # 0.6.0 composition, whose standing gates are the execution-verification
+      # receipt and the library evidence gate below.
       #
       # v0 keeps that git-history restore. Any other dataset_dir runs the
       # validator only when the file exists under the package; otherwise the
       # step says it skipped by name.
-      - name: Verify release gate (sealed Slice-21 baseline from git history)
+      - name: Verify release gate (sealed Slice-21 baseline and sources from git history)
         env:
           DIR: ${{ steps.version.outputs.dir }}
         run: |
@@ -241,7 +248,17 @@ jobs:
             git show "${SEALED_REF}:datasets/jam-actions-v0-public/${SLICE21_NAME}" \
               > /tmp/slice21-fair-e3-baseline-results.json
             echo "${SEALED_SHA}  /tmp/slice21-fair-e3-baseline-results.json" | sha256sum -c -
-            pnpm exec tsx scripts/check-release-gate.ts /tmp/slice21-fair-e3-baseline-results.json
+            mkdir -p /tmp/sealed-gate/evals
+            while read -r SHA NAME; do
+              git show "${SEALED_REF}:datasets/jam-actions-v0-public/evals/${NAME}" > "/tmp/sealed-gate/evals/${NAME}"
+              echo "${SHA}  /tmp/sealed-gate/evals/${NAME}" | sha256sum -c -
+            done <<'PINS'
+          995c52c3b8e52aef4878e87c4e5a088a75f24b4d2bc248738dcf4f54380f4143 slice21-schumann-m045-rerun-results.json
+          d36dfd5dd4ed3ba725e0662b9b4ce9f22b5d36caed0105934c90433875a63b06 slice18-5-e3-post-repair-results.json
+          d471502b0d83079e1cfda146ecb9a5bd4b5935e835f8b8aa326b8ebd3b4d148c slice19-e3-tool-fresh-results.json
+          PINS
+            pnpm exec tsx scripts/check-release-gate.ts /tmp/slice21-fair-e3-baseline-results.json \
+              --artifacts-root /tmp/sealed-gate
           elif [ -f "$DIR/$SLICE21_NAME" ]; then
             echo "Found $DIR/$SLICE21_NAME — running the release-gate validator on the packaged file."
             pnpm exec tsx scripts/check-release-gate.ts "$DIR/$SLICE21_NAME"
@@ -281,6 +298,18 @@ jobs:
           else
             echo "Skipping Verify execution-verification receipt (cut-time standing gate): $RECEIPT is not present under $DIR"
           fi
+
+      # The lesson of the 0.6.0 correction, enforced at the last moment before
+      # anything is minted: every record marked public in a committed published
+      # package must trace to a song whose library provenance (re-derived from
+      # the MIDI bytes) names a redistributable arrangement licence, and for v0
+      # the record's source-file hash must equal the evidenced file. The same
+      # test runs in CI; running it here means a publish from any ref, including
+      # an old tag, cannot skip it.
+      - name: Verify library evidence (no public record without a licence)
+        run: |
+          set -euo pipefail
+          pnpm exec vitest run src/dataset/published-evidence.test.ts
 
       # ─── Build publication archives ──────────────────────────────────────────
       - name: Build .tar.gz and .zip archives
