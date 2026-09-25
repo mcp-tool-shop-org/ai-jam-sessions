@@ -42,10 +42,10 @@
   ],
   "songs_count": 10,
   "verdict_summary": {
-    "public": 115,
+    "public": 57,
     "public_candidate": 0,
     "internal": 30,
-    "excluded": 0
+    "excluded": 58
   },
   "e1_gold_pass_rate": 1,
   "splits_path": "splits.json"

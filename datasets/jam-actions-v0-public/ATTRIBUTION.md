@@ -10,22 +10,20 @@ For the underlying license obligations (share-alike, derivative-works rules), se
 |---|---|---|---|
 | Compositions | The musical works themselves (notes, structure, ideas) | Long-dead composers | Public domain (US + EU) |
 | Arrangements | The MIDI realizations of those compositions | Bernd Krueger | CC-BY-SA-3.0-DE |
-| Derivative records | These dataset records (traces, annotations, tokenizations, splits, evals) | `mcp-tool-shop-org` | CC-BY-SA-3.0-DE (share-alike inherited) |
+| Derivative records | These dataset records (traces, annotations, tokenizations, splits) | `mcp-tool-shop-org` | CC-BY-SA-3.0-DE (share-alike inherited) |
 
 Each downstream use must satisfy the most restrictive applicable layer. In practice for this dataset, that means **CC-BY-SA-3.0-DE** governs redistribution of the records, MIDI sidecars, REMI/ABC tokenizations, and SVG piano rolls.
 
 ## Layer 1 — Compositions (public domain)
 
-All 8 compositions in this public subset are in the public domain in both the United States (composed/published pre-1929) and the European Union (composer death + 70 years). No per-composition attribution is legally required, but it is good scholarly practice. The per-composer status table:
+All 4 compositions in this public subset are in the public domain in both the United States (published before 1931) and the European Union (composer death + 70 years). No per-composition attribution is legally required, but it is good scholarly practice. The per-composer status table:
 
 | Composer | Died | EU PD since | Compositions in this subset | First-published year |
 |---|---|---|---|---|
-| Johann Sebastian Bach | 1750 | 1820 | Prelude in C Major, BWV 846 (Well-Tempered Clavier) | 1722 |
-| Wolfgang Amadeus Mozart | 1791 | 1861 | Piano Sonata No. 16 in C Major, K. 545, I. Allegro | 1788 (publ. 1805) |
-| Ludwig van Beethoven | 1827 | 1897 | Bagatelle No. 25 in A minor ("Für Elise"); Sonata Op. 13 "Pathétique", II Adagio cantabile | 1799 / 1810 |
-| Frédéric Chopin | 1849 | 1919 | Nocturne in E♭ Major, Op. 9 No. 2; Prelude in E Minor, Op. 28 No. 4 | 1832 / 1838-39 |
-| Robert Schumann | 1856 | 1926 | "Träumerei" from Kinderszenen, Op. 15 No. 7 | 1838 |
-| Claude Debussy | 1918 | 1988 | "Clair de Lune" from Suite bergamasque, III | 1905 |
+| Johann Sebastian Bach | 1750 | 1821 | Prelude in C Major, BWV 846 (Well-Tempered Clavier) | 1722 |
+| Wolfgang Amadeus Mozart | 1791 | 1862 | Piano Sonata No. 16 in C Major, K. 545, I. Allegro | 1788 (publ. 1805) |
+| Ludwig van Beethoven | 1827 | 1898 | Bagatelle No. 25 in A minor ("Für Elise") | 1810 (publ. 1867) |
+| Claude Debussy | 1918 | 1989 | "Clair de Lune" from Suite bergamasque, III | 1905 |
 
 Debussy is the latest-deceased composer represented; his works entered EU public domain on 1989-01-01.
 
@@ -38,20 +36,18 @@ Debussy is the latest-deceased composer represented; his works entered EU public
 - **License:** Creative Commons Attribution-ShareAlike 3.0 Germany
 - **License URL (canonical):** https://creativecommons.org/licenses/by-sa/3.0/de/
 - **License URL (deed, English):** https://creativecommons.org/licenses/by-sa/3.0/de/deed.en
-- **Per-song evidence URLs** (from Slice 2.5 URL verification — these were resolved live and the CC marker confirmed at the page level):
+- **Per-song evidence URLs** (from Slice 2.5 URL verification):
 
   | Song | Evidence URL |
   |---|---|
   | bach-prelude-c-major-bwv846 | http://piano-midi.de/bach.htm |
-  | chopin-nocturne-op9-no2 | http://piano-midi.de/chopin.htm |
-  | chopin-prelude-e-minor | http://piano-midi.de/chopin.htm |
   | clair-de-lune | http://piano-midi.de/debuss.htm |
   | fur-elise | http://piano-midi.de/beeth.htm |
   | mozart-k545-mvt1 | http://piano-midi.de/mozart.htm |
-  | pathetique-mvt2 | http://piano-midi.de/beeth.htm |
-  | schumann-traumerei | http://piano-midi.de/schum.htm |
 
 Each record's `provenance.arrangement_evidence_url` field carries the per-song evidence URL byte-for-byte. The `arrangement_license` (`"CC-BY-SA"`) and `arrangement_license_version` (`"3.0"`) fields are also present on every record.
+
+Since 0.6.0, a page-level URL check is no longer sufficient on its own. Every record in the package must also match the source repository's library provenance block for its song — a block re-derived from the MIDI bytes, which names Bernd Krueger as the file's own copyright credit — and the record's `observation.midi_sidecar.midi_sha256` must equal that block's file hash. See "Verification evidence" below.
 
 ### Note on jurisdiction (CC-BY-SA-3.0-DE vs CC-BY-SA-3.0 international)
 
@@ -67,17 +63,17 @@ Each record in this dataset is derived from a CC-BY-SA-3.0-DE arrangement. The s
 - **Repository:** https://github.com/mcp-tool-shop-org/ai-jam-sessions
 - **License:** CC-BY-SA-3.0-DE
 - **Citation file:** [`CITATION.cff`](CITATION.cff)
-- **Version:** 0.4.3
-- **Source commit:** the records in this package were produced at source-corpus commit `4b0f181` (tag `jam-actions-v0-rc-gate-revised-2026-05-19` for the Slice 22 RC-gate revised state; Slice 23.5 reproducibility-cleanup tag carries the current operational hardening). The 6-record Slice 11 enrichment overlay is the most recent record-content change; Slice 21 added a 7th enrichment to the Schumann m045-048 record. Slices 22, 23 / 23.5, 24, and 24.5 modified no record content (release-gate revision + operator-aloneness audit + reproducibility cleanup + publication-dry-run + dataset-card polish respectively).
+- **Version:** 0.6.0
+- **Record content:** unchanged from 0.5.0 for every record in this package; 0.6.0 removes records, it does not edit them. The Bach BWV 846 corrections of 0.5.0 (errata 001 + 002) are the most recent record-content change.
 
 ### Annotation provenance — who wrote what (human-in-the-loop)
 
-The `annotation_target` and `target_trace` content on the 115 records was produced by a **human-in-the-loop** process. The HuggingFace dataset card declares `annotations_creators: [expert-generated, machine-generated]` and `language_creators: [expert-generated, machine-generated]` to capture both populations honestly; this section gives the detail behind those slugs.
+The `annotation_target` and `target_trace` content on the 57 records was produced by a **human-in-the-loop** process. The HuggingFace dataset card declares `annotations_creators: [expert-generated, machine-generated]` and `language_creators: [expert-generated, machine-generated]` to capture both populations honestly; this section gives the detail behind those slugs.
 
 - **Operator (mcp-tool-shop-org):** authored the schema, the enrichment rubric, the held-out-test discipline, the corpus selection, the per-record acceptance bar, the release-gate axes and thresholds, and the final review of every enrichment. Every annotation in the package was either operator-written or operator-reviewed before shipping.
-- **AI agents (under operator direction, models qwen2.5:7b and Claude in the source repo):** drafted the bulk of annotation_target prose for the 6 records enriched in Slice 11 (Pathétique m025-028 / m029-032; Schumann m045-048; Bach m045-048 / m049-052 / m053-056) and the 1 record rewritten in Slice 21 (Schumann m045-048, R6-aware rewrite). Agent drafts were explicitly constrained to be MIDI-grounded (anchorable to events the inspector tools can verify) and were operator-reviewed before each enrichment was admitted to the durable overlay (`enrichment-overrides.json`).
-- **Why both slugs apply:** the substantive content quality is the operator's responsibility (`expert-generated` is the closer fit by domain-expertise standard), and the agents performed substantial first-draft work under explicit human direction (`machine-generated` is honest about AI involvement). Picking only one slug would obscure either the human review (if `machine-generated` alone) or the AI involvement (if `expert-generated` alone). HF allows the list form; we use it.
-- **What `task_ids` would NOT capture:** HF's `task_ids` enum is dominated by NLP-specific subtasks (extractive QA, abstractive summarization, etc.) that do not fit MCP tool-use traces over symbolic music. The field stays unpopulated; the Slice 24.5 dataset-card-polish doc explains the decision.
+- **AI agents (under operator direction, models qwen2.5:7b and Claude in the source repo):** drafted annotation_target prose for the records enriched in Slice 11. Of those, the three Bach records (m045-048, m049-052, m053-056) remain in this package; the Pathétique and Schumann records enriched in Slices 11 and 21 were withdrawn in 0.6.0. Agent drafts were explicitly constrained to be MIDI-grounded (anchorable to events the inspector tools can verify) and were operator-reviewed before each enrichment was admitted to the durable overlay (`enrichment-overrides.json`).
+- **Why both slugs apply:** the substantive content quality is the operator's responsibility (`expert-generated` is the closer fit by domain-expertise standard), and the agents performed substantial first-draft work under explicit human direction (`machine-generated` is honest about AI involvement). HF allows the list form; we use it.
+- **What `task_ids` would NOT capture:** HF's `task_ids` enum is dominated by NLP-specific subtasks that do not fit MCP tool-use traces over symbolic music. The field stays unpopulated.
 
 ## Required redistribution attribution
 
@@ -99,7 +95,7 @@ No per-composition attribution is required, because the underlying compositions 
 @dataset{jam_actions_v0_public_2026,
   author       = {mcp-tool-shop-org},
   title        = {jam-actions-v0 — AI Jam Sessions tool-use traces (public subset)},
-  version      = {0.4.3},
+  version      = {0.6.0},
   year         = {2026},
   license      = {CC-BY-SA-3.0-DE},
   url          = {https://github.com/mcp-tool-shop-org/ai-jam-sessions},
@@ -109,7 +105,7 @@ No per-composition attribution is required, because the underlying compositions 
 
 ### Plain-text reference (paper / report)
 
-> jam-actions-v0 (public subset), version 0.4.3, mcp-tool-shop-org, 2026. Licensed under CC-BY-SA-3.0-DE. MIDI arrangements by Bernd Krueger, https://piano-midi.de/, CC-BY-SA-3.0-DE. https://github.com/mcp-tool-shop-org/ai-jam-sessions.
+> jam-actions-v0 (public subset), version 0.6.0, mcp-tool-shop-org, 2026. Licensed under CC-BY-SA-3.0-DE. MIDI arrangements by Bernd Krueger, https://piano-midi.de/, CC-BY-SA-3.0-DE. https://github.com/mcp-tool-shop-org/ai-jam-sessions.
 
 ### In-figure caption (single line)
 
@@ -119,15 +115,18 @@ No per-composition attribution is required, because the underlying compositions 
 
 > jam-actions-v0 — mcp-tool-shop-org + Bernd Krueger / piano-midi.de, CC-BY-SA-3.0-DE.
 
-## On the two demoted songs
+## Songs not in this subset
 
-Two `public_candidate` songs from the source corpus (Satie Gymnopédie No. 1; Debussy Arabesque No. 1) **could not be verified** against piano-midi.de during Slice 2.5 URL verification — Satie because piano-midi.de does not carry Satie at all (HTTP 418 on the candidate page, no Satie entry in the site's catalog metadata); Debussy Arabesque because the composer page is reachable and license-confirmed but does not list Arabesque (the site carries only Suite bergamasque and Children's Corner under Debussy).
+**Withdrawn in 0.6.0 (four songs, 58 records).** Versions 0.4.x and 0.5.x included records for Chopin's Nocturne Op. 9 No. 2 and Prelude Op. 28 No. 4, Beethoven's "Pathétique" Sonata II, and Schumann's "Träumerei", attributed to Bernd Krueger under CC-BY-SA-3.0-DE. That attribution rested on piano-midi.de listing those works. The source repository's library audit of 2026-09-09 read the MIDI files the records were actually built from: they came from midiworld.com and bitmidi.com, not piano-midi.de, and no arrangement licence could be established for them. The compositions are public domain; the arrangements in those files are not cleared, so the records were withdrawn. Do not redistribute those records from earlier versions. Details: `docs/findings/published-dataset-licence-audit.md` in the source repository.
 
-Those records are **not** included in this public subset. They remain in the source repository at `record_verdict: "internal"` for internal use only. They carry **no claim** of CC-BY-SA-3.0-DE here. A future slice may re-attribute them to a verifiable upstream (Mutopia Project, IMSLP MIDI section, kunstderfuge.com mirrors); until then, treat any MIDI bytes attributed to those works in our corpus as unverified provenance.
+**Never included (two songs).** Satie's Gymnopédie No. 1 and Debussy's Arabesque No. 1 **could not be verified** against piano-midi.de during Slice 2.5 URL verification. Their records remain in the source repository at `record_verdict: "internal"` and carry **no claim** of CC-BY-SA-3.0-DE here.
 
 ## Verification evidence
 
-All 8 songs in this subset were verified by live HTTP fetch during Slice 2.5 (2026-05-17). The full report is `provenance-verification.json` in this package. It includes, per song: pre-verdict, post-verdict, license detected, license version detected, arrangement_creator confirmed, song_title confirmed, evidence URL chosen, HTTP attempts, and HTTP status codes. The verifier ran politely (1 req/sec, 10s timeout, single retry on 5xx).
+The 4 songs in this subset carry two layers of evidence:
+
+1. **Slice 2.5 URL verification (2026-05-17).** Live HTTP fetch of each song's piano-midi.de composer page, confirming the CC marker and the work's listing. The full report is `provenance-verification.json` in this package: per song, pre-verdict, post-verdict, license detected, license version detected, arrangement_creator confirmed, song_title confirmed, evidence URL chosen, HTTP attempts, and HTTP status codes.
+2. **Library evidence gate (0.6.0).** The packager refuses any record whose song's library provenance block — re-derived from the MIDI bytes, including the file's own copyright and title events — does not name a redistributable arrangement licence, or whose `observation.midi_sidecar.midi_sha256` differs from the evidenced file's hash. All 57 records pass.
 
 ## Questions / corrections
 

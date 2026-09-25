@@ -41,7 +41,9 @@ import type { TimedEvent } from "../schema.js";
 
 const RECORDS_DIR = join(
   new URL(".", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1"),
-  "../../../datasets/jam-actions-v0-public/records",
+  // The source corpus, not the public package: several fixtures below are records
+  // withdrawn from the public subset in 0.6.0 and kept only in the source corpus.
+  "../../../datasets/jam-actions-v0/records",
 );
 
 function loadRecord(filename: string): E3Record {
