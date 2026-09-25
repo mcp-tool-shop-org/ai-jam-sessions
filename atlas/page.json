@@ -81,7 +81,76 @@
     }
   ],
   "changes": {
-    "first": true
+    "fileCounts": {
+      "added": 18,
+      "changed": 102,
+      "moved": 0,
+      "parts": 10,
+      "removed": 358
+    },
+    "items": [
+      {
+        "kind": "door",
+        "sentence": "CI runs 4 more files than before.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Publish jam-actions-v0 now also runs src/dataset/published-evidence.test.ts.",
+        "subjects": [
+          ".github/workflows/publish-jam-actions-v0.yml",
+          "src/dataset/published-evidence.test.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release runs 3 more files than before.",
+        "subjects": [
+          ".github/workflows/release.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": ".gitattributes is now read by .github/workflows/push-jam-actions-v0-hf.yml.",
+        "subjects": [
+          ".gitattributes",
+          ".github/workflows/push-jam-actions-v0-hf.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "CHANGELOG.md is now read by docs/findings/derived-content-inventory.json.",
+        "subjects": [
+          "CHANGELOG.md",
+          "docs/findings/derived-content-inventory.json"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "ROADMAP.md is now read by docs/findings/derived-content-inventory.json.",
+        "subjects": [
+          "ROADMAP.md",
+          "docs/findings/derived-content-inventory.json"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 553 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "counts",
+        "sentence": "18 files added, 358 removed and 102 changed content, across 10 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "8734514e3d140be8776b5326332831e7091c395d",
+      "generatedAt": "2026-09-24T09:18:42.006Z"
+    },
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -89,9 +158,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "8734514e3d140be8776b5326332831e7091c395d",
+  "commit": "dc771c279b9e0b845563239b89763518476c2d19",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly TypeScript (555 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
+  "derived": "14 parts, mostly TypeScript (559 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
     {
       "checks": [
@@ -113,7 +182,7 @@
         "scripts/analyze-carriers.ts",
         "scripts/annotate-batch.ts"
       ],
-      "checksCount": 179,
+      "checksCount": 181,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
@@ -152,12 +221,12 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 11
+          "files": 12
         },
         {
           "boundary": "src",
           "depth": 0,
-          "files": 366
+          "files": 369
         }
       ],
       "runs": [
@@ -210,6 +279,7 @@
         "src/dataset/acoustic/measured.test.ts",
         "src/dataset/acoustic/release-adapter.test.ts",
         "src/dataset/acoustic/reproduce.test.ts",
+        "src/dataset/derived-content.test.ts",
         "src/dataset/enrichment.test.ts",
         "src/dataset/eval/annotation-grounding-tool.test.ts",
         "src/dataset/eval/annotation-grounding.test.ts",
@@ -223,7 +293,6 @@
         "src/dataset/experiment/registry.test.ts",
         "src/dataset/package-public.test.ts",
         "src/dataset/phrase-slicer.test.ts",
-        "src/dataset/provenance-url-verifier.test.ts",
         "src/dataset/release/release-gate.test.ts",
         "src/dataset/search-v0/env.test.ts",
         "src/dataset/search-v0/task.test.ts",
@@ -256,7 +325,7 @@
         "src/vocal/kokoro-lead.test.ts",
         "src/vocal/melody-notes.test.ts"
       ],
-      "runsCount": 191,
+      "runsCount": 193,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -278,7 +347,7 @@
         "src/",
         "tsconfig.json"
       ],
-      "checksCount": 119,
+      "checksCount": 120,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
       "landings": [
@@ -317,12 +386,12 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 18
+          "files": 19
         },
         {
           "boundary": "src",
           "depth": 0,
-          "files": 366
+          "files": 369
         }
       ],
       "runs": [
@@ -379,6 +448,7 @@
         "src/dataset/acoustic/measured.test.ts",
         "src/dataset/acoustic/release-adapter.test.ts",
         "src/dataset/acoustic/reproduce.test.ts",
+        "src/dataset/derived-content.test.ts",
         "src/dataset/enrichment.test.ts",
         "src/dataset/eval/annotation-grounding-tool.test.ts",
         "src/dataset/eval/annotation-grounding.test.ts",
@@ -392,7 +462,6 @@
         "src/dataset/experiment/registry.test.ts",
         "src/dataset/package-public.test.ts",
         "src/dataset/phrase-slicer.test.ts",
-        "src/dataset/provenance-url-verifier.test.ts",
         "src/dataset/release/release-gate.test.ts",
         "src/dataset/search-v0/env.test.ts",
         "src/dataset/search-v0/task.test.ts",
@@ -425,7 +494,7 @@
         "src/vocal/kokoro-lead.test.ts",
         "src/vocal/melody-notes.test.ts"
       ],
-      "runsCount": 190,
+      "runsCount": 192,
       "sends": [
         "publishes to npm and a container image"
       ],
@@ -451,15 +520,16 @@
         },
         {
           "boundary": "src",
-          "depth": 1,
-          "files": 2
+          "depth": 0,
+          "files": 3
         }
       ],
       "runs": [
         "scripts/check-release-gate.ts",
-        "scripts/verify-public-package-checksums.ts"
+        "scripts/verify-public-package-checksums.ts",
+        "src/dataset/published-evidence.test.ts"
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -748,18 +818,6 @@
       "writers": [
         "scripts/package-jam-actions-public.ts",
         "scripts/regenerate-public-package-checksums.ts"
-      ]
-    },
-    {
-      "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-results.json",
-      "writers": [
-        "scripts/build-slice19-unified-baseline.mjs"
-      ]
-    },
-    {
-      "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json",
-      "writers": [
-        "scripts/build-slice19-unified-baseline.mjs"
       ]
     },
     {
@@ -1378,19 +1436,19 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-24T09:18:42.006Z",
+  "generatedAt": "2026-09-25T18:16:51.731Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "11 import sites could not be resolved.",
     "8 files use syntax the parser cannot read (scripts/compose-realize-demo.ts, scripts/run-jam-actions-corpus-eval.ts, src/dataset/acoustic-v1/generate-public.ts and 5 more), so what they import is not known: 6 in src (`typeof import(…)` as a type argument in 3, an import type followed by `[]` in 1, a NUL character inside a string in 1 and other syntax in 1), 2 in scripts (an import type followed by `[]`).",
-    "49 writes and 131 reads use paths built at run time and are not named here.",
-    "16 writes go to places this repository does not track, so they are not listed as generated.",
-    "97 writes and 343 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
+    "49 writes and 134 reads use paths built at run time and are not named here.",
+    "18 writes go to places this repository does not track, so they are not listed as generated.",
+    "97 writes and 351 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
     "18 commands are built at run time and not followed, 4 of them in tests.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "CI runs or checks 459 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window."
+    "CI runs or checks 463 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 404 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -1413,19 +1471,27 @@
   "readers": [
     {
       "readers": [
+        "docs/findings/derived-content-inventory.json (found by text)",
         "experiments/acoustic-sft/eval.ts",
         "experiments/acoustic-sft/format-sft.ts"
       ],
       "target": "datasets/",
-      "tests": 2
+      "tests": 3
+    },
+    {
+      "readers": [
+        "docs/findings/derived-content-inventory.json (found by text)"
+      ],
+      "target": "experiments/acoustic-sft/"
     },
     {
       "readers": [
         "docs/dogfood-swarm-grok-w2-kickoff.md (found by text)",
         "docs/dogfood-swarm-grok-w3-kickoff.md (found by text)",
+        "docs/findings/derived-content-inventory.json (found by text)",
         "experiments (5 files)",
         "scripts (19 files)",
-        "src (5 files)"
+        "src (7 files)"
       ],
       "target": "songs/",
       "tests": 6
@@ -1440,22 +1506,16 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 191,
+  "testFiles": 193,
   "testedBy": {
     "cockpit": 13,
     "experiments": 10,
-    "scripts": 11,
+    "scripts": 12,
     "spaces": 0,
-    "src": 168
+    "src": 170
   },
   "unnamedWrites": 49,
   "unread": [
-    {
-      "place": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json",
-      "writers": [
-        "scripts/build-slice19-unified-baseline.mjs"
-      ]
-    },
     {
       "place": "datasets/jam-actions-v0/evals/e1-tool-use-results.json",
       "writers": [
@@ -1497,11 +1557,17 @@
       "writers": [
         "src/dataset/acoustic-v1/generate-probe.ts"
       ]
+    },
+    {
+      "place": "datasets/jam-actions-v1-probe/README.md",
+      "writers": [
+        "src/dataset/acoustic-v1/generate-probe.ts"
+      ]
     }
   ],
   "unreadFiles": 8,
   "unreadNote": [
-    "And 61 more places."
+    "And 60 more places."
   ],
   "untested": [
     {
@@ -1511,5 +1577,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 108
+  "written": 106
 }
