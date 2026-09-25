@@ -15,7 +15,9 @@ Dry run: 2026-09-25, on a throwaway mirror (`E:/AI/ai-jam-sessions-history-dryru
 
 ## What the dry run measured
 
-The mirror held 15 branches, 55 tags and 47 `refs/pull/*` refs: 1,217 commits in all. 817 of them are reachable from branches and tags. The other 382 are pre-purge twins of rewritten commits, reachable only through `refs/pull` since the 2026-09-09 MIDI purge.
+The mirror held 15 branches, 55 tags and 47 `refs/pull/*` refs: 1,217 commits in all. 817 of them are reachable from branches and tags. The other 400 are reachable only through `refs/pull`:
+- 382 are pre-purge twins of branch commits, left there by the 2026-09-09 MIDI purge;
+- 18 are pull-request commits that no branch contains: dependency bumps, test merges, and earlier versions of rebased pull requests.
 
 Two passes were run on it:
 
