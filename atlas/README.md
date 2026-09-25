@@ -1,21 +1,14 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-09-25 from commit dc771c2.
+Mapped at 2026-09-25 from commit d92a167.
 
 ## What this is
 
 14 parts, mostly TypeScript (559 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-09-24 (8734514)
+## What changed since 2026-09-25 (dc771c2)
 
-- CI runs 4 more files than before.
-- Publish jam-actions-v0 now also runs src/dataset/published-evidence.test.ts.
-- Release runs 3 more files than before.
-- .gitattributes is now read by .github/workflows/push-jam-actions-v0-hf.yml.
-- CHANGELOG.md is now read by docs/findings/derived-content-inventory.json.
-- ROADMAP.md is now read by docs/findings/derived-content-inventory.json.
-- And 553 more new writers and readers of places.
-- 18 files added, 358 removed and 102 changed content, across 10 parts.
+Nothing structural changed since 2026-09-25; 1 file changed content.
 
 ## What comes in
 
