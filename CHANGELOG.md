@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — published datasets no longer carry arrangements whose licence could not be established
+
+The song-library audit of 2026-09-09 re-derived every song's provenance from the MIDI bytes, but it left `datasets/**` untouched. Two published datasets kept records built from four songs whose files did not come from piano-midi.de and carry no established arrangement licence, while attributing them to Bernd Krueger under CC-BY-SA-3.0-DE. The full account is in `docs/findings/published-dataset-licence-audit.md`.
+
+- **`jam-actions-v0` public subset 0.6.0** — withdraws the 58 records from Chopin Op. 9 No. 2 and Op. 28 No. 4, Beethoven "Pathétique" II and Schumann "Träumerei" (midiworld.com and bitmidi.com files). 57 records remain, byte-identical to 0.5.0. The historical `evals/` artifacts, the 0.5.0 deposit receipt and the card-check note are no longer part of the package; they describe the 115-record composition and stay in git history.
+- **`jam-actions-acoustic-v0` 1.1.0** — withdraws the 36 "Träumerei" records. 72 records remain, byte-identical to 1.0.2.
+- **Library evidence gate** in `src/dataset/package-public.ts` — the packager now refuses any record whose song's library provenance does not name a redistributable arrangement licence, whose file title contradicts the catalogue, or whose `midi_sidecar.midi_sha256` differs from the evidenced file. It fails closed, and it refuses exactly the 58 withdrawn records when run against the 0.5.x package.
+- **`src/dataset/published-evidence.test.ts`** re-runs the evidence check on every committed published package (v0-public, acoustic-v0, v1, v1-probe), so a later provenance change fails the build on the published sets themselves.
+- The working corpus marks the 58 records `record_verdict: "excluded"` with the reason; `PROVENANCE-NOTE.md`, the README, the handbook and the dataset cards describe the correction.
+- The `jam-ft-v1-qwen25` adapters are withdrawn, because their training data included records from the four songs. Their evaluation reports stand as recorded.
+
 ## [2.6.1] - 2026-09-14
 
 ### Changed — the RL handbook chapter now reports what the arc actually found

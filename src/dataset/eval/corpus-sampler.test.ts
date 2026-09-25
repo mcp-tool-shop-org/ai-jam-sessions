@@ -84,12 +84,24 @@ function buildMiniCorpus(): SamplerRecord[] {
 }
 
 /**
- * Load the actual 115-record public package — used in determinism tests so
- * the sampler is exercised against the real corpus the runner will use.
+ * Load the 115-record corpus the frozen eval cohorts were drawn from — used in
+ * determinism tests so the sampler is exercised against real records.
+ *
+ * Since 0.6.0 the public package holds 57 records, and the cohorts' required
+ * records include some of the 58 withdrawn on 2026-09-25. Those remain in the
+ * source corpus with `record_verdict: "excluded"`, so the historical input is
+ * rebuilt from there: every record that is public now, plus every record that
+ * was public in 0.5.x and withdrawn by that correction.
  */
 function loadPublicCorpus(): SamplerRecord[] {
-  const dir = join(process.cwd(), "datasets", "jam-actions-v0-public", "records");
-  const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
+  const dir = join(process.cwd(), "datasets", "jam-actions-v0", "records");
+  const wasPublicIn05x = (p: { record_verdict?: string; verdict_reason?: string }): boolean =>
+    p.record_verdict === "public" ||
+    (p.record_verdict === "excluded" &&
+      (p.verdict_reason ?? "").startsWith("Withdrawn from the public subset on 2026-09-25."));
+  const files = readdirSync(dir)
+    .filter((f) => f.endsWith(".json"))
+    .filter((f) => wasPublicIn05x(JSON.parse(readFileSync(join(dir, f), "utf8")).provenance ?? {}));
   return files.map((f) => {
     const j = JSON.parse(readFileSync(join(dir, f), "utf8")) as {
       id: string;

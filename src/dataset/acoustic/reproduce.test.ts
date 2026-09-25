@@ -4,8 +4,8 @@
 // hash. Do not write the published tree. If a byte moves, this fails — that is
 // a finding, not a reason to regenerate checksums.
 //
-// It checks ALL 115 paths, not only the records. An earlier version checked
-// records.jsonl and the 108 record files, which left six published files
+// It checks ALL 79 paths, not only the records. An earlier version checked
+// records.jsonl and the record files, which left six published files
 // unverified — and three of them (VERSION, CITATION.cff, LICENSE-DATASET.md)
 // were not emitted by the generator at all, so regenerating the corpus deleted
 // them and produced a 112-entry manifest where 115 are published.
@@ -17,7 +17,7 @@
 // results changed between the versions in Node 22 and Node 24: of the 27,869
 // distinct Math.pow(2, x) arguments this corpus evaluates, 253 (0.91%) return a
 // different double. Almost all of those vanish under int16 quantisation, but
-// two of the 108 records — both the `extra` perturbation of Für Elise, whose
+// two of the records — both the `extra` perturbation of Für Elise, whose
 // motif lands on MIDI 63 where Math.pow(2, -0.5) itself differs by one unit in
 // the last place — come out with a different waveform hash.
 //
@@ -81,8 +81,8 @@ describe("acoustic corpus through ExperimentTask", () => {
 
     // checksums.sha256 is derived from the map, so it is not in the map.
     expect([...built.keys()].sort()).toEqual([...published.keys()].sort());
-    expect(published.size).toBe(115);
-    expect([...published.keys()].filter((k) => k.startsWith("records/"))).toHaveLength(108);
+    expect(published.size).toBe(79);
+    expect([...published.keys()].filter((k) => k.startsWith("records/"))).toHaveLength(72);
   });
 
   it("reproduces every record except the waveform hash, on any engine", () => {
@@ -90,12 +90,12 @@ describe("acoustic corpus through ExperimentTask", () => {
     // JS engine you are on; only the sampled audio's hash is exempt.
     const built = buildAllRecords().map(withoutWavHash);
     const published = publishedRecords().map(withoutWavHash);
-    expect(built.length).toBe(108);
+    expect(built.length).toBe(72);
     expect(built).toEqual(published);
   });
 
   it.runIf(onGeneratingEngine)(
-    "matches the published hash for all 115 files, on the generating engine",
+    "matches the published hash for all 79 files, on the generating engine",
     () => {
       const published = publishedChecksums();
       const built = corpusFiles(buildAllRecords());

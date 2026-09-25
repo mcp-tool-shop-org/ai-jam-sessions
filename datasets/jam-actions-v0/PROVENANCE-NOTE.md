@@ -21,6 +21,25 @@ audit trail is inspectable, but they carry the same unverified-provenance
 status they had at exclusion time. Do **not** promote them into any published
 package unless their arrangement provenance is first verified.
 
+## Four works withdrawn from the published subset in 0.6.0 (2026-09-25)
+
+The library provenance audit of 2026-09-09 read the MIDI files these records
+were built from. Four songs that Slice 2.5 had verified at the level of
+piano-midi.de's composer pages turned out to have been built from files
+obtained elsewhere, with no established arrangement licence:
+
+| Work | Source of the file | Records here | Status in published subset |
+|------|--------------------|--------------|---------------------------|
+| Chopin — Nocturne Op. 9 No. 2 | midiworld.com | 18 | **withdrawn in 0.6.0** |
+| Chopin — Prelude Op. 28 No. 4 | bitmidi.com | 12 | **withdrawn in 0.6.0** |
+| Beethoven — Pathétique Sonata II | midiworld.com | 16 | **withdrawn in 0.6.0** |
+| Schumann — Träumerei | midiworld.com | 12 | **withdrawn in 0.6.0** |
+
+Their records carry `record_verdict: "excluded"` with the reason in
+`verdict_reason`. The packager's library evidence gate refuses them even if the
+verdict were flipped back. See
+[`../../docs/findings/published-dataset-licence-audit.md`](../../docs/findings/published-dataset-licence-audit.md).
+
 ## License boundary
 
 The repository's MIT license covers the **code**. Everything under
