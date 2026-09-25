@@ -102,7 +102,7 @@ pnpm exec tsx scripts/derived-content-scan.ts --history "$WORK/mirror.git" --jso
 node -e '
 const fs = require("fs");
 const rows = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
-const keep = new Set(fs.readFileSync("docs/findings/history-rewrite/kept-paths.txt", "utf8").split("\n").filter((l) => l && !l.startsWith("#")));
+const keep = new Set(fs.readFileSync("docs/findings/history-rewrite/kept-paths.txt", "utf8").split(/\r?\n/).filter((l) => l && !l.startsWith("#")));
 const paths = rows.filter((r) => !r.presentAtHead && !keep.has(r.path)).map((r) => "literal:" + r.path);
 const blobs = [...new Set(rows.filter((r) => r.presentAtHead && !keep.has(r.path)).flatMap((r) => r.dirtyBlobs))];
 fs.writeFileSync(process.argv[2], paths.sort().join("\n") + "\n");
@@ -115,8 +115,9 @@ git -C "$WORK/mirror.git" log --all --name-only --format= -- '*.mid' | sort -u \
 sort -u -o "$WORK/remove-paths.txt" "$WORK/remove-paths.txt"
 
 # 3. compare with the dry run; review every added line before going on
-diff <(sort docs/findings/history-rewrite/remove-paths.txt) "$WORK/remove-paths.txt"
-diff <(sort docs/findings/history-rewrite/drop-blobs.txt) <(sort "$WORK/drop-blobs.txt")
+#    (with core.autocrlf=true the committed lists check out as CRLF, hence tr)
+diff <(tr -d '\r' < docs/findings/history-rewrite/remove-paths.txt | sort) "$WORK/remove-paths.txt"
+diff <(tr -d '\r' < docs/findings/history-rewrite/drop-blobs.txt | sort) <(sort "$WORK/drop-blobs.txt")
 
 # 4. path pass
 cd "$WORK/mirror.git"
@@ -163,9 +164,10 @@ filter-repo removes the `origin` remote on purpose. Push only branches and tags,
 ```bash
 cd "$WORK/mirror.git"
 PROT=repos/mcp-tool-shop-org/ai-jam-sessions/branches/main/protection
-# allow force-pushes on main for the window (current protection, allow_force_pushes true)
+# the protection read from the API on 2026-09-25, with only allow_force_pushes flipped
+# for the window; re-read it first (gh api "$PROT") and stop if anything else differs
 cat > "$WORK/protection-open.json" <<'JSON'
-{"required_status_checks":{"strict":true,"contexts":["ci (22)","dep-audit","ci (24)"]},"enforce_admins":false,"required_pull_request_reviews":null,"restrictions":null,"allow_force_pushes":true,"allow_deletions":false,"required_linear_history":false,"required_conversation_resolution":false,"lock_branch":false,"allow_fork_syncing":false}
+{"required_status_checks":{"strict":true,"checks":[{"context":"ci (22)","app_id":15368},{"context":"dep-audit","app_id":15368},{"context":"ci (24)","app_id":15368}]},"enforce_admins":false,"required_pull_request_reviews":null,"restrictions":null,"allow_force_pushes":true,"allow_deletions":false,"required_linear_history":false,"required_conversation_resolution":false,"lock_branch":false,"allow_fork_syncing":false}
 JSON
 sed 's/"allow_force_pushes":true/"allow_force_pushes":false/' "$WORK/protection-open.json" > "$WORK/protection-closed.json"
 gh api -X PUT "$PROT" --input "$WORK/protection-open.json"
