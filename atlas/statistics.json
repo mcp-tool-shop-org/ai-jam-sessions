@@ -1439,8 +1439,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 2,
-        "lines": 470,
+        "commits": 3,
+        "lines": 518,
         "path": "atlas/README.md"
       },
       {
@@ -1449,18 +1449,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 2,
-        "lines": 3030,
+        "commits": 3,
+        "lines": 3194,
         "path": "atlas/page.json"
       },
       {
-        "commits": 2,
-        "lines": 39558,
+        "commits": 3,
+        "lines": 41746,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 2,
-        "lines": 65100,
+        "commits": 3,
+        "lines": 76624,
         "path": "atlas/structure.json"
       },
       {
@@ -9934,8 +9934,8 @@
         "path": "docs/findings/derived-content-inventory.md"
       },
       {
-        "commits": 2,
-        "lines": 391,
+        "commits": 3,
+        "lines": 395,
         "path": "docs/findings/history-rewrite-runbook.md"
       },
       {
@@ -19534,9 +19534,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-09-25T18:16:51.731Z",
+  "generatedAt": "2026-09-25T18:27:06.062Z",
   "generatedFrom": {
-    "commit": "dc771c279b9e0b845563239b89763518476c2d19"
+    "commit": "d92a167294ff5df72f634fda8a99777f4380279f"
   },
   "pairs": [
     {
@@ -19858,16 +19858,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-09-25T14:16:33-04:00",
+    "headDate": "2026-09-25T14:26:52-04:00",
     "inScopeFiles": 2938,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 603,
+    "qualifyingCommits": 605,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-03-29T18:16:33.000Z",
+    "since": "2026-03-29T18:26:52.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
