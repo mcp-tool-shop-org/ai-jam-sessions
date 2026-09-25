@@ -9,6 +9,7 @@ authors:
     affiliation: "piano-midi.de (upstream MIDI arrangements; CC-BY-SA-3.0-DE)"
 version: "0.6.0"
 date-released: "2026-09-25"
+doi: "10.5281/zenodo.22961580"
 license: "CC-BY-SA-3.0-DE"
 abstract: >-
   57 multi-turn MCP tool-use records grounded in four classical-piano MIDI
@@ -17,6 +18,15 @@ abstract: >-
   not to come from piano-midi.de and carry no established arrangement licence.
   Every remaining record is byte-identical to version 0.5.0.
 identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22961580"
+    description: "Version DOI of this release, v0.6.0 (published 2026-09-25)"
+  - type: url
+    value: "https://zenodo.org/records/22961580"
+    description: "Zenodo record page for v0.6.0"
+  - type: doi
+    value: "10.5281/zenodo.22961579"
+    description: "Concept DOI of this deposit; resolves to its latest version"
   - type: doi
     value: "10.5281/zenodo.21313954"
     description: "Version DOI of the prior release, v0.5.0 (2026-07-11); contains withdrawn records"
