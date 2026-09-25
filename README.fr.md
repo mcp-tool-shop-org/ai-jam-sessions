@@ -21,7 +21,7 @@
   <a href="https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions"><img src="https://img.shields.io/npm/v/@mcptoolshop/ai-jam-sessions" alt="npm"></a>
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-108_across_12_genres-blue" alt="Songs"></a>
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-108%2F108-green" alt="Ready"></a>
-  <a href="datasets/jam-actions-v0-public/README.md"><img src="https://img.shields.io/badge/dataset-jam--actions--v0%20(115_records)-8b5cf6" alt="Training dataset"></a>
+  <a href="datasets/jam-actions-v0-public/README.md"><img src="https://img.shields.io/badge/dataset-jam--actions--v0%20(57_records)-8b5cf6" alt="Training dataset"></a>
   <a href="https://doi.org/10.5281/zenodo.20279918"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20279918.svg" alt="DOI"></a>
 </p>
 
@@ -29,9 +29,9 @@
 
 ## Qu'est-ce que c'est ?
 
-Un piano et une guitare qu'une IA apprend à jouer. Pas un synthétiseur, pas une bibliothèque MIDI, mais un instrument pédagogique.
+Un piano et une guitare que l'IA apprend à jouer. Pas un synthétiseur, pas une bibliothèque MIDI, mais un instrument pédagogique.
 
-Un LLM peut lire et écrire du texte, mais il ne peut pas apprécier la musique comme nous le faisons. Il n'a ni d'oreilles, ni de doigts, ni de mémoire musculaire. AI Jam Sessions comble cette lacune en donnant au modèle des sens qu'il peut réellement utiliser :
+Un LLM peut lire et écrire du texte, mais il ne peut pas apprécier la musique comme nous le faisons. Pas d'oreilles, pas de doigts, pas de mémoire musculaire. AI Jam Sessions comble cette lacune en donnant au modèle des sens qu'il peut réellement utiliser :
 
 - **Lecture** — partition MIDI réelle avec des annotations musicales approfondies. Pas d’approximations manuscrites, mais des données analysées, interprétées et expliquées.
 - **Audition** — six moteurs audio (piano oscillateur, piano échantillonné, échantillons vocaux, tractus vocal physique, synthétiseur vocal additif, guitare modélisée physiquement) qui diffusent le son via vos haut-parleurs, transformant ainsi les personnes présentes dans la pièce en les « oreilles » de l’IA. Et maintenant, le modèle a ses propres oreilles : il peut mesurer un enregistrement qu’il a réalisé, ou un que vous avez réalisé, et indiquer ce qu’il contient réellement — voir [Écoute](#écoute).
@@ -39,9 +39,9 @@ Un LLM peut lire et écrire du texte, mais il ne peut pas apprécier la musique 
 - **Mémorisation** — un journal de pratique qui est conservé entre les sessions, afin que l’apprentissage s’accumule avec le temps.
 - **Chant** — synthèse du tractus vocal avec 20 préréglages vocaux, allant du soprano d’opéra au chœur électronique. Mode « chant en chœur » avec solfège, contour et narration syllabique. Et une véritable ligne mélodique chantée sur le tempo du piano : un chanteur conditionné par la partition, piloté par le MIDI de la chanson, avec une porte temporelle (40 ms) et une porte de hauteur (50 cents) avant que vous ne l’entendiez — voir [Chant](#chant).
 
-Chacune des 120 chansons est désormais entièrement annotée : contexte historique, analyse structurelle mesure par mesure, moments clés, objectifs pédagogiques et conseils de performance, dans les 12 genres. Une version antérieure de ce fichier README indiquait que les chansons brutes « attendaient que l'IA assimile les motifs, joue la musique et rédige ses propres annotations ». C'est exactement ce qui s'est passé : les annotations ont été rédigées par l'IA sur la base d'une analyse déterministe de chaque chanson (accords, structure répétitive, limites des sections, tonalités vérifiées), soumises à une grille d'évaluation de la qualité et vérifiées de manière contradictoire affirmation par affirmation : numéros de mesures, fenêtres d'accords et décomptes structurels sont tous vérifiés par rapport au MIDI réel avant que quoi que ce soit ne soit publié.
+Chacune des 108 chansons est maintenant entièrement annotée : contexte historique, analyse structurelle barre par barre, moments clés, objectifs pédagogiques et conseils de performance, dans les 12 genres. Une version antérieure de ce fichier README indiquait que les chansons brutes « attendaient que l'IA assimile les motifs, joue la musique et écrive ses propres annotations ». C'est exactement ce qui s'est passé : les annotations ont été écrites par l'IA sur la base d'une analyse déterministe par chanson (accords, structure de répétition, limites de section, tonalités vérifiées par le contenu), soumises à une grille d'évaluation de la qualité et vérifiées de manière contradictoire, affirmation par affirmation (numéros de mesures, fenêtres d'accords et décomptes structurels, le tout vérifié par rapport au MIDI réel avant toute publication).
 
-Dans le cadre de ce même travail, nous publions également **[jam-actions-v0](#training-dataset)** : un ensemble de données public de 115 séquences d'utilisation d'outils MCP en plusieurs étapes sur du piano classique réel. Il enseigne aux LLM à effectuer une *utilisation d'outils ancrée dans la musique symbolique*, et pas seulement la génération de texte, et est livré avec une grille de publication à 7 axes qui distingue le fait de « transmettre des preuves » du fait de « passer parce que la tâche est triviale ». Voir [Ensemble de données d'entraînement](#training-dataset) ci-dessous pour l'histoire complète.
+À partir de ce même travail, nous publions également **[jam-actions-v0](#training-dataset)** — un ensemble de données public de 57 séquences d'utilisation d'outils MCP en plusieurs étapes sur du piano classique réel. Il enseigne aux LLM à effectuer une *utilisation d'outils basée sur des données musicales symboliques*, et pas seulement à générer du texte, et est livré avec une grille de publication à 7 axes qui distingue « la transmission de preuves » de « la transmission parce que la tâche est triviale ». Voir [Ensemble de données d'entraînement](#training-dataset) ci-dessous pour tous les détails.
 
 ## Écoute
 
@@ -97,9 +97,9 @@ Le canal acoustique présente un décalage et indique l'ampleur de ce décalage 
 Le suivi acoustique suit une ligne à la fois, il ne pourra donc pas identifier les notes d'un accord, et il ne prétend pas le faire. Un accord qu'il ne peut pas résoudre est sa limite connue, plutôt qu'une découverte, et
 l'ensemble reste silencieux à ce sujet au lieu de crier au loup à chaque accord joué par le piano.
 
-## Le clavier de piano
+## Le piano-rouleau
 
-Le clavier de piano est le moyen par lequel l'IA perçoit la musique. Il affiche chaque chanson sous forme de SVG : bleu pour la main droite, corail pour la main gauche, avec des grilles rythmiques, des nuances et des limites de mesures :
+Le piano-rouleau est la façon dont l'IA perçoit la musique. Il représente chaque chanson sous forme de SVG : bleu pour la main droite, corail pour la main gauche, avec des grilles de temps, des nuances et des limites de mesures :
 
 <p align="center">
   <img src="docs/fur-elise-m1-8.svg" alt="Piano roll of Fur Elise measures 1-8, showing right hand (blue) and left hand (coral) notes" width="100%" />
@@ -107,34 +107,34 @@ Le clavier de piano est le moyen par lequel l'IA perçoit la musique. Il affiche
 
 <p align="center"><em>Für Elise, measures 1–8 — the E5-D#5 trill in blue, bass accompaniment in coral</em></p>
 
-Deux modes de couleur : **main** (bleu/corail) ou **classe chromatique** (arc-en-ciel chromatique : chaque Do est rouge, chaque Fa# est cyan). Le format SVG signifie que le modèle peut à la fois voir l'image et lire le balisage pour vérifier la hauteur, le rythme et l'indépendance des mains.
+Deux modes de couleur : **main** (bleu/corail) ou **classe de hauteur** (arc-en-ciel chromatique : chaque Do est rouge, chaque Fa# est cyan). Le format SVG signifie que le modèle peut à la fois voir l'image et lire le balisage pour vérifier la hauteur, le rythme et l'indépendance des mains.
 
-## L'interface
+## Le cockpit
 
-Un studio de composition basé sur un navigateur qui se trouve dans ce dépôt à l'adresse [`apps/cockpit`](apps/cockpit) et fonctionne en direct à l'adresse **[mcp-tool-shop-org.github.io/ai-jam-sessions/cockpit](https://mcp-tool-shop-org.github.io/ai-jam-sessions/cockpit/)**. Pas de plugins, pas de DAW, pas d'installation ; tout reste dans votre navigateur (votre travail est automatiquement enregistré localement). Préférez-vous le modifier ?
+Un studio de composition basé sur un navigateur qui se trouve dans ce dépôt à l'adresse [`apps/cockpit`](apps/cockpit) et qui fonctionne en direct à l'adresse **[mcp-tool-shop-org.github.io/ai-jam-sessions/cockpit](https://mcp-tool-shop-org.github.io/ai-jam-sessions/cockpit/)**. Pas de plugins, pas de DAW, pas d'installation ; tout reste dans votre navigateur (votre travail est automatiquement enregistré localement). Vous préférez le modifier ?
 
 ```bash
 cd apps/cockpit && npm install && npm run dev   # Vite dev server, opens in your browser
 ```
 
-- **Par défaut, un piano de concert échantillonné** — le panneau principal intègre une version allégée du pack Salamander Grand (90 fichiers OGG, 8 Mo) qui se charge lors de votre première interaction et utilise la même chaîne de traitement que les voix synthétiques ; avant son chargement (ou hors ligne), les pianos à oscillateurs accordés assurent une transition fluide. Échantillons par [Alexander Holm](https://freepats.zenvoid.org/Piano/acoustic-grand-piano.html), CC-BY 3.0.
-- **Mode panneau — la salle d’écoute** — tests comparatifs aveugles en série des sonorités du moteur de composition sur des mélodies réelles issues de la bibliothèque : extraits appariés en termes de volume, rendus hors ligne via le chemin audio réel, essais aléatoires avec des pièges cachés pour évaluer les limites de discrimination, classements Bradley-Terry avec intervalles de confiance bootstrap, et résultats honnêtes (PROVISOIRES jusqu’à ce que chaque paire atteigne son quota de votes ; NON INTERPRÉTABLES lorsque la limite de discrimination est atteinte). Un deuxième sous-mode exécute le même classement avec des juges LLM locaux, ainsi qu’un historique pour les deux types d’exécution et une vue comparative (Kendall τ + correspondance du classement du moteur) qui permet de déterminer si les pistes simplifiées reflètent fidèlement la réalité.
-- **Synchronisation précise** — les notes sont synchronisées avec le tempo musical, ce qui signifie que le contrôle du BPM ajuste réellement le rythme de lecture ; une règle temporelle avec clic pour naviguer et des régions de boucle définissables par glisser-déposer ; défilement automatique qui suit la tête de lecture.
-- **Enregistrement activé** — jouez sur les touches QWERTY, le clavier à l’écran ou un appareil Web MIDI, et cela sera enregistré dans la partition : une mesure d’introduction, un enregistrement en boucle comme avec un looper (ou remplacement), le timing brut de l’interprétation est préservé sous une vue quantifiée, chaque passage constitue une unité unique pouvant être annulée.
-- **Annulation/rétablissement complet** — toutes les modifications, y compris Effacer et Importer, sont réversibles (Ctrl+Z), avec des gestes de glisser qui se combinent comme le font les éditeurs classiques.
-- **Sélection multiple + presse-papiers** — sélection par rectangle sous un outil de sélection/dessin à bascule, clics modificateurs standard de la plateforme, copier/couper/coller au niveau de la tête de lecture, Dupliquer.
-- **Tactile et accessibilité** — événements du pointeur avec capture sur chaque surface, tapoter pour redéfinir la position comme alternative au glissement, édition des notes au clavier, superposition de partitions adaptée aux personnes daltoniennes.
-- **Piano roll à double mode** — basculez entre le mode Instrument (couleurs par classe chromatique) et le mode Vocal (notes colorées en fonction de la forme vocalique : /a/ /e/ /i/ /o/ /u/).
-- **Clavier visuel** — deux octaves à partir de C4, mappé sur votre clavier QWERTY. Cliquez ou tapez.
-- **20 préréglages vocaux** — 15 voix mappées Kokoro (Aoede, Heart, Jessica, Sky, Eric, Fenrir, Liam, Onyx, Alice, Emma, Isabella, George, Lewis, plus chœur et voix synthétiques), 4 voix mappées sur le spectre sonore et une section de chœur synthétique.
-- **10 préréglages d’instruments** — les 6 voix de piano côté serveur, plus un pad synthétique, un orgue, une cloche et des cordes.
-- **Inspecteur de notes** — cliquez sur n’importe quelle note pour modifier la vélocité, la voyelle et l’intensité.
-- **7 systèmes d’accordage** — tempérament égal, intonation juste (majeur/mineur), pythagoricien, gamme moyenne à quart de comma, Werckmeister III ou décalages personnalisés en centièmes. Référence A4 réglable (392–494 Hz).
-- **Audit d’accordage** — tableau des fréquences, testeur d’intervalles avec analyse de la fréquence de battement et exportation/importation de l’accordage.
-- **Importation/exportation de partitions** — sérialisez toute la partition au format JSON et chargez-la à nouveau.
-- **API orientée LLM** — `window.__cockpit` expose `exportScore()`, `importScore()`, `addNote()`, `play()`, `stop()`, `panic()`, `setMode()` et `getScore()` afin qu’un LLM puisse composer, arranger et lire de manière programmatique.
+- **Un piano à queue échantillonné par défaut** : le cockpit est livré avec un ensemble de sons de piano Salamander Grand réduit (90 fichiers OGG, 8 Mo) qui se charge lors de votre première interaction et est joué via la même chaîne de sortie que les voix du synthétiseur ; avant qu'il ne se charge (ou hors ligne), le piano à oscillateur accordé prend le relais de manière transparente. Échantillons de [Alexander Holm](https://freepats.zenvoid.org/Piano/acoustic-grand-piano.html), CC-BY 3.0.
+- **Mode panneau — la salle d'écoute** : auditions comparatives à l'aveugle, par paires, des voicings du moteur de composition sur de véritables mélodies de bibliothèque : extraits de volume égal rendus hors ligne via le chemin de la voix réelle, essais aléatoires avec des essais de seuil cachés, classements Bradley-Terry avec des intervalles de confiance bootstrap et résultats honnêtes (PROVISOIRES jusqu'à ce que chaque paire atteigne son budget de votes ; NON INTERPRÉTABLES lorsque le seuil de discrimination est atteint). Un deuxième sous-mode exécute le même classement avec des juges LLM locaux, ainsi qu'un historique pour les deux types d'exécution et une vue de comparaison (Kendall τ + correspondance du classement du moteur) qui permet de savoir si les pistes de substitution bon marché suivent la vérité humaine.
+- **Transport précis au rythme** : les notes existent dans le temps musical, de sorte que le contrôle du BPM modifie réellement le tempo de lecture ; une règle de temps avec clic pour rechercher et une possibilité de faire glisser pour définir les **régions de boucle** ; défilement automatique qui suit la tête de lecture
+- **Capture avec activation de l'enregistrement** : jouez les touches QWERTY, le clavier à l'écran ou un appareil Web MIDI, et cela se retrouve dans la partition : 1 mesure d'introduction, superposition de style looper sur les cycles de boucle (ou mode de remplacement), le tempo de la performance brute est préservé dans une vue quantifiée, chaque passage est une unité unique qui peut être annulée
+- **Annulation/rétablissement complet** : chaque modification, y compris Effacer et Importer, est réversible (Ctrl+Z), les gestes de glissement se combinant de la même manière que dans les éditeurs réels
+- **Sélection multiple + presse-papiers** : sélection par rectangle sous un outil de sélection/dessin, clics avec modificateurs standard de la plateforme, copier/couper/coller à la tête de lecture, Dupliquer
+- **Tactile + accessibilité** : événements de pointeur avec capture sur chaque surface, tapoter pour redéfinir comme alternative à la glisse, édition des notes au clavier, superpositions de partitions sans danger pour les daltoniens
+- **Piano-rouleau à double mode** : basculez entre le mode Instrument (couleurs de classe de hauteur chromatique) et le mode Vocal (notes colorées en fonction de la forme de la voyelle : /a/ /e/ /i/ /o/ /u/)
+- **Clavier visuel** : deux octaves à partir de Do4, mappées à votre clavier QWERTY. Cliquez ou tapez.
+- **20 préréglages de voix** : 15 voix mappées Kokoro (Aoede, Heart, Jessica, Sky, Eric, Fenrir, Liam, Onyx, Alice, Emma, Isabella, George, Lewis, plus chœur et voix de synthé), 4 voix mappées de tractus et une section de chœur synthétique
+- **10 préréglages d'instruments** : les 6 voix de piano côté serveur plus synthé-pad, orgue, cloche et cordes
+- **Inspecteur de notes** : cliquez sur n'importe quelle note pour modifier la vélocité, la voyelle et la sonorité
+- **7 systèmes d'accordage** : tempérament égal, intonation juste (majeur/mineur), pythagoricien, tempérament à quart de virgule, Werckmeister III ou décalages de cent personnalisés. Référence A4 réglable (392–494 Hz).
+- **Audit d'accordage** : tableau de fréquences, testeur d'intervalles avec analyse de la fréquence de battement et exportation/importation de l'accordage
+- **Importation/exportation de partitions** : sérialisez l'ensemble de la partition au format JSON et chargez-la
+- **API orientée LLM** : `window.__cockpit` expose `exportScore()`, `importScore()`, `addNote()`, `play()`, `stop()`, `panic()`, `setMode()` et `getScore()` afin qu'un LLM puisse composer, arranger et lire en programme
 
-## La boucle d’apprentissage
+## La boucle d'apprentissage
 
 <p align="center">
   <img src="docs/learning-loop.svg" alt="The learning loop: Read (MIDI + annotations) → Play (six sound engines) → See (piano roll · guitar tab) → Reflect (practice journal), with the journal persisting so the next session picks up where the last left off" width="100%" />
@@ -142,68 +142,68 @@ cd apps/cockpit && npm install && npm run dev   # Vite dev server, opens in your
 
 ## La bibliothèque de chansons
 
-120 chansons dans 12 genres différents, créées à partir de fichiers MIDI réels. Chaque genre possède un exemple annoté en profondeur — avec contexte historique, analyse harmonique par mesure, moments clés, objectifs pédagogiques et conseils d’interprétation (y compris des indications vocales). Ces exemples servent de modèles : l’IA en étudie un, puis annote les autres.
+108 chansons annotées dans 12 genres, créées à partir de fichiers MIDI réels. Chaque genre possède un exemple annoté en profondeur, avec un contexte historique, une analyse harmonique barre par barre, des moments clés, des objectifs pédagogiques et des conseils de performance (y compris des conseils vocaux). Ces exemples servent de modèles : l'IA en étudie un, puis annote les autres.
 
 **Quels fichiers sont inclus et quels fichiers sont téléchargés.** Les annotations sont les nôtres et sont fournies avec chaque morceau. Les fichiers MIDI ont été téléchargés à partir de sites MIDI publics lors de la création de la bibliothèque, et un audit de provenance par fichier ([`docs/findings/library-provenance-audit.md`](docs/findings/library-provenance-audit.md)) a révélé que seulement 14 d’entre eux comportent une licence qui autorise la redistribution : les arrangements piano-midi.de de Bernd Krueger (CC-BY-SA-3.0-DE) et les mises en page du Mutopia Project, qui sont dans le domaine public. Ces 14 fichiers sont inclus dans le paquet npm. Les 94 autres ne le sont pas : leurs `.json` sont inclus, avec un `provenance` qui indique la source, ses conditions et le hachage SHA-256 du fichier, et `ai-jam-sessions library fetch --accept-source-terms` télécharge chacun d’eux à partir du site qui l’a publié, en respectant les conditions de ce site, et refuse tout fichier dont le hachage ne correspond plus à ce qui a été vérifié dans les annotations. Douze fichiers qui se sont avérés être des morceaux différents de ceux indiqués par leur nom ont été mis en quarantaine, ce qui explique pourquoi le nombre est de 108 et non de 120, comme l’indiquaient les versions précédentes. Les versions antérieures à celle-ci incluaient les 120 fichiers MIDI ; c’était une erreur, et elle est corrigée ici plutôt que d’être dissimulée.
 
-| Genre | Exemple | Tonalité | Ce que cela enseigne |
+| Genre | Exemple | Clé | Ce que cela enseigne |
 |-------|----------|-----|-----------------|
-| Blues | The Thrill Is Gone (B.B. King) | Si mineur | Forme du blues mineur, appel et réponse, jeu en décalage par rapport au rythme |
-| Classique | Für Elise (Beethoven) | La mineur | Forme de rondo, différenciation du toucher, discipline de la pédale |
+| Blues | The Thrill Is Gone (B.B. King) | Si mineur | Forme de blues mineur, question-réponse, jeu en contretemps |
+| Classique | Für Elise (Beethoven) | La mineur | Forme de rondo, différenciation du toucher, discipline du pédalage |
 | Film | Comptine d’un autre été (Tiersen) | Mi mineur | Textures arpégées, architecture dynamique sans changement harmonique |
-| Folk | Greensleeves | Mi mineur | Sensation de valse en 3/4, mélange modal, style vocal de la Renaissance |
-| Jazz | Autumn Leaves (Kosma) | Sol mineur | Progressions ii-V-I, notes guides, rythmes swing en huitièmes, voicings sans fondamentale |
-| Latin | The Girl from Ipanema (Jobim) | Fa majeur | Rythme de bossa nova, modulation chromatique, retenue vocale |
-| New-Age | River Flows in You (Yiruma) | La majeur | Reconnaissance de I-V-vi-IV, arpèges fluides, rubato |
+| Musique folklorique | Greensleeves | Mi mineur | Ambiance de valse en 3/4, mélange modal, style vocal de la Renaissance |
+| Jazz | Autumn Leaves (Kosma) | Sol mineur | Progressions ii-V-I, notes directrices, croches en swing, accords sans fondamentale |
+| Musique latine | The Girl from Ipanema (Jobim) | Fa majeur | Rythme de bossa nova, modulation chromatique, retenue vocale |
+| New-Age | River Flows in You (Yiruma) | La majeur | Reconnaissance I-V-vi-IV, arpèges fluides, rubato |
 | Pop | Imagine (Lennon) | Do majeur | Accompagnement arpégé, retenue, sincérité vocale |
-| Ragtime | The Entertainer (Joplin) | Do majeur | Basse « oom-pah », syncopes, forme à plusieurs parties, discipline du tempo |
-| R&B | Superstition (Stevie Wonder) | Mi bémol mineur | Funk en seizièmes de note, clavier percussif, notes fantômes |
-| Rock | Your Song (Elton John) | Mi bémol majeur | Voix-leading d’une ballade au piano, inversions, chant conversationnel |
-| Soul | Lean on Me (Bill Withers) | Do majeur | Mélodie diatonique, accompagnement gospel, appel et réponse |
+| Ragtime | The Entertainer (Joplin) | Do majeur | Basse « oom-pah », syncopation, forme à plusieurs parties, discipline du tempo |
+| R&B | Superstition (Stevie Wonder) | Mi bémol mineur | Funk en doubles croches, clavier percussif, notes fantômes |
+| Rock | Your Song (Elton John) | Mi bémol majeur | Mélodie de ballade au piano, renversements, chant conversationnel |
+| Soul | Lean on Me (Bill Withers) | Do majeur | Mélodie diatonique, accompagnement gospel, question-réponse |
 
-Les chansons progressent de **brut** (MIDI uniquement) → **annoté** → **prêt** (totalement jouable avec un langage musical). L’IA fait progresser les chansons en les étudiant et en rédigeant des annotations à l’aide de `annotate_song`.
+Les morceaux progressent de **brut** (MIDI uniquement) à **annoté** à **prêt** (totalement jouable avec un langage musical). L’IA fait progresser les morceaux en les étudiant et en rédigeant des annotations avec `annotate_song`.
 
 ## Moteurs sonores
 
-Six moteurs, plus un combinateur à plusieurs niveaux qui exécute deux d’entre eux simultanément :
+Six moteurs, plus un combinateur en couches qui exécute simultanément deux d’entre eux :
 
-| Moteur | Type | Sonorité |
+| Moteur | Type | Son |
 |--------|------|---------------------|
-| **Oscillator Piano** | Synthèse additive | Piano multi-harmonique avec bruit de marteau, inharmonicité, brillance modulée par la vélocité, polyphonie à 48 voix, panoramisation stéréo. Aucune dépendance. |
-| **Sample Piano** | Lecture d’échantillons | Salamander Grand Piano — le vrai son. **Le moteur par défaut lorsqu’un ensemble de sons est installé** (`samples/AccurateSalamander` ou `AI_JAM_SAMPLES_DIR`) ; l’archive npm ne contient pas d’échantillons, vous devez donc fournir le téléchargement [Salamander](https://freepats.zenvoid.org/Piano/acoustic-grand-piano.html). La console du navigateur est livrée avec son propre ensemble de sons réduit de 8 Mo (90 fichiers OGG, CC-BY 3.0 Alexander Holm) — aucune configuration n’est nécessaire sur le Web. |
-| **Vocal (Sample)** | Échantillons à hauteur modifiée | Sons de voyelles soutenues avec portamento et mode legato. |
-| **Vocal Tract** | Modèle physique | Pink Trombone — forme d’onde glottale basse fréquence traversant un guide d’ondes numérique à 44 cellules. Quatre préréglages : soprano, alto, ténor, basse. |
-| **Vocal Synth** | Synthèse additive | 15 préréglages de voix Kokoro avec modulation de formant, souffle, vibrato. Déterministe (générateur aléatoire à graines). |
-| **Guitar** | Synthèse additive | Corde pincée modélisée physiquement — 4 préréglages (dreadnought en acier, classique en nylon, jazz archtop, douze cordes), 8 accordages, 17 paramètres réglables. |
-| **Layered** | Combinateur | Combine deux moteurs et transmet chaque événement MIDI aux deux — piano + synthé, voix + synthé, etc. |
+| **Oscillator Piano** | Synthèse additive | Piano multi-harmonique avec bruit de marteau, inharmonicité, brillance modulée par la vélocité, polyphonie à 48 voix, imagerie stéréo. Aucune dépendance. |
+| **Sample Piano** | Lecture d’échantillons | Salamander Grand Piano — le vrai son. **Le moteur par défaut lorsqu’un ensemble est installé** (`samples/AccurateSalamander` ou `AI_JAM_SAMPLES_DIR`) ; le fichier tar npm reste sans échantillon, vous fournissez donc le téléchargement [Salamander](https://freepats.zenvoid.org/Piano/acoustic-grand-piano.html). Le cockpit du navigateur est livré avec son propre ensemble réduit de 8 Mo (90 OGG, CC-BY 3.0 Alexander Holm) — aucune configuration sur le Web. |
+| **Vocal (Sample)** | Échantillons à hauteur modifiée | Tons de voyelles soutenus avec portamento et mode legato. |
+| **Vocal Tract** | Modèle physique | Pink Trombone — onde glottale LF à travers un guide d’ondes numérique à 44 cellules. Quatre préréglages : soprano, alto, ténor, basse. |
+| **Vocal Synth** | Synthèse additive | 15 préréglages de voix Kokoro avec mise en forme de formants, souffle, vibrato. Déterministe (générateur de nombres aléatoires avec amorçage). |
+| **Guitar** | Synthèse additive | Corde pincée modélisée physiquement — 4 préréglages (dreadnought en acier, classique en nylon, jazz arche, douze cordes), 8 accordages, 17 paramètres réglables. |
+| **Layered** | Combinateur | Enveloppe deux moteurs et transmet chaque événement MIDI aux deux — piano+synthé, voix+synthé, etc. |
 
 ### Voix de clavier
 
-Six voix de piano réglables, chacune étant ajustable par paramètre (brillance, durée, dureté du marteau, désaccord, largeur stéréo, et plus :
+Six voix de piano réglables, chacune ajustable par paramètre (brillance, durée, dureté du marteau, désaccord, largeur stéréo, etc.) :
 
-| Voix | Caractéristique |
+| Voix | Caractère |
 |-------|-----------|
-| Grand de concert | Riche, ample, classique |
-| Vertical | Chaud, intime, folk |
-| Piano électrique | Soie, jazz, son Fender Rhodes |
-| Honky-Tonk | Désaccordé, ragtime, de saloon |
-| Boîte à musique | Cristallin, éthéré |
-| Grand brillant | Perçant, contemporain, pop |
+| Concert Grand | Riche, ample, classique |
+| Upright | Chaud, intime, folk |
+| Electric Piano | Soie, jazz, ambiance Fender Rhodes |
+| Honky-Tonk | Désaccordé, ragtime, saloon |
+| Music Box | Cristallin, éthéré |
+| Bright Grand | Perçant, contemporain, pop |
 
 ### Voix de guitare
 
-Quatre préréglages de voix de guitare avec synthèse de cordes modélisée physiquement, chacun ayant 17 paramètres réglables (brillance, résonance du corps, position de pincement, amortissement des cordes, et plus :
+Quatre préréglages de voix de guitare avec synthèse de cordes modélisée physiquement, chacun avec 17 paramètres réglables (brillance, résonance du corps, position de pincement, amortissement des cordes, etc.) :
 
-| Voix | Caractéristique |
+| Voix | Caractère |
 |-------|-----------|
-| Dreadnought en acier | Brillant, équilibré, acoustique classique |
-| Classique en nylon | Chaud, doux, arrondi |
+| Steel Dreadnought | Brillant, équilibré, acoustique classique |
+| Nylon Classical | Chaud, doux, arrondi |
 | Jazz Archtop | Doux, boisé, clair |
-| Douze cordes | Scintillant, doublé, semblable à un chorus |
+| Twelve-String | Chatoyant, doublé, semblable à un chorus |
 
 ## Le journal de pratique
 
-Après chaque session, le serveur enregistre ce qui s’est passé — quelle chanson, quelle vitesse, combien de mesures, combien de temps. L’IA ajoute ses propres réflexions : ce qu’elle a remarqué, quels schémas elle a reconnus, quoi essayer ensuite.
+Après chaque session, le serveur enregistre ce qui s’est passé — quel morceau, quelle vitesse, combien de mesures, combien de temps. L’IA ajoute ses propres réflexions : ce qu’elle a remarqué, quels schémas elle a reconnus, ce qu’il faut essayer ensuite.
 
 ```markdown
 ---
@@ -220,47 +220,43 @@ Next: try at full speed. Compare the Ipanema bridge modulation with this.
 
 Un fichier Markdown par jour, stocké dans `~/.ai-jam-sessions/journal/`. Lisible par l’homme, ajout uniquement. Lors de la prochaine session, l’IA lit son journal et reprend là où elle s’était arrêtée.
 
-## Ensemble de données d’entraînement
+## Ensemble d’entraînement
 
-**jam-actions-v0** — un ensemble de données public de traces d’utilisation d’outils MCP sur plusieurs tours, basé sur des fichiers MIDI réels de piano classique. Construit à partir de la même bibliothèque que celle avec laquelle ce serveur enseigne, l’ensemble de données apprend aux LLM à effectuer une **utilisation d’outils basée sur des preuves dans le domaine de la musique symbolique** — et pas seulement la génération de texte.
+**jam-actions-v0** — un ensemble de données public de traces d’utilisation d’outils MCP sur plusieurs tours, basé sur des fichiers MIDI de piano classique. Construit à partir de la même bibliothèque que ce serveur utilise pour l’enseignement, l’ensemble de données enseigne aux LLM comment effectuer une **utilisation d’outils basée sur des données sur de la musique symbolique** — et pas seulement de la génération de texte.
 
-Chaque enregistrement associe une fenêtre de phrase de 4 mesures à un objectif d’enseignement annoté et à une *trace cible* — une session étape par étape dans laquelle un assistant utilise les outils MCP ci-dessus (`get_events_in_measure`, `get_events_in_hand`, `count_distinct_pitch_classes` et le reste des 9 outils de l’interface MIDI) pour lire, analyser et discuter de la phrase.
+Chaque enregistrement associe une séquence de 4 mesures à un objectif pédagogique annoté et à une *trace cible* — une session étape par étape dans laquelle un assistant utilise les outils MCP mentionnés ci-dessus (`get_events_in_measure`, `get_events_in_hand`, `count_distinct_pitch_classes` et le reste de la surface d’inspection MIDI composée de 9 outils) pour lire, analyser et discuter de la séquence.
 
 | | |
 |---|---|
-| **DOI** | [**`10.5281/zenodo.20279918`**](https://doi.org/10.5281/zenodo.20279918) — concept DOI, resolves to the latest published version (v0.5.0: [`10.5281/zenodo.21313954`](https://doi.org/10.5281/zenodo.21313954), published 2026-07-11) |
-| Enregistrements | 115 (sous-ensemble public) |
-| Valeur de référence canonique | E3 après correction, 16 enregistrements |
-| Compositions | 8 œuvres pour piano classique de 6 compositeurs (Bach, Beethoven, Chopin, Debussy, Mozart, Schumann) |
-| Source MIDI | piano-midi.de — arrangements de Bernd Krueger |
-| Licence | CC-BY-SA-3.0-DE (arrangements) sur des compositions du domaine public |
-| Version | 0.5.0 (11 juillet 2026) — correction de Bach BWV 846, errata 001 + 002 |
-| Schéma | `release-gate-assessment/2.0.0` |
+| Version | **0.6.0 (25-09-2026) — version de correction** (voir ci-dessous) |
+| Enregistrements | 57 (sous-ensemble public) : 45 pour l’entraînement, 12 pour le test (`clair-de-lune`) |
+| Compositions | 4 œuvres classiques pour piano : Bach BWV 846, Mozart K. 545 I, Beethoven « Für Elise », Debussy « Clair de lune » |
+| Source MIDI | piano-midi.de — arrangements de Bernd Krueger, chaque fichier portant le crédit de droit d’auteur de Krueger |
+| Licence | CC-BY-SA-3.0-DE (arrangements) pour les compositions du domaine public |
+| Où | [`mcp-tool-shop/jam-actions-v0`](https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0) on Hugging Face and on Zenodo; DOIs and citation in the [dataset card](datasets/jam-actions-v0-public/README.md) and [`CITATION.cff`](datasets/jam-actions-v0-public/CITATION.cff) |
 
-**Histoire de la qualité — le seuil de publication à 7 axes.** L’ensemble de données est livré avec un seuil de publication qui distingue les résultats basés sur des preuves et valides des résultats saturés. Les axes 1 à 6 sont bloquants (seuil absolu, composé de marge, taux d’utilisation d’outils, correction après utilisation d’un outil, nombre d’interprétations erronées, seuil du niveau) ; l’axe 7 est une comparaison entre les résultats enrichis et non enrichis. Les axes 2 et 6 autorisent un compartiment `ceiling_saturated_pass` afin que les enregistrements qui obtiennent un score de 1,000 dans des conditions textuelles uniquement / inspectées par des outils / MIDI aléatoires ne diluent pas les niveaux plus difficiles. La valeur de référence Slice 22 **PASSE** le seuil révisé. La valeur de référence Slice 19 échoue toujours — elle est conservée en tant que diagnostic de régression afin que le seuil soit efficace.
+**La correction 0.6.0.** Les versions 0.4.x et 0.5.x contenaient 115 enregistrements répartis sur 8 œuvres, tous attribués à Bernd Krueger. Cette attribution a été vérifiée par rapport aux pages du compositeur sur piano-midi.de, et non par rapport aux fichiers. Lorsque la bibliothèque de chansons a été auditée à partir des octets MIDI, il s’est avéré que quatre de ces chansons — le Nocturne op. 9 n° 2 et le Prélude op. 28 n° 4 de Chopin, la « Pathétique » II de Beethoven et le « Träumerei » de Schumann — avaient été créées à partir de fichiers obtenus sur midiworld.com et bitmidi.com, sans licence d’arrangement établie. Leurs 58 enregistrements contenaient ces arrangements note par note, de sorte que la version 0.6.0 les retire. Les 57 enregistrements restants sont identiques à ceux de la version 0.5.0. Veuillez ne pas redistribuer les enregistrements retirés des versions antérieures. Le compte rendu complet se trouve dans [`docs/findings/published-dataset-licence-audit.md`](docs/findings/published-dataset-licence-audit.md).
 
-**Reproductibilité.** Un nouveau contributeur sur n’importe quelle plateforme (Windows natif, macOS, Linux, WSL) peut vérifier le package et reproduire la valeur de référence canonique PASS en moins d’une minute :
+**La validation des preuves.** Le programme d’empaquetage relit maintenant le bloc de provenance de chaque chanson — recalculé à partir des octets MIDI — et refuse tout enregistrement dont la chanson ne dispose pas d’une licence d’arrangement redistribuable, ou dont le hachage du fichier source diffère du fichier dont la provenance est prouvée. Il fonctionne en mode sécurisé. Un test exécute à nouveau la même vérification sur chaque paquet publié, de sorte qu’un changement de provenance ultérieur fait passer la compilation en rouge pour les ensembles publiés.
+
+**Évaluation de la qualité — la validation sur 7 axes.** La validation de l’ensemble de données distingue la validation basée sur des preuves de la validation qui atteint un seuil maximal. Les axes 1 à 6 sont bloquants (seuil absolu, seuil composé, taux d’utilisation des outils, correction après l’utilisation d’un outil, nombre d’interprétations erronées, seuil de la couche) ; l’axe 7 est une comparaison entre les données enrichies et les données non enrichies. Les résultats enregistrés ont été mesurés sur les 115 enregistrements des versions 0.4.x et 0.5.x et peuvent être reproduits à partir de la balise `jam-actions-v0-0.5.0-cut-2026-07-11` ; ils n’ont pas été remesurés dans la version 0.6.0.
+
+**Reproductibilité.** Un nouveau contributeur sur n’importe quelle plateforme (Windows natif, macOS, Linux, WSL) peut vérifier le paquet et le reconstruire :
 
 ```bash
 git clone https://github.com/mcp-tool-shop-org/ai-jam-sessions.git
 cd ai-jam-sessions && pnpm install
-pnpm exec tsx scripts/verify-public-package-checksums.ts        # 274 entries, ~2s
+pnpm exec tsx scripts/verify-public-package-checksums.ts                        # every file accounted for
+pnpm exec tsx scripts/package-jam-actions-public.ts --today 2026-09-25 --dry-run # evidence gate runs first
 pnpm build && pnpm exec tsx scripts/verify-public-package-execution.ts
 # → "VERDICT: PASS" — every frozen tool call replays live (needs an audio device)
-git show jam-actions-v0-feature-marketed-2026-05-19:datasets/jam-actions-v0-public/evals/slice21-fair-e3-baseline-results.json > /tmp/b.json
-pnpm exec tsx scripts/check-release-gate.ts /tmp/b.json
-# → "Aggregate: PASS" (exit 0) — the sealed baseline ships in the v0.4.3 deposit; v0.5.0 restores it from git history
 ```
 
-`.gitattributes` fixe les fins de ligne LF pour `*.sha256` et l’arborescence public-dataset afin que le vérificateur de sommes de contrôle fonctionne sur toutes les plateformes. L’interface de ligne de commande du seuil de publication est stricte en termes de position (elle rejette les arguments positionnels inconnus ou multiples) afin que les contributeurs qui démarrent ne puissent pas l’invoquer silencieusement de manière incorrecte.
+`.gitattributes` fixe les fins de ligne LF pour `*.sha256` et l’arborescence du jeu de données public afin que le vérificateur de sommes de contrôle fonctionne sur toutes les plateformes.
 
-**Où le trouver.** L’enregistrement Zenodo se trouve sous l’identifiant DOI du concept [`10.5281/zenodo.20279918`](https://doi.org/10.5281/zenodo.20279918) (toujours la dernière version ; v0.5.0 publié le 2026-07-11 à l’adresse https://zenodo.org/records/21313954), et l’ensemble de données est mis en miroir sur Hugging Face à l’adresse [`mcp-tool-shop/jam-actions-v0`](https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0) pour `load_dataset()` utilisateurs. La fiche complète de l’ensemble de données se trouve à l’adresse [`datasets/jam-actions-v0-public/README.md`](datasets/jam-actions-v0-public/README.md). Les métadonnées de dépôt Zenodo se trouvent à l’adresse [`zenodo-metadata.json`](datasets/jam-actions-v0-public/zenodo-metadata.json), les métadonnées de citation à l’adresse [`CITATION.cff`](datasets/jam-actions-v0-public/CITATION.cff), le justificatif de publication à l’adresse [`publication-receipt.json`](datasets/jam-actions-v0-public/publication-receipt.json) et les notes de version à l’adresse [`RELEASE_NOTES.md`](datasets/jam-actions-v0-public/RELEASE_NOTES.md). La série de 25 étapes — du brouillon initial du corpus jusqu’à la correction, la remédiation Schumann, la révision RC-gate, l’audit d’autonomie de l’opérateur et l’exécution de la publication — se trouve dans [`docs/`](docs/).
+**Historique du réglage fin.** Les affirmations de l’ensemble de données ont été testées avec des réglages fins préenregistrés, évalués par rapport à des valeurs de référence scellées. **v0** (les 78 séquences d’improvisation seules) a donné un résultat négatif honnête ([rapport](docs/finetune-arc-eval-report.md)) ; **v1** a amélioré l’assurance qualité basée sur les outils de +0,202, mais n’a pas atteint la barre préenregistrée d’une seule victoire ([rapport](docs/finetune-arc-v1-eval-report.md)) ; **B-1** a retesté les adaptateurs v1 figés sur un groupe de 36 enregistrements : 0,678 → 0,890, 29/36 victoires par rapport à la barre de 24/34 définie à l’avance ([rapport](docs/finetune-arc-v2-b1-eval-report.md)). Ces mesures sont enregistrées telles quelles. **Les adaptateurs eux-mêmes sont retirés** : leurs données d’entraînement comprenaient des enregistrements des quatre chansons retirées, de sorte qu’ils ne peuvent pas être proposés dans le cadre des conditions de cet ensemble de données. Les adaptateurs entraînés uniquement sur du matériel dont la licence est claire sont publiés avec les ensembles de données `jam-actions-v1`.
 
-**Citez-le.** `mcp-tool-shop-org & Krueger, B. (2026). AI Jam Sessions — Tool-Use Traces v0 (Public Subset). Zenodo. https://doi.org/10.5281/zenodo.20279918`
-
-**Est-ce que cela entraîne réellement quelque chose ? — les résultats du réglage fin, trois séries.** Les affirmations de l’ensemble de données sont testées de manière rigoureuse : des réglages fins préenregistrés sont évalués par rapport à des références scellées, avec des règles d’honnêteté figées avant tout entraînement. **v0** (les 78 pistes Jam seules) a renvoyé un *résultat négatif honnête* — la réponse basée sur les outils a chuté de 0,661 à 0,601 ([rapport](docs/finetune-arc-eval-report.md)). **v1** (un ensemble de données de 494 exemples ajoutant des pistes vérifiées par exécution et adaptées au contexte) a amélioré la même métrique de +0,202 avec les cinq graines au-dessus de la référence — et a tout de même été publié sous le nom de *"globalement meilleur, mais pas assez performant"* parce que 12 sur 16 victoires appariées n’ont pas atteint la barre préenregistrée de ≥13/16 d’une seule unité ; aucun adaptateur n’a été publié à partir d’un résultat presque réussi ([rapport](docs/finetune-arc-v1-eval-report.md)). **B-1** a ensuite retesté les artefacts *figés* de v1 sur une cohorte préenregistrée de 36 éléments, principalement constituée de matériel non utilisé : 0,678 → **0,890** (+0,212, 29/36 victoires appariées par rapport à la barre ex ante de 24/34, p < 0,0001 et 10/12 sur une musique jamais entraînée) — une **victoire significative**, avec la réserve honnête intacte : les surfaces en prose uniquement restent en dessous de la référence ([rapport](docs/finetune-arc-v2-b1-eval-report.md)). Les cinq adaptateurs de graines sont publiés à l’adresse [`mcp-tool-shop/jam-ft-v1-qwen25`](https://huggingface.co/mcp-tool-shop/jam-ft-v1-qwen25) avec la revendication liée à la moyenne de toutes les graines — pas le meilleur des résultats pour chaque graine. Les trois séries, les verrouillages, les amendements et les résultats par graine se trouvent dans [`experiments/`](experiments/) — la rigueur est l’objectif.
-
-> Les arrangements MIDI sont de Bernd Krueger (piano-midi.de), sous licence CC-BY-SA-3.0-DE. Les annotations, les pistes et les artefacts d’évaluation sont de l’équipe AI Jam Sessions, publiés sous la même licence afin que la chaîne de partage soit préservée de bout en bout. **Limite de licence :** la licence MIT du dépôt couvre le code ; tout ce qui se trouve sous `datasets/` est soumis à la licence CC-BY-SA-3.0-DE. Le corpus de travail situé à l’adresse `datasets/jam-actions-v0/` contient également deux œuvres (Satie Gymnopédie n° 1, Debussy Arabesque n° 1) qui sont *exclues* du sous-ensemble publié parce que la provenance de leur arrangement n’a pas pu être vérifiée — voir [`datasets/jam-actions-v0/PROVENANCE-NOTE.md`](datasets/jam-actions-v0/PROVENANCE-NOTE.md).
+> Les arrangements MIDI sont de Bernd Krueger (piano-midi.de), sous licence CC-BY-SA-3.0-DE. Les annotations, les séquences et les artefacts d’évaluation sont de l’équipe AI Jam Sessions, publiés sous la même licence afin de préserver la chaîne de partage de bout en bout. **Limite de la licence** : la licence MIT du dépôt couvre le code ; tout ce qui se trouve sous `datasets/` est sous licence CC-BY-SA-3.0-DE. Le corpus de travail à `datasets/jam-actions-v0/` contient également des enregistrements qui ne sont pas publiés : deux œuvres dont la provenance n’a jamais été vérifiée (Satie Gymnopédie n° 1, Debussy Arabesque n° 1) et les quatre œuvres retirées dans la version 0.6.0 — voir [`datasets/jam-actions-v0/PROVENANCE-NOTE.md`](datasets/jam-actions-v0/PROVENANCE-NOTE.md).
 
 ### Le corpus acoustique
 
@@ -268,7 +264,8 @@ pnpm exec tsx scripts/check-release-gate.ts /tmp/b.json
 
 | | |
 |---|---|
-| Enregistrements | 108 : 3 phrases × 9 types de perturbations × 4 notes cibles |
+| Version | 1.1.0 (25-09-2026) — a retiré les 36 enregistrements de « Träumerei » de la version 1.0.x, dont le fichier source ne dispose pas d’une licence d’arrangement établie |
+| Enregistrements | 72 — 2 séquences (Bach, Für Elise) × 9 types de perturbations × 4 notes cibles |
 | Mise à l'écart | par **phrase** (Für Elise), et non par enregistrement, de sorte qu'un jumeau perturbé de la même mélodie ne puisse pas être utilisé. |
 | Classes | correspondance, échec/avertissement de la hauteur, échec/réussite du timing, note manquante, note supplémentaire, vibrato accordé, silence sans note à évaluer |
 | Audio | aucun fichier distribué : chaque enregistrement contient une recette déterministe et le hachage de la forme d'onde qu'il produit |
@@ -302,7 +299,7 @@ Chacune de ces règles a un coût à apprendre.
 npm install -g @mcptoolshop/ai-jam-sessions
 ```
 
-Nécessite **Node.js 22+** (la v2.0.0 a augmenté la version minimale avec `node-web-audio-api` 2.0). Pas de pilotes MIDI, pas de ports virtuels, pas de logiciels externes.
+Nécessite **Node.js 22+** (la version 2.0.0 a augmenté le seuil avec `node-web-audio-api` 2.0). Pas de pilotes MIDI, pas de ports virtuels, pas de logiciels externes.
 
 ### Claude Desktop / Claude Code
 
@@ -334,9 +331,9 @@ Chaque version publie également `ghcr.io/mcp-tool-shop-org/ai-jam-sessions`, un
 
 L’image contient les 14 fichiers MIDI redistribuables ; l’exécution de `library fetch --accept-source-terms` une seule fois à l’intérieur du conteneur place les 94 autres fichiers dans le volume. `docker compose up` fait de même avec un volume nommé, et `--profile ollama` ajoute un conteneur annexe Ollama. Pour plus de détails, consultez la documentation sur l’interface en ligne de commande à l’intérieur de l’image et sur ce qui n’y est pas inclus : [docs/docker.md](docs/docker.md). Pour exécuter les évaluateurs affinés dans Ollama, avec le coût mesuré d’une base à 4 bits : [docs/ollama-adapters.md](docs/ollama-adapters.md).
 
-## MCP Tools
+## Outils MCP
 
-49 outils et 4 modèles d’invite répartis en sept catégories :
+54 outils et 4 modèles de requête répartis en huit catégories :
 
 ### Apprendre
 
@@ -344,48 +341,48 @@ L’image contient les 14 fichiers MIDI redistribuables ; l’exécution de `l
 |------|--------------|
 | `list_songs` | Parcourir par genre, difficulté ou mot-clé |
 | `song_info` | Analyse musicale complète — structure, moments clés, objectifs pédagogiques, conseils de style |
-| `registry_stats` | Statistiques à l’échelle de la bibliothèque : nombre total de chansons, genres, difficultés |
+| `registry_stats` | Statistiques à l’échelle de la bibliothèque : nombre total de chansons, genres, difficultés |
 | `list_measures` | Notes, dynamiques et notes pédagogiques de chaque mesure |
-| `teaching_note` | Analyse approfondie d’une seule mesure — doigté, dynamique, contexte |
+| `teaching_note` | Analyse approfondie d’une seule mesure — doigté, dynamiques, contexte |
 | `suggest_song` | Recommandation basée sur le genre, la difficulté et ce que vous avez joué |
 | `practice_setup` | Vitesse, mode, paramètres de voix et commande CLI recommandés pour une chanson |
-| `compare_songs` | Reconnaissance des motifs intergenres — relations clés, similarité de hauteur/intervalle, formes partagées, liens pédagogiques |
-| `annotation_progress` | Suivi de la qualité de l’annotation dans toute la bibliothèque — scores, notes et suggestions d’amélioration |
+| `compare_songs` | Reconnaissance de motifs intergenres — relations clés, similarité de hauteur/intervalle, formes partagées, liens pédagogiques |
+| `annotation_progress` | Suivi de la qualité de l’annotation dans la bibliothèque — scores, notes et suggestions d’amélioration |
 | `server_info` | Version du serveur, statistiques de la bibliothèque, liste des moteurs, session active |
 
-### Jouer
+### Lire
 
 | Outil | Ce qu’il fait |
 |------|--------------|
-| `play_song` | Lecture via les haut-parleurs — chansons de la bibliothèque ou fichiers .mid bruts. Quatre moteurs (piano, voix, tractus vocal, guitare), n’importe quelle vitesse, mode, plage de mesures — ainsi qu’un métronome avec une introduction et un drapeau `record` qui enregistre la session pour l’évaluation. Les moteurs synthétiques et superposés sont uniquement disponibles en ligne de commande. |
+| `play_song` | Lire via les haut-parleurs — morceaux de la bibliothèque ou fichiers .mid bruts. Quatre moteurs (piano, voix, registre, guitare), vitesse, mode et plage de mesures arbitraires — plus un métronome avec compte et un indicateur `record` qui enregistre la session pour l’évaluation. Le synthétiseur et les moteurs superposés sont accessibles uniquement via l’interface en ligne de commande. |
 | `stop_playback` | Arrêter |
 | `pause_playback` | Mettre en pause ou reprendre |
-| `set_speed` | Modifier la vitesse pendant la lecture (0,1×–4,0×) |
+| `set_speed` | Modifier la vitesse pendant la lecture (de 0,1× à 4,0×) |
 | `playback_status` | Instantané en temps réel : mesure actuelle, tempo, vitesse, voix du clavier, état |
-| `view_piano_roll` | Rendu au format SVG (couleur de la main ou arc-en-ciel chromatique des classes de hauteur) |
-| `score_performance` | Évaluation d’un accompagnement MIDI — précision de la hauteur, synchronisation, exhaustivité, avec un retour gradué |
-| `mute_hand` | Couper ou réactiver la main gauche/droite pendant l’entraînement — isoler une main à la fois |
-| `detect_chord` | Nommer l’accord d’un ensemble de notes MIDI actuellement jouées (par exemple, `[60,64,67]` → Do) |
+| `view_piano_roll` | Rendre sous forme de SVG (couleur de la main ou arc-en-ciel chromatique des classes de hauteur) |
+| `score_performance` | Évaluer une pièce MIDI jouée en accompagnement — précision de la hauteur, rythme, exhaustivité, avec évaluation progressive |
+| `mute_hand` | Couper ou rétablir le son de la main gauche/droite pendant l’entraînement — isoler une main à la fois |
+| `detect_chord` | Identifier l’accord à partir d’un ensemble de notes MIDI actuellement jouées (par exemple, `[60,64,67]` → Do) |
 | `preview_teaching_cues` | Afficher toutes les notes pédagogiques et les moments clés avant de jouer |
 
-### Entraînement
+### S’entraîner
 
 | Outil | Ce qu’il fait |
 |------|--------------|
-| `practice_loop` | L’exercice qu’un vrai professeur assignerait : répéter les mesures 5 à 8 plus lentement, et le tempo n’augmente (+5 %) que lorsqu’il y a une exécution *parfaite* — chaque répétition est enregistrée, évaluée et résumée |
-| `practice_status` | Où en est l’exercice : répétition actuelle, vitesse et diagnostic par mesure de la dernière tentative |
-| `score_last_take` | Évaluer la dernière tentative enregistrée — précision de la hauteur, synchronisation, exhaustivité, verdicts par note |
-| `view_scored_piano_roll` | Le score annoté que tout professeur utilise : le piano roll superposé aux verdicts par note dans une palette sans danger pour les daltoniens (plein = correct, en pointillés = synchronisation, ✕ = manqué) |
+| `practice_loop` | L’exercice qu’un véritable professeur assignerait : répéter les mesures 5 à 8 plus lentement, et le tempo augmente (+5 %) uniquement après une exécution *réussie* — chaque exécution est enregistrée, évaluée et résumée |
+| `practice_status` | État de l’exercice : exécution actuelle, vitesse et diagnostic par mesure de la dernière tentative |
+| `score_last_take` | Évaluer la dernière tentative enregistrée — précision de la hauteur, rythme, exhaustivité, évaluation par note |
+| `view_scored_piano_roll` | La partition annotée que tout professeur utilise : la partition de piano superposée aux évaluations par note dans une palette adaptée aux personnes daltoniennes (plein = correct, pointillé = rythme, ✕ = manquant) |
 
 ### Chanter
 
 | Outil | Ce qu’il fait |
 |------|--------------|
-| `sing_along` | Texte chantable : noms de notes, solfège, contour ou syllabes. Avec ou sans accompagnement au piano. |
-| `ai_jam_sessions` | Générer un bref descriptif pour une improvisation : progression d’accords, esquisse de mélodie et indications de style pour la réinterprétation. |
-| `verify_harmony` | La porte de vérification de la boucle du créateur : une proposition de réharmonisation est vérifiée par les outils déterministes propres à la plateforme : fidélité des accords (le moteur d’accords doit détecter chaque accord prévu), consonance mélodique (ton/tension/chromatisme), conduite des voix basses, appartenance à la tonalité. |
-| `auto_reharmonize` | La boucle du créateur en une seule étape : un modèle local propose une réharmonisation, la porte déterministe de `verify_harmony` vérifie chaque voicing, sélection du meilleur parmi n jusqu’à ce qu’une interprétation vérifiée soit obtenue. |
-| `compose_panel` | Exécuter le panneau de composition des conduites de voix sur n’importe quelle chanson : quatre systèmes réalisent des accompagnements, un LLM aveugle et inter-familles juge les résultats et les classe, agrégation Bradley-Terry — avec une porte de discrimination qui invalide les séquences non interprétables (signal directionnel uniquement, jamais un score de qualité). Exécution pendant quelques minutes et affichage des notifications de progression pendant son fonctionnement. |
+| `sing_along` | Texte chantable — noms de notes, solfège, contour ou syllabes. Avec ou sans accompagnement au piano. |
+| `ai_jam_sessions` | Générer un bref descriptif pour une improvisation — progression d’accords, esquisse de mélodie et indications de style pour une réinterprétation |
+| `verify_harmony` | La porte de vérification de la boucle de création : une réharmonisation proposée est vérifiée par les propres outils déterministes de la plateforme — fidélité de l’accord (le moteur d’accord doit détecter chaque accord prévu), consonance de la mélodie (ton/tension/chromatisme), conduite des voix de la basse, appartenance à la tonalité |
+| `auto_reharmonize` | La boucle de création en une seule étape — un modèle local propose une réharmonisation, la porte déterministe de `verify_harmony` vérifie chaque tessiture, le meilleur parmi n jusqu’à ce qu’une interprétation vérifiée soit renvoyée |
+| `compose_panel` | Exécuter le panneau de composition des voix sur n’importe quelle chanson : quatre systèmes réalisent des accompagnements, un LLM aveugle et inter-familles évalue et classe les accompagnements, agrégation de Bradley-Terry — avec une porte de discrimination qui invalide les séquences non interprétables (signal directionnel uniquement, jamais un score de qualité). Exécution pendant plusieurs minutes et affichage des notifications de progression pendant son fonctionnement. |
 
 **Une ligne chantée sur le tempo — la voie vocale.** N’importe quelle chanson de la bibliothèque peut contenir une véritable ligne vocale chantée qui s’intègre au piano : un **tempo de partition** (`scripts/build-score-clock.mjs`) dérive la hauteur, le début et la durée de chaque syllabe à partir du MIDI de la chanson sur la propre ligne de temps du lecteur ; un chanteur local, Apache-2.0, conditionné par la partition ([SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer)) chante à partir de ce tempo sur votre GPU ; et deux portes mesurent l’artefact avant que quoi que ce soit ne soit considéré comme un mixage — **tempo** : chaque début de voyelle dans les 40 ms de la partition ; **hauteur** : chaque note dans les 50 cents, décalage global dans les 20. Les mots sont choisis dans un ensemble d’enregistrements et joints uniquement aux limites des mots, avec des fondus enchaînés. Leviers : `--track` (quelle piste MIDI est la mélodie ; `--list-tracks` pour regarder), `--lyrics "A-ma-zing grace …"` (un jeton par note, les syllabes jointes par `-`), `--measures`, le clip d’invite (la voix), le nombre d’enregistrements et les seuils de la porte — chacun avec sa citation dans `scripts/vocal_clock.py`. Itinéraire, leviers et reçus : [manuel → Vocales](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/), [`docs/vocal-clock.md`](docs/vocal-clock.md) ; la recherche derrière les choix : [`docs/vocal-singing-study-2026-09.md`](docs/vocal-singing-study-2026-09.md).
 
@@ -393,31 +390,31 @@ L’image contient les 14 fichiers MIDI redistribuables ; l’exécution de `l
 
 | Outil | Ce qu’il fait |
 |------|--------------|
-| `view_guitar_tab` | Afficher une tablature interactive pour guitare au format HTML : clic pour modifier, curseur de lecture, raccourcis clavier. |
-| `list_guitar_voices` | Presets de voix de guitare disponibles |
-| `list_guitar_tunings` | Systèmes d’accordage de guitare disponibles (standard, accordage en drop D, accordage ouvert en G, DADGAD, etc.) |
+| `view_guitar_tab` | Rendre interactivement la tablature de guitare au format HTML — clic pour modifier, curseur de lecture, raccourcis clavier |
+| `list_guitar_voices` | Préréglages de voix de guitare disponibles |
+| `list_guitar_tunings` | Systèmes d’accord de guitare disponibles (standard, accordage en mi grave, accordage ouvert en sol, DADGAD, etc.) |
 | `tune_guitar` | Ajuster n’importe quel paramètre de n’importe quelle voix de guitare. Les paramètres sont conservés entre les sessions. |
-| `get_guitar_config` | Configuration actuelle de la voix de guitare par rapport aux valeurs par défaut d’usine |
-| `reset_guitar` | Réinitialiser une voix de guitare aux valeurs d’usine |
+| `get_guitar_config` | Configuration actuelle de la voix de guitare par rapport aux paramètres d’usine |
+| `reset_guitar` | Réinitialiser une voix de guitare aux paramètres d’usine |
 
-### Création
+### Créer
 
 | Outil | Ce qu’il fait |
 |------|--------------|
 | `add_song` | Ajouter une nouvelle chanson au format JSON |
 | `import_midi` | Importer un fichier .mid avec des métadonnées |
-| `annotate_song` | Écrire un langage musical pour une chanson brute et la promouvoir en tant que chanson prête à être utilisée. |
-| `save_practice_note` | Entrée de journal avec les données de session capturées automatiquement |
+| `annotate_song` | Écrire un langage musical pour une chanson brute et la préparer |
+| `save_practice_note` | Entrée de journal avec des données de session capturées automatiquement |
 | `read_practice_journal` | Charger les entrées récentes pour le contexte |
 | `list_keyboards` | Voix de clavier disponibles |
 | `tune_keyboard` | Ajuster n’importe quel paramètre de n’importe quelle voix de clavier. Les paramètres sont conservés entre les sessions. |
-| `get_keyboard_config` | Configuration actuelle par rapport aux valeurs par défaut d’usine |
-| `reset_keyboard` | Réinitialiser une voix de clavier aux valeurs d’usine |
-| `score_annotation` | Qualité de l’annotation du score sur 5 dimensions : exhaustivité, profondeur, spécificité, valeur pédagogique, vocabulaire. |
-| `validate_song_entry` | Valider un fichier JSON de chanson par rapport au schéma avant de l’ajouter. |
-| `transpose_song` | Transposer une chanson d’un ou plusieurs demi-tons vers le haut ou vers le bas : nouvelle tonalité, nouvelles notes. |
-| `list_sections` | Afficher les sections structurelles d’une chanson (introduction, couplet, refrain, etc.). |
-| `add_section` | Ajouter un marqueur de section à une chanson pour la navigation structurale. |
+| `get_keyboard_config` | Configuration actuelle par rapport aux paramètres d’usine |
+| `reset_keyboard` | Réinitialiser une voix de clavier aux paramètres d’usine |
+| `score_annotation` | Qualité de l’annotation de la partition sur 5 dimensions — exhaustivité, profondeur, spécificité, valeur pédagogique, vocabulaire |
+| `validate_song_entry` | Valider un fichier JSON de chanson par rapport au schéma avant de l’ajouter |
+| `transpose_song` | Transposer une chanson d’un ou plusieurs demi-tons — nouvelle tonalité, nouvelles notes |
+| `list_sections` | Afficher les sections structurelles d’une chanson (introduction, couplet, refrain, etc.) |
+| `add_section` | Ajouter un marqueur de section à une chanson pour la navigation structurelle |
 
 ### Score
 
@@ -440,16 +437,16 @@ Mesure de l'audio enregistré. Monophonique : ils suivent une ligne à la fois, 
 
 ### Invites MCP
 
-Quatre modèles d’invites pour des flux de travail pédagogiques structurés :
+Quatre modèles d’invites pour des flux de travail d’enseignement structurés :
 
 | Invite | Ce qu’il fait |
 |--------|--------------|
-| `annotate_song` | Flux de travail d’annotation guidé : étudier un exemple, écrire un langage musical pour une chanson brute. |
-| `practice_plan` | Créer un plan de pratique structuré basé sur le genre, la difficulté et les objectifs. |
-| `performance_review` | Examiner une session terminée : ce qui a bien fonctionné, sur quoi se concentrer ensuite. |
-| `maker_loop` | Effectuer l’ensemble du cycle du créateur : proposer une réharmonisation, la vérifier avec les outils déterministes de la plateforme, puis ajouter et jouer le résultat vérifié. |
+| `annotate_song` | Flux de travail d’annotation guidé — étudier un exemple, écrire un langage musical pour une chanson brute |
+| `practice_plan` | Créer un plan d’entraînement structuré basé sur le genre, la difficulté et les objectifs |
+| `performance_review` | Examiner une session terminée — ce qui a bien fonctionné, sur quoi se concentrer ensuite |
+| `maker_loop` | Effectuer la boucle de création complète — proposer une réharmonisation, la vérifier avec les outils déterministes de la plateforme, puis ajouter et jouer le résultat vérifié |
 
-## CLI
+## Interface en ligne de commande
 
 ```
 ai-jam-sessions list [--genre <genre>] [--difficulty <level>]
@@ -483,21 +480,21 @@ Dans la version précédente, v2.4.0, le modèle a été doté d’une fonction 
 
 **v2.3.0 — la version dans laquelle l’instrument a appris à chanter sur le tempo** (voir [JOURNAL DES MODIFICATIONS](CHANGELOG.md)). N’importe quelle chanson de la bibliothèque peut désormais contenir une véritable ligne chantée qui s’intègre au piano : un **tempo de partition** dérive la hauteur, le début et la durée de chaque syllabe à partir du MIDI de la chanson sur la propre ligne de temps du lecteur ; un chanteur local, Apache-2.0, conditionné par la partition ([SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer)) chante à partir de celui-ci ; et deux portes mesurent l’artefact avant que quoi que ce soit ne soit considéré comme un mixage — tempo (chaque voyelle dans les 40 ms de la partition) et hauteur (chaque note dans les 50 cents). L’exécution d’Amazing Grace incluse mesure 6 ms au pire pour le tempo et -2,7 cents pour la hauteur globale, avec les reçus enregistrés ; la page d’accueil l’affiche comme un état honnête, avec le seul défaut restant nommé (l’épissure d’ouverture, transmise). L’itinéraire, ses leviers et la recherche derrière chaque choix (cinq axes d’étude, cités) se trouvent dans le [manuel](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/) et [`docs/`](docs/). La surface en direct est inchangée, avec **49 outils et 4 modèles d’invite**, avec **3 080 tests réussis (1 ignoré)**, ainsi que la propre suite de tests pytest de l’instrument vocal. **État de la publication** : publié — [`@mcptoolshop/ai-jam-sessions@2.3.0`](https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions) sur npm, avec une traçabilité attestée.
 
-**v2.2.0 — la version où l’instrument a acquis une véritable capacité d’écoute et un espace d’écoute.** (voir [CHANGELOG](CHANGELOG.md)). Le piano par défaut du cockpit est désormais un **piano à queue échantillonné** : un ensemble Salamander réduit qui se charge lors de votre première interaction et revient au synthétiseur oscillateur accordé jusqu’à ce qu’il soit prêt, et le serveur sélectionne automatiquement le moteur d’échantillonnage chaque fois qu’un ensemble complet est installé. Au-dessus se trouve le **panneau de composition** : un espace d’écoute A/B aveugle et à volume égal où un humain classe les voicings du moteur de composition par rapport aux références théoriquement valides et invalides (Bradley-Terry avec intervalles de confiance bootstrap, une limite de discrimination de type MUSHRA, PROVISOIRE et NON INTERPRÉTABLE en tant que résultats de premier ordre), à côté d’un panneau de modèles locaux qui exécute le même classement avec des juges LLM inter-familles et une vue de comparaison (Kendall τ) qui demande si la solution de remplacement bon marché suit la vérité humaine.
+Dans la version 2.2.0 — la version où l’instrument a acquis une véritable capacité d’écoute et une salle d’écoute. Le piano par défaut du cockpit est désormais un **piano à queue échantillonné** — un ensemble Salamander réduit qui se charge lors de votre première interaction et revient au synthétiseur oscillateur accordé jusqu’à ce qu’il soit prêt — et le serveur sélectionne automatiquement le moteur d’échantillonnage chaque fois qu’un ensemble complet est installé. Au-dessus se trouve le **panneau de composition** : une salle d’écoute A/B aveugle et à volume égal où un humain classe les tessitures du moteur de composition par rapport à des références théoriquement valides et théoriquement invalides (Bradley-Terry avec intervalles de confiance bootstrap, un seuil de discrimination de type MUSHRA, PROVISOIRE et NON INTERPRÉTABLE comme résultats de premier ordre), à côté d’un panneau de modèles locaux qui exécute le même classement avec des juges LLM inter-familles et une vue de comparaison (tau de Kendall) qui demande si le proxy bon marché suit la vérité humaine.
 
 La même version contient le moteur de composition qui alimente le panneau (`src/compose/` : une porte déterministe de guidage vocal avec des préréglages de style nommés, des spécifications de tessiture basées sur la construction, un raffineur qui traite les parties une par une), une mise à jour complète (45 problèmes corrigés : sécurité renforcée, chaînes de caractères plus conviviales, amélioration visuelle qui préserve l’aspect), des entrées de bibliothèque Satie et Debussy révisées à partir de données du domaine public de Mutopia, et une mise à jour de renforcement pour les tests avec des utilisateurs inconnus : erreurs de validation descriptives, enveloppes d’erreurs structurées `{code, message, hint}`, une archive tar sélectionnée, notifications de progression pour les outils longs et grammaire des erreurs en ligne de commande. Cette version a été publiée sous le nom de [`@mcptoolshop/ai-jam-sessions@2.2.0`](https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions) et comprend 49 outils, 4 modèles d’invite et 3 033 tests.
 
-Dans la version précédente, v2.1.0 — la version où l’analyste est devenu un **créateur**. La boucle du créateur est intégrée en tant que produit : un modèle propose une réharmonisation de n’importe quelle chanson de la bibliothèque, et les outils déterministes propres à la plateforme la valident : le moteur d’accords doit confirmer chaque voicing prévu (`verify_harmony`), chaque note de mélodie est étiquetée par rapport à la nouvelle harmonie, et seule une interprétation vérifiée passe aux étapes suivantes `add_song` → `play_song` → `view_piano_roll`. Génération vérifiée par construction — pas de grille d’évaluation, pas d’auto-notation ; le même `inferChord` qui rédige les descriptifs pour les improvisations est également le juge. Le modèle d’invite `maker_loop` permet de parcourir l’ensemble du cycle.
+Dans la version 2.1.0, l’analyste est devenu un **créateur**. Le processus de création est intégré au produit : un modèle propose une réharmonisation de n’importe quelle chanson de la bibliothèque, et les outils déterministes de la plateforme valident cette proposition : le moteur d’accords doit confirmer chaque enchaînement d’accords prévu (`verify_harmony`), chaque note de la mélodie est associée à la nouvelle harmonie, et seule une interprétation vérifiée passe aux étapes `add_song` → `play_song` → `view_piano_roll`. La génération est vérifiée par construction : pas de grille d’évaluation, pas d’auto-notation ; le même `inferChord` qui rédige les briefs pour les séances d’improvisation est également le juge. Le modèle de requête `maker_loop` guide l’ensemble du processus.
 
-Dans la version précédente, v2.0.0, le jeu de données a fait ses preuves. **Important : la limite minimale pour Node.js est désormais de 22** (`node-web-audio-api` 2.0) ; l’interface de l’outil reste inchangée : six moteurs sonores, 47 outils MCP, 3 modèles d’invite et une **bibliothèque entièrement annotée : 120/120 morceaux répartis dans 12 genres** (12 champs clés corrigés pour correspondre aux clés détectées par le contenu dans cette version). La boucle d’apprentissage est complète de bout en bout : métronome avec compte à rebours → enregistrement en direct → notation note par note → partition de piano annotée → boucles d’entraînement qui augmentent progressivement le tempo uniquement après des passages réussis. Le tableau de bord du navigateur est un véritable outil de composition : transport précis au rythme, capture avec activation de l’enregistrement, annulation/rétablissement complets, sélection multiple et presse-papiers, prise en charge tactile — [disponible sur le web](https://mcp-tool-shop-org.github.io/ai-jam-sessions/cockpit/).
+Dans la version 2.0.0, le jeu de données a prouvé sa fiabilité. **Important : la version minimale de Node.js est désormais 22** (`node-web-audio-api` 2.0) ; l’interface de l’outil reste inchangée : six moteurs sonores, 47 outils MCP, 3 modèles de requête et une **bibliothèque entièrement annotée : 120 chansons sur 12 genres** (12 champs clés corrigés pour correspondre aux tonalités détectées dans cette version). Le processus d’apprentissage est bouclé de bout en bout : métronome avec compte à rebours → enregistrement en direct → notation de chaque note → partition de piano annotée → boucles d’entraînement qui augmentent progressivement le tempo uniquement après des passages réussis. L’interface du navigateur est un véritable outil de composition : transport précis au niveau du temps avec des régions de boucle, capture avec activation de l’enregistrement, annulation/rétablissement complet, sélection multiple et presse-papiers, prise en charge tactile — [disponible en ligne](https://mcp-tool-shop-org.github.io/ai-jam-sessions/cockpit/).
 
-Publie également **[jam-actions-v0](#training-dataset)** : un jeu de données d’entraînement de 115 enregistrements, contenant des séquences d’utilisation multi-étapes des outils MCP sur du piano classique, avec une porte de sortie à 7 axes, une reproductibilité en cas de démarrage à froid et des métadonnées Zenodo + CITATION.cff complètes (CC-BY-SA-3.0-DE) — mises en miroir sur [Hugging Face](https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0), et contenant désormais les **résultats d’un réglage fin documentés dans les deux sens** : un résultat négatif honnête (v0) et un résultat positif respectant les règles de préenregistrement, qui s’est arrêté à une victoire de son propre objectif (v1) — voir les [preuves du réglage fin](#training-dataset). Cette version corrige également les enregistrements de Bach à la source (révisions r001/r002 avec errata) après que la porte de sortie du pipeline v1 ait détecté un dépassement de la fenêtre publiée par rapport aux 62 mesures réelles de BWV 846. 2 506 tests réussis sur le serveur MCP + le tableau de bord + les outils de gestion des jeux de données + les outils d’évaluation + le validateur de porte de sortie. Le MIDI est complet, chaque morceau peut servir à l’apprentissage et ce corpus d’apprentissage y est inclus.
+Publie également **[jam-actions-v0](#training-dataset)** : un jeu de données d’entraînement de 57 enregistrements, contenant des traces d’utilisation d’outils MCP sur plusieurs tours, appliqué au piano classique, avec une validation en 7 axes, une reproductibilité en conditions de démarrage à froid et des métadonnées Zenodo + CITATION.cff complètes (CC-BY-SA-3.0-DE) — disponible en miroir sur [Hugging Face](https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0), et contenant désormais les **résultats d’un affinage documenté dans les deux sens** : un résultat négatif honnête (v0) et un résultat positif respectant les règles de pré-enregistrement, qui s’est arrêté à une victoire de sa propre barre de réussite (v1) — voir les [résultats de l’affinage](#training-dataset). Cette version corrige également les enregistrements de Bach à la source (révisions de l’ensemble de travail r001/r002 avec errata) après que la validation du pipeline v1 ait détecté que la fenêtre publiée dépassait les 62 mesures réelles de BWV 846. 2 506 tests réussis sur le serveur MCP + l’interface + les outils de gestion des jeux de données + les outils d’évaluation + le validateur de publication. Le fichier MIDI est complet, chaque chanson peut servir d’exemple, et le corpus de cet apprentissage est inclus.
 
 ## Sécurité et confidentialité
 
-**Données concernées :** bibliothèque de morceaux (JSON + MIDI), répertoire des morceaux de l’utilisateur (`~/.ai-jam-sessions/songs/`), configurations d’accordage de guitare, entrées du journal d’entraînement, périphérique de sortie audio local.
+**Données concernées :** bibliothèque de chansons (JSON + MIDI), répertoire des chansons de l’utilisateur (`~/.ai-jam-sessions/songs/`), configurations d’accordage de guitare, entrées du journal d’entraînement, périphérique de sortie audio local.
 
-**Données non concernées (chemins par défaut) :** le serveur et l’interface en ligne de commande MCP n’effectuent aucune requête réseau, ne lisent aucun identifiant et n’accèdent à aucun fichier système en dehors du répertoire des morceaux de l’utilisateur. Aucune télémétrie n’est collectée ni envoyée. L’**ensemble d’outils/d’évaluation facultatif** inclus dans le même package (`scripts/run-llm-eval.ts`, vérificateur de provenance) est la seule exception : lorsque vous l’activez explicitement, il peut appeler des API LLM (lit `ANTHROPIC_API_KEY` à partir de votre environnement, sans jamais le stocker) et récupérer des URL de provenance. Il ne s’exécute jamais dans le cadre du serveur, de l’interface en ligne de commande ou de l’installation.
+**Données NON concernées (chemins par défaut) :** le serveur MCP et l’interface en ligne de commande n’effectuent aucune requête réseau, ne lisent aucun identifiant et n’accèdent à aucun fichier système en dehors du répertoire des chansons de l’utilisateur. Aucune télémétrie n’est collectée ni envoyée. L’**ensemble d’outils d’évaluation/de jeu de données optionnel** inclus dans le même package (`scripts/run-llm-eval.ts`, vérificateur de provenance) est la seule exception : lorsque vous l’activez explicitement, il peut appeler des API LLM (lit `ANTHROPIC_API_KEY` à partir de votre environnement, sans jamais le stocker) et récupérer des URL de provenance. Il ne s’exécute jamais dans le cadre du serveur, de l’interface en ligne de commande ou de l’installation.
 
 **Autorisations :** le serveur MCP utilise uniquement le transport stdio (pas de HTTP). L’interface en ligne de commande accède au système de fichiers local et aux périphériques audio. Voir [SECURITY.md](SECURITY.md) pour la politique complète.
 
