@@ -1,20 +1,27 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-09-24 from commit 8734514.
+Mapped at 2026-09-25 from commit dc771c2.
 
 ## What this is
 
-14 parts, mostly TypeScript (555 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
+14 parts, mostly TypeScript (559 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since the last map
+## What changed since 2026-09-24 (8734514)
 
-This is the first map.
+- CI runs 4 more files than before.
+- Publish jam-actions-v0 now also runs src/dataset/published-evidence.test.ts.
+- Release runs 3 more files than before.
+- .gitattributes is now read by .github/workflows/push-jam-actions-v0-hf.yml.
+- CHANGELOG.md is now read by docs/findings/derived-content-inventory.json.
+- ROADMAP.md is now read by docs/findings/derived-content-inventory.json.
+- And 553 more new writers and readers of places.
+- 18 files added, 358 removed and 102 changed content, across 10 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/capture.test.ts and 188 more; checks LICENSE, README.md, logo.png and 176 more.
-2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more; checks LICENSE, README.md, logo.png and 116 more.
-3. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts.
+1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/capture.test.ts and 190 more; checks LICENSE, README.md, logo.png and 178 more.
+2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 189 more; checks LICENSE, README.md, logo.png and 117 more.
+3. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts, scripts/verify-public-package-checksums.ts and src/dataset/published-evidence.test.ts.
 4. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **Push jam-actions adapters to HuggingFace.** By hand. Runs no file this map can see.
 6. **Push jam-actions dataset to HuggingFace.** By hand. Runs no file this map can see.
@@ -30,14 +37,15 @@ This is the first map.
 
 ## Who reads the results
 
-- **datasets/** is read by experiments/acoustic-sft/eval.ts and experiments/acoustic-sft/format-sft.ts, and by 2 tests.
-- **songs/** is read by docs/dogfood-swarm-grok-w2-kickoff.md (found by text), docs/dogfood-swarm-grok-w3-kickoff.md (found by text), experiments (5 files), scripts (19 files) and src (5 files), and by 6 tests.
+- **datasets/** is read by docs/findings/derived-content-inventory.json (found by text), experiments/acoustic-sft/eval.ts and experiments/acoustic-sft/format-sft.ts, and by 3 tests.
+- **experiments/acoustic-sft/** is read by docs/findings/derived-content-inventory.json (found by text).
+- **songs/** is read by docs/dogfood-swarm-grok-w2-kickoff.md (found by text), docs/dogfood-swarm-grok-w3-kickoff.md (found by text), docs/findings/derived-content-inventory.json (found by text), experiments (5 files), scripts (19 files) and src (7 files), and by 6 tests.
 
 ## The other doors
 
-**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 187 more, checks LICENSE, README.md, logo.png and 116 more, writes to datasets/jam-actions-acoustic-v0/, datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md, datasets/jam-actions-v1-probe/README.md, datasets/jam-actions-v1-probe/applied.json, datasets/jam-actions-v1-probe/checksums.sha256, datasets/jam-actions-v1-probe/manifest.json, datasets/jam-actions-v1-probe/records/, datasets/jam-actions-v1-probe/records.jsonl, datasets/jam-actions-v1-probe/splits.json, experiments/acoustic-sft/data/sft-test.jsonl, experiments/acoustic-sft/data/sft-train.jsonl, experiments/acoustic-sft/runs/ and songs/, and publishes to npm and a container image.
+**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 189 more, checks LICENSE, README.md, logo.png and 117 more, writes to datasets/jam-actions-acoustic-v0/, datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md, datasets/jam-actions-v1-probe/README.md, datasets/jam-actions-v1-probe/applied.json, datasets/jam-actions-v1-probe/checksums.sha256, datasets/jam-actions-v1-probe/manifest.json, datasets/jam-actions-v1-probe/records/, datasets/jam-actions-v1-probe/records.jsonl, datasets/jam-actions-v1-probe/splits.json, experiments/acoustic-sft/data/sft-test.jsonl, experiments/acoustic-sft/data/sft-train.jsonl, experiments/acoustic-sft/runs/ and songs/, and publishes to npm and a container image.
 
-**Publish jam-actions-v0** runs scripts/check-release-gate.ts and scripts/verify-public-package-checksums.ts, and reaches src.
+**Publish jam-actions-v0** runs scripts/check-release-gate.ts, scripts/verify-public-package-checksums.ts and src/dataset/published-evidence.test.ts.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -77,7 +85,6 @@ Window: 180 days; a pair counts from 3 shared commits, since 7 source files reac
 
 ## Written but never read
 
-- **datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json** is written by scripts/build-slice19-unified-baseline.mjs and read by nothing else in this repository.
 - **datasets/jam-actions-v0/evals/e1-tool-use-results.json** is written by scripts/eval-jam-actions-tool-use.ts and read by nothing else in this repository.
 - **datasets/jam-actions-v0/evals/e2-notes-present-results.json** is written by scripts/run-e2-notes-present-eval.ts and read by nothing else in this repository.
 - **datasets/jam-actions-v0/evals/e3-annotation-grounding-results.json** is written by scripts/eval-jam-actions-annotation-grounding.ts and read by nothing else in this repository.
@@ -85,8 +92,9 @@ Window: 180 days; a pair counts from 3 shared commits, since 7 source files reac
 - **datasets/jam-actions-v0/pianoroll/bach-prelude-c-major-bwv846-m061-062.svg** is written by scripts/revise-jam-actions-v0-r001-bach-window.ts and read by nothing else in this repository.
 - **datasets/jam-actions-v0/pianoroll/fur-elise-m001-008.svg** is written by scripts/build-record-fur-elise-m001-008.ts and read by nothing else in this repository.
 - **datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md** is written by src/dataset/acoustic-v1/generate-probe.ts and read by nothing else in this repository.
+- **datasets/jam-actions-v1-probe/README.md** is written by src/dataset/acoustic-v1/generate-probe.ts and read by nothing else in this repository.
 
-And 61 more places.
+And 60 more places.
 
 ## Helpers that look duplicated
 
@@ -104,8 +112,6 @@ And 2 more pairs.
 
 - **datasets/jam-actions-acoustic-v0/** is written by src/dataset/acoustic/generate-corpus.ts.
 - **datasets/jam-actions-v0-public/** is written by scripts/package-jam-actions-public.ts and scripts/regenerate-public-package-checksums.ts.
-- **datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-results.json** is written by scripts/build-slice19-unified-baseline.mjs.
-- **datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json** is written by scripts/build-slice19-unified-baseline.mjs.
 - **datasets/jam-actions-v0/** is written by scripts (6 files).
 - **datasets/jam-actions-v0/evals/e1-tool-use-results.json** is written by scripts/eval-jam-actions-tool-use.ts.
 - **datasets/jam-actions-v0/evals/e2-notes-present-results.json** is written by scripts/run-e2-notes-present-eval.ts.
@@ -223,13 +229,13 @@ Read those in order to follow one pull request end to end.
 - 5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.
 - 11 import sites could not be resolved.
 - 8 files use syntax the parser cannot read (scripts/compose-realize-demo.ts, scripts/run-jam-actions-corpus-eval.ts, src/dataset/acoustic-v1/generate-public.ts and 5 more), so what they import is not known: 6 in src (`typeof import(…)` as a type argument in 3, an import type followed by `[]` in 1, a NUL character inside a string in 1 and other syntax in 1), 2 in scripts (an import type followed by `[]`).
-- 49 writes and 131 reads use paths built at run time and are not named here.
-- 16 writes go to places this repository does not track, so they are not listed as generated.
-- 97 writes and 343 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
+- 49 writes and 134 reads use paths built at run time and are not named here.
+- 18 writes go to places this repository does not track, so they are not listed as generated.
+- 97 writes and 351 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.
 - 18 commands are built at run time and not followed, 4 of them in tests.
 - Readers marked (found by text) come from scanning unparsed files.
-- CI runs or checks 459 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
-- Release runs or checks 401 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
-- Statistics confidence is low: fewer than 20 source files reach 10 revisions in the window.
+- CI runs or checks 463 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- Release runs or checks 404 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.
