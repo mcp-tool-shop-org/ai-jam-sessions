@@ -60,10 +60,17 @@ const DEFAULT_BASELINE = join(
   "slice19-fair-e3-baseline-results.json",
 );
 
+// The baseline's `source_artifacts` are paths relative to a package root. By
+// default that is the working tree's package; a publish from a later version
+// that no longer ships these evals points it at the same files extracted from
+// the sealed tag instead (--artifacts-root).
+const DEFAULT_ARTIFACTS_ROOT = join(REPO_ROOT, "datasets", "jam-actions-v0-public");
+
 // ─── CLI parsing ─────────────────────────────────────────────────────────────
 
 interface CliArgs {
   baseline: string;
+  artifactsRoot: string;
   out: string | null;
   thresholds: ReleaseGateThresholds;
   reportsEnrichedSplit: boolean;
@@ -100,6 +107,7 @@ export class CliArgsError extends Error {
 export function parseArgs(argv: string[]): CliArgs {
   const args: CliArgs = {
     baseline: DEFAULT_BASELINE,
+    artifactsRoot: DEFAULT_ARTIFACTS_ROOT,
     out: null,
     thresholds: { ...DEFAULT_THRESHOLDS },
     reportsEnrichedSplit: true,
@@ -126,6 +134,13 @@ export function parseArgs(argv: string[]): CliArgs {
         break;
       case "--out":
         args.out = next;
+        i++;
+        break;
+      case "--artifacts-root":
+        if (next === undefined || next.startsWith("--")) {
+          throw new CliArgsError("--artifacts-root needs a directory");
+        }
+        args.artifactsRoot = next;
         i++;
         break;
       case "--axis1-floor":
@@ -209,6 +224,8 @@ function printHelp(): void {
       "Options:",
       "  --baseline <path>                  Path to the unified baseline JSON",
       `                                     (default: ${DEFAULT_BASELINE})`,
+      "  --artifacts-root <dir>             Resolve the baseline's source_artifacts here",
+      `                                     (default: ${DEFAULT_ARTIFACTS_ROOT})`,
       "  --out <path>                       Write assessment artifact to disk",
       "  --quiet                            Suppress human-readable summary",
       "",
@@ -380,6 +397,7 @@ interface AggregateBlock {
  */
 function buildPerRecordMisinterpMap(
   baseline: UnifiedBaseline,
+  artifactsRoot: string,
 ): {
   byRecordId: Map<string, { source: string; tool_called: number; tool_called_correct: number; misinterp_count: number }>;
   consultedSources: string[];
@@ -415,7 +433,7 @@ function buildPerRecordMisinterpMap(
   const byRecordId = new Map<string, { source: string; tool_called: number; tool_called_correct: number; misinterp_count: number }>();
   const consulted: string[] = [];
   for (const relPath of priority) {
-    const abs = join(REPO_ROOT, "datasets", "jam-actions-v0-public", relPath);
+    const abs = join(artifactsRoot, relPath);
     if (!existsSync(abs)) {
       process.stderr.write(`source artifact not found: ${abs}\n`);
       process.exit(1);
@@ -436,6 +454,7 @@ function buildPerRecordMisinterpMap(
 function buildGateInput(
   baseline: UnifiedBaseline,
   reportsEnrichedSplit: boolean,
+  artifactsRoot: string = DEFAULT_ARTIFACTS_ROOT,
 ): {
   input: ReleaseGateInput;
   trace_provenance: {
@@ -446,7 +465,7 @@ function buildGateInput(
   };
 } {
   // Slice 22: build the per-record source-priority map for axes 2 + 6.
-  const perRecordTally = buildPerRecordMisinterpMap(baseline);
+  const perRecordTally = buildPerRecordMisinterpMap(baseline, artifactsRoot);
 
   // Corpus-level tally — sum across the per-record map (consistent
   // attribution; Slice 22 swaps in the slice21-schumann-rerun version of
@@ -630,7 +649,7 @@ function main(): void {
   }
 
   const baseline = JSON.parse(readFileSync(args.baseline, "utf8")) as UnifiedBaseline;
-  const built = buildGateInput(baseline, args.reportsEnrichedSplit);
+  const built = buildGateInput(baseline, args.reportsEnrichedSplit, args.artifactsRoot);
   const result = evaluateReleaseGate(built.input, args.thresholds);
 
   if (!args.quiet) {
