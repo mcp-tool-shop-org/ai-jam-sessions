@@ -77,6 +77,30 @@ Decided by the Director, who delegated the choice of options to the coordinator;
 - **Publication steps that follow the merge:** the corrected packages are pushed to Hugging Face; 0.6.0 is deposited on Zenodo as a fresh record related to 0.5.0 and 0.4.3; the explorer Space drops the four affected examples; the `jam-ft-v1-qwen25` adapters are withdrawn from Hugging Face and the GitHub release; 0.4.3 and 0.5.0 on Zenodo get a public note pointing to 0.6.0, and their files are restricted where Zenodo permits. Each step is recorded below with its outcome as it happens.
 - **Not in this change:** the derived experiment files and working-corpus records listed under "Beyond the published datasets" (a separate repository cleanup with its own guard), and any rewrite of git history, which is irreversible and is left to the Director.
 
+### Outcomes (2026-09-25)
+
+Each outcome was checked afterwards from outside, without credentials, unless noted.
+
+| Surface | Outcome | Evidence |
+|---|---|---|
+| HF dataset `jam-actions-v0` | 0.6.0, pushed from tag `jam-actions-v0-0.6.0` with stale-file deletion: 150 files not in the package were removed from the head | commit `9d69b47`; the head holds exactly the package's 130 files, none from the four works |
+| HF dataset `jam-actions-acoustic-v0` | 1.1.0, same method: 36 files removed | commit `79c92fb`; the head holds exactly the package's 80 files |
+| Zenodo, 0.6.0 | fresh deposit, version DOI [`10.5281/zenodo.22961580`](https://doi.org/10.5281/zenodo.22961580), concept `10.5281/zenodo.22961579`, `isNewVersionOf` 0.5.0 and 0.4.3 | run 36151244382, from `main` at `79c4fd1` (package byte-identical to the tag). Before minting, the run re-verified the historical release gate from its sealed, sha256-pinned sources and passed the library evidence test (10/10). |
+| Zenodo, 0.5.0 and 0.4.3 | a dated correction paragraph leads each description; the notes name 0.6.0; `isPreviousVersionOf` 0.6.0 and `isDocumentedBy` this audit; files restricted. Title, creators and licence field unchanged. | runs 36152525777 and 36152509818; the public API shows `access_right: restricted` and no files, and a file URL redirects to the login page |
+| Explorer Space | shows the four cleared phrases; dated notice; no links to the adapters | Space commit `56d7693` |
+| Eval Space | dated notice; the three links to the adapters removed; the write-up stays as the historical record | Space commit `386d43f` |
+| Adapters `jam-ft-v1-qwen25` | withdrawal notice on the card, then made private. All five `adapter_model.safetensors` remain there, each matching the hash pinned in `experiments/finetune-arc-v2/evals/p7-adapter-publish-receipt.json` | commit `c5fd6c7`; the model URL answers 401 to anonymous requests |
+| Live demo Space `jam-actions-live` | notice, then made private | commit `067f4e8`; 401 to anonymous requests |
+| GitHub release `jam-ft-v1-adapters` | retitled "withdrawn", notice prepended, converted to a draft. Its notes and its 767 MB archive (0 downloads) are no longer public. The archive was **not** deleted. | the asset URL answers 404 to anonymous requests |
+| Publish workflow | re-verifies the sealed release gate from pinned sources (`--artifacts-root`) and runs the library evidence test before minting | #44 |
+
+**Retraining.** None was needed for the withdrawal. The withdrawn adapters had no recorded downloads, and adapters trained only on licence-cleared data already exist with the `jam-actions-v1` datasets.
+
+**Still open, for the Director.** Each of these is irreversible:
+- **History.** Earlier revisions of both HF datasets, the private adapter repository and this repository's git history still contain the withdrawn records. Removal means squashing HF history and running `filter-repo` plus a force-push here; `refs/pull/*` needs GitHub support.
+- **The draft release's archive.** Deleting it is permanent. The adapters survive in the private HF repository.
+- **Zenodo deletion** of 0.4.3 and 0.5.0 is available only through a support request. The files are already restricted.
+
 ## Why it happened
 
 - The v0 licence evidence was a web page, not the bytes. `datasets/jam-actions-v0-public/ATTRIBUTION.md` says it was confirmed "at the page level".
