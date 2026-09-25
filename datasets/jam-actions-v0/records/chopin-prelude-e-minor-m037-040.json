@@ -14,11 +14,11 @@
     "arrangement_license": "CC-BY-SA",
     "arrangement_license_version": "3.0",
     "arrangement_evidence_url": "http://piano-midi.de/chopin.htm",
-    "record_verdict": "public",
-    "verdict_reason": "Prelude in E Minor, Op. 28 No. 4. Slice 2.5 URL verification. License confirmed: CC-BY-SA-3.0. Evidence URL: http://piano-midi.de/chopin.htm. Verdict: public — all site-level + per-song verification conditions passed.",
+    "record_verdict": "excluded",
+    "verdict_reason": "Withdrawn from the public subset on 2026-09-25. The 2026-09-09 library provenance audit re-derived this song's provenance from the MIDI bytes: the file came from bitmidi.com and no arrangement licence could be established. The earlier Slice 2.5 verdict checked a piano-midi.de page, not the file this record was built from. See docs/findings/published-dataset-licence-audit.md.",
     "verifier": "auto-rule-engine+slice2.5-url-verifier",
     "verified_at": "2026-05-17",
-    "training_use_permitted": true
+    "training_use_permitted": false
   },
   "scope": {
     "song_id": "chopin-prelude-e-minor",
