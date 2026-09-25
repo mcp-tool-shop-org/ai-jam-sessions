@@ -1,9 +1,9 @@
 {
-  "$schema_note": "Zenodo deposition metadata payload for the v0.5.0 new-version deposit under concept DOI 10.5281/zenodo.20279918 (prior version DOI: 10.5281/zenodo.20279919). Conforms to the Zenodo legacy REST API deposition schema at https://developers.zenodo.org/#representation. DOI is intentionally absent — Zenodo mints the new version DOI on publish. No auth tokens, no account IDs, no credentials.",
+  "$schema_note": "Zenodo deposition metadata for jam-actions-v0 0.6.0, a fresh deposit (its own concept DOI) related to the prior versions 10.5281/zenodo.21313954 and 10.5281/zenodo.20279919. Conforms to the Zenodo legacy REST API deposition schema. DOI is intentionally absent; Zenodo mints it on publish. No auth tokens, no account IDs, no credentials.",
   "metadata": {
-    "title": "jam-actions-v0 (public subset) — AI Jam Sessions tool-use traces",
+    "title": "jam-actions-v0 (public subset) — AI Jam Sessions tool-use traces, v0.6.0 correction release",
     "upload_type": "dataset",
-    "description": "<p><strong>jam-actions-v0</strong> is a corpus of multi-turn MCP (Model Context Protocol) tool-use traces grounded in real classical-piano MIDI. Each record pairs a short phrase window (typically 4 measures) with an annotated teaching target and a target trace — a turn-by-turn session in which an assistant uses the <code>ai-jam-sessions</code> MCP tools to read, analyze, and discuss the phrase. The dataset teaches LLMs to do <em>grounded tool-use over symbolic music</em>, not just text generation.</p><p>This is the <strong>public subset</strong>: 115 records across 8 compositions (Bach, Mozart, Beethoven, Chopin, Schumann, Debussy). The held-out test set is <code>clair-de-lune</code> (12 records); the train split is 103 records. All records have verified provenance against piano-midi.de.</p><p><strong>Version 0.5.0 is a record-content correction release (errata 001 + 002).</strong> The Bach BWV 846 record <code>m061-064</code> claimed a 4-measure window past the 62-measure source MIDI — its frozen <code>play_song(61, 64)</code> call is impossible against the live MCP server — and was retargeted to the two measures it always contained (<code>m061-062</code>). All 16 Bach records' annotation prose was additionally re-derived from executed MIDI ground truth: the source file is prelude (mm. 1–35) + fugue (mm. 36–62), where the old prose narrated an imagined 64-measure prelude. The defect was caught by execution verification — replaying every frozen tool call against the real server — and that check is now a standing packaging gate: the v0.5.0 receipt (<code>evals/v0.5.0-execution-verification.json</code>) shows 230 unique calls, 0 failures. Full errata with machine receipts live in the source repository.</p><p>The package includes 274 files: per-record JSON, the consolidated <code>records.jsonl</code>, SVG piano-rolls, eval artifacts and gate assessments (including this version's RC-gate PASS at <code>evals/v0.5.0-release-gate-assessment.json</code>), curated docs (README dataset card, layered LICENSE, ATTRIBUTION with copy-pasteable strings, KNOWN_LIMITATIONS for honest scope, DATASET_SCHEMA, RELEASE_NOTES, CITATION.cff), a SHA-256 checksums file, and packaging metadata. Honest eval-scope note: the RC gate's evidence base is the sealed E3 baseline measured on v0.4.3 records (shipped in the v0.4.3 deposit, not here); a successor baseline measured on v0.5.0 records ships with a future version.</p><p><strong>Licensing</strong>: three-layer stack. Compositions are public domain (US + EU). MIDI arrangements by Bernd Krueger / piano-midi.de under CC-BY-SA 3.0 (Germany jurisdiction). Derivative records under CC-BY-SA-3.0 (DE) via share-alike. Zenodo's enumerated license slug is <code>CC-BY-SA-3.0</code> (international form) — the substantive obligations are identical; the DE jurisdiction is documented in <code>ATTRIBUTION.md</code> and <code>LICENSE-DATASET.md</code>.</p><p><strong>Reproducibility</strong>: clone the source repo at tag <code>jam-actions-v0-0.5.0-cut-2026-07-11</code>, <code>pnpm install</code>, run <code>verify-public-package-checksums.ts</code> (expected: 274/274 verify) and <code>verify-public-package-execution.ts</code> (expected: 230 unique tool calls, 0 failures; requires an audio device). The RC-gate validator recipe, including restoring the sealed baseline bytes from git history, is in the README's Reproducibility section.</p>",
+    "description": "<p><strong>jam-actions-v0</strong> is a corpus of multi-turn MCP (Model Context Protocol) tool-use traces grounded in classical-piano MIDI. Each record pairs a short phrase window (typically 4 measures) with an annotated teaching target and a target trace in which an assistant uses the <code>ai-jam-sessions</code> MCP tools to read, analyze and discuss the phrase.</p><p><strong>Version 0.6.0 is a correction release.</strong> Versions 0.4.3 (10.5281/zenodo.20279919) and 0.5.0 (10.5281/zenodo.21313954) contained 115 records across 8 compositions, all attributed to Bernd Krueger / piano-midi.de under CC-BY-SA-3.0-DE. An audit of the source library from the MIDI bytes found that four of those songs (Chopin Op. 9 No. 2 and Op. 28 No. 4, Beethoven Op. 13 II, Schumann Op. 15 No. 7) had been built from files obtained from midiworld.com and bitmidi.com that carry no established arrangement licence. The 58 records built from them are withdrawn; do not redistribute them from the earlier versions. The 57 remaining records, from Bernd Krueger's arrangements of Bach BWV 846, Mozart K. 545 I, Beethoven WoO 59 (F&uuml;r Elise) and Debussy's Clair de Lune, are byte-identical to 0.5.0. The held-out test song is <code>clair-de-lune</code> (12 records); the train split is 45 records.</p><p>This version is deposited separately from the earlier versions because their concept DOI (10.5281/zenodo.20279918) also holds versions of the distinct jam-actions-v1 dataset. The packaging now includes a library evidence gate: a record ships only if its song's provenance, re-derived from the MIDI bytes, names a redistributable arrangement licence and the record's source-file hash equals the evidenced file.</p><p><strong>Licensing</strong>: compositions are public domain (US + EU). MIDI arrangements by Bernd Krueger / piano-midi.de under CC-BY-SA 3.0 (Germany). Derivative records under CC-BY-SA-3.0 (DE) via share-alike; Zenodo's licence slug is the international form, and the DE jurisdiction is documented in ATTRIBUTION.md and LICENSE-DATASET.md.</p>",
     "creators": [
       {
         "name": "mcp-tool-shop-org",
@@ -32,8 +32,20 @@
     "license": "CC-BY-SA-3.0",
     "access_right": "open",
     "language": "eng",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "related_identifiers": [
+      {
+        "identifier": "10.5281/zenodo.21313954",
+        "relation": "isNewVersionOf",
+        "scheme": "doi",
+        "resource_type": "dataset"
+      },
+      {
+        "identifier": "10.5281/zenodo.20279919",
+        "relation": "isNewVersionOf",
+        "scheme": "doi",
+        "resource_type": "dataset"
+      },
       {
         "identifier": "https://github.com/mcp-tool-shop-org/ai-jam-sessions",
         "relation": "isSupplementTo",
@@ -41,10 +53,10 @@
         "resource_type": "software"
       },
       {
-        "identifier": "https://github.com/mcp-tool-shop-org/ai-jam-sessions/releases/tag/jam-actions-v0-0.5.0-cut-2026-07-11",
-        "relation": "isDerivedFrom",
+        "identifier": "https://github.com/mcp-tool-shop-org/ai-jam-sessions/blob/main/docs/findings/published-dataset-licence-audit.md",
+        "relation": "isDocumentedBy",
         "scheme": "url",
-        "resource_type": "software"
+        "resource_type": "publication-report"
       },
       {
         "identifier": "https://piano-midi.de/",
@@ -71,13 +83,10 @@
       }
     ],
     "references": [
-      "Krueger, B. (n.d.). Classical Piano MIDI Page. piano-midi.de. Licensed under CC-BY-SA 3.0 (Germany).",
-      "mcp-tool-shop-org (2026). jam-actions-v0 v0.5.0 RC-gate PASS verdict. evals/v0.5.0-release-gate-assessment.json. release-gate-assessment/2.0.0 schema; all 6 blocking axes PASS at the v0.5.0 cut.",
-      "mcp-tool-shop-org (2026). jam-actions-v0 v0.5.0 execution-verification receipt. evals/v0.5.0-execution-verification.json. Standing packaging gate; 230 unique frozen tool calls replayed against the live MCP server, 0 failures.",
-      "mcp-tool-shop-org (2026). Erratum 001 — bach-prelude-c-major-bwv846:m061-064 window exceeds the song. docs/jam-actions-v0-erratum-001-bach-m061-064.md (source repository).",
-      "mcp-tool-shop-org (2026). Erratum 002 — Bach BWV 846 annotation prose describes music that is not there. docs/jam-actions-v0-erratum-002-bach-annotation-prose.md (source repository).",
+      "Krueger, B. Classical Piano MIDI Page. piano-midi.de. Licensed under CC-BY-SA 3.0 (Germany).",
+      "mcp-tool-shop-org (2026). Published datasets still carry licence claims the library audit disproved. docs/findings/published-dataset-licence-audit.md (source repository).",
       "Model Context Protocol specification. modelcontextprotocol.io."
     ],
-    "notes": "Version 0.5.0 is a record-content correction release (errata 001 + 002, Bach BWV 846) published as a new version under the concept DOI; the v0.4.3 deposit is unchanged. A PASS verdict on the RC gate (release-gate-assessment/2.0.0) does NOT mean the dataset is approved for release; per the source-repo doctrine 'gate clearance is not release approval.' The RC gate's evidence base is the sealed E3 baseline measured on v0.4.3 records; a successor baseline measured on v0.5.0 records ships with a future version. See KNOWN_LIMITATIONS.md for honest scope (8 songs, single-arranger, piano-only, English-only annotations). See RELEASE_NOTES.md for the full version arc 0.1.0 → 0.5.0."
+    "notes": "Correction release. 58 records from four songs withdrawn (arrangement licence not established); 57 records byte-identical to 0.5.0. Historical eval artifacts are not shipped; they remain in the source repository at tag jam-actions-v0-0.5.0-cut-2026-07-11. See RELEASE_NOTES.md and KNOWN_LIMITATIONS.md."
   }
 }

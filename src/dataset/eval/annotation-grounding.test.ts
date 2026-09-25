@@ -696,7 +696,7 @@ describe("Slice 18.5 regression — pathetique-mvt2:m017-020 off-by-one", () => 
     // Load the actual public record (canonical fixture).
     const recordsDir = join(
       new URL(".", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1"),
-      "../../../datasets/jam-actions-v0-public/records",
+      "../../../datasets/jam-actions-v0/records", // source corpus: this record was withdrawn from the public subset in 0.6.0
     );
     const recordPath = join(recordsDir, PATHETIQUE_M017);
     const record = JSON.parse(readFileSync(recordPath, "utf-8")) as E3Record;
