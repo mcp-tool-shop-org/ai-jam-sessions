@@ -91,15 +91,18 @@ Each outcome was checked afterwards from outside, without credentials, unless no
 | Eval Space | dated notice; the three links to the adapters removed; the write-up stays as the historical record | Space commit `386d43f` |
 | Adapters `jam-ft-v1-qwen25` | withdrawal notice on the card, then made private. All five `adapter_model.safetensors` remain there, each matching the hash pinned in `experiments/finetune-arc-v2/evals/p7-adapter-publish-receipt.json` | commit `c5fd6c7`; the model URL answers 401 to anonymous requests |
 | Live demo Space `jam-actions-live` | notice, then made private | commit `067f4e8`; 401 to anonymous requests |
-| GitHub release `jam-ft-v1-adapters` | retitled "withdrawn", notice prepended, converted to a draft. Its notes and its 767 MB archive (0 downloads) are no longer public. The archive was **not** deleted. | the asset URL answers 404 to anonymous requests |
+| GitHub release `jam-ft-v1-adapters` | retitled "withdrawn", notice prepended, converted to a draft. Its 767 MB archive (0 downloads) was then removed from the release, after an offline copy was verified against the sha256 recorded at publication. | the release lists no assets; the asset URL answers 404 to anonymous requests |
+| HF history: `jam-actions-v0`, `jam-actions-acoustic-v0`, explorer Space | squashed to one commit each (from 12, 5 and 4), after offline mirrors of all three were verified blob for blob against the Hub's own listings. The current files are unchanged. | new heads `cbacb7c`, `c7fce8d`, `d63ac7e`. On the day, the old commits still resolved when requested by hash: the Hub applies a squash asynchronously (its storage documentation gives up to 36 hours). This row is re-checked after that window. |
 | Publish workflow | re-verifies the sealed release gate from pinned sources (`--artifacts-root`) and runs the library evidence test before minting | #44 |
+
+Commit ids of these Hugging Face repositories recorded before the squash, such as `9d69b47` in the 0.6.0 publication receipt, now point to history that is no longer on any branch. The maintainers hold offline, verified copies of everything removed on this page.
 
 **Retraining.** None was needed for the withdrawal. The withdrawn adapters had no recorded downloads, and adapters trained only on licence-cleared data already exist with the `jam-actions-v1` datasets.
 
-**Still open, for the Director.** Each of these is irreversible:
-- **History.** Earlier revisions of both HF datasets, the private adapter repository and this repository's git history still contain the withdrawn records. Removal means squashing HF history and running `filter-repo` plus a force-push here; `refs/pull/*` needs GitHub support.
-- **The draft release's archive.** Deleting it is permanent. The adapters survive in the private HF repository.
-- **Zenodo deletion** of 0.4.3 and 0.5.0 is available only through a support request. The files are already restricted.
+**Still open, for the Director.**
+- **This repository's git history** still contains the withdrawn records and the derived files listed above. Removing them means `filter-repo` and a force-push. That gives every later commit a new id, including the commits and tags cited by the Zenodo records and receipts, and every checkout has to re-sync; `refs/pull/*` needs GitHub support. An offline mirror would make it reversible, but the coordination cost makes it a decision rather than a step.
+- **Zenodo deletion** of 0.4.3 and 0.5.0 is available only through a support request. The files are already restricted, so deletion is not recommended.
+- The private adapter repository keeps its history. It is not public.
 
 ## Why it happened
 
