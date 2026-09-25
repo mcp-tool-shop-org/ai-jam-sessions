@@ -311,6 +311,127 @@ export function assertNoExcludedWorksInPublicSet(
   }
 }
 
+// ─── Library evidence gate (2026-09-25) ──────────────────────────────────────
+//
+// `record_verdict` is a claim written onto each record when the corpus was
+// built, and `EXCLUDED_SONG_IDS` is a hand-kept backstop. Neither reads the
+// evidence. The 2026-09-09 library audit re-derived every song's provenance
+// from the MIDI bytes, and four songs whose records carried
+// `record_verdict: "public"` had no established arrangement licence. Their
+// records shipped in 0.4.x and 0.5.x.
+//
+// This gate reads the evidence itself. A record may enter the public package
+// only when (1) its song's library provenance block names a redistributable
+// arrangement licence, (2) the file's own title does not contradict the
+// catalogue, and (3) the MIDI the record was built from is the file that the
+// evidence describes: `observation.midi_sidecar.midi_sha256` equals the
+// block's `midi_sha256`. It fails closed, so a provenance change halts
+// packaging instead of shipping quietly.
+
+/** Arrangement licences a public record may inherit. */
+export const REDISTRIBUTABLE_ARRANGEMENT_LICENSES: readonly string[] = [
+  "CC-BY-SA-3.0-DE",
+  "Public-Domain",
+];
+
+/** What the library's provenance block says about one song. */
+export interface LibraryEvidence {
+  songId: string;
+  arrangementLicense: string;
+  titleVerdict: string;
+  midiSha256: string;
+  sourceSite: string;
+  /** Repo-relative path of the song JSON the evidence came from. */
+  path: string;
+}
+
+/**
+ * Read every song's provenance block under `songs/library` and
+ * `songs/quarantine`. Keys are normalized song ids. A song JSON without a
+ * provenance block contributes nothing, so its records can never pass.
+ */
+export function loadLibraryEvidence(repoRoot: string): Map<string, LibraryEvidence> {
+  const evidence = new Map<string, LibraryEvidence>();
+  const walk = (dir: string): string[] =>
+    readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+      const p = join(dir, e.name);
+      return e.isDirectory() ? walk(p) : e.name.endsWith(".json") ? [p] : [];
+    });
+  for (const root of ["songs/library", "songs/quarantine"]) {
+    const abs = join(repoRoot, root);
+    if (!existsSync(abs)) continue;
+    for (const file of walk(abs).sort()) {
+      const song = JSON.parse(readFileSync(file, "utf8")) as {
+        id?: string;
+        provenance?: {
+          arrangement_license?: string;
+          title_verdict?: string;
+          midi_sha256?: string;
+          source_site?: string;
+        };
+      };
+      if (!song.id || !song.provenance) continue;
+      evidence.set(normalizeSongId(song.id), {
+        songId: song.id,
+        arrangementLicense: song.provenance.arrangement_license ?? "",
+        titleVerdict: song.provenance.title_verdict ?? "",
+        midiSha256: song.provenance.midi_sha256 ?? "",
+        sourceSite: song.provenance.source_site ?? "",
+        path: relative(repoRoot, file).split(sep).join("/"),
+      });
+    }
+  }
+  return evidence;
+}
+
+/**
+ * Why `record` may not be published, or `null` when the library evidence
+ * clears it.
+ */
+export function evidenceRefusal(
+  record: SourceRecord,
+  evidence: ReadonlyMap<string, LibraryEvidence>,
+): string | null {
+  const ev = evidence.get(normalizeSongId(record.scope.song_id));
+  if (!ev) return `no library provenance block for song "${record.scope.song_id}"`;
+  if (!REDISTRIBUTABLE_ARRANGEMENT_LICENSES.includes(ev.arrangementLicense)) {
+    return `arrangement licence is "${ev.arrangementLicense || "absent"}" (source: ${ev.sourceSite || "unknown"}; ${ev.path})`;
+  }
+  if (ev.titleVerdict === "contradicts") {
+    return `the file's own title contradicts the catalogue (${ev.path})`;
+  }
+  const observation = record.observation as { midi_sidecar?: { midi_sha256?: unknown } } | undefined;
+  const sidecar = observation?.midi_sidecar?.midi_sha256;
+  if (typeof sidecar !== "string" || sidecar.length === 0) {
+    return "record carries no observation.midi_sidecar.midi_sha256, so its source file cannot be matched to the evidence";
+  }
+  if (!ev.midiSha256) return `library provenance for "${ev.songId}" records no midi_sha256 (${ev.path})`;
+  if (sidecar !== ev.midiSha256) {
+    return `built from MIDI ${sidecar.slice(0, 12)}…, not the evidenced file ${ev.midiSha256.slice(0, 12)}… (${ev.path})`;
+  }
+  return null;
+}
+
+/**
+ * Fail closed when any record bound for the public package is not cleared by
+ * the library evidence. The error names every refused record and its reason.
+ */
+export function assertPublicRecordsHaveEvidence(
+  publicRecords: SourceRecord[],
+  evidence: ReadonlyMap<string, LibraryEvidence>,
+): void {
+  const refused = publicRecords
+    .map((r) => ({ id: r.id, reason: evidenceRefusal(r, evidence) }))
+    .filter((x): x is { id: string; reason: string } => x.reason !== null);
+  if (refused.length > 0) {
+    const lines = refused.map((x) => `  - ${x.id}: ${x.reason}`).join("\n");
+    throw new Error(
+      `package-public: EVIDENCE GATE refused ${refused.length} record(s) marked public. ` +
+        `Fix the source corpus (record_verdict) or the library provenance, never this gate.\n${lines}`,
+    );
+  }
+}
+
 // ─── Pair completeness ───────────────────────────────────────────────────────
 
 /**
