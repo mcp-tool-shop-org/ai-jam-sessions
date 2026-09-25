@@ -82,75 +82,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 18,
-      "changed": 102,
+      "added": 0,
+      "changed": 1,
       "moved": 0,
-      "parts": 10,
-      "removed": 358
+      "parts": 1,
+      "removed": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI runs 4 more files than before.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Publish jam-actions-v0 now also runs src/dataset/published-evidence.test.ts.",
-        "subjects": [
-          ".github/workflows/publish-jam-actions-v0.yml",
-          "src/dataset/published-evidence.test.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release runs 3 more files than before.",
-        "subjects": [
-          ".github/workflows/release.yml"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".gitattributes is now read by .github/workflows/push-jam-actions-v0-hf.yml.",
-        "subjects": [
-          ".gitattributes",
-          ".github/workflows/push-jam-actions-v0-hf.yml"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "CHANGELOG.md is now read by docs/findings/derived-content-inventory.json.",
-        "subjects": [
-          "CHANGELOG.md",
-          "docs/findings/derived-content-inventory.json"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "ROADMAP.md is now read by docs/findings/derived-content-inventory.json.",
-        "subjects": [
-          "ROADMAP.md",
-          "docs/findings/derived-content-inventory.json"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 553 more new writers and readers of places.",
-        "subjects": []
-      },
-      {
         "kind": "counts",
-        "sentence": "18 files added, 358 removed and 102 changed content, across 10 parts.",
+        "sentence": "Nothing structural changed since 2026-09-25; 1 file changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "8734514e3d140be8776b5326332831e7091c395d",
-      "generatedAt": "2026-09-24T09:18:42.006Z"
+      "commit": "dc771c279b9e0b845563239b89763518476c2d19",
+      "generatedAt": "2026-09-25T18:16:51.731Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -158,7 +107,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "dc771c279b9e0b845563239b89763518476c2d19",
+  "commit": "d92a167294ff5df72f634fda8a99777f4380279f",
   "defaultBranch": "main",
   "derived": "14 parts, mostly TypeScript (559 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
@@ -1436,7 +1385,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T18:16:51.731Z",
+  "generatedAt": "2026-09-25T18:27:06.062Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "11 import sites could not be resolved.",
