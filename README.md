@@ -21,7 +21,7 @@
   <a href="https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions"><img src="https://img.shields.io/npm/v/@mcptoolshop/ai-jam-sessions" alt="npm"></a>
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-108_across_12_genres-blue" alt="Songs"></a>
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-108%2F108-green" alt="Ready"></a>
-  <a href="datasets/jam-actions-v0-public/README.md"><img src="https://img.shields.io/badge/dataset-jam--actions--v0%20(115_records)-8b5cf6" alt="Training dataset"></a>
+  <a href="datasets/jam-actions-v0-public/README.md"><img src="https://img.shields.io/badge/dataset-jam--actions--v0%20(57_records)-8b5cf6" alt="Training dataset"></a>
   <a href="https://doi.org/10.5281/zenodo.20279918"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20279918.svg" alt="DOI"></a>
 </p>
 
@@ -41,7 +41,7 @@ An LLM can read and write text, but it can't experience music the way we do. No 
 
 Every one of the 108 songs is now fully annotated — historical context, bar-by-bar structural analysis, key moments, teaching goals, and performance tips, in all 12 genres. An earlier version of this README said the raw songs were "waiting for the AI to absorb the patterns, play the music, and write its own annotations." That is exactly what happened: the annotations were written by AI against a deterministic per-song analysis (chords, repetition structure, section boundaries, content-verified keys), gated by a quality rubric, and adversarially fact-checked claim by claim — measure numbers, chord windows, and structural counts all verified against the actual MIDI before anything shipped.
 
-Out of this same work, we also publish **[jam-actions-v0](#training-dataset)** — a public dataset of 115 multi-turn MCP tool-use traces over real classical piano. It teaches LLMs to do *grounded tool-use over symbolic music*, not just text generation, and ships with a 7-axis release gate that distinguishes "passing on evidence" from "passing because the task is trivial." See [Training Dataset](#training-dataset) below for the full story.
+Out of this same work, we also publish **[jam-actions-v0](#training-dataset)** — a public dataset of 57 multi-turn MCP tool-use traces over real classical piano. It teaches LLMs to do *grounded tool-use over symbolic music*, not just text generation, and ships with a 7-axis release gate that distinguishes "passing on evidence" from "passing because the task is trivial." See [Training Dataset](#training-dataset) below for the full story.
 
 ## Listening
 
@@ -244,56 +244,53 @@ One markdown file per day, stored in `~/.ai-jam-sessions/journal/`. Human-readab
 
 ## Training Dataset
 
-**jam-actions-v0** — a public dataset of multi-turn MCP tool-use traces grounded in real classical-piano MIDI. Built from the same library this server teaches with, the dataset teaches LLMs to do **grounded tool-use over symbolic music** — not just text generation.
+**jam-actions-v0** — a public dataset of multi-turn MCP tool-use traces grounded in classical-piano MIDI. Built from the same library this server teaches with, the dataset teaches LLMs to do **grounded tool-use over symbolic music** — not just text generation.
 
 Each record pairs a 4-measure phrase window with an annotated teaching target and a *target trace* — a turn-by-turn session in which an assistant uses the MCP tools above (`get_events_in_measure`, `get_events_in_hand`, `count_distinct_pitch_classes`, and the rest of the 9-tool MIDI inspector surface) to read, analyze, and discuss the phrase.
 
 | | |
 |---|---|
-| **DOI** | [**`10.5281/zenodo.20279918`**](https://doi.org/10.5281/zenodo.20279918) — concept DOI, resolves to the latest published version (v0.5.0: [`10.5281/zenodo.21313954`](https://doi.org/10.5281/zenodo.21313954), published 2026-07-11) |
-| Records | 115 (public subset) |
-| Canonical baseline | 16-record post-repair E3 |
-| Compositions | 8 classical piano works across 6 composers (Bach, Beethoven, Chopin, Debussy, Mozart, Schumann) |
-| Source MIDI | piano-midi.de — Bernd Krueger arrangements |
+| Version | **0.6.0 (2026-09-25) — correction release** (see below) |
+| Records | 57 (public subset): train 45, held-out test 12 (`clair-de-lune`) |
+| Compositions | 4 classical piano works: Bach BWV 846, Mozart K. 545 I, Beethoven "Für Elise", Debussy "Clair de Lune" |
+| Source MIDI | piano-midi.de — Bernd Krueger arrangements, each file carrying Krueger's own copyright credit |
 | License | CC-BY-SA-3.0-DE (arrangements) over public-domain compositions |
-| Version | 0.5.0 (2026-07-11) — Bach BWV 846 correction release, errata 001 + 002 |
-| Schema | `release-gate-assessment/2.0.0` |
+| Where | [`mcp-tool-shop/jam-actions-v0`](https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0) on Hugging Face and on Zenodo; DOIs and citation in the [dataset card](datasets/jam-actions-v0-public/README.md) and [`CITATION.cff`](datasets/jam-actions-v0-public/CITATION.cff) |
 
-**Quality story — the 7-axis release gate.** The dataset ships with a release gate that distinguishes evidence-grounded passing from ceiling-saturated passing. Axes 1–6 are blocking (absolute floor, margin compound, tool-use rate, correct-after-tool, misinterpretation count, stratum floor); axis 7 is enriched-vs-non reporting. Axes 2 and 6 admit a `ceiling_saturated_pass` bucket so records that score 1.000 across text-only / tool-inspected / random-MIDI conditions don't dilute the harder strata. The Slice 22 baseline **PASSES** the revised gate. The Slice 19 baseline still **FAILS** it — kept as a regression diagnostic so the gate has teeth.
+**The 0.6.0 correction.** Versions 0.4.x and 0.5.x held 115 records across 8 works, all attributed to Bernd Krueger. That attribution was checked against piano-midi.de's composer pages, not against the files. When the song library was audited from the MIDI bytes, four of those songs — Chopin's Nocturne Op. 9 No. 2 and Prelude Op. 28 No. 4, Beethoven's "Pathétique" II and Schumann's "Träumerei" — turned out to have been built from files obtained from midiworld.com and bitmidi.com, with no established arrangement licence. Their 58 records carried those arrangements note for note, so 0.6.0 withdraws them. The 57 remaining records are byte-identical to 0.5.0. Please do not redistribute the withdrawn records from earlier versions. The full account is in [`docs/findings/published-dataset-licence-audit.md`](docs/findings/published-dataset-licence-audit.md).
 
-**Reproducibility.** A fresh contributor on any platform (Windows native, macOS, Linux, WSL) can verify the package and reproduce the canonical PASS verdict in under a minute:
+**The evidence gate.** The packager now re-reads each song's library provenance block — re-derived from the MIDI bytes — and refuses any record whose song has no redistributable arrangement licence, or whose source-file hash differs from the evidenced file. It fails closed. A test re-runs the same check on every committed published package, so a later provenance change turns the build red on the published sets themselves.
+
+**Quality story — the 7-axis release gate.** The dataset's release gate distinguishes evidence-grounded passing from ceiling-saturated passing. Axes 1–6 are blocking (absolute floor, margin compound, tool-use rate, correct-after-tool, misinterpretation count, stratum floor); axis 7 is enriched-vs-non reporting. Its recorded verdicts were measured on the 115-record composition of 0.4.x and 0.5.x and remain reproducible from the tag `jam-actions-v0-0.5.0-cut-2026-07-11`; they have not been re-measured on 0.6.0.
+
+**Reproducibility.** A fresh contributor on any platform (Windows native, macOS, Linux, WSL) can verify the package and rebuild it:
 
 ```bash
 git clone https://github.com/mcp-tool-shop-org/ai-jam-sessions.git
 cd ai-jam-sessions && pnpm install
-pnpm exec tsx scripts/verify-public-package-checksums.ts        # 274 entries, ~2s
+pnpm exec tsx scripts/verify-public-package-checksums.ts                        # every file accounted for
+pnpm exec tsx scripts/package-jam-actions-public.ts --today 2026-09-25 --dry-run # evidence gate runs first
 pnpm build && pnpm exec tsx scripts/verify-public-package-execution.ts
 # → "VERDICT: PASS" — every frozen tool call replays live (needs an audio device)
-git show jam-actions-v0-feature-marketed-2026-05-19:datasets/jam-actions-v0-public/evals/slice21-fair-e3-baseline-results.json > /tmp/b.json
-pnpm exec tsx scripts/check-release-gate.ts /tmp/b.json
-# → "Aggregate: PASS" (exit 0) — the sealed baseline ships in the v0.4.3 deposit; v0.5.0 restores it from git history
 ```
 
-`.gitattributes` pins LF line endings for `*.sha256` and the public-dataset tree so the checksum verifier works on every platform. The release-gate CLI is strict-positional (rejects unknown / multiple positional args) so cold-start contributors can't silently mis-invoke it.
+`.gitattributes` pins LF line endings for `*.sha256` and the public-dataset tree so the checksum verifier works on every platform.
 
-**Where to find it.** The Zenodo record lives under concept DOI [`10.5281/zenodo.20279918`](https://doi.org/10.5281/zenodo.20279918) (always the latest version; v0.5.0 published 2026-07-11 at https://zenodo.org/records/21313954), and the dataset is mirrored on Hugging Face at [`mcp-tool-shop/jam-actions-v0`](https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0) for `load_dataset()` consumers. The full dataset card is at [`datasets/jam-actions-v0-public/README.md`](datasets/jam-actions-v0-public/README.md). Zenodo deposition metadata is at [`zenodo-metadata.json`](datasets/jam-actions-v0-public/zenodo-metadata.json), citation metadata at [`CITATION.cff`](datasets/jam-actions-v0-public/CITATION.cff), the publication receipt at [`publication-receipt.json`](datasets/jam-actions-v0-public/publication-receipt.json), and release notes at [`RELEASE_NOTES.md`](datasets/jam-actions-v0-public/RELEASE_NOTES.md). The 25-slice build arc — from initial corpus draft through the off-by-one repair, the Schumann remediation, the RC-gate revision, the operator-aloneness audit, and the publication execution — lives in [`docs/`](docs/).
+**Fine-tuning history.** The dataset's claims were tested with preregistered fine-tunes scored against sealed baselines. **v0** (the 78 jam traces alone) returned an honest negative ([report](docs/finetune-arc-eval-report.md)); **v1** moved tool-grounded QA +0.202 but missed its preregistered bar by one paired win ([report](docs/finetune-arc-v1-eval-report.md)); **B-1** re-tested the frozen v1 adapters on a 36-record cohort: 0.678 → 0.890, 29/36 paired wins against the ex-ante 24/34 bar ([report](docs/finetune-arc-v2-b1-eval-report.md)). Those measurements stand as recorded. **The adapters themselves are withdrawn**: their training data included records from the four withdrawn songs, so they cannot be offered under this dataset's terms. Adapters trained only on licence-cleared material are published with the `jam-actions-v1` datasets.
 
-**Cite it.** `mcp-tool-shop-org & Krueger, B. (2026). AI Jam Sessions — Tool-Use Traces v0 (Public Subset). Zenodo. https://doi.org/10.5281/zenodo.20279918`
-
-**Does it actually train anything? — the fine-tuning receipts, three arcs.** The dataset's claims are tested the hard way: preregistered fine-tunes scored against sealed baselines, with the honesty rules frozen before any training. **v0** (the 78 jam traces alone) returned an *honest negative* — tool-grounded QA dropped 0.661 → 0.601 ([report](docs/finetune-arc-eval-report.md)). **v1** (a 494-example data pass adding execution-verified, grounding-shaped traces) moved the same metric +0.202 with all five seeds above baseline — and still shipped as *"directionally better, underpowered"* because 12/16 paired wins missed the preregistered ≥13/16 bar by one; no adapter published from a near-miss ([report](docs/finetune-arc-v1-eval-report.md)). **B-1** then re-tested the *frozen* v1 artifacts on a preregistered 36-record cohort dominated by held-out material: 0.678 → **0.890** (+0.212, 29/36 paired wins against the ex-ante 24/34 bar, p < 0.0001, and 10/12 on never-trained music) — a **powered win**, with the honest caveat intact: prose-only surfaces stay below baseline ([report](docs/finetune-arc-v2-b1-eval-report.md)). The five seed adapters are published at [`mcp-tool-shop/jam-ft-v1-qwen25`](https://huggingface.co/mcp-tool-shop/jam-ft-v1-qwen25) with the claim tied to the all-seeds mean — no best-of-seeds. All three arcs, locks, amendments, and per-seed receipts live in [`experiments/`](experiments/) — the discipline is the point.
-
-> The MIDI arrangements are by Bernd Krueger (piano-midi.de), licensed CC-BY-SA-3.0-DE. The annotations, traces, and eval artifacts are by the AI Jam Sessions team, released under the same license so the share-alike chain is preserved end-to-end. **License boundary:** the repository's MIT license covers the code; everything under `datasets/` is CC-BY-SA-3.0-DE. The working corpus at `datasets/jam-actions-v0/` additionally contains two works (Satie Gymnopédie No. 1, Debussy Arabesque No. 1) that are *excluded* from the published subset because their arrangement provenance could not be verified — see [`datasets/jam-actions-v0/PROVENANCE-NOTE.md`](datasets/jam-actions-v0/PROVENANCE-NOTE.md).
+> The MIDI arrangements are by Bernd Krueger (piano-midi.de), licensed CC-BY-SA-3.0-DE. The annotations, traces, and eval artifacts are by the AI Jam Sessions team, released under the same license so the share-alike chain is preserved end-to-end. **License boundary:** the repository's MIT license covers the code; everything under `datasets/` is CC-BY-SA-3.0-DE. The working corpus at `datasets/jam-actions-v0/` also contains records that are not published: two works whose provenance was never verified (Satie Gymnopédie No. 1, Debussy Arabesque No. 1) and the four withdrawn in 0.6.0 — see [`datasets/jam-actions-v0/PROVENANCE-NOTE.md`](datasets/jam-actions-v0/PROVENANCE-NOTE.md).
 
 ### The acoustic corpus
 
 **jam-actions-acoustic-v0** — the counterpart to the traces above, over **audio** rather than
-symbolic music. 108 records, each pairing a deliberately perturbed synthetic rendering of a
+symbolic music. 72 records, each pairing a deliberately perturbed synthetic rendering of a
 public-domain phrase with the verdict the analysis tools actually return, so every label is checked
 against the instrument rather than only against itself.
 
 | | |
 |---|---|
-| Records | 108 — 3 phrases × 9 perturbation kinds × 4 target notes |
+| Version | 1.1.0 (2026-09-25) — withdrew the 36 "Träumerei" records of 1.0.x, whose source file has no established arrangement licence |
+| Records | 72 — 2 phrases (Bach, Für Elise) × 9 perturbation kinds × 4 target notes |
 | Held out | by **phrase** (Für Elise), not by record, so a perturbed twin of the same melody cannot leak |
 | Classes | match, pitch fail/warn, timing fail/pass, missed, extra, in-tune vibrato, nothing-to-grade silence |
 | Audio | none distributed — each record carries a deterministic recipe and the SHA-256 of the waveform it produces |
@@ -304,18 +301,18 @@ vibrato note whose correct verdict is *in tune*, and silence whose correct verdi
 grade*. Every threshold the verdict depends on is copied into the record, because both of them
 moved once during the build.
 
-The corpus is reproducible from this repository. Regenerating it produces all 115 published files
+The corpus is reproducible from this repository. Regenerating it produces all 79 published files
 and a byte-identical `checksums.sha256`, and a test asserts exactly that without writing the
 published tree.
 
 **One caveat, measured rather than assumed.** Each record carries `wav_sha256`, the hash of the
 waveform its recipe produces, and the renderer calls `Math.pow` and `Math.sin` once per sample.
 Neither is required to be correctly rounded, and V8's results changed between Node 22 and Node 24:
-of the 27,869 distinct `Math.pow(2, x)` arguments this corpus evaluates, 253 return a different
-double. Almost all of that vanishes under 16-bit quantisation, but **2 of the 108 records** — both
-the `extra` perturbation of Für Elise, whose motif sits on the one pitch where the semitone ratio
-itself differs — hash differently on Node 24. Every other field of every record reproduces on any
-engine, and the repository tests both claims separately. If you re-render and see those two
+of the 27,869 distinct `Math.pow(2, x)` arguments the original corpus evaluated, 253 return a
+different double. Almost all of that vanishes under 16-bit quantisation, but **2 of the 72 records**
+— both the `extra` perturbation of Für Elise, whose motif sits on the one pitch where the semitone
+ratio itself differs — hash differently on Node 24. Every other field of every record reproduces on
+any engine, and the repository tests both claims separately. If you re-render and see those two
 mismatch, that is this, not a corrupt download. Making the waveform bit-portable means replacing
 the transcendentals, which changes every hash and therefore needs a new schema version.
 
@@ -570,7 +567,7 @@ Previously in v2.1.0 — the release where the analyst became a **maker**. The m
 
 Previously in v2.0.0 — the release where the dataset proved its discipline. **Breaking: the Node.js floor is now 22** (`node-web-audio-api` 2.0); the tool surface itself is unchanged — six sound engines, 47 MCP tools, 3 prompt templates, and a **fully annotated library: 120/120 songs across 12 genres** (12 key fields corrected to content-detected keys this release). The teaching loop is closed end-to-end: metronome with count-in → live recording → per-note scoring → the marked-up scored piano roll → practice loops that ramp tempo only after clean passes. The browser cockpit is a real composition tool — beat-accurate transport with loop regions, record-arm capture, full undo/redo, multi-select and clipboard, touch support — [live on the web](https://mcp-tool-shop-org.github.io/ai-jam-sessions/cockpit/).
 
-Also publishes **[jam-actions-v0](#training-dataset)** — a 115-record training dataset of multi-turn MCP tool-use traces over classical piano, with a 7-axis release gate, cold-start reproducibility, and full Zenodo + CITATION.cff metadata (CC-BY-SA-3.0-DE) — mirrored on [Hugging Face](https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0), and now carrying **receipted fine-tuning results both ways**: an honest negative (v0) and a preregistration-disciplined positive that stopped one paired win short of its own victory bar (v1) — see the [fine-tuning receipts](#training-dataset). This release also fixes the Bach records at the source (working-set revisions r001/r002 with errata) after the v1 pipeline's execution gate caught the published window overshooting BWV 846's actual 62 measures. 2506 tests passing across the MCP server + cockpit + dataset packagers + eval harnesses + release-gate validator. The MIDI is all there, every song can teach, and the corpus of that learning ships with it.
+Also publishes **[jam-actions-v0](#training-dataset)** — a 57-record training dataset of multi-turn MCP tool-use traces over classical piano, with a 7-axis release gate, cold-start reproducibility, and full Zenodo + CITATION.cff metadata (CC-BY-SA-3.0-DE) — mirrored on [Hugging Face](https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0), and now carrying **receipted fine-tuning results both ways**: an honest negative (v0) and a preregistration-disciplined positive that stopped one paired win short of its own victory bar (v1) — see the [fine-tuning receipts](#training-dataset). This release also fixes the Bach records at the source (working-set revisions r001/r002 with errata) after the v1 pipeline's execution gate caught the published window overshooting BWV 846's actual 62 measures. 2506 tests passing across the MCP server + cockpit + dataset packagers + eval harnesses + release-gate validator. The MIDI is all there, every song can teach, and the corpus of that learning ships with it.
 
 ## Security & Privacy
 

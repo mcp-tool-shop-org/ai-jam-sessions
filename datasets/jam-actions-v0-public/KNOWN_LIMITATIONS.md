@@ -4,29 +4,31 @@ This document is the candid honesty layer for the dataset. The README sells what
 
 If something feels surprising or marketing-y in the README, check here first.
 
+> **Scope note for 0.6.0.** Version 0.6.0 withdrew 58 records from four songs (Chopin Op. 9 No. 2 and Op. 28 No. 4, Beethoven "Pathétique" II, Schumann "Träumerei") because their source files did not come from piano-midi.de and carry no established arrangement licence; see `RELEASE_NOTES.md`. Sections 1–3 describe the current 57-record package. The evaluation history in the later sections was measured on the 115-record composition of 0.4.x and 0.5.x; it is kept because it explains how the dataset and its gates evolved, and records it names from the withdrawn songs are marked as withdrawn.
+
 ## 1. Provenance is single-source
 
 Every MIDI sequence in this subset comes from **one upstream**: Bernd Krueger's arrangements on piano-midi.de, licensed CC-BY-SA-3.0-DE. There is no cross-source diversity in v0. A model trained on this dataset will see one arranger's interpretive choices (tempo, ornamentation handling, voicing decisions) for every record. This concentrates an inductive bias on Krueger's style.
 
-The original Slice 7 E3 finding flagged this directly: "all 45 records share the arranger. A model with prior knowledge of piano-midi.de could guess `provenance.arrangement_creator` above chance." That observation now applies at 115 records.
+The original Slice 7 E3 finding flagged this directly: "all 45 records share the arranger. A model with prior knowledge of piano-midi.de could guess `provenance.arrangement_creator` above chance." That observation now applies at 57 records.
 
-Future work to diversify: integrate Mutopia Project / IMSLP MIDI / kunstderfuge mirrors with verified provenance. See ATTRIBUTION.md for the two demoted songs that may seed a re-attribution slice.
+Future work to diversify: integrate Mutopia Project / IMSLP MIDI / kunstderfuge mirrors with verified provenance. See ATTRIBUTION.md for the songs not in this subset and why.
 
-## 2. Eight songs is small
+## 2. Four songs is small
 
-The subset covers **8 compositions** across **6 composers** in a single genre (Western art / classical, late-Baroque through early-Impressionist). For comparison:
+The subset covers **4 compositions** across **4 composers** in a single genre (Western art / classical, late-Baroque through early-Impressionist). For comparison:
 
 - MAESTRO ships ~1300 performances across 60+ composers.
 - POP909 ships 909 popular songs.
 - Lakh MIDI ships 100K+ files (though with messier provenance).
 
-v0 is **proof-of-concept scale**: enough to prove the dataset/eval loop works, far from enough to be a competitive symbolic-music corpus. The 115 records form 57 prompt-continuation pairs + 1 standalone; the train split is 103 records. That is a small dataset by any modern measure.
+v0 is **proof-of-concept scale**: enough to prove the dataset/eval loop works, far from enough to be a competitive symbolic-music corpus. The 57 records form 28 prompt-continuation pairs + 1 standalone; the train split is 45 records. That is a small dataset by any modern measure.
 
 The thesis is "show that MCP-tool-use traces on real symbolic music can be evaluated to fine-tunable signal," not "ship a comprehensive music corpus." Treat the size accordingly.
 
 ## 3. Genre and instrument are not diverse
 
-- **Single genre:** Western classical only. No jazz, no pop, no folk, no world music, no contemporary. The Slice 2 scan deliberately excluded modern copyrighted material (jazz, blues, pop, film, new-age, R&B, rock, soul, latin); the public subset further excludes the two unverifiable classical entries (Satie, Debussy Arabesque).
+- **Single genre:** Western classical only. No jazz, no pop, no folk, no world music, no contemporary. The Slice 2 scan deliberately excluded modern copyrighted material (jazz, blues, pop, film, new-age, R&B, rock, soul, latin); the public subset further excludes the two unverifiable classical entries (Satie, Debussy Arabesque) and, since 0.6.0, the four classical songs whose source files carry no established arrangement licence.
 - **Single era spread:** roughly 1722 (Bach) to 1905 (Debussy). 200 years of stylistic range, but all within the "common-practice" tradition.
 - **Single instrument:** solo piano. No orchestral, no chamber, no string, no wind, no percussion, no vocal. The schema is instrument-agnostic (`instrument` is `z.string().min(1)`), but every record carries `"piano"`.
 
@@ -75,9 +77,9 @@ Other records in the corpus retain their existing annotation depth. Future enric
 ## 6. Three records (in source, not in this public subset) marked `rhythm_onset: not_computable`
 
 Three records in the **source corpus** have anacrusis or syncopated phrase entries with no downbeat onsets:
-- `pathetique-mvt2:m029-032` (in this public subset)
-- `pathetique-mvt2:m057-060` (in this public subset)
-- `schumann-traumerei:m045-048` (in this public subset)
+- `pathetique-mvt2:m029-032` (withdrawn in 0.6.0)
+- `pathetique-mvt2:m057-060` (withdrawn in 0.6.0)
+- `schumann-traumerei:m045-048` (withdrawn in 0.6.0)
 
 For these, the E3 `rhythm_onset` question generator correctly returns `not_computable` — there are no downbeat onsets to count. This is **honest absence**, not a defect. The other E3 load-bearing question types (`pitch_class_count`, `hand_register`, `annotation_grounding`) remain 100% computable on these records.
 

@@ -19,7 +19,9 @@ name: Zenodo edit record metadata
 #   record_id             published Zenodo record id (no default)
 #   edit_file             repo path of a JSON object whose keys replace the same
 #                         keys of the live metadata (allowed: title, description,
-#                         notes, keywords, related_identifiers, references, version);
+#                         notes, keywords, related_identifiers, references, version,
+#                         access_right, access_conditions — the owner may restrict a
+#                         published record's files, e.g. after a correction release);
 #                         default docs/zenodo/22675251-metadata-edit.json
 #   mode                  preview (default): GET the record, print the merged payload,
 #                         write nothing | edit-and-publish: edit -> PUT -> publish
@@ -139,9 +141,17 @@ jobs:
           test -f "$EDIT_FILE" || { echo "ERROR: $EDIT_FILE not found"; exit 1; }
           jq -e 'type == "object"' "$EDIT_FILE" > /dev/null || { echo "ERROR: edit file is not a JSON object"; exit 1; }
           # keys that may be replaced; "$comment" is documentation and is dropped
-          BAD=$(jq -r 'del(.["$comment"]) | keys[] | select(. as $k | ["title","description","notes","keywords","related_identifiers","references","version"] | index($k) | not)' "$EDIT_FILE")
+          BAD=$(jq -r 'del(.["$comment"]) | keys[] | select(. as $k | ["title","description","notes","keywords","related_identifiers","references","version","access_right","access_conditions"] | index($k) | not)' "$EDIT_FILE")
           if [ -n "$BAD" ]; then echo "ERROR: keys not allowed in an edit: $BAD"; exit 1; fi
           jq -e '(.title // "") | type == "string" and length > 0' "$EDIT_FILE" > /dev/null || { echo "ERROR: title must be a non-empty string"; exit 1; }
+          # A restriction needs its conditions, and only the two values that keep the
+          # record's metadata public are allowed here.
+          if jq -e 'has("access_right")' "$EDIT_FILE" > /dev/null; then
+            jq -e '.access_right == "restricted" or .access_right == "open"' "$EDIT_FILE" > /dev/null || { echo "ERROR: access_right must be restricted or open"; exit 1; }
+            if jq -e '.access_right == "restricted"' "$EDIT_FILE" > /dev/null; then
+              jq -e '(.access_conditions // "") | type == "string" and length > 0' "$EDIT_FILE" > /dev/null || { echo "ERROR: restricted access needs access_conditions"; exit 1; }
+            fi
+          fi
           jq 'del(.["$comment"])' "$EDIT_FILE" > edit.json
           echo "fields to replace:"; jq 'keys' edit.json
           echo "new title: $(jq -r .title edit.json)"

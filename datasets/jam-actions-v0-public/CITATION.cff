@@ -7,24 +7,22 @@ authors:
   - family-names: "Krueger"
     given-names: "Bernd"
     affiliation: "piano-midi.de (upstream MIDI arrangements; CC-BY-SA-3.0-DE)"
-version: "0.5.1"
-date-released: "2026-07-11"
+version: "0.6.0"
+date-released: "2026-09-25"
 license: "CC-BY-SA-3.0-DE"
-doi: "10.5281/zenodo.20279918"
+abstract: >-
+  57 multi-turn MCP tool-use records grounded in four classical-piano MIDI
+  arrangements by Bernd Krueger (piano-midi.de). Version 0.6.0 is a correction
+  release: it withdraws 58 records from four songs whose source files were found
+  not to come from piano-midi.de and carry no established arrangement licence.
+  Every remaining record is byte-identical to version 0.5.0.
 identifiers:
   - type: doi
-    value: "10.5281/zenodo.20279918"
-    description: "Concept DOI — resolves to the latest published version on Zenodo"
-  - type: doi
     value: "10.5281/zenodo.21313954"
-    description: "Version DOI for this release, v0.5.0 (published 2026-07-11)"
-  - type: url
-    value: "https://zenodo.org/records/21313954"
-    description: "Zenodo record page for v0.5.0"
+    description: "Version DOI of the prior release, v0.5.0 (2026-07-11); contains withdrawn records"
   - type: doi
     value: "10.5281/zenodo.20279919"
-    description: "Version DOI for the prior release, v0.4.3 (2026-05-19)"
-url: "https://doi.org/10.5281/zenodo.20279918"
+    description: "Version DOI of v0.4.3 (2026-05-19); contains withdrawn records"
 repository-code: "https://github.com/mcp-tool-shop-org/ai-jam-sessions"
 keywords:
   - music

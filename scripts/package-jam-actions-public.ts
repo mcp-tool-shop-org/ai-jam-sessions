@@ -57,6 +57,7 @@ import {
   assertCitationCffMatchesVersion,
   assertCuratedFilesPresent,
   assertNoExcludedWorksInPublicSet,
+  assertPublicRecordsHaveEvidence,
   buildChecksumsManifest,
   buildManifest,
   buildRecordsJsonl,
@@ -67,6 +68,7 @@ import {
   filterSplitsToPublic,
   findPairOrphans,
   formatJson,
+  loadLibraryEvidence,
   publicIdSet,
   readPackageInputs,
   readVersion,
@@ -342,6 +344,16 @@ function main(): void {
   assertNoExcludedWorksInPublicSet(publicRecords);
   console.log(
     `  Exclusion regression guard: PASS (${EXCLUDED_SONG_IDS.length} deny-listed song(s) checked: ${EXCLUDED_SONG_IDS.join(", ")})`,
+  );
+
+  // 2c. Library evidence gate (2026-09-25): fail closed unless every public
+  //     record's song has a redistributable arrangement licence in its library
+  //     provenance block AND the record was built from the evidenced MIDI file.
+  //     See `evidenceRefusal` in src/dataset/package-public.ts.
+  const libraryEvidence = loadLibraryEvidence(REPO_ROOT);
+  assertPublicRecordsHaveEvidence(publicRecords, libraryEvidence);
+  console.log(
+    `  Library evidence gate: PASS (${publicRecords.length} record(s) cleared against ${libraryEvidence.size} provenance block(s))`,
   );
 
   // 3. Pair-completeness gate (must pass before any writes).
