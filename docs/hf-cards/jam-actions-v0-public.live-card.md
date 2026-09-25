@@ -39,7 +39,7 @@ configs:
 
 **Records built:** 2026-07-11 (0.5.0 cut; unchanged)   **Package built:** 2026-09-25
 
-**DOI:** assigned on publication; see `CITATION.cff`. Earlier versions: 0.5.0 [`10.5281/zenodo.21313954`](https://doi.org/10.5281/zenodo.21313954) and 0.4.3 [`10.5281/zenodo.20279919`](https://doi.org/10.5281/zenodo.20279919). Both contain the withdrawn records — cite 0.6.0 for new work. The concept DOI `10.5281/zenodo.20279918` also holds versions of the separate `jam-actions-v1` dataset and currently resolves to them, so cite a version DOI rather than the concept DOI.
+**DOI:** [`10.5281/zenodo.22961580`](https://doi.org/10.5281/zenodo.22961580) (this version; concept DOI [`10.5281/zenodo.22961579`](https://doi.org/10.5281/zenodo.22961579)). Earlier versions: 0.5.0 [`10.5281/zenodo.21313954`](https://doi.org/10.5281/zenodo.21313954) and 0.4.3 [`10.5281/zenodo.20279919`](https://doi.org/10.5281/zenodo.20279919). Both contain the withdrawn records — cite 0.6.0 for new work. The concept DOI `10.5281/zenodo.20279918` also holds versions of the separate `jam-actions-v1` dataset and currently resolves to them, so cite a version DOI rather than that concept DOI.
 
 ## Version 0.6.0 correction
 
@@ -234,12 +234,14 @@ See `CITATION.cff` for machine-readable metadata. BibTeX equivalent:
 
 ```bibtex
 @dataset{jam_actions_v0_public_2026,
-  author       = {mcp-tool-shop-org},
+  author       = {{mcp-tool-shop-org} and Krueger, Bernd},
   title        = {jam-actions-v0 — AI Jam Sessions tool-use traces (public subset)},
   version      = {0.6.0},
   year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.22961580},
   license      = {CC-BY-SA-3.0-DE},
-  url          = {https://github.com/mcp-tool-shop-org/ai-jam-sessions}
+  url          = {https://doi.org/10.5281/zenodo.22961580}
 }
 ```
 
