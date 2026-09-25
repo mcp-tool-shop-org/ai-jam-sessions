@@ -1,0 +1,123 @@
+{
+  "version": "0.3.0",
+  "applied_for_dataset_version": "0.4.0",
+  "schema_version": "jam-actions-v0/1.0.0",
+  "applied_at": "2026-05-19",
+  "overrides": {
+    "bach-prelude-c-major-bwv846:m045-048:piano:mcp-session:v1": {
+      "scope": {
+        "musical_phrase_label": "coda transition — chromatic dominant prep with G2/A2 pedal bass"
+      },
+      "annotation_target": {
+        "measure_range": [45, 48],
+        "structure": "Continuation of the prelude's post-pedal coda area (Krueger's arrangement extends the WTC original past m. 35 with a chromatic-cadential coda). The texture is no longer the simple opening arpeggio (RH-only over LH whole-note pedal); the Krueger arrangement layers three right-hand voices on top of a structural left-hand bass that descends through G2 → A2 → G2 across m. 45–48. Chromatic pitches outside C major appear (F#5 at m. 45, F#3/F#4/G#4 in adjacent measures), marking this as pre-cadential dominant preparation rather than tonic statement.",
+        "key_moments": [
+          "m. 45 b1.0 — F#5 sustains 0.81 seconds in the upper voice (chromatic — not in C major); this is the leading-tone of G, marking the dominant-of-dominant area",
+          "m. 45 b2.0 — first deep-bass attack: G2 (left hand, channel 5) sustains 0.41 seconds; B4 and G5 align above for a clear G-major voicing",
+          "m. 45 b3.0 — A2 left-hand bass (low pedal-area shift); the bass moves G2 → A2 within the same measure, distinguishing this from the opening's static one-chord-per-measure design",
+          "m. 45 — RH note count: 82 across the four measures, vs. only 62 in m. 1–4 of the opening; LH note count: 43, vs. only 2 in m. 1–4 — quantitative evidence that this is a different texture, not a simple tonic restatement"
+        ],
+        "teaching_goals": [
+          "do NOT play this as the opening texture — the multi-voice writing and chromatic harmony make it a different musical event",
+          "voice the F#5 at m. 45 b1.0 distinctly; it's the chromatic color that signals the prelude is now in cadential preparation, not tonic-cycling mode",
+          "feel the G2 → A2 bass motion within m. 45 as the structural step that pulls toward the eventual cadence — the bass is no longer a one-note-per-measure pedal"
+        ],
+        "style_tips": [
+          "slightly more presence than the opening — the texture has thickened, even at the same nominal dynamic",
+          "let the chromatic non-diatonic pitches (F#, A#, G#) speak; they are the harmonic interest of this section, not accidents",
+          "the bass moves on at the half-bar in m. 45; don't pedal through this motion or the chromatic harmonies will smear together"
+        ],
+        "teaching_notes": [
+          {
+            "measure": 45,
+            "note": "F#5 at b1.0 is chromatic — outside C major. Voice it clearly; it announces this section is dominant-preparation, not tonic-cycling.",
+            "technique": ["voice the chromatic top line", "release pedal at half-bar"]
+          },
+          {
+            "measure": 45,
+            "note": "The bass moves G2 (b2.0) → A2 (b3.0) within the bar. Compare to m. 1–4 where each measure has at most one bass note. This is the structural-bass section, not the opening texture.",
+            "technique": ["clear bass articulation", "no over-pedaling"]
+          }
+        ]
+      }
+    },
+    "bach-prelude-c-major-bwv846:m049-052:piano:mcp-session:v1": {
+      "scope": {
+        "musical_phrase_label": "coda extension antecedent — chromatic upper-voice density continues"
+      },
+      "annotation_target": {
+        "measure_range": [49, 52],
+        "structure": "Antecedent of the coda extension (paired with m. 53–56). The Krueger arrangement continues the dense multi-voice coda texture: the right hand carries three layered voices while the left hand maintains the lower-register structural bass that entered at m. 45. Chromatic pitches outside C major are present (A#2, C#4, F#3, F#4, G#4 are all in this window), continuing the dominant-preparation harmonic field. This is NOT a return to the opening's one-chord-per-measure arpeggio; the surface rhythm is similar but the harmonic content is fundamentally different.",
+        "key_moments": [
+          "m. 49 — chromatic non-diatonic pitches active: F#3 and F#4 introduce raised-fourth color (leading-tone of G); the LH bass operates at multiple attacks per measure rather than the opening's single sustained tonic",
+          "m. 50 — the LH bass becomes especially active (10+ attacks across the bar based on event density), with bass figures at b0, b0.5, b1, b1.5, b2, b2.5, b2.75, b2.875, b3, b3.5",
+          "m. 51 — A#2 (B♭2) appears in the bass, the lowered-seventh of C major; combined with C#4 in the upper voice this creates a chromatic-mediant tension area before resolution",
+          "m. 52 — G#4 enters in the upper voice; combined with the bass motion, this marks the antecedent's harmonic-tension peak and hands off to the consequent at m. 53"
+        ],
+        "teaching_goals": [
+          "treat this as cadential-preparation texture, NOT opening-texture; the chromatic upper-voice activity is the musical content here",
+          "track the bass attack pattern within each measure — the bass is busier in m. 50 than in any opening measure, and that activity is structural",
+          "voice the chromatic pitches (F#, A#, G#) as the harmonic agents driving toward the consequent's tension peak"
+        ],
+        "style_tips": [
+          "the opening's serenity has been replaced by chromatic intensity — match the texture, not the affect",
+          "no temptation to over-pedal; the multi-voice writing wants clarity, not blur",
+          "the harmonic motion is goal-directed (toward the cadence at the end of the piece), so the tempo should remain steady — the goal-direction is in the pitch material, not in the speed"
+        ],
+        "teaching_notes": [
+          {
+            "measure": 50,
+            "note": "The left-hand bass has 10+ attack points across the bar — the densest LH measure of the coda extension. Articulate each bass event clearly; over-pedaling will lose the chromatic intervals.",
+            "technique": ["clear LH articulation", "avoid pedal smear"]
+          },
+          {
+            "measure": 51,
+            "note": "A#2 (B♭2) bass against C#4 upper voice creates the chromatic-mediant color of the dominant-preparation field. Voice both lines distinctly.",
+            "technique": ["voice top and bottom", "let the dissonance speak"]
+          },
+          {
+            "measure": 52,
+            "note": "G#4 marks the harmonic-tension peak of the antecedent. From here the consequent (m. 53–56) will continue the dominant preparation toward final cadence.",
+            "technique": ["voice the G#4 clearly"]
+          }
+        ]
+      }
+    },
+    "bach-prelude-c-major-bwv846:m053-056:piano:mcp-session:v1": {
+      "scope": {
+        "musical_phrase_label": "coda extension consequent — chromatic dominant prep continues toward cadence"
+      },
+      "annotation_target": {
+        "measure_range": [53, 56],
+        "structure": "Consequent of the coda extension (paired with m. 49–52). The Krueger arrangement maintains the dense multi-voice coda texture into the final-cadence preparation zone. The right hand carries layered voices; the left-hand structural bass operates with multiple attacks per measure (a sharp departure from the opening's one-note-per-measure pedal design). Chromatic upper-voice color (F# / G# / A# / C#) continues throughout, signaling that the prelude is still in dominant-preparation mode — the resolution to the final tonic does not arrive in this window.",
+        "key_moments": [
+          "m. 53–54 — coda-texture continuation: layered RH voices over the dense LH bass; the surface arpeggio shape remains recognizable, but harmonic content is chromatic, not diatonic-tonic",
+          "m. 55 — cadential-approach measure: bass and upper-voice motion converge toward the dominant; expect upper-line activity to slow as the dominant prepares to resolve",
+          "m. 56 — penultimate cadential measure: the final-dominant area; the next pair (m. 57–60 / m. 61–64) will complete the cadence and reach the C-major tonic conclusion"
+        ],
+        "teaching_goals": [
+          "continue the cadential-preparation character — this window is NOT yet the resolution; the tension wants to remain",
+          "match the antecedent's chromatic density rather than collapsing back to opening-texture simplicity",
+          "voice the bass clearly; the structural-bass design of the coda is the engine driving toward the cadence"
+        ],
+        "style_tips": [
+          "the dominant area persists — slight forward energy in the harmonic motion, no premature relaxation",
+          "no ritardando in this window unless the score explicitly marks one — the slowdown belongs to the final-cadence measures",
+          "the chromatic harmonies are the point: let them be heard, not smoothed over"
+        ],
+        "teaching_notes": [
+          {
+            "measure": 55,
+            "note": "Cadential approach: the bass and upper-voice converge toward the final dominant. Maintain the dense texture; the simplification is in the harmonic direction (toward G), not in the surface rhythm.",
+            "technique": ["preserve density", "track harmonic motion"]
+          },
+          {
+            "measure": 56,
+            "note": "Penultimate cadential measure of this window — the final-dominant area. The next pair (m. 57–60 / m. 61–64) completes the resolution to C-major tonic.",
+            "technique": ["voice the dominant", "prepare the resolution but don't anticipate it"]
+          }
+        ]
+      }
+    }
+  }
+}

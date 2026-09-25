@@ -1,0 +1,245 @@
+[
+  {
+    "itemId": "bethena:m1-8",
+    "songId": "bethena",
+    "genre": "ragtime",
+    "title": "Bethena",
+    "composer": "Scott Joplin",
+    "key": "Bb major",
+    "timeSignature": "3/4",
+    "measureRange": [
+      1,
+      8
+    ],
+    "melody": [
+      {
+        "number": 1,
+        "rightHand": "A5:e G5:q B5:e A5:q"
+      },
+      {
+        "number": 2,
+        "rightHand": "A4:e G4:q B4:e A4:q"
+      },
+      {
+        "number": 3,
+        "rightHand": "R:w"
+      },
+      {
+        "number": 4,
+        "rightHand": "R:w"
+      },
+      {
+        "number": 5,
+        "rightHand": "C4+E4:h."
+      },
+      {
+        "number": 6,
+        "rightHand": "C4+D#4:h."
+      },
+      {
+        "number": 7,
+        "rightHand": "C4+D4:h."
+      },
+      {
+        "number": 8,
+        "rightHand": "C4+F#4+A4:h."
+      }
+    ],
+    "sourceChords": [
+      {
+        "measure": 1,
+        "impliedChord": "N/A"
+      },
+      {
+        "measure": 2,
+        "impliedChord": "N/A"
+      },
+      {
+        "measure": 3,
+        "impliedChord": "Gadd9"
+      },
+      {
+        "measure": 4,
+        "impliedChord": "Gadd9"
+      },
+      {
+        "measure": 5,
+        "impliedChord": "Gadd9"
+      },
+      {
+        "measure": 6,
+        "impliedChord": "Cmaj7"
+      },
+      {
+        "measure": 7,
+        "impliedChord": "D"
+      },
+      {
+        "measure": 8,
+        "impliedChord": "D"
+      }
+    ]
+  },
+  {
+    "itemId": "elite-syncopations:m1-8",
+    "songId": "elite-syncopations",
+    "genre": "ragtime",
+    "title": "Elite Syncopations",
+    "composer": "Scott Joplin",
+    "key": "Bb major",
+    "timeSignature": "2/4",
+    "measureRange": [
+      1,
+      8
+    ],
+    "melody": [
+      {
+        "number": 1,
+        "rightHand": "C5+C6:s A4+A5:s G4+G5:s F4+F5:e A4+A5:s G4+G5:s F4+F5:s"
+      },
+      {
+        "number": 2,
+        "rightHand": "G4+G5:s F4+F5:s D4+D5:s C4+C5:e F4:s G4:s A4:s"
+      },
+      {
+        "number": 3,
+        "rightHand": "C4:s G4:e F4:s E4:e G4:e"
+      },
+      {
+        "number": 4,
+        "rightHand": "C4+E4+G4+C5:e C4:s D4:s E4:s"
+      },
+      {
+        "number": 5,
+        "rightHand": "F4:s D5:s F4+A4+C5:e D5:s D#4+A4+C5:e"
+      },
+      {
+        "number": 6,
+        "rightHand": "E4:s D5:s E4+A#4+C5:e D5:s E4+A#4+C5:e"
+      },
+      {
+        "number": 7,
+        "rightHand": "F4+A4+C5:s D#4:e A4+C5:s D4:e G#4+B4:s C#4:e G4+A#4:s"
+      },
+      {
+        "number": 8,
+        "rightHand": "C4+F4+A4:e C5:s G#4+D5:e F5:s G4+C5+E5:e A#4+E5+G5:e"
+      }
+    ],
+    "sourceChords": [
+      {
+        "measure": 1,
+        "impliedChord": "N/A"
+      },
+      {
+        "measure": 2,
+        "impliedChord": "Fadd9"
+      },
+      {
+        "measure": 3,
+        "impliedChord": "C"
+      },
+      {
+        "measure": 4,
+        "impliedChord": "Cadd9"
+      },
+      {
+        "measure": 5,
+        "impliedChord": "F"
+      },
+      {
+        "measure": 6,
+        "impliedChord": "G"
+      },
+      {
+        "measure": 7,
+        "impliedChord": "Dmaj7"
+      },
+      {
+        "measure": 8,
+        "impliedChord": "Bbsus2"
+      }
+    ]
+  },
+  {
+    "itemId": "maple-leaf-rag:m1-8",
+    "songId": "maple-leaf-rag",
+    "genre": "ragtime",
+    "title": "Maple Leaf Rag",
+    "composer": "Scott Joplin",
+    "key": "Ab major",
+    "timeSignature": "2/4",
+    "measureRange": [
+      1,
+      8
+    ],
+    "melody": [
+      {
+        "number": 1,
+        "rightHand": "G#4:s C4+D#4+D#5:e G#4:s C4+C5:e D#4+D#5:e"
+      },
+      {
+        "number": 2,
+        "rightHand": "G4:s D#4+D#5:s G4:s C#4+A#4:e D#4+D#5:ht C#4:e"
+      },
+      {
+        "number": 3,
+        "rightHand": "G#4:s C4+D#4+D#5:e G#4:s C4+C5:e D#4+D#5:e"
+      },
+      {
+        "number": 4,
+        "rightHand": "G4:s D#4+D#5:s G4:s C#4+A#4:e D#4+D#5:e. C#4:e"
+      },
+      {
+        "number": 5,
+        "rightHand": "D#4+D#5:s G#4:s B4:s E4+E5:s D#4+D#5:s"
+      },
+      {
+        "number": 6,
+        "rightHand": "D#4+D#5:s G#4:s B4:s E4+E5:s D#4+D#5:s"
+      },
+      {
+        "number": 7,
+        "rightHand": "R:w"
+      },
+      {
+        "number": 8,
+        "rightHand": "G#4:s G#4:s B4:s G#5:s G#4:e G#5:s"
+      }
+    ],
+    "sourceChords": [
+      {
+        "measure": 1,
+        "impliedChord": "Ebsus4"
+      },
+      {
+        "measure": 2,
+        "impliedChord": "Eb"
+      },
+      {
+        "measure": 3,
+        "impliedChord": "Ebsus4"
+      },
+      {
+        "measure": 4,
+        "impliedChord": "Eb"
+      },
+      {
+        "measure": 5,
+        "impliedChord": "Eb"
+      },
+      {
+        "measure": 6,
+        "impliedChord": "Eb"
+      },
+      {
+        "measure": 7,
+        "impliedChord": "Abm"
+      },
+      {
+        "measure": 8,
+        "impliedChord": "Abm"
+      }
+    ]
+  }
+]
