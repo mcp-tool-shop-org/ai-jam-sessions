@@ -3,6 +3,8 @@
 // The file-reading half of the derived-content guard. src/dataset/
 // derived-content.ts decides what a file's text contains; this walks
 // `git ls-files`, reads each file (gunzipping .gz), and hands the text over.
+// Binary files carry no text to read, except MIDI: a MIDI file, found by its
+// name or by its header, is handed over as bytes and judged whole (judgeMidi).
 //
 // Used by src/dataset/derived-content.test.ts (the CI guard). Run directly to
 // print findings for the working tree, for any commit (read from git objects;
@@ -24,7 +26,9 @@ import { gunzipSync } from "node:zlib";
 import { loadLibraryEvidence, type LibraryEvidence, type SourceRecord } from "../src/dataset/package-public.js";
 import {
   isEvidencedRecordShape,
+  isMidiFile,
   judge,
+  judgeMidi,
   scanFileText,
   songClearance,
   type Finding,
@@ -35,8 +39,16 @@ import {
 
 export const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-/** Formats whose bytes carry no text the scanner can read. */
-const BINARY_EXT = /\.(png|jpe?g|gif|webp|ico|ogg|wav|mp3|flac|mid|midi|pyc|woff2?|ttf|safetensors|bin|zip|tar|pdf)$/i;
+/** Formats whose bytes carry no text the scanner can read. MIDI among them is judged by its bytes. */
+const BINARY_EXT =
+  /\.(png|jpe?g|gif|webp|ico|ogg|wav|mp3|flac|mid|midi|kar|rmi|smf|pyc|woff2?|ttf|safetensors|bin|zip|tar|pdf)$/i;
+/** MIDI by name, compressed or not: history keeps these blobs for judging. */
+const MIDI_PATH = /\.(mid|midi|kar|rmi|smf)(\.gz)?$/i;
+
+/** Whether bytes are binary: a NUL in the first 8 KB. */
+function isBinary(buf: Uint8Array): boolean {
+  return buf.subarray(0, 8192).includes(0);
+}
 
 /**
  * Files `git ls-files` lists that exist on disk. A tracked file deleted in the
@@ -50,12 +62,20 @@ export function trackedFiles(root: string = REPO_ROOT): string[] {
     .sort();
 }
 
+/** A tracked file's bytes. .gz is decompressed. */
+export function readTrackedBytes(root: string, path: string): Buffer {
+  const buf = readFileSync(join(root, path));
+  return path.endsWith(".gz") ? gunzipSync(buf) : buf;
+}
+
+/** The text of a file's bytes, or null for binary content. */
+function textOf(path: string, buf: Buffer): string | null {
+  return BINARY_EXT.test(scanPath(path)) || isBinary(buf) ? null : buf.toString("utf8");
+}
+
 /** A tracked file's text, or null for binary content. .gz is decompressed. */
 export function readTrackedText(root: string, path: string): string | null {
-  let buf = readFileSync(join(root, path));
-  if (path.endsWith(".gz")) buf = gunzipSync(buf);
-  else if (BINARY_EXT.test(path) || buf.subarray(0, 8192).includes(0)) return null;
-  return buf.toString("utf8");
+  return textOf(path, readTrackedBytes(root, path));
 }
 
 /** The path a .gz is scanned as: "run.log.gz" reads as "run.log". */
@@ -72,7 +92,10 @@ export interface RepoScan {
   /** The context the scan judged with, so a caller can judge one more file the same way. */
   context: JudgeContext;
   scanned: number;
+  /** Files with no text to scan, MIDI included. */
   binary: string[];
+  /** Files judged as MIDI, by their bytes (a subset of `binary`). */
+  midi: string[];
 }
 
 /** Record-shaped objects in tracked JSON and JSONL under datasets/, by id. */
@@ -110,16 +133,23 @@ export function scanRepo(
   root: string = REPO_ROOT,
   files: string[] = trackedFiles(root),
   read: (path: string) => string | null = (p) => readTrackedText(root, p),
+  readBytes: (path: string) => Buffer = (p) => readTrackedBytes(root, p),
 ): RepoScan {
   const evidence = loadLibraryEvidence(root);
   const clearance = songClearance(evidence);
   const songIds = new Set(clearance.keys());
   const texts = new Map<string, string>();
   const binary: string[] = [];
+  const midiBytes = new Map<string, Buffer>();
   for (const f of files) {
     const t = read(f);
-    if (t === null) binary.push(f);
-    else texts.set(f, t);
+    if (t !== null) {
+      texts.set(f, t);
+      continue;
+    }
+    binary.push(f);
+    const bytes = readBytes(f);
+    if (isMidiFile(scanPath(f), bytes)) midiBytes.set(f, bytes);
   }
   const records = indexRecords(texts, songIds);
   const sc = { songIds, recordIds: new Set(records.keys()) };
@@ -131,12 +161,23 @@ export function scanRepo(
     for (const n of notes) keyed.push({ path, notes: n });
     findings.push(...judge(path, notes, jc));
   }
-  return { findings, keyed, clearance, evidence, context: jc, scanned: texts.size, binary };
+  for (const [path, bytes] of midiBytes) findings.push(...judgeMidi(path, bytes, jc));
+  return { findings, keyed, clearance, evidence, context: jc, scanned: texts.size, binary, midi: [...midiBytes.keys()] };
 }
 
 /** Judge one file's text with a finished scan's context, as the scan itself would. */
 export function judgeText(scan: RepoScan, path: string, text: string): Finding[] {
   return judge(path, scanFileText(scanPath(path), text, scan.context), scan.context);
+}
+
+/**
+ * Judge one file's (decompressed) bytes with a finished scan's context, as the
+ * scan itself would: MIDI whole, other binary content not at all, text as text.
+ */
+export function judgeBytes(scan: RepoScan, path: string, bytes: Buffer): Finding[] {
+  const text = textOf(path, bytes);
+  if (text !== null) return judgeText(scan, path, text);
+  return isMidiFile(scanPath(path), bytes) ? judgeMidi(path, bytes, scan.context) : [];
 }
 
 export interface HistoryPath {
@@ -173,13 +214,17 @@ export function scanHistory(gitDir: string, root: string = REPO_ROOT): HistoryPa
     const tab = line.indexOf("\t");
     const [, newMode, , sha, status] = line.slice(0, tab).split(" ");
     const p = line.slice(tab + 1);
-    if (status !== "D" && newMode !== "160000" && !/^0+$/.test(sha) && !BINARY_EXT.test(p)) pairs.push([sha, p] as const);
+    // Other binary formats are not read. MIDI is, to be judged by its bytes;
+    // so is any blob whose header is MIDI, among the blobs read for text.
+    const read = !BINARY_EXT.test(scanPath(p)) || MIDI_PATH.test(p);
+    if (status !== "D" && newMode !== "160000" && !/^0+$/.test(sha) && read) pairs.push([sha, p] as const);
   }
   const pathsOf = new Map<string, Set<string>>();
   for (const [sha, p] of pairs) pathsOf.set(sha, (pathsOf.get(sha) ?? new Set()).add(p));
   const pathOf = new Map<string, string>([...pathsOf].map(([sha, ps]) => [sha, [...ps][0]]));
   const out = git(["cat-file", "--batch"], [...pathOf.keys()].join("\n") + "\n");
   const blobs = new Map<string, string>();
+  const midiBlobs = new Map<string, Buffer>();
   for (let off = 0; off < out.length; ) {
     const nl = out.indexOf(10, off);
     const [sha, type, size] = out.subarray(off, nl).toString().split(" ");
@@ -199,8 +244,9 @@ export function scanHistory(gitDir: string, root: string = REPO_ROOT): HistoryPa
       } catch {
         continue;
       }
-    } else if (buf.subarray(0, 8192).includes(0)) continue;
-    blobs.set(sha, buf.toString("utf8"));
+    }
+    if ([...pathsOf.get(sha)!].some((q) => isMidiFile(scanPath(q), buf))) midiBlobs.set(sha, Buffer.from(buf));
+    else if (!isBinary(buf)) blobs.set(sha, buf.toString("utf8"));
   }
   const evidence = loadLibraryEvidence(root);
   const clearance = songClearance(evidence);
@@ -227,35 +273,41 @@ export function scanHistory(gitDir: string, root: string = REPO_ROOT): HistoryPa
   );
   const result = new Map<string, HistoryPath>();
   const versions = new Map<string, Set<string>>();
-  for (const [sha, p] of pairs) if (blobs.has(sha)) versions.set(p, (versions.get(p) ?? new Set()).add(sha));
+  for (const [sha, p] of pairs) {
+    if (blobs.has(sha) || midiBlobs.has(sha)) versions.set(p, (versions.get(p) ?? new Set()).add(sha));
+  }
+  const add = (p: string, sha: string, f: Finding[]): void => {
+    if (!f.length) return;
+    const e = result.get(p) ?? { path: p, versions: versions.get(p)?.size ?? 1, dirtyBlobs: [], presentAtHead: head.has(p), songs: [] };
+    e.dirtyBlobs.push(sha);
+    e.songs = [...new Set([...e.songs, ...f.map((x) => x.songKey)])].sort();
+    result.set(p, e);
+  };
   for (const [sha, text] of blobs) {
-    for (const p of pathsOf.get(sha)!) {
-      const f = judge(p, scanFileText(scanPath(p), text, sc), jc);
-      if (!f.length) continue;
-      const e = result.get(p) ?? { path: p, versions: versions.get(p)?.size ?? 1, dirtyBlobs: [], presentAtHead: head.has(p), songs: [] };
-      e.dirtyBlobs.push(sha);
-      e.songs = [...new Set([...e.songs, ...f.map((x) => x.songKey)])].sort();
-      result.set(p, e);
-    }
+    for (const p of pathsOf.get(sha)!) add(p, sha, judge(p, scanFileText(scanPath(p), text, sc), jc));
+  }
+  for (const [sha, bytes] of midiBlobs) {
+    for (const p of pathsOf.get(sha)!) add(p, sha, judgeMidi(p, bytes, jc));
   }
   for (const e of result.values()) e.dirtyBlobs.sort();
   return [...result.values()].sort((a, b) => a.path.localeCompare(b.path));
 }
 
-/** Files and a reader for a commit, from git objects rather than the working tree. */
-export function atRef(ref: string, root: string = REPO_ROOT): { files: string[]; read: (p: string) => string | null } {
+/** Files and readers for a commit, from git objects rather than the working tree. */
+export function atRef(
+  ref: string,
+  root: string = REPO_ROOT,
+): { files: string[]; read: (p: string) => string | null; readBytes: (p: string) => Buffer } {
   const files = execFileSync("git", ["ls-tree", "-r", "-z", "--name-only", ref], { cwd: root, maxBuffer: 1 << 28 })
     .toString("utf8")
     .split("\0")
     .filter(Boolean)
     .sort();
-  const read = (p: string): string | null => {
-    let buf = execFileSync("git", ["show", `${ref}:${p}`], { cwd: root, maxBuffer: 1 << 28 });
-    if (p.endsWith(".gz")) buf = gunzipSync(buf);
-    else if (BINARY_EXT.test(p) || buf.subarray(0, 8192).includes(0)) return null;
-    return buf.toString("utf8");
+  const readBytes = (p: string): Buffer => {
+    const buf = execFileSync("git", ["show", `${ref}:${p}`], { cwd: root, maxBuffer: 1 << 28 });
+    return p.endsWith(".gz") ? gunzipSync(buf) : buf;
   };
-  return { files, read };
+  return { files, read: (p) => textOf(p, readBytes(p)), readBytes };
 }
 
 function main(): void {
@@ -275,7 +327,7 @@ function main(): void {
   const refAt = process.argv.indexOf("--ref");
   const ref = refAt >= 0 ? process.argv[refAt + 1] : null;
   const at = ref ? atRef(ref) : null;
-  const scan = at ? scanRepo(REPO_ROOT, at.files, at.read) : scanRepo();
+  const scan = at ? scanRepo(REPO_ROOT, at.files, at.read, at.readBytes) : scanRepo();
   if (process.argv.includes("--json")) {
     process.stdout.write(`${JSON.stringify(scan.findings, null, 2)}\n`);
     return;
@@ -286,7 +338,10 @@ function main(): void {
     const units = fs.reduce((n, f) => n + f.units, 0);
     console.log(`${path}  (${fs.length} key${fs.length === 1 ? "" : "s"}, ${units} units)`);
   }
-  console.log(`\n${scan.findings.length} findings in ${byPath.size} files; ${scan.scanned} text files scanned, ${scan.binary.length} binary skipped.`);
+  console.log(
+    `\n${scan.findings.length} findings in ${byPath.size} files; ${scan.scanned} text files scanned, ` +
+      `${scan.midi.length} MIDI files judged by their bytes, ${scan.binary.length - scan.midi.length} other binary files skipped.`,
+  );
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) main();
