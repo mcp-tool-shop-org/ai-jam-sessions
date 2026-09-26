@@ -617,7 +617,9 @@ export type FindingRule =
   /** keyed to a v0 window record that is absent or fails evidenceRefusal */
   | "unevidenced-record"
   /** a MIDI file whose bytes are no song's evidenced file */
-  | "unevidenced-midi";
+  | "unevidenced-midi"
+  /** compressed content the scan could not read: past its bound, or not decompressing */
+  | "uninspected";
 
 export interface Finding {
   path: string;
@@ -627,6 +629,7 @@ export interface Finding {
   /**
    * note-level when note units reach NOTE_UNIT_FLOOR, else measurement-level.
    * A MIDI file is always note-level: it is an arrangement, whatever it holds.
+   * So is uninspected content: what could not be read is held to the strictest level.
    */
   level: "note-level" | "measurement-level";
   reason: string;
@@ -715,25 +718,50 @@ export function judge(path: string, keyed: KeyedNotes[], jc: JudgeContext): Find
 // other bytes are a finding, whatever the file is called. That covers the
 // library files of uncleared songs, a superseded file of a cleared song (the
 // pre-Mutopia Satie and Debussy bytes), and MIDI saved under another name.
+//
+// The header is looked for at any offset, so MIDI inside a RIFF file (.rmi,
+// or a chunk of a WAVE file) or after other bytes is found too. That fails
+// closed: every cleared file starts with its header, so bytes whose first
+// header is further in are never a cleared file, and are refused.
 
 const MIDI_NAME = /\.(mid|midi|kar|rmi|smf)$/i;
 
-/** Whether a file is MIDI: by its name, or by its header whatever the name. */
-export function isMidiFile(path: string, bytes: Uint8Array): boolean {
-  if (MIDI_NAME.test(path)) return true;
-  const tag = (at: number): string => String.fromCharCode(...bytes.subarray(at, at + 4));
-  // a Standard MIDI File, or one wrapped in RIFF (.rmi)
-  return tag(0) === "MThd" || (tag(0) === "RIFF" && tag(8) === "RMID");
+/**
+ * The first 8 bytes of a Standard MIDI File: "MThd" and a header length of 6.
+ * The length is NUL bytes, so no text holds this.
+ */
+const SMF_HEADER = "MThd\x00\x00\x00\x06";
+
+/**
+ * Where the first Standard MIDI File header starts, or -1. It is matched at
+ * any offset. Given decoded text, the index is in characters, and it is -1
+ * unless the text holds NUL characters.
+ */
+export function smfHeaderOffset(content: Uint8Array | string): number {
+  if (typeof content === "string") return content.indexOf(SMF_HEADER);
+  return Buffer.from(content.buffer, content.byteOffset, content.byteLength).indexOf(SMF_HEADER, 0, "latin1");
 }
 
 /**
- * Note-on events in a Standard MIDI File, or null when the bytes are not a
- * whole one. midi-file accepts a bare "MThd" or a header whose tracks are
- * missing, so the header's track count must match the tracks read.
+ * Whether binary content is MIDI: by its name, by "MThd" or a RIFF MIDI
+ * (.rmi) wrapper at the start, or by a MIDI header anywhere in it. Text files
+ * are MIDI only by the header (smfHeaderOffset).
+ */
+export function isMidiFile(path: string, bytes: Uint8Array): boolean {
+  if (MIDI_NAME.test(path)) return true;
+  const tag = (at: number): string => String.fromCharCode(...bytes.subarray(at, at + 4));
+  return tag(0) === "MThd" || (tag(0) === "RIFF" && tag(8) === "RMID") || smfHeaderOffset(bytes) >= 0;
+}
+
+/**
+ * Note-on events in a Standard MIDI File, read from its first header, or null
+ * when the bytes are not a whole one. midi-file accepts a bare "MThd" or a
+ * header whose tracks are missing, so the header's track count must match the
+ * tracks read.
  */
 export function midiNoteOns(bytes: Uint8Array): number | null {
   try {
-    const midi = parseMidi(bytes);
+    const midi = parseMidi(bytes.subarray(Math.max(0, smfHeaderOffset(bytes))));
     if (!midi.header.numTracks || midi.tracks.length !== midi.header.numTracks) return null;
     return midi.tracks.reduce((n, track) => n + track.filter((e) => e.type === "noteOn").length, 0);
   } catch {
@@ -758,6 +786,7 @@ export function judgeMidi(path: string, bytes: Uint8Array, jc: JudgeContext): Fi
   const owners = [...jc.evidence.values()].filter((ev) => ev.midiSha256 === sha).map((ev) => ev.songId);
   if (owners.some((id) => jc.clearance.get(id)?.cleared ?? false)) return [];
   const noteOns = midiNoteOns(bytes);
+  const at = smfHeaderOffset(bytes);
   const base = {
     path,
     level: "note-level" as const,
@@ -765,6 +794,7 @@ export function judgeMidi(path: string, bytes: Uint8Array, jc: JudgeContext): Fi
     indicators: { ...emptyIndicators(), events: noteOns ?? 0 },
     where: [
       `sha256 ${sha.slice(0, 12)}…`,
+      ...(at > 0 ? [`MIDI header at byte ${at}`] : []),
       noteOns === null ? "does not parse as a Standard MIDI File" : `${noteOns} note-on events`,
     ],
   };
@@ -791,3 +821,20 @@ export function judgeMidi(path: string, bytes: Uint8Array, jc: JudgeContext): Fi
   ];
 }
 
+/**
+ * A file the scan could not read, as a finding: compressed content past the
+ * scan's bound, or content that does not decompress. It fails closed, so an
+ * unreadable file is reviewed, never skipped.
+ */
+export function uninspectedFinding(path: string, reason: string, storedBytes: number): Finding {
+  return {
+    path,
+    songKey: path.split("/").pop() ?? path,
+    rule: "uninspected",
+    level: "note-level",
+    reason,
+    units: 0,
+    indicators: emptyIndicators(),
+    where: [`${storedBytes} bytes stored`],
+  };
+}
