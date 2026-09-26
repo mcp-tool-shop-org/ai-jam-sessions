@@ -67,7 +67,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "docs",
-      "qualifyingSourceCommits": 2,
+      "qualifyingSourceCommits": 3,
       "rebaseline": null
     },
     {
@@ -167,7 +167,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "scripts",
-      "qualifyingSourceCommits": 70,
+      "qualifyingSourceCommits": 72,
       "rebaseline": null
     },
     {
@@ -236,7 +236,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 168,
+      "qualifyingSourceCommits": 169,
       "rebaseline": null
     }
   ],
@@ -254,18 +254,18 @@
         "path": ".gitattributes"
       },
       {
-        "commits": 34,
-        "lines": 728,
+        "commits": 36,
+        "lines": 744,
         "path": ".github/workflows/ci.yml"
       },
       {
-        "commits": 15,
-        "lines": 52,
+        "commits": 12,
+        "lines": 46,
         "path": ".github/workflows/pages.yml"
       },
       {
-        "commits": 27,
-        "lines": 2156,
+        "commits": 29,
+        "lines": 2234,
         "path": ".github/workflows/publish-jam-actions-v0.yml"
       },
       {
@@ -279,8 +279,8 @@
         "path": ".github/workflows/push-adapters-hf.yml"
       },
       {
-        "commits": 18,
-        "lines": 694,
+        "commits": 20,
+        "lines": 734,
         "path": ".github/workflows/push-jam-actions-v0-hf.yml"
       },
       {
@@ -289,13 +289,13 @@
         "path": ".github/workflows/release.yml"
       },
       {
-        "commits": 6,
-        "lines": 1194,
+        "commits": 8,
+        "lines": 1222,
         "path": ".github/workflows/zenodo-edit-record.yml"
       },
       {
-        "commits": 24,
-        "lines": 141,
+        "commits": 23,
+        "lines": 140,
         "path": ".gitignore"
       },
       {
@@ -304,13 +304,13 @@
         "path": ".npmignore"
       },
       {
-        "commits": 19,
-        "lines": 73152,
+        "commits": 21,
+        "lines": 104954,
         "path": ".polyglot-cache.json"
       },
       {
-        "commits": 32,
-        "lines": 1249,
+        "commits": 38,
+        "lines": 1277,
         "path": "CHANGELOG.md"
       },
       {
@@ -329,43 +329,43 @@
         "path": "Dockerfile"
       },
       {
-        "commits": 21,
-        "lines": 1918,
+        "commits": 23,
+        "lines": 2392,
         "path": "README.es.md"
       },
       {
-        "commits": 21,
-        "lines": 2604,
+        "commits": 23,
+        "lines": 3158,
         "path": "README.fr.md"
       },
       {
-        "commits": 21,
-        "lines": 2074,
+        "commits": 23,
+        "lines": 2636,
         "path": "README.hi.md"
       },
       {
-        "commits": 21,
-        "lines": 2880,
+        "commits": 23,
+        "lines": 3422,
         "path": "README.it.md"
       },
       {
-        "commits": 21,
-        "lines": 1968,
+        "commits": 23,
+        "lines": 2578,
         "path": "README.ja.md"
       },
       {
-        "commits": 39,
-        "lines": 1413,
+        "commits": 41,
+        "lines": 1535,
         "path": "README.md"
       },
       {
-        "commits": 21,
-        "lines": 1890,
+        "commits": 23,
+        "lines": 2264,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 21,
-        "lines": 2868,
+        "commits": 23,
+        "lines": 3454,
         "path": "README.zh.md"
       },
       {
@@ -1439,6 +1439,31 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
+        "commits": 3,
+        "lines": 518,
+        "path": "atlas/README.md"
+      },
+      {
+        "commits": 2,
+        "lines": 116,
+        "path": "atlas/boundaries.yaml"
+      },
+      {
+        "commits": 3,
+        "lines": 3194,
+        "path": "atlas/page.json"
+      },
+      {
+        "commits": 3,
+        "lines": 41746,
+        "path": "atlas/statistics.json"
+      },
+      {
+        "commits": 3,
+        "lines": 76624,
+        "path": "atlas/structure.json"
+      },
+      {
         "commits": 1,
         "lines": 64,
         "path": "compare_amazing-grace_bethena.json}"
@@ -1474,38 +1499,38 @@
         "path": "compare_the-entertainer_weeping-willow.json}"
       },
       {
-        "commits": 7,
-        "lines": 151,
+        "commits": 9,
+        "lines": 169,
         "path": "datasets/jam-actions-acoustic-v0/CITATION.cff"
       },
       {
-        "commits": 6,
-        "lines": 235,
+        "commits": 8,
+        "lines": 245,
         "path": "datasets/jam-actions-acoustic-v0/LICENSE-DATASET.md"
       },
       {
-        "commits": 7,
-        "lines": 459,
+        "commits": 9,
+        "lines": 495,
         "path": "datasets/jam-actions-acoustic-v0/README.md"
       },
       {
-        "commits": 7,
-        "lines": 9,
+        "commits": 9,
+        "lines": 13,
         "path": "datasets/jam-actions-acoustic-v0/VERSION"
       },
       {
-        "commits": 8,
-        "lines": 595,
+        "commits": 10,
+        "lines": 695,
         "path": "datasets/jam-actions-acoustic-v0/checksums.sha256"
       },
       {
-        "commits": 7,
-        "lines": 114,
+        "commits": 9,
+        "lines": 132,
         "path": "datasets/jam-actions-acoustic-v0/manifest.json"
       },
       {
-        "commits": 5,
-        "lines": 540,
+        "commits": 7,
+        "lines": 612,
         "path": "datasets/jam-actions-acoustic-v0/records.jsonl"
       },
       {
@@ -1869,208 +1894,208 @@
         "path": "datasets/jam-actions-acoustic-v0/records/fur-elise_mm.1-8RH4-notereduction_vibrato_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_clean_s1.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_clean_s12.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_clean_s4.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_clean_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_dropped_s1.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_dropped_s12.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_dropped_s4.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_dropped_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_extra_s1.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_extra_s12.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_extra_s4.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_extra_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_late_25_s1.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_late_25_s12.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_late_25_s4.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_late_25_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_late_80_s1.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_late_80_s12.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_late_80_s4.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_late_80_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_sharp_30_s1.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_sharp_30_s12.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_sharp_30_s4.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_sharp_30_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_sharp_60_s1.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_sharp_60_s12.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_sharp_60_s4.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_sharp_60_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 1295,
+        "commits": 7,
+        "lines": 1813,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_silence_s1.json"
       },
       {
-        "commits": 5,
-        "lines": 1295,
+        "commits": 7,
+        "lines": 1813,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_silence_s12.json"
       },
       {
-        "commits": 5,
-        "lines": 1295,
+        "commits": 7,
+        "lines": 1813,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_silence_s4.json"
       },
       {
-        "commits": 5,
-        "lines": 1295,
+        "commits": 7,
+        "lines": 1813,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_silence_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_vibrato_s1.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_vibrato_s12.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_vibrato_s4.json"
       },
       {
-        "commits": 5,
-        "lines": 1410,
+        "commits": 7,
+        "lines": 1974,
         "path": "datasets/jam-actions-acoustic-v0/records/schumann-traumerei_mm.1-4RH4-notereduction_vibrato_s7.json"
       },
       {
-        "commits": 5,
-        "lines": 645,
+        "commits": 7,
+        "lines": 731,
         "path": "datasets/jam-actions-acoustic-v0/splits.json"
       },
       {
-        "commits": 3,
-        "lines": 150,
+        "commits": 5,
+        "lines": 248,
         "path": "datasets/jam-actions-v0-public/ATTRIBUTION.md"
       },
       {
-        "commits": 15,
-        "lines": 80,
+        "commits": 19,
+        "lines": 144,
         "path": "datasets/jam-actions-v0-public/CITATION.cff"
       },
       {
-        "commits": 1,
-        "lines": 351,
+        "commits": 3,
+        "lines": 371,
         "path": "datasets/jam-actions-v0-public/DATASET_SCHEMA.md"
       },
       {
-        "commits": 4,
-        "lines": 254,
+        "commits": 6,
+        "lines": 294,
         "path": "datasets/jam-actions-v0-public/KNOWN_LIMITATIONS.md"
       },
       {
@@ -2079,128 +2104,128 @@
         "path": "datasets/jam-actions-v0-public/LICENSE-DATASET.md"
       },
       {
-        "commits": 12,
-        "lines": 1000,
+        "commits": 16,
+        "lines": 1264,
         "path": "datasets/jam-actions-v0-public/README.md"
       },
       {
-        "commits": 9,
-        "lines": 287,
+        "commits": 13,
+        "lines": 347,
         "path": "datasets/jam-actions-v0-public/RELEASE_NOTES.md"
       },
       {
-        "commits": 13,
-        "lines": 25,
+        "commits": 15,
+        "lines": 29,
         "path": "datasets/jam-actions-v0-public/VERSION"
       },
       {
-        "commits": 26,
-        "lines": 518,
+        "commits": 30,
+        "lines": 882,
         "path": "datasets/jam-actions-v0-public/checksums.sha256"
       },
       {
-        "commits": 1,
-        "lines": 9078,
+        "commits": 3,
+        "lines": 27234,
         "path": "datasets/jam-actions-v0-public/evals/corpus-scale-qwen2.5-7b-results.json"
       },
       {
-        "commits": 1,
-        "lines": 276,
+        "commits": 3,
+        "lines": 828,
         "path": "datasets/jam-actions-v0-public/evals/corpus-scale-qwen2.5-7b-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 1389,
+        "commits": 3,
+        "lines": 4167,
         "path": "datasets/jam-actions-v0-public/evals/multi-run-n3-qwen2.5-7b-e2-results.json"
       },
       {
-        "commits": 1,
-        "lines": 276,
+        "commits": 3,
+        "lines": 828,
         "path": "datasets/jam-actions-v0-public/evals/multi-run-n3-qwen2.5-7b-e2-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 7188,
+        "commits": 3,
+        "lines": 21564,
         "path": "datasets/jam-actions-v0-public/evals/multi-run-n3-qwen2.5-7b-e3-enriched-results.json"
       },
       {
-        "commits": 1,
-        "lines": 1997,
+        "commits": 3,
+        "lines": 5991,
         "path": "datasets/jam-actions-v0-public/evals/post-isolation-qwen2.5-7b-results.json"
       },
       {
-        "commits": 1,
-        "lines": 4011,
+        "commits": 3,
+        "lines": 12033,
         "path": "datasets/jam-actions-v0-public/evals/slice16-e3-baseline-pre-enrichment-results.json"
       },
       {
-        "commits": 1,
-        "lines": 4011,
+        "commits": 3,
+        "lines": 12033,
         "path": "datasets/jam-actions-v0-public/evals/slice16-e3-rubric-cohort-results.json"
       },
       {
-        "commits": 1,
-        "lines": 2349,
+        "commits": 3,
+        "lines": 7047,
         "path": "datasets/jam-actions-v0-public/evals/slice17-e3-tool-inspected-results.json"
       },
       {
-        "commits": 1,
-        "lines": 276,
+        "commits": 3,
+        "lines": 828,
         "path": "datasets/jam-actions-v0-public/evals/slice17-e3-tool-inspected-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 9816,
+        "commits": 3,
+        "lines": 29448,
         "path": "datasets/jam-actions-v0-public/evals/slice18-5-e3-post-repair-results.json"
       },
       {
-        "commits": 1,
-        "lines": 276,
+        "commits": 3,
+        "lines": 828,
         "path": "datasets/jam-actions-v0-public/evals/slice18-5-e3-post-repair-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 9509,
+        "commits": 3,
+        "lines": 28527,
         "path": "datasets/jam-actions-v0-public/evals/slice18-e3-tool-corpus-validation-results.json"
       },
       {
-        "commits": 1,
-        "lines": 276,
+        "commits": 3,
+        "lines": 828,
         "path": "datasets/jam-actions-v0-public/evals/slice18-e3-tool-corpus-validation-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 19707,
+        "commits": 3,
+        "lines": 59121,
         "path": "datasets/jam-actions-v0-public/evals/slice19-e3-fresh-cohort-results.json"
       },
       {
-        "commits": 1,
-        "lines": 276,
+        "commits": 3,
+        "lines": 828,
         "path": "datasets/jam-actions-v0-public/evals/slice19-e3-fresh-cohort-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 1946,
+        "commits": 3,
+        "lines": 5838,
         "path": "datasets/jam-actions-v0-public/evals/slice19-e3-tool-fresh-results.json"
       },
       {
-        "commits": 1,
-        "lines": 276,
+        "commits": 3,
+        "lines": 828,
         "path": "datasets/jam-actions-v0-public/evals/slice19-e3-tool-fresh-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 1333,
+        "commits": 3,
+        "lines": 3999,
         "path": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-results.json"
       },
       {
-        "commits": 1,
-        "lines": 173,
+        "commits": 3,
+        "lines": 519,
         "path": "datasets/jam-actions-v0-public/evals/slice19-fair-e3-baseline-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 210,
+        "commits": 3,
+        "lines": 630,
         "path": "datasets/jam-actions-v0-public/evals/slice20-release-gate-assessment.json"
       },
       {
@@ -2214,28 +2239,28 @@
         "path": "datasets/jam-actions-v0-public/evals/slice21-fair-e3-baseline-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 208,
+        "commits": 3,
+        "lines": 624,
         "path": "datasets/jam-actions-v0-public/evals/slice21-release-gate-assessment.json"
       },
       {
-        "commits": 1,
-        "lines": 1682,
+        "commits": 3,
+        "lines": 5046,
         "path": "datasets/jam-actions-v0-public/evals/slice21-schumann-m045-rerun-results.json"
       },
       {
-        "commits": 1,
-        "lines": 276,
+        "commits": 3,
+        "lines": 828,
         "path": "datasets/jam-actions-v0-public/evals/slice21-schumann-m045-rerun-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 611,
+        "commits": 3,
+        "lines": 1833,
         "path": "datasets/jam-actions-v0-public/evals/slice22-release-gate-revised-assessment.json"
       },
       {
-        "commits": 1,
-        "lines": 628,
+        "commits": 3,
+        "lines": 1884,
         "path": "datasets/jam-actions-v0-public/evals/slice22-release-gate-slice19-regression-check.json"
       },
       {
@@ -2244,23 +2269,23 @@
         "path": "datasets/jam-actions-v0-public/evals/v0.5.0-execution-verification.json"
       },
       {
-        "commits": 1,
-        "lines": 613,
+        "commits": 3,
+        "lines": 1839,
         "path": "datasets/jam-actions-v0-public/evals/v0.5.0-release-gate-assessment.json"
       },
       {
-        "commits": 2,
-        "lines": 184,
+        "commits": 4,
+        "lines": 432,
         "path": "datasets/jam-actions-v0-public/hf-dataset-card-check.md"
       },
       {
-        "commits": 16,
-        "lines": 116,
+        "commits": 18,
+        "lines": 164,
         "path": "datasets/jam-actions-v0-public/manifest.json"
       },
       {
-        "commits": 15,
-        "lines": 82,
+        "commits": 19,
+        "lines": 146,
         "path": "datasets/jam-actions-v0-public/package-inputs.json"
       },
       {
@@ -2349,153 +2374,153 @@
         "path": "datasets/jam-actions-v0-public/pianoroll/bach-prelude-c-major-bwv846-m061-064.svg"
       },
       {
-        "commits": 1,
-        "lines": 228,
+        "commits": 3,
+        "lines": 684,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m001-004.svg"
       },
       {
-        "commits": 1,
-        "lines": 243,
+        "commits": 3,
+        "lines": 729,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m005-008.svg"
       },
       {
-        "commits": 1,
-        "lines": 252,
+        "commits": 3,
+        "lines": 756,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m009-012.svg"
       },
       {
-        "commits": 1,
-        "lines": 243,
+        "commits": 3,
+        "lines": 729,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m013-016.svg"
       },
       {
-        "commits": 1,
-        "lines": 275,
+        "commits": 3,
+        "lines": 825,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m017-020.svg"
       },
       {
-        "commits": 1,
-        "lines": 240,
+        "commits": 3,
+        "lines": 720,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m021-024.svg"
       },
       {
-        "commits": 1,
-        "lines": 253,
+        "commits": 3,
+        "lines": 759,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m025-028.svg"
       },
       {
-        "commits": 1,
-        "lines": 245,
+        "commits": 3,
+        "lines": 735,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m029-032.svg"
       },
       {
-        "commits": 1,
-        "lines": 231,
+        "commits": 3,
+        "lines": 693,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m033-036.svg"
       },
       {
-        "commits": 1,
-        "lines": 197,
+        "commits": 3,
+        "lines": 591,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m037-040.svg"
       },
       {
-        "commits": 1,
-        "lines": 246,
+        "commits": 3,
+        "lines": 738,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m041-044.svg"
       },
       {
-        "commits": 1,
-        "lines": 263,
+        "commits": 3,
+        "lines": 789,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m045-048.svg"
       },
       {
-        "commits": 1,
-        "lines": 224,
+        "commits": 3,
+        "lines": 672,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m057-060.svg"
       },
       {
-        "commits": 1,
-        "lines": 243,
+        "commits": 3,
+        "lines": 729,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m061-064.svg"
       },
       {
-        "commits": 1,
-        "lines": 202,
+        "commits": 3,
+        "lines": 606,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m065-068.svg"
       },
       {
-        "commits": 1,
-        "lines": 279,
+        "commits": 3,
+        "lines": 837,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m069-072.svg"
       },
       {
-        "commits": 1,
-        "lines": 290,
+        "commits": 3,
+        "lines": 870,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m073-076.svg"
       },
       {
-        "commits": 1,
-        "lines": 212,
+        "commits": 3,
+        "lines": 636,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-nocturne-op9-no2-m077-080.svg"
       },
       {
-        "commits": 1,
-        "lines": 137,
+        "commits": 3,
+        "lines": 411,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m001-004.svg"
       },
       {
-        "commits": 1,
-        "lines": 168,
+        "commits": 3,
+        "lines": 504,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m005-008.svg"
       },
       {
-        "commits": 1,
-        "lines": 179,
+        "commits": 3,
+        "lines": 537,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m009-012.svg"
       },
       {
-        "commits": 1,
-        "lines": 194,
+        "commits": 3,
+        "lines": 582,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m013-016.svg"
       },
       {
-        "commits": 1,
-        "lines": 193,
+        "commits": 3,
+        "lines": 579,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m017-020.svg"
       },
       {
-        "commits": 1,
-        "lines": 178,
+        "commits": 3,
+        "lines": 534,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m021-024.svg"
       },
       {
-        "commits": 1,
-        "lines": 148,
+        "commits": 3,
+        "lines": 444,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m025-028.svg"
       },
       {
-        "commits": 1,
-        "lines": 144,
+        "commits": 3,
+        "lines": 432,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m029-032.svg"
       },
       {
-        "commits": 1,
-        "lines": 165,
+        "commits": 3,
+        "lines": 495,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m033-036.svg"
       },
       {
-        "commits": 1,
-        "lines": 220,
+        "commits": 3,
+        "lines": 660,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m037-040.svg"
       },
       {
-        "commits": 1,
-        "lines": 198,
+        "commits": 3,
+        "lines": 594,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m041-044.svg"
       },
       {
-        "commits": 1,
-        "lines": 157,
+        "commits": 3,
+        "lines": 471,
         "path": "datasets/jam-actions-v0-public/pianoroll/chopin-prelude-e-minor-m045-048.svg"
       },
       {
@@ -2704,158 +2729,158 @@
         "path": "datasets/jam-actions-v0-public/pianoroll/mozart-k545-mvt1-m085-088.svg"
       },
       {
-        "commits": 1,
-        "lines": 147,
+        "commits": 3,
+        "lines": 441,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m001-004.svg"
       },
       {
-        "commits": 1,
-        "lines": 189,
+        "commits": 3,
+        "lines": 567,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m005-008.svg"
       },
       {
-        "commits": 1,
-        "lines": 192,
+        "commits": 3,
+        "lines": 576,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m009-012.svg"
       },
       {
-        "commits": 1,
-        "lines": 166,
+        "commits": 3,
+        "lines": 498,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m013-016.svg"
       },
       {
-        "commits": 1,
-        "lines": 200,
+        "commits": 3,
+        "lines": 600,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m017-020.svg"
       },
       {
-        "commits": 1,
-        "lines": 239,
+        "commits": 3,
+        "lines": 717,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m021-024.svg"
       },
       {
-        "commits": 1,
-        "lines": 255,
+        "commits": 3,
+        "lines": 765,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m025-028.svg"
       },
       {
-        "commits": 1,
-        "lines": 215,
+        "commits": 3,
+        "lines": 645,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m029-032.svg"
       },
       {
-        "commits": 1,
-        "lines": 179,
+        "commits": 3,
+        "lines": 537,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m033-036.svg"
       },
       {
-        "commits": 1,
-        "lines": 241,
+        "commits": 3,
+        "lines": 723,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m037-040.svg"
       },
       {
-        "commits": 1,
-        "lines": 130,
+        "commits": 3,
+        "lines": 390,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m057-060.svg"
       },
       {
-        "commits": 1,
-        "lines": 175,
+        "commits": 3,
+        "lines": 525,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m061-064.svg"
       },
       {
-        "commits": 1,
-        "lines": 223,
+        "commits": 3,
+        "lines": 669,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m073-076.svg"
       },
       {
-        "commits": 1,
-        "lines": 306,
+        "commits": 3,
+        "lines": 918,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m077-080.svg"
       },
       {
-        "commits": 1,
-        "lines": 312,
+        "commits": 3,
+        "lines": 936,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m081-084.svg"
       },
       {
-        "commits": 1,
-        "lines": 215,
+        "commits": 3,
+        "lines": 645,
         "path": "datasets/jam-actions-v0-public/pianoroll/pathetique-mvt2-m085-088.svg"
       },
       {
-        "commits": 1,
-        "lines": 178,
+        "commits": 3,
+        "lines": 534,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m001-004.svg"
       },
       {
-        "commits": 1,
-        "lines": 221,
+        "commits": 3,
+        "lines": 663,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m005-008.svg"
       },
       {
-        "commits": 1,
-        "lines": 183,
+        "commits": 3,
+        "lines": 549,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m009-012.svg"
       },
       {
-        "commits": 1,
-        "lines": 221,
+        "commits": 3,
+        "lines": 663,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m013-016.svg"
       },
       {
-        "commits": 1,
-        "lines": 190,
+        "commits": 3,
+        "lines": 570,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m017-020.svg"
       },
       {
-        "commits": 1,
-        "lines": 211,
+        "commits": 3,
+        "lines": 633,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m021-024.svg"
       },
       {
-        "commits": 1,
-        "lines": 179,
+        "commits": 3,
+        "lines": 537,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m025-028.svg"
       },
       {
-        "commits": 1,
-        "lines": 191,
+        "commits": 3,
+        "lines": 573,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m029-032.svg"
       },
       {
-        "commits": 1,
-        "lines": 205,
+        "commits": 3,
+        "lines": 615,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m033-036.svg"
       },
       {
-        "commits": 1,
-        "lines": 210,
+        "commits": 3,
+        "lines": 630,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m037-040.svg"
       },
       {
-        "commits": 1,
-        "lines": 208,
+        "commits": 3,
+        "lines": 624,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m041-044.svg"
       },
       {
-        "commits": 1,
-        "lines": 193,
+        "commits": 3,
+        "lines": 579,
         "path": "datasets/jam-actions-v0-public/pianoroll/schumann-traumerei-m045-048.svg"
       },
       {
-        "commits": 1,
-        "lines": 283,
+        "commits": 3,
+        "lines": 551,
         "path": "datasets/jam-actions-v0-public/provenance-verification.json"
       },
       {
-        "commits": 2,
-        "lines": 167,
+        "commits": 6,
+        "lines": 501,
         "path": "datasets/jam-actions-v0-public/publication-receipt.json"
       },
       {
-        "commits": 5,
-        "lines": 167,
+        "commits": 7,
+        "lines": 283,
         "path": "datasets/jam-actions-v0-public/records.jsonl"
       },
       {
@@ -2944,153 +2969,153 @@
         "path": "datasets/jam-actions-v0-public/records/bach-prelude-c-major-bwv846-m061-064.json"
       },
       {
-        "commits": 1,
-        "lines": 729,
+        "commits": 3,
+        "lines": 2187,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m001-004.json"
       },
       {
-        "commits": 1,
-        "lines": 871,
+        "commits": 3,
+        "lines": 2613,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m005-008.json"
       },
       {
-        "commits": 2,
-        "lines": 865,
+        "commits": 4,
+        "lines": 2559,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m009-012.json"
       },
       {
-        "commits": 1,
-        "lines": 836,
+        "commits": 3,
+        "lines": 2508,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m013-016.json"
       },
       {
-        "commits": 1,
-        "lines": 1024,
+        "commits": 3,
+        "lines": 3072,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m017-020.json"
       },
       {
-        "commits": 1,
-        "lines": 1007,
+        "commits": 3,
+        "lines": 3021,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m021-024.json"
       },
       {
-        "commits": 1,
-        "lines": 806,
+        "commits": 3,
+        "lines": 2418,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m025-028.json"
       },
       {
-        "commits": 1,
-        "lines": 764,
+        "commits": 3,
+        "lines": 2292,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m029-032.json"
       },
       {
-        "commits": 1,
-        "lines": 804,
+        "commits": 3,
+        "lines": 2412,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m033-036.json"
       },
       {
-        "commits": 1,
-        "lines": 1013,
+        "commits": 3,
+        "lines": 3039,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m037-040.json"
       },
       {
-        "commits": 1,
-        "lines": 1055,
+        "commits": 3,
+        "lines": 3165,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m041-044.json"
       },
       {
-        "commits": 1,
-        "lines": 938,
+        "commits": 3,
+        "lines": 2814,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m045-048.json"
       },
       {
-        "commits": 1,
-        "lines": 755,
+        "commits": 3,
+        "lines": 2265,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m057-060.json"
       },
       {
-        "commits": 1,
-        "lines": 832,
+        "commits": 3,
+        "lines": 2496,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m061-064.json"
       },
       {
-        "commits": 1,
-        "lines": 1028,
+        "commits": 3,
+        "lines": 3084,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m065-068.json"
       },
       {
-        "commits": 1,
-        "lines": 1090,
+        "commits": 3,
+        "lines": 3270,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m069-072.json"
       },
       {
-        "commits": 1,
-        "lines": 1094,
+        "commits": 3,
+        "lines": 3282,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m073-076.json"
       },
       {
-        "commits": 1,
-        "lines": 767,
+        "commits": 3,
+        "lines": 2301,
         "path": "datasets/jam-actions-v0-public/records/chopin-nocturne-op9-no2-m077-080.json"
       },
       {
-        "commits": 1,
-        "lines": 638,
+        "commits": 3,
+        "lines": 1914,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m001-004.json"
       },
       {
-        "commits": 1,
-        "lines": 921,
+        "commits": 3,
+        "lines": 2763,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m005-008.json"
       },
       {
-        "commits": 1,
-        "lines": 836,
+        "commits": 3,
+        "lines": 2508,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m009-012.json"
       },
       {
-        "commits": 1,
-        "lines": 915,
+        "commits": 3,
+        "lines": 2745,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m013-016.json"
       },
       {
-        "commits": 1,
-        "lines": 933,
+        "commits": 3,
+        "lines": 2799,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m017-020.json"
       },
       {
-        "commits": 1,
-        "lines": 1000,
+        "commits": 3,
+        "lines": 3000,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m021-024.json"
       },
       {
-        "commits": 1,
-        "lines": 869,
+        "commits": 3,
+        "lines": 2607,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m025-028.json"
       },
       {
-        "commits": 1,
-        "lines": 617,
+        "commits": 3,
+        "lines": 1851,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m029-032.json"
       },
       {
-        "commits": 1,
-        "lines": 971,
+        "commits": 3,
+        "lines": 2913,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m033-036.json"
       },
       {
-        "commits": 1,
-        "lines": 1164,
+        "commits": 3,
+        "lines": 3492,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m037-040.json"
       },
       {
-        "commits": 1,
-        "lines": 1087,
+        "commits": 3,
+        "lines": 3261,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m041-044.json"
       },
       {
-        "commits": 1,
-        "lines": 919,
+        "commits": 3,
+        "lines": 2757,
         "path": "datasets/jam-actions-v0-public/records/chopin-prelude-e-minor-m045-048.json"
       },
       {
@@ -3299,163 +3324,163 @@
         "path": "datasets/jam-actions-v0-public/records/mozart-k545-mvt1-m085-088.json"
       },
       {
-        "commits": 2,
-        "lines": 531,
+        "commits": 4,
+        "lines": 1537,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m001-004.json"
       },
       {
-        "commits": 1,
-        "lines": 670,
+        "commits": 3,
+        "lines": 2010,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m005-008.json"
       },
       {
-        "commits": 1,
-        "lines": 622,
+        "commits": 3,
+        "lines": 1866,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m009-012.json"
       },
       {
-        "commits": 1,
-        "lines": 619,
+        "commits": 3,
+        "lines": 1857,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m013-016.json"
       },
       {
-        "commits": 1,
-        "lines": 756,
+        "commits": 3,
+        "lines": 2268,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m017-020.json"
       },
       {
-        "commits": 1,
-        "lines": 936,
+        "commits": 3,
+        "lines": 2808,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m021-024.json"
       },
       {
-        "commits": 2,
-        "lines": 882,
+        "commits": 4,
+        "lines": 2598,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m025-028.json"
       },
       {
-        "commits": 2,
-        "lines": 843,
+        "commits": 4,
+        "lines": 2481,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m029-032.json"
       },
       {
-        "commits": 1,
-        "lines": 635,
+        "commits": 3,
+        "lines": 1905,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m033-036.json"
       },
       {
-        "commits": 1,
-        "lines": 1140,
+        "commits": 3,
+        "lines": 3420,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m037-040.json"
       },
       {
-        "commits": 1,
-        "lines": 487,
+        "commits": 3,
+        "lines": 1461,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m057-060.json"
       },
       {
-        "commits": 1,
-        "lines": 601,
+        "commits": 3,
+        "lines": 1803,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m061-064.json"
       },
       {
-        "commits": 1,
-        "lines": 706,
+        "commits": 3,
+        "lines": 2118,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m073-076.json"
       },
       {
-        "commits": 1,
-        "lines": 1462,
+        "commits": 3,
+        "lines": 4386,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m077-080.json"
       },
       {
-        "commits": 1,
-        "lines": 1826,
+        "commits": 3,
+        "lines": 5478,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m081-084.json"
       },
       {
-        "commits": 1,
-        "lines": 2062,
+        "commits": 3,
+        "lines": 6186,
         "path": "datasets/jam-actions-v0-public/records/pathetique-mvt2-m085-088.json"
       },
       {
-        "commits": 2,
-        "lines": 518,
+        "commits": 4,
+        "lines": 1490,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m001-004.json"
       },
       {
-        "commits": 1,
-        "lines": 871,
+        "commits": 3,
+        "lines": 2613,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m005-008.json"
       },
       {
-        "commits": 1,
-        "lines": 518,
+        "commits": 3,
+        "lines": 1554,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m009-012.json"
       },
       {
-        "commits": 1,
-        "lines": 817,
+        "commits": 3,
+        "lines": 2451,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m013-016.json"
       },
       {
-        "commits": 1,
-        "lines": 620,
+        "commits": 3,
+        "lines": 1860,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m017-020.json"
       },
       {
-        "commits": 1,
-        "lines": 832,
+        "commits": 3,
+        "lines": 2496,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m021-024.json"
       },
       {
-        "commits": 1,
-        "lines": 569,
+        "commits": 3,
+        "lines": 1707,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m025-028.json"
       },
       {
-        "commits": 1,
-        "lines": 716,
+        "commits": 3,
+        "lines": 2148,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m029-032.json"
       },
       {
-        "commits": 1,
-        "lines": 772,
+        "commits": 3,
+        "lines": 2316,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m033-036.json"
       },
       {
-        "commits": 1,
-        "lines": 583,
+        "commits": 3,
+        "lines": 1749,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m037-040.json"
       },
       {
-        "commits": 1,
-        "lines": 824,
+        "commits": 3,
+        "lines": 2472,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m041-044.json"
       },
       {
-        "commits": 3,
-        "lines": 654,
+        "commits": 5,
+        "lines": 1850,
         "path": "datasets/jam-actions-v0-public/records/schumann-traumerei-m045-048.json"
       },
       {
-        "commits": 2,
-        "lines": 129,
+        "commits": 4,
+        "lines": 249,
         "path": "datasets/jam-actions-v0-public/splits.json"
       },
       {
-        "commits": 3,
-        "lines": 99,
+        "commits": 5,
+        "lines": 169,
         "path": "datasets/jam-actions-v0-public/zenodo-metadata.json"
       },
       {
-        "commits": 2,
-        "lines": 48,
+        "commits": 4,
+        "lines": 86,
         "path": "datasets/jam-actions-v0/PROVENANCE-NOTE.md"
       },
       {
-        "commits": 3,
-        "lines": 441,
+        "commits": 4,
+        "lines": 719,
         "path": "datasets/jam-actions-v0/enrichment-overrides.json"
       },
       {
@@ -3479,8 +3504,8 @@
         "path": "datasets/jam-actions-v0/evals/e2-phrase-continuation-results.json"
       },
       {
-        "commits": 2,
-        "lines": 13737,
+        "commits": 3,
+        "lines": 13947,
         "path": "datasets/jam-actions-v0/evals/e3-annotation-grounding-results.json"
       },
       {
@@ -3504,8 +3529,8 @@
         "path": "datasets/jam-actions-v0/evals/llm-in-the-loop-results.json"
       },
       {
-        "commits": 3,
-        "lines": 62,
+        "commits": 5,
+        "lines": 70,
         "path": "datasets/jam-actions-v0/manifest.json"
       },
       {
@@ -3594,153 +3619,153 @@
         "path": "datasets/jam-actions-v0/pianoroll/bach-prelude-c-major-bwv846-m061-064.svg"
       },
       {
-        "commits": 1,
-        "lines": 228,
+        "commits": 2,
+        "lines": 456,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m001-004.svg"
       },
       {
-        "commits": 1,
-        "lines": 243,
+        "commits": 2,
+        "lines": 486,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m005-008.svg"
       },
       {
-        "commits": 1,
-        "lines": 252,
+        "commits": 2,
+        "lines": 504,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m009-012.svg"
       },
       {
-        "commits": 1,
-        "lines": 243,
+        "commits": 2,
+        "lines": 486,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m013-016.svg"
       },
       {
-        "commits": 1,
-        "lines": 275,
+        "commits": 2,
+        "lines": 550,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m017-020.svg"
       },
       {
-        "commits": 1,
-        "lines": 240,
+        "commits": 2,
+        "lines": 480,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m021-024.svg"
       },
       {
-        "commits": 1,
-        "lines": 253,
+        "commits": 2,
+        "lines": 506,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m025-028.svg"
       },
       {
-        "commits": 1,
-        "lines": 245,
+        "commits": 2,
+        "lines": 490,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m029-032.svg"
       },
       {
-        "commits": 1,
-        "lines": 231,
+        "commits": 2,
+        "lines": 462,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m033-036.svg"
       },
       {
-        "commits": 1,
-        "lines": 197,
+        "commits": 2,
+        "lines": 394,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m037-040.svg"
       },
       {
-        "commits": 1,
-        "lines": 246,
+        "commits": 2,
+        "lines": 492,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m041-044.svg"
       },
       {
-        "commits": 1,
-        "lines": 263,
+        "commits": 2,
+        "lines": 526,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m045-048.svg"
       },
       {
-        "commits": 1,
-        "lines": 224,
+        "commits": 2,
+        "lines": 448,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m057-060.svg"
       },
       {
-        "commits": 1,
-        "lines": 243,
+        "commits": 2,
+        "lines": 486,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m061-064.svg"
       },
       {
-        "commits": 1,
-        "lines": 202,
+        "commits": 2,
+        "lines": 404,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m065-068.svg"
       },
       {
-        "commits": 1,
-        "lines": 279,
+        "commits": 2,
+        "lines": 558,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m069-072.svg"
       },
       {
-        "commits": 1,
-        "lines": 290,
+        "commits": 2,
+        "lines": 580,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m073-076.svg"
       },
       {
-        "commits": 1,
-        "lines": 212,
+        "commits": 2,
+        "lines": 424,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-nocturne-op9-no2-m077-080.svg"
       },
       {
-        "commits": 1,
-        "lines": 137,
+        "commits": 2,
+        "lines": 274,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m001-004.svg"
       },
       {
-        "commits": 1,
-        "lines": 168,
+        "commits": 2,
+        "lines": 336,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m005-008.svg"
       },
       {
-        "commits": 1,
-        "lines": 179,
+        "commits": 2,
+        "lines": 358,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m009-012.svg"
       },
       {
-        "commits": 1,
-        "lines": 194,
+        "commits": 2,
+        "lines": 388,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m013-016.svg"
       },
       {
-        "commits": 1,
-        "lines": 193,
+        "commits": 2,
+        "lines": 386,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m017-020.svg"
       },
       {
-        "commits": 1,
-        "lines": 178,
+        "commits": 2,
+        "lines": 356,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m021-024.svg"
       },
       {
-        "commits": 1,
-        "lines": 148,
+        "commits": 2,
+        "lines": 296,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m025-028.svg"
       },
       {
-        "commits": 1,
-        "lines": 144,
+        "commits": 2,
+        "lines": 288,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m029-032.svg"
       },
       {
-        "commits": 1,
-        "lines": 165,
+        "commits": 2,
+        "lines": 330,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m033-036.svg"
       },
       {
-        "commits": 1,
-        "lines": 220,
+        "commits": 2,
+        "lines": 440,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m037-040.svg"
       },
       {
-        "commits": 1,
-        "lines": 198,
+        "commits": 2,
+        "lines": 396,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m041-044.svg"
       },
       {
-        "commits": 1,
-        "lines": 157,
+        "commits": 2,
+        "lines": 314,
         "path": "datasets/jam-actions-v0/pianoroll/chopin-prelude-e-minor-m045-048.svg"
       },
       {
@@ -3804,83 +3829,83 @@
         "path": "datasets/jam-actions-v0/pianoroll/clair-de-lune-m055-058.svg"
       },
       {
-        "commits": 1,
-        "lines": 255,
+        "commits": 2,
+        "lines": 510,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m001-004.svg"
       },
       {
-        "commits": 1,
-        "lines": 260,
+        "commits": 2,
+        "lines": 520,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m005-008.svg"
       },
       {
-        "commits": 1,
-        "lines": 255,
+        "commits": 2,
+        "lines": 510,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m009-012.svg"
       },
       {
-        "commits": 1,
-        "lines": 252,
+        "commits": 2,
+        "lines": 504,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m013-016.svg"
       },
       {
-        "commits": 1,
-        "lines": 282,
+        "commits": 2,
+        "lines": 564,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m017-020.svg"
       },
       {
-        "commits": 1,
-        "lines": 301,
+        "commits": 2,
+        "lines": 602,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m021-024.svg"
       },
       {
-        "commits": 1,
-        "lines": 231,
+        "commits": 2,
+        "lines": 462,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m025-028.svg"
       },
       {
-        "commits": 1,
-        "lines": 203,
+        "commits": 2,
+        "lines": 406,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m029-032.svg"
       },
       {
-        "commits": 1,
-        "lines": 298,
+        "commits": 2,
+        "lines": 596,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m033-036.svg"
       },
       {
-        "commits": 1,
-        "lines": 203,
+        "commits": 2,
+        "lines": 406,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m037-040.svg"
       },
       {
-        "commits": 1,
-        "lines": 178,
+        "commits": 2,
+        "lines": 356,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m041-044.svg"
       },
       {
-        "commits": 1,
-        "lines": 190,
+        "commits": 2,
+        "lines": 380,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m045-048.svg"
       },
       {
-        "commits": 1,
-        "lines": 201,
+        "commits": 2,
+        "lines": 402,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m057-060.svg"
       },
       {
-        "commits": 1,
-        "lines": 148,
+        "commits": 2,
+        "lines": 296,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m061-064.svg"
       },
       {
-        "commits": 1,
-        "lines": 242,
+        "commits": 2,
+        "lines": 484,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m077-080.svg"
       },
       {
-        "commits": 1,
-        "lines": 255,
+        "commits": 2,
+        "lines": 510,
         "path": "datasets/jam-actions-v0/pianoroll/debussy-arabesque-no1-m081-084.svg"
       },
       {
@@ -4029,213 +4054,213 @@
         "path": "datasets/jam-actions-v0/pianoroll/mozart-k545-mvt1-m085-088.svg"
       },
       {
-        "commits": 1,
-        "lines": 147,
+        "commits": 2,
+        "lines": 294,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m001-004.svg"
       },
       {
-        "commits": 1,
-        "lines": 189,
+        "commits": 2,
+        "lines": 378,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m005-008.svg"
       },
       {
-        "commits": 1,
-        "lines": 192,
+        "commits": 2,
+        "lines": 384,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m009-012.svg"
       },
       {
-        "commits": 1,
-        "lines": 166,
+        "commits": 2,
+        "lines": 332,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m013-016.svg"
       },
       {
-        "commits": 1,
-        "lines": 200,
+        "commits": 2,
+        "lines": 400,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m017-020.svg"
       },
       {
-        "commits": 1,
-        "lines": 239,
+        "commits": 2,
+        "lines": 478,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m021-024.svg"
       },
       {
-        "commits": 1,
-        "lines": 255,
+        "commits": 2,
+        "lines": 510,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m025-028.svg"
       },
       {
-        "commits": 1,
-        "lines": 215,
+        "commits": 2,
+        "lines": 430,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m029-032.svg"
       },
       {
-        "commits": 1,
-        "lines": 179,
+        "commits": 2,
+        "lines": 358,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m033-036.svg"
       },
       {
-        "commits": 1,
-        "lines": 241,
+        "commits": 2,
+        "lines": 482,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m037-040.svg"
       },
       {
-        "commits": 1,
-        "lines": 130,
+        "commits": 2,
+        "lines": 260,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m057-060.svg"
       },
       {
-        "commits": 1,
-        "lines": 175,
+        "commits": 2,
+        "lines": 350,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m061-064.svg"
       },
       {
-        "commits": 1,
-        "lines": 223,
+        "commits": 2,
+        "lines": 446,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m073-076.svg"
       },
       {
-        "commits": 1,
-        "lines": 306,
+        "commits": 2,
+        "lines": 612,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m077-080.svg"
       },
       {
-        "commits": 1,
-        "lines": 312,
+        "commits": 2,
+        "lines": 624,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m081-084.svg"
       },
       {
-        "commits": 1,
-        "lines": 215,
+        "commits": 2,
+        "lines": 430,
         "path": "datasets/jam-actions-v0/pianoroll/pathetique-mvt2-m085-088.svg"
       },
       {
-        "commits": 1,
-        "lines": 170,
+        "commits": 2,
+        "lines": 340,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m003-006.svg"
       },
       {
-        "commits": 1,
-        "lines": 159,
+        "commits": 2,
+        "lines": 318,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m007-010.svg"
       },
       {
-        "commits": 1,
-        "lines": 170,
+        "commits": 2,
+        "lines": 340,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m011-014.svg"
       },
       {
-        "commits": 1,
-        "lines": 176,
+        "commits": 2,
+        "lines": 352,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m015-018.svg"
       },
       {
-        "commits": 1,
-        "lines": 159,
+        "commits": 2,
+        "lines": 318,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m019-022.svg"
       },
       {
-        "commits": 1,
-        "lines": 163,
+        "commits": 2,
+        "lines": 326,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m023-026.svg"
       },
       {
-        "commits": 1,
-        "lines": 179,
+        "commits": 2,
+        "lines": 358,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m027-030.svg"
       },
       {
-        "commits": 1,
-        "lines": 178,
+        "commits": 2,
+        "lines": 356,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m031-034.svg"
       },
       {
-        "commits": 1,
-        "lines": 153,
+        "commits": 2,
+        "lines": 306,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m035-038.svg"
       },
       {
-        "commits": 1,
-        "lines": 111,
+        "commits": 2,
+        "lines": 222,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m039-042.svg"
       },
       {
-        "commits": 1,
-        "lines": 176,
+        "commits": 2,
+        "lines": 352,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m043-046.svg"
       },
       {
-        "commits": 1,
-        "lines": 143,
+        "commits": 2,
+        "lines": 286,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m047-050.svg"
       },
       {
-        "commits": 1,
-        "lines": 176,
+        "commits": 2,
+        "lines": 352,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m051-054.svg"
       },
       {
-        "commits": 1,
-        "lines": 170,
+        "commits": 2,
+        "lines": 340,
         "path": "datasets/jam-actions-v0/pianoroll/satie-gymnopedie-no1-m055-058.svg"
       },
       {
-        "commits": 1,
-        "lines": 178,
+        "commits": 2,
+        "lines": 356,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m001-004.svg"
       },
       {
-        "commits": 1,
-        "lines": 221,
+        "commits": 2,
+        "lines": 442,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m005-008.svg"
       },
       {
-        "commits": 1,
-        "lines": 183,
+        "commits": 2,
+        "lines": 366,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m009-012.svg"
       },
       {
-        "commits": 1,
-        "lines": 221,
+        "commits": 2,
+        "lines": 442,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m013-016.svg"
       },
       {
-        "commits": 1,
-        "lines": 190,
+        "commits": 2,
+        "lines": 380,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m017-020.svg"
       },
       {
-        "commits": 1,
-        "lines": 211,
+        "commits": 2,
+        "lines": 422,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m021-024.svg"
       },
       {
-        "commits": 1,
-        "lines": 179,
+        "commits": 2,
+        "lines": 358,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m025-028.svg"
       },
       {
-        "commits": 1,
-        "lines": 191,
+        "commits": 2,
+        "lines": 382,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m029-032.svg"
       },
       {
-        "commits": 1,
-        "lines": 205,
+        "commits": 2,
+        "lines": 410,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m033-036.svg"
       },
       {
-        "commits": 1,
-        "lines": 210,
+        "commits": 2,
+        "lines": 420,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m037-040.svg"
       },
       {
-        "commits": 1,
-        "lines": 208,
+        "commits": 2,
+        "lines": 416,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m041-044.svg"
       },
       {
-        "commits": 1,
-        "lines": 193,
+        "commits": 2,
+        "lines": 386,
         "path": "datasets/jam-actions-v0/pianoroll/schumann-traumerei-m045-048.svg"
       },
       {
@@ -4244,8 +4269,8 @@
         "path": "datasets/jam-actions-v0/provenance-scan.json"
       },
       {
-        "commits": 1,
-        "lines": 356,
+        "commits": 3,
+        "lines": 426,
         "path": "datasets/jam-actions-v0/provenance-verification.json"
       },
       {
@@ -4334,153 +4359,153 @@
         "path": "datasets/jam-actions-v0/records/bach-prelude-c-major-bwv846-m061-064.json"
       },
       {
-        "commits": 2,
-        "lines": 743,
+        "commits": 5,
+        "lines": 1484,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m001-004.json"
       },
       {
-        "commits": 2,
-        "lines": 885,
+        "commits": 5,
+        "lines": 1768,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m005-008.json"
       },
       {
-        "commits": 3,
-        "lines": 879,
+        "commits": 6,
+        "lines": 1738,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m009-012.json"
       },
       {
-        "commits": 2,
-        "lines": 850,
+        "commits": 5,
+        "lines": 1698,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m013-016.json"
       },
       {
-        "commits": 2,
-        "lines": 1038,
+        "commits": 5,
+        "lines": 2074,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m017-020.json"
       },
       {
-        "commits": 2,
-        "lines": 1021,
+        "commits": 5,
+        "lines": 2040,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m021-024.json"
       },
       {
-        "commits": 2,
-        "lines": 820,
+        "commits": 5,
+        "lines": 1638,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m025-028.json"
       },
       {
-        "commits": 2,
-        "lines": 778,
+        "commits": 5,
+        "lines": 1554,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m029-032.json"
       },
       {
-        "commits": 2,
-        "lines": 818,
+        "commits": 5,
+        "lines": 1634,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m033-036.json"
       },
       {
-        "commits": 2,
-        "lines": 1027,
+        "commits": 5,
+        "lines": 2052,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m037-040.json"
       },
       {
-        "commits": 2,
-        "lines": 1069,
+        "commits": 5,
+        "lines": 2136,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m041-044.json"
       },
       {
-        "commits": 2,
-        "lines": 952,
+        "commits": 5,
+        "lines": 1902,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m045-048.json"
       },
       {
-        "commits": 2,
-        "lines": 769,
+        "commits": 5,
+        "lines": 1536,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m057-060.json"
       },
       {
-        "commits": 2,
-        "lines": 846,
+        "commits": 5,
+        "lines": 1690,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m061-064.json"
       },
       {
-        "commits": 2,
-        "lines": 1042,
+        "commits": 5,
+        "lines": 2082,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m065-068.json"
       },
       {
-        "commits": 2,
-        "lines": 1104,
+        "commits": 5,
+        "lines": 2206,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m069-072.json"
       },
       {
-        "commits": 2,
-        "lines": 1108,
+        "commits": 5,
+        "lines": 2214,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m073-076.json"
       },
       {
-        "commits": 2,
-        "lines": 781,
+        "commits": 5,
+        "lines": 1560,
         "path": "datasets/jam-actions-v0/records/chopin-nocturne-op9-no2-m077-080.json"
       },
       {
-        "commits": 2,
-        "lines": 652,
+        "commits": 5,
+        "lines": 1302,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m001-004.json"
       },
       {
-        "commits": 2,
-        "lines": 935,
+        "commits": 5,
+        "lines": 1868,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m005-008.json"
       },
       {
-        "commits": 2,
-        "lines": 850,
+        "commits": 5,
+        "lines": 1698,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m009-012.json"
       },
       {
-        "commits": 2,
-        "lines": 929,
+        "commits": 5,
+        "lines": 1856,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m013-016.json"
       },
       {
-        "commits": 2,
-        "lines": 947,
+        "commits": 5,
+        "lines": 1892,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m017-020.json"
       },
       {
-        "commits": 2,
-        "lines": 1014,
+        "commits": 5,
+        "lines": 2026,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m021-024.json"
       },
       {
-        "commits": 2,
-        "lines": 883,
+        "commits": 5,
+        "lines": 1764,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m025-028.json"
       },
       {
-        "commits": 2,
-        "lines": 631,
+        "commits": 5,
+        "lines": 1260,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m029-032.json"
       },
       {
-        "commits": 2,
-        "lines": 985,
+        "commits": 5,
+        "lines": 1968,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m033-036.json"
       },
       {
-        "commits": 2,
-        "lines": 1178,
+        "commits": 5,
+        "lines": 2354,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m037-040.json"
       },
       {
-        "commits": 2,
-        "lines": 1101,
+        "commits": 5,
+        "lines": 2200,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m041-044.json"
       },
       {
-        "commits": 2,
-        "lines": 933,
+        "commits": 5,
+        "lines": 1864,
         "path": "datasets/jam-actions-v0/records/chopin-prelude-e-minor-m045-048.json"
       },
       {
@@ -4544,83 +4569,83 @@
         "path": "datasets/jam-actions-v0/records/clair-de-lune-m055-058.json"
       },
       {
-        "commits": 2,
-        "lines": 1028,
+        "commits": 3,
+        "lines": 2042,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m001-004.json"
       },
       {
-        "commits": 2,
-        "lines": 1232,
+        "commits": 3,
+        "lines": 2450,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m005-008.json"
       },
       {
-        "commits": 2,
-        "lines": 1077,
+        "commits": 3,
+        "lines": 2140,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m009-012.json"
       },
       {
-        "commits": 2,
-        "lines": 1025,
+        "commits": 3,
+        "lines": 2036,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m013-016.json"
       },
       {
-        "commits": 2,
-        "lines": 1205,
+        "commits": 3,
+        "lines": 2396,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m017-020.json"
       },
       {
-        "commits": 2,
-        "lines": 1314,
+        "commits": 3,
+        "lines": 2614,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m021-024.json"
       },
       {
-        "commits": 2,
-        "lines": 1065,
+        "commits": 3,
+        "lines": 2116,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m025-028.json"
       },
       {
-        "commits": 2,
-        "lines": 924,
+        "commits": 3,
+        "lines": 1834,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m029-032.json"
       },
       {
-        "commits": 2,
-        "lines": 1218,
+        "commits": 3,
+        "lines": 2422,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m033-036.json"
       },
       {
-        "commits": 2,
-        "lines": 790,
+        "commits": 3,
+        "lines": 1566,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m037-040.json"
       },
       {
-        "commits": 2,
-        "lines": 970,
+        "commits": 3,
+        "lines": 1926,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m041-044.json"
       },
       {
-        "commits": 2,
-        "lines": 928,
+        "commits": 3,
+        "lines": 1842,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m045-048.json"
       },
       {
-        "commits": 2,
-        "lines": 942,
+        "commits": 3,
+        "lines": 1870,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m057-060.json"
       },
       {
-        "commits": 2,
-        "lines": 785,
+        "commits": 3,
+        "lines": 1556,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m061-064.json"
       },
       {
-        "commits": 2,
-        "lines": 1165,
+        "commits": 3,
+        "lines": 2316,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m077-080.json"
       },
       {
-        "commits": 2,
-        "lines": 1045,
+        "commits": 3,
+        "lines": 2076,
         "path": "datasets/jam-actions-v0/records/debussy-arabesque-no1-m081-084.json"
       },
       {
@@ -4769,213 +4794,213 @@
         "path": "datasets/jam-actions-v0/records/mozart-k545-mvt1-m085-088.json"
       },
       {
-        "commits": 3,
-        "lines": 545,
+        "commits": 6,
+        "lines": 1060,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m001-004.json"
       },
       {
-        "commits": 2,
-        "lines": 684,
+        "commits": 5,
+        "lines": 1366,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m005-008.json"
       },
       {
-        "commits": 2,
-        "lines": 636,
+        "commits": 5,
+        "lines": 1270,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m009-012.json"
       },
       {
-        "commits": 2,
-        "lines": 633,
+        "commits": 5,
+        "lines": 1264,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m013-016.json"
       },
       {
-        "commits": 2,
-        "lines": 770,
+        "commits": 5,
+        "lines": 1538,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m017-020.json"
       },
       {
-        "commits": 2,
-        "lines": 950,
+        "commits": 5,
+        "lines": 1898,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m021-024.json"
       },
       {
-        "commits": 3,
-        "lines": 896,
+        "commits": 6,
+        "lines": 1766,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m025-028.json"
       },
       {
-        "commits": 3,
-        "lines": 857,
+        "commits": 6,
+        "lines": 1688,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m029-032.json"
       },
       {
-        "commits": 2,
-        "lines": 649,
+        "commits": 5,
+        "lines": 1296,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m033-036.json"
       },
       {
-        "commits": 2,
-        "lines": 1154,
+        "commits": 5,
+        "lines": 2306,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m037-040.json"
       },
       {
-        "commits": 2,
-        "lines": 501,
+        "commits": 5,
+        "lines": 1000,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m057-060.json"
       },
       {
-        "commits": 2,
-        "lines": 615,
+        "commits": 5,
+        "lines": 1228,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m061-064.json"
       },
       {
-        "commits": 2,
-        "lines": 720,
+        "commits": 5,
+        "lines": 1438,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m073-076.json"
       },
       {
-        "commits": 2,
-        "lines": 1476,
+        "commits": 5,
+        "lines": 2950,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m077-080.json"
       },
       {
-        "commits": 2,
-        "lines": 1840,
+        "commits": 5,
+        "lines": 3678,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m081-084.json"
       },
       {
-        "commits": 2,
-        "lines": 2076,
+        "commits": 5,
+        "lines": 4150,
         "path": "datasets/jam-actions-v0/records/pathetique-mvt2-m085-088.json"
       },
       {
-        "commits": 2,
-        "lines": 524,
+        "commits": 3,
+        "lines": 1036,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m003-006.json"
       },
       {
-        "commits": 2,
-        "lines": 518,
+        "commits": 3,
+        "lines": 1024,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m007-010.json"
       },
       {
-        "commits": 2,
-        "lines": 521,
+        "commits": 3,
+        "lines": 1030,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m011-014.json"
       },
       {
-        "commits": 2,
-        "lines": 534,
+        "commits": 3,
+        "lines": 1056,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m015-018.json"
       },
       {
-        "commits": 2,
-        "lines": 489,
+        "commits": 3,
+        "lines": 966,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m019-022.json"
       },
       {
-        "commits": 2,
-        "lines": 616,
+        "commits": 3,
+        "lines": 1220,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m023-026.json"
       },
       {
-        "commits": 2,
-        "lines": 635,
+        "commits": 3,
+        "lines": 1258,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m027-030.json"
       },
       {
-        "commits": 2,
-        "lines": 552,
+        "commits": 3,
+        "lines": 1092,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m031-034.json"
       },
       {
-        "commits": 2,
-        "lines": 666,
+        "commits": 3,
+        "lines": 1320,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m035-038.json"
       },
       {
-        "commits": 2,
-        "lines": 468,
+        "commits": 3,
+        "lines": 924,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m039-042.json"
       },
       {
-        "commits": 2,
-        "lines": 571,
+        "commits": 3,
+        "lines": 1130,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m043-046.json"
       },
       {
-        "commits": 2,
-        "lines": 469,
+        "commits": 3,
+        "lines": 926,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m047-050.json"
       },
       {
-        "commits": 2,
-        "lines": 572,
+        "commits": 3,
+        "lines": 1132,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m051-054.json"
       },
       {
-        "commits": 2,
-        "lines": 485,
+        "commits": 3,
+        "lines": 958,
         "path": "datasets/jam-actions-v0/records/satie-gymnopedie-no1-m055-058.json"
       },
       {
-        "commits": 3,
-        "lines": 532,
+        "commits": 6,
+        "lines": 1030,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m001-004.json"
       },
       {
-        "commits": 2,
-        "lines": 885,
+        "commits": 5,
+        "lines": 1768,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m005-008.json"
       },
       {
-        "commits": 2,
-        "lines": 532,
+        "commits": 5,
+        "lines": 1062,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m009-012.json"
       },
       {
-        "commits": 2,
-        "lines": 831,
+        "commits": 5,
+        "lines": 1660,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m013-016.json"
       },
       {
-        "commits": 2,
-        "lines": 634,
+        "commits": 5,
+        "lines": 1266,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m017-020.json"
       },
       {
-        "commits": 2,
-        "lines": 846,
+        "commits": 5,
+        "lines": 1690,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m021-024.json"
       },
       {
-        "commits": 2,
-        "lines": 583,
+        "commits": 5,
+        "lines": 1164,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m025-028.json"
       },
       {
-        "commits": 2,
-        "lines": 730,
+        "commits": 5,
+        "lines": 1458,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m029-032.json"
       },
       {
-        "commits": 2,
-        "lines": 786,
+        "commits": 5,
+        "lines": 1570,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m033-036.json"
       },
       {
-        "commits": 2,
-        "lines": 597,
+        "commits": 5,
+        "lines": 1192,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m037-040.json"
       },
       {
-        "commits": 2,
-        "lines": 838,
+        "commits": 5,
+        "lines": 1674,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m041-044.json"
       },
       {
-        "commits": 4,
-        "lines": 668,
+        "commits": 7,
+        "lines": 1278,
         "path": "datasets/jam-actions-v0/records/schumann-traumerei-m045-048.json"
       },
       {
@@ -9899,6 +9924,51 @@
         "path": "docs/feature-pass-v1.5-dispatch.md"
       },
       {
+        "commits": 1,
+        "lines": 17312,
+        "path": "docs/findings/derived-content-inventory.json"
+      },
+      {
+        "commits": 1,
+        "lines": 490,
+        "path": "docs/findings/derived-content-inventory.md"
+      },
+      {
+        "commits": 3,
+        "lines": 395,
+        "path": "docs/findings/history-rewrite-runbook.md"
+      },
+      {
+        "commits": 1,
+        "lines": 108,
+        "path": "docs/findings/history-rewrite/cited-commits.tsv"
+      },
+      {
+        "commits": 1,
+        "lines": 119,
+        "path": "docs/findings/history-rewrite/drop-blobs.txt"
+      },
+      {
+        "commits": 1,
+        "lines": 10,
+        "path": "docs/findings/history-rewrite/drop-dirty-versions.py"
+      },
+      {
+        "commits": 1,
+        "lines": 27,
+        "path": "docs/findings/history-rewrite/kept-paths.txt"
+      },
+      {
+        "commits": 1,
+        "lines": 718,
+        "path": "docs/findings/history-rewrite/remove-paths.txt"
+      },
+      {
+        "commits": 1,
+        "lines": 56,
+        "path": "docs/findings/history-rewrite/tags.tsv"
+      },
+      {
         "commits": 4,
         "lines": 1148,
         "path": "docs/findings/library-provenance-audit.md"
@@ -9907,6 +9977,11 @@
         "commits": 5,
         "lines": 532,
         "path": "docs/findings/probe-tracker-error.ts"
+      },
+      {
+        "commits": 5,
+        "lines": 351,
+        "path": "docs/findings/published-dataset-licence-audit.md"
       },
       {
         "commits": 4,
@@ -10364,8 +10439,8 @@
         "path": "docs/hf-cards/README.md"
       },
       {
-        "commits": 4,
-        "lines": 1060,
+        "commits": 8,
+        "lines": 1324,
         "path": "docs/hf-cards/jam-actions-v0-public.live-card.md"
       },
       {
@@ -10619,8 +10694,8 @@
         "path": "docs/jam-actions-v0-slice9b-corpus-expansion.md"
       },
       {
-        "commits": 2,
-        "lines": 507,
+        "commits": 3,
+        "lines": 567,
         "path": "docs/jam-actions-v0-slice9c-local-lora.md"
       },
       {
@@ -10767,6 +10842,16 @@
         "commits": 5,
         "lines": 600,
         "path": "docs/vocal-singing-study-2026-09.md"
+      },
+      {
+        "commits": 3,
+        "lines": 78,
+        "path": "docs/zenodo/20279919-metadata-edit.json"
+      },
+      {
+        "commits": 3,
+        "lines": 78,
+        "path": "docs/zenodo/21313954-metadata-edit.json"
       },
       {
         "commits": 5,
@@ -12099,13 +12184,13 @@
         "path": "experiments/coverage-v1-sft/data-bare/gold-test.jsonl"
       },
       {
-        "commits": 4,
-        "lines": 360,
+        "commits": 5,
+        "lines": 391,
         "path": "experiments/coverage-v1-sft/data-bare/sft-test.jsonl"
       },
       {
-        "commits": 4,
-        "lines": 712,
+        "commits": 5,
+        "lines": 770,
         "path": "experiments/coverage-v1-sft/data-bare/sft-train.jsonl"
       },
       {
@@ -12199,8 +12284,8 @@
         "path": "experiments/coverage-v1-sft/runs/ab/run-config-B.json"
       },
       {
-        "commits": 4,
-        "lines": 400,
+        "commits": 5,
+        "lines": 407,
         "path": "experiments/coverage-v1-sft/runs/preds-base-fair.jsonl"
       },
       {
@@ -12214,8 +12299,8 @@
         "path": "experiments/coverage-v1-sft/runs/preds-base.jsonl"
       },
       {
-        "commits": 4,
-        "lines": 400,
+        "commits": 5,
+        "lines": 402,
         "path": "experiments/coverage-v1-sft/runs/preds-lora-epoch3.jsonl"
       },
       {
@@ -12619,18 +12704,18 @@
         "path": "experiments/finetune-arc-b2/data/rehearsal-b2-raw.jsonl"
       },
       {
-        "commits": 1,
-        "lines": 748,
+        "commits": 2,
+        "lines": 968,
         "path": "experiments/finetune-arc-b2/data/sft-train-b2.jsonl"
       },
       {
-        "commits": 1,
-        "lines": 24,
+        "commits": 2,
+        "lines": 33,
         "path": "experiments/finetune-arc-b2/data/sft-val-abstention.jsonl"
       },
       {
-        "commits": 1,
-        "lines": 50,
+        "commits": 2,
+        "lines": 69,
         "path": "experiments/finetune-arc-b2/data/sft-val-grounding.jsonl"
       },
       {
@@ -12649,13 +12734,13 @@
         "path": "experiments/finetune-arc-b2/data/tools-mcp41.json"
       },
       {
-        "commits": 1,
-        "lines": 24,
+        "commits": 2,
+        "lines": 36,
         "path": "experiments/finetune-arc-b2/data/transfer-slice-b2.jsonl"
       },
       {
-        "commits": 1,
-        "lines": 103470,
+        "commits": 2,
+        "lines": 106239,
         "path": "experiments/finetune-arc-b2/evals/b2-baseline-results.json"
       },
       {
@@ -12674,8 +12759,8 @@
         "path": "experiments/finetune-arc-b2/evals/b2-run.log"
       },
       {
-        "commits": 1,
-        "lines": 91760,
+        "commits": 2,
+        "lines": 93342,
         "path": "experiments/finetune-arc-b2/evals/b2-seed1024-results.json"
       },
       {
@@ -12684,8 +12769,8 @@
         "path": "experiments/finetune-arc-b2/evals/b2-seed1024-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 97128,
+        "commits": 2,
+        "lines": 99277,
         "path": "experiments/finetune-arc-b2/evals/b2-seed13-results.json"
       },
       {
@@ -12694,8 +12779,8 @@
         "path": "experiments/finetune-arc-b2/evals/b2-seed13-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 94692,
+        "commits": 2,
+        "lines": 96346,
         "path": "experiments/finetune-arc-b2/evals/b2-seed271-results.json"
       },
       {
@@ -12704,8 +12789,8 @@
         "path": "experiments/finetune-arc-b2/evals/b2-seed271-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 95104,
+        "commits": 2,
+        "lines": 96782,
         "path": "experiments/finetune-arc-b2/evals/b2-seed42-results.json"
       },
       {
@@ -12714,8 +12799,8 @@
         "path": "experiments/finetune-arc-b2/evals/b2-seed42-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 97116,
+        "commits": 2,
+        "lines": 98952,
         "path": "experiments/finetune-arc-b2/evals/b2-seed512-results.json"
       },
       {
@@ -12924,13 +13009,13 @@
         "path": "experiments/finetune-arc-v1/data/rehearsal-raw.jsonl"
       },
       {
-        "commits": 2,
-        "lines": 594,
+        "commits": 3,
+        "lines": 691,
         "path": "experiments/finetune-arc-v1/data/sft-train-v1.jsonl"
       },
       {
-        "commits": 1,
-        "lines": 50,
+        "commits": 2,
+        "lines": 69,
         "path": "experiments/finetune-arc-v1/data/sft-val-grounding.jsonl"
       },
       {
@@ -12949,8 +13034,8 @@
         "path": "experiments/finetune-arc-v1/data/tools-mcp41.json"
       },
       {
-        "commits": 1,
-        "lines": 33508,
+        "commits": 2,
+        "lines": 34522,
         "path": "experiments/finetune-arc-v1/evals/ft-v1-seed1024-results.json"
       },
       {
@@ -12959,8 +13044,8 @@
         "path": "experiments/finetune-arc-v1/evals/ft-v1-seed1024-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 32233,
+        "commits": 2,
+        "lines": 33115,
         "path": "experiments/finetune-arc-v1/evals/ft-v1-seed13-results.json"
       },
       {
@@ -12969,8 +13054,8 @@
         "path": "experiments/finetune-arc-v1/evals/ft-v1-seed13-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 33427,
+        "commits": 2,
+        "lines": 34441,
         "path": "experiments/finetune-arc-v1/evals/ft-v1-seed271-results.json"
       },
       {
@@ -12979,8 +13064,8 @@
         "path": "experiments/finetune-arc-v1/evals/ft-v1-seed271-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 33678,
+        "commits": 2,
+        "lines": 34682,
         "path": "experiments/finetune-arc-v1/evals/ft-v1-seed42-results.json"
       },
       {
@@ -12989,8 +13074,8 @@
         "path": "experiments/finetune-arc-v1/evals/ft-v1-seed42-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 33682,
+        "commits": 2,
+        "lines": 34686,
         "path": "experiments/finetune-arc-v1/evals/ft-v1-seed512-results.json"
       },
       {
@@ -13109,8 +13194,8 @@
         "path": "experiments/finetune-arc-v2/data/b1-cohort.json"
       },
       {
-        "commits": 1,
-        "lines": 79032,
+        "commits": 2,
+        "lines": 82259,
         "path": "experiments/finetune-arc-v2/evals/b1-baseline-results.json"
       },
       {
@@ -13129,8 +13214,8 @@
         "path": "experiments/finetune-arc-v2/evals/b1-run.log"
       },
       {
-        "commits": 1,
-        "lines": 78174,
+        "commits": 2,
+        "lines": 79852,
         "path": "experiments/finetune-arc-v2/evals/b1-seed1024-results.json"
       },
       {
@@ -13139,8 +13224,8 @@
         "path": "experiments/finetune-arc-v2/evals/b1-seed1024-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 75277,
+        "commits": 2,
+        "lines": 76792,
         "path": "experiments/finetune-arc-v2/evals/b1-seed13-results.json"
       },
       {
@@ -13149,8 +13234,8 @@
         "path": "experiments/finetune-arc-v2/evals/b1-seed13-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 78205,
+        "commits": 2,
+        "lines": 80023,
         "path": "experiments/finetune-arc-v2/evals/b1-seed271-results.json"
       },
       {
@@ -13159,8 +13244,8 @@
         "path": "experiments/finetune-arc-v2/evals/b1-seed271-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 77657,
+        "commits": 2,
+        "lines": 79315,
         "path": "experiments/finetune-arc-v2/evals/b1-seed42-results.json"
       },
       {
@@ -13169,8 +13254,8 @@
         "path": "experiments/finetune-arc-v2/evals/b1-seed42-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 78311,
+        "commits": 2,
+        "lines": 79979,
         "path": "experiments/finetune-arc-v2/evals/b1-seed512-results.json"
       },
       {
@@ -13319,8 +13404,8 @@
         "path": "experiments/finetune-arc/data/tools.json"
       },
       {
-        "commits": 1,
-        "lines": 38934,
+        "commits": 2,
+        "lines": 40963,
         "path": "experiments/finetune-arc/evals/ft-seed1024-results.json"
       },
       {
@@ -13329,8 +13414,8 @@
         "path": "experiments/finetune-arc/evals/ft-seed1024-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 38206,
+        "commits": 2,
+        "lines": 39888,
         "path": "experiments/finetune-arc/evals/ft-seed13-results.json"
       },
       {
@@ -13339,8 +13424,8 @@
         "path": "experiments/finetune-arc/evals/ft-seed13-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 37498,
+        "commits": 2,
+        "lines": 38941,
         "path": "experiments/finetune-arc/evals/ft-seed271-results.json"
       },
       {
@@ -13349,8 +13434,8 @@
         "path": "experiments/finetune-arc/evals/ft-seed271-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 35919,
+        "commits": 2,
+        "lines": 36981,
         "path": "experiments/finetune-arc/evals/ft-seed42-results.json"
       },
       {
@@ -13359,8 +13444,8 @@
         "path": "experiments/finetune-arc/evals/ft-seed42-sample.json"
       },
       {
-        "commits": 1,
-        "lines": 35445,
+        "commits": 2,
+        "lines": 36622,
         "path": "experiments/finetune-arc/evals/ft-seed512-results.json"
       },
       {
@@ -13449,8 +13534,8 @@
         "path": "experiments/jam-actions-v0-lora/generate_train_jsonl.py"
       },
       {
-        "commits": 1,
-        "lines": 20,
+        "commits": 2,
+        "lines": 35,
         "path": "experiments/jam-actions-v0-lora/train.jsonl"
       },
       {
@@ -13484,8 +13569,8 @@
         "path": "experiments/maker-arc/e2-gate/inputs/build-claude-ceiling-responses.mjs"
       },
       {
-        "commits": 1,
-        "lines": 115,
+        "commits": 2,
+        "lines": 192,
         "path": "experiments/maker-arc/e2-gate/inputs/claude-ceiling-briefs.json"
       },
       {
@@ -13639,8 +13724,8 @@
         "path": "experiments/maker-arc/er-gate/inputs/claude-ceiling-responses.json"
       },
       {
-        "commits": 1,
-        "lines": 1787,
+        "commits": 2,
+        "lines": 3409,
         "path": "experiments/maker-arc/er-gate/items.json"
       },
       {
@@ -13699,13 +13784,13 @@
         "path": "experiments/maker-arc/er-gate/qwen2.5_7b.json"
       },
       {
-        "commits": 1,
-        "lines": 1093,
+        "commits": 2,
+        "lines": 1359,
         "path": "experiments/maker-arc/implied-chord-bass-aware-shifts.json"
       },
       {
-        "commits": 7,
-        "lines": 17297,
+        "commits": 8,
+        "lines": 37879,
         "path": "experiments/maker-arc/implied-chord-snapshot.json"
       },
       {
@@ -14354,13 +14439,13 @@
         "path": "experiments/rollout-arc/p3/RESULTS.md"
       },
       {
-        "commits": 1,
-        "lines": 44,
+        "commits": 2,
+        "lines": 85,
         "path": "experiments/rollout-arc/p3/runs/er-g8.jsonl"
       },
       {
-        "commits": 1,
-        "lines": 3566,
+        "commits": 2,
+        "lines": 7011,
         "path": "experiments/rollout-arc/p3/runs/er-items.json"
       },
       {
@@ -14369,13 +14454,13 @@
         "path": "experiments/rollout-arc/p3/runs/er-probe-summary.json"
       },
       {
-        "commits": 1,
-        "lines": 44,
+        "commits": 2,
+        "lines": 85,
         "path": "experiments/rollout-arc/p3/runs/er-prompts.jsonl"
       },
       {
-        "commits": 1,
-        "lines": 2,
+        "commits": 2,
+        "lines": 4,
         "path": "experiments/rollout-arc/p3/runs/smoke.jsonl"
       },
       {
@@ -16369,13 +16454,13 @@
         "path": "scripts/cast-kokoro-lock.mjs"
       },
       {
-        "commits": 1,
-        "lines": 118,
+        "commits": 3,
+        "lines": 152,
         "path": "scripts/check-release-gate.test.ts"
       },
       {
-        "commits": 4,
-        "lines": 828,
+        "commits": 6,
+        "lines": 878,
         "path": "scripts/check-release-gate.ts"
       },
       {
@@ -16427,6 +16512,11 @@
         "commits": 1,
         "lines": 127,
         "path": "scripts/compute-slice16-ag-anchors.ts"
+      },
+      {
+        "commits": 1,
+        "lines": 292,
+        "path": "scripts/derived-content-scan.ts"
       },
       {
         "commits": 8,
@@ -16534,8 +16624,8 @@
         "path": "scripts/npm-ship-list.ts"
       },
       {
-        "commits": 5,
-        "lines": 693,
+        "commits": 7,
+        "lines": 717,
         "path": "scripts/package-jam-actions-public.ts"
       },
       {
@@ -16674,13 +16764,13 @@
         "path": "site/astro.config.mjs"
       },
       {
-        "commits": 2,
-        "lines": 13578,
+        "commits": 1,
+        "lines": 6039,
         "path": "site/package-lock.json"
       },
       {
-        "commits": 4,
-        "lines": 16,
+        "commits": 1,
+        "lines": 6,
         "path": "site/package.json"
       },
       {
@@ -16714,8 +16804,8 @@
         "path": "site/public/og-card.png"
       },
       {
-        "commits": 5,
-        "lines": 130,
+        "commits": 4,
+        "lines": 12,
         "path": "site/src/content/docs/handbook/beginners.md"
       },
       {
@@ -16729,8 +16819,8 @@
         "path": "site/src/content/docs/handbook/getting-started.md"
       },
       {
-        "commits": 16,
-        "lines": 48,
+        "commits": 17,
+        "lines": 55,
         "path": "site/src/content/docs/handbook/index.md"
       },
       {
@@ -16769,8 +16859,8 @@
         "path": "site/src/content/docs/handbook/train-your-own-adapter.md"
       },
       {
-        "commits": 8,
-        "lines": 281,
+        "commits": 12,
+        "lines": 375,
         "path": "site/src/content/docs/handbook/training-dataset.md"
       },
       {
@@ -17434,8 +17524,8 @@
         "path": "spaces/jam-actions-live/app.py"
       },
       {
-        "commits": 1,
-        "lines": 1,
+        "commits": 2,
+        "lines": 3,
         "path": "spaces/jam-actions-live/demo_data.json"
       },
       {
@@ -17819,8 +17909,8 @@
         "path": "src/cli.test.ts"
       },
       {
-        "commits": 24,
-        "lines": 2085,
+        "commits": 23,
+        "lines": 2080,
         "path": "src/cli.ts"
       },
       {
@@ -18089,13 +18179,13 @@
         "path": "src/dataset/acoustic-v1/v1.test.ts"
       },
       {
-        "commits": 7,
-        "lines": 151,
+        "commits": 9,
+        "lines": 169,
         "path": "src/dataset/acoustic/assets/CITATION.cff"
       },
       {
-        "commits": 6,
-        "lines": 235,
+        "commits": 8,
+        "lines": 245,
         "path": "src/dataset/acoustic/assets/LICENSE-DATASET.md"
       },
       {
@@ -18109,13 +18199,13 @@
         "path": "src/dataset/acoustic/builder.ts"
       },
       {
-        "commits": 7,
-        "lines": 435,
+        "commits": 9,
+        "lines": 477,
         "path": "src/dataset/acoustic/corpus.test.ts"
       },
       {
-        "commits": 9,
-        "lines": 1669,
+        "commits": 11,
+        "lines": 1713,
         "path": "src/dataset/acoustic/generate-corpus.ts"
       },
       {
@@ -18129,8 +18219,8 @@
         "path": "src/dataset/acoustic/measured.test.ts"
       },
       {
-        "commits": 5,
-        "lines": 605,
+        "commits": 7,
+        "lines": 625,
         "path": "src/dataset/acoustic/phrases.ts"
       },
       {
@@ -18144,8 +18234,8 @@
         "path": "src/dataset/acoustic/release-adapter.ts"
       },
       {
-        "commits": 6,
-        "lines": 565,
+        "commits": 8,
+        "lines": 593,
         "path": "src/dataset/acoustic/reproduce.test.ts"
       },
       {
@@ -18162,6 +18252,21 @@
         "commits": 5,
         "lines": 250,
         "path": "src/dataset/acoustic/task.ts"
+      },
+      {
+        "commits": 1,
+        "lines": 96,
+        "path": "src/dataset/derived-content-exceptions.json"
+      },
+      {
+        "commits": 1,
+        "lines": 341,
+        "path": "src/dataset/derived-content.test.ts"
+      },
+      {
+        "commits": 1,
+        "lines": 699,
+        "path": "src/dataset/derived-content.ts"
       },
       {
         "commits": 1,
@@ -18184,8 +18289,8 @@
         "path": "src/dataset/eval/annotation-grounding-tool.ts"
       },
       {
-        "commits": 5,
-        "lines": 1411,
+        "commits": 8,
+        "lines": 1499,
         "path": "src/dataset/eval/annotation-grounding.test.ts"
       },
       {
@@ -18194,8 +18299,8 @@
         "path": "src/dataset/eval/annotation-grounding.ts"
       },
       {
-        "commits": 2,
-        "lines": 324,
+        "commits": 5,
+        "lines": 571,
         "path": "src/dataset/eval/corpus-sampler.test.ts"
       },
       {
@@ -18239,8 +18344,8 @@
         "path": "src/dataset/eval/markov-foil.ts"
       },
       {
-        "commits": 2,
-        "lines": 538,
+        "commits": 5,
+        "lines": 609,
         "path": "src/dataset/eval/midi-inspector.test.ts"
       },
       {
@@ -18284,8 +18389,8 @@
         "path": "src/dataset/eval/paired-tests.ts"
       },
       {
-        "commits": 2,
-        "lines": 820,
+        "commits": 3,
+        "lines": 872,
         "path": "src/dataset/eval/phrase-continuation.test.ts"
       },
       {
@@ -18399,13 +18504,13 @@
         "path": "src/dataset/experiment/task.ts"
       },
       {
-        "commits": 5,
-        "lines": 1585,
+        "commits": 6,
+        "lines": 1613,
         "path": "src/dataset/package-public.test.ts"
       },
       {
-        "commits": 7,
-        "lines": 1446,
+        "commits": 9,
+        "lines": 1688,
         "path": "src/dataset/package-public.ts"
       },
       {
@@ -18437,6 +18542,11 @@
         "commits": 2,
         "lines": 674,
         "path": "src/dataset/provenance.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 284,
+        "path": "src/dataset/published-evidence.test.ts"
       },
       {
         "commits": 5,
@@ -18704,8 +18814,8 @@
         "path": "src/mcp-server.test.ts"
       },
       {
-        "commits": 54,
-        "lines": 7102,
+        "commits": 53,
+        "lines": 7099,
         "path": "src/mcp-server.ts"
       },
       {
@@ -19089,14 +19199,9 @@
         "path": "src/vendor/pink-trombone.ts"
       },
       {
-        "commits": 3,
-        "lines": 21,
+        "commits": 2,
+        "lines": 4,
         "path": "src/version.test.ts"
-      },
-      {
-        "commits": 1,
-        "lines": 9,
-        "path": "src/version.ts"
       },
       {
         "commits": 1,
@@ -19414,6 +19519,11 @@
         "path": "teaching_goals_weeping-willow.json}"
       },
       {
+        "commits": 2,
+        "lines": 36,
+        "path": "v0.6.0-execution-verification.json}"
+      },
+      {
         "commits": 7,
         "lines": 201,
         "path": "vitest.config.ts"
@@ -19422,207 +19532,207 @@
   },
   "confidence": {
     "level": "low",
-    "reason": "fewer than 20 source files reach 10 revisions in the window"
+    "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-09-24T09:18:42.006Z",
+  "generatedAt": "2026-09-25T18:27:06.062Z",
   "generatedFrom": {
-    "commit": "8734514e3d140be8776b5326332831e7091c395d"
+    "commit": "d92a167294ff5df72f634fda8a99777f4380279f"
   },
   "pairs": [
     {
       "a": ".polyglot-cache.json",
       "b": "README.es.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 19,
+      "shared": 12,
+      "strength": 0.631579
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.fr.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 19,
+      "shared": 12,
+      "strength": 0.631579
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.hi.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 19,
+      "shared": 12,
+      "strength": 0.631579
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.it.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 19,
+      "shared": 12,
+      "strength": 0.631579
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.ja.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 19,
+      "shared": 12,
+      "strength": 0.631579
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.pt-BR.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 19,
+      "shared": 12,
+      "strength": 0.631579
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.zh.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 19,
+      "shared": 12,
+      "strength": 0.631579
     },
     {
       "a": "README.es.md",
       "b": "README.fr.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.hi.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.it.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.ja.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.hi.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.it.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.ja.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.it.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.ja.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.ja.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
       "a": "README.pt-BR.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 17,
+      "shared": 17,
       "strength": 1
     },
     {
@@ -19642,58 +19752,58 @@
     {
       "a": "datasets/jam-actions-v0-public/CITATION.cff",
       "b": "datasets/jam-actions-v0-public/README.md",
-      "either": 11,
-      "shared": 8,
-      "strength": 0.727273
+      "either": 12,
+      "shared": 9,
+      "strength": 0.75
     },
     {
       "a": "datasets/jam-actions-v0-public/CITATION.cff",
       "b": "datasets/jam-actions-v0-public/RELEASE_NOTES.md",
-      "either": 11,
-      "shared": 6,
-      "strength": 0.545455
+      "either": 12,
+      "shared": 7,
+      "strength": 0.583333
     },
     {
       "a": "datasets/jam-actions-v0-public/CITATION.cff",
       "b": "datasets/jam-actions-v0-public/VERSION",
-      "either": 11,
+      "either": 12,
       "shared": 9,
-      "strength": 0.818182
+      "strength": 0.75
     },
     {
       "a": "datasets/jam-actions-v0-public/CITATION.cff",
       "b": "datasets/jam-actions-v0-public/checksums.sha256",
-      "either": 22,
-      "shared": 11,
-      "strength": 0.5
+      "either": 23,
+      "shared": 12,
+      "strength": 0.521739
     },
     {
       "a": "datasets/jam-actions-v0-public/CITATION.cff",
       "b": "datasets/jam-actions-v0-public/manifest.json",
-      "either": 13,
+      "either": 14,
       "shared": 10,
-      "strength": 0.769231
+      "strength": 0.714286
     },
     {
       "a": "datasets/jam-actions-v0-public/README.md",
       "b": "datasets/jam-actions-v0-public/RELEASE_NOTES.md",
-      "either": 9,
-      "shared": 5,
-      "strength": 0.555556
+      "either": 10,
+      "shared": 6,
+      "strength": 0.6
     },
     {
       "a": "datasets/jam-actions-v0-public/README.md",
       "b": "datasets/jam-actions-v0-public/VERSION",
-      "either": 11,
+      "either": 12,
       "shared": 6,
-      "strength": 0.545455
+      "strength": 0.5
     },
     {
       "a": "datasets/jam-actions-v0-public/README.md",
       "b": "datasets/jam-actions-v0-public/manifest.json",
-      "either": 13,
+      "either": 14,
       "shared": 7,
-      "strength": 0.538462
+      "strength": 0.5
     },
     {
       "a": "datasets/jam-actions-v0-public/VERSION",
@@ -19705,16 +19815,16 @@
     {
       "a": "datasets/jam-actions-v0-public/checksums.sha256",
       "b": "datasets/jam-actions-v0-public/manifest.json",
-      "either": 22,
+      "either": 23,
       "shared": 12,
-      "strength": 0.545455
+      "strength": 0.521739
     },
     {
       "a": "datasets/jam-actions-v0-public/checksums.sha256",
       "b": "datasets/jam-actions-v0-public/package-inputs.json",
-      "either": 22,
-      "shared": 15,
-      "strength": 0.681818
+      "either": 23,
+      "shared": 16,
+      "strength": 0.695652
     },
     {
       "a": "experiments/rollout-arc/p2/BUILD.md",
@@ -19748,16 +19858,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-09-17T18:49:35-07:00",
-    "inScopeFiles": 3273,
+    "headDate": "2026-09-25T14:26:52-04:00",
+    "inScopeFiles": 2938,
     "pinnedStart": null,
-    "priorFloor": null,
-    "qualifyingCommits": 598,
+    "priorFloor": "fallen",
+    "qualifyingCommits": 605,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-03-22T01:49:35.000Z",
+    "since": "2026-03-29T18:26:52.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

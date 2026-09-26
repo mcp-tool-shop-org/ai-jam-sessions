@@ -7,6 +7,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { evidenceRefusal, loadLibraryEvidence, type SourceRecord } from "../package-public.js";
 import {
   buildSample,
   buildSampleManifest,
@@ -84,48 +85,55 @@ function buildMiniCorpus(): SamplerRecord[] {
 }
 
 /**
- * Load the 115-record corpus the frozen eval cohorts were drawn from — used in
- * determinism tests so the sampler is exercised against real records.
+ * Load the records of the source corpus that pass the library evidence gate,
+ * so the sampler is exercised against real records.
  *
- * Since 0.6.0 the public package holds 57 records, and the cohorts' required
- * records include some of the 58 withdrawn on 2026-09-25. Those remain in the
- * source corpus with `record_verdict: "excluded"`, so the historical input is
- * rebuilt from there: every record that is public now, plus every record that
- * was public in 0.5.x and withdrawn by that correction.
+ * The frozen Slice 12 cohorts were drawn from the 115-record 0.4.x/0.5.x
+ * public set. On 2026-09-25 the 58 records of the four uncleared works and the
+ * 30 Debussy/Satie records built from pre-Mutopia files were removed from the
+ * tree (docs/findings/derived-content-inventory.md), so that input cannot be
+ * rebuilt. The corpus the sampler can meet today is the cleared one.
  */
-function loadPublicCorpus(): SamplerRecord[] {
+function loadClearedCorpus(): SamplerRecord[] {
   const dir = join(process.cwd(), "datasets", "jam-actions-v0", "records");
-  const wasPublicIn05x = (p: { record_verdict?: string; verdict_reason?: string }): boolean =>
-    p.record_verdict === "public" ||
-    (p.record_verdict === "excluded" &&
-      (p.verdict_reason ?? "").startsWith("Withdrawn from the public subset on 2026-09-25."));
-  const files = readdirSync(dir)
+  const evidence = loadLibraryEvidence(process.cwd());
+  return readdirSync(dir)
     .filter((f) => f.endsWith(".json"))
-    .filter((f) => wasPublicIn05x(JSON.parse(readFileSync(join(dir, f), "utf8")).provenance ?? {}));
-  return files.map((f) => {
-    const j = JSON.parse(readFileSync(join(dir, f), "utf8")) as {
-      id: string;
-      scope: SamplerRecord["scope"];
-      target_trace?: unknown;
-      annotation_target?: { rhythm_onset?: string };
-    };
-    return {
+    .map(
+      (f) =>
+        JSON.parse(readFileSync(join(dir, f), "utf8")) as SourceRecord & {
+          target_trace?: unknown;
+          annotation_target?: { rhythm_onset?: string };
+        },
+    )
+    .filter((j) => evidenceRefusal(j, evidence) === null)
+    .map((j) => ({
       id: j.id,
-      scope: j.scope,
+      scope: j.scope as SamplerRecord["scope"],
       has_target_trace: j.target_trace !== undefined,
-      rhythm_onset_not_computable:
-        j.annotation_target?.rhythm_onset === "not_computable",
-    };
-  });
+      rhythm_onset_not_computable: j.annotation_target?.rhythm_onset === "not_computable",
+    }));
 }
+
+/** The three Slice 11 enriched records withdrawn with their works on 2026-09-25. */
+const WITHDRAWN_ENRICHED = [
+  "pathetique-mvt2:m025-028:piano:mcp-session:v1",
+  "pathetique-mvt2:m029-032:piano:mcp-session:v1",
+  "schumann-traumerei:m045-048:piano:mcp-session:v1",
+];
+const CLEARED_IDS = new Set(loadClearedCorpus().map((r) => r.id));
+/** The Slice 11 enriched records the cleared corpus still holds. */
+const CLEARED_REQUIRED = SLICE_11_ENRICHED_RECORD_IDS.filter((id) => CLEARED_IDS.has(id));
+/** DEFAULT_CONFIG with the required set the cleared corpus can satisfy. */
+const CLEARED_CONFIG: SamplerConfig = { ...DEFAULT_CONFIG, requiredRecordIds: CLEARED_REQUIRED };
 
 // ─── 1. Determinism ────────────────────────────────────────────────────────────
 
 describe("corpus-sampler — determinism", () => {
   it("produces byte-identical output across two calls with same inputs and seed", () => {
-    const records = loadPublicCorpus();
-    const plan1 = buildSample(records, DEFAULT_CONFIG);
-    const plan2 = buildSample(records, DEFAULT_CONFIG);
+    const records = loadClearedCorpus();
+    const plan1 = buildSample(records, CLEARED_CONFIG);
+    const plan2 = buildSample(records, CLEARED_CONFIG);
 
     // generatedAt is a timestamp and will differ — strip it before comparison.
     const strip = (p: { generatedAt: string }): unknown => ({
@@ -136,11 +144,11 @@ describe("corpus-sampler — determinism", () => {
   }, 30000);
 
   it("produces different output for different seeds (sanity check)", () => {
-    const records = loadPublicCorpus();
-    const planA = buildSample(records, { ...DEFAULT_CONFIG, seed: "seed-A" });
-    const planB = buildSample(records, { ...DEFAULT_CONFIG, seed: "seed-B" });
+    const records = loadClearedCorpus();
+    const planA = buildSample(records, { ...CLEARED_CONFIG, seed: "seed-A" });
+    const planB = buildSample(records, { ...CLEARED_CONFIG, seed: "seed-B" });
     // The non-required portion of the E1 list should differ between seeds.
-    const requiredCount = SLICE_11_ENRICHED_RECORD_IDS.length;
+    const requiredCount = CLEARED_REQUIRED.length;
     const restA = planA.e1.recordIds.slice(requiredCount).join(",");
     const restB = planB.e1.recordIds.slice(requiredCount).join(",");
     expect(restA).not.toBe(restB);
@@ -159,50 +167,59 @@ describe("corpus-sampler — determinism", () => {
 // ─── 2. Required inclusions ────────────────────────────────────────────────────
 
 describe("corpus-sampler — required inclusions", () => {
-  it("includes ALL 6 Slice 11 enriched records in E3 sample", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
-    for (const eid of SLICE_11_ENRICHED_RECORD_IDS) {
+  it("the cleared corpus lacks exactly the three withdrawn Slice 11 records, so the locked config refuses it", () => {
+    const missing = SLICE_11_ENRICHED_RECORD_IDS.filter((id) => !CLEARED_IDS.has(id));
+    expect(missing).toEqual(WITHDRAWN_ENRICHED);
+    expect(CLEARED_REQUIRED).toHaveLength(3);
+    // DEFAULT_CONFIG stays the historical lock; it fails closed on today's corpus.
+    expect(() => buildSample(loadClearedCorpus(), DEFAULT_CONFIG)).toThrow(
+      /required record 'pathetique-mvt2:m025-028/,
+    );
+  });
+
+  it("includes ALL Slice 11 enriched records the cleared corpus holds in E3 sample", () => {
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
+    for (const eid of CLEARED_REQUIRED) {
       expect(plan.e3.recordIds).toContain(eid);
     }
-    expect(plan.e3.enrichedIncluded.length).toBe(SLICE_11_ENRICHED_RECORD_IDS.length);
+    expect(plan.e3.enrichedIncluded.length).toBe(CLEARED_REQUIRED.length);
   });
 
-  it("includes ALL 6 Slice 11 enriched records in E1 sample (each has target_trace)", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
-    for (const eid of SLICE_11_ENRICHED_RECORD_IDS) {
+  it("includes ALL Slice 11 enriched records the cleared corpus holds in E1 sample (each has target_trace)", () => {
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
+    for (const eid of CLEARED_REQUIRED) {
       expect(plan.e1.recordIds).toContain(eid);
     }
+    expect(plan.e1.enrichedIncluded.length).toBe(CLEARED_REQUIRED.length);
   });
 
-  it("includes ALL 4 enriched-record pairs in E2 sample", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
+  it("includes ALL enriched-record pairs of the cleared corpus in E2 sample", () => {
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
     // Expected pairs (prompt IDs):
     //  - bach m041-044 -> m045-048 (target enriched)
     //  - bach m049-052 -> m053-056 (both enriched)
-    //  - pathetique m025-028 -> m029-032 (both enriched)
-    //  - schumann m041-044 -> m045-048 (target enriched)
+    // The other two historical pairs (pathetique m025-028, schumann m041-044)
+    // were withdrawn with their works.
     const expectedPromptIds = [
       "bach-prelude-c-major-bwv846:m041-044:piano:mcp-session:v1",
       "bach-prelude-c-major-bwv846:m049-052:piano:mcp-session:v1",
-      "pathetique-mvt2:m025-028:piano:mcp-session:v1",
-      "schumann-traumerei:m041-044:piano:mcp-session:v1",
     ];
     const sampledPromptIds = plan.e2.pairs.map((p) => p.promptId);
     for (const pid of expectedPromptIds) {
       expect(sampledPromptIds).toContain(pid);
     }
-    expect(plan.e2.enrichedPairsIncluded.length).toBe(4);
+    expect(plan.e2.enrichedPairsIncluded.length).toBe(2);
   });
 
   it("throws when a required record is missing from the input pool", () => {
-    const records = loadPublicCorpus().filter(
-      (r) => r.id !== "pathetique-mvt2:m025-028:piano:mcp-session:v1",
+    const records = loadClearedCorpus().filter(
+      (r) => r.id !== "bach-prelude-c-major-bwv846:m045-048:piano:mcp-session:v1",
     );
-    expect(() => buildSample(records, DEFAULT_CONFIG)).toThrow(
-      /required record.*pathetique-mvt2:m025-028/,
+    expect(() => buildSample(records, CLEARED_CONFIG)).toThrow(
+      /required record.*bach-prelude-c-major-bwv846:m045-048/,
     );
   });
 });
@@ -211,20 +228,45 @@ describe("corpus-sampler — required inclusions", () => {
 
 describe("corpus-sampler — stratification", () => {
   it("E1 sample contains at least 2 opening, 2 middle, 1 cadential record", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
     expect(plan.e1.buckets.opening.length).toBeGreaterThanOrEqual(2);
     expect(plan.e1.buckets.middle.length).toBeGreaterThanOrEqual(2);
     expect(plan.e1.buckets.cadential.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("E3 sample contains at least one Bach texture-repetition record and at least one anacrusis record", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
+  it("E3 sample contains at least one Bach texture-repetition record; the cleared corpus has no anacrusis case and says so", () => {
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
     expect(plan.e3.buckets.bachTextureRepetition.length).toBeGreaterThanOrEqual(1);
-    expect(plan.e3.buckets.anacrusis.length).toBeGreaterThanOrEqual(1);
-    // Anacrusis-required (schumann m045-048) must be present.
-    expect(plan.e3.recordIds).toContain(ANACRUSIS_RECORD_IDS[0]);
+    // The only anacrusis case (schumann m045-048) was withdrawn with its work,
+    // and no cleared record has a not-computable rhythm onset: the bucket is
+    // empty and the plan reports it, per the sampler's abort policy.
+    expect(records.some((r) => ANACRUSIS_RECORD_IDS.includes(r.id) || r.rhythm_onset_not_computable)).toBe(false);
+    expect(plan.e3.buckets.anacrusis).toEqual([]);
+    expect(plan.diagnostics).toContain(
+      "[e3] stratum 'anacrusis' under-filled: needed 1 more, only 0 candidates available.",
+    );
+  });
+
+  it("E3 sample includes an anacrusis record whenever the corpus has one", () => {
+    const records = buildMiniCorpus();
+    // m009-012 occurs once in the mini corpus (m005/m029 ids repeat as a
+    // target and the next prompt), so the flag lands on the record the
+    // sampler reads.
+    const pickup = records.find((r) => r.id.includes(":m009-012") && r.scope.song_id === "bach-prelude-c-major-bwv846");
+    if (!pickup) throw new Error("fixture lookup failed");
+    expect(records.filter((r) => r.id === pickup.id)).toHaveLength(1);
+    pickup.rhythm_onset_not_computable = true;
+    const plan = buildSample(records, {
+      seed: "test-seed",
+      e1Size: 4,
+      e2PairSize: 2,
+      e3Size: 4,
+      requiredRecordIds: [],
+    });
+    expect(plan.e3.buckets.anacrusis).toContain(pickup.id);
+    expect(plan.e3.recordIds).toContain(pickup.id);
   });
 
   it("classifyPosition correctly tags opening, middle, cadential", () => {
@@ -252,26 +294,26 @@ describe("corpus-sampler — stratification", () => {
 
 describe("corpus-sampler — sizes", () => {
   it("E1 sample contains exactly 24 records by default", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
     expect(plan.e1.recordIds.length).toBe(24);
   });
 
   it("E2 sample contains exactly 12 pairs by default", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
     expect(plan.e2.pairs.length).toBe(12);
   });
 
   it("E3 sample contains exactly 24 records by default", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
     expect(plan.e3.recordIds.length).toBe(24);
   });
 
   it("E1 sample has no duplicate record IDs", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
     const set = new Set(plan.e1.recordIds);
     expect(set.size).toBe(plan.e1.recordIds.length);
   });
@@ -296,15 +338,16 @@ describe("corpus-sampler — edge cases", () => {
   });
 
   it("resolveAllPairs correctly identifies enriched pairs", () => {
-    const records = loadPublicCorpus();
+    const records = loadClearedCorpus();
     const pairs = resolveAllPairs(records);
     const enriched = pairs.filter((p) => p.containsEnriched);
-    expect(enriched.length).toBe(4);
-    // Specifically: the pathetique pair has BOTH halves enriched
-    const pathPair = enriched.find((p) =>
-      p.promptId.startsWith("pathetique-mvt2:m025"),
+    expect(enriched.length).toBe(2);
+    // Bach m049-052 -> m053-056: BOTH halves enriched (the pathetique
+    // m025-028 pair that also had both halves enriched was withdrawn)
+    const bothHalves = enriched.find((p) =>
+      p.promptId.startsWith("bach-prelude-c-major-bwv846:m049"),
     );
-    expect(pathPair?.enrichedHalves.length).toBe(2);
+    expect(bothHalves?.enrichedHalves.length).toBe(2);
     // Bach m041-044 -> m045-048: only target is enriched
     const bachFirst = enriched.find((p) =>
       p.promptId.startsWith("bach-prelude-c-major-bwv846:m041"),
@@ -313,17 +356,15 @@ describe("corpus-sampler — edge cases", () => {
   });
 
   it("buildSampleManifest produces a fully-populated serializable manifest", () => {
-    const records = loadPublicCorpus();
-    const plan = buildSample(records, DEFAULT_CONFIG);
-    const manifest = buildSampleManifest(plan, DEFAULT_CONFIG);
+    const records = loadClearedCorpus();
+    const plan = buildSample(records, CLEARED_CONFIG);
+    const manifest = buildSampleManifest(plan, CLEARED_CONFIG);
     expect(manifest.schema_version).toBe("corpus-scale-sample/1.0.0");
     expect(manifest.seed).toBe("slice12-2026-05-17");
     expect(manifest.e1.record_ids.length).toBe(24);
     expect(manifest.e2.pairs.length).toBe(12);
     expect(manifest.e3.record_ids.length).toBe(24);
-    expect(manifest.config.required_records).toEqual([
-      ...SLICE_11_ENRICHED_RECORD_IDS,
-    ]);
+    expect(manifest.config.required_records).toEqual([...CLEARED_REQUIRED]);
     // Round-trip JSON serialization sanity
     const json = JSON.stringify(manifest);
     const parsed = JSON.parse(json) as { schema_version: string };

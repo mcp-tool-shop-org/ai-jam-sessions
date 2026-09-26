@@ -1,0 +1,96 @@
+{
+  "about": "Reviewed exceptions to the derived-content guard (src/dataset/derived-content.test.ts). Each entry names the songs it covers and a ceiling on the note units any one of them may reach in the file, so an exception cannot grow quietly; one that matches nothing fails as stale. See docs/findings/derived-content-inventory.md.",
+  "not_derived": [
+    {
+      "path": "experiments/rollout-arc/p4/runs/vl-prompts.jsonl",
+      "songs": "*",
+      "maxUnits": 8,
+      "reason": "Each prompt gives the song's chord symbols. The only pitches are the same two example voicings, repeated in every system prompt."
+    },
+    {
+      "path": "experiments/rollout-arc/p4/runs/vl-g8.jsonl",
+      "songs": [
+        "all-the-things-you-are", "autumn-leaves", "blue-bossa", "chopin-nocturne-op9-no2", "chopin-prelude-e-minor",
+        "fly-me-to-the-moon", "georgia-on-my-mind", "misty", "my-funny-valentine", "pathetique-mvt2",
+        "round-midnight", "schumann-traumerei", "summertime"
+      ],
+      "maxUnits": 300,
+      "reason": "A model's four-voice voicings of chord symbols. The prompts carried no notes of the songs."
+    },
+    {
+      "path": "experiments/rollout-arc/p4/runs/smoke.jsonl",
+      "songs": ["chopin-nocturne-op9-no2"],
+      "maxUnits": 256,
+      "reason": "The same voicing task as vl-g8.jsonl, for one song."
+    },
+    {
+      "path": "experiments/maker-arc/e2-gate/inputs/claude-ceiling-responses.json",
+      "songs": [
+        "chopin-nocturne-op9-no2", "chopin-prelude-e-minor", "debussy-arabesque-no1", "pathetique-mvt2",
+        "satie-gymnopedie-no1", "schumann-traumerei"
+      ],
+      "maxUnits": 60,
+      "reason": "Continuations the ceiling model composed in even rhythm at one velocity. Against the real target windows the longest shared pitch run is 2 to 6; nothing is copied from the arrangement."
+    },
+    {
+      "path": "experiments/maker-arc/e2-gate/inputs/build-claude-ceiling-responses.mjs",
+      "songs": ["chopin-nocturne-op9-no2", "schumann-traumerei"],
+      "maxUnits": 4,
+      "reason": "The script that wrote the composed continuations above."
+    },
+    {
+      "path": "experiments/maker-arc/er-gate/inputs/claude-ceiling-responses.json",
+      "songs": [
+        "a-change-is-gonna-come", "a-thousand-years", "agua-de-beber", "aint-no-sunshine", "all-of-me",
+        "all-the-things-you-are", "amazing-grace", "auld-lang-syne", "autumn-leaves", "baba-oriley",
+        "bennie-and-the-jets", "besame-mucho", "blues-in-the-night", "born-under-a-bad-sign", "cinema-paradiso",
+        "comptine-dun-autre-ete", "divenire", "experience", "fallin", "halo"
+      ],
+      "maxUnits": 32,
+      "reason": "Per-measure chord voicings the ceiling model wrote. None of the 162 melody measures appears in them."
+    },
+    {
+      "path": "songs/library/jazz/take-the-a-train.json",
+      "songs": ["take-the-a-train"],
+      "maxUnits": 9,
+      "reason": "The annotation names one five-note chord (measure 111) twice. A single sonority, no sequence."
+    },
+    {
+      "path": "docs/jam-actions-v0-slice16-rubric-guided-enrichment.md",
+      "songs": ["chopin-nocturne-op9-no2"],
+      "maxUnits": 26,
+      "reason": "Single anchor pitches and the computed chromatic neighbours around them, from a public-domain work. No arrangement timing or dynamics."
+    },
+    {
+      "path": "docs/jam-actions-v0-slice11-record-quality-enrichment.md",
+      "songs": ["schumann-traumerei"],
+      "maxUnits": 8,
+      "reason": "An arpeggio outline of the tonic triad, four pitches, from a public-domain work."
+    },
+    {
+      "path": "docs/handoffs/audio-inspector-12-grok-to-claude.md",
+      "songs": ["schumann-traumerei"],
+      "maxUnits": 4,
+      "reason": "Four opening melody pitches of a public-domain work, pitches only."
+    },
+    {
+      "path": "docs/jam-actions-v0-slice21-schumann-remediation.md",
+      "songs": ["schumann-traumerei"],
+      "maxUnits": 4,
+      "reason": "Four melody pitches of a public-domain work, quoted as an example of a rejected annotation."
+    }
+  ],
+  "held_for_owner": {
+    "reason": "Amazing Grace vocal route. The GitHub Pages landing page plays site/public/audio/amazing-grace-*.mp3, whose piano bed renders measures 1-10 of the library arrangement (licence unknown) and whose sung line takes its timing from that file. These are the route's inputs. The composition (New Britain, 1829; words 1779) is public domain. Removing them changes a published surface, so the decision is the owner's.",
+    "songs": ["amazing-grace"],
+    "maxUnits": 33,
+    "paths": [
+      "scores/amazing-grace.score-clock.v1.json",
+      "scores/receipts/amazing-grace/piano-bed.render-receipt.json",
+      "scores/receipts/amazing-grace/soulx-01/pitch.json",
+      "scores/receipts/amazing-grace/soulx-01/pitch-local.json",
+      "scores/receipts/amazing-grace/soulx-01/pitch-placed.json",
+      "scores/receipts/amazing-grace/soulx-syllables/pitch.json"
+    ]
+  }
+}
