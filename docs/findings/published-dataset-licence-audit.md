@@ -94,13 +94,14 @@ Each outcome was checked afterwards from outside, without credentials, unless no
 | GitHub release `jam-ft-v1-adapters` | retitled "withdrawn", notice prepended, converted to a draft. Its 767 MB archive (0 downloads) was then removed from the release, after an offline copy was verified against the sha256 recorded at publication. | the release lists no assets; the asset URL answers 404 to anonymous requests |
 | HF history: `jam-actions-v0`, `jam-actions-acoustic-v0`, explorer Space | squashed to one commit each (from 12, 5 and 4), after offline mirrors of all three were verified blob for blob against the Hub's own listings. The current files are unchanged. | new heads `cbacb7c`, `c7fce8d`, `d63ac7e`. On the day, the old commits still resolved when requested by hash: the Hub applies a squash asynchronously (its storage documentation gives up to 36 hours). This row is re-checked after that window. |
 | Publish workflow | re-verifies the sealed release gate from pinned sources (`--artifacts-root`) and runs the library evidence test before minting | #44 |
+| This repository's history | rewritten on 2026-09-26 per [`history-rewrite-runbook.md`](history-rewrite-runbook.md), after #46 cleared the tree: 1,186 of 1,224 commits have new ids and 2 were pruned as empty, 54 of 55 tags have new ids, and `main` is `7ae19f1` | a fresh clone of branches and tags scans to the 20 kept paths only; the map is [`history-rewrite/commit-map-2026-09-26.txt`](history-rewrite/commit-map-2026-09-26.txt) |
 
 Commit ids of these Hugging Face repositories recorded before the squash, such as `9d69b47` in the 0.6.0 publication receipt, now point to history that is no longer on any branch. The maintainers hold offline, verified copies of everything removed on this page.
 
 **Retraining.** None was needed for the withdrawal. The withdrawn adapters had no recorded downloads, and adapters trained only on licence-cleared data already exist with the `jam-actions-v1` datasets.
 
 **Still open, for the Director.**
-- **This repository's git history** still contains the withdrawn records and the derived files listed above. Removing them means `filter-repo` and a force-push. That gives every later commit a new id, including the commits and tags cited by the Zenodo records and receipts, and every checkout has to re-sync; `refs/pull/*` needs GitHub support. An offline mirror would make it reversible, but the coordination cost makes it a decision rather than a step.
+- **`refs/pull/*` and cached commit views** still reach the old commits until GitHub support removes them; the request is step 8 of the runbook. Forks are not ours to change.
 - **Zenodo deletion** of 0.4.3 and 0.5.0 is available only through a support request. The files are already restricted, so deletion is not recommended.
 - The private adapter repository keeps its history. It is not public.
 
