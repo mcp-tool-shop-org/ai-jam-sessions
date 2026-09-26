@@ -462,6 +462,41 @@ describe("derived content of uncleared songs stays out of the tree", () => {
     }
   });
 
+  it("scanHistory opens blobs under binary names too: MIDI committed as .bin or .png, then deleted, is found", () => {
+    // The tree scan and --ref read every binary file's header; history must give the same verdicts.
+    const png = Buffer.concat([
+      Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 13, 0x49, 0x48, 0x44, 0x52]),
+      Buffer.alloc(64),
+    ]);
+    const files: [string, Buffer][] = [
+      ["x.bin", smf([60, 62, 64, 65])], // MIDI that is no song's file, under a binary name
+      ["y.png", smf([72, 74, 76, 77])], // the same under an image name
+      ["z.png", png], // an image header: not MIDI
+      ["k.bin", readFileSync(join(REPO_ROOT, scan.midi[0]))], // a cleared song's file under a binary name
+    ];
+    const dir = mkdtempSync(join(tmpdir(), "derived-content-binary-history-"));
+    try {
+      const git = (...args: string[]) =>
+        execFileSync("git", ["-C", dir, "-c", "user.name=guard-test", "-c", "user.email=guard-test@example.invalid", "-c", "core.autocrlf=false", ...args]);
+      git("init", "-q");
+      for (const [name, bytes] of files) writeFileSync(join(dir, name), bytes);
+      git("add", "-A");
+      git("commit", "-q", "-m", "add");
+      git("rm", "-q", "x.bin", "y.png");
+      git("commit", "-q", "-m", "delete the MIDI");
+      const rows = scanHistory(dir, REPO_ROOT);
+      expect(rows.map((r) => [r.path, r.presentAtHead, r.dirtyBlobs.length, r.songs])).toEqual([
+        ["x.bin", false, 1, ["x.bin"]],
+        ["y.png", false, 1, ["y.png"]],
+      ]);
+      // The tree scan's verdict on the same bytes under the same names.
+      const flaggedInTree = files.filter(([name, bytes]) => judgeBytes(scan, name, bytes).length > 0).map(([name]) => name);
+      expect(rows.map((r) => r.path)).toEqual(flaggedInTree);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
   it("every committed piano roll belongs to a record that passes the evidence gate", () => {
     const rolls = trackedFiles(REPO_ROOT).filter((f) => /^datasets\/[^/]+\/pianoroll\/[^/]+\.svg$/.test(f));
     expect(rolls.length).toBeGreaterThan(0);

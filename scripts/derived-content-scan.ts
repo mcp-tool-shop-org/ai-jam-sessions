@@ -42,12 +42,15 @@ export const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 /** Formats whose bytes carry no text the scanner can read. MIDI among them is judged by its bytes. */
 const BINARY_EXT =
   /\.(png|jpe?g|gif|webp|ico|ogg|wav|mp3|flac|mid|midi|kar|rmi|smf|pyc|woff2?|ttf|safetensors|bin|zip|tar|pdf)$/i;
-/** MIDI by name, compressed or not: history keeps these blobs for judging. */
-const MIDI_PATH = /\.(mid|midi|kar|rmi|smf)(\.gz)?$/i;
 
 /** Whether bytes are binary: a NUL in the first 8 KB. */
 function isBinary(buf: Uint8Array): boolean {
   return buf.subarray(0, 8192).includes(0);
+}
+
+/** Whether a path may be read as text: its name is not a binary format's. */
+function isTextPath(path: string): boolean {
+  return !BINARY_EXT.test(scanPath(path));
 }
 
 /**
@@ -70,7 +73,7 @@ export function readTrackedBytes(root: string, path: string): Buffer {
 
 /** The text of a file's bytes, or null for binary content. */
 function textOf(path: string, buf: Buffer): string | null {
-  return BINARY_EXT.test(scanPath(path)) || isBinary(buf) ? null : buf.toString("utf8");
+  return isTextPath(path) && !isBinary(buf) ? buf.toString("utf8") : null;
 }
 
 /** A tracked file's text, or null for binary content. .gz is decompressed. */
@@ -214,10 +217,12 @@ export function scanHistory(gitDir: string, root: string = REPO_ROOT): HistoryPa
     const tab = line.indexOf("\t");
     const [, newMode, , sha, status] = line.slice(0, tab).split(" ");
     const p = line.slice(tab + 1);
-    // Other binary formats are not read. MIDI is, to be judged by its bytes;
-    // so is any blob whose header is MIDI, among the blobs read for text.
-    const read = !BINARY_EXT.test(scanPath(p)) || MIDI_PATH.test(p);
-    if (status !== "D" && newMode !== "160000" && !/^0+$/.test(sha) && read) pairs.push([sha, p] as const);
+    // Every blob is read, whatever its name. As in the tree scan, the header
+    // and not the name says whether it is MIDI, so a MIDI file committed as
+    // .bin or .png is judged too. On this repository's history that reads 113
+    // more blobs (13.3 MiB of audio and images) than text and MIDI names
+    // alone (measured 2026-09-26).
+    if (status !== "D" && newMode !== "160000" && !/^0+$/.test(sha)) pairs.push([sha, p] as const);
   }
   const pathsOf = new Map<string, Set<string>>();
   for (const [sha, p] of pairs) pathsOf.set(sha, (pathsOf.get(sha) ?? new Set()).add(p));
@@ -245,8 +250,10 @@ export function scanHistory(gitDir: string, root: string = REPO_ROOT): HistoryPa
         continue;
       }
     }
-    if ([...pathsOf.get(sha)!].some((q) => isMidiFile(scanPath(q), buf))) midiBlobs.set(sha, Buffer.from(buf));
-    else if (!isBinary(buf)) blobs.set(sha, buf.toString("utf8"));
+    const ps = [...pathsOf.get(sha)!];
+    if (ps.some((q) => isMidiFile(scanPath(q), buf))) midiBlobs.set(sha, Buffer.from(buf));
+    else if (ps.some(isTextPath) && !isBinary(buf)) blobs.set(sha, buf.toString("utf8"));
+    // anything else is binary content that is not MIDI (images, audio): nothing to judge
   }
   const evidence = loadLibraryEvidence(root);
   const clearance = songClearance(evidence);
@@ -254,8 +261,7 @@ export function scanHistory(gitDir: string, root: string = REPO_ROOT): HistoryPa
   // index every historical version of every v0 record, keyed by record id
   const records = new Map<string, SourceRecord>();
   for (const [sha, text] of blobs) {
-    const p = pathOf.get(sha)!;
-    if (!p.startsWith("datasets/") || !p.endsWith(".json")) continue;
+    if (![...pathsOf.get(sha)!].some((p) => p.startsWith("datasets/") && p.endsWith(".json"))) continue;
     try {
       const o = JSON.parse(text);
       if (isEvidencedRecordShape(o, songIds) && !records.has(o.id)) records.set(o.id, o);
@@ -284,7 +290,8 @@ export function scanHistory(gitDir: string, root: string = REPO_ROOT): HistoryPa
     result.set(p, e);
   };
   for (const [sha, text] of blobs) {
-    for (const p of pathsOf.get(sha)!) add(p, sha, judge(p, scanFileText(scanPath(p), text, sc), jc));
+    // a path with a binary format's name is never read as text, here or in the tree scan
+    for (const p of pathsOf.get(sha)!) if (isTextPath(p)) add(p, sha, judge(p, scanFileText(scanPath(p), text, sc), jc));
   }
   for (const [sha, bytes] of midiBlobs) {
     for (const p of pathsOf.get(sha)!) add(p, sha, judgeMidi(p, bytes, jc));
