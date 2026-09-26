@@ -30,6 +30,7 @@ import {
   judge,
   judgeMidi,
   scanFileText,
+  smfHeaderOffset,
   songClearance,
   type Finding,
   type JudgeContext,
@@ -146,13 +147,15 @@ export function scanRepo(
   const midiBytes = new Map<string, Buffer>();
   for (const f of files) {
     const t = read(f);
-    if (t !== null) {
+    // Text holds no MIDI header (its length field is NUL bytes). If this does,
+    // MIDI follows text, and it is judged as MIDI.
+    if (t !== null && smfHeaderOffset(t) < 0) {
       texts.set(f, t);
       continue;
     }
     binary.push(f);
     const bytes = readBytes(f);
-    if (isMidiFile(scanPath(f), bytes)) midiBytes.set(f, bytes);
+    if (t !== null || isMidiFile(scanPath(f), bytes)) midiBytes.set(f, bytes);
   }
   const records = indexRecords(texts, songIds);
   const sc = { songIds, recordIds: new Set(records.keys()) };
@@ -179,8 +182,8 @@ export function judgeText(scan: RepoScan, path: string, text: string): Finding[]
  */
 export function judgeBytes(scan: RepoScan, path: string, bytes: Buffer): Finding[] {
   const text = textOf(path, bytes);
-  if (text !== null) return judgeText(scan, path, text);
-  return isMidiFile(scanPath(path), bytes) ? judgeMidi(path, bytes, scan.context) : [];
+  if (text !== null && smfHeaderOffset(text) < 0) return judgeText(scan, path, text);
+  return text !== null || isMidiFile(scanPath(path), bytes) ? judgeMidi(path, bytes, scan.context) : [];
 }
 
 export interface HistoryPath {
@@ -250,9 +253,13 @@ export function scanHistory(gitDir: string, root: string = REPO_ROOT): HistoryPa
         continue;
       }
     }
+    // Classified as the tree scan classifies a file: text under a text name,
+    // unless it holds a MIDI header; otherwise MIDI by name or header.
     const ps = [...pathsOf.get(sha)!];
-    if (ps.some((q) => isMidiFile(scanPath(q), buf))) midiBlobs.set(sha, Buffer.from(buf));
-    else if (ps.some(isTextPath) && !isBinary(buf)) blobs.set(sha, buf.toString("utf8"));
+    const text = ps.some(isTextPath) && !isBinary(buf);
+    const midi = text ? smfHeaderOffset(buf) >= 0 : ps.some((q) => isMidiFile(scanPath(q), buf));
+    if (midi) midiBlobs.set(sha, Buffer.from(buf));
+    else if (text) blobs.set(sha, buf.toString("utf8"));
     // anything else is binary content that is not MIDI (images, audio): nothing to judge
   }
   const evidence = loadLibraryEvidence(root);

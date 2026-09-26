@@ -36,6 +36,7 @@ import {
   judgeMidi,
   mentionedSongIds,
   midiNoteOns,
+  smfHeaderOffset,
   noteUnits,
   scanFileText,
   songClearance,
@@ -154,6 +155,21 @@ function smf(values: readonly number[]): Buffer {
 }
 
 const sha256 = (bytes: Uint8Array): string => createHash("sha256").update(bytes).digest("hex");
+
+/** A PNG signature and IHDR chunk head: binary bytes that are not MIDI. */
+const PNG_HEAD = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 13, 0x49, 0x48, 0x44, 0x52]);
+
+/** A RIFF file of `form` ("RMID" is a .rmi file) holding `body` in one chunk named `chunk`. */
+function riff(form: string, chunk: string, body: Buffer): Buffer {
+  const head = Buffer.alloc(8);
+  head.write(chunk, 0, "latin1");
+  head.writeUInt32LE(body.length, 4);
+  const inner = Buffer.concat([Buffer.from(form, "latin1"), head, body, Buffer.alloc(body.length % 2)]);
+  const outer = Buffer.alloc(8);
+  outer.write("RIFF", 0, "latin1");
+  outer.writeUInt32LE(inner.length, 4);
+  return Buffer.concat([outer, inner]);
+}
 
 // ─── The cleared set is the gate's ───────────────────────────────────────────
 
@@ -342,6 +358,34 @@ describe("judgeMidi", () => {
       { rule: "unevidenced-midi", units: 0, where: [expect.any(String), "does not parse as a Standard MIDI File"] },
     ]);
   });
+
+  it("finds a MIDI header at any offset: in a RIFF file, or after other bytes", () => {
+    const rmid = riff("RMID", "data", a);
+    const wave = riff("WAVE", "junk", a);
+    const after = Buffer.concat([PNG_HEAD, a]);
+    expect([a, rmid, wave, after].map(smfHeaderOffset)).toEqual([0, 20, 20, 16]);
+    expect(isMidiFile("x.dat", rmid) && isMidiFile("x.wav", wave) && isMidiFile("x.png", after)).toBe(true);
+    // the tag alone is not a header: the header is "MThd" and its length, 6
+    expect(isMidiFile("x.png", Buffer.concat([PNG_HEAD, Buffer.from("MThd")]))).toBe(false);
+    // text holds none: the header's length field is NUL bytes
+    expect(smfHeaderOffset("MThd header chunk, length 6")).toBe(-1);
+    // the notes are read from the header on
+    expect([rmid, wave, after].map(midiNoteOns)).toEqual([4, 4, 4]);
+  });
+
+  it("refuses a MIDI header found past the start, even around a cleared song's own file", () => {
+    const jc = midiContext();
+    expect(judgeMidi("x/a.mid", a, jc)).toEqual([]);
+    for (const [name, bytes, at] of [
+      ["x/a.rmi", riff("RMID", "data", a), 20],
+      ["x/a.bin", Buffer.concat([PNG_HEAD, a]), 16],
+    ] as const) {
+      const [f, ...rest] = judgeMidi(name, bytes, jc);
+      expect(rest).toEqual([]);
+      expect(f).toMatchObject({ rule: "unevidenced-midi", units: 4 });
+      expect(f.where).toContain(`MIDI header at byte ${at}`);
+    }
+  });
 });
 
 // ─── The tree ────────────────────────────────────────────────────────────────
@@ -424,6 +468,11 @@ describe("derived content of uncleared songs stays out of the tree", () => {
     expect(scan.findings.filter((f) => scan.midi.includes(f.path)).map(describeFinding)).toEqual([]);
   });
 
+  it("every tracked MIDI file starts with its header, so a header found further in is never a cleared file", () => {
+    expect(scan.midi.length).toBeGreaterThan(0);
+    expect(scan.midi.filter((f) => smfHeaderOffset(readFileSync(join(REPO_ROOT, f))) !== 0)).toEqual([]);
+  });
+
   it("goes red when an uncleared MIDI file comes back (mutation check)", () => {
     // The uncleared song's library file is gone from the tree, so bytes made here stand in for it.
     const at = [...evidence.values()].find((ev) => ev.songId === UNCLEARED)!.path.replace(/\.json$/, ".mid");
@@ -464,10 +513,7 @@ describe("derived content of uncleared songs stays out of the tree", () => {
 
   it("scanHistory opens blobs under binary names too: MIDI committed as .bin or .png, then deleted, is found", () => {
     // The tree scan and --ref read every binary file's header; history must give the same verdicts.
-    const png = Buffer.concat([
-      Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 13, 0x49, 0x48, 0x44, 0x52]),
-      Buffer.alloc(64),
-    ]);
+    const png = Buffer.concat([PNG_HEAD, Buffer.alloc(64)]);
     const files: [string, Buffer][] = [
       ["x.bin", smf([60, 62, 64, 65])], // MIDI that is no song's file, under a binary name
       ["y.png", smf([72, 74, 76, 77])], // the same under an image name
@@ -492,6 +538,38 @@ describe("derived content of uncleared songs stays out of the tree", () => {
       // The tree scan's verdict on the same bytes under the same names.
       const flaggedInTree = files.filter(([name, bytes]) => judgeBytes(scan, name, bytes).length > 0).map(([name]) => name);
       expect(rows.map((r) => r.path)).toEqual(flaggedInTree);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("scanHistory finds MIDI inside a RIFF file or after other bytes, by its header at any offset", () => {
+    const files: [string, Buffer][] = [
+      ["r.bin", riff("RMID", "data", smf([60, 62, 64, 65]))], // a .rmi file under a binary name
+      ["w.wav", riff("WAVE", "junk", smf([62, 64, 65, 67]))], // MIDI in a chunk of a WAVE file
+      ["c.bin", Buffer.concat([PNG_HEAD, smf([64, 65, 67, 69])])], // MIDI after other bytes
+      ["t.txt", Buffer.concat([Buffer.alloc(9000, "a"), smf([65, 67, 69, 71])])], // MIDI after 8 KB of text
+    ];
+    const dir = mkdtempSync(join(tmpdir(), "derived-content-embedded-history-"));
+    try {
+      const git = (...args: string[]) =>
+        execFileSync("git", ["-C", dir, "-c", "user.name=guard-test", "-c", "user.email=guard-test@example.invalid", "-c", "core.autocrlf=false", ...args]);
+      git("init", "-q");
+      for (const [name, bytes] of files) writeFileSync(join(dir, name), bytes);
+      git("add", "-A");
+      git("commit", "-q", "-m", "add");
+      git("rm", "-q", ...files.map(([name]) => name));
+      git("commit", "-q", "-m", "delete them");
+      const rows = scanHistory(dir, REPO_ROOT);
+      expect(rows.map((r) => [r.path, r.presentAtHead, r.dirtyBlobs.length])).toEqual([
+        ["c.bin", false, 1],
+        ["r.bin", false, 1],
+        ["t.txt", false, 1],
+        ["w.wav", false, 1],
+      ]);
+      // The tree scan's verdict on the same bytes under the same names.
+      const flaggedInTree = files.filter(([name, bytes]) => judgeBytes(scan, name, bytes).length > 0).map(([name]) => name);
+      expect(rows.map((r) => r.path)).toEqual([...flaggedInTree].sort());
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
