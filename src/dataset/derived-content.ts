@@ -26,7 +26,12 @@
 // to an uncleared song is a finding; in prose and code a finding needs
 // NOTE_UNIT_FLOOR note units, so a named chord or a single pitch is not one.
 // Chord symbols, labels, counts and prose are metadata and are not counted.
+//
+// A MIDI file is judged by its bytes, not its text (judgeMidi, at the end):
+// it passes only when it is exactly a cleared song's evidenced file.
 
+import { createHash } from "node:crypto";
+import { parseMidi } from "midi-file";
 import { evidenceRefusal, type LibraryEvidence, type SourceRecord } from "./package-public.js";
 
 // ─── The cleared set ─────────────────────────────────────────────────────────
@@ -610,14 +615,19 @@ export type FindingRule =
   /** keyed to a song the evidence gate does not clear */
   | "uncleared-song"
   /** keyed to a v0 window record that is absent or fails evidenceRefusal */
-  | "unevidenced-record";
+  | "unevidenced-record"
+  /** a MIDI file whose bytes are no song's evidenced file */
+  | "unevidenced-midi";
 
 export interface Finding {
   path: string;
   songKey: string;
   recordId?: string;
   rule: FindingRule;
-  /** note-level when note units reach NOTE_UNIT_FLOOR, else measurement-level. */
+  /**
+   * note-level when note units reach NOTE_UNIT_FLOOR, else measurement-level.
+   * A MIDI file is always note-level: it is an arrangement, whatever it holds.
+   */
   level: "note-level" | "measurement-level";
   reason: string;
   /** Note units, or measurement fields for a measurement-level finding. */
@@ -695,5 +705,89 @@ export function judge(path: string, keyed: KeyedNotes[], jc: JudgeContext): Find
     }
   }
   return out;
+}
+
+// ─── MIDI files ──────────────────────────────────────────────────────────────
+//
+// A MIDI file is an arrangement note for note, so it is judged whole, by its
+// bytes. It is cleared only when its sha256 is the `midi_sha256` of a song the
+// gate clears: exactly the file that song's provenance block describes. Any
+// other bytes are a finding, whatever the file is called. That covers the
+// library files of uncleared songs, a superseded file of a cleared song (the
+// pre-Mutopia Satie and Debussy bytes), and MIDI saved under another name.
+
+const MIDI_NAME = /\.(mid|midi|kar|rmi|smf)$/i;
+
+/** Whether a file is MIDI: by its name, or by its header whatever the name. */
+export function isMidiFile(path: string, bytes: Uint8Array): boolean {
+  if (MIDI_NAME.test(path)) return true;
+  const tag = (at: number): string => String.fromCharCode(...bytes.subarray(at, at + 4));
+  // a Standard MIDI File, or one wrapped in RIFF (.rmi)
+  return tag(0) === "MThd" || (tag(0) === "RIFF" && tag(8) === "RMID");
+}
+
+/**
+ * Note-on events in a Standard MIDI File, or null when the bytes are not a
+ * whole one. midi-file accepts a bare "MThd" or a header whose tracks are
+ * missing, so the header's track count must match the tracks read.
+ */
+export function midiNoteOns(bytes: Uint8Array): number | null {
+  try {
+    const midi = parseMidi(bytes);
+    if (!midi.header.numTracks || midi.tracks.length !== midi.header.numTracks) return null;
+    return midi.tracks.reduce((n, track) => n + track.filter((e) => e.type === "noteOn").length, 0);
+  } catch {
+    return null;
+  }
+}
+
+/** The song a MIDI file's name claims ("…/satie-gymnopedie-no1.mid"), if it names one. */
+function songNamedBy(path: string, songIds: ReadonlySet<string>): string | null {
+  const base = (path.split("/").pop() ?? path).replace(/\.gz$/i, "").replace(MIDI_NAME, "");
+  return songIds.has(base) ? base : null;
+}
+
+/**
+ * Judge one MIDI file by its bytes. It passes when they are a cleared song's
+ * evidenced file. Bytes that are an uncleared song's evidenced file are keyed
+ * to that song; bytes that are no song's evidenced file are keyed to the song
+ * the file name claims, or to the file name.
+ */
+export function judgeMidi(path: string, bytes: Uint8Array, jc: JudgeContext): Finding[] {
+  const sha = createHash("sha256").update(bytes).digest("hex");
+  const owners = [...jc.evidence.values()].filter((ev) => ev.midiSha256 === sha).map((ev) => ev.songId);
+  if (owners.some((id) => jc.clearance.get(id)?.cleared ?? false)) return [];
+  const noteOns = midiNoteOns(bytes);
+  const base = {
+    path,
+    level: "note-level" as const,
+    units: noteOns ?? 0,
+    indicators: { ...emptyIndicators(), events: noteOns ?? 0 },
+    where: [
+      `sha256 ${sha.slice(0, 12)}…`,
+      noteOns === null ? "does not parse as a Standard MIDI File" : `${noteOns} note-on events`,
+    ],
+  };
+  if (owners.length) {
+    return [
+      {
+        ...base,
+        songKey: owners.join("|"),
+        rule: "uncleared-song",
+        reason: owners.map((id) => `${id}: ${jc.clearance.get(id)?.refusal ?? "no library provenance block"}`).join("; "),
+      },
+    ];
+  }
+  const named = songNamedBy(path, jc.songIds);
+  const ev = named ? [...jc.evidence.values()].find((e) => e.songId === named) : undefined;
+  const theirs = ev ? `; ${ev.songId}'s evidenced file is ${ev.midiSha256.slice(0, 12)}… (${ev.path})` : "";
+  return [
+    {
+      ...base,
+      songKey: named ?? (path.split("/").pop() ?? path),
+      rule: "unevidenced-midi",
+      reason: `the bytes are no song's evidenced MIDI file${theirs}`,
+    },
+  ];
 }
 

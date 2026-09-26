@@ -4,7 +4,8 @@
 // songs the library evidence gate does not clear: experiment inputs, model
 // outputs that echo them, eval traces, training lines, piano rolls
 // (docs/findings/derived-content-inventory.md). This test scans every file
-// `git ls-files` lists and fails when such content comes back.
+// `git ls-files` lists and fails when such content comes back. A MIDI file is
+// judged by its bytes: it must be exactly a cleared song's evidenced file.
 //
 // "Cleared" is the packager's gate, not a list kept here: see songClearance in
 // derived-content.ts. The exceptions below are reviewed one by one. Each names
@@ -12,21 +13,34 @@
 // cannot quietly grow; one that no longer matches anything fails as stale.
 
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { writeMidi, type MidiEvent } from "midi-file";
 import { beforeAll, describe, expect, it } from "vitest";
-import { judgeText, scanHistory, scanRepo, trackedFiles, type RepoScan } from "../../scripts/derived-content-scan.js";
+import {
+  judgeBytes,
+  judgeText,
+  scanHistory,
+  scanRepo,
+  trackedFiles,
+  type RepoScan,
+} from "../../scripts/derived-content-scan.js";
 import {
   countNoteIndicators,
   isDataPath,
+  isMidiFile,
   judge,
+  judgeMidi,
   mentionedSongIds,
+  midiNoteOns,
   noteUnits,
   scanFileText,
   songClearance,
   type Finding,
+  type JudgeContext,
 } from "./derived-content.js";
 import { evidenceRefusal, loadLibraryEvidence, type LibraryEvidence, type SourceRecord } from "./package-public.js";
 
@@ -127,6 +141,19 @@ function judgeFake(path: string, text: string, records: Map<string, SourceRecord
   const sc = { songIds: ids, recordIds: new Set(records.keys()) };
   return judge(path, scanFileText(path, text, sc), { ...sc, clearance: cl, evidence: ev, records });
 }
+
+/** A one-track Standard MIDI File, made here from no song: each value a quarter note. */
+function smf(values: readonly number[]): Buffer {
+  const track: MidiEvent[] = [];
+  for (const v of values) {
+    track.push({ deltaTime: 0, type: "noteOn", channel: 0, noteNumber: v, velocity: 64 } as MidiEvent);
+    track.push({ deltaTime: 480, type: "noteOff", channel: 0, noteNumber: v, velocity: 0 } as MidiEvent);
+  }
+  track.push({ deltaTime: 0, type: "endOfTrack", meta: true } as MidiEvent);
+  return Buffer.from(writeMidi({ header: { format: 0, numTracks: 1, ticksPerBeat: 480 }, tracks: [track] }));
+}
+
+const sha256 = (bytes: Uint8Array): string => createHash("sha256").update(bytes).digest("hex");
 
 // ─── The cleared set is the gate's ───────────────────────────────────────────
 
@@ -255,6 +282,68 @@ describe("scanFileText + judge", () => {
   });
 });
 
+// ─── MIDI files are judged by their bytes ────────────────────────────────────
+
+describe("judgeMidi", () => {
+  const a = smf([60, 62, 64, 65]);
+  const b = smf([60, 62, 64, 67]);
+  const c = smf([72, 74, 76, 77, 79]);
+
+  /** Fake evidence in which the cleared song's file is `a` and the uncleared song's is `c`. */
+  function midiContext(): JudgeContext {
+    const ev = fakeEvidence();
+    ev.set("song-cleared", { ...ev.get("song-cleared")!, midiSha256: sha256(a) });
+    ev.set("song-unknown", { ...ev.get("song-unknown")!, midiSha256: sha256(c) });
+    const cl = songClearance(ev);
+    return { songIds: new Set(cl.keys()), recordIds: new Set(), clearance: cl, evidence: ev, records: new Map() };
+  }
+
+  it("recognises MIDI by its name, or by its header whatever the name", () => {
+    expect(isMidiFile("songs/x.mid", Buffer.from("not a header"))).toBe(true);
+    expect(isMidiFile("songs/x.MIDI", Buffer.alloc(0))).toBe(true);
+    expect(isMidiFile("assets/x.bin", a)).toBe(true);
+    const rmid = Buffer.concat([Buffer.from("RIFF"), Buffer.alloc(4), Buffer.from("RMID"), a]);
+    expect(isMidiFile("assets/x.dat", rmid)).toBe(true);
+    expect(isMidiFile("assets/x.png", Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))).toBe(false);
+    expect(isMidiFile("notes.txt", Buffer.from("MTh is not a header"))).toBe(false);
+  });
+
+  it("counts note-on events, and returns null for bytes that are not a whole MIDI file", () => {
+    expect(midiNoteOns(a)).toBe(4);
+    expect(midiNoteOns(c)).toBe(5);
+    expect(midiNoteOns(Buffer.from("MThd"))).toBeNull();
+    expect(midiNoteOns(a.subarray(0, 14))).toBeNull(); // the header alone: one track promised, none there
+    expect(midiNoteOns(Buffer.from("not midi at all"))).toBeNull();
+  });
+
+  it("passes exactly a cleared song's evidenced file, under any name", () => {
+    const jc = midiContext();
+    expect(judgeMidi("songs/library/test/song-cleared.mid", a, jc)).toEqual([]);
+    expect(judgeMidi("elsewhere/copy.bin", a, jc)).toEqual([]);
+  });
+
+  it("refuses other bytes under a cleared song's name, as a superseded file", () => {
+    const [f, ...rest] = judgeMidi("songs/library/test/song-cleared.mid", b, midiContext());
+    expect(rest).toEqual([]);
+    expect(f).toMatchObject({ rule: "unevidenced-midi", level: "note-level", songKey: "song-cleared", units: 4 });
+    expect(f.reason).toMatch(/song-cleared's evidenced file is [0-9a-f]{12}…/);
+  });
+
+  it("keys an uncleared song's own file to that song, whatever it is called", () => {
+    const [f] = judgeMidi("elsewhere/renamed.bin", c, midiContext());
+    expect(f).toMatchObject({ rule: "uncleared-song", level: "note-level", songKey: "song-unknown", units: 5 });
+    expect(f.reason).toMatch(/arrangement licence is "unknown"/);
+  });
+
+  it("refuses bytes that are no song's file, and bytes that do not parse", () => {
+    const jc = midiContext();
+    expect(judgeMidi("x/unknown.mid", b, jc)).toMatchObject([{ rule: "unevidenced-midi", songKey: "unknown.mid" }]);
+    expect(judgeMidi("x/broken.mid", Buffer.from("MThd"), jc)).toMatchObject([
+      { rule: "unevidenced-midi", units: 0, where: [expect.any(String), "does not parse as a Standard MIDI File"] },
+    ]);
+  });
+});
+
 // ─── The tree ────────────────────────────────────────────────────────────────
 
 describe("derived content of uncleared songs stays out of the tree", () => {
@@ -317,6 +406,57 @@ describe("derived content of uncleared songs stays out of the tree", () => {
       expect(rows[0].dirtyBlobs).toHaveLength(1);
       expect(rows[0].dirtyBlobs).toEqual(rows[1].dirtyBlobs);
       expect(rows[0].songs).toEqual([UNCLEARED]);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("every tracked MIDI file is a cleared song's evidenced file", () => {
+    const named = trackedFiles(REPO_ROOT).filter((f) => /\.(mid|midi|kar|rmi|smf)$/i.test(f));
+    expect(named.length).toBeGreaterThan(0);
+    // Every MIDI-named file was judged as MIDI, and no file under another name has a MIDI header.
+    expect(scan.midi).toEqual(named);
+    // Checked here without judgeMidi: each file's sha256 is a cleared song's midi_sha256.
+    const clearedFiles = new Set(
+      [...evidence.values()].filter((ev) => clearance.get(ev.songId)?.cleared).map((ev) => ev.midiSha256),
+    );
+    expect(scan.midi.filter((f) => !clearedFiles.has(sha256(readFileSync(join(REPO_ROOT, f)))))).toEqual([]);
+    expect(scan.findings.filter((f) => scan.midi.includes(f.path)).map(describeFinding)).toEqual([]);
+  });
+
+  it("goes red when an uncleared MIDI file comes back (mutation check)", () => {
+    // The uncleared song's library file is gone from the tree, so bytes made here stand in for it.
+    const at = [...evidence.values()].find((ev) => ev.songId === UNCLEARED)!.path.replace(/\.json$/, ".mid");
+    const back = judgeBytes(scan, at, smf([60, 62, 64, 65]));
+    expect(back.map((f) => [f.rule, f.songKey])).toEqual([["unevidenced-midi", UNCLEARED]]);
+    expect(EXCEPTIONS.some((e) => back.every((f) => coveredBy(f, e)))).toBe(false);
+    // Under another name it is still MIDI.
+    expect(judgeBytes(scan, "assets/sound.bin", smf([60, 62, 64, 65]))).toHaveLength(1);
+    // A cleared song's own file passes; other bytes under its name do not.
+    const kept = scan.midi[0];
+    expect(judgeBytes(scan, kept, readFileSync(join(REPO_ROOT, kept)))).toEqual([]);
+    expect(judgeBytes(scan, kept, smf([60, 62, 64, 65])).map((f) => f.rule)).toEqual(["unevidenced-midi"]);
+  });
+
+  it("scanHistory judges MIDI blobs by their bytes, under a MIDI name or another", () => {
+    const dir = mkdtempSync(join(tmpdir(), "derived-content-midi-history-"));
+    try {
+      const git = (...args: string[]) =>
+        execFileSync("git", ["-C", dir, "-c", "user.name=guard-test", "-c", "user.email=guard-test@example.invalid", "-c", "core.autocrlf=false", ...args]);
+      git("init", "-q");
+      mkdirSync(join(dir, "m"));
+      writeFileSync(join(dir, "m", "kept.mid"), readFileSync(join(REPO_ROOT, scan.midi[0]))); // a cleared song's file
+      writeFileSync(join(dir, "m", "gone.mid"), smf([60, 62, 64, 65])); // no song's file
+      writeFileSync(join(dir, "m", "renamed.dat"), smf([72, 74, 76, 77])); // MIDI under another name
+      git("add", "-A");
+      git("commit", "-q", "-m", "add");
+      git("rm", "-q", "m/gone.mid");
+      git("commit", "-q", "-m", "remove one");
+      const rows = scanHistory(dir, REPO_ROOT);
+      expect(rows.map((r) => [r.path, r.presentAtHead, r.dirtyBlobs.length])).toEqual([
+        ["m/gone.mid", false, 1],
+        ["m/renamed.dat", true, 1],
+      ]);
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
