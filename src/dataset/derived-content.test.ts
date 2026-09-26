@@ -18,11 +18,14 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { gzipSync } from "node:zlib";
 import { writeMidi, type MidiEvent } from "midi-file";
 import { beforeAll, describe, expect, it } from "vitest";
 import {
+  classify,
   judgeBytes,
   judgeText,
+  MAX_INFLATE,
   scanHistory,
   scanRepo,
   trackedFiles,
@@ -169,6 +172,42 @@ function riff(form: string, chunk: string, body: Buffer): Buffer {
   outer.write("RIFF", 0, "latin1");
   outer.writeUInt32LE(inner.length, 4);
   return Buffer.concat([outer, inner]);
+}
+
+/** A one-member ustar archive as tar writes it: a 512-byte header, the data padded to 512, two empty blocks. */
+function tarOne(name: string, data: Buffer): Buffer {
+  const h = Buffer.alloc(512);
+  h.write(name, 0, "latin1");
+  h.write("0000644\0", 100, "latin1"); // mode
+  h.write("0000000\0", 108, "latin1"); // uid
+  h.write("0000000\0", 116, "latin1"); // gid
+  h.write(data.length.toString(8).padStart(11, "0") + "\0", 124, "latin1"); // size
+  h.write("00000000000\0", 136, "latin1"); // mtime
+  h.write("        ", 148, "latin1"); // checksum, counted as spaces
+  h.write("0", 156, "latin1"); // a regular file
+  h.write("ustar\u000000", 257, "latin1"); // magic and version
+  let sum = 0;
+  for (const b of h) sum += b;
+  h.write(sum.toString(8).padStart(6, "0") + "\0 ", 148, "latin1");
+  return Buffer.concat([h, data, Buffer.alloc((512 - (data.length % 512)) % 512), Buffer.alloc(1024)]);
+}
+
+/** Commit `files` to a throwaway repository, delete `remove` in a second commit, and scan its history. */
+function historyOf(files: [string, Buffer][], remove: string[]) {
+  const dir = mkdtempSync(join(tmpdir(), "derived-content-history-"));
+  try {
+    const git = (...args: string[]) =>
+      execFileSync("git", ["-C", dir, "-c", "user.name=guard-test", "-c", "user.email=guard-test@example.invalid", "-c", "core.autocrlf=false", ...args]);
+    git("init", "-q");
+    for (const [name, bytes] of files) writeFileSync(join(dir, name), bytes);
+    git("add", "-A");
+    git("commit", "-q", "-m", "add");
+    git("rm", "-q", ...remove);
+    git("commit", "-q", "-m", "delete");
+    return scanHistory(dir, REPO_ROOT);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 // ─── The cleared set is the gate's ───────────────────────────────────────────
@@ -388,6 +427,40 @@ describe("judgeMidi", () => {
   });
 });
 
+// ─── How every scan reads a file ─────────────────────────────────────────────
+
+describe("classify", () => {
+  const mid = smf([60, 62, 64, 65]);
+
+  it("opens gzip by a .gz name or by its magic bytes, whatever the name", () => {
+    expect(classify("x.bin.gz", gzipSync(mid))).toMatchObject({ kind: "midi" });
+    expect(classify("x.bin", gzipSync(mid))).toMatchObject({ kind: "midi" });
+    expect(classify("x.tgz", gzipSync(tarOne("x.mid", mid)))).toMatchObject({ kind: "midi" });
+    expect(classify("run.log.gz", gzipSync(Buffer.from("a log line\n")))).toEqual({ kind: "text", bytes: Buffer.from("a log line\n") });
+    expect(classify("notes.json", gzipSync(Buffer.from("{}")))).toEqual({ kind: "text", bytes: Buffer.from("{}") });
+    expect(classify("x.png", Buffer.concat([PNG_HEAD, Buffer.alloc(8)]))).toEqual({ kind: "other" });
+  });
+
+  it("stops inflating at the bound and reports the file uninspected, never skipped", () => {
+    expect(MAX_INFLATE).toBe(64 * 2 ** 20);
+    const zeros = gzipSync(Buffer.alloc(4096));
+    expect(classify("x.bin", zeros, 1024)).toEqual({
+      kind: "uninspected",
+      reason: "gzip content inflates past 1024 bytes, the scan's bound, so it was not read",
+    });
+    expect(classify("x.bin", zeros, 4096)).toEqual({ kind: "other" });
+  });
+
+  it("reports gzip that does not decompress as uninspected, by its name or by its magic", () => {
+    const cut = gzipSync(mid).subarray(0, 20);
+    for (const name of ["x.gz", "x.bin"]) {
+      expect(classify(name, cut)).toMatchObject({ kind: "uninspected", reason: expect.stringMatching(/^gzip content does not decompress/) });
+    }
+    // a .gz name on bytes that are not gzip at all
+    expect(classify("x.gz", Buffer.from("plain text"))).toMatchObject({ kind: "uninspected" });
+  });
+});
+
 // ─── The tree ────────────────────────────────────────────────────────────────
 
 describe("derived content of uncleared songs stays out of the tree", () => {
@@ -573,6 +646,39 @@ describe("derived content of uncleared songs stays out of the tree", () => {
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
+  });
+
+  it("scanHistory opens gzip as the tree scan does: by a .gz name on any path, or by its magic bytes", () => {
+    const gz = gzipSync(smf([60, 62, 64, 65]));
+    const files: [string, Buffer][] = [
+      ["a.bin", gz], // one blob under two names, and the .gz name is not the first
+      ["notes.bin.gz", gz],
+      ["notes.bin", gzipSync(smf([62, 64, 65, 67]))], // gzip with no .gz name
+      ["songs.tgz", gzipSync(tarOne("song.mid", smf([64, 65, 67, 69])))], // MIDI inside a .tgz
+      ["broken.gz", gzipSync(smf([65, 67, 69, 71])).subarray(0, 20)], // gzip that does not decompress
+      ["run.log.gz", gzipSync(Buffer.from("a log line\n"))], // gzipped text with nothing to flag
+    ];
+    const rows = historyOf(files, files.map(([name]) => name));
+    expect(rows.map((r) => [r.path, r.presentAtHead, r.dirtyBlobs.length])).toEqual([
+      ["a.bin", false, 1],
+      ["broken.gz", false, 1],
+      ["notes.bin", false, 1],
+      ["notes.bin.gz", false, 1],
+      ["songs.tgz", false, 1],
+    ]);
+    // The tree scan's verdict on the same bytes under the same names.
+    const flaggedInTree = files.filter(([name, bytes]) => judgeBytes(scan, name, bytes).length > 0).map(([name]) => name);
+    expect(rows.map((r) => r.path)).toEqual([...flaggedInTree].sort());
+    // and what each is: MIDI, found through gzip, except the one that could not be read
+    const rules = Object.fromEntries(files.map(([name, bytes]) => [name, judgeBytes(scan, name, bytes).map((f) => f.rule)]));
+    expect(rules).toEqual({
+      "a.bin": ["unevidenced-midi"],
+      "notes.bin.gz": ["unevidenced-midi"],
+      "notes.bin": ["unevidenced-midi"],
+      "songs.tgz": ["unevidenced-midi"],
+      "broken.gz": ["uninspected"],
+      "run.log.gz": [],
+    });
   });
 
   it("every committed piano roll belongs to a record that passes the evidence gate", () => {

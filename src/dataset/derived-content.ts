@@ -617,7 +617,9 @@ export type FindingRule =
   /** keyed to a v0 window record that is absent or fails evidenceRefusal */
   | "unevidenced-record"
   /** a MIDI file whose bytes are no song's evidenced file */
-  | "unevidenced-midi";
+  | "unevidenced-midi"
+  /** compressed content the scan could not read: past its bound, or not decompressing */
+  | "uninspected";
 
 export interface Finding {
   path: string;
@@ -627,6 +629,7 @@ export interface Finding {
   /**
    * note-level when note units reach NOTE_UNIT_FLOOR, else measurement-level.
    * A MIDI file is always note-level: it is an arrangement, whatever it holds.
+   * So is uninspected content: what could not be read is held to the strictest level.
    */
   level: "note-level" | "measurement-level";
   reason: string;
@@ -818,3 +821,20 @@ export function judgeMidi(path: string, bytes: Uint8Array, jc: JudgeContext): Fi
   ];
 }
 
+/**
+ * A file the scan could not read, as a finding: compressed content past the
+ * scan's bound, or content that does not decompress. It fails closed, so an
+ * unreadable file is reviewed, never skipped.
+ */
+export function uninspectedFinding(path: string, reason: string, storedBytes: number): Finding {
+  return {
+    path,
+    songKey: path.split("/").pop() ?? path,
+    rule: "uninspected",
+    level: "note-level",
+    reason,
+    units: 0,
+    indicators: emptyIndicators(),
+    where: [`${storedBytes} bytes stored`],
+  };
+}
