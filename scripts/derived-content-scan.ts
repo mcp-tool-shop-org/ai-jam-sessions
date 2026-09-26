@@ -85,6 +85,11 @@ export type Content =
  *    16 KiB chunks and stops the moment its output passes `maxInflate`, so no
  *    file can hold more than that in memory. Past the bound, or when the bytes
  *    do not decompress, the file is uninspected: a finding, never a skip.
+ *    Only a gzip stream that starts the file is opened. A gzip stream further
+ *    in stays compressed and holds no MIDI header, so it is not judged: a
+ *    gzipped MIDI after any prefix, or a .mid.gz member of an uncompressed tar
+ *    (a tar of a gzipped MIDI). Both are known limits. A gzip of a tar of a
+ *    MIDI file is opened, and a raw MIDI inside a tar is found by its header.
  * 2. Text is read under a text name when there is no NUL in the first 8 KB,
  *    unless it holds a MIDI header: then it is MIDI after text.
  * 3. Otherwise it is MIDI by name or by header (isMidiFile), or not judged.
