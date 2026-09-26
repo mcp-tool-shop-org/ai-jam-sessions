@@ -9,9 +9,12 @@
 //   - JSON schema validity
 //   - Tool registry roundtrip via INSPECTOR_TOOLS / findInspectorTool
 //
-// Fixtures: 2-3 real corpus records (loaded from disk) — `bach-prelude-c-major-bwv846-m001-004`
-// and `pathetique-mvt2-m025-028` — both required by Slice 17 demo. Hand-computed
-// expected values verified before writing the assertions.
+// Fixtures: 2 real corpus records (loaded from disk) — `bach-prelude-c-major-bwv846-m001-004`
+// and `fur-elise-m009-012`. Hand-computed expected values verified before writing the
+// assertions. The Slice 17 demo's second record, `pathetique-mvt2-m025-028`, was removed
+// from the tree on 2026-09-25 with its work (docs/findings/derived-content-inventory.md);
+// fur-elise m009-012 takes its place for the same reasons: both hands, accidentals, and
+// simultaneous onsets across the hands (which also exercises the tie-break).
 //
 // NO LLM calls, NO fetch, NO global state.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -41,8 +44,6 @@ import type { TimedEvent } from "../schema.js";
 
 const RECORDS_DIR = join(
   new URL(".", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1"),
-  // The source corpus, not the public package: several fixtures below are records
-  // withdrawn from the public subset in 0.6.0 and kept only in the source corpus.
   "../../../datasets/jam-actions-v0/records",
 );
 
@@ -53,7 +54,7 @@ function loadRecord(filename: string): E3Record {
 }
 
 const bach = loadRecord("bach-prelude-c-major-bwv846-m001-004.json");
-const pathetique = loadRecord("pathetique-mvt2-m025-028.json");
+const furElise = loadRecord("fur-elise-m009-012.json");
 
 // A small in-memory record for edge-case tests.
 function makeSyntheticRecord(events: TimedEvent[]): E3Record {
@@ -109,13 +110,16 @@ describe("get_events_in_measure", () => {
     expect(m1[0].hand).toBe("right");
   });
 
-  it("returns 10 events for pathetique m25 (hand-computed)", () => {
-    const m25 = get_events_in_measure(pathetique, 25);
-    // Hand-computed: 10 events in m25 (mixed hands).
-    expect(m25.length).toBe(10);
-    // First event sorted by beat: E5 (note 76, right) at beat 0.7396.
-    expect(m25[0].pitch).toBe(76);
-    expect(m25[0].hand).toBe("right");
+  it("returns 6 events for fur-elise m9 (hand-computed)", () => {
+    const m9 = get_events_in_measure(furElise, 9);
+    // Hand-computed: 6 events in m9 (mixed hands).
+    expect(m9.length).toBe(6);
+    // First event sorted by beat: A4 (note 69, right) at beat 0. A2 (left) also
+    // starts at beat 0; the right hand sorts first on a tie.
+    expect(m9[0].pitch).toBe(69);
+    expect(m9[0].hand).toBe("right");
+    expect(m9[1].pitch).toBe(45);
+    expect(m9[1].hand).toBe("left");
   });
 
   it("returns empty array for missing measure", () => {
@@ -150,9 +154,9 @@ describe("get_events_in_hand", () => {
     expect(left.length).toBe(2);
   });
 
-  it("returns 23 right and 17 left for pathetique (hand-computed)", () => {
-    expect(get_events_in_hand(pathetique, "right").length).toBe(23);
-    expect(get_events_in_hand(pathetique, "left").length).toBe(17);
+  it("returns 17 right and 9 left for fur-elise m009-012 (hand-computed)", () => {
+    expect(get_events_in_hand(furElise, "right").length).toBe(17);
+    expect(get_events_in_hand(furElise, "left").length).toBe(9);
   });
 
   it("returns sorted by (measure, beat) ascending", () => {
@@ -184,7 +188,7 @@ describe("count_distinct_pitch_classes", () => {
   });
 
   it("returns sorted classes alphabetically", () => {
-    const result = count_distinct_pitch_classes(pathetique);
+    const result = count_distinct_pitch_classes(furElise);
     const sorted = [...result.classes].sort();
     expect(result.classes).toEqual(sorted);
   });
@@ -295,11 +299,11 @@ describe("get_hand_balance", () => {
     expect(result.ratio).toBeCloseTo(62 / 64, 4);
   });
 
-  it("returns 23/17 for pathetique (hand-computed)", () => {
-    const result = get_hand_balance(pathetique);
-    expect(result.right_count).toBe(23);
-    expect(result.left_count).toBe(17);
-    expect(result.ratio).toBeCloseTo(23 / 40, 4);
+  it("returns 17/9 for fur-elise m009-012 (hand-computed)", () => {
+    const result = get_hand_balance(furElise);
+    expect(result.right_count).toBe(17);
+    expect(result.left_count).toBe(9);
+    expect(result.ratio).toBeCloseTo(17 / 26, 4);
   });
 
   it("returns null ratio for empty events", () => {
@@ -376,21 +380,24 @@ describe("count_notes_with_pitch_class", () => {
     expect(result.count).toBe(expected);
   });
 
-  it("counts D# (sharp form) in pathetique", () => {
-    const result = count_notes_with_pitch_class(pathetique, "D#");
+  it("counts D# (sharp form) in fur-elise m009-012", () => {
+    const result = count_notes_with_pitch_class(furElise, "D#");
     expect(result.pitch_class).toBe("D#");
-    // Should be non-negative integer; cross-check against direct filter.
-    const events = pathetique.observation.midi_sidecar.timed_events;
+    // Hand-computed: two D# events (the D#5 neighbour tones). Cross-check
+    // against a direct filter as well.
+    expect(result.count).toBe(2);
+    const events = furElise.observation.midi_sidecar.timed_events;
     const expected = events.filter((e) => e.note % 12 === 3).length;
     expect(result.count).toBe(expected);
   });
 
   it("accepts flat-name input and normalizes to canonical sharp", () => {
     // Eb is canonical D#.
-    const a = count_notes_with_pitch_class(pathetique, "Eb");
-    const b = count_notes_with_pitch_class(pathetique, "D#");
+    const a = count_notes_with_pitch_class(furElise, "Eb");
+    const b = count_notes_with_pitch_class(furElise, "D#");
     expect(a.pitch_class).toBe("D#");
     expect(a.count).toBe(b.count);
+    expect(a.count).toBeGreaterThan(0);
   });
 
   it("accepts unicode-flat input (B♭ → A#)", () => {

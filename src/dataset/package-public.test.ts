@@ -392,12 +392,30 @@ describe("D-B1-002 — real corpus regression: satie/debussy never survive the p
       .map((r) => r.id);
     expect(offendingIds).toEqual([]);
 
-    // Sanity: the deny-listed songs really are present in the SOURCE corpus
-    // (proving this test isn't vacuously passing because the records simply
-    // don't exist on disk) — they're just correctly excluded by verdict.
+    // Since 2026-09-25 the deny-listed songs' records are not in the SOURCE
+    // corpus at all: they were built from the pre-Mutopia files, whose sidecar
+    // hashes match no evidenced library file, and were removed from the tree
+    // (docs/findings/derived-content-inventory.md; the derived-content guard
+    // keeps them out). So the corpus holds none of them...
     const songIds = new Set(allRecords.map((r) => r.scope.song_id));
-    expect(songIds.has("satie-gymnopedie-no1")).toBe(true);
-    expect(songIds.has("debussy-arabesque-no1")).toBe(true);
+    expect(songIds.has("satie-gymnopedie-no1")).toBe(false);
+    expect(songIds.has("debussy-arabesque-no1")).toBe(false);
+
+    // ...and, so this test cannot pass vacuously, a real public record
+    // relabelled as each deny-listed song and marked public is still refused
+    // by the same pipeline run on the real corpus.
+    const donor = publicRecords[0];
+    for (const song of EXCLUDED_SONG_IDS) {
+      const relabelled: SourceRecord = {
+        ...donor,
+        id: donor.id.replace(/^[^:]+/, song),
+        scope: { ...donor.scope, song_id: song },
+        provenance: { ...donor.provenance, record_verdict: "public" },
+      };
+      const selected = selectPublicRecords([...allRecords, relabelled]);
+      expect(selected.map((r) => r.id)).toContain(relabelled.id);
+      expect(() => assertNoExcludedWorksInPublicSet(selected)).toThrow(/EXCLUSION REGRESSION/);
+    }
   });
 });
 
