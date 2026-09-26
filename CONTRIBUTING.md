@@ -52,7 +52,7 @@ check `pnpm --version` first.
 
 **3. Coverage floor.** `pnpm test:coverage` enforces a local coverage floor
 (`vitest.config.ts`, `coverage.thresholds`) independent of the Codecov upload
-in `ci.yml` (which is currently non-blocking — see the comment on that step).
+in `ci.yml`, which only reports (`codecov.yml` keeps its statuses informational).
 `pnpm test` does not run coverage and won't catch a threshold miss; only
 `pnpm test:coverage` will, and only the Node 22 leg of CI runs it. If you're
 adding a large new module, run `pnpm test:coverage` locally before pushing so

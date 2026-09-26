@@ -3,16 +3,12 @@ import { defineConfig } from "vitest/config";
 // ─── Coverage gate (C-B1-001, Stage C amend) ───────────────────────────────
 //
 // Before this file existed, `pnpm test:coverage` computed a report on every
-// CI run (ci.yml, Node 22 leg) but nothing ever gated on it. The only
-// consumer was the Codecov upload step, which has silently failed on every
-// single run: Codecov's tokenless upload path doesn't work against a
-// branch-protected default branch, and `fail_ci_if_error: false` swallows
-// that failure so the job stays green regardless. This config adds a local,
-// Codecov-independent floor so a real regression (coverage collection
+// CI run (ci.yml, Node 22 leg) but nothing ever gated on it. This config adds
+// a local, Codecov-independent floor so a real regression (coverage collection
 // breaking, a large new module landing untested) fails the build on its own.
-// The Codecov step in ci.yml is left in place and still non-blocking — fixing
-// its token requires a `CODECOV_TOKEN` repo secret, which is an operator
-// action outside this fix's scope, not something a config file can supply.
+// Codecov only reports: ci.yml's codecov job uploads with OIDC, and
+// codecov.yml keeps both of its statuses informational, so this floor is the
+// one gate on coverage.
 //
 // Vitest 4 removed `coverage.all`; the explicit `include` below is its
 // replacement — every file matching `include` appears in the report even
@@ -92,7 +88,7 @@ export default defineConfig({
         "src/smoke.ts",
       ],
       reportsDirectory: "./coverage",
-      // Keep "json" — ci.yml's Codecov step reads ./coverage/coverage-final.json.
+      // Keep "json" — ci.yml saves ./coverage/coverage-final.json for Codecov.
       reporter: ["text", "json", "json-summary", "html"],
       thresholds: {
         statements: 30,
