@@ -12,10 +12,21 @@ The owner approved both passes and the order below. What happened:
   With both fixed, the path and blob lists equalled the dry run's exactly (718 paths, 119 blob versions).
 - Step 6 passed in full. On the Windows check clone, one test (`ship-list.test.ts`, byte equality of `songs/library/.npmignore`) failed only because `core.autocrlf=true` put a carriage return on each of the file's 99 lines; the committed blob has none. On an LF checkout it passes, and CI on the identical tree (`f513ef3`) was green.
 - Before the push, the external review's findings on #46 and this runbook were dispositioned on the PR.
-- Step 7 pushed branches, then tags, each with `--atomic`, inside a window that re-applied the branch protection in a `finally`. GitHub then served exactly the mirror's 71 branch and tag refs. `main` is now `7ae19f1`.
-- A fresh clone of branches and tags from GitHub scans to the 20 kept paths and nothing else, and the only MIDI in its history are the 14 cleared library files.
-- The real old-to-new map is [`history-rewrite/commit-map-2026-09-26.txt`](history-rewrite/commit-map-2026-09-26.txt): 1,224 commits: 1,186 rewritten, 2 pruned as empty (`78b1856` and its `refs/pull` twin `972bd64`), 36 unchanged. For the published citations checked, the dry-run ids in the tables below match it: `5139ec7` → `72ff5ca`, `79c4fd1` → `e2050c2`, `c9dcd17` → `ff31000`.
-- Steps 8 and 9 follow: the GitHub support request for `refs/pull/*`, and the post-steps.
+- Step 7 pushed branches, then tags, each with `--atomic`, inside a window that re-applied the branch protection in a `finally`. GitHub then served exactly the mirror's 71 branch and tag refs. `main` became `7ae19f1`.
+- A fresh clone of branches and tags from GitHub scanned to the 20 kept paths and nothing else. This record first said the only MIDI in its history were the 14 cleared library files. That was wrong: it was checked by path, and two of those paths still held older, uncleared versions. The second pass below removed them.
+- The real old-to-new map is [`history-rewrite/commit-map-2026-09-26.txt`](history-rewrite/commit-map-2026-09-26.txt): 1,224 commits: 1,186 rewritten, 2 pruned as empty (`78b1856` and its `refs/pull` twin `972bd64`), 36 unchanged. For the published citations checked, the dry-run ids in the tables below match it: `5139ec7` → `72ff5ca`, `79c4fd1` → `e2050c2`, `c9dcd17` → `ff31000`. These are first-pass ids; the second pass moved them again.
+- Step 8: GitHub support ticket #4795393, which asks for the removal of the old commits that `refs/pull/*` still reach.
+
+### The second pass (2026-09-26)
+
+The MIDI guard (#47) judges MIDI files by their bytes. Its history scan found two pre-Mutopia MIDI versions the first pass had left, under paths that now hold the cleared files: `songs/library/classical/satie-gymnopedie-no1.mid` (blob `35c466c4`) and `debussy-arabesque-no1.mid` (blob `613e22e1`). They sat in 298 of the 823 commits reachable from branches and tags, and in 44 of 55 tags. The owner approved a second content pass.
+- A new verified backup was taken after #47 merged (`e538e20`).
+- The working mirror was scoped to branches and tags. GitHub's read-only `refs/pull/*` still reach the original commits until support acts, and they are never pushed.
+- The scanner's lists were exactly the two blobs, and one content pass dropped them.
+- Step 6 passed again, plus a content check the first pass lacked: every MIDI version anywhere in branch and tag history is byte-identical to its cleared file at HEAD.
+- Step 7 pushed 17 branches and 55 tags, and GitHub served exactly the mirror's 72 refs. `main` became `db83d7e`.
+- The maps are [`commit-map-2026-09-26-pass2.txt`](history-rewrite/commit-map-2026-09-26-pass2.txt) (first-pass id → final) and [`commit-map-original-to-final.txt`](history-rewrite/commit-map-original-to-final.txt) (pre-rewrite id → final; zeros for the 2 pruned, `-` for the 18 reached by no branch or tag). The final ids of the published citations are `5139ec7` → `093cdaf`, `79c4fd1` → `e2e2faa` and `c9dcd17` → `8866608`.
+- Ticket #4795393 was updated to cover both passes.
 
 ## Standards compliance
 
