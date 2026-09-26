@@ -1,0 +1,4 @@
+{
+  "title": "jam-actions-v0 (public subset) — AI Jam Sessions tool-use traces, v0.6.0 correction release",
+  "notes": "Correction release. 58 records from four songs withdrawn (arrangement licence not established); 57 records byte-identical to 0.5.0. Historical eval artifacts are not shipped; they remain in the source repository at tag jam-actions-v0-0.5.0-cut-2026-07-11. See RELEASE_NOTES.md and KNOWN_LIMITATIONS.md. On 2026-09-26 the source repository's history was rewritten to remove content that could not be licensed. Commit ids cited in this archive map to new ids: source_commit 5139ec7 is now 72ff5ca, and 79c4fd1 is now e2050c2. The jam-actions-v0-* tags point to the rewritten commits. The full map is in docs/findings/history-rewrite/ in mcp-tool-shop-org/ai-jam-sessions."
+}

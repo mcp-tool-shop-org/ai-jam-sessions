@@ -2,6 +2,21 @@
 
 Dry run: 2026-09-25, on a throwaway mirror (`E:/AI/ai-jam-sessions-history-dryrun.git`, cloned from GitHub that day). **Nothing was pushed.** Every step below that changes GitHub is the owner's decision; this page makes that decision measurable. It is written against `derived-content-inventory.md`, which lists what the tree held.
 
+## The real run (2026-09-26)
+
+The owner approved both passes and the order below. What happened:
+- The sweep PR (#46) merged as `f513ef3`. A verified backup was taken before anything else, on the archive drive: `fsck` clean, bundle verified, 119 refs recorded.
+- Step 3 caught two faults in step 2 as it was first written. Both are fixed in the commands below.
+  - The MIDI filter used a `git ls-tree -- '*.mid'` pattern. `ls-tree` matches literal path prefixes, not globs, so the pattern matched nothing, and the 14 cleared library MIDI files would have been removed from every commit, the tip included.
+  - 30 piano-roll SVGs deleted by #46 were missing, because the scanner does not flag them.
+  With both fixed, the path and blob lists equalled the dry run's exactly (718 paths, 119 blob versions).
+- Step 6 passed in full. On the Windows check clone, one test (`ship-list.test.ts`, byte equality of `songs/library/.npmignore`) failed only because `core.autocrlf=true` put a carriage return on each of the file's 99 lines; the committed blob has none. On an LF checkout it passes, and CI on the identical tree (`f513ef3`) was green.
+- Before the push, the external review's findings on #46 and this runbook were dispositioned on the PR.
+- Step 7 pushed branches, then tags, each with `--atomic`, inside a window that re-applied the branch protection in a `finally`. GitHub then served exactly the mirror's 71 branch and tag refs. `main` is now `7ae19f1`.
+- A fresh clone of branches and tags from GitHub scans to the 20 kept paths and nothing else, and the only MIDI in its history are the 14 cleared library files.
+- The real old-to-new map is [`history-rewrite/commit-map-2026-09-26.txt`](history-rewrite/commit-map-2026-09-26.txt): 1,224 commits: 1,186 rewritten, 2 pruned as empty (`78b1856` and its `refs/pull` twin `972bd64`), 36 unchanged. For the published citations checked, the dry-run ids in the tables below match it: `5139ec7` → `72ff5ca`, `79c4fd1` → `e2050c2`, `c9dcd17` → `ff31000`.
+- Steps 8 and 9 follow: the GitHub support request for `refs/pull/*`, and the post-steps.
+
 ## Standards compliance
 
 | Standard | Score | Evidence |
@@ -110,11 +125,21 @@ const blobs = [...new Set(rows.filter((r) => r.presentAtHead && !keep.has(r.path
 fs.writeFileSync(process.argv[2], paths.sort().join("\n") + "\n");
 fs.writeFileSync(process.argv[3], blobs.sort().join("\n") + "\n");
 ' "$WORK/history.json" "$WORK/remove-paths.txt" "$WORK/drop-blobs.txt"
-# the scanner skips binaries: add every historical MIDI path not at HEAD (the purged ones)
+# the scanner skips binaries: add every historical MIDI path not at HEAD (the purged ones).
+# `git ls-tree -- '*.mid'` matches literal path prefixes, not globs, so filter the listing;
+# otherwise the cleared library MIDI at HEAD would be removed from every commit.
+git -C "$WORK/mirror.git" ls-tree -r --name-only HEAD | grep '\.mid$' > "$WORK/midi-at-head.txt"
 git -C "$WORK/mirror.git" log --all --name-only --format= -- '*.mid' | sort -u \
-  | grep -v -x -F -f <(git -C "$WORK/mirror.git" ls-tree -r --name-only HEAD -- '*.mid') \
+  | grep -v -x -F -f "$WORK/midi-at-head.txt" \
+  | sed 's/^/literal:/' >> "$WORK/remove-paths.txt"
+# the scanner does not flag every derived file (piano-roll SVGs): add the sweep merge's deletions
+SWEEP_MERGE=f513ef3   # the merge of #46; use its id in the mirror being rewritten
+git -C "$WORK/mirror.git" diff --name-only --diff-filter=D "$SWEEP_MERGE^1" "$SWEEP_MERGE" \
   | sed 's/^/literal:/' >> "$WORK/remove-paths.txt"
 sort -u -o "$WORK/remove-paths.txt" "$WORK/remove-paths.txt"
+# andon: no path present at HEAD may be on the list
+git -C "$WORK/mirror.git" ls-tree -r --name-only HEAD | sed 's/^/literal:/' | sort \
+  | comm -12 "$WORK/remove-paths.txt" - | grep . && { echo "STOP: paths at HEAD are listed"; exit 1; }
 
 # 3. compare with the dry run; review every added line before going on
 #    (with core.autocrlf=true the committed lists check out as CRLF, hence tr)
@@ -132,7 +157,7 @@ DROP_BLOBS="$WORK/drop-blobs.txt" git filter-repo --force \
 cp -r filter-repo "$WORK/pass2"
 ```
 
-After the sweep merge, the 177 deletions are absent at HEAD, so step 2 lists them as history-only paths without special handling. The dry run built its path list from the PR's deletion list, because its mirror predated the merge.
+After the sweep merge, the 177 deletions are absent at HEAD. The scanner lists most of them as history-only paths, but not the 30 piano-roll SVGs it does not flag, so step 2 adds the merge's deletions explicitly, as the dry run did from the PR's deletion list.
 
 ## 6. Verification: every item must hold (andon)
 

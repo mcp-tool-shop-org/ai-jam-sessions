@@ -58,7 +58,7 @@ Ordered by note units (derived content only; composite keys count toward each so
 |---|---|---|---|---|---|---|---:|---|
 | blue-bossa | Blue Bossa | 1963 | Kenny Dorham (1972) | no | no | high | 2330 | snapshot, E-R generations, E-R items, E-R prompts |
 | lets-stay-together | Let's Stay Together (Al Green song) | 1971 | Al Green (living); Willie Mitchell (2010); Al Jackson Jr. (1975) | no | no | high | 1898 | snapshot |
-| besame-mucho | Bésame Mucho | 1932 | Consuelo Velázquez (2005) | no | no | high | 1735 | E-R gate items, snapshot, E-R generations, E-R items, E-R prompts |
+| besame-mucho | Bésame Mucho | 1940 (written 1932) | Consuelo Velázquez (2005) | no | no | high | 1735 | E-R gate items, snapshot, E-R generations, E-R items, E-R prompts |
 | mas-que-nada | Mas que Nada | 1963 | Jorge Ben Jor (living) | no | no | high | 1706 | bass-aware shifts, snapshot |
 | desafinado | Desafinado | 1959 | Antônio Carlos Jobim (1994); Newton Mendonça (1960) | no | no | high | 1687 | bass-aware shifts, snapshot |
 | baba-oriley | Baba O'Riley | 1971 | Pete Townshend (living) | no | no | high | 1641 | E-R gate items, snapshot, E-R generations, E-R items, E-R prompts |
@@ -262,7 +262,7 @@ Source URLs for every row are in the JSON.
 | autumn-leaves | library | Autumn Leaves (1945 song) | 1945 | Joseph Kosma (1969); Jacques Prévert (1977); Johnny Mercer (1976) | no | no | possibly-in-copyright | high |
 | baba-oriley | library | Baba O'Riley | 1971 | Pete Townshend (living) | no | no | possibly-in-copyright | high |
 | bennie-and-the-jets | library | Bennie and the Jets | 1973 | Elton John (living); Bernie Taupin (living) | no | no | possibly-in-copyright | high |
-| besame-mucho | library | Bésame Mucho | 1932 | Consuelo Velázquez (2005) | no | no | possibly-in-copyright | high |
+| besame-mucho | library | Bésame Mucho | 1940 (written 1932) | Consuelo Velázquez (2005) | no | no | possibly-in-copyright | high |
 | black-orpheus | library | Manhã de Carnaval | 1959 | Luiz Bonfá (2001); Antônio Maria (1964) | no | no | possibly-in-copyright | medium |
 | blue-bossa | library | Blue Bossa | 1963 | Kenny Dorham (1972) | no | no | possibly-in-copyright | high |
 | blues-in-the-night | quarantine | **"Blowing Kisses in the Wind" (Paula Abdul, 1991), not Arlen/Mercer** | 1991 | Peter Lord (death ?); V. Jeffrey Smith (death ?) | no | no | possibly-in-copyright | high |
