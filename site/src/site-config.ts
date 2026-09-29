@@ -2,7 +2,7 @@ import type { SiteConfig } from '@mcptoolshop/site-theme';
 
 export const config: SiteConfig = {
   title: 'AI Jam Sessions',
-  description: 'An MCP server that teaches AI to play piano and guitar — and sing. 109 annotated songs across 12 genres (now including a public-domain patriotic hymn), six sound engines, browser cockpit, practice journal — and jam-actions-v0, a public 115-record tool-use dataset.',
+  description: 'An MCP server that teaches AI to play piano and guitar — and sing. 109 annotated songs across 12 genres (now including a public-domain patriotic hymn), six sound engines, browser cockpit, practice journal — and jam-actions-v0, a public 57-record tool-use dataset.',
   logoBadge: '♪',
   brandName: 'AI Jam Sessions',
   repoUrl: 'https://github.com/mcp-tool-shop-org/ai-jam-sessions',
@@ -13,7 +13,7 @@ export const config: SiteConfig = {
     badge: 'MCP Server',
     headline: 'AI Jam Sessions.',
     headlineAccent: 'Machine learning the old fashioned way.',
-    description: 'An MCP server that teaches AI to play piano and guitar — and sing. 109 annotated songs across 12 genres (now including a public-domain patriotic hymn). Six sound engines. Interactive guitar tablature. A browser cockpit with a sampled Concert Grand, a vocal synthesizer, and a blind listening panel. A practice journal that remembers everything. Plus jam-actions-v0, a 115-record public dataset of multi-turn MCP tool-use traces over classical piano.',
+    description: 'An MCP server that teaches AI to play piano and guitar — and sing. 109 annotated songs across 12 genres (now including a public-domain patriotic hymn). Six sound engines. Interactive guitar tablature. A browser cockpit with a sampled Concert Grand, a vocal synthesizer, and a blind listening panel. A practice journal that remembers everything. Plus jam-actions-v0, a 57-record public dataset of multi-turn MCP tool-use traces over classical piano.',
     primaryCta: { href: '#quick-start', label: 'Get started' },
     secondaryCta: { href: 'handbook/', label: 'Read the Handbook' },
     previews: [
@@ -56,7 +56,7 @@ export const config: SiteConfig = {
         },
         {
           title: 'A Training Dataset to Match',
-          desc: 'jam-actions-v0 — a public corpus of 115 multi-turn MCP tool-use traces over classical piano, with a 7-axis release gate and cold-start reproducibility. CC-BY-SA-3.0-DE.',
+          desc: 'jam-actions-v0 — a public corpus of 57 multi-turn MCP tool-use traces over classical piano, with a 7-axis release gate and cold-start reproducibility. CC-BY-SA-3.0-DE.',
         },
       ],
     },
@@ -67,8 +67,8 @@ export const config: SiteConfig = {
       subtitle: 'Multi-turn MCP tool-use traces over real classical piano. Grounded tool-use over symbolic music — not just text generation.',
       features: [
         {
-          title: '115 records · 8 piano pieces',
-          desc: 'Public subset of the full corpus: 8 classical-piano arrangements from piano-midi.de across 6 composers (Bach, Beethoven, Chopin, Debussy, Mozart, Schumann). 16-record canonical post-repair baseline.',
+          title: '57 records · 4 piano pieces',
+          desc: 'Public subset 0.6.0: four piano-midi.de arrangements (Bach, Beethoven, Debussy, Mozart), 45 train and 12 held out. Version 0.6.0 withdrew 58 records from four songs whose files had no established arrangement licence. The 16-record canonical baseline was measured on the earlier composition.',
         },
         {
           title: '7-axis release gate',
@@ -88,11 +88,11 @@ export const config: SiteConfig = {
         },
         {
           title: 'Honest about provenance',
-          desc: 'Two songs in the source corpus (Satie, Debussy) are NOT in the public subset because their piano-midi.de provenance could not be verified during URL audit. Excluded rather than included on faith.',
+          desc: 'Version 0.6.0 withdraws Chopin\'s Nocturne Op. 9 No. 2 and Prelude Op. 28 No. 4, Beethoven\'s Pathétique II, and Schumann\'s Träumerei. Those files came from midiworld.com and bitmidi.com and carry no established arrangement licence. The remaining 57 records are byte-identical to 0.5.0.',
         },
         {
           title: 'Fine-tuning receipts, three arcs',
-          desc: 'Preregistered fine-tunes on sealed baselines: v0 was an honest negative (0.661 → 0.601); v1 hit +0.202 but missed its frozen 13/16 bar by one — no adapter from a near-miss; B-1 re-tested the FROZEN v1 seeds on a preregistered 36-record cohort and cleared its ex-ante bar (0.678 → 0.890, 29/36 wins vs 24/34, p<0.0001, 10/12 on never-trained music) — a powered win. The five seed adapters ship with the claim tied to the all-seeds mean.',
+          desc: 'Preregistered fine-tunes on sealed baselines: v0 was an honest negative (0.661 → 0.601); v1 hit +0.202 but missed its frozen 13/16 bar by one; B-1 cleared its ex-ante bar (0.678 → 0.890, 29/36 wins). The five seed adapters are withdrawn: they were trained on records that include the four songs 0.6.0 removed. The measurements stand as recorded.',
         },
       ],
     },
