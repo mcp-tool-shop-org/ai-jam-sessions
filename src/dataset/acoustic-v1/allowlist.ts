@@ -22,6 +22,16 @@ export const FORBIDDEN_IDS = new Set([
   "debussy-arabesque-no1",
 ]);
 
+/**
+ * Licence-clean songs added after jam-actions-v1 1.1.0 (213 records, eleven
+ * songs) was released. They ship in the library and in npm. They are not
+ * members of that corpus. Naming one here is the visible diff; do not
+ * regenerate 1.1.0 to absorb it.
+ */
+export const POST_V1_CORPUS_IDS = new Set([
+  "america-the-beautiful",
+]);
+
 /** Locked expected set — a library change that adds or drops a song is a visible diff. */
 export const EXPECTED_PUBLISHABLE_IDS = [
   "bach-prelude-c-major-bwv846",
@@ -63,6 +73,7 @@ export function isPublishableConfig(config: SongConfig): boolean {
   const p = config.provenance;
   if (!p) return false;
   if (FORBIDDEN_IDS.has(config.id)) return false;
+  if (POST_V1_CORPUS_IDS.has(config.id)) return false;
   if (p.title_verdict === "contradicts") return false;
   return isPublishableLicence(p.arrangement_license);
 }

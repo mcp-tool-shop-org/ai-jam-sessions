@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.0] - 2026-09-29
+
+### Added — America the Beautiful, a public-domain folk exemplar
+- New library song `america-the-beautiful` (Samuel A. Ward, 1882, public domain). The arrangement was made in this repository with `midi-file`, in F major at 80 BPM, melody F4–C5, and its provenance block says `arrangement_license: "Public-Domain"`. It ships in the npm package. The library is 109 songs; 15 MIDI files ship and 94 stay fetch-only.
+- It is the folk exemplar on the landing page, in the README, and in the handbook.
+- Score clock, piano-roll SVG, and a SoulX-Singer vocal route (four takes, word-level pick). Timing gate PASS (worst 5.6 ms). Pitch gate PASS (global offset −5.6 cents, scatter SD 19.9 cents), with three warnings left on the page: "O" and "beau" flat (~−32 cents), "cious" sharp (+40 cents). Order, one-voice, and fits-timeline stay FAIL without a Comfy Cloud transcript.
+- `play` and `play_song` accept a `soulx` singer backend (`--singer-backend` / `singerBackend`), optional melody track, and an optional reference clip. The default backend is still Kokoro.
+
 ### Fixed — published datasets no longer carry arrangements whose licence could not be established
 
 The song-library audit of 2026-09-09 re-derived every song's provenance from the MIDI bytes, but it left `datasets/**` untouched. Two published datasets kept records built from four songs whose files did not come from piano-midi.de and carry no established arrangement licence, while attributing them to Bernd Krueger under CC-BY-SA-3.0-DE. The full account is in `docs/findings/published-dataset-licence-audit.md`.

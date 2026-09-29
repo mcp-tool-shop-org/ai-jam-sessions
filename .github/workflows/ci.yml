@@ -303,12 +303,12 @@ jobs:
       - name: Build image (no push)
         run: docker build -t ai-jam-sessions:ci .
 
-      - name: Library is 14 loaded / 94 unfetched
+      - name: Library is 15 loaded / 94 unfetched
         run: |
           set -euo pipefail
           STATS=$(docker run --rm --entrypoint node ai-jam-sessions:ci dist/cli.js stats)
           echo "$STATS"
-          echo "$STATS" | grep -q 'Total songs: 14'
+          echo "$STATS" | grep -q 'Total songs: 15'
           LIB=$(docker run --rm --entrypoint node ai-jam-sessions:ci dist/cli.js library)
           echo "$LIB"
           echo "$LIB" | grep -q 'Not fetched: 94'

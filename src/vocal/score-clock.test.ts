@@ -10,6 +10,7 @@ import {
   deriveScoreClock,
   roundToSample,
   SCORE_CLOCK_SCHEMA,
+  detectMelodyTrack,
 } from "./score-clock.js";
 
 const MIDI = join(process.cwd(), "songs", "library", "classical", "satie-gymnopedie-no1.mid");
@@ -66,6 +67,39 @@ describe("syllabify", () => {
       { lyric: "zing", word: "Amazing", syllable: 2, syllables: 3 },
       { lyric: "grace", word: "grace", syllable: 0, syllables: 1 },
     ]);
+  });
+});
+
+describe("detectMelodyTrack", () => {
+  it("prefers a track named 'treble:' over 'bass:' for Gymnopédie", () => {
+    const { tracks } = parseMidiTracks(readFileSync(MIDI));
+    const detected = detectMelodyTrack(tracks);
+    expect(detected).toBe("treble:");
+  });
+
+  it("prefers a named melody track over an unnamed accompaniment track", () => {
+    const detected = detectMelodyTrack([
+      { name: "", notes: [{ tick: 0, durationTicks: 100, midi: 60, velocity: 80 }] },
+      { name: "Melody", notes: [{ tick: 0, durationTicks: 100, midi: 72, velocity: 80 }] },
+      { name: "Chords", notes: [{ tick: 0, durationTicks: 100, midi: 48, velocity: 80 }, { tick: 50, durationTicks: 100, midi: 52, velocity: 80 }] },
+    ] as any);
+    expect(detected).toBe("Melody");
+  });
+
+  it("prefers the note-richest track when no name matches", () => {
+    const detected = detectMelodyTrack([
+      { name: "Drums", notes: [{ tick: 0, durationTicks: 100, midi: 36, velocity: 80 }] },
+      { name: "", notes: [{ tick: 0, durationTicks: 100, midi: 60, velocity: 80 }, { tick: 100, durationTicks: 100, midi: 62, velocity: 80 }] },
+    ] as any);
+    expect(detected).toBe("");
+  });
+
+  it("returns null when every track is empty", () => {
+    const detected = detectMelodyTrack([
+      { name: "Drums", notes: [] },
+      { name: "Bass", notes: [] },
+    ] as any);
+    expect(detected).toBeNull();
   });
 });
 

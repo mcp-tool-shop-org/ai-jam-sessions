@@ -47,3 +47,11 @@ export function pianoVoicesDir(): string {
 export function fetchedLibraryDir(): string {
   return join(stateHome(), "songs", "library");
 }
+
+export function cacheDir(): string {
+  return join(stateHome(), "cache");
+}
+
+export function soulxCacheDir(): string {
+  return join(cacheDir(), "soulx");
+}

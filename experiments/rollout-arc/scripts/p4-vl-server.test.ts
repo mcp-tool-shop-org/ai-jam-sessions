@@ -14,7 +14,7 @@ let base = "";
 // THE FROZEN FIXTURE, NOT THE LIBRARY. Without `fixture` the bridge builds its pool from
 // songs/library, and this test then measures the ENVIRONMENT rather than the bridge: a dev rig
 // has all 108 songs fetched and builds ~107 progressions, while a fresh clone — and CI, which
-// asserts it in a step literally named "Library is 14 loaded / 94 unfetched" — builds 14. The
+// asserts it in a step literally named "Library is 15 loaded / 94 unfetched" — builds 15. The
 // server's own source says so at p4-vl-server.mjs:221.
 //
 // That is the same defect the P4 smoke run paid for once, when the bridge served 14 rows to a

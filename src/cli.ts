@@ -300,10 +300,10 @@ function cmdInfo(args: string[]): void {
   printSongInfo(song);
 }
 
-async function cmdPlay(args: string[]): Promise<void> {
+async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
   const target = args[0];
   if (!target) {
-    console.error("Usage: ai-jam-sessions play <song-id | file.mid> [--speed N] [--tempo N] [--mode MODE] [--midi] [--with-singing] [--with-teaching] [--sing-mode MODE] [--seek N] [--metronome] [--count-in N] [--record]");
+    console.error("Usage: ai-jam-sessions play <song-id | file.mid> [--speed N] [--tempo N] [--mode MODE] [--midi] [--with-singing] [--with-teaching] [--sing-mode MODE] [--seek N] [--metronome] [--count-in N] [--record] [--singer-backend kokoro|soulx|additive|tract] [--melody-track NAME]");
     process.exit(1);
   }
 
@@ -324,6 +324,17 @@ async function cmdPlay(args: string[]): Promise<void> {
   const lyricsFlag = getFlag(args, "--lyrics");
   const lyricsFile = getFlag(args, "--lyrics-file");
   const lyricsMeasuresStr = getFlag(args, "--measures");
+  const singerBackend = getFlag(args, "--singer-backend") ?? "kokoro";
+  const melodyTrack = getFlag(args, "--melody-track") ?? undefined;
+  const singerPromptWav = getFlag(args, "--singer-prompt-wav") ?? undefined;
+  const singerPromptMeta = getFlag(args, "--singer-prompt-meta") ?? undefined;
+
+  // Validate singer backend
+  const VALID_SINGER_BACKENDS = ["kokoro", "soulx", "additive", "tract"];
+  if (!VALID_SINGER_BACKENDS.includes(singerBackend)) {
+    console.error(`Unknown singer backend: "${singerBackend}". Available: ${VALID_SINGER_BACKENDS.join(", ")}`);
+    process.exit(1);
+  }
 
   // Session-recording flags (library songs only — see parsePlaySessionFlags).
   let sessionFlags: PlaySessionFlags;
@@ -623,6 +634,11 @@ async function cmdPlay(args: string[]): Promise<void> {
             endMeasure: lyricsEnd,
             tempo,
             speed,
+            libraryDir,
+            backend: singerBackend,
+            melodyTrack,
+            soulxPromptWav: singerPromptWav,
+            soulxPromptMeta: singerPromptMeta,
           });
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err);
@@ -1812,7 +1828,7 @@ async function main(): Promise<void> {
       cmdInfo(args.slice(1));
       break;
     case "play":
-      await cmdPlay(args.slice(1));
+      await cmdPlay(args.slice(1), libraryDir);
       // Force exit: the audio engines (node-web-audio-api) don't release
       // all handles/timers on disconnect(), so the event loop can stay
       // alive indefinitely otherwise. This is a known workaround for that

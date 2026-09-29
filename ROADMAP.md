@@ -17,6 +17,7 @@ What's next to make this feel less like a developer utility and more like a musi
 - [x] **Recording pipeline → scoring** — `play_song`'s `record` flag captures the session; `score_last_take` scores it per-note
 - [x] **Practice loop / section repeat** — `practice_loop` drills a measure range and ramps tempo +5% only after a clean pass; `practice_status` reports the drill
 - [x] **Song library annotation** — 120/120 songs ready: deterministic per-song analysis + gated LLM pass, fact-checked against the MIDI
+- [x] **Patriotic exemplar** — America the Beautiful (F major, public domain) is the folk exemplar. The package ships the arrangement. SoulX-Singer sings it; the landing page keeps the timing pass, the pitch pass, and the three pitch warnings
 - [x] **MCP server + CLI test coverage** — `mcp-server.test.ts` and `cli.test.ts` run in CI; the suite is 2930 tests
 - [x] **Scored piano roll overlay** — `view_scored_piano_roll` renders per-note verdicts in a colorblind-safe palette
 - [x] **Suggested next song** — `suggest_song` recommends by genre, difficulty, and play history

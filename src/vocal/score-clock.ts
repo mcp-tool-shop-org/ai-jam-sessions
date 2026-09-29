@@ -143,7 +143,55 @@ export function parseMidiTracks(bytes: Uint8Array): {
   };
 }
 
-// ─── Session-nominal schedule ───────────────────────────────────────────────
+// ─── Melody-track auto-detect ───────────────────────────────────────────────
+
+const MELODY_KEYWORDS = [
+  "melody", "tune", "lead", "vocal", "voice", "soprano", "solo", "tubularbel",
+];
+
+const ACCOMP_KEYWORDS = [
+  "bass", "drums", "perc", "chords", "comp", "accomp", "rhythm", "pad",
+  "strings", "drum", "bass", "arpeggio", "arp", "harmony", "bassline",
+];
+
+/** Score a track for how likely it is the melody. Higher = more likely. */
+function scoreTrack(name: string, noteCount: number): number {
+  const lower = name.toLowerCase();
+  let score = 0;
+  if (noteCount === 0) return -Infinity; // never pick an empty track
+
+  // Exact melody keywords
+  for (const kw of MELODY_KEYWORDS) {
+    if (lower === kw) score += 100;
+    else if (lower.includes(kw)) score += 50;
+  }
+
+  // Accompaniment penalty
+  for (const kw of ACCOMP_KEYWORDS) {
+    if (lower.includes(kw)) score -= 80;
+  }
+
+  // Note count bonus (log-scaled so a track with 2× notes gets +7, not +2×)
+  score += Math.log2(noteCount + 1) * 10;
+
+  return score;
+}
+
+/**
+ * Auto-detect the melody track from parsed MIDI tracks.
+ * Returns the name of the best candidate, or `null` if every track is empty.
+ */
+export function detectMelodyTrack(
+  tracks: { name: string; notes: MidiMelodyNote[] }[],
+): string | null {
+  const scored = tracks
+    .map((t) => ({ name: t.name, score: scoreTrack(t.name, t.notes.length) }))
+    .filter((s) => s.score !== -Infinity)
+    .sort((a, b) => b.score - a.score);
+
+  if (scored.length === 0) return null;
+  return scored[0].name;
+}
 
 export interface ScheduledNote {
   measure: number;

@@ -25,8 +25,9 @@ export interface ScoreSingerOptions {
   /**
    * `kokoro` — locked Kokoro take + voice-changer (fx-dub PERFORM). Default.
    * `tract` / `additive` — leftover engines; not the singing lead.
+   * `soulx` — SoulX-Singer score-conditioned neural SVS (local GPU).
    */
-  backend?: "kokoro" | "tract" | "additive";
+  backend?: "kokoro" | "tract" | "additive" | "soulx";
 }
 
 function findPresetsDir(): string {

@@ -1172,8 +1172,12 @@ registerTool(
     countIn: z.number().int().min(0).max(8).optional().describe("Count-in length in bars before playback starts (library songs only). Only takes effect when metronome is true. Default: 1 bar when metronome is true and this is omitted, 0 otherwise."),
     record: z.boolean().optional().describe("Record played notes for later scoring (library songs only) — retrieve with score_last_take. Default: false."),
     lyrics: z.string().optional().describe("English lyrics to sing as a score-locked lead (vowel on the MIDI beat). Aligns to the right-hand melody of the selected measures. The --engine aah/tract/synth path is not used for the lead when lyrics are set."),
+    singerBackend: z.enum(["kokoro", "soulx", "additive", "tract"]).optional().describe("Singing backend when lyrics are provided. 'kokoro' (default) uses the locked Kokoro take + voice-changer. 'soulx' uses SoulX-Singer score-conditioned neural SVS (local GPU)."),
+    melodyTrack: z.string().optional().describe("MIDI track name that carries the melody (e.g. 'TUBULARBEL'). Only used with singerBackend='soulx'. If omitted, the track is auto-detected from the MIDI file."),
+    singerPromptWav: z.string().optional().describe("Path to a reference singing voice clip (WAV/MP3) for SoulX zero-shot timbre. Requires singerPromptMeta. If omitted, the default example prompt in the SoulX checkout is used."),
+    singerPromptMeta: z.string().optional().describe("Path to the SoulX metadata JSON for the reference voice clip. Required when singerPromptWav is set."),
   },
-  async ({ id, speed, tempo, mode, startMeasure, endMeasure, withSinging, withTeaching, singMode, keyboard, engine, tractVoice, guitarVoice, syncMode: syncModeParam, metronome, countIn, record, lyrics }) => withStateLock(async () => {
+  async ({ id, speed, tempo, mode, startMeasure, endMeasure, withSinging, withTeaching, singMode, keyboard, engine, tractVoice, guitarVoice, syncMode: syncModeParam, metronome, countIn, record, lyrics, singerBackend, melodyTrack, singerPromptWav, singerPromptMeta }) => withStateLock(async () => {
     // Stop whatever is currently playing
     await stopActive();
 
@@ -1574,12 +1578,21 @@ registerTool(
 
     if (lyrics && lyrics.trim().length > 0) {
       try {
+        const { dirname } = await import("node:path");
+        const { fileURLToPath } = await import("node:url");
+        const __dirname = dirname(fileURLToPath(import.meta.url));
+        const libraryDir = pathJoin(__dirname, "..", "songs", "library");
         const prepared = await prepareScoreLocked(song, {
           lyrics,
           startMeasure,
           endMeasure,
           tempo,
           speed,
+          libraryDir,
+          backend: singerBackend,
+          melodyTrack,
+          soulxPromptWav: singerPromptWav,
+          soulxPromptMeta: singerPromptMeta,
         });
         if (prepared) {
           await prepared.singer.connect();
