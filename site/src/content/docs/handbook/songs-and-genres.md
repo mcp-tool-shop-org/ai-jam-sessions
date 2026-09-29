@@ -1,13 +1,13 @@
 ---
 title: Songs and genres
-description: The fully annotated 108-song library, what ships and what you fetch, 12 genre exemplars, and how the annotation loop works.
+description: The fully annotated 109-song library, what ships and what you fetch, 12 genre exemplars, and how the annotation loop works.
 sidebar:
   order: 3
 ---
 
 ## The library
 
-108 annotated songs across 12 genres, built from real MIDI files. Fourteen of the MIDI files ship in the package; the other 94 are fetched from their source sites with one command (see the end of this page). Songs progress through three states:
+109 annotated songs across 12 genres, built from real MIDI files. Fifteen of the MIDI files ship in the package; the other 94 are fetched from their source sites with one command (see the end of this page). America the Beautiful, arranged in this repository and dedicated to the public domain, is the fifteenth and the folk exemplar. Songs progress through three states:
 
 1. **Raw** — MIDI only, no annotations
 2. **Annotated** — musical language has been written by the AI
@@ -22,7 +22,7 @@ Each genre has one deeply annotated exemplar with historical context, bar-by-bar
 | Blues | The Thrill Is Gone (B.B. King) | B minor | Minor blues form, call-and-response, playing behind the beat |
 | Classical | Fur Elise (Beethoven) | A minor | Rondo form, touch differentiation, pedaling discipline |
 | Film | Comptine d'un autre ete (Tiersen) | E minor | Arpeggiated textures, dynamic architecture without harmonic change |
-| Folk | Greensleeves | E minor | 3/4 waltz feel, modal mixture, Renaissance vocal style |
+| Folk | America the Beautiful (Ward) | F major | Tonic-dominant hymn harmony, patriotic phrasing, melody in F4–C5 |
 | Jazz | Autumn Leaves (Kosma) | G minor | ii-V-I progressions, guide tones, swing eighths, rootless voicings |
 | Latin | The Girl from Ipanema (Jobim) | F major | Bossa nova rhythm, chromatic modulation, vocal restraint |
 | New-Age | River Flows in You (Yiruma) | A major | I-V-vi-IV recognition, flowing arpeggios, rubato |
@@ -44,7 +44,7 @@ Use the Learn tools to explore:
 
 ## Annotation workflow
 
-All 108 songs are now fully annotated — written by AI through this exact loop, gated by a quality rubric, and fact-checked against the actual MIDI. The same workflow promotes any newly imported song from raw to ready:
+All 109 songs are now fully annotated — written by AI through this exact loop, gated by a quality rubric, and fact-checked against the actual MIDI. The same workflow promotes any newly imported song from raw to ready:
 
 1. Use `song_info` or `list_measures` to examine the raw MIDI data
 2. Study the genre exemplar for context and teaching patterns
@@ -72,10 +72,10 @@ Use `mute_hand` to isolate left or right hand practice. Use `preview_teaching_cu
 
 ## What ships, and what you fetch
 
-The annotations are ours and ship with every song. The MIDI files were downloaded from public MIDI sites when the library was built, and a per-file provenance audit found that only 14 of them carry a licence that permits redistribution: Bernd Krueger's piano-midi.de arrangements (CC-BY-SA-3.0-DE) and the Mutopia Project's public-domain typesettings. Those 14 are in the npm package and in the repository. The other 94 are not. Each of their `.json` files carries a `provenance` block naming the source site, its terms and the file's SHA-256, and
+The annotations are ours and ship with every song. The MIDI files were downloaded from public MIDI sites when the library was built, and a per-file provenance audit found that only 14 of those downloads carry a licence that permits redistribution: Bernd Krueger's piano-midi.de arrangements (CC-BY-SA-3.0-DE) and the Mutopia Project's public-domain typesettings. Those 14 are in the npm package and in the repository. America the Beautiful is the fifteenth shipped MIDI: an arrangement made in this repository and dedicated to the public domain. The other 94 downloads are not. Each of their `.json` files carries a `provenance` block naming the source site, its terms and the file's SHA-256, and
 
 ```bash
 ai-jam-sessions library fetch --accept-source-terms
 ```
 
-downloads each one from the site that published it, under that site's terms, refusing any file whose hash no longer matches what the annotations were verified against. Until you fetch, those songs are listed as `unfetched` and the server plays the 14. Twelve files that turned out to be a different piece than their name were quarantined, which is why the library is 108 songs and not the 120 earlier versions claimed. The full audit is in the repository at `docs/findings/library-provenance-audit.md`.
+downloads each one from the site that published it, under that site's terms, refusing any file whose hash no longer matches what the annotations were verified against. Until you fetch, those songs are listed as `unfetched` and the server plays the 15 that ship. Twelve files that turned out to be a different piece than their name were quarantined, which is why the downloaded library is 108 songs and not the 120 earlier versions claimed. America the Beautiful brings the library to 109. The full audit is in the repository at `docs/findings/library-provenance-audit.md`.

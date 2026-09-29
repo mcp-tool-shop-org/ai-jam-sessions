@@ -1,0 +1,67 @@
+{
+  "id": "america-the-beautiful",
+  "title": "America the Beautiful",
+  "genre": "folk",
+  "composer": "Samuel A. Ward",
+  "difficulty": "beginner",
+  "key": "F major",
+  "splitPoint": 61,
+  "tempo": 80,
+  "timeSignature": "4/4",
+  "tags": [
+    "folk",
+    "patriotic",
+    "hymn",
+    "american"
+  ],
+  "status": "ready",
+  "musicalLanguage": {
+    "description": "Samuel A. Ward composed the hymn tune 'Materna' in 1882; it became inseparable from Katharine Lee Bates's 1895 poem 'Pikes Peak,' retitled 'America the Beautiful.' This arrangement presents the melody as a simple block-chord hymn in F major at a stately 80 BPM — four clear quarter-note phrases over a steady tonic-dominant bass. The melody sits in F4–C5 (the hymn's peak F5 is written an octave lower so a vocal model can sing it in tune), well-suited to a female vocal model. The piece's dignified, stepwise melody and unambiguous I-V-I harmony make it an ideal beginner piece and a natural patriotic exemplar.",
+    "structure": "Strophic hymn form — the same four-measure tune repeats for each verse. The harmonic motion is textbook tonic-dominant: measures 2 and 4 sit on F major (I), measure 3 moves to C major (V), and measure 5 returns to F major (I) for a perfect authentic cadence. The melody spans a fifth (F4 to C5), comfortably within a soprano/alto range.",
+    "keyMoments": [
+      "Measure 2: the opening F-major tonic — the melody begins on the root and immediately establishes the key.",
+      "Measure 3: the dominant shift to C major — the only harmonic departure in the excerpt, creating gentle tension before the return.",
+      "Measure 4: the high point on C5 — the melody's registral peak in this arrangement (the hymn's F5, written an octave lower), a natural place for a breath or slight emphasis.",
+      "Measure 5: the perfect authentic cadence — dominant resolves back to tonic on the final beat, closing the phrase with certainty."
+    ],
+    "teachingGoals": [
+      "Tonic-dominant recognition: hear how every phrase moves I → V → I and learn to predict the bass before it arrives.",
+      "Hymn accompaniment pattern: practice playing a root-position triad on beat 1 and holding it through the measure — the most basic and beautiful church-piano texture.",
+      "Melodic contour singing: the tune is almost entirely stepwise; practice singing it on solfege (fa-fa-sol-la-do-do-la-sol-fa) before playing.",
+      "Patriotic phrasing: this is a public-processional hymn, not a solo showpiece — keep the tempo steady and the tone dignified."
+    ],
+    "styleTips": [
+      "Play the opening F-major chord genuinely full-voiced — the block-chord texture is the point, not a reduction.",
+      "Resist rushing the dominant in measure 3; the stately tempo earns its effect through patience.",
+      "Bring out the melody slightly over the accompaniment — a gentle thumb emphasis is enough.",
+      "Think of a congregation singing together in a high-ceilinged space, not a concert-hall solo."
+    ]
+  },
+  "provenance": {
+    "schema": 1,
+    "source_url": "https://en.wikipedia.org/wiki/America_the_Beautiful",
+    "source_site": "en.wikipedia.org",
+    "arrangement_creator": "mcp-tool-shop-org",
+    "arrangement_license": "Public-Domain",
+    "terms_url": "https://en.wikipedia.org/wiki/America_the_Beautiful",
+    "terms_quote": "America the Beautiful is an American patriotic song. Its lyrics were written by Katharine Lee Bates and its music was composed by church organist and choirmaster Samuel A. Ward at Grace Episcopal Church in Newark, New Jersey, though the two never met.",
+    "verified_at": "2026-09-29",
+    "verifier": "https://en.wikipedia.org/wiki/America_the_Beautiful",
+    "midi_sha256": "53ee63721851092b58b2861a559801b6b3ddc784fb49a7ff5eec8065d9f59d00",
+    "midi_title_events": [
+      "America the Beautiful"
+    ],
+    "midi_credit_events": [],
+    "credited_parties": [
+      {
+        "name": "Samuel A. Ward",
+        "evidence": "melody composed 1882, public domain per U.S. copyright law (17 U.S.C. § 304)"
+      },
+      {
+        "name": "Katharine Lee Bates",
+        "evidence": "text published 1895, public domain per U.S. copyright law (pre-1929)"
+      }
+    ],
+    "title_verdict": "matches"
+  }
+}

@@ -20,6 +20,7 @@ export {
   allowlistRows,
   EXPECTED_PUBLISHABLE_IDS,
   FORBIDDEN_IDS,
+  POST_V1_CORPUS_IDS,
   evidenceGaps,
   isPublishableConfig,
 } from "./allowlist.js";

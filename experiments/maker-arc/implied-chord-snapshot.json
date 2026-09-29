@@ -1,7 +1,7 @@
 {
   "schemaVersion": "implied-chord-snapshot/1.0.0",
-  "songCount": 108,
-  "measureCount": 12050,
+  "songCount": 109,
+  "measureCount": 12056,
   "lines": [
     "a-change-is-gonna-come\tm1\t[removed 2026-09-25: note content of an arrangement outside the cleared set]\tN/A",
     "a-change-is-gonna-come\tm2\t[removed 2026-09-25: note content of an arrangement outside the cleared set]\tF#",
@@ -629,6 +629,12 @@
     "amazing-grace\tm67\t[removed 2026-09-25: note content of an arrangement outside the cleared set]\tCsus2",
     "amazing-grace\tm68\t[removed 2026-09-25: note content of an arrangement outside the cleared set]\tGdim",
     "amazing-grace\tm69\t[removed 2026-09-25: note content of an arrangement outside the cleared set]\tC#maj7",
+    "america-the-beautiful\tm1\tR:w\tN/A",
+    "america-the-beautiful\tm2\tF3+A3+C4:w\tF",
+    "america-the-beautiful\tm3\tC3+E3+G3:w\tC",
+    "america-the-beautiful\tm4\tF3+A3+C4:w\tF",
+    "america-the-beautiful\tm5\tF3+A3+C4:w\tF",
+    "america-the-beautiful\tm6\tF3+A3+C4:w\tF",
     "auld-lang-syne\tm1\t[removed 2026-09-25: note content of an arrangement outside the cleared set]\tN/A",
     "auld-lang-syne\tm2\t[removed 2026-09-25: note content of an arrangement outside the cleared set]\tEbm7",
     "auld-lang-syne\tm3\t[removed 2026-09-25: note content of an arrangement outside the cleared set]\tF7",

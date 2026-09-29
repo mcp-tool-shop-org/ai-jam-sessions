@@ -12,15 +12,15 @@
 
 <p align="center">
   An MCP server that teaches AI to play piano and guitar — and sing.<br/>
-  108 annotated songs across 12 genres. Six sound engines. Interactive guitar tablature.<br/>
+  109 annotated songs across 12 genres. Six sound engines. Interactive guitar tablature.<br/>
   A browser cockpit with vocal synthesizer. A practice journal that remembers everything.
 </p>
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions"><img src="https://img.shields.io/npm/v/@mcptoolshop/ai-jam-sessions" alt="npm"></a>
-  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-108_across_12_genres-blue" alt="Songs"></a>
-  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-108%2F108-green" alt="Ready"></a>
+  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-109_across_12_genres-blue" alt="Songs"></a>
+  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-109%2F109-green" alt="Ready"></a>
   <a href="datasets/jam-actions-v0-public/README.md"><img src="https://img.shields.io/badge/dataset-jam--actions--v0%20(57_records)-8b5cf6" alt="Training dataset"></a>
   <a href="https://doi.org/10.5281/zenodo.20279918"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20279918.svg" alt="DOI"></a>
 </p>
@@ -39,7 +39,7 @@ Un LLM puede leer y escribir texto, pero no puede experimentar la música de la 
 - **Memorización:** Un diario de práctica que se mantiene a lo largo de las sesiones, de modo que el aprendizaje se acumula con el tiempo.
 - **Canto:** Síntesis del tracto vocal con 20 preajustes de voz, desde soprano de ópera hasta coro electrónico. Modo de canto con solfeo, contorno y narración silábica. Y una melodía vocal real en el reloj del piano: una partitura que condiciona al cantante y que se basa en el MIDI de la canción, con una limitación en el tiempo (40 ms) y en el tono (50 centésimos) antes de que la escuche (ver [Canto](#canto)).
 
-Cada una de las 108 canciones ahora está completamente anotada: contexto histórico, análisis estructural barra por barra, momentos clave, objetivos de enseñanza y consejos de interpretación, en los 12 géneros. Una versión anterior de este archivo README decía que las canciones originales estaban "esperando a que la IA absorbiera los patrones, tocara la música y escribiera sus propias anotaciones". Eso es exactamente lo que sucedió: las anotaciones fueron escritas por la IA basándose en un análisis determinista por canción (acordes, estructura de repetición, límites de sección, tonalidades verificadas por contenido), con una rúbrica de calidad que las guía y una verificación adversarial de cada afirmación (números de compás, ventanas de acordes y recuentos estructurales, todo verificado con el MIDI real antes de que se publique nada).
+Cada una de las 109 canciones ahora está completamente anotada: contexto histórico, análisis estructural barra por barra, momentos clave, objetivos de enseñanza y consejos de interpretación, en los 12 géneros. Una versión anterior de este archivo README decía que las canciones originales estaban "esperando a que la IA absorbiera los patrones, tocara la música y escribiera sus propias anotaciones". Eso es exactamente lo que sucedió: las anotaciones fueron escritas por la IA basándose en un análisis determinista por canción (acordes, estructura de repetición, límites de sección, tonalidades verificadas por contenido), con una rúbrica de calidad que las guía y una verificación adversarial de cada afirmación (números de compás, ventanas de acordes y recuentos estructurales, todo verificado con el MIDI real antes de que se publique nada).
 
 A partir de este mismo trabajo, también publicamos **[jam-actions-v0](#training-dataset)**: un conjunto de datos público de 57 secuencias de uso de herramientas MCP en múltiples turnos sobre piano clásico real. Enseña a los LLM a realizar *un uso de herramientas fundamentado sobre música simbólica*, no solo a generar texto, y se entrega con una puerta de liberación de 7 ejes que distingue entre "transmitir evidencia" y "transmitir porque la tarea es trivial". Consulte [Conjunto de datos de entrenamiento](#training-dataset) a continuación para obtener la información completa.
 
@@ -133,16 +133,16 @@ cd apps/cockpit && npm install && npm run dev   # Vite dev server, opens in your
 
 ## La biblioteca de canciones
 
-108 canciones anotadas de 12 géneros, creadas a partir de archivos MIDI reales. Cada género tiene un ejemplo profundamente anotado, con contexto histórico, análisis armónico barra por barra, momentos clave, objetivos de enseñanza y consejos de interpretación (incluida la guía vocal). Estos ejemplos sirven como plantillas: la IA estudia uno y luego anota el resto.
+109 canciones anotadas de 12 géneros, creadas a partir de archivos MIDI reales. Cada género tiene un ejemplo profundamente anotado, con contexto histórico, análisis armónico barra por barra, momentos clave, objetivos de enseñanza y consejos de interpretación (incluida la guía vocal). Estos ejemplos sirven como plantillas: la IA estudia uno y luego anota el resto.
 
-**Qué archivos se incluyen y qué se obtiene.** Las anotaciones son nuestras y se incluyen con cada canción. Los archivos MIDI se descargaron de sitios MIDI públicos cuando se creó la biblioteca, y una auditoría de procedencia por archivo ([`docs/findings/library-provenance-audit.md`](docs/findings/library-provenance-audit.md)) reveló que solo 14 de ellos tienen una licencia que permite la redistribución: los arreglos de piano-midi.de de Bernd Krueger (CC-BY-SA-3.0-DE) y las ediciones de dominio público del Proyecto Mutopia. Estos 14 se incluyen en el paquete npm. Los otros 94 no: sus `.json` se incluyen, con un `provenance` que indica el origen, sus términos y el SHA-256 del archivo, y `ai-jam-sessions library fetch --accept-source-terms` descarga cada uno de ellos del sitio que lo publicó, bajo los términos de ese sitio, rechazando cualquier archivo cuyo hash ya no coincida con lo que se verificó en las anotaciones. Doce archivos que resultaron ser piezas diferentes a las que indicaba su nombre se pusieron en cuarentena, por lo que el recuento es de 108 y no de los 120 que se afirmaba en las versiones anteriores. Las versiones anteriores a esta incluían los 120 archivos MIDI; fue un error, y se corrige aquí en lugar de ocultarlo.
+**Qué archivos se incluyen y qué se obtiene.** Las anotaciones son nuestras y se incluyen con cada canción. Los archivos MIDI se descargaron de sitios MIDI públicos cuando se creó la biblioteca, y una auditoría de procedencia por archivo ([`docs/findings/library-provenance-audit.md`](docs/findings/library-provenance-audit.md)) reveló que solo 14 de ellos tienen una licencia que permite la redistribución: los arreglos de piano-midi.de de Bernd Krueger (CC-BY-SA-3.0-DE) y las ediciones de dominio público del Proyecto Mutopia. Estos 14 se incluyen en el paquete npm. Los otros 94 no: sus `.json` se incluyen, con un `provenance` que indica el origen, sus términos y el SHA-256 del archivo, y `ai-jam-sessions library fetch --accept-source-terms` descarga cada uno de ellos del sitio que lo publicó, bajo los términos de ese sitio, rechazando cualquier archivo cuyo hash ya no coincida con lo que se verificó en las anotaciones. Doce archivos que resultaron ser piezas diferentes a las que indicaba su nombre se pusieron en cuarentena, por lo que esa biblioteca descargada es de 108 y no de los 120 que se afirmaba en las versiones anteriores. America the Beautiful es la canción 109 y el decimoquinto MIDI que incluye el paquete: el arreglo se hizo aquí y se dedicó al dominio público. Las versiones anteriores a esta incluían los 120 archivos MIDI; fue un error, y se corrige aquí en lugar de ocultarlo.
 
 | Género | Ejemplo | Clave | Qué enseña |
 |-------|----------|-----|-----------------|
 | Blues | The Thrill Is Gone (B.B. King) | Si menor | Forma de blues menor, llamada y respuesta, tocar después del ritmo |
 | Clásico | Für Elise (Beethoven) | La menor | Forma de rondó, diferenciación del tacto, disciplina del pedal |
 | Cine | Comptine d'un autre été (Tiersen) | Mi menor | Texturas en arpegio, arquitectura dinámica sin cambio armónico |
-| Folclórico | Greensleeves | Mi menor | Sensación de vals en 3/4, mezcla modal, estilo vocal renacentista |
+| Folclórico | America the Beautiful (Ward) | Fa mayor | Armonía de himno tónica-dominante, fraseo patriótico, melodía en F4–C5 |
 | Jazz | Autumn Leaves (Kosma) | Sol menor | Progresiones ii-V-I, tonos guía, corcheas con swing, acordes sin fundamental |
 | Latino | The Girl from Ipanema (Jobim) | Fa mayor | Ritmo de bossa nova, modulación cromática, moderación vocal |
 | New-Age | River Flows in You (Yiruma) | La mayor | Reconocimiento I-V-vi-IV, arpegios fluidos, rubato |

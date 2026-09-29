@@ -12,15 +12,15 @@
 
 <p align="center">
   An MCP server that teaches AI to play piano and guitar — and sing.<br/>
-  108 annotated songs across 12 genres. Six sound engines. Interactive guitar tablature.<br/>
+  109 annotated songs across 12 genres. Six sound engines. Interactive guitar tablature.<br/>
   A browser cockpit with vocal synthesizer. A practice journal that remembers everything.
 </p>
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions"><img src="https://img.shields.io/npm/v/@mcptoolshop/ai-jam-sessions" alt="npm"></a>
-  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-108_across_12_genres-blue" alt="Songs"></a>
-  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-108%2F108-green" alt="Ready"></a>
+  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-109_across_12_genres-blue" alt="Songs"></a>
+  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-109%2F109-green" alt="Ready"></a>
   <a href="datasets/jam-actions-v0-public/README.md"><img src="https://img.shields.io/badge/dataset-jam--actions--v0%20(57_records)-8b5cf6" alt="Training dataset"></a>
   <a href="https://doi.org/10.5281/zenodo.20279918"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20279918.svg" alt="DOI"></a>
 </p>
@@ -39,7 +39,7 @@ LLMはテキストを読み書きできますが、私たちが体験する音�
 - **記憶** — セッション間で保持される練習ジャーナルにより、時間の経過とともに学習が積み重ねられます。
 - **歌唱** — 20 種類の音声プリセット（オペラ歌手からエレクトロニックコーラスまで）を備えた声帯合成。ソルフレーゼ、音程、音節によるナレーションを備えた、一緒に歌えるモード。そして、ピアノのクロックに合わせて実際に歌うことができます。曲の MIDI に基づいて、タイミング（40 ミリ秒）と音程（50 セント）でゲート処理され、あなたがそれを聞く前に、スコアに沿った歌声が生成されます。詳細は [Sing](#sing) を参照してください。
 
-108曲すべてに、歴史的背景、小節ごとの構造分析、重要なポイント、教育目標、演奏のヒントなど、詳細な注釈が加えられています。これらは12のジャンルすべてにわたります。このREADMEの以前のバージョンでは、生の楽曲は「AIがパターンを吸収し、音楽を演奏し、独自の注釈を作成するのを待っている」と記載されていました。まさにそれが起こりました。注釈は、決定論的な楽曲ごとの分析（コード、反復構造、セクションの境界、コンテンツ検証されたキー）に基づいてAIによって作成され、品質基準によって制御され、敵対的に事実確認されたクレームごとに検証されました。具体的には、小節番号、コードウィンドウ、構造カウントがすべて実際のMIDIに対して検証され、それからリリースされました。
+109曲すべてに、歴史的背景、小節ごとの構造分析、重要なポイント、教育目標、演奏のヒントなど、詳細な注釈が加えられています。これらは12のジャンルすべてにわたります。このREADMEの以前のバージョンでは、生の楽曲は「AIがパターンを吸収し、音楽を演奏し、独自の注釈を作成するのを待っている」と記載されていました。まさにそれが起こりました。注釈は、決定論的な楽曲ごとの分析（コード、反復構造、セクションの境界、コンテンツ検証されたキー）に基づいてAIによって作成され、品質基準によって制御され、敵対的に事実確認されたクレームごとに検証されました。具体的には、小節番号、コードウィンドウ、構造カウントがすべて実際のMIDIに対して検証され、それからリリースされました。
 
 この作業から、**[jam-actions-v0](#training-dataset)**も公開します。これは、実際のクラシックピアノ音楽を使用した57回の多段階のMCPツール使用のパブリックデータセットです。これは、単なるテキスト生成ではなく、シンボリック音楽における*実用的なツール使用*をLLMに教えます。また、7軸のリリースゲートも搭載されており、「証拠を伝える」ことと「タスクが些細なため合格とする」ことを区別します。詳細については、以下の[トレーニングデータセット](#training-dataset)を参照してください。
 
@@ -133,16 +133,16 @@ cd apps/cockpit && npm install && npm run dev   # Vite dev server, opens in your
 
 ## 楽曲ライブラリ
 
-実際のMIDIファイルから作成された12のジャンルにわたる108曲の注釈付き楽曲。各ジャンルには、歴史的背景、小節ごとのハーモニー分析、重要なポイント、教育目標、および演奏のヒント（ボーカルガイダンスを含む）を備えた、詳細に注釈が付けられた模範曲が1つあります。これらの模範曲はテンプレートとして機能します。AIはまず1つを学習し、次に残りの楽曲に注釈を付けます。
+実際のMIDIファイルから作成された12のジャンルにわたる109曲の注釈付き楽曲。各ジャンルには、歴史的背景、小節ごとのハーモニー分析、重要なポイント、教育目標、および演奏のヒント（ボーカルガイダンスを含む）を備えた、詳細に注釈が付けられた模範曲が1つあります。これらの模範曲はテンプレートとして機能します。AIはまず1つを学習し、次に残りの楽曲に注釈を付けます。
 
-**What ships, and what you fetch.** The annotations are ours and ship with every song. The MIDI files were downloaded from public MIDI sites when the library was built, and a per-file provenance audit ([`docs/findings/library-provenance-audit.md`](docs/findings/library-provenance-audit.md)) found that only 14 of them carry a licence that permits redistribution — Bernd Krueger's piano-midi.de arrangements (CC-BY-SA-3.0-DE) and the Mutopia Project's public-domain typesettings. Those 14 are in the npm package. The other 94 are not: their `.json` ships, with a `provenance` block naming the source, its terms and the file's SHA-256, and `ai-jam-sessions library fetch --accept-source-terms` downloads each one from the site that published it, under that site's terms, refusing any file whose hash no longer matches what the annotations were verified against. Twelve files that turned out to be a different piece than their name were quarantined, which is why the count is 108 and not the 120 earlier versions claimed. Versions before this one shipped all 120 MIDI files; that was a mistake, and it is corrected here rather than papered over.
+**What ships, and what you fetch.** The annotations are ours and ship with every song. The MIDI files were downloaded from public MIDI sites when the library was built, and a per-file provenance audit ([`docs/findings/library-provenance-audit.md`](docs/findings/library-provenance-audit.md)) found that only 14 of them carry a licence that permits redistribution — Bernd Krueger's piano-midi.de arrangements (CC-BY-SA-3.0-DE) and the Mutopia Project's public-domain typesettings. Those 14 are in the npm package. The other 94 are not: their `.json` ships, with a `provenance` block naming the source, its terms and the file's SHA-256, and `ai-jam-sessions library fetch --accept-source-terms` downloads each one from the site that published it, under that site's terms, refusing any file whose hash no longer matches what the annotations were verified against. Twelve files that turned out to be a different piece than their name were quarantined, which is why that downloaded library is 108 songs and not the 120 earlier versions claimed. America the Beautiful is the 109th song and the fifteenth MIDI the package ships: the arrangement was made here and dedicated to the public domain. Versions before this one shipped all 120 MIDI files; that was a mistake, and it is corrected here rather than papered over.
 
 | ジャンル | 模範 | キー | 教える内容 |
 |-------|----------|-----|-----------------|
 | ブルース | The Thrill Is Gone (B.B. King) | Bマイナー | マイナーブルース形式、コール＆レスポンス、ビートの後ろで演奏 |
 | クラシック | Für Elise (ベートーヴェン) | Aマイナー | ロンド形式、タッチの使い分け、ペダルの練習 |
 | 映画 | Comptine d'un autre été (ティエルセン) | Eマイナー | アルペジオのテクスチャ、ハーモニーの変化なしのダイナミックなアーキテクチャ |
-| フォーク | Greensleeves | Eマイナー | 3/4ワルツのリズム、モーダルミクスチャー、ルネサンス様式のボーカルスタイル |
+| フォーク | America the Beautiful (Ward) | ヘ長調 | トニック-ドミナントの賛美歌和声、愛国的なフレージング、F4–C5の旋律 |
 | ジャズ | Autumn Leaves (コスマ) | Gマイナー | ii-V-I進行、ガイドトーン、スウィングの8分音符、ルートレスボイシング |
 | ラテン | The Girl from Ipanema (ジョビン) | Fメジャー | ボサノバリズム、クロマチックモジュレーション、抑制されたボーカル |
 | ニューエイジ | River Flows in You (イルマ) | Aメジャー | I-V-vi-IVの認識、流れるようなアルペジオ、ルバート |

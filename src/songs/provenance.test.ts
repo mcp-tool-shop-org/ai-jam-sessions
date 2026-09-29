@@ -39,8 +39,11 @@ const LIBRARY_DIR = join(ROOT, "songs", "library");
 const QUARANTINE_DIR = join(ROOT, "songs", "quarantine");
 const DOWNLOAD_SCRIPT = join(ROOT, "scripts", "download-library.ts");
 
-/** The library had 120 songs when the audit ran; a song may move to quarantine, never vanish. */
-const AUDITED_SONG_COUNT = 120;
+/**
+ * 120 when the 2026-09-09 audit ran, plus America the Beautiful (arranged here).
+ * A song may move to quarantine; it may not vanish. A new song raises this count.
+ */
+const AUDITED_SONG_COUNT = 121;
 
 interface Song {
   key: string;

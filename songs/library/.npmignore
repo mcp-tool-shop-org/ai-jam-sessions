@@ -2,7 +2,7 @@
 # A .mid listed here has no verified redistributable licence and is withheld from the
 # npm tarball. Its .json (annotations + provenance) still ships; `ai-jam-sessions library
 # fetch` downloads the MIDI from the recorded source under that source's terms.
-# withheld: 94 of 108; shipped: 14
+# withheld: 94 of 109; shipped: 15
 blues/crossroad-blues.mid
 blues/everyday-i-have-the-blues.mid
 blues/hoochie-coochie-man.mid

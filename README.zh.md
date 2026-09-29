@@ -12,15 +12,15 @@
 
 <p align="center">
   An MCP server that teaches AI to play piano and guitar — and sing.<br/>
-  108 annotated songs across 12 genres. Six sound engines. Interactive guitar tablature.<br/>
+  109 annotated songs across 12 genres. Six sound engines. Interactive guitar tablature.<br/>
   A browser cockpit with vocal synthesizer. A practice journal that remembers everything.
 </p>
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions"><img src="https://img.shields.io/npm/v/@mcptoolshop/ai-jam-sessions" alt="npm"></a>
-  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-108_across_12_genres-blue" alt="Songs"></a>
-  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-108%2F108-green" alt="Ready"></a>
+  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-109_across_12_genres-blue" alt="Songs"></a>
+  <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-109%2F109-green" alt="Ready"></a>
   <a href="datasets/jam-actions-v0-public/README.md"><img src="https://img.shields.io/badge/dataset-jam--actions--v0%20(57_records)-8b5cf6" alt="Training dataset"></a>
   <a href="https://doi.org/10.5281/zenodo.20279918"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20279918.svg" alt="DOI"></a>
 </p>
@@ -39,7 +39,7 @@
 - **记忆**——一个练习日志，可以跨会话保存，因此学习效果会随着时间的推移而累积。
 - **演唱**——带有 20 种人声预设的人声声道合成，从歌剧女高音到电子合唱。带有音阶、轮廓和音节叙述的合唱模式。以及在钢琴时钟上进行真实的演唱：一种基于歌曲 MIDI 驱动的、在时序（40 毫秒）和音高（50 分）上进行门控的、在您听到之前进行评分的歌手（参见[演唱](#演唱））。
 
-这 108 首歌曲中的每一首现在都已完全注释——包括历史背景、逐小节的结构分析、关键时刻、教学目标和演奏技巧，涵盖所有 12 个流派。早期版本的 README 中提到，原始歌曲“正在等待 AI 吸收模式、演奏音乐并编写自己的注释”。而这正是发生的事情：这些注释是由 AI 根据每首歌曲的确定性分析（和弦、重复结构、乐段边界、经过验证的内容）编写的，并受到质量标准的约束，并且对每个声明进行对抗性的事实核查——包括小节编号、和弦范围和结构计数，所有这些都经过验证，以确保与实际 MIDI 文件一致，然后才发布。
+这 109 首歌曲中的每一首现在都已完全注释——包括历史背景、逐小节的结构分析、关键时刻、教学目标和演奏技巧，涵盖所有 12 个流派。早期版本的 README 中提到，原始歌曲“正在等待 AI 吸收模式、演奏音乐并编写自己的注释”。而这正是发生的事情：这些注释是由 AI 根据每首歌曲的确定性分析（和弦、重复结构、乐段边界、经过验证的内容）编写的，并受到质量标准的约束，并且对每个声明进行对抗性的事实核查——包括小节编号、和弦范围和结构计数，所有这些都经过验证，以确保与实际 MIDI 文件一致，然后才发布。
 
 基于相同的工作，我们还发布了 **[jam-actions-v0](#training-dataset)**——一个包含 57 个多轮 MCP 工具使用轨迹的公共数据集，这些轨迹基于真实的古典钢琴。它教会大型语言模型进行*基于符号音乐的实际工具使用*，而不仅仅是文本生成，并且附带一个 7 轴发布门，用于区分“传递证据”和“因为任务很简单而通过”。有关完整信息，请参阅下方的 [训练数据集](#training-dataset)。
 
@@ -133,16 +133,16 @@ cd apps/cockpit && npm install && npm run dev   # Vite dev server, opens in your
 
 ## 歌曲库
 
-108 首注释歌曲，涵盖 12 个流派，基于真实的 MIDI 文件构建。每个流派都有一首深度注释的示例——包括历史背景、逐小节的和谐分析、关键时刻、教学目标和演奏技巧（包括人声指导）。这些示例充当模板：AI 研究其中一个，然后注释其余的。
+109 首注释歌曲，涵盖 12 个流派，基于真实的 MIDI 文件构建。每个流派都有一首深度注释的示例——包括历史背景、逐小节的和谐分析、关键时刻、教学目标和演奏技巧（包括人声指导）。这些示例充当模板：AI 研究其中一个，然后注释其余的。
 
-**What ships, and what you fetch.** The annotations are ours and ship with every song. The MIDI files were downloaded from public MIDI sites when the library was built, and a per-file provenance audit ([`docs/findings/library-provenance-audit.md`](docs/findings/library-provenance-audit.md)) found that only 14 of them carry a licence that permits redistribution — Bernd Krueger's piano-midi.de arrangements (CC-BY-SA-3.0-DE) and the Mutopia Project's public-domain typesettings. Those 14 are in the npm package. The other 94 are not: their `.json` ships, with a `provenance` block naming the source, its terms and the file's SHA-256, and `ai-jam-sessions library fetch --accept-source-terms` downloads each one from the site that published it, under that site's terms, refusing any file whose hash no longer matches what the annotations were verified against. Twelve files that turned out to be a different piece than their name were quarantined, which is why the count is 108 and not the 120 earlier versions claimed. Versions before this one shipped all 120 MIDI files; that was a mistake, and it is corrected here rather than papered over.
+**What ships, and what you fetch.** The annotations are ours and ship with every song. The MIDI files were downloaded from public MIDI sites when the library was built, and a per-file provenance audit ([`docs/findings/library-provenance-audit.md`](docs/findings/library-provenance-audit.md)) found that only 14 of them carry a licence that permits redistribution — Bernd Krueger's piano-midi.de arrangements (CC-BY-SA-3.0-DE) and the Mutopia Project's public-domain typesettings. Those 14 are in the npm package. The other 94 are not: their `.json` ships, with a `provenance` block naming the source, its terms and the file's SHA-256, and `ai-jam-sessions library fetch --accept-source-terms` downloads each one from the site that published it, under that site's terms, refusing any file whose hash no longer matches what the annotations were verified against. Twelve files that turned out to be a different piece than their name were quarantined, which is why that downloaded library is 108 songs and not the 120 earlier versions claimed. America the Beautiful is the 109th song and the fifteenth MIDI the package ships: the arrangement was made here and dedicated to the public domain. Versions before this one shipped all 120 MIDI files; that was a mistake, and it is corrected here rather than papered over.
 
 | 类型 | 范例 | 关键 | 它教授的内容 |
 |-------|----------|-----|-----------------|
 | 布鲁斯 | 《The Thrill Is Gone》（B.B. King） | B 小调 | 小调布鲁斯形式、呼应式，在节拍之后演奏 |
 | 古典 | 《致爱丽丝》（贝多芬） | A 小调 | 回旋曲形式、触键差异、踏板技巧 |
 | 电影 | 《另一个夏天的圆舞曲》（蒂尔森） | E 小调 | 琶音织体，动态架构，没有和声变化 |
-| 民谣 | 《绿袖子》 | E 小调 | 3/4 华尔兹节奏，模态混合，文艺复兴时期的声乐风格 |
+| 民谣 | 《America the Beautiful》（Ward） | F 大调 | 主-属赞美诗和声，爱国乐句，旋律在 F4–C5 |
 | 爵士 | 《秋叶》（科斯马） | G 小调 | ii-V-I 级进行、引导音、摇摆八分音符、无根音和弦 |
 | 拉丁 | 《伊帕内玛的女孩》（若比姆） | F 大调 | 波萨诺瓦节奏、半音调制、声乐克制 |
 | 新世纪音乐 | 《河流在你心中流淌》（Yiruma） | A 大调 | I-V-vi-IV 识别、流畅的琶音、自由节奏 |

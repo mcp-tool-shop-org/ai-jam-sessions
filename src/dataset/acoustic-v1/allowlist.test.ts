@@ -6,6 +6,7 @@ import {
   allowlistById,
   EXPECTED_PUBLISHABLE_IDS,
   FORBIDDEN_IDS,
+  POST_V1_CORPUS_IDS,
   evidenceGaps,
 } from "./library.js";
 import {
@@ -28,6 +29,14 @@ describe("derived publishable allowlist (A1)", () => {
       expect(evidenceGaps(row), row.id).toEqual([]);
     }
     for (const id of FORBIDDEN_IDS) {
+      expect(rows.some((r) => r.id === id), id).toBe(false);
+    }
+  });
+
+  it("keeps songs added after the v1 release out of that corpus", () => {
+    expect([...POST_V1_CORPUS_IDS]).toEqual(["america-the-beautiful"]);
+    const rows = allowlistRows();
+    for (const id of POST_V1_CORPUS_IDS) {
       expect(rows.some((r) => r.id === id), id).toBe(false);
     }
   });

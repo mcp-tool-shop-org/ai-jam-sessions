@@ -12,9 +12,12 @@
 // then read the `git diff` on experiments/maker-arc/implied-chord-snapshot.json
 // and record the adjudication in the change's report before committing.
 //
-// The committed snapshot stays at 108 songs. After the history purge a checkout
-// only has MIDI for 14 of them; this file compares the snapshot over the songs
-// present on disk and still requires those 14 to match.
+// The committed snapshot covers 109 songs. 108 of those lines are the
+// pre-existing library (left-hand notes of uncleared songs redacted in place).
+// America the Beautiful is the 109th, and its lines are the live arrangement.
+// After the history purge a checkout only has MIDI for the songs the package
+// ships; this file compares the snapshot over the songs present on disk and
+// still requires the original 14, plus America the Beautiful, to match.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { describe, it, expect, beforeAll } from "vitest";
@@ -45,6 +48,7 @@ const PURGE_KEPT_IDS = [
   "solace",
   "the-easy-winners",
   "the-entertainer",
+  "america-the-beautiful",
 ] as const;
 
 interface Snapshot {
@@ -66,13 +70,13 @@ describe("inferChord library regression (Gate 2)", () => {
     snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8")) as Snapshot;
   });
 
-  it("the committed snapshot still covers 108 songs", () => {
-    expect(snapshot.songCount).toBe(108);
+  it("the committed snapshot still covers 109 songs", () => {
+    expect(snapshot.songCount).toBe(109);
     expect(snapshot.lines.length).toBe(snapshot.measureCount);
   });
 
-  it("at least the 14 songs that keep their MIDI are present and loaded", () => {
-    expect(getAllSongs().length).toBeGreaterThanOrEqual(14);
+  it("at least the 15 songs that keep their MIDI are present and loaded", () => {
+    expect(getAllSongs().length).toBeGreaterThanOrEqual(15);
     for (const id of PURGE_KEPT_IDS) {
       expect(presentIds.has(id), `${id} must be on disk and loaded`).toBe(true);
     }
