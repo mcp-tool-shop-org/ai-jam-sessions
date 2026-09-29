@@ -11,7 +11,7 @@ AI Jam Sessions ships an MCP server. It also ships **jam-actions-v0** — a publ
 
 Each record in `jam-actions-v0` pairs:
 
-- **A phrase window.** Typically 4 measures of real classical piano MIDI from one of 8 source compositions.
+- **A phrase window.** Typically 4 measures of real classical piano MIDI from one of 4 source compositions.
 - **An annotated teaching target.** A specific musical claim about that phrase — a melodic contour, an interval relationship, a hand-balance observation, a pitch-class count — that an LLM should be able to verify by reading the MIDI.
 - **A target trace.** A turn-by-turn record of an assistant using the MCP inspector tools (`get_events_in_measure`, `get_events_in_hand`, `count_distinct_pitch_classes`, `count_notes_with_pitch_class`, `count_beat_1_onsets`, `get_pitch_at`, `get_hand_balance`, `find_highest_pitch`, `find_lowest_pitch`) to read the phrase, gather evidence, and either confirm or correct the claim.
 
