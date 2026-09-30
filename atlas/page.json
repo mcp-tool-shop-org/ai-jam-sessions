@@ -2,12 +2,20 @@
   "authored": [
     ".github/",
     "plugin/",
-    "root",
-    "site/"
+    "root"
+  ],
+  "authoredWritten": [
+    {
+      "place": "spaces/jam-actions-live/demo_data.json",
+      "untrackedInputs": true,
+      "writers": [
+        "spaces/jam-actions-live/extract-demo-data.mjs"
+      ]
+    }
   ],
   "breaks": [
     {
-      "doors": 6,
+      "doors": 7,
       "importedBy": [
         "cockpit",
         "docs",
@@ -17,7 +25,11 @@
       "importedByTests": [],
       "kind": "part",
       "name": "src",
-      "partLabel": "src"
+      "partLabel": "src",
+      "spawnedBy": [
+        "experiments",
+        "scripts"
+      ]
     },
     {
       "doors": 3,
@@ -27,10 +39,13 @@
       ],
       "kind": "part",
       "name": "scripts",
-      "partLabel": "scripts"
+      "partLabel": "scripts",
+      "spawnedBy": [
+        "experiments"
+      ]
     },
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [],
       "importedByTests": [
         "src"
@@ -63,6 +78,7 @@
         "experiments"
       ],
       "target": "experiments/rollout-arc/p4/runs/",
+      "tests": 2,
       "writers": [
         "experiments"
       ]
@@ -75,6 +91,7 @@
         "src"
       ],
       "target": "songs/library/",
+      "tests": 6,
       "writers": [
         "scripts"
       ]
@@ -82,24 +99,94 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 1,
+      "added": 17,
+      "changed": 1756,
       "moved": 0,
-      "parts": 1,
+      "parts": 13,
       "removed": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI now also runs files in apps/cockpit/.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "apps/cockpit/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "And 3 more changes to doors.",
+        "subjects": []
+      },
+      {
+        "kind": "landing",
+        "sentence": ".eval-checkpoints is now written by scripts/run-jam-actions-corpus-eval.ts.",
+        "subjects": [
+          ".eval-checkpoints",
+          "scripts/run-jam-actions-corpus-eval.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.",
+        "subjects": [
+          "datasets/jam-actions-v0-public/",
+          "scripts/run-jam-actions-corpus-eval.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.",
+        "subjects": [
+          "datasets/jam-actions-v0-public/evals/",
+          "scripts/run-jam-actions-corpus-eval.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 131 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "origin",
+        "sentence": "the site was authored and is now mixed.",
+        "subjects": [
+          "site"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "songs was generated and is now mixed.",
+        "subjects": [
+          "songs"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; 1 file changed content.",
+        "sentence": "17 files added and 1756 changed content, across 13 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "dc771c279b9e0b845563239b89763518476c2d19",
-      "generatedAt": "2026-09-25T18:16:51.731Z"
+      "commit": "d92a167294ff5df72f634fda8a99777f4380279f",
+      "generatedAt": "2026-09-25T18:27:06.062Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -107,12 +194,118 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "d92a167294ff5df72f634fda8a99777f4380279f",
+  "commit": "6e898149dd1e701d620e3db143abf37856e20a4a",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly TypeScript (559 files). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
+  "derived": "14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (563), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
     {
+      "builds": [
+        "src/analysis/analyze.ts",
+        "src/analysis/baseline.ts",
+        "src/analysis/chord-id.ts",
+        "src/analysis/events.ts",
+        "src/analysis/hcdf.ts",
+        "src/annotation-scorer.ts",
+        "src/audio-engine.ts",
+        "src/audio-shared.ts",
+        "src/audio/bridge.ts",
+        "src/audio/cqt.ts",
+        "src/audio/db.ts",
+        "src/audio/ensemble.ts",
+        "src/audio/fft.ts",
+        "src/chord-detect.ts",
+        "src/cli.ts",
+        "src/compose/bws-judge-text.ts",
+        "src/compose/bws.ts",
+        "src/compose/compose-panel-tool.ts",
+        "src/compose/human-audio-catalog.ts",
+        "src/compose/human-audio-panel.ts",
+        "src/compose/index.ts",
+        "src/compose/llm-panel.ts",
+        "src/dataset/abc-adapter.ts",
+        "src/dataset/acoustic-v1/allowlist.ts",
+        "src/dataset/acoustic-v1/builder.ts",
+        "src/dataset/acoustic-v1/coverage.ts",
+        "src/dataset/acoustic-v1/f5-acoustic.ts",
+        "src/dataset/acoustic-v1/generate-corpus.ts",
+        "src/dataset/acoustic-v1/generate-probe.ts",
+        "src/dataset/acoustic-v1/generate-public.ts",
+        "src/dataset/acoustic-v1/library.ts",
+        "src/dataset/acoustic/builder.ts",
+        "src/dataset/acoustic/generate-corpus.ts",
+        "src/dataset/acoustic/index.ts",
+        "src/dataset/acoustic/phrases.ts",
+        "src/dataset/acoustic/release-adapter.ts",
+        "src/dataset/derived-content.ts",
+        "src/dataset/enrichment.ts",
+        "src/dataset/eval/annotation-grounding-tool.ts",
+        "src/dataset/eval/annotation-grounding.ts",
+        "src/dataset/eval/corpus-sampler.ts",
+        "src/dataset/eval/llm-backends/",
+        "src/dataset/eval/llm-runner.ts",
+        "src/dataset/eval/markov-foil.ts",
+        "src/dataset/experiment/env.ts",
+        "src/dataset/experiment/eval.ts",
+        "src/dataset/experiment/format-sft.ts",
+        "src/dataset/experiment/index.ts",
+        "src/dataset/experiment/mcp-executor.ts",
+        "src/dataset/package-public.ts",
+        "src/dataset/phrase-slicer.ts",
+        "src/dataset/release/release-gate.ts",
+        "src/dataset/search-v0/env.ts",
+        "src/dataset/search-v0/generate.ts",
+        "src/dataset/search-v0/task.ts",
+        "src/dataset/search-v0/window.ts",
+        "src/dataset/synth-v0/env.ts",
+        "src/dataset/synth-v0/generate.ts",
+        "src/dataset/synth-v0/task.ts",
+        "src/errors.ts",
+        "src/maker/abc-chord-proposer.ts",
+        "src/maker/abc-syntax.ts",
+        "src/maker/auto-reharmonize-tool.ts",
+        "src/maker/chord-proposer.ts",
+        "src/maker/er-gate.ts",
+        "src/midi/parser.ts",
+        "src/midi/types.ts",
+        "src/playback/controls.ts",
+        "src/playback/metronome-types.ts",
+        "src/playback/metronome.ts",
+        "src/playback/midi-engine.ts",
+        "src/playback/position.ts",
+        "src/songs/config/loader.ts",
+        "src/songs/config/schema.ts",
+        "src/songs/fetch.ts",
+        "src/songs/implied-chord-snapshot.ts",
+        "src/songs/index.ts",
+        "src/songs/jam.ts",
+        "src/songs/library.ts",
+        "src/songs/midi/hands.ts",
+        "src/songs/midi/ingest.ts",
+        "src/songs/midi/measures.ts",
+        "src/songs/midi/meta.ts",
+        "src/songs/midi/types.ts",
+        "src/teaching/",
+        "src/vendor/",
+        "src/vocal/align-lyrics.ts",
+        "src/vocal/breath.ts",
+        "src/vocal/g2p.ts",
+        "src/vocal/index.ts",
+        "src/vocal/kokoro-lead.ts"
+      ],
       "checks": [
+        "scripts/analysis-chords.ts",
+        "scripts/analysis-patterns.ts",
+        "scripts/analysis-sections.ts",
+        "scripts/analysis-validate.ts",
+        "scripts/analyze-carriers.ts"
+      ],
+      "checksCount": 60,
+      "checksMore": 57,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "packs": [
         "LICENSE",
         "README.md",
         "logo.png",
@@ -122,40 +315,14 @@
         "samples/vocal/",
         "songs/library/",
         "src/",
-        "tsconfig.json",
-        "apps/cockpit/src/",
-        "scripts/analysis-chords.ts",
-        "scripts/analysis-patterns.ts",
-        "scripts/analysis-sections.ts",
-        "scripts/analysis-validate.ts",
-        "scripts/analyze-carriers.ts",
-        "scripts/annotate-batch.ts"
+        "tsconfig.json"
       ],
-      "checksCount": 181,
-      "file": ".github/workflows/ci.yml",
-      "id": ".github/workflows/ci.yml",
-      "landings": [
-        "datasets/jam-actions-acoustic-v0/",
-        "datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md",
-        "datasets/jam-actions-v1-probe/README.md",
-        "datasets/jam-actions-v1-probe/applied.json",
-        "datasets/jam-actions-v1-probe/checksums.sha256",
-        "datasets/jam-actions-v1-probe/manifest.json",
-        "datasets/jam-actions-v1-probe/records/",
-        "datasets/jam-actions-v1-probe/records.jsonl",
-        "datasets/jam-actions-v1-probe/splits.json",
-        "experiments/acoustic-sft/data/sft-test.jsonl",
-        "experiments/acoustic-sft/data/sft-train.jsonl",
-        "experiments/acoustic-sft/runs/",
-        "songs/"
-      ],
-      "name": "CI",
       "pushes": false,
       "reach": [
         {
           "boundary": "cockpit",
           "depth": 0,
-          "files": 32
+          "files": 33
         },
         {
           "boundary": "experiments",
@@ -175,22 +342,14 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 369
+          "files": 371
         }
       ],
       "runs": [
         "src/mcp-server.ts",
         "src/smoke.ts",
-        "apps/cockpit/src/capture.test.ts",
-        "apps/cockpit/src/clipboard.test.ts",
-        "apps/cockpit/src/gesture.test.ts",
-        "apps/cockpit/src/preview.test.ts",
-        "apps/cockpit/src/pure-logic.test.ts",
-        "apps/cockpit/src/ruler.test.ts",
-        "apps/cockpit/src/salamander-logic.test.ts",
-        "apps/cockpit/src/state.test.ts",
-        "apps/cockpit/src/time.test.ts",
-        "apps/cockpit/src/transport.test.ts",
+        "apps/cockpit/src/",
+        "apps/cockpit/vite.config.ts",
         "experiments/_template/task.test.ts",
         "experiments/acoustic-sft/eval.test.ts",
         "experiments/acoustic-sft/runpod.test.ts",
@@ -264,27 +423,129 @@
         "src/songs/jam.regression.test.ts",
         "src/songs/jam.test.ts",
         "src/songs/library.test.ts",
-        "src/songs/loader.test.ts",
         "src/songs/midi/ingest.test.ts",
         "src/songs/midi/measures.test.ts",
         "src/songs/midi/meta.test.ts",
         "src/vocal/align-lyrics.test.ts",
         "src/vocal/breath.test.ts",
         "src/vocal/g2p.test.ts",
-        "src/vocal/kokoro-lead.test.ts",
-        "src/vocal/melody-notes.test.ts"
+        "src/vocal/kokoro-lead.test.ts"
       ],
-      "runsCount": 193,
-      "sends": [],
+      "runsCount": 297,
+      "runsMore": 294,
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 20 paths",
-        "on a push to main touching 20 paths",
+        "on a pull request touching 21 paths",
+        "on a push to main touching 21 paths",
         "or by hand"
       ]
     },
     {
-      "checks": [
+      "builds": [
+        "src/analysis/analyze.ts",
+        "src/analysis/baseline.ts",
+        "src/analysis/chord-id.ts",
+        "src/analysis/events.ts",
+        "src/analysis/hcdf.ts",
+        "src/annotation-scorer.ts",
+        "src/audio-engine.ts",
+        "src/audio-shared.ts",
+        "src/audio/bridge.ts",
+        "src/audio/cqt.ts",
+        "src/audio/db.ts",
+        "src/audio/ensemble.ts",
+        "src/audio/fft.ts",
+        "src/chord-detect.ts",
+        "src/cli.ts",
+        "src/compose/bws-judge-text.ts",
+        "src/compose/bws.ts",
+        "src/compose/compose-panel-tool.ts",
+        "src/compose/human-audio-catalog.ts",
+        "src/compose/human-audio-panel.ts",
+        "src/compose/index.ts",
+        "src/compose/llm-panel.ts",
+        "src/dataset/abc-adapter.ts",
+        "src/dataset/acoustic-v1/allowlist.ts",
+        "src/dataset/acoustic-v1/builder.ts",
+        "src/dataset/acoustic-v1/coverage.ts",
+        "src/dataset/acoustic-v1/f5-acoustic.ts",
+        "src/dataset/acoustic-v1/generate-corpus.ts",
+        "src/dataset/acoustic-v1/generate-probe.ts",
+        "src/dataset/acoustic-v1/generate-public.ts",
+        "src/dataset/acoustic-v1/library.ts",
+        "src/dataset/acoustic/builder.ts",
+        "src/dataset/acoustic/generate-corpus.ts",
+        "src/dataset/acoustic/index.ts",
+        "src/dataset/acoustic/phrases.ts",
+        "src/dataset/acoustic/release-adapter.ts",
+        "src/dataset/derived-content.ts",
+        "src/dataset/enrichment.ts",
+        "src/dataset/eval/annotation-grounding-tool.ts",
+        "src/dataset/eval/annotation-grounding.ts",
+        "src/dataset/eval/corpus-sampler.ts",
+        "src/dataset/eval/llm-backends/",
+        "src/dataset/eval/llm-runner.ts",
+        "src/dataset/eval/markov-foil.ts",
+        "src/dataset/experiment/env.ts",
+        "src/dataset/experiment/eval.ts",
+        "src/dataset/experiment/format-sft.ts",
+        "src/dataset/experiment/index.ts",
+        "src/dataset/experiment/mcp-executor.ts",
+        "src/dataset/package-public.ts",
+        "src/dataset/phrase-slicer.ts",
+        "src/dataset/release/release-gate.ts",
+        "src/dataset/search-v0/env.ts",
+        "src/dataset/search-v0/generate.ts",
+        "src/dataset/search-v0/task.ts",
+        "src/dataset/search-v0/window.ts",
+        "src/dataset/synth-v0/env.ts",
+        "src/dataset/synth-v0/generate.ts",
+        "src/dataset/synth-v0/task.ts",
+        "src/errors.ts",
+        "src/maker/abc-chord-proposer.ts",
+        "src/maker/abc-syntax.ts",
+        "src/maker/auto-reharmonize-tool.ts",
+        "src/maker/chord-proposer.ts",
+        "src/maker/er-gate.ts",
+        "src/midi/parser.ts",
+        "src/midi/types.ts",
+        "src/playback/controls.ts",
+        "src/playback/metronome-types.ts",
+        "src/playback/metronome.ts",
+        "src/playback/midi-engine.ts",
+        "src/playback/position.ts",
+        "src/playback/timing.ts",
+        "src/songs/config/loader.ts",
+        "src/songs/config/schema.ts",
+        "src/songs/fetch.ts",
+        "src/songs/implied-chord-snapshot.ts",
+        "src/songs/index.ts",
+        "src/songs/jam.ts",
+        "src/songs/library.ts",
+        "src/songs/midi/hands.ts",
+        "src/songs/midi/ingest.ts",
+        "src/songs/midi/measures.ts",
+        "src/songs/midi/meta.ts",
+        "src/songs/midi/types.ts",
+        "src/teaching/",
+        "src/vendor/",
+        "src/vocal/align-lyrics.ts",
+        "src/vocal/breath.ts",
+        "src/vocal/g2p.ts",
+        "src/vocal/index.ts",
+        "src/vocal/kokoro-lead.ts"
+      ],
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "packs": [
         "LICENSE",
         "README.md",
         "logo.png",
@@ -296,25 +557,6 @@
         "src/",
         "tsconfig.json"
       ],
-      "checksCount": 120,
-      "file": ".github/workflows/release.yml",
-      "id": ".github/workflows/release.yml",
-      "landings": [
-        "datasets/jam-actions-acoustic-v0/",
-        "datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md",
-        "datasets/jam-actions-v1-probe/README.md",
-        "datasets/jam-actions-v1-probe/applied.json",
-        "datasets/jam-actions-v1-probe/checksums.sha256",
-        "datasets/jam-actions-v1-probe/manifest.json",
-        "datasets/jam-actions-v1-probe/records/",
-        "datasets/jam-actions-v1-probe/records.jsonl",
-        "datasets/jam-actions-v1-probe/splits.json",
-        "experiments/acoustic-sft/data/sft-test.jsonl",
-        "experiments/acoustic-sft/data/sft-train.jsonl",
-        "experiments/acoustic-sft/runs/",
-        "songs/"
-      ],
-      "name": "Release",
       "pushes": false,
       "reach": [
         {
@@ -340,7 +582,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 369
+          "files": 371
         }
       ],
       "runs": [
@@ -443,7 +685,8 @@
         "src/vocal/kokoro-lead.test.ts",
         "src/vocal/melody-notes.test.ts"
       ],
-      "runsCount": 192,
+      "runsCount": 304,
+      "runsMore": 301,
       "sends": [
         "publishes to npm and a container image"
       ],
@@ -456,6 +699,51 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "cockpit",
+          "depth": 0,
+          "files": 33
+        },
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 34
+        }
+      ],
+      "runs": [
+        "apps/cockpit/src/",
+        "apps/cockpit/vite.config.ts",
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 4,
+      "runsMore": 2,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 3 paths",
+        "or by hand"
+      ],
+      "untracked": "site/dist, which is not tracked"
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/publish-jam-actions-v0.yml",
       "id": ".github/workflows/publish-jam-actions-v0.yml",
       "landings": [],
@@ -479,7 +767,11 @@
         "src/dataset/published-evidence.test.ts"
       ],
       "runsCount": 3,
-      "sends": [],
+      "runsMore": 0,
+      "sends": [
+        "publishes to the Hugging Face Hub when run by hand with confirm_irreversible yes-mint-doi and mode publish",
+        "publishes a record on Zenodo when run by hand with confirm_irreversible yes-mint-doi"
+      ],
       "stages": [],
       "triggers": [
         "by hand"
@@ -488,35 +780,7 @@
     {
       "checks": [],
       "checksCount": 0,
-      "file": ".github/workflows/pages.yml",
-      "id": ".github/workflows/pages.yml",
-      "landings": [],
-      "name": "Deploy site to GitHub Pages",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "site",
-          "depth": 0,
-          "files": 3
-        }
-      ],
-      "runs": [
-        "site/astro.config.mjs",
-        "site/src/"
-      ],
-      "runsCount": 2,
-      "sends": [
-        "deploys the site"
-      ],
-      "stages": [],
-      "triggers": [
-        "on a push to main touching 3 paths",
-        "or by hand"
-      ]
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/push-adapters-hf.yml",
       "id": ".github/workflows/push-adapters-hf.yml",
       "landings": [],
@@ -525,7 +789,10 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
-      "sends": [],
+      "runsMore": 0,
+      "sends": [
+        "publishes to the Hugging Face Hub"
+      ],
       "stages": [],
       "triggers": [
         "by hand"
@@ -534,6 +801,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/push-jam-actions-v0-hf.yml",
       "id": ".github/workflows/push-jam-actions-v0-hf.yml",
       "landings": [],
@@ -542,7 +810,10 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
-      "sends": [],
+      "runsMore": 0,
+      "sends": [
+        "publishes to the Hugging Face Hub"
+      ],
       "stages": [],
       "triggers": [
         "by hand"
@@ -551,6 +822,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": ".github/workflows/zenodo-edit-record.yml",
       "id": ".github/workflows/zenodo-edit-record.yml",
       "landings": [],
@@ -559,7 +831,10 @@
       "reach": [],
       "runs": [],
       "runsCount": 0,
-      "sends": [],
+      "runsMore": 0,
+      "sends": [
+        "publishes a record on Zenodo"
+      ],
       "stages": [],
       "triggers": [
         "by hand"
@@ -568,25 +843,25 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#@mcptoolshop/ai-jam-sessions",
       "kind": "package",
-      "landings": [
-        "songs/"
-      ],
+      "landings": [],
       "name": "@mcptoolshop/ai-jam-sessions",
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 82
+          "files": 84
         }
       ],
       "runs": [
         "src/index.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -594,25 +869,25 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#ai-jam-sessions",
       "kind": "command",
-      "landings": [
-        "songs/"
-      ],
+      "landings": [],
       "name": "ai-jam-sessions",
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 82
+          "files": 84
         }
       ],
       "runs": [
         "src/cli.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -620,6 +895,7 @@
     {
       "checks": [],
       "checksCount": 0,
+      "checksMore": 0,
       "file": "package.json",
       "id": "package.json#ai-jam-sessions-mcp",
       "kind": "command",
@@ -630,13 +906,14 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 1
+          "files": 139
         }
       ],
       "runs": [
         "src/mcp-server.ts"
       ],
       "runsCount": 1,
+      "runsMore": 0,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -755,6 +1032,7 @@
       "to": "scripts"
     }
   ],
+  "engine": "1.24.0",
   "generated": [
     {
       "place": "datasets/jam-actions-acoustic-v0/",
@@ -766,7 +1044,8 @@
       "place": "datasets/jam-actions-v0-public/",
       "writers": [
         "scripts/package-jam-actions-public.ts",
-        "scripts/regenerate-public-package-checksums.ts"
+        "scripts/regenerate-public-package-checksums.ts",
+        "scripts/run-jam-actions-corpus-eval.ts"
       ]
     },
     {
@@ -1353,23 +1632,46 @@
       ]
     },
     {
-      "block": true,
       "place": "scores/amazing-grace.score-clock.v1.json",
       "writers": [
         "scripts/build-score-clock.mjs"
       ]
     },
     {
-      "place": "songs/",
+      "place": "site/public/",
       "writers": [
-        "scripts (4 files)",
-        "src/songs/loader.ts"
+        "scripts/render-landing-pianoroll.ts"
       ]
     },
     {
-      "place": "spaces/jam-actions-live/demo_data.json",
+      "place": "songs/library/",
       "writers": [
-        "spaces/jam-actions-live/extract-demo-data.mjs"
+        "scripts/annotate-batch.ts",
+        "scripts/download-library.ts"
+      ]
+    },
+    {
+      "place": "songs/library/.npmignore",
+      "writers": [
+        "scripts/npm-ship-list.ts"
+      ]
+    },
+    {
+      "place": "songs/library/folk/america-the-beautiful.json",
+      "writers": [
+        "scripts/create-america-the-beautiful.ts"
+      ]
+    },
+    {
+      "place": "songs/library/folk/america-the-beautiful.mid",
+      "writers": [
+        "scripts/create-america-the-beautiful.ts"
+      ]
+    },
+    {
+      "place": "songs/quarantine/",
+      "writers": [
+        "scripts/provenance-audit.ts"
       ]
     },
     {
@@ -1385,18 +1687,24 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T18:27:06.062Z",
+  "generatedAt": "2026-09-30T20:07:02.042Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
-    "11 import sites could not be resolved.",
-    "8 files use syntax the parser cannot read (scripts/compose-realize-demo.ts, scripts/run-jam-actions-corpus-eval.ts, src/dataset/acoustic-v1/generate-public.ts and 5 more), so what they import is not known: 6 in src (`typeof import(…)` as a type argument in 3, an import type followed by `[]` in 1, a NUL character inside a string in 1 and other syntax in 1), 2 in scripts (an import type followed by `[]`).",
-    "49 writes and 134 reads use paths built at run time and are not named here.",
-    "18 writes go to places this repository does not track, so they are not listed as generated.",
-    "97 writes and 351 reads go to the directory the command is run in, the home directory or a path its caller passes, not to this repository.",
-    "18 commands are built at run time and not followed, 4 of them in tests.",
-    "Readers marked (found by text) come from scanning unparsed files.",
-    "CI runs or checks 463 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs or checks 404 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
+    "48 writes and 112 reads use paths built at run time and are not named here.",
+    "26 writes go to places this repository does not track, so they are not listed as generated.",
+    "100 writes and 376 reads go to a path their caller passes, not to this repository.",
+    "1 write and 18 reads go to the directory the command is run in, not to this repository.",
+    "3 writes and 11 reads go to the home directory (.ssh/), not to this repository.",
+    "8 writes and 4 reads go to a temporary directory, not to this repository.",
+    "1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.",
+    "1 read goes to the directory the command is run in (tmp/) or a path its caller passes, not to this repository.",
+    "1 write goes to a temporary directory or a path its caller passes, not to this repository.",
+    "20 commands are built at run time and not followed, 2 of them in tests.",
+    "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
+    "There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.",
+    "CI runs or checks 468 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 406 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -1417,53 +1725,82 @@
     "src": "src"
   },
   "parts": 14,
-  "readers": [
+  "readers": [],
+  "repo": "mcp-tool-shop-org/ai-jam-sessions",
+  "sequences": [
     {
-      "readers": [
-        "docs/findings/derived-content-inventory.json (found by text)",
-        "experiments/acoustic-sft/eval.ts",
-        "experiments/acoustic-sft/format-sft.ts"
+      "alternatives": [
+        {
+          "steps": [
+            {
+              "name": "runStdioSupervisor",
+              "part": "src",
+              "partLabel": "src",
+              "phrase": "`runStdioSupervisor`"
+            }
+          ],
+          "when": "shouldSuperviseStdio()"
+        }
       ],
-      "target": "datasets/",
-      "tests": 3
-    },
-    {
-      "readers": [
-        "docs/findings/derived-content-inventory.json (found by text)"
-      ],
-      "target": "experiments/acoustic-sft/"
-    },
-    {
-      "readers": [
-        "docs/dogfood-swarm-grok-w2-kickoff.md (found by text)",
-        "docs/dogfood-swarm-grok-w3-kickoff.md (found by text)",
-        "docs/findings/derived-content-inventory.json (found by text)",
-        "experiments (5 files)",
-        "scripts (19 files)",
-        "src (7 files)"
-      ],
-      "target": "songs/",
-      "tests": 6
+      "entry": "main",
+      "file": "src/mcp-server.ts",
+      "inner": [],
+      "part": "src",
+      "partLabel": "src",
+      "phrase": "`main`",
+      "steps": [
+        {
+          "name": "shouldSuperviseStdio",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "`shouldSuperviseStdio`"
+        },
+        {
+          "name": "userSongsDir",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "`userSongsDir`"
+        },
+        {
+          "name": "initializeFromLibrary",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "`initializeFromLibrary`"
+        },
+        {
+          "name": "serverStatePath",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "`serverStatePath`"
+        },
+        {
+          "name": "openRpcOutputStream",
+          "part": "src",
+          "partLabel": "src",
+          "phrase": "`openRpcOutputStream`"
+        }
+      ]
     }
   ],
-  "repo": "mcp-tool-shop-org/ai-jam-sessions",
-  "sequences": [],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
-    "src/mcp-server.ts"
+    "src/mcp-server.ts",
+    "src/stdio-supervisor.ts",
+    "src/state-home.ts",
+    "src/songs/config/loader.ts"
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 193,
+  "testFiles": 194,
   "testedBy": {
     "cockpit": 13,
     "experiments": 10,
     "scripts": 12,
     "spaces": 0,
-    "src": 170
+    "src": 171
   },
-  "unnamedWrites": 49,
+  "unnamedWrites": 48,
   "unread": [
     {
       "place": "datasets/jam-actions-v0/evals/e1-tool-use-results.json",
@@ -1514,9 +1851,9 @@
       ]
     }
   ],
-  "unreadFiles": 8,
+  "unreadFiles": 0,
   "unreadNote": [
-    "And 60 more places."
+    "And 63 more places."
   ],
   "untested": [
     {
@@ -1526,5 +1863,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 106
+  "written": 108
 }
