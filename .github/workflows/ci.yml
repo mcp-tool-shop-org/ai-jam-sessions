@@ -116,7 +116,7 @@ jobs:
       # Node 22 cell only rather than repeating the same check on 24.
       - name: Atlas check
         if: matrix.node-version == 22
-        run: npx --yes @dogfood-lab/atlas@1.17.0 check
+        run: npx --yes @dogfood-lab/atlas@1.24.0 check
 
       - run: pnpm install --frozen-lockfile
 
