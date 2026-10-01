@@ -13,7 +13,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "79d5bd238db63f02633eed152e9348fe40a319141dfb7490834d40e33266cbf9",
+          "hash": "391e4730c7c98eb059537e81d7737220f881727f30c1d772e43df5e83bc2c09a",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -12226,11 +12226,11 @@
           "path": "package.json"
         },
         {
-          "hash": "8cd7df5abaf69f982e4e5d7df8b5ddf41d428915ec58739755186581664f5843",
+          "hash": "081cf6859d5b9b8d736531bbda8035fe243e8b1a84cc9de223f9487facdb41da",
           "path": "pnpm-lock.yaml"
         },
         {
-          "hash": "3535801e2faee1f88c018d252641c5eba733621af0a7fa0bd675a5dac54c63ad",
+          "hash": "a04f681e44162c1de91702039bb79c475de8cee778e34742b3cbe0caac160614",
           "path": "pnpm-workspace.yaml"
         },
         {
@@ -31049,30 +31049,7 @@
       ],
       "triggers": [
         {
-          "event": "pull_request",
-          "paths": [
-            ".dockerignore",
-            ".github/workflows/**",
-            "Dockerfile",
-            "apps/**",
-            "atlas/**",
-            "codecov.yml",
-            "datasets/**",
-            "docker-compose.yml",
-            "package.json",
-            "plugin/**",
-            "pnpm-lock.yaml",
-            "pnpm-workspace.yaml",
-            "samples/**",
-            "scripts/**",
-            "site/astro.config.mjs",
-            "site/package-lock.json",
-            "site/package.json",
-            "songs/**",
-            "src/**",
-            "tsconfig.json",
-            "vitest.config.ts"
-          ]
+          "event": "pull_request"
         },
         {
           "branches": [
@@ -34725,7 +34702,7 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "6e898149dd1e701d620e3db143abf37856e20a4a",
+    "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
     "tracked": 2950
   },
   "landings": [
