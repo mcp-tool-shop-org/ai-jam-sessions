@@ -19,5 +19,6 @@ onlyBuiltDependencies:
 # host-confusion via the ajv chain; ws — GHSA memory-exhaustion DoS via
 # vocal-synth-engine.
 overrides:
-  fast-uri: 3.1.3
+  fast-uri: ^3.1.8  # was pinned at 3.1.3; a range lets future patches resolve
+  "@hono/node-server": ^1.19.15  # keep the 1.x line; the sdk also allows 2.x
   ws: 8.21.0
