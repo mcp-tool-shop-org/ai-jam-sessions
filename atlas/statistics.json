@@ -255,8 +255,8 @@
         "path": ".gitattributes"
       },
       {
-        "commits": 37,
-        "lines": 947,
+        "commits": 39,
+        "lines": 951,
         "path": ".github/workflows/ci.yml"
       },
       {
@@ -1195,8 +1195,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 5,
-        "lines": 572,
+        "commits": 7,
+        "lines": 784,
         "path": "atlas/README.md"
       },
       {
@@ -1205,18 +1205,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 5,
-        "lines": 3378,
+        "commits": 7,
+        "lines": 4732,
         "path": "atlas/page.json"
       },
       {
-        "commits": 5,
-        "lines": 43962,
+        "commits": 7,
+        "lines": 56836,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 5,
-        "lines": 88152,
+        "commits": 7,
+        "lines": 131932,
         "path": "atlas/structure.json"
       },
       {
@@ -12955,13 +12955,13 @@
         "path": "plugin/agents/piano-teacher.md"
       },
       {
-        "commits": 13,
-        "lines": 6356,
+        "commits": 15,
+        "lines": 6694,
         "path": "pnpm-lock.yaml"
       },
       {
-        "commits": 4,
-        "lines": 43,
+        "commits": 6,
+        "lines": 49,
         "path": "pnpm-workspace.yaml"
       },
       {
@@ -16535,9 +16535,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-09-30T20:07:02.042Z",
+  "generatedAt": "2026-10-01T02:13:24.770Z",
   "generatedFrom": {
-    "commit": "6e898149dd1e701d620e3db143abf37856e20a4a"
+    "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175"
   },
   "pairs": [
     {
@@ -16873,16 +16873,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-09-29T08:12:10-07:00",
+    "headDate": "2026-09-30T17:37:36-07:00",
     "inScopeFiles": 2955,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 616,
+    "qualifyingCommits": 618,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-02T15:12:10.000Z",
+    "since": "2026-04-04T00:37:36.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

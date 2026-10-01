@@ -1,28 +1,19 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-09-30 from commit 6e89814 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 254e22e by Atlas 1.24.0.
 
 ## What this is
 
 14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (563), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-09-25 (d92a167)
+## What changed since 2026-09-30 (6e89814)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs files in apps/cockpit/.
-- And 3 more changes to doors.
-- .eval-checkpoints is now written by scripts/run-jam-actions-corpus-eval.ts.
-- datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.
-- datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.
-- And 131 more new writers and readers of places.
-- the site was authored and is now mixed.
-- songs was generated and is now mixed.
-- 17 files added and 1756 changed content, across 13 parts.
+- CI's pull request trigger no longer names `.dockerignore`, `.github/workflows/**`, `Dockerfile`, `apps/**`, `atlas/**`, `codecov.yml`, `datasets/**`, `docker-compose.yml`, `package.json`, `plugin/**`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `samples/**`, `scripts/**`, `site/astro.config.mjs`, `site/package-lock.json`, `site/package.json`, `songs/**`, `src/**`, `tsconfig.json` and `vitest.config.ts`.
+- 3 files changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 21 paths; on a push to main touching 21 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 294 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 92 more; checks scripts/analysis-chords.ts, scripts/analysis-patterns.ts, scripts/analysis-sections.ts and 57 more; packs LICENSE, README.md, logo.png and 377 more into an image.
+1. **CI.** On a pull request; on a push to main touching 21 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 294 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 92 more; checks scripts/analysis-chords.ts, scripts/analysis-patterns.ts, scripts/analysis-sections.ts and 57 more; packs LICENSE, README.md, logo.png and 377 more into an image.
 2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 301 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more; packs LICENSE, README.md, logo.png and 377 more into an image.
 3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; or by hand. Runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more.
 4. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts, scripts/verify-public-package-checksums.ts and src/dataset/published-evidence.test.ts.

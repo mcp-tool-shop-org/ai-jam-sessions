@@ -99,92 +99,29 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 17,
-      "changed": 1756,
+      "added": 0,
+      "changed": 3,
       "moved": 0,
-      "parts": 13,
+      "parts": 2,
       "removed": 0
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "sentence": "CI's pull request trigger no longer names `.dockerignore`, `.github/workflows/**`, `Dockerfile`, `apps/**`, `atlas/**`, `codecov.yml`, `datasets/**`, `docker-compose.yml`, `package.json`, `plugin/**`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `samples/**`, `scripts/**`, `site/astro.config.mjs`, `site/package-lock.json`, `site/package.json`, `songs/**`, `src/**`, `tsconfig.json` and `vitest.config.ts`.",
         "subjects": [
           ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI's push trigger now also names `codecov.yml`.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI now also runs files in apps/cockpit/.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "apps/cockpit/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 3 more changes to doors.",
-        "subjects": []
-      },
-      {
-        "kind": "landing",
-        "sentence": ".eval-checkpoints is now written by scripts/run-jam-actions-corpus-eval.ts.",
-        "subjects": [
-          ".eval-checkpoints",
-          "scripts/run-jam-actions-corpus-eval.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.",
-        "subjects": [
-          "datasets/jam-actions-v0-public/",
-          "scripts/run-jam-actions-corpus-eval.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.",
-        "subjects": [
-          "datasets/jam-actions-v0-public/evals/",
-          "scripts/run-jam-actions-corpus-eval.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 131 more new writers and readers of places.",
-        "subjects": []
-      },
-      {
-        "kind": "origin",
-        "sentence": "the site was authored and is now mixed.",
-        "subjects": [
-          "site"
-        ]
-      },
-      {
-        "kind": "origin",
-        "sentence": "songs was generated and is now mixed.",
-        "subjects": [
-          "songs"
         ]
       },
       {
         "kind": "counts",
-        "sentence": "17 files added and 1756 changed content, across 13 parts.",
+        "sentence": "3 files changed content, across 2 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "d92a167294ff5df72f634fda8a99777f4380279f",
-      "generatedAt": "2026-09-25T18:27:06.062Z"
+      "commit": "6e898149dd1e701d620e3db143abf37856e20a4a",
+      "generatedAt": "2026-09-30T20:07:02.042Z"
     },
     "unchanged": false
   },
@@ -194,7 +131,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "6e898149dd1e701d620e3db143abf37856e20a4a",
+  "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
   "defaultBranch": "main",
   "derived": "14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (563), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
@@ -438,7 +375,7 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 21 paths",
+        "on a pull request",
         "on a push to main touching 21 paths",
         "or by hand"
       ]
@@ -1687,7 +1624,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T20:07:02.042Z",
+  "generatedAt": "2026-10-01T02:13:24.770Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
