@@ -1019,7 +1019,12 @@ describe("audio engines render offline", () => {
     });
   });
 
-  describe("vocal tract", () => {
+  // The tract synthesizes every sample in JavaScript, and v8 coverage makes
+  // that loop about ten times slower: on CI a soprano note took 3.1 s in the
+  // plain pass and 28.5 s in the coverage pass, against the 30 s default.
+  // The melody test is about twice that. The limit is set from those
+  // figures, so a stuck render still fails.
+  describe("vocal tract", { timeout: 120_000 }, () => {
     // Pink Trombone keeps a simplex wobble even when the sine vibrato amount
     // is 0, and that field is seeded from Date.now() when the module loads.
     // Reloading it against a fixed clock makes the held median repeatable.
