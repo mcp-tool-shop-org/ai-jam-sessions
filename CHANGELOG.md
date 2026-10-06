@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — pause and resume, the practice journal filter, and an empty song list
+- **Resume works after a pause.** `pause()` settles a player's `play()` promise, and `play_song`
+  hung its teardown on that promise: a pause disconnected the audio and cleared the player, so
+  the next resume answered "Nothing is paused." This held for library songs and both MIDI-file
+  paths. Playback now outlives a pause and tears down only when it really ends (finished, stopped,
+  or superseded). Resume also returns at once; before, it would have waited until the song ended.
+  Measure mode keeps its step-and-stop behaviour: only a pause made through `pause_playback`
+  keeps playback open.
+- **A sung lead stops on pause**, and the pause says so. The lead is one pre-rendered buffer with
+  no pause of its own, so it cannot resume in step with the piano.
+- **`read_practice_journal` with `song_id` finds the song's own notes.** Entries name a song by
+  its title, and the filter matched only the id. A known id now matches its title as well.
+- **`list_songs` with no matches** says "No songs found matching your criteria." without a
+  "Found 0 song(s):" heading over it.
+- Found by the coverage tests in #63, which pinned them unfixed.
+
 ### Added — spectral balance, against pink noise or a reference render
 - `analyze_audio` gains a Balance section: each of seven bands' share of the energy (sub, bass,
   low-mid, mid, high-mid, presence, brilliance) with its deviation from pink noise, the spectral
