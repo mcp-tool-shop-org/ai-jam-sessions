@@ -251,3 +251,25 @@ def test_nucleus_window_skips_the_attack_and_the_release():
     assert a == pytest.approx(10.09) and b == pytest.approx(10.55)
     a, b = vc.nucleus_window(10.0, 10.12)   # too short: shrink instead of collapsing
     assert a < b
+
+
+def test_rise_onset_calls_a_near_silent_window_silent():
+    # a window just before a loud syllable holds only the band filter's ringing:
+    # the peak there is not zero, but it is nowhere near a vowel
+    sr = 48000
+    x = render(sr, 3.0, [synth_syllable(sr, 2.0, 0.5)])
+    times, env = vc.band_envelope(x, sr)
+    r = vc.rise_onset(times, env, 1.4, 1.99)   # ends 10 ms before the syllable, inside its filter ringing
+    assert r["t"] is None and r["reason"] == "silent"
+
+
+def test_rise_onset_still_dates_a_quiet_real_syllable():
+    # 30 dB under the loudest syllable is quiet, but it is singing, not silence
+    sr = 48000
+    loud = synth_syllable(sr, 0.5, 0.4)
+    onset, quiet = synth_syllable(sr, 1.5, 0.4)
+    x = render(sr, 2.5, [loud, (onset, quiet * 10 ** (-30 / 20))])
+    times, env = vc.band_envelope(x, sr)
+    r = vc.rise_onset(times, env, 1.3, 1.9)
+    assert r["reason"] == "ok"
+    assert abs(r["t"] - (1.5 + 0.01)) < 0.006
