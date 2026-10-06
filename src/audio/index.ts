@@ -21,6 +21,7 @@
 //   loudness            BS.1770-4 LUFS, peak dBFS, clipped-sample runs
 //   defects             dropouts (gaps) and noise bursts / clicks
 //   loop-seam           the click where a loop's end meets its start
+//   balance             spectral balance by band, against pink noise or a reference
 //   wav                 minimal RIFF/WAVE decode, the way audio gets in
 //   transcribe          monophonic notes → MidiNoteEvent[] (lossy at the convert)
 //   render              spectrogram → PNG bytes (tier 3, orientation only)
@@ -168,6 +169,22 @@ export {
   type BurstEvent,
   type BurstOptions,
 } from "./defects.js";
+
+export {
+  BALANCE_BANDS,
+  BALANCE_GATE_DB,
+  BALANCE_ROLLOFF_FRACTION,
+  TILT_FLOOR_DB,
+  BALANCE_CAVEAT,
+  measureBalance,
+  compareBalance,
+  type BalanceBandSpec,
+  type BalanceOptions,
+  type BalanceBand,
+  type BalanceReport,
+  type BalanceBandDifference,
+  type BalanceComparison,
+} from "./balance.js";
 
 export {
   LOOP_SEAM_CAVEAT,

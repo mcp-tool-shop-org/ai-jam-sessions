@@ -55,6 +55,8 @@ by running the signal through the same kind of tools it already uses on the scor
   cent deviations, never as raw frequencies. Level means the real numbers now: BS.1770-4
   integrated loudness in LUFS, the sample peak in dBFS, and a clipped-sample count, plus an
   integrity pass that reports dropouts and noise bursts — the click-and-glitch half of render QA.
+  A Balance section says where the energy sits, from sub-bass to air: each band's share against
+  pink noise, the brightness, and the tilt.
 - **`transcribe_audio`** — the recording as notes: pitch, start, duration, and how far each note
   sits from concert pitch.
 - **`score_audio_take`** — grade a performance against a song in the library **by ear**. It
@@ -68,6 +70,9 @@ by running the signal through the same kind of tools it already uses on the scor
 - **`check_loop_seam`** — judge a looping render where it wraps: the waveform step after
   extrapolating the tail's own slope, burst-shaped energy at the join, and the level shift across
   the seam. A phase-perfect loop reads clean even when the raw boundary sample jumps.
+- **`compare_balance`** — the tone of a render against a reference that is known to be right,
+  band by band in dB. A cue that should sit like its siblings, a re-render that should match the
+  take it replaces. Loudness cancels out, so only the tone is compared.
 
 **What it will not tell you.** The picture is for finding *where* something is wrong; every number
 comes from signal processing, never from a model reading an image. The transcriber follows one
@@ -380,7 +385,7 @@ in Ollama, with the measured cost of a 4-bit base: [docs/ollama-adapters.md](doc
 
 ## MCP Tools
 
-55 tools and 4 prompt templates across eight categories:
+56 tools and 4 prompt templates across eight categories:
 
 ### Learn
 
@@ -478,11 +483,12 @@ a picture.
 
 | Tool | What it does |
 |------|--------------|
-| `analyze_audio` | Measure a WAV — onset times, the pitch contour as note names with cents, level (BS.1770-4 LUFS, peak dBFS, clipped samples), and an integrity pass (dropouts, noise bursts, clicks) |
+| `analyze_audio` | Measure a WAV — onset times, the pitch contour as note names with cents, level (BS.1770-4 LUFS, peak dBFS, clipped samples), spectral balance by band, and an integrity pass (dropouts, noise bursts, clicks) |
 | `transcribe_audio` | Turn a monophonic recording into notes, with each note's deviation from concert pitch. Notes the tracker could not follow are omitted rather than guessed |
 | `score_audio_take` | Grade a performance against a library song **by ear**, then hand the result to `view_scored_piano_roll` |
 | `view_spectrogram` | See the sound — a constant-Q spectrogram on a piano-keyboard axis, optionally overlaid with the intended notes. Blind by default |
 | `check_loop_seam` | Judge where a loop's end wraps back to its start — extrapolated waveform step, burst energy at the join, level shift across it |
+| `compare_balance` | Compare a render's tonal balance against a reference, band by band in dB, with the change in brightness and tilt. Loudness cancels out |
 | `ensemble_now` | What every instrument is playing **right now**, mid-performance. Notes come from what was sent, so they are exact rather than estimated |
 
 ### MCP Prompts
