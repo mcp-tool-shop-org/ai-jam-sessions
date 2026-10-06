@@ -122,11 +122,80 @@ function songNotFoundError(songId: string, extra?: string): JamError {
   });
 }
 
+/**
+ * A command asked to stop. Thrown instead of process.exit so runCli can
+ * return the code. Playback catches rethrow it; they must not send it
+ * through handleError, or a preflight exit becomes a runtime failure.
+ * The real entry point still process.exit's with the code runCli returns.
+ */
+class CliHalt {
+  readonly code: number;
+  constructor(code: number) {
+    this.code = code;
+  }
+}
+
+function halt(code: number): never {
+  throw new CliHalt(code);
+}
+
+export interface CliIo {
+  out(text: string): void;
+  err(text: string): void;
+}
+
+export interface RunCliOptions {
+  /** Package song library. Defaults to the library shipped beside this file. */
+  libraryDir?: string;
+}
+
+/** Argv of the runCli call in progress. Debug flags are read from this, not from process.argv, so an in-process caller can pass them. */
+let cliArgv: string[] = [];
+
+function debugEnabled(): boolean {
+  return cliArgv.includes("--debug") || cliArgv.includes("-D");
+}
+
+function bindIo(custom: CliIo | undefined): () => void {
+  if (!custom) return () => {};
+  const previous = {
+    log: console.log,
+    error: console.error,
+    warn: console.warn,
+    stdoutWrite: process.stdout.write,
+    stderrWrite: process.stderr.write,
+  };
+  console.log = ((...args: unknown[]) => {
+    custom.out(args.map((part) => String(part)).join(" ") + "\n");
+  }) as typeof console.log;
+  console.error = ((...args: unknown[]) => {
+    custom.err(args.map((part) => String(part)).join(" ") + "\n");
+  }) as typeof console.error;
+  console.warn = ((...args: unknown[]) => {
+    custom.err(args.map((part) => String(part)).join(" ") + "\n");
+  }) as typeof console.warn;
+  process.stdout.write = ((chunk: unknown) => {
+    custom.out(typeof chunk === "string" ? chunk : String(chunk));
+    return true;
+  }) as typeof process.stdout.write;
+  process.stderr.write = ((chunk: unknown) => {
+    custom.err(typeof chunk === "string" ? chunk : String(chunk));
+    return true;
+  }) as typeof process.stderr.write;
+  return () => {
+    console.log = previous.log;
+    console.error = previous.error;
+    console.warn = previous.warn;
+    process.stdout.write = previous.stdoutWrite;
+    process.stderr.write = previous.stderrWrite;
+  };
+}
+
 /** Pre-flight EXIT_USER with the JamError [CODE]: message + Hint: line. */
 function exitUser(err: JamError): never {
   console.error(`Error [${err.code}]: ${err.message}`);
   if (err.hint) console.error(`Hint: ${err.hint}`);
-  process.exit(EXIT_USER);
+  halt(EXIT_USER);
 }
 
 function printSongTable(songs: SongEntry[]): void {
@@ -225,7 +294,7 @@ export interface PlaySessionFlags {
  * process.exit — so it's directly importable/testable (see cli.test.ts)
  * without pulling in cmdPlay's audio-engine/session machinery. Throws a
  * plain Error with a user-facing message on an invalid --count-in; cmdPlay
- * converts that into this file's usual "print + exit(1)" pattern (see the
+ * converts that into this file's usual "print + halt(1)" pattern (see the
  * header comment on the pre-flight-validation convention, above cmdList).
  */
 export function parsePlaySessionFlags(args: string[]): PlaySessionFlags {
@@ -246,19 +315,20 @@ export function parsePlaySessionFlags(args: string[]): PlaySessionFlags {
 
 // ─── Commands ───────────────────────────────────────────────────────────────
 //
-// Error-handling split (F-1a562e8f): the ~25 early-validation sites below
-// (`console.error(...); process.exit(1);`) are pre-flight argument checks —
+// Error-handling split (F-1a562e8f): the early-validation sites below
+// (`console.error(...); halt(1);`) are pre-flight argument checks —
 // bad flag values, missing required args, unknown song IDs. These are
 // EXIT_USER by construction: a conscious decision, not an oversight. They
-// intentionally stay as direct process.exit(1) calls (which already equals
-// errors.ts's EXIT_USER) rather than `throw new JamError(...)`, because
-// they run before any engine/file-I/O/transport work has started, so the
-// failure category is never ambiguous. JamError + main().catch()'s
-// handleError() is reserved for errors whose category ISN'T known until
-// runtime — see cmdPlay/cmdSing's own catch blocks below, which route
-// through handleError() precisely because a failure during playback really
-// could be either an EXIT_USER (bad song data) or EXIT_RUNTIME (audio
-// engine crash, MIDI port dropped) condition.
+// throw CliHalt so runCli can return 1 (errors.ts's EXIT_USER) rather than
+// `throw new JamError(...)`, because they run before any engine/file-I/O/
+// transport work has started, so the failure category is never ambiguous.
+// The entry point process.exit's with the code runCli returns. JamError +
+// handleError() is reserved for errors whose category isn't known until
+// runtime — see cmdPlay/cmdSing/cmdPractice's catch blocks, which route
+// through handleError() because a failure during playback could be
+// EXIT_USER (bad song data) or EXIT_RUNTIME (audio engine crash, MIDI port
+// dropped). Those catches rethrow CliHalt so a preflight halt inside the
+// try is not reclassified as a runtime failure.
 function cmdList(args: string[]): void {
   const genreArg = getFlag(args, "--genre");
   const diffArg = getFlag(args, "--difficulty");
@@ -268,7 +338,7 @@ function cmdList(args: string[]): void {
   if (genreArg) {
     if (!GENRES.includes(genreArg as Genre)) {
       console.error(`Unknown genre: "${genreArg}". Available: ${GENRES.join(", ")}`);
-      process.exit(1);
+      halt(1);
     }
     songs = getSongsByGenre(genreArg as Genre);
   } else {
@@ -278,7 +348,7 @@ function cmdList(args: string[]): void {
   if (diffArg) {
     if (!DIFFICULTIES.includes(diffArg as Difficulty)) {
       console.error(`Unknown difficulty: "${diffArg}". Available: ${DIFFICULTIES.join(", ")}`);
-      process.exit(1);
+      halt(1);
     }
     songs = songs.filter(s => s.difficulty === diffArg);
   }
@@ -290,7 +360,7 @@ function cmdInfo(args: string[]): void {
   const songId = args[0];
   if (!songId) {
     console.error("Usage: ai-jam-sessions info <song-id>");
-    process.exit(1);
+    halt(1);
   }
   const song = getSong(songId);
   if (!song) {
@@ -303,7 +373,7 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
   const target = args[0];
   if (!target) {
     console.error("Usage: ai-jam-sessions play <song-id | file.mid> [--speed N] [--tempo N] [--mode MODE] [--midi] [--with-singing] [--with-teaching] [--sing-mode MODE] [--seek N] [--metronome] [--count-in N] [--record] [--singer-backend kokoro|soulx|additive|tract] [--melody-track NAME]");
-    process.exit(1);
+    halt(1);
   }
 
   // Parse flags
@@ -332,7 +402,7 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
   const VALID_SINGER_BACKENDS = ["kokoro", "soulx", "additive", "tract"];
   if (!VALID_SINGER_BACKENDS.includes(singerBackend)) {
     console.error(`Unknown singer backend: "${singerBackend}". Available: ${VALID_SINGER_BACKENDS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
 
   // Session-recording flags (library songs only — see parsePlaySessionFlags).
@@ -340,33 +410,34 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
   try {
     sessionFlags = parsePlaySessionFlags(args);
   } catch (err) {
+    if (err instanceof CliHalt) throw err;
     console.error(err instanceof Error ? err.message : String(err));
-    process.exit(1);
+    halt(1);
   }
 
   // Validate engine
   const VALID_ENGINES = ["piano", "sample", "vocal", "tract", "synth", "piano+synth", "vocal+synth", "guitar", "guitar+synth"];
   if (!VALID_ENGINES.includes(engineStr)) {
     console.error(`Unknown engine: "${engineStr}". Available: ${VALID_ENGINES.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
 
   // Validate tract voice
   if (!TRACT_VOICE_IDS.includes(tractVoiceStr as TractVoiceId)) {
     console.error(`Unknown tract voice: "${tractVoiceStr}". Available: ${TRACT_VOICE_IDS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
 
   // Validate guitar voice
   if (!GUITAR_VOICE_IDS.includes(guitarVoiceStr as GuitarVoiceId)) {
     console.error(`Unknown guitar voice: "${guitarVoiceStr}". Available: ${GUITAR_VOICE_IDS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
 
   // Validate keyboard
   if (!VOICE_IDS.includes(keyboardStr as PianoVoiceId)) {
     console.error(`Unknown keyboard: "${keyboardStr}". Available: ${VOICE_IDS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
   const keyboardId = keyboardStr as PianoVoiceId;
 
@@ -374,19 +445,19 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
   const speed = speedStr ? parseFloat(speedStr) : undefined;
   if (speed !== undefined && (isNaN(speed) || speed <= 0 || speed > 4)) {
     console.error(`Invalid speed: "${speedStr}". Must be between 0 (exclusive) and 4.`);
-    process.exit(1);
+    halt(1);
   }
 
   // Validate sing mode
   if (!VALID_SING_MODES.includes(singModeStr as SingAlongMode)) {
     console.error(`Invalid --sing-mode: "${singModeStr}". Available: ${VALID_SING_MODES.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
   const singMode = singModeStr as SingAlongMode;
 
   if (!VALID_VOICE_FILTERS.includes(voiceFilterStr as SingVoiceFilter)) {
     console.error(`Invalid --voice-filter: "${voiceFilterStr}". Available: ${VALID_VOICE_FILTERS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
   const voiceFilter = voiceFilterStr as SingVoiceFilter;
 
@@ -411,13 +482,13 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
     const m = lyricsMeasuresStr.match(/^(\d+)-(\d+)$/);
     if (!m) {
       console.error(`Invalid --measures range: "${lyricsMeasuresStr}". Use format like "1-8".`);
-      process.exit(1);
+      halt(1);
     }
     lyricsStart = parseInt(m[1], 10);
     lyricsEnd = parseInt(m[2], 10);
     if (lyricsStart < 1 || lyricsEnd < lyricsStart) {
       console.error(`Invalid --measures range: "${lyricsMeasuresStr}".`);
-      process.exit(1);
+      halt(1);
     }
   }
 
@@ -436,7 +507,7 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
         const samplesDir = resolvePianoSamplesDir();
         if (!samplesDir) {
           console.error("Sampled piano is not installed. Set AI_JAM_SAMPLES_DIR to an Accurate-Salamander directory, or use --engine piano.");
-          process.exit(1);
+          halt(1);
         }
         return createSampleEngine({ samplesDir });
       }
@@ -478,7 +549,7 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
       // ── MIDI file playback ──
       if (!existsSync(target)) {
         console.error(`File not found: "${target}"`);
-        process.exit(1);
+        halt(1);
       }
 
       const parsed = await parseMidiFile(target);
@@ -493,7 +564,7 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
       const seekSec = seekStr ? parseFloat(seekStr) : undefined;
       if (seekSec !== undefined && (isNaN(seekSec) || seekSec < 0)) {
         console.error(`Invalid seek: "${seekStr}". Must be a positive number (seconds).`);
-        process.exit(1);
+        halt(1);
       }
 
       console.log(`\nPlaying: ${target}`);
@@ -575,12 +646,12 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
       const tempo = tempoStr ? parseInt(tempoStr, 10) : undefined;
       if (tempo !== undefined && (isNaN(tempo) || tempo < 10 || tempo > 400)) {
         console.error(`Invalid tempo: "${tempoStr}". Must be between 10 and 400 BPM.`);
-        process.exit(1);
+        halt(1);
       }
 
       if (!VALID_MODES.includes(modeStr as PlaybackMode)) {
         console.error(`Invalid mode: "${modeStr}". Available: ${VALID_MODES.join(", ")}`);
-        process.exit(1);
+        halt(1);
       }
       const mode = modeStr as PlaybackMode;
 
@@ -617,7 +688,7 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
       if (wantsLyrics && lyricsStart !== undefined && lyricsEnd !== undefined) {
         if (lyricsEnd > song.measures.length) {
           console.error(`--measures ${lyricsStart}-${lyricsEnd} exceeds "${song.title}" (${song.measures.length} measures).`);
-          process.exit(1);
+          halt(1);
         }
         loopRange = [lyricsStart, lyricsEnd];
         playMode = "loop";
@@ -640,14 +711,16 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
             soulxPromptMeta: singerPromptMeta,
           });
         } catch (err) {
+          if (err instanceof CliHalt) throw err;
           const msg = err instanceof Error ? err.message : String(err);
           console.error(`Couldn't build sung lyrics: ${msg}`);
-          process.exit(1);
+          halt(1);
         }
         if (scoreSinger) {
           try {
             await scoreSinger.singer.connect();
           } catch (err) {
+            if (err instanceof CliHalt) throw err;
             const msg = err instanceof Error ? err.message : String(err);
             console.error(`  Sung lead skipped: ${msg}`);
             scoreSinger = null;
@@ -674,12 +747,12 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
       if (lyricsOut) {
         if (!scoreSinger) {
           console.error("--out with no --lyrics: nothing to render. Pass --lyrics or --lyrics-file.");
-          process.exit(1);
+          halt(1);
         }
         const backendStr = getFlag(args, "--svs-backend") ?? "dsp";
         if (backendStr !== "dsp" && backendStr !== "diffsinger") {
           console.error(`Unknown --svs-backend: "${backendStr}". Use dsp or diffsinger.`);
-          process.exit(1);
+          halt(1);
         }
         try {
           const rendered = await renderOfflineSvs(scoreSinger.score, {
@@ -688,9 +761,10 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
           });
           console.log(`  Wrote sung lead: ${rendered.outPath} (${rendered.durationSec.toFixed(1)}s, ${rendered.backend})`);
         } catch (err) {
+          if (err instanceof CliHalt) throw err;
           const msg = err instanceof Error ? err.message : String(err);
           console.error(`Couldn't render sung lead: ${msg}`);
-          process.exit(1);
+          halt(1);
         }
       }
 
@@ -786,11 +860,13 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
         appendJournalEntry(entry);
         console.log("  📝 Session logged to practice journal.");
       } catch (journalErr) {
+        if (journalErr instanceof CliHalt) throw journalErr;
         const msg = journalErr instanceof Error ? (journalErr as Error).message : String(journalErr);
         console.warn(`  ⚠ Could not save journal entry: ${msg}`);
       }
     }
   } catch (err) {
+    if (err instanceof CliHalt) throw err;
     // Route through handleError() instead of a bare process.exit(1) — a
     // failure during playback could be EXIT_USER (bad song data) or
     // EXIT_RUNTIME (audio engine crash, MIDI port dropped), and the two
@@ -798,8 +874,7 @@ async function cmdPlay(args: string[], libraryDir?: string): Promise<void> {
     // modules already construct JamError with the right code; this is
     // what lets that classification actually reach the exit code.
     const { handleError } = await import("./errors.js");
-    const debug = process.argv.includes("--debug") || process.argv.includes("-D");
-    process.exit(handleError(err, debug));
+    halt(handleError(err, debugEnabled()));
   } finally {
     await connector.disconnect();
   }
@@ -809,7 +884,7 @@ async function cmdSing(args: string[]): Promise<void> {
   const songId = args[0];
   if (!songId) {
     console.error("Usage: ai-jam-sessions sing <song-id> [--mode note-names|solfege|contour|syllables] [--hand right|left|both] [--speed N] [--tempo N] [--with-piano] [--sync concurrent|before] [--midi]");
-    process.exit(1);
+    halt(1);
   }
   const song = getSong(songId);
   if (!song) {
@@ -830,28 +905,28 @@ async function cmdSing(args: string[]): Promise<void> {
   // Validate keyboard
   if (!VOICE_IDS.includes(singKeyboardStr as PianoVoiceId)) {
     console.error(`Unknown keyboard: "${singKeyboardStr}". Available: ${VOICE_IDS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
   const singKeyboardId = singKeyboardStr as PianoVoiceId;
 
   // Validate sing-along mode
   if (!VALID_SING_MODES.includes(modeStr as SingAlongMode)) {
     console.error(`Invalid mode: "${modeStr}". Available: ${VALID_SING_MODES.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
   const singMode = modeStr as SingAlongMode;
 
   // Validate hand
   if (!VALID_HANDS.includes(handStr as typeof VALID_HANDS[number])) {
     console.error(`Invalid hand: "${handStr}". Available: ${VALID_HANDS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
   const hand = handStr as "right" | "left" | "both";
 
   // Validate sync mode
   if (!VALID_SYNC_MODES.includes(syncStr as SyncMode)) {
     console.error(`Invalid sync mode: "${syncStr}". Available: ${VALID_SYNC_MODES.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
   const syncMode = syncStr as SyncMode;
 
@@ -859,14 +934,14 @@ async function cmdSing(args: string[]): Promise<void> {
   const speed = speedStr ? parseFloat(speedStr) : undefined;
   if (speed !== undefined && (isNaN(speed) || speed <= 0 || speed > 4)) {
     console.error(`Invalid speed: "${speedStr}". Must be between 0 (exclusive) and 4.`);
-    process.exit(1);
+    halt(1);
   }
 
   // Validate tempo
   const tempo = tempoStr ? parseInt(tempoStr, 10) : undefined;
   if (tempo !== undefined && (isNaN(tempo) || tempo < 10 || tempo > 400)) {
     console.error(`Invalid tempo: "${tempoStr}". Must be between 10 and 400 BPM.`);
-    process.exit(1);
+    halt(1);
   }
 
   // Create connector: built-in piano engine or MIDI output
@@ -874,7 +949,7 @@ async function cmdSing(args: string[]): Promise<void> {
   const SING_ENGINES = ["piano", "synth", "piano+synth"];
   if (!SING_ENGINES.includes(singEngineStr)) {
     console.error(`Unknown engine for sing: "${singEngineStr}". Available: ${SING_ENGINES.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
 
   function buildSingEngine(engine: string): VmpkConnector {
@@ -961,6 +1036,7 @@ async function cmdSing(args: string[]): Promise<void> {
     console.log(`\nFinished! ${session.session.measuresPlayed} measures played.`);
     console.log(session.summary());
   } catch (err) {
+    if (err instanceof CliHalt) throw err;
     // Route through handleError() instead of a bare process.exit(1) — a
     // failure during playback could be EXIT_USER (bad song data) or
     // EXIT_RUNTIME (audio engine crash, MIDI port dropped), and the two
@@ -968,8 +1044,7 @@ async function cmdSing(args: string[]): Promise<void> {
     // modules already construct JamError with the right code; this is
     // what lets that classification actually reach the exit code.
     const { handleError } = await import("./errors.js");
-    const debug = process.argv.includes("--debug") || process.argv.includes("-D");
-    process.exit(handleError(err, debug));
+    halt(handleError(err, debugEnabled()));
   } finally {
     await connector.disconnect();
   }
@@ -1063,9 +1138,10 @@ async function cmdPractice(args: string[]): Promise<void> {
   try {
     parsed = parsePracticeArgs(args);
   } catch (err) {
+    if (err instanceof CliHalt) throw err;
     if (err instanceof JamError) exitUser(err);
     console.error(err instanceof Error ? err.message : String(err));
-    process.exit(1);
+    halt(1);
   }
 
   const song = getSong(parsed.songId);
@@ -1086,8 +1162,9 @@ async function cmdPractice(args: string[]): Promise<void> {
       maxPasses: parsed.maxPasses,
     });
   } catch (err) {
+    if (err instanceof CliHalt) throw err;
     console.error(err instanceof Error ? err.message : String(err));
-    process.exit(1);
+    halt(1);
   }
 
   const connector = createAudioEngine("grand");
@@ -1155,6 +1232,7 @@ async function cmdPractice(args: string[]): Promise<void> {
       appendJournalEntry(entry);
       console.log("  📝 Session logged to practice journal.");
     } catch (journalErr) {
+      if (journalErr instanceof CliHalt) throw journalErr;
       const msg = journalErr instanceof Error ? journalErr.message : String(journalErr);
       console.warn(`  ⚠ Could not save journal entry: ${msg}`);
     }
@@ -1171,12 +1249,12 @@ async function cmdPractice(args: string[]): Promise<void> {
       throw new Error(finalState.error ?? `Practice loop for "${song.title}" ended in an error state.`);
     }
   } catch (err) {
+    if (err instanceof CliHalt) throw err;
     // Same EXIT_USER/EXIT_RUNTIME routing as cmdPlay/cmdSing — see their
     // own comments on why this goes through handleError() instead of a
     // bare process.exit(1).
     const { handleError } = await import("./errors.js");
-    const debug = process.argv.includes("--debug") || process.argv.includes("-D");
-    process.exit(handleError(err, debug));
+    halt(handleError(err, debugEnabled()));
   } finally {
     await connector.disconnect();
   }
@@ -1218,7 +1296,7 @@ async function cmdView(args: string[]): Promise<void> {
   const songId = args[0];
   if (!songId) {
     console.error("Usage: ai-jam-sessions view <song-id> [--measures 1-8] [--out file.svg]");
-    process.exit(1);
+    halt(1);
   }
   const song = getSong(songId);
   if (!song) {
@@ -1235,19 +1313,19 @@ async function cmdView(args: string[]): Promise<void> {
     endMeasure = parts[1] ? parseInt(parts[1], 10) : startMeasure;
     if (isNaN(startMeasure) || isNaN(endMeasure)) {
       console.error(`Invalid --measures range: "${measuresStr}". Use format like "1-8" or "5-12".`);
-      process.exit(1);
+      halt(1);
     }
     if (startMeasure < 1) {
       console.error(`Invalid --measures range: start must be >= 1 (got ${startMeasure}).`);
-      process.exit(1);
+      halt(1);
     }
     if (startMeasure > song.measures.length) {
       console.error(`Invalid --measures range: start ${startMeasure} exceeds song length (${song.measures.length} measures).`);
-      process.exit(1);
+      halt(1);
     }
     if (endMeasure < startMeasure) {
       console.error(`Invalid --measures range: end ${endMeasure} must be >= start ${startMeasure}.`);
-      process.exit(1);
+      halt(1);
     }
     if (endMeasure > song.measures.length) {
       console.error(`Warning: end measure ${endMeasure} exceeds song length (${song.measures.length}), clamping.`);
@@ -1260,7 +1338,7 @@ async function cmdView(args: string[]): Promise<void> {
   const validColors = ["hand", "pitch-class"];
   if (!validColors.includes(colorStr)) {
     console.error(`Invalid --color: "${colorStr}". Options: ${validColors.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
   const colorMode = colorStr as PianoRollColorMode;
 
@@ -1289,7 +1367,7 @@ async function cmdViewGuitar(args: string[]): Promise<void> {
   const songId = args[0];
   if (!songId) {
     console.error("Usage: ai-jam-sessions view-guitar <song-id> [--measures 1-8] [--tuning standard] [--out file.html]");
-    process.exit(1);
+    halt(1);
   }
   const song = getSong(songId);
   if (!song) {
@@ -1306,19 +1384,19 @@ async function cmdViewGuitar(args: string[]): Promise<void> {
     endMeasure = parts[1] ? parseInt(parts[1], 10) : startMeasure;
     if (isNaN(startMeasure) || isNaN(endMeasure)) {
       console.error(`Invalid --measures range: "${measuresStr}". Use format like "1-8" or "5-12".`);
-      process.exit(1);
+      halt(1);
     }
     if (startMeasure < 1) {
       console.error(`Invalid --measures range: start must be >= 1 (got ${startMeasure}).`);
-      process.exit(1);
+      halt(1);
     }
     if (startMeasure > song.measures.length) {
       console.error(`Invalid --measures range: start ${startMeasure} exceeds song length (${song.measures.length} measures).`);
-      process.exit(1);
+      halt(1);
     }
     if (endMeasure < startMeasure) {
       console.error(`Invalid --measures range: end ${endMeasure} must be >= start ${startMeasure}.`);
-      process.exit(1);
+      halt(1);
     }
     if (endMeasure > song.measures.length) {
       console.error(`Warning: end measure ${endMeasure} exceeds song length (${song.measures.length}), clamping.`);
@@ -1330,7 +1408,7 @@ async function cmdViewGuitar(args: string[]): Promise<void> {
   const tuning = getFlag(args, "--tuning");
   if (tuning && !GUITAR_TUNING_IDS.includes(tuning as any)) {
     console.error(`Invalid --tuning: "${tuning}". Options: ${GUITAR_TUNING_IDS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
 
   // Parse --tempo flag
@@ -1407,7 +1485,7 @@ function cmdTuneGuitar(args: string[]): void {
 
   if (!GUITAR_VOICE_IDS.includes(voiceId as any)) {
     console.error(`Unknown guitar voice: "${voiceId}". Valid: ${GUITAR_VOICE_IDS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
 
   // --reset flag
@@ -1461,11 +1539,11 @@ function cmdTuneGuitar(args: string[]): void {
       const num = parseFloat(val);
       if (isNaN(num)) {
         console.error(`Invalid value for --${p.key}: "${val}" (expected a number)`);
-        process.exit(1);
+        halt(1);
       }
       if (num < p.min || num > p.max) {
         console.error(`--${p.key} ${num} is out of range (${p.min}–${p.max})`);
-        process.exit(1);
+        halt(1);
       }
       overrides[p.key] = num;
     }
@@ -1473,7 +1551,7 @@ function cmdTuneGuitar(args: string[]): void {
 
   if (Object.keys(overrides).length === 0) {
     console.error(`No tuning parameters specified. Run 'ai-jam-sessions tune-guitar' to see available parameters.`);
-    process.exit(1);
+    halt(1);
   }
 
   saveGuitarUserTuning(voiceId, overrides);
@@ -1491,17 +1569,17 @@ function cmdGenerateSong(args: string[]): void {
   const lyrics = getFlag(args, "--lyrics") ?? args.find((a) => !a.startsWith("--")) ?? "";
   if (!lyrics.trim()) {
     console.error("Usage: ai-jam-sessions generate-song --lyrics \"...\" [--generator ace-step|diffrhythm|yue]");
-    process.exit(1);
+    halt(1);
   }
   const gen = getFlag(args, "--generator") ?? "ace-step";
   if (gen !== "ace-step" && gen !== "diffrhythm" && gen !== "yue") {
     console.error(`Unknown --generator: "${gen}". Use ace-step, diffrhythm, or yue.`);
-    process.exit(1);
+    halt(1);
   }
   const result = generateFullSong({ lyrics, generator: gen });
   console.error(`Error [INPUT_INVALID_ARGS]: ${result.reason}`);
   console.error(`Hint: ${result.hint}`);
-  process.exit(1);
+  halt(1);
 }
 
 function cmdTune(args: string[]): void {
@@ -1521,7 +1599,7 @@ function cmdTune(args: string[]): void {
 
   if (!VOICE_IDS.includes(voiceId as any)) {
     console.error(`Unknown keyboard: "${voiceId}". Valid: ${VOICE_IDS.join(", ")}`);
-    process.exit(1);
+    halt(1);
   }
 
   // --reset flag
@@ -1575,11 +1653,11 @@ function cmdTune(args: string[]): void {
       const num = parseFloat(val);
       if (isNaN(num)) {
         console.error(`Invalid value for --${p.key}: "${val}" (expected a number)`);
-        process.exit(1);
+        halt(1);
       }
       if (num < p.min || num > p.max) {
         console.error(`--${p.key} ${num} is out of range (${p.min}–${p.max})`);
-        process.exit(1);
+        halt(1);
       }
       overrides[p.key] = num;
     }
@@ -1587,7 +1665,7 @@ function cmdTune(args: string[]): void {
 
   if (Object.keys(overrides).length === 0) {
     console.error(`No tuning parameters specified. Run 'ai-jam-sessions tune' to see available parameters.`);
-    process.exit(1);
+    halt(1);
   }
 
   saveUserTuning(voiceId, overrides);
@@ -1732,7 +1810,7 @@ async function cmdLibraryFetch(args: string[], libraryDir: string): Promise<void
   console.log(NL + `  Fetched ${ok} of ${candidates.length}.` + rest + NL);
 }
 
-function cmdLibrary(args: string[], libraryDir: string): void {
+async function cmdLibrary(args: string[], libraryDir: string): Promise<void> {
   const progress = getLibraryProgress(libraryDir);
 
   // Sub-command: status <genre>
@@ -1742,7 +1820,7 @@ function cmdLibrary(args: string[], libraryDir: string): void {
     if (!gp) {
       console.error(`Unknown genre: ${genre}`);
       console.error(`Valid genres: ${GENRES.join(", ")}`);
-      process.exit(1);
+      halt(1);
     }
 
     console.log(`\n  ${genre} — ${gp.total} songs`);
@@ -1762,7 +1840,7 @@ function cmdLibrary(args: string[], libraryDir: string): void {
   // source under that source's terms (printed first), checked against the
   // SHA-256 the audit recorded.
   if (args[0] === "fetch") {
-    void cmdLibraryFetch(args.slice(1), libraryDir);
+    await cmdLibraryFetch(args.slice(1), libraryDir);
     return;
   }
 
@@ -1806,17 +1884,7 @@ function getFlag(args: string[], flag: string): string | null {
   return args[idx + 1];
 }
 
-async function main(): Promise<void> {
-  // Load songs from library + user directories
-  const { dirname, join } = await import("node:path");
-  const { fileURLToPath } = await import("node:url");
-  const __dirname = dirname(fileURLToPath(import.meta.url));
-  const libraryDir = join(__dirname, "..", "songs", "library");
-  const { userSongsDir } = await import("./state-home.js");
-  const userDir = userSongsDir();
-  initializeFromLibrary(libraryDir, userDir);
-
-  const args = process.argv.slice(2);
+async function dispatch(args: string[], libraryDir: string): Promise<void> {
   const command = args[0] ?? "help";
 
   switch (command) {
@@ -1828,24 +1896,21 @@ async function main(): Promise<void> {
       break;
     case "play":
       await cmdPlay(args.slice(1), libraryDir);
-      // Force exit: the audio engines (node-web-audio-api) don't release
-      // all handles/timers on disconnect(), so the event loop can stay
-      // alive indefinitely otherwise. This is a known workaround for that
-      // resource-cleanup gap (F-68e883cf), not a general-purpose pattern —
-      // fix the underlying engine leak before layering more logic after
-      // this exit; a forced exit can truncate buffered stdout/stderr and
-      // skips any future 'beforeExit'/'exit' listeners.
-      process.exit(0);
+      // Stop the process after playback. The audio engines do not release
+      // every timer on disconnect(), so returning would leave the event
+      // loop alive (F-68e883cf). runCli turns this into the exit code, and
+      // the entry guard process.exit's with it.
+      halt(0);
       break;
     case "sing":
       await cmdSing(args.slice(1));
       // See the "play" case above — same audio-engine cleanup workaround.
-      process.exit(0);
+      halt(0);
       break;
     case "practice":
       await cmdPractice(args.slice(1));
       // See the "play" case above — same audio-engine cleanup workaround.
-      process.exit(0);
+      halt(0);
       break;
     case "view":
       await cmdView(args.slice(1));
@@ -1868,7 +1933,7 @@ async function main(): Promise<void> {
       break;
     case "library":
     case "lib":
-      cmdLibrary(args.slice(1), libraryDir);
+      await cmdLibrary(args.slice(1), libraryDir);
       break;
     case "stats":
       cmdStats();
@@ -1896,23 +1961,54 @@ async function main(): Promise<void> {
         printSongInfo(song);
       } else {
         console.error(`Unknown command: "${command}". Run 'ai-jam-sessions help' for usage.`);
-        process.exit(1);
+        halt(1);
       }
+  }
+}
+
+/**
+ * Run one CLI invocation. Returns the exit code instead of exiting the
+ * process. `io` captures stdout and stderr for a test; omit it to write
+ * to the real streams. Song-library init happens here, from the package
+ * library plus the user directory under AI_JAM_HOME.
+ */
+export async function runCli(argv: string[], io?: CliIo, options?: RunCliOptions): Promise<number> {
+  const restore = bindIo(io);
+  const previousArgv = cliArgv;
+  cliArgv = argv;
+  try {
+    const { dirname, join } = await import("node:path");
+    const { fileURLToPath } = await import("node:url");
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    const libraryDir = options?.libraryDir ?? join(__dirname, "..", "songs", "library");
+    const { userSongsDir } = await import("./state-home.js");
+    initializeFromLibrary(libraryDir, userSongsDir());
+    await dispatch(argv, libraryDir);
+    return 0;
+  } catch (err) {
+    if (err instanceof CliHalt) return err.code;
+    throw err;
+  } finally {
+    cliArgv = previousArgv;
+    restore();
   }
 }
 
 // ─── Entry guard ────────────────────────────────────────────────────────────
 //
-// Only run main() when this file is the process entry point — not when a
-// test imports parsePlaySessionFlags / parsePracticeArgs. The comparison,
-// including realpath handling for symlinked bins, lives in entry-guard.ts
-// and is shared with mcp-server.ts.
+// Only run the CLI when this file is the process entry point — not when a
+// test imports parsePlaySessionFlags / parsePracticeArgs / runCli. The
+// comparison, including realpath handling for symlinked bins, lives in
+// entry-guard.ts and is shared with mcp-server.ts.
 
 if (isEntrypoint(import.meta.url)) {
-  main().catch(async (err) => {
-    const { handleError } = await import("./errors.js");
-    const debug = process.argv.includes("--debug") || process.argv.includes("-D");
-    const code = handleError(err, debug);
-    process.exit(code);
-  });
+  runCli(process.argv.slice(2))
+    .then((code) => {
+      process.exit(code);
+    })
+    .catch(async (err) => {
+      const { handleError } = await import("./errors.js");
+      const debug = process.argv.includes("--debug") || process.argv.includes("-D");
+      process.exit(handleError(err, debug));
+    });
 }
