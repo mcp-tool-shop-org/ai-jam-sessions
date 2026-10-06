@@ -845,6 +845,9 @@ describe("mcp-server.ts — audio inspection tools not covered elsewhere", () =>
     dir = mkdtempSync(join(tmpdir(), "ajs-mcp-wav-"));
     writeWav16(join(dir, "a4.wav"), tone(440, 0.5), SR);
     writeWav16(join(dir, "silence.wav"), new Float64Array(SR), SR);
+    // overlay's missing-song errors run after cqt(). A short file keeps
+    // those two transforms small. The drawn pictures use a4.wav.
+    writeWav16(join(dir, "blip.wav"), tone(440, 0.08), SR);
   }, 30000);
 
   afterAll(async () => {
@@ -908,15 +911,15 @@ describe("mcp-server.ts — audio inspection tools not covered elsewhere", () =>
     expect(extractText(overlaid)).toContain("intended notes");
     expect(overlaid.content.some((item) => item.mimeType === "image/png")).toBe(true);
 
-    const noSong = await call("view_spectrogram", { path: join(dir, "a4.wav"), overlay: true, end_sec: 0.5 });
+    const noSong = await call("view_spectrogram", { path: join(dir, "blip.wav"), overlay: true, end_sec: 0.08 });
     expect(noSong.isError).toBe(true);
     expect(extractText(noSong)).toContain("overlay needs a song_id");
 
     const unknown = await call("view_spectrogram", {
-      path: join(dir, "a4.wav"),
+      path: join(dir, "blip.wav"),
       overlay: true,
       song_id: "no-such-song-xyz",
-      end_sec: 0.5,
+      end_sec: 0.08,
     });
     expect(unknown.isError).toBe(true);
     expect(extractText(unknown)).toContain(`No song called "no-such-song-xyz"`);
@@ -932,7 +935,8 @@ describe("mcp-server.ts — audio inspection tools not covered elsewhere", () =>
     const missingAnalysis = await call("analyze_audio", { path: join(dir, "no-such-file-xyz.wav") });
     expect(missingAnalysis.isError).toBe(true);
     expect(extractText(missingAnalysis)).toContain('No file at "');
-  }, 30000);
+    // v8 on the coverage job pushed the two half-second renders past 30s.
+  }, 90000);
 });
 
 describe("mcp-server.ts — annotate_song promotes a disposable raw fixture", () => {
