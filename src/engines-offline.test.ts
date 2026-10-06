@@ -5,7 +5,7 @@ import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import { OfflineAudioContext } from "node-web-audio-api";
+import { AudioBufferSourceNode, OfflineAudioContext } from "node-web-audio-api";
 import { setSharedAudioContext, getSharedAudioContext } from "./audio-shared.js";
 import { centsFromTarget, midiToHz, trackPitch } from "./audio/pitch.js";
 import { measureLevels } from "./audio/loudness.js";
@@ -225,6 +225,27 @@ function latestContext(): OfflineAudioContext {
   const ctx = harness.contexts.at(-1);
   if (!ctx) throw new Error("the engine did not construct an AudioContext");
   return ctx;
+}
+
+// The vocal engine's cleanup calls source.stop() on a private voice.
+// Counting that call is the observation a tail measurement does not give:
+// the release ramp already sits at unity gain 0.001, and noteOff drops the
+// voice before killVoice runs.
+function watchBufferSources(ctx: OfflineAudioContext): { sources: AudioBufferSourceNode[]; stops: () => number } {
+  const sources: AudioBufferSourceNode[] = [];
+  let stops = 0;
+  const native = ctx.createBufferSource.bind(ctx);
+  ctx.createBufferSource = () => {
+    const source = native();
+    const stop = source.stop.bind(source);
+    source.stop = ((when?: number) => {
+      stops += 1;
+      return stop(when);
+    }) as AudioBufferSourceNode["stop"];
+    sources.push(source);
+    return source;
+  };
+  return { sources, stops: () => stops };
 }
 
 function hold(engine: VmpkConnector, note: number, velocity = 90): Array<{ t: number; run: () => void }> {
@@ -936,6 +957,66 @@ describe("audio engines render offline", () => {
       expect(engine.status()).toBe("connected");
       await engine.disconnect();
     });
+
+    it("chorus detunes MIDI 69 by 2.5 cents from the shipped 880 Hz", async () => {
+      // Chorus is the only detune this engine applies: the primary goes 2.5
+      // cents flat and the second voice 2.5 cents sharp. There is no +100
+      // cent input. cents/1100 is about 1.1e-4 of playbackRate away from
+      // 2^(cents/1200), which five decimal places reject. A pitch window of
+      // a few cents cannot see that error, so the rate is the gate.
+      const engine = createVocalEngine({ chorus: true });
+      await engine.connect();
+      const ctx = latestContext();
+      const watched = watchBufferSources(ctx);
+      let primaryRate = 0;
+      let chorusRate = 0;
+      const rendered = await bounce(ctx, [
+        {
+          t: NOTE_ON,
+          run: () => {
+            engine.noteOn(69, 90);
+            primaryRate = watched.sources[0]!.playbackRate.value;
+            chorusRate = watched.sources[1]!.playbackRate.value;
+            // The second voice is 5 cents sharp of the primary. Drop it so
+            // trackPitch follows the primary the engine just detuned.
+            watched.sources[1]!.disconnect();
+          },
+        },
+        { t: NOTE_OFF, run: () => engine.noteOff(69) },
+      ]);
+      const base = 2 ** ((69 - 72) / 12);
+      expect(watched.sources).toHaveLength(2);
+      expect(primaryRate).toBeCloseTo(base * 2 ** (-2.5 / 1200), 5);
+      expect(chorusRate).toBeCloseTo(base * 2 ** (2.5 / 1200), 5);
+      expectHz(rendered.samples, rendered.sampleRate, 880 * 2 ** (-2.5 / 1200), "chorus primary", 4);
+      await engine.disconnect();
+    });
+
+    it("noteOff silences MIDI 69 after the release and the voice leaves the active set", async () => {
+      const engine = createVocalEngine({ debug: true });
+      await engine.connect();
+      const ctx = latestContext();
+      const watched = watchBufferSources(ctx);
+      vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval"] });
+      try {
+        const rendered = await bounce(ctx, hold(engine, 69));
+        expectEnergy(rendered.samples, rendered.sampleRate, "vocal holding MIDI 69");
+        // noteOff at 0.85 s, release ramp 0.15 s, so the tail is past 1.00 s.
+        expectSilence(rendered.samples, rendered.sampleRate, 1.02, 1.15, "vocal after the release");
+        expect(engine.debugLog.map((event) => event.type)).toEqual(["on", "off"]);
+        expect(engine.debugLog[1]).toMatchObject({ type: "off", midiTarget: 69 });
+        engine.noteOff(69);
+        expect(engine.debugLog).toHaveLength(2);
+        expect(watched.stops(), "the release ramp has not stopped the source yet").toBe(0);
+        // killVoice is armed for 250 ms. Advancing the fake clock runs it.
+        // That call is voice.source.stop(). Removing the call leaves this at 0.
+        await vi.advanceTimersByTimeAsync(300);
+        expect(watched.stops(), "killVoice stops the source").toBe(1);
+      } finally {
+        vi.useRealTimers();
+      }
+      await engine.disconnect();
+    });
   });
 
   describe("vocal tract", () => {
@@ -1039,6 +1120,31 @@ describe("audio engines render offline", () => {
         expect(Math.abs(centsFromTarget(last, 60)), `melody C4 again ${last.toFixed(2)} Hz`).toBeLessThanOrEqual(10);
         await engine.disconnect();
       });
+    });
+
+    it("soprano velocity 120 is louder than velocity 40", async () => {
+      async function levelsAt(velocity: number) {
+        return withSeededNoise(async () => {
+          harness.renderSeconds = RENDER_SECONDS;
+          const engine = makeTract({ voice: "soprano", vibrato: false });
+          await engine.connect();
+          try {
+            const rendered = await bounce(latestContext(), [
+              { t: NOTE_ON, run: () => engine.noteOn(69, velocity) },
+              { t: NOTE_OFF, run: () => engine.noteOff(69) },
+            ]);
+            return windowLevels(rendered.samples, rendered.sampleRate, 0.4, 0.75);
+          } finally {
+            await engine.disconnect();
+          }
+        });
+      }
+      const quiet = await levelsAt(40);
+      const loud = await levelsAt(120);
+      expect(quiet.rmsDbFs, "velocity 40 still sounds").toBeGreaterThan(-50);
+      // 120/40 is 3. A clear margin under that still rejects a flat gain of 1.
+      const ratio = loud.rmsLinear / quiet.rmsLinear;
+      expect(ratio, `velocity ratio ${ratio.toFixed(3)}`).toBeGreaterThan(2);
     });
 
     it("allNotesOff silences a held note, and playNote resolves on a fake clock", async () => {
