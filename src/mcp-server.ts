@@ -157,6 +157,7 @@ import {
   rankWorstMeasures,
 } from "./practice-loop.js";
 import { JamError } from "./errors.js";
+import { isEntrypoint } from "./entry-guard.js";
 import { userSongsDir, serverStatePath, stateHome } from "./state-home.js";
 import { readFile } from "node:fs/promises";
 import { existsSync, readFileSync, writeFileSync, realpathSync, mkdirSync } from "node:fs";
@@ -277,7 +278,7 @@ function fsErrorResult(err: unknown, action: string): { content: [{ type: "text"
 
 // ─── Server ─────────────────────────────────────────────────────────────────
 
-const server = new McpServer({
+export const server = new McpServer({
   name: "ai-jam-sessions",
   version: VERSION,
 });
@@ -4824,19 +4825,19 @@ function loadSessionState(): void {
 
 // ─── Start ──────────────────────────────────────────────────────────────────
 
-async function main(): Promise<void> {
-  // On POSIX, re-exec into the stdio-purity supervisor before doing any real
-  // work: it runs this server as an inner child with the native audio layer's
-  // stray stdout writes quarantined to stderr and JSON-RPC split onto fd 3, so
-  // the host's stdout can never be corrupted regardless of JACK state. See
-  // src/stdio-supervisor.ts for the full rationale (dup2 is unavailable in
-  // pure Node, so separation requires this one thin external process).
-  if (shouldSuperviseStdio()) {
-    runStdioSupervisor();
-    return;
-  }
+let libraryPrepared = false;
 
-  // Load songs from library + user directories
+/**
+ * Load the song library and any persisted session snapshot.
+ * Tests call this, then server.connect() on an in-memory transport.
+ * main() calls it before the stdio transport. A second call on the same
+ * module is a no-op so a repeat cannot clear songs registered since the
+ * first load.
+ */
+export async function prepareMcpServer(): Promise<McpServer> {
+  if (libraryPrepared) return server;
+  libraryPrepared = true;
+
   const { dirname } = await import("node:path");
   const { fileURLToPath } = await import("node:url");
   const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -4853,6 +4854,23 @@ async function main(): Promise<void> {
     );
   }
 
+  return server;
+}
+
+async function main(): Promise<void> {
+  // On POSIX, re-exec into the stdio-purity supervisor before doing any real
+  // work: it runs this server as an inner child with the native audio layer's
+  // stray stdout writes quarantined to stderr and JSON-RPC split onto fd 3, so
+  // the host's stdout can never be corrupted regardless of JACK state. See
+  // src/stdio-supervisor.ts for the full rationale (dup2 is unavailable in
+  // pure Node, so separation requires this one thin external process).
+  if (shouldSuperviseStdio()) {
+    runStdioSupervisor();
+    return;
+  }
+
+  await prepareMcpServer();
+
   // JSON-RPC output target: fd 3 when running as the supervised inner server
   // (the supervisor wired fd 3 to the host's stdout), otherwise stdout. This
   // is what keeps fd 1 free for the native audio layer's stray prints.
@@ -4861,7 +4879,11 @@ async function main(): Promise<void> {
   console.error("ai-jam-sessions MCP server running on stdio");
 }
 
-main().catch((err) => {
-  console.error("Fatal error:", err instanceof Error ? err.message : String(err));
-  process.exit(1);
-});
+// Same entry guard as cli.ts (src/entry-guard.ts). Importing this module
+// from a test must not connect stdio to the test runner's own stdin/stdout.
+if (isEntrypoint(import.meta.url)) {
+  main().catch((err) => {
+    console.error("Fatal error:", err instanceof Error ? err.message : String(err));
+    process.exit(1);
+  });
+}

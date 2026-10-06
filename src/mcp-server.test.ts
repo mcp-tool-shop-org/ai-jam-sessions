@@ -1,41 +1,105 @@
 // ─── mcp-server.test.ts ────────────────────────────────────────────────────────
 //
-// Protocol-level tests for mcp-server.ts's tool-handler layer.
+// Protocol tests for mcp-server.ts. The module's entry guard (entry-guard.ts)
+// lets a test import it without connecting stdio. Handlers stay closures
+// inside registerTool, so the client is the real MCP Client on
+// InMemoryTransport — the same tool calls a host makes, counted by coverage.
 //
-// mcp-server.ts has no `isMain`-style guard: importing the module directly
-// runs `main()` unconditionally, which constructs a real StdioServerTransport
-// and connects it to the process's actual stdin/stdout — unsafe to trigger
-// inside a shared vitest worker process. Its tool handlers (play_song,
-// add_section, transpose_song, server_info) also live entirely as closures
-// inside `registerTool(...)` calls with no separately-exported/importable
-// pure functions to unit-test directly.
+// Two spawned smokes remain: the tsx entry (guard did not swallow main, and
+// stdout stays JSON-only) and dist/mcp-server.js when a build is present.
 //
-// So this file drives the server the way a real MCP client does: spawn it as
-// a child process (mirroring this repo's own
-// `"smoke": "node --import tsx src/smoke.ts"` convention) and talk to it over
-// real MCP-over-stdio via the SDK's Client + StdioClientTransport. HOME /
-// USERPROFILE are redirected to a fresh temp directory so add_section /
-// transpose_song's saveSong() writes land in an isolated user-songs dir
-// instead of the real developer's ~/.ai-jam-sessions/songs — persistence is
-// then verified by reading that file back from disk directly, bypassing the
-// server's own in-memory registry entirely.
-//
-// Audio: play_song's endMeasure-bound check (in the library-song/loop-mode
-// path) sits AFTER the real audio connector's .connect() call in the current
-// code, so this test necessarily exercises the real node-web-audio-api
-// engine (confirmed to connect successfully in this sandbox via a direct
-// smoke check before writing this file) rather than a mock — this is the one
-// sub-item where "mock audio output" isn't achievable without editing
-// mcp-server.ts itself, which is out of this domain's scope.
+// State paths: AI_JAM_HOME is set to <tmp>/.ai-jam-sessions before the
+// dynamic import. os.homedir() is cached for the worker process, so HOME
+// alone would not redirect stateHome(); the child-process smokes still use
+// HOME/USERPROFILE because their homedir cache is fresh. Playback uses a
+// fake connector (no audio device).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from "vitest";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { mkdtempSync, rmSync, readFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+
+const audioDouble = vi.hoisted(() => {
+  const waiters: Array<() => void> = [];
+  return {
+    gate: false,
+    connectError: null as string | null,
+    waiterCount: () => waiters.length,
+    releaseAll() {
+      const pending = waiters.splice(0);
+      for (const resolve of pending) resolve();
+    },
+    async playNote() {
+      if (this.gate) {
+        await new Promise<void>((resolve) => {
+          waiters.push(resolve);
+        });
+        return;
+      }
+      await new Promise<void>((resolve) => {
+        setImmediate(resolve);
+      });
+    },
+  };
+});
+
+function fakeConnector() {
+  return {
+    async connect() {
+      if (audioDouble.connectError) throw new Error(audioDouble.connectError);
+    },
+    async disconnect() {},
+    status() {
+      return "connected" as const;
+    },
+    listPorts() {
+      return ["fake-port"];
+    },
+    noteOn() {},
+    noteOff() {},
+    allNotesOff() {},
+    playNote: () => audioDouble.playNote(),
+  };
+}
+
+function fakeMetronome() {
+  return {
+    start() {},
+    stop() {},
+    setTempo() {},
+    async countIn() {},
+  };
+}
+
+vi.mock("./audio-engine.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./audio-engine.js")>();
+  return { ...actual, createAudioEngine: () => fakeConnector() };
+});
+vi.mock("./sample-engine.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./sample-engine.js")>();
+  return { ...actual, createSampleEngine: () => fakeConnector() };
+});
+vi.mock("./vocal-engine.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./vocal-engine.js")>();
+  return { ...actual, createVocalEngine: () => fakeConnector() };
+});
+vi.mock("./vocal-tract-engine.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./vocal-tract-engine.js")>();
+  return { ...actual, createTractEngine: () => fakeConnector() };
+});
+vi.mock("./guitar-engine.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./guitar-engine.js")>();
+  return { ...actual, createGuitarEngine: () => fakeConnector() };
+});
+vi.mock("./playback/metronome.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./playback/metronome.js")>();
+  return { ...actual, createMetronome: () => fakeMetronome() };
+});
 
 const SERVER_PATH = fileURLToPath(new URL("./mcp-server.ts", import.meta.url));
 
@@ -51,71 +115,78 @@ function extractText(result: ToolResult): string {
     .join("\n");
 }
 
-// ─── Shared helper: fully isolated server instance ─────────────────────────
-//
-// The `client`/`transport` pair set up in the outer `beforeAll` below is
-// shared across all of that describe block's tests and is already connected
-// by the time any test runs — fine for tests that only care about tool
-// call/response behavior, but two categories of test below need more control
-// than that:
-//
-//   1. Tests that must pre-seed a file under the server's HOME (e.g. a
-//      server-state.json with a specific shape) BEFORE the server process
-//      starts, since loadSessionState() only runs once, inside main(), at
-//      startup.
-//   2. Tests that need to observe the raw child process's stdout stream
-//      directly (bypassing the SDK's own lenient per-line JSON-parse-or-drop
-//      handling in ReadBuffer.readMessage(), which silently swallows any
-//      non-JSON line without failing the calling test — see
-//      node_modules/.../@modelcontextprotocol/sdk/dist/esm/shared/stdio.js).
-//
-// Both need their own dedicated, independently-torn-down server instance
-// rather than reusing the shared one.
+// Fresh module per call so loadSessionState() sees files seeded in beforeStart.
+// AI_JAM_HOME points at <tmpHome>/.ai-jam-sessions, which is where the
+// assertions below read saved songs back from disk.
+const ISOLATED_ENV_KEYS = ["HOME", "USERPROFILE", "AI_JAM_HOME", "OLLAMA_HOST"];
+
+function snapshotEnv(extra?: Record<string, string>): Record<string, string | undefined> {
+  const keys = new Set<string>([...ISOLATED_ENV_KEYS, ...Object.keys(extra ?? {})]);
+  const snap: Record<string, string | undefined> = {};
+  for (const key of keys) snap[key] = process.env[key];
+  return snap;
+}
+
+function restoreEnv(snap: Record<string, string | undefined>): void {
+  for (const [key, value] of Object.entries(snap)) {
+    if (value === undefined) delete process.env[key];
+    else process.env[key] = value;
+  }
+}
+
+async function waitForGatedNote(): Promise<void> {
+  for (let i = 0; i < 100; i++) {
+    if (audioDouble.waiterCount() > 0) return;
+    await new Promise<void>((resolve) => {
+      setImmediate(resolve);
+    });
+  }
+  throw new Error("playback never reached a gated note");
+}
+
 async function spawnIsolatedServer(options: {
-  /**
-   * Called with the fresh tmpHome directory path BEFORE the server process
-   * is spawned, so callers can pre-seed files (e.g.
-   * `<tmpHome>/.ai-jam-sessions/server-state.json`) that the server will
-   * read during its own startup.
-   */
+  /** Seed files under tmpHome before prepareMcpServer() reads them. */
   beforeStart?: (tmpHome: string) => void;
-  /**
-   * Extra environment variables merged into the spawned server's env (after
-   * process.env, HOME, and USERPROFILE). Lets a test pin e.g. OLLAMA_HOST to a
-   * dead port so the auto_reharmonize probe fails deterministically regardless
-   * of whether a real Ollama is running on the dev machine.
-   */
+  /** Extra env for this module only (OLLAMA_HOST, for example). Restored on close. */
   env?: Record<string, string>;
 } = {}): Promise<{
   client: Client;
-  transport: StdioClientTransport;
   tmpHome: string;
   close: () => Promise<void>;
 }> {
   const tmpHome = mkdtempSync(join(tmpdir(), "ajs-mcp-server-test-iso-"));
+  const snap = snapshotEnv(options.env);
+  process.env.HOME = tmpHome;
+  process.env.USERPROFILE = tmpHome;
+  process.env.AI_JAM_HOME = join(tmpHome, ".ai-jam-sessions");
+  if (options.env) Object.assign(process.env, options.env);
   options.beforeStart?.(tmpHome);
-  const transport = new StdioClientTransport({
-    command: process.execPath,
-    args: ["--import", "tsx", SERVER_PATH],
-    env: {
-      ...process.env,
-      HOME: tmpHome,
-      USERPROFILE: tmpHome,
-      ...options.env,
-    } as Record<string, string>,
-  });
+
+  vi.resetModules();
+  const mod = await import("./mcp-server.js");
+  const mcp = await mod.prepareMcpServer();
+  const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
   const client = new Client({ name: "tests-agent-mcp-server-test-iso", version: "0.0.0" });
-  await client.connect(transport);
+  await Promise.all([client.connect(clientTransport), mcp.connect(serverTransport)]);
+
   return {
     client,
-    transport,
     tmpHome,
     close: async () => {
+      audioDouble.gate = false;
+      audioDouble.connectError = null;
+      audioDouble.releaseAll();
+      try {
+        await client.callTool({ name: "stop_playback", arguments: {} });
+      } catch {
+        /* best-effort */
+      }
       try {
         await client.close();
       } catch {
         /* best-effort */
       }
+      restoreEnv(snap);
       rmSync(tmpHome, { recursive: true, force: true });
     },
   };
@@ -123,36 +194,27 @@ async function spawnIsolatedServer(options: {
 
 describe("mcp-server.ts — MCP protocol-level tool tests", () => {
   let client: Client;
-  let transport: StdioClientTransport;
   let tmpHome: string;
+  let closeShared: () => Promise<void> = async () => {};
 
   beforeAll(async () => {
-    tmpHome = mkdtempSync(join(tmpdir(), "ajs-mcp-server-test-home-"));
-    transport = new StdioClientTransport({
-      command: process.execPath,
-      args: ["--import", "tsx", SERVER_PATH],
-      env: {
-        ...process.env,
-        // Redirect getUserSongsDir() (~/.ai-jam-sessions/songs) so
-        // add_section/transpose_song's saveSong() writes are fully isolated
-        // from the real developer's home directory.
-        HOME: tmpHome,
-        USERPROFILE: tmpHome,
-      } as Record<string, string>,
-    });
-    client = new Client({ name: "tests-agent-mcp-server-test", version: "0.0.0" });
-    await client.connect(transport);
+    const iso = await spawnIsolatedServer();
+    client = iso.client;
+    tmpHome = iso.tmpHome;
+    closeShared = iso.close;
   }, 30000);
 
+  afterEach(async () => {
+    audioDouble.gate = false;
+    audioDouble.connectError = null;
+    audioDouble.releaseAll();
+    if (client) {
+      await client.callTool({ name: "stop_playback", arguments: {} }).catch(() => {});
+    }
+  });
+
   afterAll(async () => {
-    try {
-      await client?.close();
-    } catch {
-      /* best-effort */
-    }
-    if (tmpHome) {
-      rmSync(tmpHome, { recursive: true, force: true });
-    }
+    await closeShared();
   });
 
   it(
@@ -207,7 +269,8 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
 
       expect(result.isError).toBe(true);
       expect(text.toLowerCase()).not.toContain("now playing");
-      expect(text.toLowerCase()).toMatch(/measure/);
+      expect(text.toLowerCase()).toContain("exceeds");
+      expect(text.toLowerCase()).toContain("valid range");
     },
     20000,
   );
@@ -234,7 +297,8 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
       expect(past.isError).toBe(true);
       const pastText = extractText(past).toLowerCase();
       expect(pastText).not.toContain("now playing");
-      expect(pastText).toMatch(/exceeds|valid range/);
+      expect(pastText).toContain("exceeds");
+      expect(pastText).toContain("valid range");
 
       // Exactly the last measure → the range guard must ACCEPT it. We assert on
       // the guard's own outcome, not on playback succeeding: a real audio device
@@ -249,7 +313,9 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
         name: "play_song",
         arguments: { id: "bach-prelude-c-major-bwv846", mode: "loop", startMeasure: n, endMeasure: n },
       })) as ToolResult;
-      expect(extractText(edge).toLowerCase()).not.toMatch(/exceeds|valid range/);
+      const edgeText = extractText(edge).toLowerCase();
+      expect(edgeText).not.toContain("exceeds");
+      expect(edgeText).not.toContain("valid range");
 
       // Best-effort cleanup in case audio did start (local dev with a device).
       await client.callTool({ name: "stop_playback", arguments: {} }).catch(() => {});
@@ -569,7 +635,9 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
         },
       })) as ToolResult;
       expect(outOfRange.isError).toBe(true);
-      expect(extractText(outOfRange)).toMatch(/measure/i);
+      const outOfRangeText = extractText(outOfRange);
+      expect(outOfRangeText).toContain("bad_measure_range");
+      expect(outOfRangeText).toContain("End measure must be >= start measure");
 
       const ok = (await client.callTool({
         name: "verify_harmony",
@@ -739,7 +807,7 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
           },
         })) as ToolResult;
         expect(res.isError).toBe(true);
-        expect(extractText(res).toLowerCase()).toMatch(/failed to import midi|midi/i);
+        expect(extractText(res)).toContain("Failed to import MIDI");
       } finally {
         await iso.close();
       }
@@ -756,116 +824,111 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
       })) as ToolResult;
       expect(res.isError).toBe(true);
       const text = extractText(res).toLowerCase();
-      expect(text).toMatch(/home directory|midi/);
-      expect(text).not.toMatch(/no song called/);
+      expect(text).toContain("can't access");
+      expect(text).toContain("home directory");
+      expect(text).not.toContain("no song called");
     },
     20000,
   );
 });
 
-// ─── Stdio purity (pins B-B1-001) ───────────────────────────────────────────
+// ─── Spawned entry smokes ───────────────────────────────────────────────────
 //
-// mcp-server.ts's MCP transport is StdioServerTransport — the JSON-RPC
-// framing channel IS the child process's stdout. Anything else written to
-// stdout (a stray console.log, a teaching-hook narration line, a debug
-// print) corrupts that channel. Pre-fix, `createConsoleTeachingHook()`
-// (src/teaching.ts) — which calls `console.log(...)` for onMeasureStart /
-// onKeyMoment / onSongComplete / push — was pushed into the hooks array
-// UNCONDITIONALLY by both play_song code paths (mcp-server.ts's MIDI-file
-// branch at ~line 1010 and library-song branch at ~line 1163), regardless of
-// the withTeaching flag. Any play_song call that gets far enough to start
-// playback leaks lines like "  [Measure 1]" onto stdout.
+// In-process tests never execute main(), so they cannot prove the guard
+// still starts the server. Two child processes do:
 //
-// This bug does NOT necessarily fail the OTHER tests in this file: the SDK's
-// own StdioClientTransport (see shared/stdio.js's ReadBuffer) reads stdout
-// newline-delimited, and if `JSON.parse(line)` throws on a garbage line, it
-// just forwards to `transport.onerror` (a no-op unless a caller sets one —
-// confirmed by reading the SDK's Protocol class) and moves on to the next
-// line; the legitimate JSON-RPC response, sent as its own separate write,
-// still parses fine and resolves the pending tool call. So a client built on
-// this SDK silently tolerates the leak. A stricter client, or any
-// line-oriented proxy/logger sitting on the stdio pipe (exactly the shape of
-// a real MCP host), would not. This test bypasses the SDK's lenient
-// per-line handling entirely and inspects the raw byte stream, which is the
-// only way to actually catch this class of bug — this is why it is a new,
-// dedicated test rather than an assertion bolted onto an existing one.
-describe("mcp-server.ts — stdio purity (pins B-B1-001)", () => {
+//   1. `node --import tsx src/mcp-server.ts` lists tools, then play_song.
+//      stdout is inspected raw (B-B1-001): the SDK's line parser drops
+//      non-JSON, so a teaching-hook leak would still look like a passing
+//      tool call. A fake clock cannot reach the child, so this keeps the
+//      original pipe-observation window after the tool returns.
+//   2. `node dist/mcp-server.js` when a build is present — the symlinked
+//      bin case. If dist/ is absent the test says so and does not pretend
+//      the built entry ran.
+
+const REPO_ROOT = fileURLToPath(new URL("..", import.meta.url));
+
+describe("mcp-server.ts — spawned entry smokes", () => {
   it(
-    "writes ONLY JSON-RPC to stdout during a play_song call — no teaching-hook narration text " +
-      "(e.g. '[Measure N]') leaks onto the framing channel, even though the SDK client itself " +
-      "would silently tolerate such a leak",
+    "tsx entry lists tools and writes only JSON-RPC to stdout during play_song (B-B1-001)",
     async () => {
+      const tmpHome = mkdtempSync(join(tmpdir(), "ajs-mcp-smoke-"));
+      const transport = new StdioClientTransport({
+        command: process.execPath,
+        args: ["--import", "tsx", SERVER_PATH],
+        env: {
+          ...process.env,
+          HOME: tmpHome,
+          USERPROFILE: tmpHome,
+        } as Record<string, string>,
+      });
+      const client = new Client({ name: "tests-agent-mcp-smoke", version: "0.0.0" });
       const rawStdoutLines: string[] = [];
       let lineBuf = "";
-
-      const iso = await spawnIsolatedServer();
+      let stdoutBuf = "";
+      let stderrBuf = "";
       try {
-        // Reach into the transport's own child process to observe the exact
-        // bytes written to stdout — the same stream the SDK's ReadBuffer
-        // consumes to frame JSON-RPC messages. This is a second, independent
-        // 'data' listener on the real stdout stream (Node streams dispatch
-        // 'data' to every registered listener; this doesn't steal or reorder
-        // bytes the SDK's own transport needs to keep functioning).
+        await client.connect(transport);
+        const toolList = await client.listTools();
+        expect(toolList.tools.length).toBeGreaterThan(50);
+        expect(toolList.tools.some((t) => t.name === "play_song")).toBe(true);
+        expect(toolList.tools.some((t) => t.name === "server_info")).toBe(true);
+
+        const info = (await client.callTool({ name: "server_info", arguments: {} })) as ToolResult;
+        expect(info.isError).not.toBe(true);
+        expect(extractText(info)).toContain("**Tools:**");
+
         const rawProcess = (
-          iso.transport as unknown as { _process?: { stdout?: NodeJS.ReadableStream } }
+          transport as unknown as {
+            _process?: { stdout?: NodeJS.ReadableStream; stderr?: NodeJS.ReadableStream };
+          }
         )._process;
         expect(rawProcess?.stdout).toBeTruthy();
         rawProcess!.stdout!.on("data", (chunk: Buffer) => {
-          lineBuf += chunk.toString("utf8");
+          const text = chunk.toString("utf8");
+          stdoutBuf += text;
+          lineBuf += text;
           let idx: number;
           while ((idx = lineBuf.indexOf("\n")) !== -1) {
             rawStdoutLines.push(lineBuf.slice(0, idx).replace(/\r$/, ""));
             lineBuf = lineBuf.slice(idx + 1);
           }
         });
+        rawProcess?.stderr?.on("data", (chunk: Buffer) => {
+          stderrBuf += chunk.toString("utf8");
+        });
 
-        // Loop mode over a tiny 1-measure range on a real library song — the
-        // library-song play_song path is the one that unconditionally pushed
-        // createConsoleTeachingHook() into libHooks pre-fix. onMeasureStart
-        // fires essentially immediately once session.play() starts
-        // (synchronously, before the tool handler's own return — playRange's
-        // first loop iteration awaits Promise.all([onMeasureStart(...),
-        // playMeasure(...)]), and onMeasureStart's console.log runs
-        // synchronously within that), so this exercises the leak whether or
-        // not this machine has a real audio device — see F-765eb987 /
-        // T-B1-001 for confirmation that connector.connect() succeeds
-        // (degrades gracefully) on headless CI here. Per this wave's brief:
-        // if audio genuinely can't start on some other test machine, the
-        // handler still returns its own JSON-RPC response before ever
-        // reaching the hooks code, so the assertion below ("any stdout
-        // observed must be JSON") holds regardless either way.
-        const playResult = (await iso.client.callTool({
+        const playResult = (await client.callTool({
           name: "play_song",
           arguments: { id: "bach-prelude-c-major-bwv846", mode: "loop", startMeasure: 1, endMeasure: 1 },
         })) as ToolResult;
         expect(playResult).toBeDefined();
+        const playText = extractText(playResult);
+        expect(playText.length).toBeGreaterThan(0);
+        const started = !playResult.isError && playText.includes("Now playing");
+        // A headless runner has no audio device. The guard still started the
+        // server; the tool then refuses with the engine-start error.
+        const refused = playResult.isError === true && playText.includes("Couldn't start the") && playText.includes("engine");
+        expect(started || refused).toBe(true);
 
-        // Give any backgrounded teaching-hook callbacks (onMeasureStart /
-        // onKeyMoment / onSongComplete / push) a window to fire and
-        // potentially write to stdout.
+        // Observation window for the child pipe. Narration that fires is
+        // synchronous with playback start when a device exists; the wait
+        // is so a late stderr/stdout chunk is not asserted before it arrives.
         await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        // Best-effort stop so the background loop doesn't outlive the test.
-        await iso.client.callTool({ name: "stop_playback", arguments: {} }).catch(() => {});
+        await client.callTool({ name: "stop_playback", arguments: {} }).catch(() => {});
         await new Promise((resolve) => setTimeout(resolve, 200));
       } finally {
-        await iso.close();
+        try {
+          await client.close();
+        } catch {
+          /* best-effort */
+        }
+        rmSync(tmpHome, { recursive: true, force: true });
       }
 
-      // Flush a trailing partial line (no terminating newline yet, e.g. if
-      // the process was still mid-write when the test stopped listening) —
-      // a non-JSON trailing fragment is just as much a leak as a full line.
-      if (lineBuf.trim().length > 0) {
-        rawStdoutLines.push(lineBuf);
-      }
-
-      const nonEmptyLines = rawStdoutLines.filter((l) => l.trim().length > 0);
-      // Non-vacuous: must have actually observed traffic (at minimum the
-      // play_song and stop_playback tool responses) — otherwise the
-      // all-lines-are-JSON assertion below would trivially pass over zero
-      // lines and prove nothing.
+      if (lineBuf.trim().length > 0) rawStdoutLines.push(lineBuf);
+      const nonEmptyLines = rawStdoutLines.filter((line) => line.trim().length > 0);
       expect(nonEmptyLines.length).toBeGreaterThan(0);
-
       const badLines: string[] = [];
       for (const line of nonEmptyLines) {
         try {
@@ -874,96 +937,54 @@ describe("mcp-server.ts — stdio purity (pins B-B1-001)", () => {
           badLines.push(line);
         }
       }
-
-      // Strict purity: stdout IS the JSON-RPC framing channel, so it must carry
-      // nothing but JSON. Two classes of non-JSON used to reach it, both now
-      // closed:
-      //   • our own teaching/singing narration ("[Measure N]", ♪/★/🎓/ℹ/💡/❗,
-      //     solfège) — routed to stderr (B-B1-001);
-      //   • the native audio layer's fd-1 writes — node-web-audio-api's cpal
-      //     JACK probe (`Failed to open client … LibraryError("libjack.so.0…")`)
-      //     prints to fd-1 from native code, outside our JS console. It could
-      //     not be intercepted in-process (no dup2 in pure Node; /proc/self/fd
-      //     reopen is ENXIO for a pipe fd; worker threads share the fd table),
-      //     so it is now quarantined to stderr by the stdio-purity supervisor
-      //     (src/stdio-supervisor.ts), which runs the real server as an inner
-      //     child and splits JSON-RPC onto fd 3.
-      // With both closed there is no tolerated-noise exception left: ANY
-      // non-JSON line on stdout is a real protocol-corruption regression.
-      // (Reverting the stderr hook makes "[Measure N]" reappear here; disabling
-      // the supervisor makes the libjack line reappear here — both → RED.)
       expect(badLines).toEqual([]);
+
+      const narration = /\[Measure/;
+      expect(narration.test(stdoutBuf)).toBe(false);
+      if (narration.test(stderrBuf)) {
+        expect(stderrBuf).toMatch(narration);
+        expect(narration.test(stdoutBuf)).toBe(false);
+      }
     },
-    25000,
+    30000,
   );
 
-  // FL3-002 hygiene: the RED above only proves narration text never leaks to
-  // stdout — it stays green identically whether narration fired on stderr
-  // OR never fired at all (e.g. no audio device headless), so on its own it
-  // cannot distinguish "the leak is fixed" from "the narration path never
-  // ran". This positive control adds the other half: when narration DOES
-  // fire, it must land on stderr. Structured to never false-fail headless —
-  // the stdout-purity half of the assertion is unconditional (holds
-  // trivially with zero narration on either stream); the "it actually fired"
-  // half only asserts when stderr narration is observed, so a device-less
-  // CI runner still gets a real (not vacuous) purity check without needing
-  // real audio to succeed.
-  it(
-    "when teaching narration fires, it appears on stderr and NEVER on stdout — not merely absent from stdout because it never fired",
-    async () => {
-      let stdoutBuf = "";
-      let stderrBuf = "";
+  it("node dist/mcp-server.js lists tools when the build is present", async () => {
+    const distBin = join(REPO_ROOT, "dist", "mcp-server.js");
+    if (!existsSync(distBin)) {
+      expect(existsSync(distBin)).toBe(false);
+      return;
+    }
 
-      const iso = await spawnIsolatedServer();
+    const tmpHome = mkdtempSync(join(tmpdir(), "ajs-mcp-dist-smoke-"));
+    const transport = new StdioClientTransport({
+      command: process.execPath,
+      args: [distBin],
+      env: {
+        ...process.env,
+        HOME: tmpHome,
+        USERPROFILE: tmpHome,
+      } as Record<string, string>,
+    });
+    const client = new Client({ name: "tests-agent-mcp-dist-smoke", version: "0.0.0" });
+    try {
+      await client.connect(transport);
+      const toolList = await client.listTools();
+      expect(toolList.tools.some((t) => t.name === "play_song")).toBe(true);
+      expect(toolList.tools.some((t) => t.name === "server_info")).toBe(true);
+      const info = (await client.callTool({ name: "server_info", arguments: {} })) as ToolResult;
+      expect(info.isError).not.toBe(true);
+      expect(extractText(info)).toContain("ai-jam-sessions v");
+      expect(extractText(info)).toContain("**Tools:**");
+    } finally {
       try {
-        const rawProcess = (
-          iso.transport as unknown as {
-            _process?: { stdout?: NodeJS.ReadableStream; stderr?: NodeJS.ReadableStream };
-          }
-        )._process;
-        expect(rawProcess?.stdout).toBeTruthy();
-        rawProcess!.stdout!.on("data", (chunk: Buffer) => {
-          stdoutBuf += chunk.toString("utf8");
-        });
-        rawProcess?.stderr?.on("data", (chunk: Buffer) => {
-          stderrBuf += chunk.toString("utf8");
-        });
-
-        const playResult = (await iso.client.callTool({
-          name: "play_song",
-          arguments: { id: "bach-prelude-c-major-bwv846", mode: "loop", startMeasure: 1, endMeasure: 1 },
-        })) as ToolResult;
-        expect(playResult).toBeDefined();
-
-        // Give any backgrounded teaching-hook callbacks a window to fire.
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        await iso.client.callTool({ name: "stop_playback", arguments: {} }).catch(() => {});
-        await new Promise((resolve) => setTimeout(resolve, 200));
-      } finally {
-        await iso.close();
+        await client.close();
+      } catch {
+        /* best-effort */
       }
-
-      const NARRATION_RE = /\[Measure/;
-      const narrationOnStdout = NARRATION_RE.test(stdoutBuf);
-      const narrationOnStderr = NARRATION_RE.test(stderrBuf);
-
-      // Unconditional, CI-robust: narration text must NEVER reach stdout.
-      // Holds trivially (both sides false) in a headless/no-audio-device
-      // environment where narration never fires at all — never false-fails.
-      expect(narrationOnStdout).toBe(false);
-
-      // Positive control: only exercised when a real audio device lets
-      // playback reach the teaching hook (e.g. local dev with a device).
-      // Proves this suite isn't vacuously green because narration simply
-      // never happened — when it DOES fire, it must be observed on stderr.
-      if (narrationOnStderr) {
-        expect(stderrBuf).toMatch(NARRATION_RE);
-        expect(narrationOnStdout).toBe(false);
-      }
-    },
-    25000,
-  );
+      rmSync(tmpHome, { recursive: true, force: true });
+    }
+  }, 30000);
 });
 
 // ─── Session-state persistence validation (pins B-B1-002) ──────────────────
@@ -971,11 +992,9 @@ describe("mcp-server.ts — stdio purity (pins B-B1-001)", () => {
 // loadSessionState() (mcp-server.ts) reads <HOME>/.ai-jam-sessions/
 // server-state.json at startup and restores `lastCompletedSession` from it.
 // Neither loadSessionState nor persistSessionState nor STATE_FILE are
-// exported — mcp-server.ts has no isMain-style guard (see this file's own
-// header comment), so there is no way to unit-test the loader function
-// directly. These tests instead pre-seed a server-state.json BEFORE spawning
-// a fresh, isolated server instance (loadSessionState only runs once, inside
-// main(), at startup) and observe the loader's effect indirectly through
+// exported. These tests pre-seed server-state.json before prepareMcpServer()
+// (loadSessionState runs once, inside that call) and observe the loader
+// indirectly through
 // save_practice_note, which falls back to `lastCompletedSession` whenever no
 // `song_id` override is given ("Tool: save_practice_note") and renders it
 // into the journal entry via buildJournalEntry() (src/journal.ts) — a
@@ -1522,37 +1541,28 @@ describe("mcp-server.ts — practice loop + scoring tools (Wave S3)", () => {
   );
 
   it(
-    "practice_loop starts successfully and returns the first pass's micro-goal + a config echo (real audio — best-effort, mirrors this file's play_song hedge)",
+    "practice_loop starts and echoes the first pass micro-goal",
     async () => {
       const iso = await spawnIsolatedServer();
+      audioDouble.gate = true;
       try {
         const result = (await iso.client.callTool({
           name: "practice_loop",
           arguments: { id: "bach-prelude-c-major-bwv846", startMeasure: 1, endMeasure: 1, speedStartPct: 80, speedTargetPct: 80 },
         })) as ToolResult;
         const text = extractText(result);
+        expect(result.isError).not.toBe(true);
+        expect(text).toContain("Practice loop started");
+        expect(text).toContain("m. 1 at 80%");
+        expect(text).toContain("measures 1–1");
+        expect(text).toContain("80% → 80%");
 
-        if (result.isError) {
-          // No audio device on this runner — the same degrade path
-          // play_song's own tests already tolerate (see this file's header
-          // comment). The validation-path tests in the first describe block
-          // already prove the input-checking logic independent of audio.
-          expect(text.toLowerCase()).toMatch(/couldn't start|engine/);
-        } else {
-          expect(text).toContain("Practice loop started");
-          expect(text).toContain("m. 1 at 80%"); // single-measure micro-goal (formatMicroGoal)
-          expect(text).toContain("measures 1–1");
-          expect(text).toContain("80% → 80%");
-
-          // practice_status should now see it as running (or already
-          // completed, if the pass finished fast) rather than "no loop yet".
-          const status = (await iso.client.callTool({ name: "practice_status", arguments: {} })) as ToolResult;
-          expect(extractText(status).toLowerCase()).not.toMatch(/no practice loop has run yet/);
-        }
-
-        // Best-effort cleanup in case audio did start (local dev with a device).
-        await iso.client.callTool({ name: "stop_playback", arguments: {} }).catch(() => {});
+        const status = (await iso.client.callTool({ name: "practice_status", arguments: {} })) as ToolResult;
+        expect(extractText(status)).toMatch(/\*\*Status:\*\* running/);
+        expect(extractText(status)).toContain("80%");
       } finally {
+        audioDouble.gate = false;
+        audioDouble.releaseAll();
         await iso.close();
       }
     },
@@ -1560,27 +1570,22 @@ describe("mcp-server.ts — practice loop + scoring tools (Wave S3)", () => {
   );
 
   it(
-    "score_last_take refuses a loop-mode take with a structured message instead of mis-scoring it (real audio — best-effort)",
+    "score_last_take refuses a loop-mode take instead of scoring it",
     async () => {
       const iso = await spawnIsolatedServer();
+      audioDouble.gate = true;
       try {
         const played = (await iso.client.callTool({
           name: "play_song",
           arguments: { id: "bach-prelude-c-major-bwv846", mode: "loop", record: true },
         })) as ToolResult;
+        expect(played.isError).not.toBe(true);
+        expect(extractText(played)).toContain("Now playing");
+        expect(extractText(played)).toContain("**Recording:** on");
 
-        if (played.isError) {
-          // No audio device on this runner — same hedge as this file's other
-          // audio-touching tests.
-          expect(extractText(played).toLowerCase()).toMatch(/couldn't start|engine/);
-          return;
-        }
-
-        // stop_playback captures whatever was recorded (mcp-server.ts's
-        // stopActive -> captureLastRecording) regardless of how far the loop
-        // actually got — even a stop during count-in still tags mode:"loop"
-        // on lastRecording, since that comes from the session's own config,
-        // not from how much actually played.
+        await waitForGatedNote();
+        audioDouble.gate = false;
+        audioDouble.releaseAll();
         await iso.client.callTool({ name: "stop_playback", arguments: {} });
 
         const scored = (await iso.client.callTool({ name: "score_last_take", arguments: {} })) as ToolResult;
@@ -1589,6 +1594,8 @@ describe("mcp-server.ts — practice loop + scoring tools (Wave S3)", () => {
         expect(text.toLowerCase()).toMatch(/loop-mode take/);
         expect(text).toMatch(/use `?practice_loop`? for scored looping, or record with mode:'full'/);
       } finally {
+        audioDouble.gate = false;
+        audioDouble.releaseAll();
         await iso.close();
       }
     },
@@ -1596,44 +1603,34 @@ describe("mcp-server.ts — practice loop + scoring tools (Wave S3)", () => {
   );
 
   it(
-    "pause_playback pauses and resumes a running practice loop instead of reporting nothing is playing (real audio — best-effort)",
+    "pause_playback pauses and resumes a running practice loop",
     async () => {
       const iso = await spawnIsolatedServer();
+      audioDouble.gate = true;
       try {
         const started = (await iso.client.callTool({
           name: "practice_loop",
           arguments: { id: "bach-prelude-c-major-bwv846", startMeasure: 1, endMeasure: 1, speedStartPct: 80, speedTargetPct: 80 },
         })) as ToolResult;
+        expect(started.isError).not.toBe(true);
+        expect(extractText(started)).toContain("Practice loop started");
+        await waitForGatedNote();
 
-        if (started.isError) {
-          expect(extractText(started).toLowerCase()).toMatch(/couldn't start|engine/);
-          return;
-        }
-
-        // Every pass has a metronome count-in (practice_loop always enables
-        // the metronome — see the practice_loop tool), so the session is
-        // reliably "playing" for at least the count-in's duration right
-        // after practice_loop returns — no artificial wait needed.
         const status = (await iso.client.callTool({ name: "practice_status", arguments: {} })) as ToolResult;
-        const running = /\*\*Status:\*\* running/.test(extractText(status));
+        expect(extractText(status)).toMatch(/\*\*Status:\*\* running/);
 
-        if (running) {
-          const paused = (await iso.client.callTool({ name: "pause_playback", arguments: {} })) as ToolResult;
-          const pausedText = extractText(paused).toLowerCase();
-          expect(pausedText).not.toMatch(/no song is currently playing/);
-          expect(pausedText).toMatch(/paused practice loop/);
+        const paused = (await iso.client.callTool({ name: "pause_playback", arguments: {} })) as ToolResult;
+        const pausedText = extractText(paused).toLowerCase();
+        expect(paused.isError).not.toBe(true);
+        expect(pausedText).toMatch(/paused practice loop/);
 
-          const resumed = (await iso.client.callTool({ name: "pause_playback", arguments: { resume: true } })) as ToolResult;
-          const resumedText = extractText(resumed).toLowerCase();
-          expect(resumedText).not.toMatch(/nothing is paused/);
-          expect(resumedText).toMatch(/resumed practice loop/);
-        }
-        // else: the single short pass already finished before we could
-        // observe "running" — same best-effort hedge this file's other
-        // practice_loop test already accepts for a fast completion.
-
-        await iso.client.callTool({ name: "stop_playback", arguments: {} }).catch(() => {});
+        const resumed = (await iso.client.callTool({ name: "pause_playback", arguments: { resume: true } })) as ToolResult;
+        const resumedText = extractText(resumed).toLowerCase();
+        expect(resumed.isError).not.toBe(true);
+        expect(resumedText).toMatch(/resumed practice loop/);
       } finally {
+        audioDouble.gate = false;
+        audioDouble.releaseAll();
         await iso.close();
       }
     },
@@ -1641,31 +1638,25 @@ describe("mcp-server.ts — practice loop + scoring tools (Wave S3)", () => {
   );
 
   it(
-    "set_speed refuses with a structured message while a practice loop is running, instead of fighting its tempo ramp (real audio — best-effort)",
+    "set_speed refuses while a practice loop is running",
     async () => {
       const iso = await spawnIsolatedServer();
+      audioDouble.gate = true;
       try {
         const started = (await iso.client.callTool({
           name: "practice_loop",
           arguments: { id: "bach-prelude-c-major-bwv846", startMeasure: 1, endMeasure: 1, speedStartPct: 80, speedTargetPct: 80 },
         })) as ToolResult;
+        expect(started.isError).not.toBe(true);
+        await waitForGatedNote();
 
-        if (started.isError) {
-          expect(extractText(started).toLowerCase()).toMatch(/couldn't start|engine/);
-          return;
-        }
-
-        const status = (await iso.client.callTool({ name: "practice_status", arguments: {} })) as ToolResult;
-        const running = /\*\*Status:\*\* running/.test(extractText(status));
-
-        if (running) {
-          const result = (await iso.client.callTool({ name: "set_speed", arguments: { speed: 2 } })) as ToolResult;
-          expect(result.isError).toBe(true);
-          expect(extractText(result)).toMatch(/practice loop controls its own tempo ramp/);
-        }
-
-        await iso.client.callTool({ name: "stop_playback", arguments: {} }).catch(() => {});
+        const result = (await iso.client.callTool({ name: "set_speed", arguments: { speed: 2 } })) as ToolResult;
+        expect(result.isError).toBe(true);
+        expect(extractText(result)).toContain("[INPUT_INVALID_ARGS]");
+        expect(extractText(result)).toMatch(/practice loop controls its own tempo ramp/);
       } finally {
+        audioDouble.gate = false;
+        audioDouble.releaseAll();
         await iso.close();
       }
     },
@@ -1676,10 +1667,7 @@ describe("mcp-server.ts — practice loop + scoring tools (Wave S3)", () => {
 // ─── Audio inspection over the protocol ──────────────────────────────────────
 //
 // The audio modules are unit-tested where they live; these tests pin what the
-// TOOLS say, end to end, on WAVs written here with known answers: the Level,
-// Defects and Balance sections of analyze_audio, check_loop_seam's verdicts,
-// and compare_balance. The server runs as a child process, so coverage tools
-// do not see these lines run; the assertions are the evidence.
+// TOOLS say, end to end, on WAVs written here with known answers.
 
 function writeWav16(path: string, samples: Float64Array, sampleRate: number): void {
   const n = samples.length;
@@ -1736,8 +1724,13 @@ describe("mcp-server.ts — audio inspection tools", () => {
   }, 20000);
 
   it("check_loop_seam passes a seamless loop and flags one cut mid-cycle", async () => {
-    expect(extractText(await call("check_loop_seam", { path: join(dir, "loop-clean.wav") }))).toMatch(/## Verdict: clean/);
-    expect(extractText(await call("check_loop_seam", { path: join(dir, "loop-cut.wav") }))).toMatch(/## Verdict: click-risk/);
+    const clean = extractText(await call("check_loop_seam", { path: join(dir, "loop-clean.wav") }));
+    expect(clean).toContain("## Verdict: clean");
+    expect(clean).toContain("The seam is safe to ship.");
+    const cut = extractText(await call("check_loop_seam", { path: join(dir, "loop-cut.wav") }));
+    expect(cut).toContain("## Verdict: click-risk");
+    expect(cut).not.toContain("safe to ship");
+    expect(cut).toContain("Step at the wrap:");
   }, 20000);
 
   it("compare_balance reads a darker file as darker, band by band", async () => {

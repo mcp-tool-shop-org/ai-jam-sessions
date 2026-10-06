@@ -1,20 +1,21 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-10-01 from commit 254e22e by Atlas 1.24.0.
+Mapped at 2026-10-06 from commit aaf8685 by Atlas 1.24.0.
 
 ## What this is
 
-14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (563), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
+14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (574), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-09-30 (6e89814)
+## What changed since 2026-10-01 (254e22e)
 
-- CI's pull request trigger no longer names `.dockerignore`, `.github/workflows/**`, `Dockerfile`, `apps/**`, `atlas/**`, `codecov.yml`, `datasets/**`, `docker-compose.yml`, `package.json`, `plugin/**`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `samples/**`, `scripts/**`, `site/astro.config.mjs`, `site/package-lock.json`, `site/package.json`, `songs/**`, `src/**`, `tsconfig.json` and `vitest.config.ts`.
-- 3 files changed content, across 2 parts.
+- CI runs 11 more files than before.
+- Release runs 11 more files than before.
+- 11 files added and 10 changed content, across 3 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 21 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 294 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 92 more; checks scripts/analysis-chords.ts, scripts/analysis-patterns.ts, scripts/analysis-sections.ts and 57 more; packs LICENSE, README.md, logo.png and 377 more into an image.
-2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 301 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more; packs LICENSE, README.md, logo.png and 377 more into an image.
+1. **CI.** On a pull request; on a push to main touching 21 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 305 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 92 more; checks scripts/analysis-chords.ts, scripts/analysis-patterns.ts, scripts/analysis-sections.ts and 57 more; packs LICENSE, README.md, logo.png and 388 more into an image.
+2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 312 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more; packs LICENSE, README.md, logo.png and 388 more into an image.
 3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; or by hand. Runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more.
 4. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts, scripts/verify-public-package-checksums.ts and src/dataset/published-evidence.test.ts.
 5. **Push jam-actions adapters to HuggingFace.** By hand. Runs no file this map can see.
@@ -37,7 +38,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 301 more, builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more, packs LICENSE, README.md, logo.png and 377 more into an image, and publishes to npm and a container image.
+**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 312 more, builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more, packs LICENSE, README.md, logo.png and 388 more into an image, and publishes to npm and a container image.
 
 **Deploy site to GitHub Pages** runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more, reaches src, writes to site/dist, which is not tracked, and deploys the site.
 
@@ -71,7 +72,7 @@ No two source files, other than a file and its own test, changed together often 
 
 2 files changed together with their own tests, as expected.
 
-Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -240,8 +241,8 @@ Read those in order to follow one pull request end to end.
 - 20 commands are built at run time and not followed, 2 of them in tests.
 - There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.
-- CI runs or checks 468 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
-- Release runs or checks 406 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- CI runs or checks 479 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- Release runs or checks 417 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

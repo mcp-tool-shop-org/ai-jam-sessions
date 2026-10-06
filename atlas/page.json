@@ -99,41 +99,48 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 3,
+      "added": 11,
+      "changed": 10,
       "moved": 0,
-      "parts": 2,
+      "parts": 3,
       "removed": 0
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger no longer names `.dockerignore`, `.github/workflows/**`, `Dockerfile`, `apps/**`, `atlas/**`, `codecov.yml`, `datasets/**`, `docker-compose.yml`, `package.json`, `plugin/**`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `samples/**`, `scripts/**`, `site/astro.config.mjs`, `site/package-lock.json`, `site/package.json`, `songs/**`, `src/**`, `tsconfig.json` and `vitest.config.ts`.",
+        "sentence": "CI runs 11 more files than before.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
+        "kind": "door",
+        "sentence": "Release runs 11 more files than before.",
+        "subjects": [
+          ".github/workflows/release.yml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "3 files changed content, across 2 parts.",
+        "sentence": "11 files added and 10 changed content, across 3 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "6e898149dd1e701d620e3db143abf37856e20a4a",
-      "generatedAt": "2026-09-30T20:07:02.042Z"
+      "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
+      "generatedAt": "2026-10-01T02:13:24.770Z"
     },
     "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "2 files changed together with their own tests, as expected.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
+  "commit": "aaf8685af34ae644a32be956ed25f63893a2cb00",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (563), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
+  "derived": "14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (574), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
     {
       "builds": [
@@ -145,11 +152,11 @@
         "src/annotation-scorer.ts",
         "src/audio-engine.ts",
         "src/audio-shared.ts",
+        "src/audio/balance.ts",
         "src/audio/bridge.ts",
         "src/audio/cqt.ts",
         "src/audio/db.ts",
-        "src/audio/ensemble.ts",
-        "src/audio/fft.ts",
+        "src/audio/defects.ts",
         "src/chord-detect.ts",
         "src/cli.ts",
         "src/compose/bws-judge-text.ts",
@@ -196,7 +203,7 @@
         "src/dataset/synth-v0/env.ts",
         "src/dataset/synth-v0/generate.ts",
         "src/dataset/synth-v0/task.ts",
-        "src/errors.ts",
+        "src/entry-guard.ts",
         "src/maker/abc-chord-proposer.ts",
         "src/maker/abc-syntax.ts",
         "src/maker/auto-reharmonize-tool.ts",
@@ -279,7 +286,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 371
+          "files": 382
         }
       ],
       "runs": [
@@ -306,11 +313,11 @@
         "src/analysis/events.test.ts",
         "src/analysis/hcdf.test.ts",
         "src/annotation-scorer.test.ts",
+        "src/audio/balance.test.ts",
         "src/audio/bridge.test.ts",
         "src/audio/cqt.test.ts",
         "src/audio/db.test.ts",
-        "src/audio/ensemble.test.ts",
-        "src/audio/fft.test.ts",
+        "src/audio/defects.test.ts",
         "src/chord-detect.test.ts",
         "src/cli.test.ts",
         "src/compose/bws.test.ts",
@@ -344,7 +351,7 @@
         "src/dataset/search-v0/window.test.ts",
         "src/dataset/synth-v0/env.test.ts",
         "src/dataset/synth-v0/generate.test.ts",
-        "src/errors.test.ts",
+        "src/entry-guard.test.ts",
         "src/maker/abc-chord-proposer.test.ts",
         "src/maker/abc-syntax.test.ts",
         "src/maker/auto-reharmonize-tool.test.ts",
@@ -368,8 +375,8 @@
         "src/vocal/g2p.test.ts",
         "src/vocal/kokoro-lead.test.ts"
       ],
-      "runsCount": 297,
-      "runsMore": 294,
+      "runsCount": 308,
+      "runsMore": 305,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -390,11 +397,11 @@
         "src/annotation-scorer.ts",
         "src/audio-engine.ts",
         "src/audio-shared.ts",
+        "src/audio/balance.ts",
         "src/audio/bridge.ts",
         "src/audio/cqt.ts",
         "src/audio/db.ts",
-        "src/audio/ensemble.ts",
-        "src/audio/fft.ts",
+        "src/audio/defects.ts",
         "src/chord-detect.ts",
         "src/cli.ts",
         "src/compose/bws-judge-text.ts",
@@ -441,7 +448,7 @@
         "src/dataset/synth-v0/env.ts",
         "src/dataset/synth-v0/generate.ts",
         "src/dataset/synth-v0/task.ts",
-        "src/errors.ts",
+        "src/entry-guard.ts",
         "src/maker/abc-chord-proposer.ts",
         "src/maker/abc-syntax.ts",
         "src/maker/auto-reharmonize-tool.ts",
@@ -519,7 +526,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 371
+          "files": 382
         }
       ],
       "runs": [
@@ -558,11 +565,11 @@
         "src/analysis/events.test.ts",
         "src/analysis/hcdf.test.ts",
         "src/annotation-scorer.test.ts",
+        "src/audio/balance.test.ts",
         "src/audio/bridge.test.ts",
         "src/audio/cqt.test.ts",
         "src/audio/db.test.ts",
-        "src/audio/ensemble.test.ts",
-        "src/audio/fft.test.ts",
+        "src/audio/defects.test.ts",
         "src/chord-detect.test.ts",
         "src/cli.test.ts",
         "src/compose/bws.test.ts",
@@ -596,7 +603,7 @@
         "src/dataset/search-v0/window.test.ts",
         "src/dataset/synth-v0/env.test.ts",
         "src/dataset/synth-v0/generate.test.ts",
-        "src/errors.test.ts",
+        "src/entry-guard.test.ts",
         "src/maker/abc-chord-proposer.test.ts",
         "src/maker/abc-syntax.test.ts",
         "src/maker/auto-reharmonize-tool.test.ts",
@@ -622,8 +629,8 @@
         "src/vocal/kokoro-lead.test.ts",
         "src/vocal/melody-notes.test.ts"
       ],
-      "runsCount": 304,
-      "runsMore": 301,
+      "runsCount": 315,
+      "runsMore": 312,
       "sends": [
         "publishes to npm and a container image"
       ],
@@ -817,7 +824,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 84
+          "files": 85
         }
       ],
       "runs": [
@@ -843,7 +850,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 139
+          "files": 144
         }
       ],
       "runs": [
@@ -1624,7 +1631,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T02:13:24.770Z",
+  "generatedAt": "2026-10-06T16:51:56.427Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
@@ -1640,8 +1647,8 @@
     "20 commands are built at run time and not followed, 2 of them in tests.",
     "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.",
-    "CI runs or checks 468 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs or checks 406 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "CI runs or checks 479 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 417 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -1729,13 +1736,13 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 194,
+  "testFiles": 200,
   "testedBy": {
     "cockpit": 13,
     "experiments": 10,
     "scripts": 12,
     "spaces": 0,
-    "src": 171
+    "src": 177
   },
   "unnamedWrites": 48,
   "unread": [
