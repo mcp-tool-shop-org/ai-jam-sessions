@@ -29,6 +29,10 @@ const audioDouble = vi.hoisted(() => {
     noteOnError: null as string | null,
     onNoteOff: null as null | (() => void),
     connectedEngine: "",
+    disconnects: 0,
+    /** When true, a sung lead starts with a fake singer instead of a real backend. */
+    fakeSinger: false,
+    singerStops: 0,
     waiterCount: () => waiters.length,
     releaseAll() {
       const pending = waiters.splice(0);
@@ -56,7 +60,9 @@ function fakeConnector(kind: string) {
       audioDouble.connectedEngine = kind;
       if (audioDouble.connectError) throw new Error(audioDouble.connectError);
     },
-    async disconnect() {},
+    async disconnect() {
+      audioDouble.disconnects++;
+    },
     status() {
       return "connected" as const;
     },
@@ -100,6 +106,24 @@ vi.mock("./vocal-tract-engine.js", async (importOriginal) => {
 vi.mock("./guitar-engine.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("./guitar-engine.js")>();
   return { ...actual, createGuitarEngine: () => fakeConnector("guitar") };
+});
+vi.mock("./vocal/prepare.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./vocal/prepare.js")>();
+  return {
+    ...actual,
+    prepareScoreLocked: (async (...args: Parameters<typeof actual.prepareScoreLocked>) => {
+      if (!audioDouble.fakeSinger) return actual.prepareScoreLocked(...args);
+      return {
+        singer: {
+          async connect() {},
+          start() {},
+          async stop() {
+            audioDouble.singerStops++;
+          },
+        },
+      };
+    }) as typeof actual.prepareScoreLocked,
+  };
 });
 vi.mock("./playback/metronome.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("./playback/metronome.js")>();
@@ -365,7 +389,8 @@ describe("mcp-server.ts — tool success and error paths", () => {
     const found = ok(await call("list_songs", {}), "Found ", "song(s):", BACH);
     expect(found).toMatch(/Found [1-9]\d* song/);
     ok(await call("list_songs", { genre: "classical", composer: "Bach", query: "Prelude" }), BACH);
-    ok(await call("list_songs", { query: "zzzz-no-such-song-query" }), "Found 0 song(s):", "No songs found matching your criteria.");
+    const none = ok(await call("list_songs", { query: "zzzz-no-such-song-query" }), "No songs found matching your criteria.");
+    expect(none).not.toContain("Found 0");
     err(await call("list_songs", { genre: "not-a-genre" }), "must be one of", "classical");
   });
 
@@ -636,6 +661,27 @@ describe("mcp-server.ts — tool success and error paths", () => {
     await schemaRejects("server_info");
   });
 
+  it("pauses and resumes a library song without tearing it down, and stops the sung lead on pause", async () => {
+    audioDouble.gate = false;
+    audioDouble.fakeSinger = true;
+    try {
+      ok(await call("play_song", { id: BACH, lyrics: "la la la" }), "Now playing:");
+      const paused = ok(await call("pause_playback", {}), "Paused (", "The sung lead stopped");
+      expect(paused).toContain("cannot resume in step with the piano");
+      await flushTurns(40);
+      expect(audioDouble.singerStops).toBe(1);
+      const afterPause = audioDouble.disconnects;
+      ok(await call("pause_playback", { resume: true }), "Resumed playback.");
+      await flushTurns(10);
+      expect(audioDouble.disconnects).toBe(afterPause);
+      ok(await call("stop_playback", {}), "Stopped:");
+      await flushTurns(40);
+      expect(audioDouble.disconnects).toBeGreaterThan(afterPause);
+    } finally {
+      audioDouble.fakeSinger = false;
+    }
+  });
+
   it("writes a practice note and reads it back", async () => {
     ok(await call("read_practice_journal", {}), "No practice journal entries yet.");
     ok(
@@ -645,6 +691,16 @@ describe("mcp-server.ts — tool success and error paths", () => {
       "heard the arpeggios",
     );
     ok(await call("read_practice_journal", {}), "Practice journal (", "entries across", "heard the arpeggios");
+    // Entries carry the song's title, not its id: filtering by the id must
+    // still find the song's own note, and must not return other songs' notes.
+    ok(await call("read_practice_journal", { song_id: BACH }), "heard the arpeggios");
+    // A note left without song_id belongs to the last song played, so the
+    // other song is named explicitly.
+    ok(await call("save_practice_note", { note: "the one-note drill", song_id: "coverage-one-note" }), "Journal entry saved to ");
+    const filtered = ok(await call("read_practice_journal", { song_id: BACH }), "heard the arpeggios");
+    expect(filtered).not.toContain("the one-note drill");
+    ok(await call("read_practice_journal", { song_id: "coverage-one-note" }), "the one-note drill");
+    ok(await call("read_practice_journal", { song_id: "no-such-song-xyz" }), `No journal entries found for "no-such-song-xyz"`);
     err(await call("read_practice_journal", { days: 0 }), "days");
   });
 
@@ -782,10 +838,20 @@ describe("mcp-server.ts — tool success and error paths", () => {
     ok(await call("stop_playback", {}), "Stopped:", "MIDI file");
 
     ok(await call("play_song", { id: midiPath, withSinging: true }), "Now playing:", "(MIDI file)");
+    // pause() settles the controller's play() promise. The playback must
+    // outlive that: no disconnect on pause, a working resume, and the
+    // teardown only when it really ends (here, a stop while paused).
     ok(await call("pause_playback", {}), "Paused at");
-    // pause() aborts the MIDI play() promise, and play_song's finally drops
-    // the controller as soon as that promise settles. Resume therefore finds
-    // nothing paused. Pinned, not fixed: see the PR body.
+    await flushTurns(40);
+    const afterPause = audioDouble.disconnects;
+    ok(await call("pause_playback", { resume: true }), "Resumed playback.");
+    await flushTurns(10);
+    expect(audioDouble.disconnects).toBe(afterPause);
+    ok(await call("pause_playback", {}), "Paused at");
+    await flushTurns(40);
+    ok(await call("stop_playback", {}), "Stopped:", "MIDI file");
+    await flushTurns(40);
+    expect(audioDouble.disconnects).toBeGreaterThan(afterPause);
     ok(await call("pause_playback", { resume: true }), "Nothing is paused.");
 
     const raw = ok(await call("play_song", { id: midiPath }), "Now playing:", "(MIDI file)");
@@ -795,7 +861,11 @@ describe("mcp-server.ts — tool success and error paths", () => {
     ok(await call("stop_playback", {}), "Stopped:", "events played");
     ok(await call("play_song", { id: midiPath }), "Now playing:");
     ok(await call("pause_playback", {}), "Paused at");
-    ok(await call("pause_playback", { resume: true }), "Nothing is paused.");
+    await flushTurns(40);
+    const rawAfterPause = audioDouble.disconnects;
+    ok(await call("pause_playback", { resume: true }), "Resumed playback.");
+    expect(audioDouble.disconnects).toBe(rawAfterPause);
+    ok(await call("stop_playback", {}), "Stopped:", "events played");
 
     audioDouble.noteOnError = "midi string snapped";
     ok(await call("play_song", { id: midiPath }), "Now playing:", "(MIDI file)");

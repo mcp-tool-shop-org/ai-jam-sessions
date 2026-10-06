@@ -154,7 +154,14 @@ export function appendJournalEntry(entry: string, date: Date = new Date()): stri
  * @param songFilter  Optional song ID or title to filter entries
  * @returns Concatenated journal text (most recent last)
  */
-export function readJournal(days: number = 7, songFilter?: string): string {
+export function readJournal(days: number = 7, songFilterArg?: string | string[]): string {
+  // Several filters match an entry when ANY of them appears in it (a song's
+  // id and its title, say). The first one names the filter in the
+  // no-results message.
+  const filters = songFilterArg === undefined
+    ? []
+    : (Array.isArray(songFilterArg) ? songFilterArg : [songFilterArg]).filter((f) => f.length > 0);
+  const songFilter = filters[0];
   const dir = getJournalDir();
   if (!existsSync(dir)) return "";
 
@@ -173,9 +180,10 @@ export function readJournal(days: number = 7, songFilter?: string): string {
       if (songFilter) {
         // Extract matching entries (between --- markers)
         const blocks = content.split(/^---$/m).filter(Boolean);
-        const matching = blocks.filter(
-          (b) => b.toLowerCase().includes(songFilter.toLowerCase())
-        );
+        const matching = blocks.filter((b) => {
+          const text = b.toLowerCase();
+          return filters.some((f) => text.includes(f.toLowerCase()));
+        });
         if (matching.length > 0) {
           entries.push(`---${matching.join("---")}---`);
         }

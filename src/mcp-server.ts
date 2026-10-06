@@ -513,11 +513,15 @@ registerTool(
       composer: params.composer,
     });
 
-    const text = results.length === 0
-      ? "No songs found matching your criteria."
-      : results
-          .map((s) => `${s.id} — ${s.title} (${s.genre}, ${s.difficulty}, ${s.measures.length} measures)`)
-          .join("\n");
+    // No "Found 0 song(s):" header over the no-results sentence: it read as
+    // a list heading with nothing under it.
+    if (results.length === 0) {
+      return { content: [{ type: "text", text: "No songs found matching your criteria." }] };
+    }
+
+    const text = results
+      .map((s) => `${s.id} — ${s.title} (${s.genre}, ${s.difficulty}, ${s.measures.length} measures)`)
+      .join("\n");
 
     return {
       content: [{ type: "text", text: `Found ${results.length} song(s):\n\n${text}` }],
@@ -1097,8 +1101,80 @@ function withStateLock<T>(fn: () => Promise<T>): Promise<T> {
   return run;
 }
 
+// ─── Playback lifetime across a pause ───────────────────────────────────────
+//
+// pause() on any of the three players (session, MIDI controller, raw MIDI
+// engine) aborts its play loop, so the play() promise SETTLES, with the player
+// left in "paused". Playback is not over, but play_song hung its teardown on
+// that promise: a pause disconnected the connector and cleared the active
+// player, and the next resume answered "Nothing is paused." Measure mode hit
+// the same wall after every measure, since it ends each step in "paused".
+//
+// runUntilDone() is the lifetime play_song now hangs its teardown on. When a
+// run settles with the player paused BY pause_playback, it waits for the next
+// run (handed over
+// by pause_playback's resume through continuePausedRun) or for the end
+// (endPausedRun, from stopActive). Either may arrive before the paused run
+// has finished unwinding, so a hand-over with no waiter yet is queued.
+//
+// Only a pause the user asked for keeps the lifetime open. Measure mode also
+// ends each step in "paused", by design: that run is over, and the session
+// tears down as it always has.
+// Wrapped in an object: a promise resolved with a promise is unwrapped by
+// await, which would wait out the whole resumed run inside the hand-over.
+type PausedHandover = { run: Promise<void> } | null;
+const pausedRunWaiters = new WeakMap<object, (next: PausedHandover) => void>();
+const queuedHandovers = new WeakMap<object, PausedHandover>();
+const pausedByUser = new WeakSet<object>();
+
+/** Mark a player paused through pause_playback, so its lifetime waits for a resume. */
+function notePausedByUser(player: object): void {
+  pausedByUser.add(player);
+}
+
+async function runUntilDone(player: { readonly state: string }, firstRun: Promise<void>): Promise<void> {
+  let run = firstRun;
+  for (;;) {
+    await run;
+    if (player.state !== "paused" || !pausedByUser.has(player)) return;
+    let next: PausedHandover;
+    if (queuedHandovers.has(player)) {
+      next = queuedHandovers.get(player)!;
+      queuedHandovers.delete(player);
+    } else {
+      next = await new Promise<PausedHandover>((resolve) => pausedRunWaiters.set(player, resolve));
+    }
+    if (next === null) return;
+    run = next.run;
+  }
+}
+
+function handOver(player: object, next: PausedHandover): void {
+  pausedByUser.delete(player);
+  const wake = pausedRunWaiters.get(player);
+  pausedRunWaiters.delete(player);
+  if (wake) wake(next);
+  else queuedHandovers.set(player, next);
+}
+
+/** Give a paused lifetime its resumed run, so its teardown waits for that run too. */
+function continuePausedRun(player: object, next: Promise<void>): void {
+  handOver(player, { run: next });
+}
+
+/** End a paused lifetime with no further run, so its teardown fires. */
+function endPausedRun(player: object | null): void {
+  if (player) handOver(player, null);
+}
+
 /** Stop whatever is currently playing or paused. */
 async function stopActive(): Promise<void> {
+  // Release any lifetime waiting on a resume; each player's own stop() below
+  // takes it out of "paused", so its teardown runs.
+  endPausedRun(activeSession);
+  endPausedRun(activeController);
+  endPausedRun(activeMidiEngine);
+
   if (activeSession) {
     captureLastRecording(activeSession);
     if (activeSession.state === "playing" || activeSession.state === "paused") {
@@ -1411,7 +1487,9 @@ registerTool(
         setLiveEnsemble(ensemble);
 
         const midiPlayStart = Date.now();
-        const playPromise = controller.play({ speed: speed ?? 1.0, teachingHook });
+        // The lifetime, not the first run: a pause settles play() (see
+        // runUntilDone).
+        const playPromise = runUntilDone(controller, controller.play({ speed: speed ?? 1.0, teachingHook }));
         playPromise
           .finally(() => {
             unsubscribeEnsemble();
@@ -1457,7 +1535,7 @@ registerTool(
         activeMidiEngine = engine;
 
         const rawMidiPlayStart = Date.now();
-        const playPromise = engine.play({ speed: speed ?? 1.0 });
+        const playPromise = runUntilDone(engine, engine.play({ speed: speed ?? 1.0 }));
         playPromise
           .then(() => {
             const elapsed = Math.round((Date.now() - rawMidiPlayStart) / 1000);
@@ -1626,7 +1704,7 @@ registerTool(
     // Play in background
     lastPlaybackError = null;
     const playStartTime = Date.now();
-    const playPromise = session.play();
+    const playPromise = runUntilDone(session, session.play());
     playPromise
       .then(() => {
         const elapsed = Math.round((Date.now() - playStartTime) / 1000);
@@ -1903,40 +1981,22 @@ registerTool(
     if (resume) {
       // Resume
       if (activeController && activeController.state === "paused") {
-        try {
-          await activeController.resume();
-          return { content: [{ type: "text", text: "Resumed playback." }] };
-        } catch (e) {
-          const msg = e instanceof Error ? e.message : String(e);
-          return {
-            content: [{ type: "text", text: `Failed to resume playback: ${msg}` }],
-            isError: true,
-          };
-        }
+        // Not awaited: the resumed run lasts until the song ends. The
+        // lifetime play_song started takes it over, teardown included.
+        continuePausedRun(activeController, activeController.resume());
+        return { content: [{ type: "text", text: "Resumed playback." }] };
       }
       if (activeMidiEngine && activeMidiEngine.state === "paused") {
-        try {
-          await activeMidiEngine.resume();
-          return { content: [{ type: "text", text: "Resumed playback." }] };
-        } catch (e) {
-          const msg = e instanceof Error ? e.message : String(e);
-          return {
-            content: [{ type: "text", text: `Failed to resume playback: ${msg}` }],
-            isError: true,
-          };
-        }
+        // Not awaited: the resumed run lasts until the song ends. The
+        // lifetime play_song started takes it over, teardown included.
+        continuePausedRun(activeMidiEngine, activeMidiEngine.resume());
+        return { content: [{ type: "text", text: "Resumed playback." }] };
       }
       if (activeSession && activeSession.state === "paused") {
-        try {
-          await activeSession.play();
-          return { content: [{ type: "text", text: "Resumed playback." }] };
-        } catch (e) {
-          const msg = e instanceof Error ? e.message : String(e);
-          return {
-            content: [{ type: "text", text: `Failed to resume playback: ${msg}` }],
-            isError: true,
-          };
-        }
+        // Not awaited: the resumed run lasts until the song ends. The
+        // lifetime play_song started takes it over, teardown included.
+        continuePausedRun(activeSession, activeSession.play());
+        return { content: [{ type: "text", text: "Resumed playback." }] };
       }
       // A running practice loop plays through its OWN per-pass session, not
       // activeSession (see the practice_loop tool) — without this,
@@ -1951,6 +2011,7 @@ registerTool(
 
     // Pause
     if (activeController && activeController.state === "playing") {
+      notePausedByUser(activeController);
       activeController.pause();
       const pos = activeController.positionSeconds;
       return {
@@ -1961,6 +2022,7 @@ registerTool(
       };
     }
     if (activeMidiEngine && activeMidiEngine.state === "playing") {
+      notePausedByUser(activeMidiEngine);
       activeMidiEngine.pause();
       return {
         content: [{
@@ -1971,11 +2033,22 @@ registerTool(
     }
     if (activeSession && activeSession.state === "playing") {
       captureLastRecording(activeSession);
+      notePausedByUser(activeSession);
       activeSession.pause();
+      // The sung lead is one pre-rendered buffer with no pause of its own:
+      // left running it would sing over the silence and come back out of
+      // step with the piano, so a pause ends it.
+      let leadNote = "";
+      if (activeScoreSinger) {
+        const singer = activeScoreSinger;
+        activeScoreSinger = null;
+        singer.stop().catch((e) => console.error(`Score-singer stop error: ${e instanceof Error ? e.message : String(e)}`));
+        leadNote = " The sung lead stopped: it cannot resume in step with the piano.";
+      }
       return {
         content: [{
           type: "text",
-          text: `Paused (${activeSession.session.measuresPlayed} measures played).`,
+          text: `Paused (${activeSession.session.measuresPlayed} measures played).${leadNote}`,
         }],
       };
     }
@@ -4083,7 +4156,11 @@ registerTool(
     song_id: zSongId("Filter entries to a specific song").optional(),
   },
   async ({ days, song_id }) => {
-    const journal = readJournal(days ?? 7, song_id);
+    // Entries name a song by its title, not its id, so filtering on the id
+    // alone missed the song's own notes. A known id also matches its title;
+    // an unknown one still filters as plain text.
+    const song = song_id ? getSong(song_id) : undefined;
+    const journal = readJournal(days ?? 7, song ? [song_id!, song.title] : song_id);
     const stats = journalStats();
 
     if (stats.totalEntries === 0) {
