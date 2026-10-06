@@ -128,6 +128,15 @@ import {
   C1_HZ,
   HOUSE_TOLERANCE_MS,
   ONSET_DETECTOR_CAVEAT,
+  measureLevels,
+  detectGaps,
+  detectBursts,
+  GAP_DETECTOR_CAVEAT,
+  BURST_DETECTOR_CAVEAT,
+  checkLoopSeam,
+  LOOP_SEAM_CAVEAT,
+  SEAM_STEP_CLICK_RISK,
+  SEAM_LEVEL_STEP_DB,
   type DecodedAudio,
 } from "./audio/index.js";
 import { deflateSync } from "node:zlib";
@@ -2845,15 +2854,14 @@ registerTool(
     const track = trackPitch(window, { sampleRate: audio.sampleRate });
     const voiced = track.frames.filter((f) => f.f0Hz !== null && f.confidence >= 0.5);
 
-    let peak = 0;
-    let sumSquares = 0;
-    for (let i = 0; i < window.length; i++) {
-      const v = window[i]!;
-      const a = Math.abs(v);
-      if (a > peak) peak = a;
-      sumSquares += v * v;
-    }
-    const rms = Math.sqrt(sumSquares / window.length);
+    const levels = measureLevels(window, { sampleRate: audio.sampleRate });
+    const gaps = detectGaps(window, { sampleRate: audio.sampleRate });
+    const bursts = detectBursts(window, { sampleRate: audio.sampleRate });
+
+    const fmtDb = (db: number): string =>
+      Number.isFinite(db) ? `${db.toFixed(2)} dBFS` : "−∞ dBFS";
+    const fmtLufs = (lufs: number | null): string =>
+      lufs === null ? "below the −70 LUFS gate" : `${lufs.toFixed(1)} LUFS`;
 
     const lines: string[] = [
       "# Audio analysis",
@@ -2869,8 +2877,18 @@ registerTool(
     lines.push(
       "",
       "## Level",
-      `Peak ${peak.toFixed(3)}, RMS ${rms.toFixed(4)}` +
-        (peak >= 0.999 ? " — at or past full scale, so this may be clipped." : ""),
+      `Peak ${levels.peakLinear.toFixed(3)} (${fmtDb(levels.peakDbFs)} at ` +
+        `${(levels.peakTimeSec + offset).toFixed(3)} s) · ` +
+        `RMS ${levels.rmsLinear.toFixed(4)} (${fmtDb(levels.rmsDbFs)}) · ` +
+        `integrated ${fmtLufs(levels.integratedLufs)} · ` +
+        `momentary max ${fmtLufs(levels.momentaryMaxLufs)}`,
+      levels.clippedSamples === 0
+        ? "Clipping: none."
+        : `Clipping: ${levels.clippedSamples} sample${levels.clippedSamples === 1 ? "" : "s"} ` +
+          `touch full scale in ${levels.clipRuns.length} run${levels.clipRuns.length === 1 ? "" : "s"}` +
+          ` (longest ${levels.longestClipRunSamples} samples at ` +
+          `${(levels.clipRuns.reduce((a, r) => (r.samples > a.samples ? r : a)).startSec + offset).toFixed(3)} s). ` +
+          `Runs of two or more are the smoking gun for real clipping.`,
       "",
       `## Onsets (${onsetResult.onsets.length})`,
     );
@@ -2909,6 +2927,39 @@ registerTool(
         `${midiToNoteName(Math.round(highest))}, centred on ` +
         `${midiToNoteName(Math.round(median))}${centsSuffix(median)}.`,
       );
+    }
+
+    const defectCount = gaps.length + bursts.length;
+    lines.push("", `## Defects (${defectCount})`);
+    if (defectCount === 0) {
+      lines.push("No dropouts, noise bursts or clicks found.");
+    } else {
+      const shownGaps = gaps.slice(0, 10);
+      const shownBursts = bursts.slice(0, 10);
+      for (const g of shownGaps) {
+        lines.push(
+          `- Gap (dropout): ${(g.startSec + offset).toFixed(3)} s to ` +
+          `${(g.endSec + offset).toFixed(3)} s — ${g.durationSec.toFixed(3)} s of ` +
+          `silence mid-audio` +
+          (g.minDbFs <= -290 ? ", audio zeroed outright." : `, floor ${g.minDbFs.toFixed(0)} dBFS (${g.depthDb.toFixed(0)} dB under the clip's own level).`),
+        );
+      }
+      for (const b of shownBursts) {
+        const shape = b.kinds.includes("noise-burst")
+          ? `Noise burst (spectral flatness ${b.peakFlatness.toFixed(2)}; harmonic material reads ≈ 0.01)`
+          : `Click (sample slope ${b.maxSlopeRatio === Infinity ? "vs silence" : `${b.maxSlopeRatio.toFixed(1)}× the local median`})`;
+        lines.push(
+          `- ${shape} at ${(b.startSec + offset).toFixed(3)} s to ` +
+          `${(b.endSec + offset).toFixed(3)} s, ${b.maxEnergyJumpDb > 0 ? `up to +${b.maxEnergyJumpDb.toFixed(1)} dB over its surroundings` : "too short to own a frame"}.`,
+        );
+      }
+      const hidden = defectCount - shownGaps.length - shownBursts.length;
+      if (hidden > 0) lines.push(`…and ${hidden} more.`);
+      const defectCaveats = [
+        gaps.length > 0 && GAP_DETECTOR_CAVEAT,
+        bursts.length > 0 && BURST_DETECTOR_CAVEAT,
+      ].filter((c): c is string => typeof c === "string");
+      if (defectCaveats.length > 0) lines.push("", ...defectCaveats);
     }
 
     lines.push("", "---", ONSET_DETECTOR_CAVEAT);
@@ -3188,6 +3239,82 @@ registerTool(
       ],
     };
   },
+);
+
+registerTool(
+"check_loop_seam",
+"Judge a looping render where it wraps: the point where the track's end goes back to its start. This catches the most common bug in game music by number, not by ear — the waveform step after extrapolating the tail's own slope (phase-perfect loops read clean here even when the raw boundary sample jumps, because what matters is whether the wave CONTINUES into the head, not whether it starts from zero), burst-shaped energy at the wrapped join, and the RMS level shift across it. Use it on any cue or ambience meant to loop, before shipping it.",
+{
+  path: z.string().describe("Absolute path to an uncompressed WAV file meant to loop."),
+  window_sec: z.number().optional().describe("How much of the tail and head to hang around the wrapped seam for defect detection. Defaults to 0.5, clamped to fit short loops."),
+},
+async ({ path, window_sec }: { path: string; window_sec?: number }) => {
+  const loaded = loadAudioFile(path);
+  if (!loaded.ok) return loaded.result;
+  const { audio } = loaded;
+
+  let seam;
+  try {
+    seam = checkLoopSeam(audio.samples, {
+      sampleRate: audio.sampleRate,
+      ...(window_sec === undefined ? {} : { windowSec: window_sec }),
+    });
+  } catch (err) {
+    return {
+      content: [{
+        type: "text" as const,
+        text:
+          `Could not judge the seam in "${path}".\n\n` +
+          `${err instanceof Error ? err.message : String(err)}`,
+      }],
+      isError: true as const,
+    };
+  }
+
+  const fmtDb = (db: number): string =>
+    Number.isFinite(db) ? `${db.toFixed(1)} dBFS` : "−∞ dBFS";
+
+  const lines: string[] = [
+    "# Loop seam",
+    "",
+    describeAudio(audio, path),
+    `Analysed: last ${seam.windowSec.toFixed(2)} s wrapped against first ${seam.windowSec.toFixed(2)} s.`,
+    "",
+    `## Verdict: ${seam.verdict}`,
+  ];
+  if (seam.verdict === "clean") {
+    lines.push(
+      "No click-shaped step, no burst-shaped energy at the join, and the " +
+      `level shift stays within ±${SEAM_LEVEL_STEP_DB} dB. The seam is safe to ship.`,
+    );
+  }
+
+  lines.push(
+    "",
+    "## Measurements",
+    `- Step at the wrap: ${seam.stepLinear.toFixed(4)} linear (${fmtDb(seam.stepDbFs)}) ` +
+      `after extrapolating the tail's own slope — past ${SEAM_STEP_CLICK_RISK} this is an ` +
+      `audible click against typical program level. The raw |end − start| jump ` +
+      "was " + seam.boundaryDelta.toFixed(4) + " — a big raw jump with a small step is " +
+      "usually just the waveform continuing its own slope, which is harmless.",
+    `- Level: last ${(seam.durationSec >= 0.2 ? 0.1 : seam.windowSec).toFixed(2)} s at ` +
+      `${fmtDb(seam.tailDbFs)} RMS, first at ${fmtDb(seam.headDbFs)} — shift ` +
+      `${seam.levelStepDb >= 0 ? "+" : ""}${seam.levelStepDb.toFixed(1)} dB, positive meaning the ` +
+      `loop comes back in louder. Past ±${SEAM_LEVEL_STEP_DB} dB the seam thumps even ` +
+      `with no click.`,
+  );
+  if (seam.clicksAtSeam.length > 0) {
+    lines.push(
+      `- Burst-shaped energy at the seam: ${seam.clicksAtSeam.length} event${seam.clicksAtSeam.length === 1 ? "" : "s"}` +
+        ` (${seam.clicksAtSeam.map((e) => `${((e.startSec + e.endSec) / 2 - seam.windowSec >= 0 ? "+" : "")}${((e.startSec + e.endSec) / 2 - seam.windowSec).toFixed(3)} s from the wrap`).join(", ")}).`,
+    );
+  } else {
+    lines.push("- Burst-shaped energy at the seam: none.");
+  }
+
+  lines.push("", "---", seam.caveat);
+  return { content: [{ type: "text" as const, text: lines.join("\n") }] };
+},
 );
 
 // ─── Tool: the live ensemble ───────────────────────────────────────────────

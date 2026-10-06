@@ -18,6 +18,9 @@
 //   cqt                 true constant-Q, sparse Brown–Puckette kernels
 //   onsets              SuperFlux on log-mel (or any TimeFrequencyData)
 //   pitch               YIN plus the cents-against-target gate
+//   loudness            BS.1770-4 LUFS, peak dBFS, clipped-sample runs
+//   defects             dropouts (gaps) and noise bursts / clicks
+//   loop-seam           the click where a loop's end meets its start
 //   wav                 minimal RIFF/WAVE decode, the way audio gets in
 //   transcribe          monophonic notes → MidiNoteEvent[] (lossy at the convert)
 //   render              spectrogram → PNG bytes (tier 3, orientation only)
@@ -132,6 +135,49 @@ export {
   type TranscribedNote,
   type TranscribeResult,
 } from "./transcribe.js";
+
+export {
+  BS1770_ABSOLUTE_GATE_LUFS,
+  BS1770_RELATIVE_GATE_LU,
+  BS1770_LOUDNESS_OFFSET,
+  LOUDNESS_BLOCK_SEC,
+  LOUDNESS_BLOCK_OVERLAP,
+  CLIP_THRESHOLD,
+  kWeightingBiquads,
+  filterBiquad,
+  kWeight,
+  integratedLoudnessFromBlocks,
+  measureLevels,
+  type BiquadCoeffs,
+  type ClipRun,
+  type LevelReport,
+  type LevelOptions,
+} from "./loudness.js";
+
+export {
+  GAP_DETECTOR_CAVEAT,
+  BURST_DETECTOR_CAVEAT,
+  rmsEnvelope,
+  detectGaps,
+  detectBursts,
+  type RmsEnvelope,
+  type EnvelopeOptions,
+  type GapEvent,
+  type GapOptions,
+  type BurstKind,
+  type BurstEvent,
+  type BurstOptions,
+} from "./defects.js";
+
+export {
+  LOOP_SEAM_CAVEAT,
+  SEAM_STEP_CLICK_RISK,
+  SEAM_LEVEL_STEP_DB,
+  checkLoopSeam,
+  type LoopSeamOptions,
+  type LoopSeamReport,
+  type LoopSeamVerdict,
+} from "./loop-seam.js";
 
 export {
   decodeWav,

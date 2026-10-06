@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — the integrity half of audio inspection: defects, loudness, and the loop seam
+- `analyze_audio`'s Level section now reports the numbers a mixdown review actually needs:
+  BS.1770-4 integrated loudness in LUFS (plus momentary max), the sample peak in dBFS with its
+  time, the RMS in dBFS, and a clipped-sample count with run lengths — replacing the bare
+  linear peak/RMS line, whose clipping hint was a threshold guess. The K-weighting biquads are
+  designed at the caller's sample rate with the DeMan (2024) formulas, so the 48 kHz special case
+  lands on the constants the standard prints (pinned by test), and the implementation cross-checks
+  within 0.1 LU of ffmpeg's libebur128.
+- A new Defects section in `analyze_audio`, from two new detectors in `src/audio/`: `detectGaps`
+  finds interior silences (leading and trailing silence is arrangement, not damage; under 50 ms is
+  articulation, both gates by default) and `detectBursts` finds noise bursts by spectral flatness
+  plus a local energy jump, and isolated clicks by sample slope. Tuning was measured against the
+  studio's ablation clips: clean melodies read flatness 0.004 against the burst clip's 0.83, and
+  a 6 dB energy bar missed the 40 ms noise burst's +5.6 dB in-frame — so the bar is 4 dB, decided
+  by the fixture, and both detectors ship caveats naming their own false-positive mode.
+- New MCP tool `check_loop_seam` (55th): judges where a loop's end wraps back to its start — the
+  single most common bug in game music — as the extrapolated waveform step (a phase-perfect loop
+  reads clean even when the raw boundary sample jumps, because what matters is whether the wave
+  continues into the head), burst-shaped energy at the wrapped join from the defects layer, and
+  the RMS level shift across the seam. Verdicts are named after the fix: `click-risk`,
+  `level-jump`.
+- Validation: the dropout and burst fixtures in `src/audio/defects.test.ts` port the studio's
+  ablation clip recipes sample-for-sample (200× flatness separability clean-vs-defect), and the
+  detectors run against the real clips find the 150 ms dropout at 3.153 s and the 40 ms burst at
+  2.438 s — and correctly report that the burst clip's own encode clipped 53 samples.
+
 ## [2.7.0] - 2026-09-29
 
 ### Added — America the Beautiful, a public-domain folk exemplar

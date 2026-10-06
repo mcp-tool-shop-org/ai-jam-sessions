@@ -1,8 +1,8 @@
 {
   "server_name": "ai-jam-sessions",
   "derived_from": "dist/mcp-server.js via MCP tools/list",
-  "derived_at": "2026-09-08T03:45:18.498Z",
-  "tool_count": 54,
+  "derived_at": "2026-10-06T14:57:04.096Z",
+  "tool_count": 55,
   "tools": [
     {
       "name": "add_section",
@@ -261,6 +261,27 @@
         },
         "required": [
           "songId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "check_loop_seam",
+      "description": "Judge a looping render where it wraps: the point where the track's end goes back to its start. This catches the most common bug in game music by number, not by ear — the waveform step after extrapolating the tail's own slope (phase-perfect loops read clean here even when the raw boundary sample jumps, because what matters is whether the wave CONTINUES into the head, not whether it starts from zero), burst-shaped energy at the wrapped join, and the RMS level shift across it. Use it on any cue or ambience meant to loop, before shipping it.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Absolute path to an uncompressed WAV file meant to loop."
+          },
+          "window_sec": {
+            "description": "How much of the tail and head to hang around the wrapped seam for defect detection. Defaults to 0.5, clamped to fit short loops.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "path"
         ],
         "$schema": "http://json-schema.org/draft-07/schema#"
       }
@@ -767,6 +788,28 @@
           },
           "lyrics": {
             "description": "English lyrics to sing as a score-locked lead (vowel on the MIDI beat). Aligns to the right-hand melody of the selected measures. The --engine aah/tract/synth path is not used for the lead when lyrics are set.",
+            "type": "string"
+          },
+          "singerBackend": {
+            "description": "Singing backend when lyrics are provided. 'kokoro' (default) uses the locked Kokoro take + voice-changer. 'soulx' uses SoulX-Singer score-conditioned neural SVS (local GPU).",
+            "type": "string",
+            "enum": [
+              "kokoro",
+              "soulx",
+              "additive",
+              "tract"
+            ]
+          },
+          "melodyTrack": {
+            "description": "MIDI track name that carries the melody (e.g. 'TUBULARBEL'). Only used with singerBackend='soulx'. If omitted, the track is auto-detected from the MIDI file.",
+            "type": "string"
+          },
+          "singerPromptWav": {
+            "description": "Path to a reference singing voice clip (WAV/MP3) for SoulX zero-shot timbre. Requires singerPromptMeta. If omitted, the default example prompt in the SoulX checkout is used.",
+            "type": "string"
+          },
+          "singerPromptMeta": {
+            "description": "Path to the SoulX metadata JSON for the reference voice clip. Required when singerPromptWav is set.",
             "type": "string"
           }
         },
