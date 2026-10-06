@@ -1672,3 +1672,86 @@ describe("mcp-server.ts — practice loop + scoring tools (Wave S3)", () => {
     25000,
   );
 });
+
+// ─── Audio inspection over the protocol ──────────────────────────────────────
+//
+// The audio modules are unit-tested where they live; these tests pin what the
+// TOOLS say, end to end, on WAVs written here with known answers: the Level,
+// Defects and Balance sections of analyze_audio, check_loop_seam's verdicts,
+// and compare_balance. The server runs as a child process, so coverage tools
+// do not see these lines run; the assertions are the evidence.
+
+function writeWav16(path: string, samples: Float64Array, sampleRate: number): void {
+  const n = samples.length;
+  const buf = Buffer.alloc(44 + n * 2);
+  buf.write("RIFF", 0); buf.writeUInt32LE(36 + n * 2, 4); buf.write("WAVE", 8);
+  buf.write("fmt ", 12); buf.writeUInt32LE(16, 16); buf.writeUInt16LE(1, 20); buf.writeUInt16LE(1, 22);
+  buf.writeUInt32LE(sampleRate, 24); buf.writeUInt32LE(sampleRate * 2, 28);
+  buf.writeUInt16LE(2, 32); buf.writeUInt16LE(16, 34);
+  buf.write("data", 36); buf.writeUInt32LE(n * 2, 40);
+  for (let i = 0; i < n; i++) {
+    buf.writeInt16LE(Math.round(Math.max(-1, Math.min(1, samples[i]!)) * 32767), 44 + i * 2);
+  }
+  writeFileSync(path, buf);
+}
+
+describe("mcp-server.ts — audio inspection tools", () => {
+  const SR = 22050;
+  let server: Awaited<ReturnType<typeof spawnIsolatedServer>>;
+  let dir: string;
+  const tone = (hz: number, sec: number, amp = 0.4) =>
+    Float64Array.from({ length: Math.round(sec * SR) }, (_, i) => amp * Math.sin(2 * Math.PI * hz * i / SR));
+  const call = async (name: string, args: Record<string, unknown>) =>
+    (await server.client.callTool({ name, arguments: args })) as ToolResult;
+
+  beforeAll(async () => {
+    server = await spawnIsolatedServer();
+    dir = mkdtempSync(join(tmpdir(), "ajs-audio-tools-"));
+    // 3 s of 440 Hz with a 150 ms dropout at 1.5 s.
+    const gap = tone(440, 3);
+    gap.fill(0, Math.round(1.5 * SR), Math.round(1.65 * SR));
+    writeWav16(join(dir, "gap.wav"), gap, SR);
+    // A seamless loop (exactly 220 cycles of 220 Hz) and one cut mid-cycle.
+    writeWav16(join(dir, "loop-clean.wav"), tone(220, 1), SR);
+    writeWav16(join(dir, "loop-cut.wav"), tone(220, 1 + 0.25 / 220), SR);
+    // Bright and dark: 3 kHz versus 200 Hz, for the balance tools.
+    writeWav16(join(dir, "bright.wav"), tone(3000, 2), SR);
+    writeWav16(join(dir, "dark.wav"), tone(200, 2), SR);
+    writeWav16(join(dir, "other-rate.wav"), Float64Array.from(tone(200, 2)), 44100);
+  }, 30000);
+
+  afterAll(async () => {
+    await server?.close();
+    if (dir) rmSync(dir, { recursive: true, force: true });
+  });
+
+  it("analyze_audio reports level, the dropout, and the balance", async () => {
+    const r = await call("analyze_audio", { path: join(dir, "gap.wav") });
+    expect(r.isError).toBeFalsy();
+    const text = extractText(r);
+    expect(text).toMatch(/## Level[\s\S]*LUFS/);
+    expect(text).toMatch(/Clipping: none\./);
+    expect(text).toMatch(/Gap \(dropout\): 1\.5\d\d s/);
+    expect(text).toMatch(/## Balance[\s\S]*\| low-mid \| 250–500 Hz \| 9\d\.\d%/);
+  }, 20000);
+
+  it("check_loop_seam passes a seamless loop and flags one cut mid-cycle", async () => {
+    expect(extractText(await call("check_loop_seam", { path: join(dir, "loop-clean.wav") }))).toMatch(/## Verdict: clean/);
+    expect(extractText(await call("check_loop_seam", { path: join(dir, "loop-cut.wav") }))).toMatch(/## Verdict: click-risk/);
+  }, 20000);
+
+  it("compare_balance reads a darker file as darker, band by band", async () => {
+    const r = await call("compare_balance", { path: join(dir, "dark.wav"), reference_path: join(dir, "bright.wav") });
+    expect(r.isError).toBeFalsy();
+    const text = extractText(r);
+    expect(text).toMatch(/Centroid -2\d\d\d Hz/);
+    expect(text).toMatch(/\| bass \| \+\d+\.\d dB \|/);
+    expect(text).toMatch(/\| high-mid \| -\d+\.\d dB \|/);
+  }, 20000);
+
+  it("compare_balance refuses files with different sample rates as a structured error", async () => {
+    const r = await call("compare_balance", { path: join(dir, "dark.wav"), reference_path: join(dir, "other-rate.wav") });
+    expect(r.isError).toBe(true);
+    expect(extractText(r)).toMatch(/different sample rates/);
+  }, 20000);
+});
