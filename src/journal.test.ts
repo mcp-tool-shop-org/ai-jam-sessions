@@ -23,6 +23,7 @@ vi.mock("node:fs", async () => {
     readFileSync: vi.fn(),
     appendFileSync: vi.fn(),
     readdirSync: vi.fn(),
+    statSync: vi.fn(),
   };
 });
 
@@ -31,9 +32,12 @@ const mockMkdirSync = vi.mocked(fs.mkdirSync);
 const mockReadFileSync = vi.mocked(fs.readFileSync);
 const mockAppendFileSync = vi.mocked(fs.appendFileSync);
 const mockReaddirSync = vi.mocked(fs.readdirSync);
+const mockStatSync = vi.mocked(fs.statSync);
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // An existing journal path is a directory unless a test says otherwise.
+  mockStatSync.mockReturnValue({ isDirectory: () => true } as fs.Stats);
 });
 
 // ─── buildJournalEntry ─────────────────────────────────────────────────────
@@ -180,6 +184,17 @@ describe("buildJournalEntry", () => {
 
 describe("appendJournalEntry", () => {
   const fixedDate = new Date(2026, 3, 1);
+
+  it("names a file in the journal directory's place, instead of failing the write", () => {
+    mockExistsSync.mockReturnValue(true);
+    mockStatSync.mockReturnValue({ isDirectory: () => false } as fs.Stats);
+
+    expect(() => appendJournalEntry("test entry", fixedDate)).toThrow(
+      /^Failed to create journal directory ".*journal": a file is in the way, where the journal directory should be\./,
+    );
+    expect(mockMkdirSync).not.toHaveBeenCalled();
+    expect(mockAppendFileSync).not.toHaveBeenCalled();
+  });
 
   it("creates journal directory if missing", () => {
     mockExistsSync.mockReturnValue(false);

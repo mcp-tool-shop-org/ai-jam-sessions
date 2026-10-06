@@ -753,25 +753,25 @@ describe("cli.ts — commands through runCli", () => {
     const altState = join(alt, "state");
     mkdirSync(join(altState, "songs"), { recursive: true });
     writeFileSync(join(altState, "songs", "coverage-one-note.json"), JSON.stringify(ONE_NOTE));
-    // existsSync is true for a file, so mkdir is skipped and the write fails.
-    // Node reports ENOENT on Windows and ENOTDIR elsewhere. The take still exits 0.
+    // A file where the journal directory should be is named as the cause,
+    // the same on every OS, and the take still finishes with exit 0.
+    // (Until the fix, the write failed instead and the warning blamed a
+    // missing file: ENOENT on Windows, ENOTDIR elsewhere.)
     writeFileSync(join(altState, "journal"), "not a directory");
     const saved = process.env.AI_JAM_HOME;
     process.env.AI_JAM_HOME = altState;
-    const now = new Date();
-    const day = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-    const filepath = join(altState, "journal", `${day}.md`);
-    const nodeCode = process.platform === "win32" ? "ENOENT" : "ENOTDIR";
-    const nodeDetail = process.platform === "win32" ? "no such file or directory" : "not a directory";
+    const journalPath = join(altState, "journal");
     try {
       const played = await run(["play", "coverage-one-note", "--engine", "piano"]);
       expect(played.code).toBe(0);
       expect(played.out).toContain("Finished! 1 measures played.");
       expect(played.out).not.toContain("Session logged to practice journal.");
-      expect(played.err).not.toContain("Failed to create journal directory");
       expect(played.err).toContain(
-        `  ⚠ Could not save journal entry: Failed to write journal entry to "${filepath}": ${nodeCode}: ${nodeDetail}, open '${filepath}'`,
+        `  ⚠ Could not save journal entry: Failed to create journal directory "${journalPath}": ` +
+          "a file is in the way, where the journal directory should be. " +
+          "Move or rename that file and the journal will be created there.",
       );
+      expect(played.err).not.toContain("Failed to write journal entry");
     } finally {
       process.env.AI_JAM_HOME = saved;
     }
