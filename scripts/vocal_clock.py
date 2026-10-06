@@ -61,6 +61,7 @@ ENV_HOP_S = 0.0005
 PEAK_BEFORE_S = 0.10         # the syllable peak is searched from this far before the STT word start
 SEARCH_BEFORE_S = 0.30       # ...and the rise up to it from this far back (Scribe dated "a" 170 ms late)
 SEARCH_AFTER_S = 0.35        # how far after the STT word start the peak may sit
+SILENT_BELOW_MAX_DB = 45.0   # a window whose peak sits this far under the take's loudest vowel is silent
 SLOPE_MIN_DB = 3.0           # legato fallback: the steepest rise must climb at least this over ±15 ms
 CUT_LEAD_IN_S = 0.04         # keep this much before the vowel (the consonant) so the artifact shows the rise
 CUT_TAIL_S = 0.06
@@ -115,7 +116,15 @@ def rise_onset(times: np.ndarray, env: np.ndarray, lo: float, hi: float, frac=RI
     below the threshold (a 5 dB l→aɪ in "like"), the onset is the steepest
     rise of the dB envelope in the 150 ms before the peak, accepted only if
     the envelope climbs SLOPE_MIN_DB across ±15 ms of it. Otherwise `t` is
-    None and the caller must say so."""
+    None and the caller must say so.
+
+    Silence is relative to the take: `env` is the whole take's envelope, and a
+    window whose peak sits SILENT_BELOW_MAX_DB or more under the take's loudest
+    point is silent. It used to be silent only at a peak of exactly zero, so
+    band-filter ringing or a noise floor was dated as a vowel and a dropped
+    syllable could be placed as a clip of nothing. Measured 2026-10-06 on three
+    SoulX takes: every real syllable peaked within 6 dB of the take's loudest,
+    the phantom at -217 dB, so 45 dB clears both sides by a wide margin."""
     if search_lo is None:
         search_lo = lo
     sel = np.where((times >= lo) & (times <= hi))[0]
@@ -124,8 +133,9 @@ def rise_onset(times: np.ndarray, env: np.ndarray, lo: float, hi: float, frac=RI
     seg = env[sel]
     ip = int(np.argmax(seg))
     peak = float(seg[ip])
-    if peak <= 0:
-        return {"t": None, "peak": 0.0, "reason": "silent", "method": None}
+    floor = float(env.max()) * 10 ** (-SILENT_BELOW_MAX_DB / 20)
+    if peak <= floor:
+        return {"t": None, "peak": peak, "reason": "silent", "method": None}
     t_peak = float(times[sel[ip]])
     thr = frac * peak
     back = np.where((times >= search_lo) & (times <= t_peak))[0]
