@@ -12130,7 +12130,7 @@
           "path": ".polyglot-cache.json"
         },
         {
-          "hash": "2291cd9f43f8d6e54d12eba4d071ba4c0bbc90c7719263f20fec0dcd8d9f88ee",
+          "hash": "02a871502b7b98b183a0d609a5992825f7b5f19e50c42e9423d7e70919c4da16",
           "path": "CHANGELOG.md"
         },
         {
@@ -12170,7 +12170,7 @@
           "path": "README.ja.md"
         },
         {
-          "hash": "f3ecba53111d93854090d06e2d27e13dc8aafc9d84ad4debdf487a053aca7677",
+          "hash": "d507e7d0a8837b672f68395b39b3aeb75703181e57545abdb4df111458f1a34a",
           "path": "README.md"
         },
         {
@@ -12226,11 +12226,11 @@
           "path": "package.json"
         },
         {
-          "hash": "081cf6859d5b9b8d736531bbda8035fe243e8b1a84cc9de223f9487facdb41da",
+          "hash": "030680f286ada4857927b490a5b2d5617469f2a918e2fae030afa0a5663ea31b",
           "path": "pnpm-lock.yaml"
         },
         {
-          "hash": "a04f681e44162c1de91702039bb79c475de8cee778e34742b3cbe0caac160614",
+          "hash": "0883000fe84568118e2b4cd7bdb7a0f1c908a40b23257b871253ee05dc6e82e9",
           "path": "pnpm-workspace.yaml"
         },
         {
@@ -14874,7 +14874,7 @@
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "af5d4f54dca60686724d306eb58759fb25b6f5ba4d66559ab84a968112a184e5",
+          "hash": "0607a19c4f60b635244a906c7ad2424359b50e20c4a83bc140f202abce4a941e",
           "path": "site/package-lock.json"
         },
         {
@@ -16159,6 +16159,38 @@
           "path": "src/audio-shared.ts"
         },
         {
+          "hash": "e18edec8ff6a4ab52dfae1e8253db397ee540cc5ad01dd9ff56aab6f5415d1ee",
+          "importsFiles": [
+            "src/audio/balance.ts",
+            "src/audio/fixtures.ts"
+          ],
+          "path": "src/audio/balance.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "compareBalance",
+            "measureBalance"
+          ],
+          "failurePaths": [
+            {
+              "in": "measureBalance",
+              "kind": "throw",
+              "line": 132
+            },
+            {
+              "in": "compareBalance",
+              "kind": "throw",
+              "line": 297
+            }
+          ],
+          "hash": "200ce98fc1951415dec2682f5479ca0c89621793e18698d2a97075a92c99939f",
+          "importsFiles": [
+            "src/audio/stft.ts"
+          ],
+          "path": "src/audio/balance.ts"
+        },
+        {
           "hash": "55fa53939e57c583eb3edb40c2f6b3618528bbbc0849121eb06b4a637932c68e",
           "importOrder": [
             "src/audio/ensemble.ts",
@@ -16306,6 +16338,104 @@
           ],
           "hash": "fe643d130f193f82a8a13703c2e9dbebdc323d1e5c63a9d6862c4d27789e66f1",
           "path": "src/audio/db.ts"
+        },
+        {
+          "hash": "12aa682ede5e7750633d8a08b67810a3de7b5714ba1e999423460edd13026252",
+          "importsFiles": [
+            "src/audio/defects.ts",
+            "src/audio/fixtures.ts"
+          ],
+          "path": "src/audio/defects.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "detectBursts",
+            "detectGaps",
+            "rmsEnvelope"
+          ],
+          "failurePaths": [
+            {
+              "in": "rmsEnvelope",
+              "kind": "throw",
+              "line": 90
+            },
+            {
+              "in": "rmsEnvelope",
+              "kind": "throw",
+              "line": 93
+            },
+            {
+              "in": "resolveGapOptions",
+              "kind": "throw",
+              "line": 166
+            },
+            {
+              "in": "resolveGapOptions",
+              "kind": "throw",
+              "line": 167
+            },
+            {
+              "in": "resolveGapOptions",
+              "kind": "throw",
+              "line": 168
+            },
+            {
+              "in": "resolveGapOptions",
+              "kind": "throw",
+              "line": 169
+            },
+            {
+              "in": "resolveBurstOptions",
+              "kind": "throw",
+              "line": 328
+            },
+            {
+              "in": "resolveBurstOptions",
+              "kind": "throw",
+              "line": 329
+            },
+            {
+              "in": "resolveBurstOptions",
+              "kind": "throw",
+              "line": 330
+            },
+            {
+              "in": "resolveBurstOptions",
+              "kind": "throw",
+              "line": 331
+            },
+            {
+              "in": "resolveBurstOptions",
+              "kind": "throw",
+              "line": 332
+            },
+            {
+              "in": "resolveBurstOptions",
+              "kind": "throw",
+              "line": 333
+            },
+            {
+              "in": "resolveBurstOptions",
+              "kind": "throw",
+              "line": 334
+            },
+            {
+              "in": "resolveBurstOptions",
+              "kind": "throw",
+              "line": 335
+            },
+            {
+              "in": "resolveBurstOptions",
+              "kind": "throw",
+              "line": 336
+            }
+          ],
+          "hash": "31c2364dce1c5b81842569c62296d2b75db6c8f65e6baa81319b851d231c3046",
+          "importsFiles": [
+            "src/audio/stft.ts"
+          ],
+          "path": "src/audio/defects.ts"
         },
         {
           "hash": "5b207707bdcc418f6e5ec668928195e90f4f1ea05e37dbbc7553c83db2d4c945",
@@ -16477,7 +16607,7 @@
           "path": "src/audio/fixtures.ts"
         },
         {
-          "hash": "31a8d949d37818dcd04cf78bbd42a741579bd1cc70a98fa0af10d8461496cce2",
+          "hash": "8a99e617d16ddee5353ee7a6500a2b29c9565aa8fb6d40257bdacd447e5ee179",
           "importOrder": [
             "src/audio/fft.ts",
             "src/audio/window.ts",
@@ -16488,6 +16618,10 @@
             "src/audio/onsets.ts",
             "src/audio/pitch.ts",
             "src/audio/transcribe.ts",
+            "src/audio/loudness.ts",
+            "src/audio/defects.ts",
+            "src/audio/balance.ts",
+            "src/audio/loop-seam.ts",
             "src/audio/wav.ts",
             "src/audio/render.ts",
             "src/audio/stream.ts",
@@ -16499,12 +16633,16 @@
             "src/audio/roster.ts"
           ],
           "importsFiles": [
+            "src/audio/balance.ts",
             "src/audio/bridge.ts",
             "src/audio/cqt.ts",
             "src/audio/db.ts",
+            "src/audio/defects.ts",
             "src/audio/ensemble.ts",
             "src/audio/fft.ts",
             "src/audio/fixtures.ts",
+            "src/audio/loop-seam.ts",
+            "src/audio/loudness.ts",
             "src/audio/mel.ts",
             "src/audio/onsets.ts",
             "src/audio/pitch.ts",
@@ -16520,6 +16658,82 @@
           ],
           "path": "src/audio/index.ts",
           "reexportsOnly": true
+        },
+        {
+          "hash": "25b9560bddc47c48a6fa3cf46d4f3db20ad2f241ac123ed28b9ad93c7f9e5ad8",
+          "importsFiles": [
+            "src/audio/loop-seam.ts"
+          ],
+          "path": "src/audio/loop-seam.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "checkLoopSeam"
+          ],
+          "failurePaths": [
+            {
+              "in": "checkLoopSeam",
+              "kind": "throw",
+              "line": 128
+            },
+            {
+              "in": "checkLoopSeam",
+              "kind": "throw",
+              "line": 131
+            },
+            {
+              "in": "checkLoopSeam",
+              "kind": "throw",
+              "line": 135
+            }
+          ],
+          "hash": "71de316476cd7b5b67af9306d694fabdf859775aea0788899819f2d9cc6f2c1f",
+          "importsFiles": [
+            "src/audio/defects.ts"
+          ],
+          "path": "src/audio/loop-seam.ts"
+        },
+        {
+          "hash": "107ba1aa83cb690af57f81da82497a738d417be191ab9c3e92e8d482f6ac7f2f",
+          "importOrder": [
+            "src/audio/loudness.ts",
+            "src/audio/fixtures.ts"
+          ],
+          "importsFiles": [
+            "src/audio/fixtures.ts",
+            "src/audio/loudness.ts"
+          ],
+          "path": "src/audio/loudness.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "filterBiquad",
+            "integratedLoudnessFromBlocks",
+            "kWeight",
+            "kWeightingBiquads",
+            "measureLevels"
+          ],
+          "failurePaths": [
+            {
+              "in": "kWeightingBiquads",
+              "kind": "throw",
+              "line": 130
+            },
+            {
+              "in": "measureLevels",
+              "kind": "throw",
+              "line": 287
+            },
+            {
+              "in": "measureLevels",
+              "kind": "throw",
+              "line": 290
+            }
+          ],
+          "hash": "08af4df10c3da00a39936560679016360f37a0920bd75c436b5f9a8a5f9c5576",
+          "path": "src/audio/loudness.ts"
         },
         {
           "hash": "be685016a4b17b9505d070b7cbcf15e348f84100a433f2329e92ddf706593801",
@@ -17189,107 +17403,103 @@
             {
               "in": "openInBrowser",
               "kind": "throw",
-              "line": 104
+              "line": 103
             },
             {
               "in": "parsePlaySessionFlags",
               "kind": "throw",
-              "line": 241
+              "line": 240
             },
             {
               "in": "cmdPlay",
               "kind": "catch",
-              "line": 343
+              "line": 342
             },
             {
               "in": "cmdPlay",
               "kind": "catch",
-              "line": 643
+              "line": 642
             },
             {
               "in": "cmdPlay",
               "kind": "catch",
-              "line": 651
+              "line": 650
             },
             {
               "in": "cmdPlay",
               "kind": "catch",
-              "line": 691
+              "line": 690
             },
             {
               "in": "cmdPlay",
               "kind": "catch",
-              "line": 789
+              "line": 788
             },
             {
               "in": "cmdPlay",
               "kind": "catch",
-              "line": 794
+              "line": 793
             },
             {
               "in": "cmdSing",
               "kind": "catch",
-              "line": 964
+              "line": 963
             },
             {
               "in": "parsePracticeArgs",
               "kind": "throw",
-              "line": 1003
+              "line": 1002
             },
             {
               "in": "parsePracticeArgs",
               "kind": "throw",
-              "line": 1012
+              "line": 1011
             },
             {
               "in": "parsePracticeArgs",
               "kind": "throw",
-              "line": 1022
+              "line": 1021
             },
             {
               "in": "parseOptNum",
               "kind": "throw",
-              "line": 1034
+              "line": 1033
             },
             {
               "in": "parsePracticeArgs",
               "kind": "throw",
-              "line": 1051
+              "line": 1050
             },
             {
               "in": "cmdPractice",
               "kind": "catch",
-              "line": 1066
+              "line": 1065
             },
             {
               "in": "cmdPractice",
               "kind": "catch",
-              "line": 1089
+              "line": 1088
             },
             {
               "in": "cmdPractice",
               "kind": "catch",
-              "line": 1158
+              "line": 1157
             },
             {
               "in": "cmdPractice",
               "kind": "throw",
-              "line": 1172
+              "line": 1171
             },
             {
               "in": "cmdPractice",
               "kind": "catch",
-              "line": 1174
-            },
-            {
-              "in": "resolveArgvMainPath",
-              "kind": "catch",
-              "line": 1932
+              "line": 1173
             }
           ],
-          "hash": "1d72e207081c3d9e72665d410fcbf2b2b5b3603d2f054bee4ecf61216f2706f0",
+          "hash": "cbcb4005a3134290a44df3d2a2cfa3349284d2cdbd4d64a5f7065f58f14e3405",
           "importsFiles": [
             "src/audio-engine.ts",
+            "src/entry-guard.ts",
             "src/errors.ts",
             "src/guitar-engine.ts",
             "src/guitar-tab-roll.ts",
@@ -17330,7 +17540,7 @@
             {
               "calls": [
                 {
-                  "line": 130,
+                  "line": 129,
                   "name": "EXIT_USER",
                   "passed": true,
                   "target": {
@@ -17346,7 +17556,7 @@
             {
               "calls": [
                 {
-                  "line": 199,
+                  "line": 198,
                   "name": "substring",
                   "target": null,
                   "via": "padRight"
@@ -17360,7 +17570,7 @@
             {
               "calls": [
                 {
-                  "line": 199,
+                  "line": 198,
                   "name": "substring",
                   "target": null
                 }
@@ -17373,7 +17583,7 @@
             {
               "calls": [
                 {
-                  "line": 203,
+                  "line": 202,
                   "name": "substring",
                   "target": null
                 }
@@ -17386,49 +17596,49 @@
             {
               "calls": [
                 {
-                  "line": 270,
+                  "line": 269,
                   "name": "includes",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 271,
+                  "line": 270,
                   "name": "join",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 274,
+                  "line": 273,
                   "name": "getSongsByGenre",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 276,
+                  "line": 275,
                   "name": "getAllSongs",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 280,
+                  "line": 279,
                   "name": "includes",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 281,
+                  "line": 280,
                   "name": "join",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 199,
+                  "line": 198,
                   "name": "substring",
                   "target": null,
                   "via": "padRight"
@@ -17442,14 +17652,14 @@
             {
               "calls": [
                 {
-                  "line": 296,
+                  "line": 295,
                   "name": "getSong",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 130,
+                  "line": 129,
                   "name": "EXIT_USER",
                   "passed": true,
                   "target": {
@@ -17466,63 +17676,63 @@
             {
               "calls": [
                 {
-                  "line": 321,
+                  "line": 320,
                   "name": "preferredPianoEngineId",
                   "target": {
                     "file": "src/sample-paths.ts"
                   }
                 },
                 {
-                  "line": 356,
+                  "line": 355,
                   "name": "includes",
                   "target": {
                     "file": "src/vocal-tract-engine.ts"
                   }
                 },
                 {
-                  "line": 357,
+                  "line": 356,
                   "name": "join",
                   "target": {
                     "file": "src/vocal-tract-engine.ts"
+                  }
+                },
+                {
+                  "line": 361,
+                  "name": "includes",
+                  "target": {
+                    "file": "src/guitar-voices.ts"
                   }
                 },
                 {
                   "line": 362,
-                  "name": "includes",
+                  "name": "join",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   }
                 },
                 {
-                  "line": 363,
-                  "name": "join",
+                  "line": 367,
+                  "name": "includes",
                   "target": {
-                    "file": "src/guitar-voices.ts"
+                    "file": "src/piano-voices.ts"
                   }
                 },
                 {
                   "line": 368,
-                  "name": "includes",
-                  "target": {
-                    "file": "src/piano-voices.ts"
-                  }
-                },
-                {
-                  "line": 369,
                   "name": "join",
                   "target": {
                     "file": "src/piano-voices.ts"
                   }
                 },
                 {
-                  "line": 402,
+                  "line": 401,
                   "name": "getSong",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 130,
+                  "line": 129,
                   "name": "EXIT_USER",
                   "passed": true,
                   "target": {
@@ -17531,21 +17741,21 @@
                   "via": "exitUser"
                 },
                 {
-                  "line": 428,
+                  "line": 427,
                   "name": "accompanimentEngineForLyrics",
                   "target": {
                     "file": "src/vocal/prepare.ts"
                   }
                 },
                 {
-                  "line": 456,
+                  "line": 455,
                   "name": "createVmpkConnector",
                   "target": {
                     "file": "src/vmpk.ts"
                   }
                 },
                 {
-                  "line": 433,
+                  "line": 432,
                   "name": "createTractEngine",
                   "target": {
                     "file": "src/vocal-tract-engine.ts"
@@ -17553,7 +17763,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 434,
+                  "line": 433,
                   "name": "createVocalEngine",
                   "target": {
                     "file": "src/vocal-engine.ts"
@@ -17561,7 +17771,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 435,
+                  "line": 434,
                   "name": "createVocalSynthEngine",
                   "target": {
                     "file": "src/vocal-synth-adapter.ts"
@@ -17569,7 +17779,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 437,
+                  "line": 436,
                   "name": "resolvePianoSamplesDir",
                   "target": {
                     "file": "src/sample-paths.ts"
@@ -17577,7 +17787,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 442,
+                  "line": 441,
                   "name": "createSampleEngine",
                   "target": {
                     "file": "src/sample-engine.ts"
@@ -17585,7 +17795,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 444,
+                  "line": 443,
                   "name": "createGuitarEngine",
                   "target": {
                     "file": "src/guitar-engine.ts"
@@ -17593,7 +17803,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 446,
+                  "line": 445,
                   "name": "createAudioEngine",
                   "target": {
                     "file": "src/audio-engine.ts"
@@ -17601,7 +17811,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 446,
+                  "line": 445,
                   "name": "createVocalSynthEngine",
                   "target": {
                     "file": "src/vocal-synth-adapter.ts"
@@ -17609,7 +17819,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 446,
+                  "line": 445,
                   "name": "createLayeredEngine",
                   "target": {
                     "file": "src/layered-engine.ts"
@@ -17617,7 +17827,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 448,
+                  "line": 447,
                   "name": "createVocalEngine",
                   "target": {
                     "file": "src/vocal-engine.ts"
@@ -17625,7 +17835,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 448,
+                  "line": 447,
                   "name": "createVocalSynthEngine",
                   "target": {
                     "file": "src/vocal-synth-adapter.ts"
@@ -17633,7 +17843,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 448,
+                  "line": 447,
                   "name": "createLayeredEngine",
                   "target": {
                     "file": "src/layered-engine.ts"
@@ -17641,7 +17851,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 450,
+                  "line": 449,
                   "name": "createGuitarEngine",
                   "target": {
                     "file": "src/guitar-engine.ts"
@@ -17658,14 +17868,14 @@
             {
               "calls": [
                 {
-                  "line": 815,
+                  "line": 814,
                   "name": "getSong",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 130,
+                  "line": 129,
                   "name": "EXIT_USER",
                   "passed": true,
                   "target": {
@@ -17674,25 +17884,41 @@
                   "via": "exitUser"
                 },
                 {
-                  "line": 832,
+                  "line": 831,
                   "name": "includes",
                   "target": {
                     "file": "src/piano-voices.ts"
                   }
                 },
                 {
-                  "line": 833,
+                  "line": 832,
                   "name": "join",
                   "target": {
                     "file": "src/piano-voices.ts"
                   }
                 },
                 {
-                  "line": 890,
+                  "line": 889,
                   "name": "createVmpkConnector",
                   "target": {
                     "file": "src/vmpk.ts"
                   }
+                },
+                {
+                  "line": 882,
+                  "name": "createVocalSynthEngine",
+                  "target": {
+                    "file": "src/vocal-synth-adapter.ts"
+                  },
+                  "via": "buildSingEngine"
+                },
+                {
+                  "line": 883,
+                  "name": "createAudioEngine",
+                  "target": {
+                    "file": "src/audio-engine.ts"
+                  },
+                  "via": "buildSingEngine"
                 },
                 {
                   "line": 883,
@@ -17703,23 +17929,7 @@
                   "via": "buildSingEngine"
                 },
                 {
-                  "line": 884,
-                  "name": "createAudioEngine",
-                  "target": {
-                    "file": "src/audio-engine.ts"
-                  },
-                  "via": "buildSingEngine"
-                },
-                {
-                  "line": 884,
-                  "name": "createVocalSynthEngine",
-                  "target": {
-                    "file": "src/vocal-synth-adapter.ts"
-                  },
-                  "via": "buildSingEngine"
-                },
-                {
-                  "line": 884,
+                  "line": 883,
                   "name": "createLayeredEngine",
                   "target": {
                     "file": "src/layered-engine.ts"
@@ -17727,7 +17937,7 @@
                   "via": "buildSingEngine"
                 },
                 {
-                  "line": 885,
+                  "line": 884,
                   "name": "createAudioEngine",
                   "target": {
                     "file": "src/audio-engine.ts"
@@ -17735,42 +17945,42 @@
                   "via": "buildSingEngine"
                 },
                 {
-                  "line": 915,
+                  "line": 914,
                   "name": "createSingAlongHook",
                   "target": {
                     "file": "src/teaching.ts"
                   }
                 },
                 {
-                  "line": 923,
+                  "line": 922,
                   "name": "createLiveFeedbackHook",
                   "target": {
                     "file": "src/teaching.ts"
                   }
                 },
                 {
-                  "line": 929,
+                  "line": 928,
                   "name": "createConsoleTeachingHook",
                   "target": {
                     "file": "src/teaching.ts"
                   }
                 },
                 {
-                  "line": 930,
+                  "line": 929,
                   "name": "composeTeachingHooks",
                   "target": {
                     "file": "src/teaching.ts"
                   }
                 },
                 {
-                  "line": 932,
+                  "line": 931,
                   "name": "createSession",
                   "target": {
                     "file": "src/session.ts"
                   }
                 },
                 {
-                  "line": 973,
+                  "line": 972,
                   "name": "handleError",
                   "target": {
                     "file": "src/errors.ts"
@@ -17785,7 +17995,7 @@
             {
               "calls": [
                 {
-                  "line": 130,
+                  "line": 129,
                   "name": "EXIT_USER",
                   "passed": true,
                   "target": {
@@ -17794,35 +18004,35 @@
                   "via": "exitUser"
                 },
                 {
-                  "line": 1072,
+                  "line": 1071,
                   "name": "getSong",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 1081,
+                  "line": 1080,
                   "name": "resolvePracticeLoopConfig",
                   "target": {
                     "file": "src/practice-loop.ts"
                   }
                 },
                 {
-                  "line": 1094,
+                  "line": 1093,
                   "name": "createAudioEngine",
                   "target": {
                     "file": "src/audio-engine.ts"
                   }
                 },
                 {
-                  "line": 1102,
+                  "line": 1101,
                   "name": "createConsoleTeachingHook",
                   "target": {
                     "file": "src/teaching.ts"
                   }
                 },
                 {
-                  "line": 1114,
+                  "line": 1113,
                   "name": "getState",
                   "receiver": "PracticeLoop",
                   "target": {
@@ -17830,7 +18040,7 @@
                   }
                 },
                 {
-                  "line": 1123,
+                  "line": 1122,
                   "name": "start",
                   "receiver": "PracticeLoop",
                   "target": {
@@ -17838,7 +18048,7 @@
                   }
                 },
                 {
-                  "line": 1124,
+                  "line": 1123,
                   "name": "done",
                   "receiver": "PracticeLoop",
                   "target": {
@@ -17846,7 +18056,7 @@
                   }
                 },
                 {
-                  "line": 1127,
+                  "line": 1126,
                   "name": "getState",
                   "receiver": "PracticeLoop",
                   "target": {
@@ -17854,21 +18064,21 @@
                   }
                 },
                 {
-                  "line": 1155,
+                  "line": 1154,
                   "name": "buildJournalEntry",
                   "target": {
                     "file": "src/journal.ts"
                   }
                 },
                 {
-                  "line": 1156,
+                  "line": 1155,
                   "name": "appendJournalEntry",
                   "target": {
                     "file": "src/journal.ts"
                   }
                 },
                 {
-                  "line": 1180,
+                  "line": 1179,
                   "name": "handleError",
                   "target": {
                     "file": "src/errors.ts"
@@ -17883,14 +18093,14 @@
             {
               "calls": [
                 {
-                  "line": 1187,
+                  "line": 1186,
                   "name": "getStats",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 199,
+                  "line": 198,
                   "name": "substring",
                   "target": null,
                   "via": "padRight"
@@ -17904,7 +18114,7 @@
             {
               "calls": [
                 {
-                  "line": 1204,
+                  "line": 1203,
                   "name": "createVmpkConnector",
                   "target": {
                     "file": "src/vmpk.ts"
@@ -17919,14 +18129,14 @@
             {
               "calls": [
                 {
-                  "line": 1224,
+                  "line": 1223,
                   "name": "getSong",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 130,
+                  "line": 129,
                   "name": "EXIT_USER",
                   "passed": true,
                   "target": {
@@ -17935,7 +18145,7 @@
                   "via": "exitUser"
                 },
                 {
-                  "line": 1271,
+                  "line": 1270,
                   "name": "renderPianoRoll",
                   "target": {
                     "file": "src/piano-roll.ts"
@@ -17950,14 +18160,14 @@
             {
               "calls": [
                 {
-                  "line": 1295,
+                  "line": 1294,
                   "name": "getSong",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 130,
+                  "line": 129,
                   "name": "EXIT_USER",
                   "passed": true,
                   "target": {
@@ -17966,21 +18176,21 @@
                   "via": "exitUser"
                 },
                 {
-                  "line": 1332,
+                  "line": 1331,
                   "name": "includes",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   }
                 },
                 {
-                  "line": 1333,
+                  "line": 1332,
                   "name": "join",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   }
                 },
                 {
-                  "line": 1343,
+                  "line": 1342,
                   "name": "renderGuitarTab",
                   "target": {
                     "file": "src/guitar-tab-roll.ts"
@@ -17995,14 +18205,14 @@
             {
               "calls": [
                 {
-                  "line": 1364,
+                  "line": 1363,
                   "name": "listVoices",
                   "target": {
                     "file": "src/piano-voices.ts"
                   }
                 },
                 {
-                  "line": 199,
+                  "line": 198,
                   "name": "substring",
                   "target": null,
                   "via": "padRight"
@@ -18016,14 +18226,14 @@
             {
               "calls": [
                 {
-                  "line": 1379,
+                  "line": 1378,
                   "name": "listGuitarVoices",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   }
                 },
                 {
-                  "line": 199,
+                  "line": 198,
                   "name": "substring",
                   "target": null,
                   "via": "padRight"
@@ -18038,7 +18248,7 @@
               "calls": [
                 {
                   "branch": "!voiceId",
-                  "line": 1398,
+                  "line": 1397,
                   "name": "join",
                   "target": {
                     "file": "src/guitar-voices.ts"
@@ -18046,20 +18256,20 @@
                 },
                 {
                   "branch": "!voiceId",
-                  "line": 199,
+                  "line": 198,
                   "name": "substring",
                   "target": null,
                   "via": "padRight"
                 },
                 {
-                  "line": 1409,
+                  "line": 1408,
                   "name": "includes",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   }
                 },
                 {
-                  "line": 1410,
+                  "line": 1409,
                   "name": "join",
                   "target": {
                     "file": "src/guitar-voices.ts"
@@ -18067,7 +18277,7 @@
                 },
                 {
                   "branch": "args.includes(\"--reset\")",
-                  "line": 1416,
+                  "line": 1415,
                   "name": "loadGuitarUserTuning",
                   "target": {
                     "file": "src/guitar-voices.ts"
@@ -18075,7 +18285,7 @@
                 },
                 {
                   "branch": "args.includes(\"--reset\")",
-                  "line": 1417,
+                  "line": 1416,
                   "name": "resetGuitarUserTuning",
                   "target": {
                     "file": "src/guitar-voices.ts"
@@ -18083,7 +18293,15 @@
                 },
                 {
                   "branch": "args.includes(\"--reset\")",
-                  "line": 1418,
+                  "line": 1417,
+                  "name": "getGuitarVoice",
+                  "target": {
+                    "file": "src/guitar-voices.ts"
+                  }
+                },
+                {
+                  "branch": "args.includes(\"--show\")",
+                  "line": 1428,
                   "name": "getGuitarVoice",
                   "target": {
                     "file": "src/guitar-voices.ts"
@@ -18092,7 +18310,7 @@
                 {
                   "branch": "args.includes(\"--show\")",
                   "line": 1429,
-                  "name": "getGuitarVoice",
+                  "name": "getMergedGuitarVoice",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   }
@@ -18100,35 +18318,27 @@
                 {
                   "branch": "args.includes(\"--show\")",
                   "line": 1430,
-                  "name": "getMergedGuitarVoice",
-                  "target": {
-                    "file": "src/guitar-voices.ts"
-                  }
-                },
-                {
-                  "branch": "args.includes(\"--show\")",
-                  "line": 1431,
                   "name": "loadGuitarUserTuning",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   }
                 },
                 {
-                  "line": 1480,
+                  "line": 1479,
                   "name": "saveGuitarUserTuning",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   }
                 },
                 {
-                  "line": 1481,
+                  "line": 1480,
                   "name": "getMergedGuitarVoice",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   }
                 },
                 {
-                  "line": 1482,
+                  "line": 1481,
                   "name": "loadGuitarUserTuning",
                   "target": {
                     "file": "src/guitar-voices.ts"
@@ -18143,7 +18353,7 @@
             {
               "calls": [
                 {
-                  "line": 1502,
+                  "line": 1501,
                   "name": "generateFullSong",
                   "target": {
                     "file": "src/vocal/song-generate.ts"
@@ -18159,7 +18369,7 @@
               "calls": [
                 {
                   "branch": "!voiceId",
-                  "line": 1512,
+                  "line": 1511,
                   "name": "join",
                   "target": {
                     "file": "src/piano-voices.ts"
@@ -18167,20 +18377,20 @@
                 },
                 {
                   "branch": "!voiceId",
-                  "line": 199,
+                  "line": 198,
                   "name": "substring",
                   "target": null,
                   "via": "padRight"
                 },
                 {
-                  "line": 1523,
+                  "line": 1522,
                   "name": "includes",
                   "target": {
                     "file": "src/piano-voices.ts"
                   }
                 },
                 {
-                  "line": 1524,
+                  "line": 1523,
                   "name": "join",
                   "target": {
                     "file": "src/piano-voices.ts"
@@ -18188,7 +18398,7 @@
                 },
                 {
                   "branch": "args.includes(\"--reset\")",
-                  "line": 1530,
+                  "line": 1529,
                   "name": "loadUserTuning",
                   "target": {
                     "file": "src/piano-voices.ts"
@@ -18196,7 +18406,7 @@
                 },
                 {
                   "branch": "args.includes(\"--reset\")",
-                  "line": 1531,
+                  "line": 1530,
                   "name": "resetUserTuning",
                   "target": {
                     "file": "src/piano-voices.ts"
@@ -18204,7 +18414,15 @@
                 },
                 {
                   "branch": "args.includes(\"--reset\")",
-                  "line": 1532,
+                  "line": 1531,
+                  "name": "getVoice",
+                  "target": {
+                    "file": "src/piano-voices.ts"
+                  }
+                },
+                {
+                  "branch": "args.includes(\"--show\")",
+                  "line": 1542,
                   "name": "getVoice",
                   "target": {
                     "file": "src/piano-voices.ts"
@@ -18213,7 +18431,7 @@
                 {
                   "branch": "args.includes(\"--show\")",
                   "line": 1543,
-                  "name": "getVoice",
+                  "name": "getMergedVoice",
                   "target": {
                     "file": "src/piano-voices.ts"
                   }
@@ -18221,35 +18439,27 @@
                 {
                   "branch": "args.includes(\"--show\")",
                   "line": 1544,
-                  "name": "getMergedVoice",
-                  "target": {
-                    "file": "src/piano-voices.ts"
-                  }
-                },
-                {
-                  "branch": "args.includes(\"--show\")",
-                  "line": 1545,
                   "name": "loadUserTuning",
                   "target": {
                     "file": "src/piano-voices.ts"
                   }
                 },
                 {
-                  "line": 1594,
+                  "line": 1593,
                   "name": "saveUserTuning",
                   "target": {
                     "file": "src/piano-voices.ts"
                   }
                 },
                 {
-                  "line": 1595,
+                  "line": 1594,
                   "name": "getMergedVoice",
                   "target": {
                     "file": "src/piano-voices.ts"
                   }
                 },
                 {
-                  "line": 1596,
+                  "line": 1595,
                   "name": "loadUserTuning",
                   "target": {
                     "file": "src/piano-voices.ts"
@@ -18264,21 +18474,21 @@
             {
               "calls": [
                 {
-                  "line": 1706,
+                  "line": 1705,
                   "name": "fetchCandidates",
                   "target": {
                     "file": "src/songs/fetch.ts"
                   }
                 },
                 {
-                  "line": 1719,
+                  "line": 1718,
                   "name": "termsNotice",
                   "target": {
                     "file": "src/songs/fetch.ts"
                   }
                 },
                 {
-                  "line": 1727,
+                  "line": 1726,
                   "name": "fetchOne",
                   "target": {
                     "file": "src/songs/fetch.ts"
@@ -18293,7 +18503,7 @@
             {
               "calls": [
                 {
-                  "line": 1737,
+                  "line": 1736,
                   "name": "getLibraryProgress",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18301,7 +18511,7 @@
                 },
                 {
                   "branch": "args[0] === \"status\" && args[1]",
-                  "line": 1745,
+                  "line": 1744,
                   "name": "join",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18309,7 +18519,7 @@
                 },
                 {
                   "branch": "args[0] === \"fetch\"",
-                  "line": 1706,
+                  "line": 1705,
                   "name": "fetchCandidates",
                   "target": {
                     "file": "src/songs/fetch.ts"
@@ -18318,7 +18528,7 @@
                 },
                 {
                   "branch": "args[0] === \"fetch\"",
-                  "line": 1719,
+                  "line": 1718,
                   "name": "termsNotice",
                   "target": {
                     "file": "src/songs/fetch.ts"
@@ -18327,7 +18537,7 @@
                 },
                 {
                   "branch": "args[0] === \"fetch\"",
-                  "line": 1727,
+                  "line": 1726,
                   "name": "fetchOne",
                   "target": {
                     "file": "src/songs/fetch.ts"
@@ -18343,21 +18553,21 @@
             {
               "calls": [
                 {
-                  "line": 1817,
+                  "line": 1816,
                   "name": "userSongsDir",
                   "target": {
                     "file": "src/state-home.ts"
                   }
                 },
                 {
-                  "line": 1818,
+                  "line": 1817,
                   "name": "initializeFromLibrary",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 270,
+                  "line": 269,
                   "name": "includes",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18365,7 +18575,7 @@
                   "via": "cmdList"
                 },
                 {
-                  "line": 271,
+                  "line": 270,
                   "name": "join",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18373,7 +18583,7 @@
                   "via": "cmdList"
                 },
                 {
-                  "line": 274,
+                  "line": 273,
                   "name": "getSongsByGenre",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18381,7 +18591,7 @@
                   "via": "cmdList"
                 },
                 {
-                  "line": 276,
+                  "line": 275,
                   "name": "getAllSongs",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18389,7 +18599,7 @@
                   "via": "cmdList"
                 },
                 {
-                  "line": 280,
+                  "line": 279,
                   "name": "includes",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18397,7 +18607,7 @@
                   "via": "cmdList"
                 },
                 {
-                  "line": 281,
+                  "line": 280,
                   "name": "join",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18405,13 +18615,13 @@
                   "via": "cmdList"
                 },
                 {
-                  "line": 199,
+                  "line": 198,
                   "name": "substring",
                   "target": null,
                   "via": "padRight"
                 },
                 {
-                  "line": 296,
+                  "line": 295,
                   "name": "getSong",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18419,7 +18629,7 @@
                   "via": "cmdInfo"
                 },
                 {
-                  "line": 130,
+                  "line": 129,
                   "name": "EXIT_USER",
                   "passed": true,
                   "target": {
@@ -18428,7 +18638,7 @@
                   "via": "exitUser"
                 },
                 {
-                  "line": 321,
+                  "line": 320,
                   "name": "preferredPianoEngineId",
                   "target": {
                     "file": "src/sample-paths.ts"
@@ -18436,7 +18646,7 @@
                   "via": "cmdPlay"
                 },
                 {
-                  "line": 356,
+                  "line": 355,
                   "name": "includes",
                   "target": {
                     "file": "src/vocal-tract-engine.ts"
@@ -18444,39 +18654,39 @@
                   "via": "cmdPlay"
                 },
                 {
-                  "line": 357,
+                  "line": 356,
                   "name": "join",
                   "target": {
                     "file": "src/vocal-tract-engine.ts"
+                  },
+                  "via": "cmdPlay"
+                },
+                {
+                  "line": 361,
+                  "name": "includes",
+                  "target": {
+                    "file": "src/guitar-voices.ts"
                   },
                   "via": "cmdPlay"
                 },
                 {
                   "line": 362,
-                  "name": "includes",
+                  "name": "join",
                   "target": {
                     "file": "src/guitar-voices.ts"
                   },
                   "via": "cmdPlay"
                 },
                 {
-                  "line": 363,
-                  "name": "join",
+                  "line": 367,
+                  "name": "includes",
                   "target": {
-                    "file": "src/guitar-voices.ts"
+                    "file": "src/piano-voices.ts"
                   },
                   "via": "cmdPlay"
                 },
                 {
                   "line": 368,
-                  "name": "includes",
-                  "target": {
-                    "file": "src/piano-voices.ts"
-                  },
-                  "via": "cmdPlay"
-                },
-                {
-                  "line": 369,
                   "name": "join",
                   "target": {
                     "file": "src/piano-voices.ts"
@@ -18484,7 +18694,7 @@
                   "via": "cmdPlay"
                 },
                 {
-                  "line": 402,
+                  "line": 401,
                   "name": "getSong",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -18492,7 +18702,7 @@
                   "via": "cmdPlay"
                 },
                 {
-                  "line": 428,
+                  "line": 427,
                   "name": "accompanimentEngineForLyrics",
                   "target": {
                     "file": "src/vocal/prepare.ts"
@@ -18500,7 +18710,7 @@
                   "via": "cmdPlay"
                 },
                 {
-                  "line": 456,
+                  "line": 455,
                   "name": "createVmpkConnector",
                   "target": {
                     "file": "src/vmpk.ts"
@@ -18508,7 +18718,7 @@
                   "via": "cmdPlay"
                 },
                 {
-                  "line": 433,
+                  "line": 432,
                   "name": "createTractEngine",
                   "target": {
                     "file": "src/vocal-tract-engine.ts"
@@ -18525,7 +18735,7 @@
                       }
                     }
                   ],
-                  "line": 434,
+                  "line": 433,
                   "name": "createVocalEngine",
                   "target": {
                     "file": "src/vocal-engine.ts"
@@ -18533,7 +18743,7 @@
                   "via": "buildEngine"
                 },
                 {
-                  "line": 435,
+                  "line": 434,
                   "name": "createVocalSynthEngine",
                   "target": {
                     "file": "src/vocal-synth-adapter.ts"
@@ -21713,7 +21923,7 @@
           "path": "src/dataset/synth-v0/task.ts"
         },
         {
-          "hash": "4a7bf1edff168896380eabd79084a93c0e38856ef76fa33fe2d28e7b074f6fd7",
+          "hash": "2dc81d471ebc3c70db1a96f865a32891d2fa088456ab0090b6600ea4a04fd797",
           "path": "src/dataset/tool-schemas.json"
         },
         {
@@ -21740,6 +21950,29 @@
             "src/dataset/schema.ts"
           ],
           "path": "src/dataset/trace-validator.ts"
+        },
+        {
+          "hash": "1d8cb1be7ab2355eb430ca5c0c982331f0bfb8c56d7dadcfb9abb83f91fa2826",
+          "importsFiles": [
+            "src/entry-guard.ts"
+          ],
+          "path": "src/entry-guard.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "isEntrypoint",
+            "resolveArgvMainPath"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolveArgvMainPath",
+              "kind": "catch",
+              "line": 25
+            }
+          ],
+          "hash": "0a71cd983655c8720157a2036821fbd27eeb4281183f2bc901422da01b9a987c",
+          "path": "src/entry-guard.ts"
         },
         {
           "hash": "1fa949f3b14a5deaa925a821b9986e8d09be6375cac146fe427084a85c9b0ab2",
@@ -22816,7 +23049,25 @@
           "path": "src/mcp-schema.ts"
         },
         {
-          "hash": "5315de9b9b4e5a228a2a6ea75f0b9d2d710ca53e036c0df1acc2635658975f92",
+          "hash": "557d648976fb5a38808619b5ce2ea9efac4d0b1675323059168a195591cdfc11",
+          "importOrder": [
+            "src/audio-engine.ts",
+            "src/sample-engine.ts",
+            "src/vocal-engine.ts",
+            "src/vocal-tract-engine.ts",
+            "src/guitar-engine.ts",
+            "src/playback/metronome.ts",
+            "src/mcp-server.ts"
+          ],
+          "importsFiles": [
+            "src/audio-engine.ts",
+            "src/guitar-engine.ts",
+            "src/mcp-server.ts",
+            "src/playback/metronome.ts",
+            "src/sample-engine.ts",
+            "src/vocal-engine.ts",
+            "src/vocal-tract-engine.ts"
+          ],
           "path": "src/mcp-server.test.ts",
           "spawns": [
             "src/mcp-server.ts"
@@ -22824,35 +23075,57 @@
           "testFramework": "vitest"
         },
         {
+          "hash": "0956ba50d6f489f2895df8b98b927f369c7bbb510319230265a91704d013e87c",
+          "importOrder": [
+            "src/audio-shared.ts",
+            "src/audio-engine.ts",
+            "src/sample-engine.ts",
+            "src/vocal-engine.ts",
+            "src/vocal-tract-engine.ts",
+            "src/guitar-engine.ts",
+            "src/playback/metronome.ts",
+            "src/mcp-server.ts"
+          ],
+          "importsFiles": [
+            "src/audio-engine.ts",
+            "src/audio-shared.ts",
+            "src/guitar-engine.ts",
+            "src/mcp-server.ts",
+            "src/playback/metronome.ts",
+            "src/sample-engine.ts",
+            "src/vocal-engine.ts",
+            "src/vocal-tract-engine.ts"
+          ],
+          "path": "src/mcp-server.tools.test.ts",
+          "testFramework": "vitest"
+        },
+        {
           "entry": "main",
           "entryRule": 1,
           "exports": [
+            "prepareMcpServer",
             "setLiveEnsemble"
           ],
           "failurePaths": [
             {
               "in": "getCanonicalHomeDir",
               "kind": "catch",
-              "line": 199
+              "line": 213
             },
             {
               "in": "resolveContainedExistingPath",
               "kind": "catch",
-              "line": 232
+              "line": 246
             },
             {
               "in": "stopActive",
               "kind": "catch",
-              "line": 1135
+              "line": 1149
             },
             {
               "in": "stopActive",
               "kind": "catch",
-              "line": 1143
-            },
-            {
-              "kind": "catch",
-              "line": 1269
+              "line": 1157
             },
             {
               "kind": "catch",
@@ -22860,20 +23133,20 @@
             },
             {
               "kind": "catch",
-              "line": 1376
+              "line": 1297
+            },
+            {
+              "kind": "catch",
+              "line": 1390
             },
             {
               "in": "unsubscribeEnsemble",
               "kind": "catch",
-              "line": 1394
+              "line": 1408
             },
             {
               "kind": "catch",
-              "line": 1602
-            },
-            {
-              "kind": "catch",
-              "line": 1766
+              "line": 1616
             },
             {
               "kind": "catch",
@@ -22881,55 +23154,55 @@
             },
             {
               "kind": "catch",
-              "line": 1895
+              "line": 1794
             },
             {
               "kind": "catch",
-              "line": 1907
+              "line": 1909
             },
             {
               "kind": "catch",
-              "line": 1919
+              "line": 1921
+            },
+            {
+              "kind": "catch",
+              "line": 1933
             },
             {
               "kind": "throw",
-              "line": 2173
-            },
-            {
-              "kind": "throw",
-              "line": 2181
-            },
-            {
-              "kind": "catch",
               "line": 2187
             },
             {
+              "kind": "throw",
+              "line": 2195
+            },
+            {
               "kind": "catch",
-              "line": 2213
+              "line": 2201
+            },
+            {
+              "kind": "catch",
+              "line": 2227
             },
             {
               "kind": "throw",
-              "line": 2226
+              "line": 2240
             },
             {
               "kind": "throw",
-              "line": 2230
+              "line": 2244
             },
             {
               "kind": "catch",
-              "line": 2234
+              "line": 2248
             },
             {
               "kind": "catch",
-              "line": 2311
+              "line": 2325
             },
             {
               "kind": "catch",
-              "line": 2323
-            },
-            {
-              "kind": "catch",
-              "line": 2401
+              "line": 2337
             },
             {
               "kind": "catch",
@@ -22937,101 +23210,113 @@
             },
             {
               "kind": "catch",
-              "line": 2441
+              "line": 2429
             },
             {
               "kind": "catch",
-              "line": 2446
+              "line": 2455
             },
             {
               "kind": "catch",
-              "line": 2511
+              "line": 2460
             },
             {
               "kind": "catch",
-              "line": 2532
+              "line": 2525
             },
             {
               "kind": "catch",
-              "line": 2637
+              "line": 2546
             },
             {
               "kind": "catch",
-              "line": 2734
+              "line": 2651
+            },
+            {
+              "kind": "catch",
+              "line": 2748
             },
             {
               "in": "loadAudioFile",
               "kind": "catch",
-              "line": 2784
+              "line": 2798
             },
             {
               "kind": "catch",
-              "line": 3161
+              "line": 3241
             },
             {
               "kind": "catch",
-              "line": 3325
+              "line": 3291
             },
             {
               "kind": "catch",
-              "line": 3419
+              "line": 3371
             },
             {
               "kind": "catch",
-              "line": 3504
+              "line": 3536
             },
             {
               "kind": "catch",
-              "line": 3623
+              "line": 3630
             },
             {
               "kind": "catch",
-              "line": 3708
+              "line": 3715
             },
             {
               "kind": "catch",
-              "line": 3849
+              "line": 3834
             },
             {
               "kind": "catch",
-              "line": 3945
+              "line": 3919
             },
             {
               "kind": "catch",
-              "line": 3967
+              "line": 4060
             },
             {
               "kind": "catch",
-              "line": 4040
+              "line": 4156
             },
             {
               "kind": "catch",
-              "line": 4345
+              "line": 4178
             },
             {
               "kind": "catch",
-              "line": 4417
+              "line": 4251
             },
             {
               "kind": "catch",
-              "line": 4446
+              "line": 4556
             },
             {
               "kind": "catch",
-              "line": 4501
+              "line": 4628
+            },
+            {
+              "kind": "catch",
+              "line": 4657
+            },
+            {
+              "kind": "catch",
+              "line": 4712
             },
             {
               "in": "persistSessionState",
               "kind": "catch",
-              "line": 4580
+              "line": 4791
             },
             {
               "in": "loadSessionState",
               "kind": "catch",
-              "line": 4610
+              "line": 4821
             }
           ],
-          "hash": "e4a656bfc8cf6744838bb2fbde954796607a6a2f270a277e3d99c5f68317245c",
+          "hash": "aca060d93eb694472939a0424b7ea21d4d87cc57972d14d8c4f764db241a2897",
           "importsFiles": [
             "src/analysis/index.ts",
             "src/annotation-scorer.ts",
@@ -23046,6 +23331,7 @@
             "src/chord-detect.ts",
             "src/compose/index.ts",
             "src/compose/panel-progress.ts",
+            "src/entry-guard.ts",
             "src/errors.ts",
             "src/guitar-engine.ts",
             "src/guitar-tab-roll.ts",
@@ -23090,7 +23376,7 @@
             {
               "calls": [
                 {
-                  "line": 260,
+                  "line": 274,
                   "name": "toUserString",
                   "target": null
                 }
@@ -23103,7 +23389,7 @@
             {
               "calls": [
                 {
-                  "line": 1057,
+                  "line": 1071,
                   "name": "getRecording",
                   "target": null
                 }
@@ -23116,7 +23402,7 @@
             {
               "calls": [
                 {
-                  "line": 1057,
+                  "line": 1071,
                   "name": "getRecording",
                   "target": null,
                   "via": "captureLastRecording"
@@ -23130,7 +23416,7 @@
             {
               "calls": [
                 {
-                  "line": 2783,
+                  "line": 2797,
                   "name": "decodeWav",
                   "target": {
                     "file": "src/audio/index.ts"
@@ -23145,7 +23431,21 @@
             {
               "calls": [
                 {
-                  "line": 3206,
+                  "line": 2818,
+                  "name": "toFixed",
+                  "target": null,
+                  "via": "signed"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "formatBalance"
+            },
+            {
+              "calls": [
+                {
+                  "line": 3417,
                   "name": "getSharedAudioContext",
                   "target": {
                     "file": "src/audio-shared.ts"
@@ -23160,7 +23460,7 @@
             {
               "calls": [
                 {
-                  "line": 4541,
+                  "line": 4752,
                   "name": "userSongsDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -23175,7 +23475,7 @@
             {
               "calls": [
                 {
-                  "line": 4545,
+                  "line": 4756,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -23190,7 +23490,7 @@
             {
               "calls": [
                 {
-                  "line": 4545,
+                  "line": 4756,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -23198,7 +23498,7 @@
                   "via": "getServerStateFile"
                 },
                 {
-                  "line": 4578,
+                  "line": 4789,
                   "name": "stateHome",
                   "target": {
                     "file": "src/state-home.ts"
@@ -23213,7 +23513,7 @@
             {
               "calls": [
                 {
-                  "line": 4545,
+                  "line": 4756,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -23229,22 +23529,7 @@
             {
               "calls": [
                 {
-                  "line": 4624,
-                  "name": "shouldSuperviseStdio",
-                  "target": {
-                    "file": "src/stdio-supervisor.ts"
-                  }
-                },
-                {
-                  "branch": "shouldSuperviseStdio()",
-                  "line": 4625,
-                  "name": "runStdioSupervisor",
-                  "target": {
-                    "file": "src/stdio-supervisor.ts"
-                  }
-                },
-                {
-                  "line": 4541,
+                  "line": 4752,
                   "name": "userSongsDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -23252,14 +23537,61 @@
                   "via": "getUserSongsDir"
                 },
                 {
-                  "line": 4635,
+                  "line": 4846,
                   "name": "initializeFromLibrary",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 4545,
+                  "line": 4756,
+                  "name": "serverStatePath",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  },
+                  "via": "getServerStateFile"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "prepareMcpServer"
+            },
+            {
+              "calls": [
+                {
+                  "line": 4867,
+                  "name": "shouldSuperviseStdio",
+                  "target": {
+                    "file": "src/stdio-supervisor.ts"
+                  }
+                },
+                {
+                  "branch": "shouldSuperviseStdio()",
+                  "line": 4868,
+                  "name": "runStdioSupervisor",
+                  "target": {
+                    "file": "src/stdio-supervisor.ts"
+                  }
+                },
+                {
+                  "line": 4752,
+                  "name": "userSongsDir",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  },
+                  "via": "getUserSongsDir"
+                },
+                {
+                  "line": 4846,
+                  "name": "initializeFromLibrary",
+                  "target": {
+                    "file": "src/songs/index.ts"
+                  },
+                  "via": "prepareMcpServer"
+                },
+                {
+                  "line": 4756,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -23267,7 +23599,7 @@
                   "via": "getServerStateFile"
                 },
                 {
-                  "line": 4649,
+                  "line": 4877,
                   "name": "openRpcOutputStream",
                   "target": {
                     "file": "src/stdio-supervisor.ts"
@@ -26945,7 +27277,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 171,
+      "testedBy": 177,
       "unresolvedSites": 0
     }
   ],
@@ -27341,7 +27673,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 371
+          "files": 382
         }
       ],
       "readers": [],
@@ -28098,6 +28430,44 @@
         {
           "job": "ci",
           "matched": true,
+          "path": "src/audio/balance.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "pnpm10-install",
+          "matched": true,
+          "path": "src/audio/balance.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "ci",
+          "matched": true,
+          "path": "src/audio/balance.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "docker-image",
+          "matched": true,
+          "path": "src/audio/balance.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "pnpm10-install",
+          "matched": true,
+          "path": "src/audio/balance.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "ci",
+          "matched": true,
           "path": "src/audio/bridge.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -28212,14 +28582,14 @@
         {
           "job": "ci",
           "matched": true,
-          "path": "src/audio/ensemble.test.ts",
+          "path": "src/audio/defects.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
         {
           "job": "pnpm10-install",
           "matched": true,
-          "path": "src/audio/ensemble.test.ts",
+          "path": "src/audio/defects.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -28227,7 +28597,7 @@
           "built": true,
           "job": "ci",
           "matched": true,
-          "path": "src/audio/ensemble.ts",
+          "path": "src/audio/defects.ts",
           "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
@@ -28235,7 +28605,7 @@
           "built": true,
           "job": "docker-image",
           "matched": true,
-          "path": "src/audio/ensemble.ts",
+          "path": "src/audio/defects.ts",
           "runKind": "executes",
           "via": "docker build Dockerfile → tsc tsconfig.json"
         },
@@ -28243,45 +28613,7 @@
           "built": true,
           "job": "pnpm10-install",
           "matched": true,
-          "path": "src/audio/ensemble.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "job": "ci",
-          "matched": true,
-          "path": "src/audio/fft.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "pnpm10-install",
-          "matched": true,
-          "path": "src/audio/fft.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "built": true,
-          "job": "ci",
-          "matched": true,
-          "path": "src/audio/fft.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "docker-image",
-          "matched": true,
-          "path": "src/audio/fft.ts",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "pnpm10-install",
-          "matched": true,
-          "path": "src/audio/fft.ts",
+          "path": "src/audio/defects.ts",
           "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
@@ -29857,14 +30189,14 @@
         {
           "job": "ci",
           "matched": true,
-          "path": "src/errors.test.ts",
+          "path": "src/entry-guard.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
         {
           "job": "pnpm10-install",
           "matched": true,
-          "path": "src/errors.test.ts",
+          "path": "src/entry-guard.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -29872,7 +30204,7 @@
           "built": true,
           "job": "ci",
           "matched": true,
-          "path": "src/errors.ts",
+          "path": "src/entry-guard.ts",
           "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
@@ -29880,7 +30212,7 @@
           "built": true,
           "job": "docker-image",
           "matched": true,
-          "path": "src/errors.ts",
+          "path": "src/entry-guard.ts",
           "runKind": "executes",
           "via": "docker build Dockerfile → tsc tsconfig.json"
         },
@@ -29888,7 +30220,7 @@
           "built": true,
           "job": "pnpm10-install",
           "matched": true,
-          "path": "src/errors.ts",
+          "path": "src/entry-guard.ts",
           "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
@@ -31001,7 +31333,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 468,
+      "runsCount": 479,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -31017,7 +31349,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 192,
+          "files": 198,
           "job": "ci",
           "runner": "vitest",
           "step": "Test",
@@ -31028,7 +31360,7 @@
         {
           "config": "vitest.config.ts",
           "coverage": true,
-          "files": 192,
+          "files": 198,
           "job": "ci",
           "runner": "vitest",
           "step": "Test with coverage",
@@ -31038,7 +31370,7 @@
         },
         {
           "config": "vitest.config.ts",
-          "files": 192,
+          "files": 198,
           "job": "pnpm10-install",
           "runner": "vitest",
           "step": "Test",
@@ -32068,7 +32400,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 371
+          "files": 382
         }
       ],
       "readers": [],
@@ -32508,6 +32840,29 @@
         {
           "job": "publish-npm",
           "matched": true,
+          "path": "src/audio/balance.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "publish-docker",
+          "matched": true,
+          "path": "src/audio/balance.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "publish-npm",
+          "matched": true,
+          "path": "src/audio/balance.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "publish-npm",
+          "matched": true,
           "path": "src/audio/bridge.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -32577,7 +32932,7 @@
         {
           "job": "publish-npm",
           "matched": true,
-          "path": "src/audio/ensemble.test.ts",
+          "path": "src/audio/defects.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -32585,7 +32940,7 @@
           "built": true,
           "job": "publish-docker",
           "matched": true,
-          "path": "src/audio/ensemble.ts",
+          "path": "src/audio/defects.ts",
           "runKind": "executes",
           "via": "docker build Dockerfile → tsc tsconfig.json"
         },
@@ -32593,30 +32948,7 @@
           "built": true,
           "job": "publish-npm",
           "matched": true,
-          "path": "src/audio/ensemble.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "job": "publish-npm",
-          "matched": true,
-          "path": "src/audio/fft.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "built": true,
-          "job": "publish-docker",
-          "matched": true,
-          "path": "src/audio/fft.ts",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "publish-npm",
-          "matched": true,
-          "path": "src/audio/fft.ts",
+          "path": "src/audio/defects.ts",
           "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
@@ -33592,7 +33924,7 @@
         {
           "job": "publish-npm",
           "matched": true,
-          "path": "src/errors.test.ts",
+          "path": "src/entry-guard.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -33600,7 +33932,7 @@
           "built": true,
           "job": "publish-docker",
           "matched": true,
-          "path": "src/errors.ts",
+          "path": "src/entry-guard.ts",
           "runKind": "executes",
           "via": "docker build Dockerfile → tsc tsconfig.json"
         },
@@ -33608,7 +33940,7 @@
           "built": true,
           "job": "publish-npm",
           "matched": true,
-          "path": "src/errors.ts",
+          "path": "src/entry-guard.ts",
           "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
@@ -34318,7 +34650,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 406,
+      "runsCount": 417,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -34346,7 +34678,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 192,
+          "files": 198,
           "job": "publish-npm",
           "runner": "vitest",
           "step": "5",
@@ -34575,7 +34907,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 84
+          "files": 85
         }
       ],
       "readers": [],
@@ -34617,7 +34949,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 139
+          "files": 144
         }
       ],
       "readers": [],
@@ -34702,8 +35034,8 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
-    "tracked": 2950
+    "commit": "aaf8685af34ae644a32be956ed25f63893a2cb00",
+    "tracked": 2961
   },
   "landings": [
     {
@@ -47041,7 +47373,7 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 194,
+  "testFiles": 200,
   "testsNotRun": [
     "scripts/test_vocal_clock.py",
     "spaces/jam-actions-live/test_tools_local.py"

@@ -184,7 +184,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "site",
-      "qualifyingSourceCommits": 14,
+      "qualifyingSourceCommits": 12,
       "rebaseline": null
     },
     {
@@ -237,7 +237,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 177,
+      "qualifyingSourceCommits": 163,
       "rebaseline": null
     }
   ],
@@ -255,8 +255,8 @@
         "path": ".gitattributes"
       },
       {
-        "commits": 39,
-        "lines": 951,
+        "commits": 40,
+        "lines": 1004,
         "path": ".github/workflows/ci.yml"
       },
       {
@@ -300,13 +300,13 @@
         "path": ".npmignore"
       },
       {
-        "commits": 20,
-        "lines": 100301,
+        "commits": 19,
+        "lines": 96458,
         "path": ".polyglot-cache.json"
       },
       {
-        "commits": 39,
-        "lines": 1253,
+        "commits": 40,
+        "lines": 1306,
         "path": "CHANGELOG.md"
       },
       {
@@ -325,43 +325,43 @@
         "path": "Dockerfile"
       },
       {
-        "commits": 24,
-        "lines": 2319,
+        "commits": 22,
+        "lines": 2102,
         "path": "README.es.md"
       },
       {
-        "commits": 24,
-        "lines": 3073,
+        "commits": 22,
+        "lines": 3028,
         "path": "README.fr.md"
       },
       {
-        "commits": 24,
-        "lines": 2531,
+        "commits": 22,
+        "lines": 2486,
         "path": "README.hi.md"
       },
       {
-        "commits": 24,
-        "lines": 3353,
+        "commits": 22,
+        "lines": 3132,
         "path": "README.it.md"
       },
       {
-        "commits": 24,
-        "lines": 2487,
+        "commits": 22,
+        "lines": 2442,
         "path": "README.ja.md"
       },
       {
         "commits": 40,
-        "lines": 1548,
+        "lines": 1555,
         "path": "README.md"
       },
       {
-        "commits": 24,
-        "lines": 2171,
+        "commits": 22,
+        "lines": 2126,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 24,
-        "lines": 3341,
+        "commits": 22,
+        "lines": 3108,
         "path": "README.zh.md"
       },
       {
@@ -375,8 +375,8 @@
         "path": "SECURITY.md"
       },
       {
-        "commits": 5,
-        "lines": 24,
+        "commits": 2,
+        "lines": 14,
         "path": "SHIP_GATE.md"
       },
       {
@@ -1195,8 +1195,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 7,
-        "lines": 784,
+        "commits": 9,
+        "lines": 822,
         "path": "atlas/README.md"
       },
       {
@@ -1205,18 +1205,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 7,
-        "lines": 4732,
+        "commits": 9,
+        "lines": 4898,
         "path": "atlas/page.json"
       },
       {
-        "commits": 7,
-        "lines": 56836,
+        "commits": 9,
+        "lines": 56912,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 7,
-        "lines": 131932,
+        "commits": 9,
+        "lines": 131998,
         "path": "atlas/structure.json"
       },
       {
@@ -7445,13 +7445,13 @@
         "path": "docs/hf-spotlight-three-arcs.md"
       },
       {
-        "commits": 3,
-        "lines": 776,
+        "commits": 2,
+        "lines": 766,
         "path": "docs/index.html"
       },
       {
-        "commits": 3,
-        "lines": 136,
+        "commits": 2,
+        "lines": 130,
         "path": "docs/index.md"
       },
       {
@@ -12920,8 +12920,8 @@
         "path": "logo.svg"
       },
       {
-        "commits": 42,
-        "lines": 239,
+        "commits": 39,
+        "lines": 228,
         "path": "package.json"
       },
       {
@@ -12935,13 +12935,13 @@
         "path": "plugin/.claude-plugin/plugin.json"
       },
       {
-        "commits": 2,
-        "lines": 4,
+        "commits": 1,
+        "lines": 2,
         "path": "plugin/.mcp.json"
       },
       {
-        "commits": 3,
-        "lines": 10,
+        "commits": 2,
+        "lines": 6,
         "path": "plugin/README.md"
       },
       {
@@ -12955,13 +12955,13 @@
         "path": "plugin/agents/piano-teacher.md"
       },
       {
-        "commits": 15,
-        "lines": 6694,
+        "commits": 17,
+        "lines": 6716,
         "path": "pnpm-lock.yaml"
       },
       {
-        "commits": 6,
-        "lines": 49,
+        "commits": 8,
+        "lines": 57,
         "path": "pnpm-workspace.yaml"
       },
       {
@@ -13740,8 +13740,8 @@
         "path": "site/astro.config.mjs"
       },
       {
-        "commits": 1,
-        "lines": 6039,
+        "commits": 3,
+        "lines": 6051,
         "path": "site/package-lock.json"
       },
       {
@@ -13795,8 +13795,8 @@
         "path": "site/public/og-card.png"
       },
       {
-        "commits": 4,
-        "lines": 12,
+        "commits": 3,
+        "lines": 8,
         "path": "site/src/content/docs/handbook/beginners.md"
       },
       {
@@ -13805,13 +13805,13 @@
         "path": "site/src/content/docs/handbook/browser-cockpit.md"
       },
       {
-        "commits": 7,
-        "lines": 22,
+        "commits": 5,
+        "lines": 14,
         "path": "site/src/content/docs/handbook/getting-started.md"
       },
       {
-        "commits": 19,
-        "lines": 63,
+        "commits": 18,
+        "lines": 61,
         "path": "site/src/content/docs/handbook/index.md"
       },
       {
@@ -13830,8 +13830,8 @@
         "path": "site/src/content/docs/handbook/live-ensemble.md"
       },
       {
-        "commits": 14,
-        "lines": 211,
+        "commits": 12,
+        "lines": 164,
         "path": "site/src/content/docs/handbook/mcp-tools.md"
       },
       {
@@ -13840,8 +13840,8 @@
         "path": "site/src/content/docs/handbook/rl-substrate.md"
       },
       {
-        "commits": 10,
-        "lines": 122,
+        "commits": 8,
+        "lines": 110,
         "path": "site/src/content/docs/handbook/songs-and-genres.md"
       },
       {
@@ -13875,8 +13875,8 @@
         "path": "site/src/pages/index.astro"
       },
       {
-        "commits": 21,
-        "lines": 237,
+        "commits": 19,
+        "lines": 213,
         "path": "site/src/site-config.ts"
       },
       {
@@ -14690,19 +14690,24 @@
         "path": "src/analysis/types.ts"
       },
       {
-        "commits": 1,
-        "lines": 6,
-        "path": "src/annotation-scorer.test.ts"
-      },
-      {
-        "commits": 14,
-        "lines": 442,
+        "commits": 13,
+        "lines": 435,
         "path": "src/audio-engine.ts"
       },
       {
         "commits": 5,
         "lines": 65,
         "path": "src/audio-shared.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 336,
+        "path": "src/audio/balance.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 630,
+        "path": "src/audio/balance.ts"
       },
       {
         "commits": 5,
@@ -14735,6 +14740,16 @@
         "path": "src/audio/db.ts"
       },
       {
+        "commits": 2,
+        "lines": 380,
+        "path": "src/audio/defects.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 1014,
+        "path": "src/audio/defects.ts"
+      },
+      {
         "commits": 6,
         "lines": 1060,
         "path": "src/audio/ensemble.test.ts"
@@ -14765,9 +14780,29 @@
         "path": "src/audio/fixtures.ts"
       },
       {
-        "commits": 14,
-        "lines": 1101,
+        "commits": 18,
+        "lines": 1227,
         "path": "src/audio/index.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 210,
+        "path": "src/audio/loop-seam.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 392,
+        "path": "src/audio/loop-seam.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 534,
+        "path": "src/audio/loudness.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 728,
+        "path": "src/audio/loudness.ts"
       },
       {
         "commits": 6,
@@ -14905,8 +14940,8 @@
         "path": "src/cli.test.ts"
       },
       {
-        "commits": 24,
-        "lines": 2101,
+        "commits": 21,
+        "lines": 2053,
         "path": "src/cli.ts"
       },
       {
@@ -15640,8 +15675,8 @@
         "path": "src/dataset/synth-v0/task.ts"
       },
       {
-        "commits": 17,
-        "lines": 2769,
+        "commits": 21,
+        "lines": 2915,
         "path": "src/dataset/tool-schemas.json"
       },
       {
@@ -15655,13 +15690,8 @@
         "path": "src/dataset/trace-validator.ts"
       },
       {
-        "commits": 1,
-        "lines": 6,
-        "path": "src/errors.test.ts"
-      },
-      {
-        "commits": 7,
-        "lines": 211,
+        "commits": 6,
+        "lines": 204,
         "path": "src/guitar-engine.ts"
       },
       {
@@ -15680,18 +15710,18 @@
         "path": "src/guitar-voices.test.ts"
       },
       {
-        "commits": 10,
-        "lines": 128,
+        "commits": 9,
+        "lines": 118,
         "path": "src/guitar-voices.ts"
       },
       {
-        "commits": 11,
-        "lines": 133,
+        "commits": 10,
+        "lines": 131,
         "path": "src/index.ts"
       },
       {
-        "commits": 6,
-        "lines": 61,
+        "commits": 5,
+        "lines": 60,
         "path": "src/journal.test.ts"
       },
       {
@@ -15700,8 +15730,8 @@
         "path": "src/journal.ts"
       },
       {
-        "commits": 7,
-        "lines": 270,
+        "commits": 6,
+        "lines": 261,
         "path": "src/layered-engine.ts"
       },
       {
@@ -15805,18 +15835,18 @@
         "path": "src/mcp-schema.ts"
       },
       {
-        "commits": 15,
-        "lines": 11198,
+        "commits": 17,
+        "lines": 11364,
         "path": "src/mcp-server.test.ts"
       },
       {
-        "commits": 54,
-        "lines": 7084,
+        "commits": 44,
+        "lines": 6676,
         "path": "src/mcp-server.ts"
       },
       {
-        "commits": 2,
-        "lines": 331,
+        "commits": 1,
+        "lines": 50,
         "path": "src/midi/parser.test.ts"
       },
       {
@@ -15825,13 +15855,13 @@
         "path": "src/midi/parser.ts"
       },
       {
-        "commits": 2,
-        "lines": 104,
+        "commits": 1,
+        "lines": 91,
         "path": "src/note-parser.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 82,
+        "commits": 1,
+        "lines": 76,
         "path": "src/note-parser.ts"
       },
       {
@@ -15865,18 +15895,18 @@
         "path": "src/piano-voices.test.ts"
       },
       {
-        "commits": 12,
-        "lines": 237,
+        "commits": 11,
+        "lines": 227,
         "path": "src/piano-voices.ts"
       },
       {
-        "commits": 7,
-        "lines": 606,
+        "commits": 6,
+        "lines": 218,
         "path": "src/playback/controls.test.ts"
       },
       {
-        "commits": 5,
-        "lines": 196,
+        "commits": 2,
+        "lines": 139,
         "path": "src/playback/controls.ts"
       },
       {
@@ -15905,8 +15935,8 @@
         "path": "src/playback/metronome.ts"
       },
       {
-        "commits": 2,
-        "lines": 58,
+        "commits": 1,
+        "lines": 32,
         "path": "src/playback/midi-engine.ts"
       },
       {
@@ -15930,8 +15960,8 @@
         "path": "src/salamander-pack.test.ts"
       },
       {
-        "commits": 12,
-        "lines": 340,
+        "commits": 10,
+        "lines": 307,
         "path": "src/sample-engine.ts"
       },
       {
@@ -15943,16 +15973,6 @@
         "commits": 5,
         "lines": 150,
         "path": "src/sample-paths.ts"
-      },
-      {
-        "commits": 1,
-        "lines": 56,
-        "path": "src/score-hand-breakdown.test.ts"
-      },
-      {
-        "commits": 1,
-        "lines": 58,
-        "path": "src/score-hand-breakdown.ts"
       },
       {
         "commits": 5,
@@ -15970,13 +15990,13 @@
         "path": "src/scored-piano-roll.test.ts"
       },
       {
-        "commits": 11,
-        "lines": 975,
+        "commits": 9,
+        "lines": 908,
         "path": "src/session.test.ts"
       },
       {
-        "commits": 8,
-        "lines": 418,
+        "commits": 7,
+        "lines": 374,
         "path": "src/session.ts"
       },
       {
@@ -15991,22 +16011,12 @@
       },
       {
         "commits": 1,
-        "lines": 8,
-        "path": "src/song-compare.test.ts"
-      },
-      {
-        "commits": 2,
-        "lines": 22,
+        "lines": 16,
         "path": "src/song-compare.ts"
       },
       {
         "commits": 1,
-        "lines": 47,
-        "path": "src/songs/config/loader.test.ts"
-      },
-      {
-        "commits": 3,
-        "lines": 51,
+        "lines": 9,
         "path": "src/songs/config/loader.ts"
       },
       {
@@ -16030,8 +16040,8 @@
         "path": "src/songs/implied-chord-snapshot.ts"
       },
       {
-        "commits": 3,
-        "lines": 7,
+        "commits": 1,
+        "lines": 2,
         "path": "src/songs/index.ts"
       },
       {
@@ -16040,33 +16050,33 @@
         "path": "src/songs/jam.regression.test.ts"
       },
       {
-        "commits": 4,
-        "lines": 409,
+        "commits": 2,
+        "lines": 62,
         "path": "src/songs/jam.test.ts"
       },
       {
-        "commits": 6,
-        "lines": 250,
+        "commits": 5,
+        "lines": 230,
         "path": "src/songs/jam.ts"
       },
       {
-        "commits": 7,
-        "lines": 531,
+        "commits": 5,
+        "lines": 110,
         "path": "src/songs/library.test.ts"
       },
       {
-        "commits": 9,
-        "lines": 193,
+        "commits": 7,
+        "lines": 135,
         "path": "src/songs/library.ts"
       },
       {
-        "commits": 2,
-        "lines": 324,
+        "commits": 1,
+        "lines": 114,
         "path": "src/songs/loader.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 23,
+        "commits": 1,
+        "lines": 15,
         "path": "src/songs/loader.ts"
       },
       {
@@ -16076,12 +16086,7 @@
       },
       {
         "commits": 1,
-        "lines": 835,
-        "path": "src/songs/midi/ingest.test.ts"
-      },
-      {
-        "commits": 2,
-        "lines": 49,
+        "lines": 32,
         "path": "src/songs/midi/ingest.ts"
       },
       {
@@ -16116,11 +16121,6 @@
       },
       {
         "commits": 1,
-        "lines": 271,
-        "path": "src/songs/registry.test.ts"
-      },
-      {
-        "commits": 1,
         "lines": 5,
         "path": "src/songs/registry.ts"
       },
@@ -16130,19 +16130,14 @@
         "path": "src/songs/ship-list.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 214,
+        "commits": 1,
+        "lines": 67,
         "path": "src/songs/transpose.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 175,
-        "path": "src/songs/transpose.ts"
-      },
-      {
         "commits": 1,
-        "lines": 24,
-        "path": "src/songs/types.ts"
+        "lines": 48,
+        "path": "src/songs/transpose.ts"
       },
       {
         "commits": 5,
@@ -16190,14 +16185,9 @@
         "path": "src/vendor/pink-trombone.ts"
       },
       {
-        "commits": 2,
-        "lines": 4,
-        "path": "src/version.test.ts"
-      },
-      {
         "commits": 1,
-        "lines": 191,
-        "path": "src/vmpk.test.ts"
+        "lines": 2,
+        "path": "src/version.test.ts"
       },
       {
         "commits": 1,
@@ -16205,28 +16195,18 @@
         "path": "src/vmpk.ts"
       },
       {
-        "commits": 1,
-        "lines": 105,
-        "path": "src/vocal-carriers.test.ts"
-      },
-      {
-        "commits": 1,
-        "lines": 18,
-        "path": "src/vocal-carriers.ts"
-      },
-      {
-        "commits": 7,
-        "lines": 211,
+        "commits": 6,
+        "lines": 201,
         "path": "src/vocal-engine.ts"
       },
       {
-        "commits": 9,
-        "lines": 170,
+        "commits": 6,
+        "lines": 131,
         "path": "src/vocal-synth-adapter.ts"
       },
       {
-        "commits": 8,
-        "lines": 170,
+        "commits": 6,
+        "lines": 125,
         "path": "src/vocal-tract-engine.ts"
       },
       {
@@ -16535,205 +16515,205 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-01T02:13:24.770Z",
+  "generatedAt": "2026-10-06T16:51:56.427Z",
   "generatedFrom": {
-    "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175"
+    "commit": "aaf8685af34ae644a32be956ed25f63893a2cb00"
   },
   "pairs": [
     {
       "a": ".polyglot-cache.json",
       "b": "README.es.md",
-      "either": 19,
-      "shared": 11,
-      "strength": 0.578947
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.fr.md",
-      "either": 19,
-      "shared": 11,
-      "strength": 0.578947
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.hi.md",
-      "either": 19,
-      "shared": 11,
-      "strength": 0.578947
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.it.md",
-      "either": 19,
-      "shared": 11,
-      "strength": 0.578947
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.ja.md",
-      "either": 19,
-      "shared": 11,
-      "strength": 0.578947
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.pt-BR.md",
-      "either": 19,
-      "shared": 11,
-      "strength": 0.578947
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.zh.md",
-      "either": 19,
-      "shared": 11,
-      "strength": 0.578947
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
     },
     {
       "a": "README.es.md",
       "b": "README.fr.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.hi.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.it.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.ja.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.pt-BR.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.zh.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.hi.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.it.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.ja.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.pt-BR.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.zh.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.it.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.ja.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.pt-BR.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.zh.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.ja.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.pt-BR.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.zh.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.pt-BR.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.zh.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.pt-BR.md",
       "b": "README.zh.md",
-      "either": 17,
-      "shared": 17,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
@@ -16746,6 +16726,48 @@
     {
       "a": "apps/cockpit/src/state.test.ts",
       "b": "apps/cockpit/src/state.ts",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/README.md",
+      "b": "atlas/page.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/README.md",
+      "b": "atlas/statistics.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/README.md",
+      "b": "atlas/structure.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/page.json",
+      "b": "atlas/statistics.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/page.json",
+      "b": "atlas/structure.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/statistics.json",
+      "b": "atlas/structure.json",
       "either": 5,
       "shared": 5,
       "strength": 1
@@ -16873,16 +16895,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-09-30T17:37:36-07:00",
-    "inScopeFiles": 2955,
+    "headDate": "2026-10-06T08:57:52-07:00",
+    "inScopeFiles": 2966,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 618,
+    "qualifyingCommits": 602,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-04T00:37:36.000Z",
+    "since": "2026-04-09T15:57:52.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
@@ -16898,7 +16920,7 @@
     ],
     "sourceFileReach": 20,
     "sourceFileRise": 25,
-    "sourceFilesReachingStrongFloor": 7,
+    "sourceFilesReachingStrongFloor": 8,
     "strength": 0.5,
     "windowDays": 180
   },

@@ -56,13 +56,12 @@ import {
 import type { PianoRollColorMode } from "./piano-roll.js";
 import { renderGuitarTab } from "./guitar-tab-roll.js";
 import { GUITAR_TUNING_IDS } from "./guitar-voices.js";
-import { pathToFileURL } from "node:url";
-import { resolve as resolvePathArg } from "node:path";
+import { isEntrypoint } from "./entry-guard.js";
 import { createSession } from "./session.js";
 import { parseMidiFile } from "./midi/parser.js";
 import { MidiPlaybackEngine } from "./playback/midi-engine.js";
 import { PlaybackController } from "./playback/controls.js";
-import { existsSync, realpathSync } from "node:fs";
+import { existsSync } from "node:fs";
 import {
   createConsoleTeachingHook,
   createSingAlongHook,
@@ -1904,40 +1903,12 @@ async function main(): Promise<void> {
 
 // ─── Entry guard ────────────────────────────────────────────────────────────
 //
-// Only run main() when this file is the actual process entry point — NOT
-// when it's imported (e.g. by cli.test.ts, which imports parsePlaySessionFlags/
-// parsePracticeArgs directly for unit testing). Without this guard, importing
-// this module for its pure parser exports would ALSO kick off main() against
-// whatever process.argv the IMPORTING process happens to have (the test
-// runner's own argv) — the same unsafe-to-import hazard mcp-server.test.ts's
-// header comment documents for mcp-server.ts, which has no such guard. Uses
-// pathToFileURL() (not a naive `file://${process.argv[1]}` string) so the
-// comparison is correct on Windows too (backslashes, drive-letter casing).
-//
-// realpath argv[1] before comparing (es-main pattern): Node resolves
-// import.meta.url to the module's REAL (symlink-resolved) path, but
-// process.argv[1] is whatever path the process was actually invoked with —
-// on Unix, an npm/pnpm-installed bin is a symlink (e.g.
-// node_modules/.bin/ai-jam-sessions -> ../ai-jam-sessions/dist/cli.js), so
-// the two strings never matched textually even though they name the same
-// file. That made the guard false for every installed-CLI invocation: main()
-// never ran, and the process exited 0 having printed nothing. realpathSync
-// can throw (e.g. a path that doesn't exist on disk, or an unusual/virtual
-// fs) — fall back to path.resolve() (never throws for a string input) so a
-// realpath failure degrades to the OLD (pre-fix) comparison rather than
-// crashing the entry guard itself.
-function resolveArgvMainPath(argvPath: string): string {
-  try {
-    return realpathSync(argvPath);
-  } catch {
-    return resolvePathArg(argvPath);
-  }
-}
+// Only run main() when this file is the process entry point — not when a
+// test imports parsePlaySessionFlags / parsePracticeArgs. The comparison,
+// including realpath handling for symlinked bins, lives in entry-guard.ts
+// and is shared with mcp-server.ts.
 
-const isMainModule = process.argv[1] !== undefined
-  && import.meta.url === pathToFileURL(resolveArgvMainPath(process.argv[1])).href;
-
-if (isMainModule) {
+if (isEntrypoint(import.meta.url)) {
   main().catch(async (err) => {
     const { handleError } = await import("./errors.js");
     const debug = process.argv.includes("--debug") || process.argv.includes("-D");
