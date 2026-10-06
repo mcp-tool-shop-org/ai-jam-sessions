@@ -1,8 +1,8 @@
 {
   "server_name": "ai-jam-sessions",
   "derived_from": "dist/mcp-server.js via MCP tools/list",
-  "derived_at": "2026-10-06T14:57:04.096Z",
-  "tool_count": 55,
+  "derived_at": "2026-10-06T15:26:06.362Z",
+  "tool_count": 56,
   "tools": [
     {
       "name": "add_section",
@@ -282,6 +282,28 @@
         },
         "required": [
           "path"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "compare_balance",
+      "description": "Compare the tonal balance of a render against a reference that is known to be right: band by band from sub-bass to air, how many dB this file has more or less than the reference, plus the change in brightness and tilt. Use it when a cue should sit like its siblings, or a re-render should match the take it replaces. Overall loudness cancels out (each band is a share of its own file's energy), so a quieter render with the same tone compares as zero; loudness is analyze_audio's question. Both files need the same sample rate.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Absolute path to the WAV file being judged."
+          },
+          "reference_path": {
+            "type": "string",
+            "description": "Absolute path to the reference WAV it should match."
+          }
+        },
+        "required": [
+          "path",
+          "reference_path"
         ],
         "$schema": "http://json-schema.org/draft-07/schema#"
       }

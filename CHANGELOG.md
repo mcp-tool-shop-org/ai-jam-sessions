@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — spectral balance, against pink noise or a reference render
+- `analyze_audio` gains a Balance section: each of seven bands' share of the energy (sub, bass,
+  low-mid, mid, high-mid, presence, brilliance) with its deviation from pink noise, the spectral
+  centroid, the 85% rolloff, and the tilt in dB per octave (pink noise 0, white noise +3).
+  Silence is gated, so a long tail does not drag the average to the noise floor.
+- New MCP tool `compare_balance` (56th): a render against a reference that is known to be right,
+  band by band in dB. Each band is a share of its own file's energy, so loudness cancels out.
+- It gives no verdicts on purpose: there is no correct spectrum for music, and a fixed "too much
+  low-mid" bar would flag half a catalogue. The comparison against a reference is the question
+  that has an answer.
+- The tilt is fitted only over octaves within 20 dB of the strongest one, and is reported as
+  absent when fewer than three qualify. Fitted over every octave, the empty ones at both ends of
+  a peaked sound swung it to nonsense: a chord progression with nothing above 2 kHz read
+  +1.5 dB/octave, "brighter than pink".
+- Validation: sines land in their band with the centroid at their frequency; white noise reads
+  +3 dB/octave; pink noise (Paul Kellet's filter, a published design) reads flat in every band
+  within 1 dB; and a low-passed re-render compares as darker in the top bands and the tilt.
+
 ### Added — the integrity half of audio inspection: defects, loudness, and the loop seam
 - `analyze_audio`'s Level section now reports the numbers a mixdown review actually needs:
   BS.1770-4 integrated loudness in LUFS (plus momentary max), the sample peak in dBFS with its

@@ -135,6 +135,10 @@ import {
   BURST_DETECTOR_CAVEAT,
   checkLoopSeam,
   LOOP_SEAM_CAVEAT,
+  measureBalance,
+  compareBalance,
+  BALANCE_CAVEAT,
+  type BalanceReport,
   SEAM_STEP_CLICK_RISK,
   SEAM_LEVEL_STEP_DB,
   type DecodedAudio,
@@ -2807,6 +2811,27 @@ function loadAudioFile(path: string):
 }
 
 /** One line describing what a decoded file is, shown at the top of each report. */
+/** The Balance section shared by analyze_audio and compare_balance. */
+function formatBalance(b: BalanceReport | null): string[] {
+  if (!b) return ["No balance: the window is silent or too short."];
+  const signed = (v: number, digits = 1) => `${v >= 0 ? "+" : ""}${v.toFixed(digits)}`;
+  return [
+    `Brightness: centroid ${Math.round(b.centroidHz)} Hz · 85% of the energy below ` +
+      `${Math.round(b.rolloffHz)} Hz · ` +
+      (b.tiltDbPerOctave === null
+        ? `tilt not meaningful (energy in fewer than three octaves).`
+        : `tilt ${signed(b.tiltDbPerOctave)} dB/octave (pink noise 0, white noise +3, darker is negative).`),
+    "| Band | Range | Share | vs pink |",
+    "|------|-------|-------|---------|",
+    ...b.bands.map((x) =>
+      x.measured
+        ? `| ${x.name} | ${x.lowHz}–${Math.round(x.highHz)} Hz | ${x.sharePercent.toFixed(1)}% | ` +
+          `${x.vsPinkDb === null || !Number.isFinite(x.vsPinkDb) ? "—" : `${signed(x.vsPinkDb)} dB`} |`
+        : `| ${x.name} | ${x.lowHz}–${x.highHz} Hz | above Nyquist | — |`),
+    BALANCE_CAVEAT,
+  ];
+}
+
 function describeAudio(audio: DecodedAudio, path: string): string {
   const chans = audio.sourceChannels === 1
     ? "mono"
@@ -2889,6 +2914,9 @@ registerTool(
           ` (longest ${levels.longestClipRunSamples} samples at ` +
           `${(levels.clipRuns.reduce((a, r) => (r.samples > a.samples ? r : a)).startSec + offset).toFixed(3)} s). ` +
           `Runs of two or more are the smoking gun for real clipping.`,
+      "",
+      "## Balance",
+      ...formatBalance(measureBalance(window, { sampleRate: audio.sampleRate })),
       "",
       `## Onsets (${onsetResult.onsets.length})`,
     );
@@ -3313,6 +3341,61 @@ async ({ path, window_sec }: { path: string; window_sec?: number }) => {
   }
 
   lines.push("", "---", seam.caveat);
+  return { content: [{ type: "text" as const, text: lines.join("\n") }] };
+},
+);
+
+registerTool(
+"compare_balance",
+"Compare the tonal balance of a render against a reference that is known to be right: band by band from sub-bass to air, how many dB this file has more or less than the reference, plus the change in brightness and tilt. Use it when a cue should sit like its siblings, or a re-render should match the take it replaces. Overall loudness cancels out (each band is a share of its own file's energy), so a quieter render with the same tone compares as zero; loudness is analyze_audio's question. Both files need the same sample rate.",
+{
+  path: z.string().describe("Absolute path to the WAV file being judged."),
+  reference_path: z.string().describe("Absolute path to the reference WAV it should match."),
+},
+async ({ path, reference_path }: { path: string; reference_path: string }) => {
+  const subject = loadAudioFile(path);
+  if (!subject.ok) return subject.result;
+  const reference = loadAudioFile(reference_path);
+  if (!reference.ok) return reference.result;
+
+  const a = measureBalance(subject.audio.samples, { sampleRate: subject.audio.sampleRate });
+  const b = measureBalance(reference.audio.samples, { sampleRate: reference.audio.sampleRate });
+  const fail = (text: string) => ({ content: [{ type: "text" as const, text }], isError: true as const });
+  if (!a) return fail(`"${path}" is silent or too short to measure a balance.`);
+  if (!b) return fail(`The reference "${reference_path}" is silent or too short to measure a balance.`);
+
+  let c;
+  try {
+    c = compareBalance(a, b);
+  } catch (err) {
+    return fail(err instanceof Error ? err.message : String(err));
+  }
+
+  const signed = (v: number, digits = 1) => `${v >= 0 ? "+" : ""}${v.toFixed(digits)}`;
+  const lines: string[] = [
+    "# Balance against a reference",
+    "",
+    `Subject: ${describeAudio(subject.audio, path)}`,
+    `Reference: ${describeAudio(reference.audio, reference_path)}`,
+    "",
+    "## Difference (subject minus reference)",
+    `Centroid ${signed(c.centroidDiffHz, 0)} Hz · ` +
+      (c.tiltDiffDbPerOctave === null
+        ? `tilt not comparable (one file is too narrow-band to have one).`
+        : `tilt ${signed(c.tiltDiffDbPerOctave)} dB/octave (negative is darker than the reference).`),
+    "| Band | Difference |",
+    "|------|------------|",
+    ...c.bands.map((x) => `| ${x.name} | ${x.diffDb === null ? "not measured" : `${signed(x.diffDb)} dB`} |`),
+    "",
+    "Differences within about ±1.5 dB are hard to hear on broadband material; " +
+      "a band several dB off in one direction is what a mix engineer would reach for.",
+    "",
+    "## Subject",
+    ...formatBalance(a).slice(0, -1),
+    "",
+    "## Reference",
+    ...formatBalance(b),
+  ];
   return { content: [{ type: "text" as const, text: lines.join("\n") }] };
 },
 );
