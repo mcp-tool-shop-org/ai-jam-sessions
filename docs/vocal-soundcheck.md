@@ -49,12 +49,25 @@ itself. Automatic onset detection is weakest on singing (finding 5), so the
 calibration phrase is hand-marked once per voice and backend:
 
 1. `soundcheck.py label-page` writes one self-contained HTML file with the takes
-   embedded. It shows a spectrogram and waveform around each syllable and plays
-   the window. **Neither the score time nor the detector's answer is shown**, so
-   neither can pull the ear.
-2. Click where the vowel starts, nudge with the arrow keys, and mark "can't tell"
-   where it is unclear. Marks save in the browser; *Download labels* writes the file.
-3. `soundcheck.py detector-error` compares the two and reports the mean, spread
+   embedded (page template: `scripts/soundcheck_label.html`). **Neither the score
+   time nor the detector's answer is shown**, so neither can pull the ear.
+2. Each word gets two views: the whole word for a rough click, and a ±80 ms
+   close-up (wideband spectrogram over the waveform) where the regular cycles of
+   the vowel can be seen starting. A playhead moves while audio plays.
+3. Two listening aids, because a picture is not how an ear finds a boundary:
+   - **Up to / from the mark** play the 0.4 s before the mark (it should hold the
+     consonant and no vowel) and the 0.4 s after it (it should start on the vowel),
+     at 1×, ½× or ¼× speed, with 3 ms fades so a cut never clicks.
+   - **Help me find it** is gating by bisection. The page plays the word from a cut
+     point and asks whether the clip starts before the vowel or already inside it.
+     Each answer halves the range; at 6 ms the midpoint becomes the mark (about 7
+     answers). This suits vowel-first words, where there is no consonant to see.
+4. Nudge with the arrow keys, mark "can't tell" where it is unclear. Marks save in
+   the browser as you go. `?test` on the URL keeps separate storage, so checking
+   the page never touches real marks.
+5. Serve the folder over localhost (`python -m http.server --bind 127.0.0.1`):
+   some browsers refuse `file://` pages.
+6. `soundcheck.py detector-error` compares the two and reports the mean, spread
    and maximum of detector minus ear, and the *effective* gate:
    40 ms − (|mean| + 2 × spread).
 

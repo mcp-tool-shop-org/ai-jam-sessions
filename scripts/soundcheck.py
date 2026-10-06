@@ -317,102 +317,8 @@ def detector_error(clock: dict, take_paths: list[str], labels: dict) -> dict:
 
 # ─── Hand-labelling page ───────────────────────────────────────────────────
 
-LABEL_PAGE = r"""<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sound check labels</title>
-<style>
-:root{--bg:#fbfaf7;--fg:#1f2328;--muted:#646b73;--line:#d9d6cf;--accent:#2f6fde;--mark:#d4472f;--panel:#fff}
-@media (prefers-color-scheme:dark){:root{--bg:#141619;--fg:#e8e6e3;--muted:#9aa1a9;--line:#2c3036;--accent:#6d9cf0;--mark:#f0745f;--panel:#1c1f23}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}
-main{max-width:980px;margin:0 auto;padding:16px}h1{font-size:20px;margin:0 0 4px}p{margin:6px 0;color:var(--muted)}
-.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
-button,select{font:inherit;padding:6px 12px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:6px;cursor:pointer}
-button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-canvas{width:100%;height:auto;display:block;background:var(--panel);border:1px solid var(--line);border-radius:6px;cursor:crosshair}
-.word{font-size:28px;font-weight:600}.status{font-variant-numeric:tabular-nums}
-kbd{border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:13px}
-</style></head><body><main>
-<h1>Sound check: mark each vowel onset</h1>
-<p>Click where the <b>vowel</b> starts: not the consonant, the moment the vowel sounds. The detector's answer and the score time are hidden on purpose, so they cannot pull your ear.
-Marks save in this browser as you go; <b>Download labels</b> writes the file the analysis reads.</p>
-<div class="bar"><select id="take"></select><span class="word" id="word"></span><span class="status" id="status"></span></div>
-<canvas id="spec" width="940" height="260"></canvas>
-<canvas id="wave" width="940" height="90" style="margin-top:6px"></canvas>
-<div class="bar">
-<button id="play">Play window</button><button id="playmark">Play from mark</button>
-<button id="prev">◀ Previous</button><button id="next" class="primary">Next ▶</button>
-<button id="cant">Can't tell</button><button id="dl">Download labels</button>
-</div>
-<p><kbd>Space</kbd> play window · <kbd>M</kbd> play from mark · <kbd>←</kbd>/<kbd>→</kbd> nudge 2 ms (<kbd>Shift</kbd> 10 ms) · <kbd>Enter</kbd> next</p>
-</main><script>
-const DATA = __DATA__;
-const PRE = 0.25, POST = 0.35;
-let ctx = null, buffers = {}, take = 0, idx = 0, playing = null;
-const KEY = "soundcheck-labels:" + DATA.clock_id;
-let labels = {}; try { labels = JSON.parse(localStorage.getItem(KEY) || "{}") } catch (e) { labels = {} }
-function save(){ try { localStorage.setItem(KEY, JSON.stringify(labels)) } catch (e) {} }
-const sel = document.getElementById("take");
-DATA.takes.forEach((t,i) => { const o = document.createElement("option"); o.value = i; o.textContent = "Take " + (i+1); sel.appendChild(o) });
-async function decode(i){
-  if (buffers[i]) return buffers[i];
-  ctx = ctx || new AudioContext();
-  const bytes = Uint8Array.from(atob(DATA.takes[i].wav_b64), c => c.charCodeAt(0));
-  buffers[i] = await ctx.decodeAudioData(bytes.buffer);
-  return buffers[i];
-}
-function windowOf(){ const ev = DATA.events[idx]; return [Math.max(0, ev.t_sec - PRE), ev.t_sec + POST] }
-function mark(){ return ((labels[take] || {})[DATA.events[idx].id]) }
-function setMark(v){ (labels[take] = labels[take] || {})[DATA.events[idx].id] = v; save(); draw() }
-function fft(re, im){ const n = re.length; for (let i=1,j=0;i<n;i++){ let b=n>>1; for(;j&b;b>>=1) j^=b; j^=b; if(i<j){[re[i],re[j]]=[re[j],re[i]];[im[i],im[j]]=[im[j],im[i]]} }
-  for (let len=2;len<=n;len<<=1){ const a=-2*Math.PI/len; for(let i=0;i<n;i+=len){ for(let k=0;k<len/2;k++){ const c=Math.cos(a*k), s=Math.sin(a*k);
-    const ur=re[i+k], ui=im[i+k], vr=re[i+k+len/2]*c-im[i+k+len/2]*s, vi=re[i+k+len/2]*s+im[i+k+len/2]*c;
-    re[i+k]=ur+vr; im[i+k]=ui+vi; re[i+k+len/2]=ur-vr; im[i+k+len/2]=ui-vi } } } }
-async function draw(){
-  const buf = await decode(take), sr = buf.sampleRate, data = buf.getChannelData(0);
-  const [a, b] = windowOf(), s0 = Math.floor(a*sr), s1 = Math.min(data.length, Math.floor(b*sr));
-  const spec = document.getElementById("spec"), g = spec.getContext("2d"), W = spec.width, H = spec.height;
-  const N = 1024, hop = Math.max(1, Math.floor((s1 - s0 - N) / W)), img = g.createImageData(W, H);
-  const dark = matchMedia("(prefers-color-scheme: dark)").matches, maxHz = 6000, bins = Math.floor(maxHz / (sr / N));
-  for (let x=0;x<W;x++){ const st = s0 + x*hop, re = new Float64Array(N), im = new Float64Array(N);
-    for (let i=0;i<N;i++){ const v = data[st+i] || 0; re[i] = v * (0.5 - 0.5*Math.cos(2*Math.PI*i/(N-1))) } fft(re, im);
-    for (let y=0;y<H;y++){ const k = Math.floor((1 - y/H) * bins), m = Math.hypot(re[k], im[k]);
-      const v = Math.max(0, Math.min(1, (20*Math.log10(m + 1e-9) + 40) / 60)), c = dark ? v*255 : 255 - v*255, p = (y*W + x)*4;
-      img.data[p] = c; img.data[p+1] = c; img.data[p+2] = dark ? Math.min(255, c+20) : c; img.data[p+3] = 255 } }
-  g.putImageData(img, 0, 0);
-  const wave = document.getElementById("wave"), w = wave.getContext("2d"); w.clearRect(0,0,wave.width,wave.height);
-  w.strokeStyle = getComputedStyle(document.body).color; w.beginPath();
-  for (let x=0;x<wave.width;x++){ let mx = 0; const st = s0 + Math.floor(x*(s1-s0)/wave.width), en = s0 + Math.floor((x+1)*(s1-s0)/wave.width);
-    for (let i=st;i<en;i++) mx = Math.max(mx, Math.abs(data[i]||0)); w.moveTo(x, wave.height/2 - mx*wave.height/2); w.lineTo(x, wave.height/2 + mx*wave.height/2) } w.stroke();
-  const m = mark();
-  if (typeof m === "number") for (const [cv, c2] of [[spec, g], [wave, w]]){ const x = (m - a) / (b - a) * cv.width;
-    c2.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--mark"); c2.lineWidth = 2; c2.beginPath(); c2.moveTo(x,0); c2.lineTo(x,cv.height); c2.stroke(); c2.lineWidth = 1 }
-  document.getElementById("word").textContent = "“" + DATA.events[idx].word + "”";
-  const done = DATA.events.filter(e => (labels[take]||{})[e.id] !== undefined).length;
-  document.getElementById("status").textContent = `syllable ${idx+1}/${DATA.events.length} · marked ${done}/${DATA.events.length}` + (m === null ? " · can't tell" : "");
-}
-async function play(from){ const buf = await decode(take); if (playing) try { playing.stop() } catch(e){}
-  const [a, b] = windowOf(), src = ctx.createBufferSource(); src.buffer = buf; src.connect(ctx.destination); src.start(0, from ?? a, b - (from ?? a)); playing = src }
-function onClick(ev){ const cv = ev.currentTarget, r = cv.getBoundingClientRect(), [a, b] = windowOf();
-  setMark(+(a + (ev.clientX - r.left) / r.width * (b - a)).toFixed(4)) }
-document.getElementById("spec").onclick = onClick; document.getElementById("wave").onclick = onClick;
-sel.onchange = () => { take = +sel.value; idx = 0; draw() };
-document.getElementById("play").onclick = () => play();
-document.getElementById("playmark").onclick = () => { const m = mark(); if (typeof m === "number") play(Math.max(0, m - 0.03)) };
-document.getElementById("next").onclick = () => { idx = Math.min(DATA.events.length-1, idx+1); draw() };
-document.getElementById("prev").onclick = () => { idx = Math.max(0, idx-1); draw() };
-document.getElementById("cant").onclick = () => setMark(null);
-document.getElementById("dl").onclick = () => { const out = {schema: "ai-jam-sessions/soundcheck/v1#labels", clock_id: DATA.clock_id, takes: {}};
-  DATA.takes.forEach((t,i) => out.takes[t.key] = labels[i] || {});
-  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], {type: "application/json"}));
-  a.download = "soundcheck-labels.json"; a.click() };
-addEventListener("keydown", e => { if (e.target.tagName === "SELECT") return;
-  if (e.key === " ") { e.preventDefault(); play() } else if (e.key === "m" || e.key === "M") document.getElementById("playmark").click();
-  else if (e.key === "Enter") document.getElementById("next").click();
-  else if (e.key === "ArrowLeft" || e.key === "ArrowRight") { const m = mark(); if (typeof m === "number") { e.preventDefault();
-    setMark(+(m + (e.key === "ArrowRight" ? 1 : -1) * (e.shiftKey ? 0.010 : 0.002)).toFixed(4)) } } });
-draw();
-</script></body></html>
-"""
+# The marking page lives beside this script so it can be edited as HTML.
+LABEL_TEMPLATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "soundcheck_label.html")
 
 
 def label_page(clock: dict, take_paths: list[str]) -> str:
@@ -426,7 +332,8 @@ def label_page(clock: dict, take_paths: list[str]) -> str:
     data = {"clock_id": clock.get("song_id"),
             "events": [{"id": e["id"], "word": e["word"], "t_sec": e["t_sec"]} for e in clock["events"]],
             "takes": takes}
-    return LABEL_PAGE.replace("__DATA__", json.dumps(data))
+    with open(LABEL_TEMPLATE, encoding="utf-8") as fh:
+        return fh.read().replace("__DATA__", json.dumps(data))
 
 
 # ─── Rendering (the one step that needs the GPU) ───────────────────────────

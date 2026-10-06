@@ -200,6 +200,9 @@ def test_label_page_embeds_the_takes_and_hides_the_detector(tmp_path, clock):
     # the page carries the words and the window centre, never a detected onset
     assert set(data["events"][0]) == {"id", "word", "t_sec"}
     assert "t_vowel" not in html and "error_ms" not in html
+    # the listening aids are there: up to / from the mark, slow motion, gating by bisection
+    for needle in ('id="pUpTo"', 'id="pFrom"', 'data-r="0.25"', "function answer(startsBefore)", ':test'):
+        assert needle in html
 
 
 @pytest.mark.xfail(strict=True, reason=(

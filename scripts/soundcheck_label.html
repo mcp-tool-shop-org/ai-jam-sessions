@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vowel onset marker</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1f2328;--muted:#5d646c;--line:#d9d6cf;--accent:#2f6fde;--mark:#d4472f;--head:#1f9d55;--panel:#fff;--shade:rgba(47,111,222,.12)}
+@media (prefers-color-scheme:dark){:root{--bg:#141619;--fg:#e8e6e3;--muted:#9aa1a9;--line:#2c3036;--accent:#6d9cf0;--mark:#f0745f;--head:#4cc38a;--panel:#1c1f23;--shade:rgba(109,156,240,.16)}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:16px}h1{font-size:20px;margin:0 0 4px}p{margin:6px 0;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+button,select{font:inherit;padding:6px 11px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:6px;cursor:pointer}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}button.on{outline:2px solid var(--accent)}
+button:disabled{opacity:.45;cursor:default}
+canvas{width:100%;height:auto;display:block;background:var(--panel);border:1px solid var(--line);border-radius:6px;cursor:crosshair}
+.label{font-size:12px;color:var(--muted);margin:8px 0 3px;text-transform:uppercase;letter-spacing:.04em}
+.word{font-size:30px;font-weight:650}.status{font-variant-numeric:tabular-nums;color:var(--muted)}
+kbd{border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:12px}
+#gate{display:none;border:1px solid var(--accent);border-radius:8px;padding:12px;margin:10px 0;background:var(--panel)}
+#gate.open{display:block}#gate h2{font-size:16px;margin:0 0 4px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}.chip{font-size:13px;padding:2px 8px;border-radius:12px;border:1px solid var(--line);cursor:pointer}
+.chip.done{background:var(--shade)}.chip.cant{opacity:.6;text-decoration:line-through}.chip.here{border-color:var(--accent);border-width:2px}
+</style></head><body><main>
+<h1>Vowel onset marker</h1>
+<p>Find the moment each <b>vowel</b> begins, not the consonant before it. The score time and the detector's answer are hidden, so your ear decides alone.
+Click the pictures to mark, or press <b>Help me find it</b> to locate it by listening alone. Marks save in this browser as you go.</p>
+<div class="row"><select id="take"></select><span class="word" id="word"></span><span class="status" id="status"></span></div>
+<div class="chips" id="chips"></div>
+<div class="label">The word (click to mark roughly)</div>
+<canvas id="over" width="960" height="190"></canvas>
+<div class="label">Close-up, ±80 ms around the mark (click to refine; regular repeating cycles mean the vowel has begun)</div>
+<canvas id="near" width="960" height="190"></canvas>
+<div class="row">
+<button id="pWord">▶ Word <kbd>Space</kbd></button>
+<button id="pUpTo">◀| Up to mark <kbd>Z</kbd></button>
+<button id="pFrom">|▶ From mark <kbd>X</kbd></button>
+<span class="status">Speed</span><button class="spd on" data-r="1">1×</button><button class="spd" data-r="0.5">½×</button><button class="spd" data-r="0.25">¼×</button>
+</div>
+<div class="row">
+<button id="help" class="primary">Help me find it <kbd>H</kbd></button>
+<button id="prev">◀ Previous</button><button id="next">Next ▶ <kbd>Enter</kbd></button>
+<button id="cant">Can't tell <kbd>C</kbd></button><button id="clear">Clear mark</button><button id="dl">Download labels</button>
+</div>
+<div id="gate">
+<h2>Listen: where does this clip start?</h2>
+<p id="gateTxt">The clip below starts at a cut point. Does it begin <b>before</b> the vowel (you hear the consonant, the previous word, or the lead-in) or <b>already inside</b> the vowel?</p>
+<div class="row"><button id="gPlay">▶ Play clip <kbd>P</kbd></button>
+<button id="gBefore">Starts before the vowel <kbd>1</kbd></button><button id="gInside">Starts inside the vowel <kbd>2</kbd></button>
+<button id="gStop">Stop helping</button><span class="status" id="gStep"></span></div>
+</div>
+<p><kbd>←</kbd>/<kbd>→</kbd> nudge the mark 2 ms (<kbd>Shift</kbd> 10 ms). Slow speeds lower the pitch; that is expected and makes onsets easier to catch.</p>
+</main><script>
+const DATA = __DATA__;
+const PRE = 0.40, POST = 0.45, NEAR = 0.08, LISTEN = 0.40, FADE = 0.003, GATE_DONE = 0.006;
+let ctx = null, buffers = {}, take = 0, idx = 0, playing = null, rate = 1, head = null, gate = null;
+// "?test" keeps its own storage, so checking the page can never touch real marks.
+const KEY = "soundcheck-labels:" + DATA.clock_id + (new URLSearchParams(location.search).has("test") ? ":test" : "");
+let labels = {}; try { labels = JSON.parse(localStorage.getItem(KEY) || "{}") } catch (e) { labels = {} }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(labels)) } catch (e) {} }
+const $ = id => document.getElementById(id), css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+DATA.takes.forEach((t, i) => { const o = document.createElement("option"); o.value = i; o.textContent = "Take " + (i + 1); $("take").appendChild(o) });
+
+async function decode(i){
+  if (buffers[i]) return buffers[i];
+  ctx = ctx || new AudioContext();
+  const bytes = Uint8Array.from(atob(DATA.takes[i].wav_b64), c => c.charCodeAt(0));
+  buffers[i] = await ctx.decodeAudioData(bytes.buffer);
+  return buffers[i];
+}
+const ev = () => DATA.events[idx];
+const wordWin = () => [Math.max(0, ev().t_sec - PRE), ev().t_sec + POST];
+const mark = () => (labels[take] || {})[ev().id];
+function setMark(v){ (labels[take] = labels[take] || {})[ev().id] = v; save(); draw() }
+function clearMark(){ if (labels[take]) delete labels[take][ev().id]; save(); draw() }
+const centre = () => typeof mark() === "number" ? mark() : ev().t_sec;
+const nearWin = () => [centre() - NEAR, centre() + NEAR];
+
+function fft(re, im){ const n = re.length; for (let i = 1, j = 0; i < n; i++){ let b = n >> 1; for (; j & b; b >>= 1) j ^= b; j ^= b; if (i < j){ [re[i], re[j]] = [re[j], re[i]]; [im[i], im[j]] = [im[j], im[i]] } }
+  for (let len = 2; len <= n; len <<= 1){ const a = -2 * Math.PI / len; for (let i = 0; i < n; i += len){ for (let k = 0; k < len / 2; k++){ const c = Math.cos(a * k), s = Math.sin(a * k);
+    const ur = re[i + k], ui = im[i + k], vr = re[i + k + len / 2] * c - im[i + k + len / 2] * s, vi = re[i + k + len / 2] * s + im[i + k + len / 2] * c;
+    re[i + k] = ur + vr; im[i + k] = ui + vi; re[i + k + len / 2] = ur - vr; im[i + k + len / 2] = ui - vi } } } }
+
+// Spectrogram on top (wideband: a short window, so onsets are sharp in time), waveform below.
+function paint(cv, buf, a, b, N){
+  const g = cv.getContext("2d"), W = cv.width, H = cv.height, specH = Math.round(H * 0.62), sr = buf.sampleRate, data = buf.getChannelData(0);
+  const s0 = Math.floor(a * sr), s1 = Math.floor(b * sr), img = g.createImageData(W, specH), dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  const bins = Math.floor(5000 / (sr / N)), win = new Float64Array(N).map((_, i) => 0.5 - 0.5 * Math.cos(2 * Math.PI * i / (N - 1)));
+  for (let x = 0; x < W; x++){
+    const mid = s0 + Math.floor(x * (s1 - s0) / W), st = mid - N / 2, re = new Float64Array(N), im = new Float64Array(N);
+    for (let i = 0; i < N; i++) re[i] = (data[st + i] || 0) * win[i];
+    fft(re, im);
+    for (let y = 0; y < specH; y++){
+      const k = Math.max(1, Math.floor((1 - y / specH) * bins)), m = Math.hypot(re[k], im[k]);
+      const v = Math.max(0, Math.min(1, (20 * Math.log10(m + 1e-9) + 45) / 60)), c = dark ? v * 255 : 255 - v * 255, p = (y * W + x) * 4;
+      img.data[p] = c; img.data[p + 1] = c; img.data[p + 2] = dark ? Math.min(255, c + 25) : c; img.data[p + 3] = 255 } }
+  g.clearRect(0, 0, W, H); g.putImageData(img, 0, 0);
+  g.strokeStyle = css("--fg"); g.globalAlpha = 0.85; g.beginPath();
+  const top = specH + 4, h = H - top, mid = top + h / 2;
+  let peak = 1e-6; for (let i = s0; i < s1; i++) peak = Math.max(peak, Math.abs(data[i] || 0));
+  for (let x = 0; x < W; x++){
+    const st = s0 + Math.floor(x * (s1 - s0) / W), en = Math.max(st + 1, s0 + Math.floor((x + 1) * (s1 - s0) / W));
+    let lo = 1, hi = -1; for (let i = st; i < en; i++){ const v = (data[i] || 0) / peak; lo = Math.min(lo, v); hi = Math.max(hi, v) }
+    g.moveTo(x, mid - hi * h / 2); g.lineTo(x, mid - lo * h / 2) }
+  g.stroke(); g.globalAlpha = 1;
+}
+function line(cv, a, b, t, colour, width){ if (t < a || t > b) return; const g = cv.getContext("2d"), x = (t - a) / (b - a) * cv.width;
+  g.strokeStyle = colour; g.lineWidth = width; g.beginPath(); g.moveTo(x, 0); g.lineTo(x, cv.height); g.stroke(); g.lineWidth = 1 }
+function shade(cv, a, b, t0, t1){ const g = cv.getContext("2d"), x0 = Math.max(0, (t0 - a) / (b - a)) * cv.width, x1 = Math.min(1, (t1 - a) / (b - a)) * cv.width;
+  g.fillStyle = css("--shade"); g.fillRect(x0, 0, x1 - x0, cv.height) }
+
+let base = null;   // painted canvases, so the playhead can redraw cheaply
+async function draw(){
+  const buf = await decode(take), [a, b] = wordWin(), [na, nb] = nearWin();
+  paint($("over"), buf, a, b, 512); paint($("near"), buf, na, nb, 256);
+  shade($("over"), a, b, na, nb);
+  if (gate) { shade($("over"), a, b, gate.lo, gate.hi); line($("over"), a, b, gate.mid, css("--accent"), 2) }
+  const m = mark();
+  if (typeof m === "number"){ line($("over"), a, b, m, css("--mark"), 2); line($("near"), na, nb, m, css("--mark"), 2) }
+  base = ["over", "near"].map(id => $(id).getContext("2d").getImageData(0, 0, $(id).width, $(id).height));
+  $("word").textContent = "“" + ev().word + "”";
+  const marks = labels[take] || {}, done = DATA.events.filter(e => e.id in marks).length;
+  $("status").textContent = `word ${idx + 1} of ${DATA.events.length} · ${done} marked in this take` + (m === null ? " · you could not tell" : typeof m === "number" ? "" : " · not marked yet");
+  $("chips").innerHTML = "";
+  DATA.events.forEach((e, i) => { const c = document.createElement("span"); c.textContent = e.word;
+    c.className = "chip" + (e.id in marks ? (marks[e.id] === null ? " cant" : " done") : "") + (i === idx ? " here" : "");
+    c.onclick = () => { stopGate(); idx = i; draw() }; $("chips").appendChild(c) });
+  $("pUpTo").disabled = $("pFrom").disabled = typeof m !== "number";
+}
+function playhead(){
+  if (!playing || !base) return;
+  const t = playing.from + (ctx.currentTime - playing.at) * rate;
+  ["over", "near"].forEach((id, i) => $(id).getContext("2d").putImageData(base[i], 0, 0));
+  if (t <= playing.to){ const [a, b] = wordWin(), [na, nb] = nearWin(); line($("over"), a, b, t, css("--head"), 2); line($("near"), na, nb, t, css("--head"), 2);
+    head = requestAnimationFrame(playhead) } else { head = null }
+}
+// Plays [from, to] of the take at the chosen speed, with short fades so a cut never clicks.
+async function play(from, to){
+  const buf = await decode(take); if (ctx.state === "suspended") await ctx.resume();
+  if (playing) try { playing.src.stop() } catch (e) {}
+  if (head) cancelAnimationFrame(head);
+  from = Math.max(0, from); to = Math.min(buf.duration, to);
+  const src = ctx.createBufferSource(), gain = ctx.createGain(), now = ctx.currentTime, dur = (to - from) / rate;
+  src.buffer = buf; src.playbackRate.value = rate; src.connect(gain); gain.connect(ctx.destination);
+  gain.gain.setValueAtTime(0, now); gain.gain.linearRampToValueAtTime(1, now + FADE);
+  gain.gain.setValueAtTime(1, now + Math.max(FADE, dur - FADE)); gain.gain.linearRampToValueAtTime(0, now + dur);
+  src.start(now, from, to - from);
+  playing = {src, from, to, at: now}; head = requestAnimationFrame(playhead);
+  return playing;
+}
+const playWord = () => { const [a, b] = wordWin(); return play(a, b) };
+const playUpTo = () => { const m = mark(); if (typeof m === "number") return play(m - LISTEN, m) };
+const playFrom = () => { const m = mark(); if (typeof m === "number") return play(m, m + LISTEN) };
+
+// "Help me find it": gating by bisection. Each answer halves the range that holds
+// the onset; when it is narrower than GATE_DONE the midpoint becomes the mark.
+function startGate(){ const [a, b] = wordWin(); gate = {lo: a + 0.05, hi: b - 0.15, steps: 0}; gate.mid = (gate.lo + gate.hi) / 2;
+  $("gate").classList.add("open"); gateStep(); draw(); playGate() }
+function stopGate(){ gate = null; $("gate").classList.remove("open"); draw() }
+const playGate = () => gate && play(gate.mid, gate.mid + LISTEN);
+function gateStep(){ $("gStep").textContent = `answer ${gate.steps + 1} · range ${Math.round((gate.hi - gate.lo) * 1000)} ms` }
+function answer(startsBefore){
+  if (!gate) return;
+  // starts before the vowel -> the onset is later than the cut
+  if (startsBefore) gate.lo = gate.mid; else gate.hi = gate.mid;
+  gate.mid = (gate.lo + gate.hi) / 2; gate.steps++;
+  if (gate.hi - gate.lo <= GATE_DONE){ const t = +gate.mid.toFixed(4); gate = null; $("gate").classList.remove("open"); setMark(t); return }
+  gateStep(); draw(); playGate();
+}
+window.__gate = { start: startGate, answer, state: () => gate && {...gate} };
+
+function onClick(e){ const cv = e.currentTarget, r = cv.getBoundingClientRect(), [a, b] = cv.id === "over" ? wordWin() : nearWin();
+  stopGate(); setMark(+(a + (e.clientX - r.left) / r.width * (b - a)).toFixed(4)) }
+$("over").onclick = onClick; $("near").onclick = onClick;
+$("take").onchange = () => { stopGate(); take = +$("take").value; idx = 0; draw() };
+$("pWord").onclick = playWord; $("pUpTo").onclick = playUpTo; $("pFrom").onclick = playFrom;
+document.querySelectorAll(".spd").forEach(bn => bn.onclick = () => { rate = +bn.dataset.r; document.querySelectorAll(".spd").forEach(x => x.classList.toggle("on", x === bn)) });
+$("next").onclick = () => { stopGate(); idx = Math.min(DATA.events.length - 1, idx + 1); draw() };
+$("prev").onclick = () => { stopGate(); idx = Math.max(0, idx - 1); draw() };
+$("cant").onclick = () => { stopGate(); setMark(null) };
+$("clear").onclick = () => { stopGate(); clearMark() };
+$("help").onclick = startGate; $("gPlay").onclick = playGate; $("gBefore").onclick = () => answer(true); $("gInside").onclick = () => answer(false); $("gStop").onclick = stopGate;
+$("dl").onclick = () => { const out = {schema: "ai-jam-sessions/soundcheck/v1#labels", clock_id: DATA.clock_id, takes: {}};
+  DATA.takes.forEach((t, i) => out.takes[t.key] = labels[i] || {});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], {type: "application/json"}));
+  a.download = "soundcheck-labels.json"; a.click() };
+addEventListener("keydown", e => {
+  if (e.target.tagName === "SELECT" || e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (gate && (k === "1" || k === "2" || k === "p")) { e.preventDefault(); k === "p" ? playGate() : answer(k === "1"); return }
+  if (k === " ") { e.preventDefault(); playWord() } else if (k === "z") playUpTo(); else if (k === "x") playFrom();
+  else if (k === "h") startGate(); else if (k === "c") $("cant").click(); else if (k === "enter") $("next").click();
+  else if (k === "arrowleft" || k === "arrowright") { const m = mark(); if (typeof m === "number") { e.preventDefault();
+    setMark(+(m + (k === "arrowright" ? 1 : -1) * (e.shiftKey ? 0.010 : 0.002)).toFixed(4)) } }
+});
+draw();
+</script></body></html>
