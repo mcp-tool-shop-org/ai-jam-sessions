@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — the vocal sound check, stage 1: a timing footprint before the song
+- `scripts/soundcheck.py`: the same voice sings a 16-word calibration phrase several times at the
+  song's tempo and median pitch, before the song is rendered. Vowel onsets are dated with the 40 ms
+  gate's own instrument. It reports bias and scatter per consonant group (none, stop, fricative,
+  sonorant), corrects a group only when its lead is steady across takes, compares held and short
+  notes, and predicts how many takes the song needs so every syllable has at least one within
+  40 ms (pass@k with a union bound). Timing is treated as a footprint, not an offset: SoulX
+  placement is random between renders, and correcting it with one number does not converge.
+- Two instruments, no hand calibration. A singing forced aligner (HubertFA, ONNX, via
+  `scripts/onset_aligner.py`) places every phoneme of the known lyrics and is the primary
+  onset; the gate's energy detector is the cross-check. The offset between their definitions
+  is measured on every run from the stop and fricative words, readings that disagree are
+  flagged, and takes needed is reported both for placeable and for confirmed syllables. The
+  word picker selects with the same detector the gate grades with, so without a second
+  instrument the gate partly checks the detector against itself.
+- Design and research grounding: `docs/vocal-soundcheck.md`. Tests: `scripts/test_soundcheck.py`
+  (synthetic takes with known offsets and a fake aligner, so every reported number has an exact expected answer).
+
 ### Fixed — a file where the journal directory should be is named as the cause
 - When the practice journal's path was a file, the directory check passed (`existsSync` is true
   for a file too) and the write failed instead, so the warning blamed a missing file: `ENOENT` on
