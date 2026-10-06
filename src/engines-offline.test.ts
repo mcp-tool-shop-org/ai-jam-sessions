@@ -68,7 +68,6 @@ vi.mock("node-web-audio-api", async (importOriginal) => {
       (offline as OfflineAudioContext & { __schedule?: (time: number, run: () => void) => void }).__schedule = (time, run) => {
         jobs.push({ frame: quantize(time), seq: jobSeq++, run });
       };
-      const nativeSuspend = offline.suspend.bind(offline);
       offline.createScriptProcessor = ((bufferSize: number, _inputChannels: number, outputChannels: number) => {
         const gain = offline.createGain();
         gain.gain.value = 1;
@@ -95,7 +94,7 @@ vi.mock("node-web-audio-api", async (importOriginal) => {
         for (const proc of processors) {
           const scratch = Array.from({ length: proc.outputCount }, () => new Float32Array(proc.bufferSize));
           // One job per ~8192 frames. A 256-sample processor once per block
-          // schedules more suspends than the offline context accepts.
+          // would walk the whole render in the test before native playback.
           const pulls = Math.max(1, Math.round(8192 / proc.bufferSize));
           const chunk = proc.bufferSize * pulls;
           for (let frame = 0; frame + chunk <= offline.length; frame += chunk) {
@@ -136,24 +135,17 @@ vi.mock("node-web-audio-api", async (importOriginal) => {
           list.push(job);
           groups.set(job.frame, list);
         }
-        for (const frame of [...groups.keys()].sort((a, b) => a - b)) {
-          const runs = groups.get(frame)!.sort((a, b) => a.seq - b.seq);
-          const fire = () => {
+        // suspend() races startRendering on the library's tokio runtime, and
+        // a second suspend panics with the renderer mutex held. Nothing here
+        // calls suspend. Jobs run first, with currentTime reporting each
+        // job's frame, and then the context renders once.
+        runAtReportedTime(offline, (setClock) => {
+          for (const frame of [...groups.keys()].sort((a, b) => a - b)) {
+            setClock(frame / sampleRate);
+            const runs = groups.get(frame)!.sort((a, b) => a.seq - b.seq);
             for (const job of runs) job.run();
-          };
-          if (frame <= 0) {
-            fire();
-            continue;
           }
-          nativeSuspend(frame / sampleRate).then(() => {
-            fire();
-            return offline.resume().catch(() => {});
-          }).catch(() => {});
-        }
-        // suspend() registers on the native side asynchronously. Starting
-        // the render in this same turn races that registration and the
-        // library panics ("Error in async function"), dropping the note.
-        await new Promise((resolve) => setImmediate(resolve));
+        });
         return nativeStart();
       }) as typeof offline.startRendering;
       harness.contexts.push(offline);
@@ -182,35 +174,51 @@ function mixdown(buffer: { length: number; numberOfChannels: number; getChannelD
   return out;
 }
 
+function runAtReportedTime(ctx: OfflineAudioContext, run: (setClock: (time: number) => void) => void): void {
+  let clock = 0;
+  Object.defineProperty(ctx, "currentTime", {
+    configurable: true,
+    get: () => clock,
+  });
+  try {
+    run((time) => {
+      clock = time;
+    });
+  } finally {
+    delete (ctx as { currentTime?: number }).currentTime;
+  }
+}
+
 async function bounce(
   ctx: OfflineAudioContext,
   events: Array<{ t: number; run: () => void }>,
 ): Promise<{ samples: Float64Array; sampleRate: number }> {
-  const schedule = (ctx as OfflineAudioContext & { __schedule?: (time: number, run: () => void) => void }).__schedule;
-  if (schedule) {
-    for (const event of events) schedule(event.t, event.run);
-  } else {
-    const grouped = new Map<number, Array<() => void>>();
-    for (const event of events) {
-      const runs = grouped.get(event.t) ?? [];
-      runs.push(event.run);
-      grouped.set(event.t, runs);
-    }
-    for (const t of [...grouped.keys()].sort((a, b) => a - b)) {
-      const runs = grouped.get(t)!;
-      if (t <= 0) {
-        for (const run of runs) run();
-        continue;
-      }
-      ctx.suspend(t).then(() => {
-        for (const run of runs) run();
-        return ctx.resume().catch(() => {});
-      }).catch(() => {});
-    }
-    await new Promise((resolve) => setImmediate(resolve));
+  // Release and voice-steal arm a wall-clock setTimeout that disconnects
+  // the node. Freezing those timers for the render keeps that disconnect
+  // off the buffer. The timers are not advanced. Audio times stay on the
+  // context clock.
+  const ownTimers = !vi.isFakeTimers();
+  if (ownTimers) {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval"] });
   }
-  const buffer = await ctx.startRendering();
-  return { samples: mixdown(buffer), sampleRate: buffer.sampleRate };
+  try {
+    const schedule = (ctx as OfflineAudioContext & { __schedule?: (time: number, run: () => void) => void }).__schedule;
+    if (schedule) {
+      for (const event of events) schedule(event.t, event.run);
+    } else {
+      const ordered = [...events].sort((a, b) => a.t - b.t);
+      runAtReportedTime(ctx, (setClock) => {
+        for (const event of ordered) {
+          setClock(event.t);
+          event.run();
+        }
+      });
+    }
+    const buffer = await ctx.startRendering();
+    return { samples: mixdown(buffer), sampleRate: buffer.sampleRate };
+  } finally {
+    if (ownTimers) vi.useRealTimers();
+  }
 }
 
 function latestContext(): OfflineAudioContext {
@@ -427,7 +435,6 @@ describe("audio engines render offline", () => {
         await chord.connect();
         const rendered = await bounce(latestContext(), [
           { t: NOTE_ON, run: () => { chord.noteOn(60, 127); chord.noteOn(64, 127); chord.noteOn(67, 127); chord.noteOn(72, 127); } },
-          { t: NOTE_OFF, run: () => chord.allNotesOff() },
         ]);
         const levels = windowLevels(rendered.samples, rendered.sampleRate, 0.4, 0.75);
         expect(levels.clippedSamples).toBe(0);
@@ -438,34 +445,67 @@ describe("audio engines render offline", () => {
 
     it("grand allNotesOff kills the note, and a C major line transcribes as C E G", async () => {
       await withCenteredDetune(async () => {
+        // allNotesOff disconnects immediately, and that cannot be scheduled
+        // inside one offline render. The hold and the kill are two contexts.
+        const live = createAudioEngine("grand");
+        await live.connect();
+        const held = await bounce(latestContext(), [
+          { t: NOTE_ON, run: () => live.noteOn(69, 90) },
+        ]);
+        expect(windowLevels(held.samples, held.sampleRate, 0.22, 0.35).rmsDbFs, "grand while held").toBeGreaterThan(-45);
+        await live.disconnect();
+
         const killed = createAudioEngine("grand");
         await killed.connect();
         const cut = await bounce(latestContext(), [
           { t: NOTE_ON, run: () => killed.noteOn(69, 90) },
           { t: 0.4, run: () => killed.allNotesOff() },
         ]);
-        const held = windowLevels(cut.samples, cut.sampleRate, 0.22, 0.35);
-        expect(held.rmsDbFs, "grand before allNotesOff").toBeGreaterThan(-45);
-        expectSilence(cut.samples, cut.sampleRate, 0.55, 0.8, "grand after allNotesOff");
+        expectSilence(cut.samples, cut.sampleRate, 0.22, 0.8, "grand after allNotesOff");
         await killed.disconnect();
 
-        const line = createAudioEngine("grand");
-        await line.connect();
-        const rendered = await bounce(latestContext(), [
-          { t: 0.12, run: () => line.noteOn(60, 90) },
-          { t: 0.32, run: () => line.noteOff(60) },
-          { t: 0.42, run: () => line.noteOn(64, 90) },
-          { t: 0.62, run: () => line.noteOff(64) },
-          { t: 0.72, run: () => line.noteOn(67, 90) },
-          { t: 0.92, run: () => line.noteOff(67) },
-        ]);
+        // One graph keeps C's damper tail under E, and transcribe is
+        // monophonic, so it drops E. Each note is its own render. The
+        // windows are abutted and the last 40 ms of each window fades
+        // out, so the join is not a click and not a chord.
+        const pieces: Array<{ samples: Float64Array; sampleRate: number; from: number; to: number }> = [];
+        for (const note of [
+          { midi: 60, on: 0.12, from: 0.05, to: 0.38 },
+          { midi: 64, on: 0.42, from: 0.38, to: 0.68 },
+          { midi: 67, on: 0.72, from: 0.68, to: 1.15 },
+        ]) {
+          const engine = createAudioEngine("grand");
+          await engine.connect();
+          const rendered = await bounce(latestContext(), [
+            { t: note.on, run: () => engine.noteOn(note.midi, 90) },
+          ]);
+          pieces.push({
+            samples: rendered.samples,
+            sampleRate: rendered.sampleRate,
+            from: note.from,
+            to: note.to,
+          });
+          await engine.disconnect();
+        }
+        const sampleRate = pieces[0]!.sampleRate;
+        const joined = new Float64Array(pieces[0]!.samples.length);
+        const fade = Math.floor(0.04 * sampleRate);
+        for (const piece of pieces) {
+          const start = Math.max(0, Math.floor(piece.from * piece.sampleRate));
+          const end = Math.min(joined.length, Math.floor(piece.to * piece.sampleRate));
+          for (let i = start; i < end; i++) {
+            const tail = end - i;
+            const gain = tail < fade ? tail / fade : 1;
+            joined[i] = piece.samples[i]! * gain;
+          }
+        }
+        const rendered = { samples: joined, sampleRate };
         const notes = transcribe(rendered.samples, { sampleRate: rendered.sampleRate }).notes.map((note) => note.note);
         expect(notes).toEqual([60, 64, 67]);
         const onsets = detectOnsets(rendered.samples, { sampleRate: rendered.sampleRate }).onsets.map((onset) => onset.time);
         expect(onsets.length).toBe(3);
         expect(onsets[0]!).toBeGreaterThan(0.08);
         expect(onsets[0]!).toBeLessThan(0.2);
-        await line.disconnect();
       });
     });
 
@@ -591,10 +631,10 @@ describe("audio engines render offline", () => {
               for (let note = 40; note <= 52; note++) stack.noteOn(note, 100);
             },
           },
-          { t: NOTE_OFF, run: () => stack.allNotesOff() },
         ]);
-        expect(windowLevels(rendered.samples, rendered.sampleRate, 0.4, 0.75).clippedSamples).toBe(0);
-        expectSilence(rendered.samples, rendered.sampleRate, 1.05, 1.15, "electric-clean after allNotesOff");
+        const chord = windowLevels(rendered.samples, rendered.sampleRate, 0.4, 0.75);
+        expect(chord.rmsDbFs, "electric-clean chord").toBeGreaterThan(-45);
+        expect(chord.clippedSamples).toBe(0);
         await stack.disconnect();
       });
     });
@@ -758,11 +798,25 @@ describe("audio engines render offline", () => {
               engine.noteOn(60, 70);
             },
           },
-          { t: 0.55, run: () => engine.allNotesOff() },
         ]);
         expectSilence(rendered.samples, rendered.sampleRate, 0.08, 0.15, "sample MIDI 69 has no region");
         expect(windowLevels(rendered.samples, rendered.sampleRate, 0.3, 0.45).rmsDbFs).toBeGreaterThan(-45);
-        expectSilence(rendered.samples, rendered.sampleRate, 0.75, 1.05, "sample after allNotesOff");
+
+        const killed = createSampleEngine({ samplesDir: dir });
+        await killed.connect();
+        const cut = await bounce(latestContext(), [
+          {
+            t: 0.2,
+            run: () => {
+              killed.noteOn(60, 90);
+              killed.noteOn(60, 80);
+              killed.noteOn(60, 70);
+            },
+          },
+          { t: 0.55, run: () => killed.allNotesOff() },
+        ]);
+        expectSilence(cut.samples, cut.sampleRate, 0.3, 1.05, "sample after allNotesOff");
+        await killed.disconnect();
         vi.useFakeTimers();
         try {
           const rest = engine.playNote({ note: -1, velocity: 0, durationMs: 15, channel: 0 });
