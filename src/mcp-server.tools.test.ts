@@ -27,6 +27,7 @@ const audioDouble = vi.hoisted(() => {
     connectError: null as string | null,
     playNoteError: null as string | null,
     noteOnError: null as string | null,
+    onNoteOff: null as null | (() => void),
     connectedEngine: "",
     waiterCount: () => waiters.length,
     releaseAll() {
@@ -65,7 +66,9 @@ function fakeConnector(kind: string) {
     noteOn() {
       if (audioDouble.noteOnError) throw new Error(audioDouble.noteOnError);
     },
-    noteOff() {},
+    noteOff() {
+      audioDouble.onNoteOff?.();
+    },
     allNotesOff() {},
     playNote: () => audioDouble.playNote(),
     createTapOutput() {
@@ -289,6 +292,18 @@ describe("mcp-server.ts — tool success and error paths", () => {
     return text;
   }
 
+  function times(text: string, needle: string): number {
+    let count = 0;
+    let from = 0;
+    while (from <= text.length) {
+      const at = text.indexOf(needle, from);
+      if (at < 0) return count;
+      count += 1;
+      from = at + needle.length;
+    }
+    return count;
+  }
+
   function err(result: ToolResult, ...needles: string[]): string {
     const text = extractText(result);
     expect(result.isError, text).toBe(true);
@@ -309,6 +324,7 @@ describe("mcp-server.ts — tool success and error paths", () => {
     audioDouble.connectError = null;
     audioDouble.playNoteError = null;
     audioDouble.noteOnError = null;
+    audioDouble.onNoteOff = null;
     audioDouble.connectedEngine = "";
     audioDouble.releaseAll();
     await setLiveAudioContext(null);
@@ -333,7 +349,9 @@ describe("mcp-server.ts — tool success and error paths", () => {
     } catch (error) {
       text = error instanceof Error ? error.message : String(error);
     }
-    expect(text).toMatch(/invalid|expected|schema|object/i);
+    // Empty-schema tools reject a non-object `arguments` in the SDK, before
+    // the handler. Zod 4 says the arguments value must be a record.
+    expect(text).toContain("expected record, received array");
     expect(text.length).toBeGreaterThan(8);
   }
 
@@ -365,8 +383,11 @@ describe("mcp-server.ts — tool success and error paths", () => {
 
     ok(await call("teaching_note", { id: BACH, measure: 1 }), "— Measure 1", "**Right Hand:**", "**Left Hand:**");
     err(await call("teaching_note", { id: "no-such-song-xyz", measure: 1 }), `No song called "no-such-song-xyz"`);
-    const tooFar = err(await call("teaching_note", { id: BACH, measure: 9999 }));
-    expect(tooFar).toMatch(/doesn't exist|only has/);
+    err(
+      await call("teaching_note", { id: BACH, measure: 9999 }),
+      "Measure 9999 doesn't exist",
+      "only has",
+    );
 
     ok(await call("suggest_song", {}), "I'd suggest:", "**Why this song?**", "song_info");
     ok(await call("suggest_song", { maxDuration: 0.001 }), "No songs match your criteria.");
@@ -546,27 +567,45 @@ describe("mcp-server.ts — tool success and error paths", () => {
   });
 
   it("tunes a keyboard and a guitar, then resets both", async () => {
-    ok(await call("list_keyboards", {}), "# Piano Keyboards", "**ID:** `grand`", "(default)");
+    const keyboards = ok(
+      await call("list_keyboards", {}),
+      "# Piano Keyboards",
+      "## Concert Grand **(default)**",
+      "**ID:** `grand`",
+    );
+    expect(times(keyboards, "**(default)**")).toBe(1);
     await schemaRejects("list_keyboards");
     err(await call("tune_keyboard", { id: "grand" }), "No tuning parameters provided.");
     err(await call("tune_keyboard", { id: "no-such-voice" }), "Invalid option", "grand");
     ok(await call("tune_keyboard", { id: "grand", brightness: 0.2 }), "Tuned **Concert Grand**", "**brightness**: 0.2");
     ok(await call("get_keyboard_config", { id: "grand" }), "# Concert Grand (`grand`)", "| Parameter | Factory | Current | Range |", "0.2");
     err(await call("get_keyboard_config", { id: "no-such-voice" }), "Invalid option", "grand");
-    ok(await call("reset_keyboard", { id: "grand" }), "factory defaults", "`grand`");
+    ok(await call("reset_keyboard", { id: "grand" }), "to factory defaults", "`grand`");
     ok(await call("reset_keyboard", { id: "upright" }), "already at factory defaults");
     err(await call("reset_keyboard", { id: "no-such-voice" }), "Invalid option", "grand");
 
-    ok(await call("list_guitar_voices", {}), "# Guitar Voices", "**ID:** `steel-dreadnought`", "(default)");
+    const guitarVoices = ok(
+      await call("list_guitar_voices", {}),
+      "# Guitar Voices",
+      "## Steel Dreadnought **(default)**",
+      "**ID:** `steel-dreadnought`",
+    );
+    expect(times(guitarVoices, "**(default)**")).toBe(1);
     await schemaRejects("list_guitar_voices");
-    ok(await call("list_guitar_tunings", {}), "# Guitar Tunings", "Standard (EADGBE)", "**ID:** `standard`");
+    const tunings = ok(
+      await call("list_guitar_tunings", {}),
+      "# Guitar Tunings",
+      "## Standard (EADGBE) **(default)**",
+      "**ID:** `standard`",
+    );
+    expect(times(tunings, "**(default)**")).toBe(1);
     await schemaRejects("list_guitar_tunings");
     err(await call("tune_guitar", { id: "steel-dreadnought" }), "No tuning parameters provided.");
     err(await call("tune_guitar", { id: "no-such-voice" }), "Invalid option", "steel-dreadnought");
     ok(await call("tune_guitar", { id: "steel-dreadnought", brightness: 0.2 }), "Tuned **Steel Dreadnought**", "**brightness**: 0.2", "reset_guitar");
     ok(await call("get_guitar_config", { id: "steel-dreadnought" }), "# Steel Dreadnought (`steel-dreadnought`)", "| Parameter | Factory | Current | Range |");
     err(await call("get_guitar_config", { id: "no-such-voice" }), "Invalid option", "steel-dreadnought");
-    ok(await call("reset_guitar", { id: "steel-dreadnought" }), "factory defaults", "steel-dreadnought");
+    ok(await call("reset_guitar", { id: "steel-dreadnought" }), "to factory defaults", "steel-dreadnought");
     ok(await call("reset_guitar", { id: "classical-nylon" }), "already at factory defaults");
     err(await call("reset_guitar", { id: "no-such-voice" }), "Invalid option", "steel-dreadnought");
   });
@@ -652,12 +691,12 @@ describe("mcp-server.ts — tool success and error paths", () => {
     ok(await call("play_song", { id: "coverage-one-note", engine: "guitar", guitarVoice: "classical-nylon" }), "Now playing:");
     expect(audioDouble.connectedEngine).toBe("guitar");
     await waitForGatedNote();
-    ok(await call("stop_playback", {}), "Stopped:");
+    ok(await call("stop_playback", {}), "Stopped:", "Coverage One Note");
 
     ok(await call("play_song", { id: "coverage-one-note", engine: "tract", tractVoice: "tenor" }), "Now playing:");
     expect(audioDouble.connectedEngine).toBe("tract");
     await waitForGatedNote();
-    ok(await call("stop_playback", {}), "Stopped:");
+    ok(await call("stop_playback", {}), "Stopped:", "Coverage One Note");
 
     ok(await call("play_song", { id: "coverage-one-note", engine: "vocal" }), "Now playing:");
     expect(audioDouble.connectedEngine).toBe("vocal");
@@ -692,19 +731,54 @@ describe("mcp-server.ts — tool success and error paths", () => {
 
     await setLiveAudioContext({ sampleRate: 48000 });
     audioDouble.gate = false;
-    const started = ok(
-      await call("play_song", { id: midiPath, withSinging: true, withTeaching: true, singMode: "solfege" }),
-      "Now playing:",
-      "(MIDI file)",
-      "**Features:**",
-      "singing (solfege)",
-      "teaching feedback",
-    );
-    expect(started).toContain("**Notes:**");
-    const live = ok(await call("ensemble_now", {}), "# The ensemble, right now");
-    expect(live).toMatch(/\*\*Sounding together:\*\*|\*\*Silence\.\*\*/);
-    ok(await call("playback_status", {}), "# Playback Status (MIDI)", "**State:**", "**Events:**");
-    ok(await call("set_speed", { speed: 2 }), "Speed changed:", "2x");
+    // The note-off and the play-loop sleep are both ~2s timers. Advancing
+    // fires every timer due at that instant, so play() finishes and its
+    // finally clears the ensemble. Silence is read on the note-off turn,
+    // before that clear.
+    vi.useFakeTimers();
+    try {
+      const started = ok(
+        await call("play_song", { id: midiPath, withSinging: true, withTeaching: true, singMode: "solfege" }),
+        "Now playing:",
+        "(MIDI file)",
+        "**Features:**",
+        "singing (solfege)",
+        "teaching feedback",
+      );
+      expect(started).toContain("**Notes:**");
+      // heldNoteMidi is note 60, C4, and it is still held here.
+      const live = ok(
+        await call("ensemble_now", {}),
+        "# The ensemble, right now",
+        "**Sounding together:** C4",
+      );
+      expect(live).not.toContain("**Silence.**");
+      ok(await call("playback_status", {}), "# Playback Status (MIDI)", "**State:**", "**Events:**");
+      ok(await call("set_speed", { speed: 2 }), "Speed changed:", "2x");
+      // noteOff runs, the ensemble updates, then play()'s sleep settles and
+      // clears the ensemble. Read the view from the note-off turn, before
+      // that clear. The inner noteOff returns before the controller emits,
+      // so the read is a microtask after the emit.
+      let released = "";
+      audioDouble.onNoteOff = () => {
+        queueMicrotask(() => {
+          void call("ensemble_now", {}).then((result) => {
+            released = extractText(result);
+          });
+        });
+      };
+      await vi.advanceTimersToNextTimerAsync();
+      await vi.runAllTicks();
+      audioDouble.onNoteOff = null;
+      expect(released, released || "(ensemble view was not read on note-off)").toContain("# The ensemble, right now");
+      expect(released).toContain("**Silence.**");
+      expect(released).not.toContain("**Sounding together:**");
+    } finally {
+      audioDouble.onNoteOff = null;
+      vi.useRealTimers();
+    }
+
+    ok(await call("play_song", { id: midiPath, withSinging: true, withTeaching: true }), "Now playing:", "(MIDI file)");
     ok(await call("stop_playback", {}), "Stopped:", "MIDI file");
 
     ok(await call("play_song", { id: midiPath, withSinging: true }), "Now playing:", "(MIDI file)");

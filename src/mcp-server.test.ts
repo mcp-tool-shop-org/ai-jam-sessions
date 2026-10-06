@@ -269,7 +269,8 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
 
       expect(result.isError).toBe(true);
       expect(text.toLowerCase()).not.toContain("now playing");
-      expect(text.toLowerCase()).toMatch(/measure/);
+      expect(text.toLowerCase()).toContain("exceeds");
+      expect(text.toLowerCase()).toContain("valid range");
     },
     20000,
   );
@@ -296,7 +297,8 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
       expect(past.isError).toBe(true);
       const pastText = extractText(past).toLowerCase();
       expect(pastText).not.toContain("now playing");
-      expect(pastText).toMatch(/exceeds|valid range/);
+      expect(pastText).toContain("exceeds");
+      expect(pastText).toContain("valid range");
 
       // Exactly the last measure → the range guard must ACCEPT it. We assert on
       // the guard's own outcome, not on playback succeeding: a real audio device
@@ -311,7 +313,9 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
         name: "play_song",
         arguments: { id: "bach-prelude-c-major-bwv846", mode: "loop", startMeasure: n, endMeasure: n },
       })) as ToolResult;
-      expect(extractText(edge).toLowerCase()).not.toMatch(/exceeds|valid range/);
+      const edgeText = extractText(edge).toLowerCase();
+      expect(edgeText).not.toContain("exceeds");
+      expect(edgeText).not.toContain("valid range");
 
       // Best-effort cleanup in case audio did start (local dev with a device).
       await client.callTool({ name: "stop_playback", arguments: {} }).catch(() => {});
@@ -631,7 +635,9 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
         },
       })) as ToolResult;
       expect(outOfRange.isError).toBe(true);
-      expect(extractText(outOfRange)).toMatch(/measure/i);
+      const outOfRangeText = extractText(outOfRange);
+      expect(outOfRangeText).toContain("bad_measure_range");
+      expect(outOfRangeText).toContain("End measure must be >= start measure");
 
       const ok = (await client.callTool({
         name: "verify_harmony",
@@ -801,7 +807,7 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
           },
         })) as ToolResult;
         expect(res.isError).toBe(true);
-        expect(extractText(res).toLowerCase()).toMatch(/failed to import midi|midi/i);
+        expect(extractText(res)).toContain("Failed to import MIDI");
       } finally {
         await iso.close();
       }
@@ -818,8 +824,9 @@ describe("mcp-server.ts — MCP protocol-level tool tests", () => {
       })) as ToolResult;
       expect(res.isError).toBe(true);
       const text = extractText(res).toLowerCase();
-      expect(text).toMatch(/home directory|midi/);
-      expect(text).not.toMatch(/no song called/);
+      expect(text).toContain("can't access");
+      expect(text).toContain("home directory");
+      expect(text).not.toContain("no song called");
     },
     20000,
   );
@@ -899,7 +906,9 @@ describe("mcp-server.ts — spawned entry smokes", () => {
         const playText = extractText(playResult);
         expect(playText.length).toBeGreaterThan(0);
         const started = !playResult.isError && playText.includes("Now playing");
-        const refused = playResult.isError === true && /couldn't start|engine/i.test(playText);
+        // A headless runner has no audio device. The guard still started the
+        // server; the tool then refuses with the engine-start error.
+        const refused = playResult.isError === true && playText.includes("Couldn't start the") && playText.includes("engine");
         expect(started || refused).toBe(true);
 
         // Observation window for the child pipe. Narration that fires is
@@ -1715,8 +1724,13 @@ describe("mcp-server.ts — audio inspection tools", () => {
   }, 20000);
 
   it("check_loop_seam passes a seamless loop and flags one cut mid-cycle", async () => {
-    expect(extractText(await call("check_loop_seam", { path: join(dir, "loop-clean.wav") }))).toMatch(/## Verdict: clean/);
-    expect(extractText(await call("check_loop_seam", { path: join(dir, "loop-cut.wav") }))).toMatch(/## Verdict: click-risk/);
+    const clean = extractText(await call("check_loop_seam", { path: join(dir, "loop-clean.wav") }));
+    expect(clean).toContain("## Verdict: clean");
+    expect(clean).toContain("The seam is safe to ship.");
+    const cut = extractText(await call("check_loop_seam", { path: join(dir, "loop-cut.wav") }));
+    expect(cut).toContain("## Verdict: click-risk");
+    expect(cut).not.toContain("safe to ship");
+    expect(cut).toContain("Step at the wrap:");
   }, 20000);
 
   it("compare_balance reads a darker file as darker, band by band", async () => {
