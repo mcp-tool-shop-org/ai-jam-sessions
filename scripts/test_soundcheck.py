@@ -297,12 +297,7 @@ def test_the_textgrid_reader_finds_each_words_first_vowel():
         oa.vowel_onsets(tiers, ["day", "go"])
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "KNOWN DEFECT in vocal_clock.rise_onset (found by the sound check, 2026-10-06): a window "
-    "is 'silent' only when its envelope peak is exactly 0, so a near-silent window (filter "
-    "ringing, a noise floor) is dated as a vowel. A dropped syllable would be placed as a clip "
-    "of nothing. Strict: this test fails loudly the day the detector is fixed, so the fix is "
-    "noticed and this marker removed."))
+# Fixed in #70 (vocal_clock.rise_onset): a near-silent window is silent, not a vowel.
 def test_a_silent_window_is_not_dated_as_a_vowel(tmp_path, clock):
     p = write_take(tmp_path, "take-00", clock, lambda e: 0.0)
     data, sr = sf.read(p)
