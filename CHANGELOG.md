@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — a file where the journal directory should be is named as the cause
+- When the practice journal's path was a file, the directory check passed (`existsSync` is true
+  for a file too) and the write failed instead, so the warning blamed a missing file: `ENOENT` on
+  Windows, `ENOTDIR` elsewhere. It now says a file is in the way and to move or rename it, the
+  same on every OS. The take still finishes and exits 0. Found by the CLI coverage tests in #66.
+
 ### Fixed — pause and resume, the practice journal filter, and an empty song list
 - **Resume works after a pause.** `pause()` settles a player's `play()` promise, and `play_song`
   hung its teardown on that promise: a pause disconnected the audio and cleared the player, so

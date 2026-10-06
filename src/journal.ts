@@ -9,7 +9,7 @@
 // Format:    YYYY-MM-DD.md (one file per day, append-only)
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { existsSync, mkdirSync, readFileSync, appendFileSync, readdirSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, appendFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import type { PerformanceResult } from "./score-performance.js";
 import { journalDir } from "./state-home.js";
@@ -42,6 +42,11 @@ function ensureJournalDir(): string {
   const dir = getJournalDir();
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
+  } else if (!statSync(dir).isDirectory()) {
+    // existsSync is true for a file too. Without this check the write that
+    // follows failed instead, and the warning blamed a missing file (ENOENT
+    // on Windows, ENOTDIR elsewhere) rather than the file in the way.
+    throw new Error("a file is in the way, where the journal directory should be. Move or rename that file and the journal will be created there.");
   }
   return dir;
 }
