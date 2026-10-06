@@ -15,13 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   notes, and predicts how many takes the song needs so every syllable has at least one within
   40 ms (pass@k with a union bound). Timing is treated as a footprint, not an offset: SoulX
   placement is random between renders, and correcting it with one number does not converge.
-- The onset detector is measured against the ear. `label-page` writes a self-contained page for
-  marking vowel onsets by hand, with the score time and the detector's answer hidden, and
-  `detector-error` reports how far the detector strays and what the 40 ms gate really promises.
-  The word picker selects takes with the same detector the gate grades with, so without this
-  reference the gate partly checks the detector against itself.
+- Two instruments, no hand calibration. A singing forced aligner (HubertFA, ONNX, via
+  `scripts/onset_aligner.py`) places every phoneme of the known lyrics and is the primary
+  onset; the gate's energy detector is the cross-check. The offset between their definitions
+  is measured on every run from the stop and fricative words, readings that disagree are
+  flagged, and takes needed is reported both for placeable and for confirmed syllables. The
+  word picker selects with the same detector the gate grades with, so without a second
+  instrument the gate partly checks the detector against itself.
 - Design and research grounding: `docs/vocal-soundcheck.md`. Tests: `scripts/test_soundcheck.py`
-  (synthetic takes with known offsets, so every reported number has an exact expected answer).
+  (synthetic takes with known offsets and a fake aligner, so every reported number has an exact expected answer).
 
 ### Fixed — a file where the journal directory should be is named as the cause
 - When the practice journal's path was a file, the directory check passed (`existsSync` is true

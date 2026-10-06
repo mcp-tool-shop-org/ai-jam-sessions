@@ -41,70 +41,70 @@ sits on two of each. No two neighbours share a group.
 The phrase is an ordinary score clock (`ai-jam-sessions/score-clock/v1`), so
 `export_soulx_target.py` and `soulx_take.py` render it unchanged.
 
-## Measuring the detector against the ear
+## Two instruments, no hand calibration
 
-The word picker chooses takes with the same detector the gate then grades with.
-Without an independent reference the gate partly checks the detector against
-itself. Automatic onset detection is weakest on singing (finding 5), so the
-calibration phrase is hand-marked once per voice and backend:
+The word picker selects takes with the same energy detector the gate then grades
+with, so on its own the gate partly checks the detector against itself. A first
+version measured the detector against vowel onsets marked by ear, once per voice.
+The Director rejected it: anything calibrated by hand has to be redone whenever the
+voice, the backend or the song changes. The professional answer is two
+instruments of different kinds, one of them validated once against annotated
+singing:
 
-1. `soundcheck.py label-page` writes one self-contained HTML file with the takes
-   embedded (page template: `scripts/soundcheck_label.html`). **Neither the score
-   time nor the detector's answer is shown**, so neither can pull the ear.
-2. Each word gets two views: the whole word for a rough click, and a ±80 ms
-   close-up (wideband spectrogram over the waveform) where the regular cycles of
-   the vowel can be seen starting. A playhead moves while audio plays.
-3. Two listening aids, because a picture is not how an ear finds a boundary:
-   - **Up to / from the mark** play the 0.4 s before the mark (it should hold the
-     consonant and no vowel) and the 0.4 s after it (it should start on the vowel),
-     at 1×, ½× or ¼× speed, with 3 ms fades so a cut never clicks.
-   - **Help me find it** is gating by bisection. The page plays the word from a cut
-     point and asks whether the clip starts before the vowel or already inside it.
-     Each answer halves the range; at 6 ms the midpoint becomes the mark (about 7
-     answers). This suits vowel-first words, where there is no consonant to see.
-4. Nudge with the arrow keys, mark "can't tell" where it is unclear. Marks save in
-   the browser as you go. `?test` on the URL keeps separate storage, so checking
-   the page never touches real marks.
-5. Serve the folder over localhost (`python -m http.server --bind 127.0.0.1`):
-   some browsers refuse `file://` pages.
-6. `soundcheck.py detector-error` compares the two and reports the mean, spread
-   and maximum of detector minus ear, and the *effective* gate:
-   40 ms − (|mean| + 2 × spread).
+| Instrument | What it reads | Role |
+|---|---|---|
+| **Singing forced aligner** (`onset_aligner.py`, HubertFA, ONNX) | The lyrics are known, so every phoneme is placed; the vowel onset is where the word's first vowel phoneme begins | Primary |
+| **Energy detector** (`vocal_clock.measure_events`) | Where the vowel band's energy crosses half its peak | Cross-check, and what the picker places clips by today |
+
+- **The offset between them is measured, not assumed.** The detector reads a little
+  later by definition: half-way up the rise, against the phoneme boundary. Each run
+  takes the median gap on stop and fricative words, where both should work, and
+  judges agreement after removing it.
+- **Agreement within ±20 ms is trusted; anything else is flagged** as `disagree`,
+  `aligner-only`, `detector-only` or `neither`. The ±20 ms is **provisional** until the
+  aligner is validated against hand-annotated singing.
+- **Takes needed** is reported both ways: syllables the detector can place, and
+  placements both instruments confirm.
+
+The aligner runs from its own environment (`E:/AI/HubertFA`; model v0.0.7 under
+`E:/AI-Models/HubertFA`). Its frames are 10 ms, and it hears through a Chinese HuBERT
+encoder, with English through its bundled CMU dictionary. Its accuracy on English
+singing is a validation question, not an assumption. The validation runs privately
+on human-annotated corpora, and no figures from them are published until their
+licences are settled (Director, 2026-10-06).
 
 ## First run: America the Beautiful, SoulX-Singer, 2026-10-06
 
 Three takes of the calibration phrase at 80 BPM and MIDI 69 (A4), the exemplar's
-own prompt voice (`en_prompt`). Receipt:
+own prompt voice (`en_prompt`), measured with both instruments. Receipt:
 [`scores/receipts/america-the-beautiful/soundcheck.receipt.json`](../scores/receipts/america-the-beautiful/soundcheck.receipt.json).
 
-| Group | Dated | Clear onset | Mean error | Spread | Raw within 40 ms |
-|---|---|---|---|---|---|
-| none (vowel first) | 8/12 | 2/12 | −55 ms | 149 ms | 0/12 |
-| stop | 11/12 | 11/12 | +56 ms | 83 ms | 5/12 |
-| fricative | 12/12 | 11/12 | +67 ms | 64 ms | 5/12 |
-| sonorant | 12/12 | 4/12 | −34 ms | 97 ms | 8/12 |
+| Group | Aligner dated | Detector dated | Agree | Median gap | Primary mean | Spread |
+|---|---|---|---|---|---|---|
+| none (vowel first) | 12/12 | 8/12 | 1/8 | 79 ms | −62 ms | 72 ms |
+| stop | 12/12 | 11/12 | 11/11 | 2.5 ms | +51 ms | 82 ms |
+| fricative | 12/12 | 12/12 | 10/12 | 3.6 ms | +47 ms | 33 ms |
+| sonorant | 12/12 | 12/12 | 7/12 | 18.7 ms | +17 ms | 29 ms |
 
-- **Takes needed: 4.** That is how many the word picker needs for every one of the
-  song's 14 syllables to have a datable vowel, at 95 % confidence. It is exactly the
-  number of takes the exemplar was built from when it passed. Six are needed if every
-  syllable must have a *clear* onset, and fourteen if placement were not there
-  (raw timing within 40 ms).
-- **What usable means.** The picker moves each clip so its vowel lands on the clock
-  (`repin_words`), so raw offsets do not fail the gate. A syllable is usable when its
-  vowel can be dated, and preferred when the onset is clear (a dip of 12 dB or more).
-  Raw offsets are still reported, as the consonant lead and the size of the shift:
-  79 ms on average, 274 ms at most here.
-- **Consonant lead.** Stops and fricatives land late, as the consonant pushes the vowel
-  back. Every group scatters far beyond half the gate, so nothing is corrected and
-  selection stays the tool (finding 7).
-- **The risk is the vowel-first word.** "on" was never dated in three takes, and the
-  vowel-first and sonorant words are mostly unclear: a legato voice blurs into the
-  vowel with no dip before it.
-- **Readings to settle by ear.** Several vowel-first words read 150–234 ms *early*
-  ("all", "eye"), which is implausible for a vowel. The hand marks will show whether
-  the detector dated the previous syllable's tail.
+- **The instruments agree on clean consonants.** The detector reads +11.7 ms from the
+  aligner by definition (measured over 23 stop and fricative syllables). After that,
+  the median gap is 2.5–3.6 ms.
+- **The aligner dates every vowel,** including "on", which the detector never found. On
+  "oh", sung from silence, the aligner sits at the note while the detector reads
+  93–138 ms late, waiting for half the peak of a slow swell.
+- **Both instruments put "all" early** (aligner −121 to −191 ms). SoulX really slides in
+  from "key"; it is not a measuring error.
+- **Disagreements cluster where they were expected**: vowel-first and sonorant words,
+  plus three detector outliers ("row" −274 ms, "zoo" +234 ms, "few" against the
+  aligner's +85 ms). They are flagged, not trusted.
+- **Takes needed: 4** for every syllable to be placeable, which is the number the exemplar
+  passed with. **7** if every placement must be confirmed by both instruments.
+- **Timing is still a footprint, not an offset.** With the aligner as primary the spread
+  narrows (sonorants 97 → 29 ms, fricatives 64 → 33 ms, once the detector's outliers
+  are gone). Every group is still beyond half the gate, so nothing is corrected and the
+  picker's placement stays the tool (finding 7).
 
-### A detector defect found on the way
+### A detector defect found on the way (fixed in #70)
 
 `vocal_clock.rise_onset` calls a window silent only when its envelope peak is exactly
 zero. A near-silent window, from band-filter ringing or a noise floor, is dated as a
@@ -145,14 +145,8 @@ marked *snippet* came from search text and carry no weight on their own.
 ```bash
 PY=E:/AI/SoulX-Singer/.venv/Scripts/python
 $PY scripts/soundcheck.py clock  --song scores/america-the-beautiful.score-clock.v1.json --out tmp/soundcheck/america/clock.json
-$PY scripts/soundcheck.py render --clock tmp/soundcheck/america/clock.json --takes 3 --out-dir tmp/soundcheck/america \
-    --prompt-wav E:/AI/SoulX-Singer/example/audio/en_prompt.mp3 --prompt-meta E:/AI/SoulX-Singer/example/audio/en_prompt.json
-$PY scripts/soundcheck.py analyze --clock tmp/soundcheck/america/clock.json --takes "tmp/soundcheck/america/take-*/take-48k.wav" \
-    --receipt tmp/soundcheck/america/soundcheck.json
-$PY scripts/soundcheck.py label-page --clock tmp/soundcheck/america/clock.json --takes "tmp/soundcheck/america/take-*/take-48k.wav" \
-    --out tmp/soundcheck/america/label.html
-$PY scripts/soundcheck.py detector-error --clock tmp/soundcheck/america/clock.json --takes "tmp/soundcheck/america/take-*/take-48k.wav" \
-    --labels soundcheck-labels.json --receipt tmp/soundcheck/america/detector-error.json
+$PY scripts/soundcheck.py render --clock tmp/soundcheck/america/clock.json --takes 3 --out-dir tmp/soundcheck/america     --prompt-wav E:/AI/SoulX-Singer/example/audio/en_prompt.mp3 --prompt-meta E:/AI/SoulX-Singer/example/audio/en_prompt.json
+$PY scripts/soundcheck.py analyze --clock tmp/soundcheck/america/clock.json --takes "tmp/soundcheck/america/take-*/take-48k.wav"     --aligner --receipt tmp/soundcheck/america/soundcheck.json
 $PY -m pytest scripts/test_soundcheck.py -q
 ```
 

@@ -3,46 +3,44 @@
 
 The same voice, backend and prompt sing a short calibration phrase several times
 at the SONG's tempo, before the song is rendered. Every syllable's vowel onset is
-dated with the gate's own instrument (vocal_clock.measure_events), so the sound
-check measures exactly what the 40 ms gate will later judge. It reports:
+measured with two instruments of different kinds:
 
-  * bias and scatter per consonant group (none / stop / fricative / sonorant);
-  * whether a group's lead is consistent enough to correct (most will not be:
-    SoulX placement is random between renders, docs/vocal-clock.md);
-  * short-note vs held-note risk at the song's tempo;
-  * how many takes the song needs so EVERY syllable has at least one the word
-    picker can use;
-  * the onset detector's real error, against vowel onsets marked by hand.
+  * a singing forced aligner (onset_aligner.py, HubertFA): the lyrics are known,
+    so every phoneme is placed and the vowel onset is where the vowel phoneme
+    begins. This is the primary instrument;
+  * the gate's own energy detector (vocal_clock.measure_events): where the
+    vowel band's energy rises through half its peak. This is the cross-check,
+    and it is also what the word picker uses to place clips today.
 
-What "usable" means comes from the picker itself (vocal_clock.repin_words). It
-MOVES each word clip so its vowel lands on the clock, so a take's raw offset is
-not what fails the gate; a syllable is usable when its vowel can be dated, and
-preferred when the onset is clear (a dip of DIP_CLEAR_DB or more before it). The
-raw offsets are still reported: they are the consonant lead and the size of the
-shift placement has to make.
+Where they agree the reading is trusted; where they disagree it is flagged. The
+detector reads a little later than the aligner by definition (half-way up the
+rise, against the phoneme boundary), so agreement is judged after that offset,
+which is MEASURED on every run from the clean-consonant words, never assumed.
+The agreement tolerance is provisional until the aligner is validated against
+hand-annotated singing (docs/vocal-soundcheck.md). Nothing is calibrated per song
+or per voice by hand.
 
-The detector measurement exists because the word picker selects takes with the same
-detector the gate then grades with. Without an independent reference the gate
-partly checks the detector against itself; the hand-marked calibration phrase
-is that reference (docs/vocal-soundcheck.md, finding 5).
+It reports bias and scatter per consonant group, held vs short notes, the
+placement shift, agreement between the instruments, and how many takes the song
+needs so EVERY syllable has at least one usable take.
 
-    python scripts/soundcheck.py clock  --song scores/america-the-beautiful.score-clock.v1.json --out tmp/soundcheck/america/clock.json
-    python scripts/soundcheck.py render --clock tmp/soundcheck/america/clock.json --takes 3 --out-dir tmp/soundcheck/america \\
+"Usable" comes from the picker itself (vocal_clock.repin_words): it MOVES each
+word clip so its vowel lands on the clock, so a take's raw offset is not what
+fails the gate. A syllable is placeable when the detector dates its vowel, and
+trustworthy when the aligner confirms that date.
+
+    python scripts/soundcheck.py clock   --song scores/america-the-beautiful.score-clock.v1.json --out tmp/soundcheck/america/clock.json
+    python scripts/soundcheck.py render  --clock tmp/soundcheck/america/clock.json --takes 3 --out-dir tmp/soundcheck/america \\
         --prompt-wav E:/AI/SoulX-Singer/example/audio/en_prompt.mp3 --prompt-meta E:/AI/SoulX-Singer/example/audio/en_prompt.json
-    python scripts/soundcheck.py analyze --clock tmp/soundcheck/america/clock.json --takes tmp/soundcheck/america/take-*/take-48k.wav \\
-        --song scores/america-the-beautiful.score-clock.v1.json --receipt tmp/soundcheck/america/soundcheck.json
-    python scripts/soundcheck.py label-page --clock tmp/soundcheck/america/clock.json --takes tmp/soundcheck/america/take-*/take-48k.wav \\
-        --out tmp/soundcheck/america/label.html
-    python scripts/soundcheck.py detector-error --clock tmp/soundcheck/america/clock.json --takes tmp/soundcheck/america/take-*/take-48k.wav \\
-        --labels soundcheck-labels.json --receipt tmp/soundcheck/america/detector-error.json
+    python scripts/soundcheck.py analyze --clock tmp/soundcheck/america/clock.json --takes "tmp/soundcheck/america/take-*/take-48k.wav" \\
+        --aligner --receipt tmp/soundcheck/america/soundcheck.json
 
-`render` runs the SoulX venv's python (SOULX_PYTHON, else E:/AI/SoulX-Singer/.venv)
-on the local GPU. Everything else is numpy and the standard library.
+`render` runs the SoulX venv's python on the local GPU; `--aligner` runs HubertFA in
+its own environment (onset_aligner.py). Everything else is numpy and the standard library.
 """
 from __future__ import annotations
 
 import argparse
-import base64
 import glob
 import json
 import math
@@ -79,6 +77,15 @@ PHRASE = ["oh", "day", "see", "low", "key", "all", "may", "few",
 # from zero, a spread at most half the gate, and the same sign in every take.
 CORRECT_MIN_BIAS_MS = 10.0
 CORRECT_MAX_SD_MS = GATE_MS / 2
+
+# The two instruments agree when the detector sits within this of the aligner,
+# after the measured definitional offset. PROVISIONAL until the aligner is
+# validated against hand-annotated singing; the first run on SoulX (2026-10-06)
+# put 21 of 23 clean-consonant syllables within it.
+AGREE_MS = 20.0
+# Groups whose vowel follows a clean consonant: both instruments should work
+# there, so they set the offset between the two definitions.
+OFFSET_GROUPS = ("stop", "fricative")
 
 
 # ─── The calibration clock ─────────────────────────────────────────────────
@@ -138,23 +145,72 @@ def build_clock(song: dict, sample_rate: int | None = None) -> dict:
 
 # ─── Measuring ─────────────────────────────────────────────────────────────
 
-def take_errors(clock: dict, path: str) -> list[dict]:
-    """Each syllable's vowel-onset error in ms (detected minus score), dated by the gate's own instrument."""
+def _ms(t: float | None, ref: float) -> float | None:
+    return None if t is None else (float(t) - float(ref)) * 1000.0
+
+
+def take_errors(clock: dict, path: str, aligner: list[float | None] | None = None) -> list[dict]:
+    """One row per syllable: the detector's reading (the gate's own instrument) and,
+    when given, the aligner's. `error_ms` is the PRIMARY reading against the score:
+    the aligner's when it placed the vowel, else the detector's."""
     mono, sr, _ = vc.read_audio(path)
     if sr != int(clock["sample_rate"]):
         raise SystemExit(f"{path} is {sr} Hz, the clock is {clock['sample_rate']} Hz")
     rows = vc.measure_events(clock, mono, sr)
-    by_id = {e["id"]: e for e in clock["events"]}
     out = []
-    for r in rows:
-        ev = by_id[r["id"]]
-        err = None if r["t_vowel"] is None else (float(r["t_vowel"]) - float(r["t_score"])) * 1000.0
+    for k, (ev, r) in enumerate(zip(clock["events"], rows)):
+        det_ms = _ms(r["t_vowel"], r["t_score"])
+        t_aln = aligner[k] if aligner is not None else None
+        aln_ms = _ms(t_aln, r["t_score"])
         dip = r.get("dip_db")
-        out.append({"id": r["id"], "word": ev["word"], "group": ev["group"], "length": ev["length"],
-                    "t_score": r["t_score"], "t_vowel": r["t_vowel"], "error_ms": err, "reason": r["reason"],
-                    "dip_db": dip, "dated": r["t_vowel"] is not None,
-                    "clear": r["t_vowel"] is not None and dip is not None and float(dip) >= vc.DIP_CLEAR_DB})
+        out.append({
+            "id": r["id"], "word": ev["word"], "group": ev["group"], "length": ev["length"], "t_score": r["t_score"],
+            "t_vowel": r["t_vowel"], "detector_ms": det_ms, "reason": r["reason"], "dip_db": dip,
+            "t_aligner": t_aln, "aligner_ms": aln_ms,
+            "error_ms": aln_ms if aln_ms is not None else det_ms,
+            "dated": r["t_vowel"] is not None,
+            "clear": r["t_vowel"] is not None and dip is not None and float(dip) >= vc.DIP_CLEAR_DB,
+        })
     return out
+
+
+def cross_check(takes: list[list[dict]]) -> dict | None:
+    """Agreement between the detector and the aligner. The offset between the two
+    definitions is the median gap on clean-consonant words, measured here; a
+    reading agrees when it sits within AGREE_MS of the aligner after that offset.
+    Marks every row with `agree` and `status`."""
+    rows = [r for t in takes for r in t]
+    if not any(r["t_aligner"] is not None for r in rows):
+        return None
+    gaps = [r["detector_ms"] - r["aligner_ms"] for r in rows
+            if r["group"] in OFFSET_GROUPS and r["detector_ms"] is not None and r["aligner_ms"] is not None]
+    offset = statistics.median(gaps) if gaps else 0.0
+    for r in rows:
+        if r["detector_ms"] is not None and r["aligner_ms"] is not None:
+            r["gap_ms"] = round(r["detector_ms"] - r["aligner_ms"] - offset, 1)
+            r["agree"] = abs(r["gap_ms"]) <= AGREE_MS
+            r["status"] = "agree" if r["agree"] else "disagree"
+        else:
+            r["gap_ms"] = None
+            r["agree"] = False
+            r["status"] = ("aligner-only" if r["aligner_ms"] is not None else
+                           "detector-only" if r["detector_ms"] is not None else "neither")
+    per_group = {}
+    for g in GROUPS:
+        gr = [r for r in rows if r["group"] == g]
+        both = [r for r in gr if r["gap_ms"] is not None]
+        per_group[g] = {"syllables": len(gr), "aligner_dated": sum(1 for r in gr if r["aligner_ms"] is not None),
+                        "both": len(both), "agree": sum(1 for r in both if r["agree"]),
+                        "median_abs_gap_ms": round(statistics.median(abs(r["gap_ms"]) for r in both), 1) if both else None,
+                        "statuses": {s: sum(1 for r in gr if r["status"] == s) for s in
+                                     ("agree", "disagree", "aligner-only", "detector-only", "neither")}}
+    return {"offset_ms": round(offset, 1), "offset_from": f"median detector-minus-aligner over {len(gaps)} {'/'.join(OFFSET_GROUPS)} syllables",
+            "agree_ms": AGREE_MS, "agree_ms_status": "provisional: pending validation against hand-annotated singing",
+            "groups": per_group,
+            "flagged": [{"word": r["word"], "id": r["id"], "status": r["status"], "gap_ms": r["gap_ms"],
+                         "detector_ms": None if r["detector_ms"] is None else round(r["detector_ms"]),
+                         "aligner_ms": None if r["aligner_ms"] is None else round(r["aligner_ms"])}
+                        for r in rows if r["status"] != "agree"]}
 
 
 def _stats(values: list[float]) -> dict:
@@ -169,8 +225,8 @@ def _stats(values: list[float]) -> dict:
 
 
 def group_footprint(takes: list[list[dict]]) -> dict:
-    """Bias and scatter per consonant group, pooled over takes, plus per-take means
-    so 'consistent across renders' is checked, not assumed."""
+    """Bias and scatter per consonant group of the PRIMARY reading, pooled over takes,
+    plus per-take means so 'consistent across renders' is checked, not assumed."""
     out = {}
     for g in GROUPS:
         pooled, per_take = [], []
@@ -201,10 +257,14 @@ def group_footprint(takes: list[list[dict]]) -> dict:
 
 
 BASES = {
-    # the picker can place it: the vowel was dated (vocal_clock.repin_words)
+    # the picker can place it: the detector dated the vowel (vocal_clock.repin_words)
     "dated": lambda r: r["dated"],
+    # ...and the aligner confirms that date, so the placement can be trusted
+    "agreed": lambda r: r.get("agree", False),
     # ...and the picker prefers it: a clear onset
     "clear": lambda r: r["clear"],
+    # the aligner placed it (what a picker driven by the aligner would need)
+    "aligned": lambda r: r["aligner_ms"] is not None,
     # raw timing, before any placement: what a pipeline WITHOUT the picker would face
     "raw_in_gate": lambda r: r["error_ms"] is not None and abs(r["error_ms"]) <= GATE_MS,
 }
@@ -221,8 +281,8 @@ def hit_rate(takes: list[list[dict]], length: str | None = None, basis: str = "d
 
 
 def takes_needed(p: float, syllables: int, confidence: float = 0.95) -> int:
-    """Takes so that every one of `syllables` has at least one take within the gate,
-    with probability >= confidence. Union bound: each syllable may fail with at most
+    """Takes so that every one of `syllables` has at least one usable take, with
+    probability >= confidence. Union bound: each syllable may fail with at most
     (1 - confidence) / syllables, and a syllable fails only if all N takes miss,
     (1 - p)^N. (Chen et al. 2021 pass@k; takes treated as independent renders.)"""
     if not 0 < p <= 1:
@@ -248,23 +308,27 @@ def plan_takes(takes: list[list[dict]], prof: dict, basis: str, confidence: floa
             "confidence": confidence, "takes_needed": max(need) if need else None}
 
 
-def analyze(clock: dict, take_paths: list[str], song: dict | None, confidence: float = 0.95) -> dict:
-    takes = [take_errors(clock, p) for p in take_paths]
+def analyze(clock: dict, take_paths: list[str], song: dict | None, confidence: float = 0.95,
+            aligner: list[list[float | None]] | None = None) -> dict:
+    takes = [take_errors(clock, p, aligner[i] if aligner else None) for i, p in enumerate(take_paths)]
+    cross = cross_check(takes)
     prof = (clock.get("soundcheck") or {}).get("profile") or (song_profile(song) if song else None)
-    held, short = hit_rate(takes, "held"), hit_rate(takes, "short")
+    bases = [b for b in BASES if cross or b not in ("agreed", "aligned")]
     plan = plans = None
     if prof:
-        plans = {b: plan_takes(takes, prof, b, confidence) for b in BASES}
-        # The picker's own rule decides: a dated vowel is placeable.
-        plan = plans["dated"]
-    shifts = [abs(r["error_ms"]) for t in takes for r in t if r["error_ms"] is not None]
+        plans = {b: plan_takes(takes, prof, b, confidence) for b in bases}
+        # Headline: placements the aligner confirms when it ran, else what the picker can place.
+        plan = plans["agreed" if cross else "dated"]
+    shifts = [abs(r["detector_ms"]) for t in takes for r in t if r["detector_ms"] is not None]
     return {
         "schema": SCHEMA,
         "clock": clock.get("_path"),
         "takes": [{"path": p.replace("\\", "/"), "sha256": vc.sha256(p)} for p in take_paths],
         "gate_ms": GATE_MS,
+        "primary": "aligner" if cross else "detector",
         "groups": group_footprint(takes),
-        "length_risk": {"held": held, "short": short},
+        "cross_check": cross,
+        "length_risk": {"held": hit_rate(takes, "held"), "short": hit_rate(takes, "short")},
         "plan": plan,
         "plans": plans,
         # how far placement has to move a clip to put its vowel on the clock
@@ -272,68 +336,6 @@ def analyze(clock: dict, take_paths: list[str], song: dict | None, confidence: f
         "rows": takes,
         "detector": vc.detector_info(),
     }
-
-
-# ─── Detector error against hand marks ─────────────────────────────────────
-
-def detector_error(clock: dict, take_paths: list[str], labels: dict) -> dict:
-    """The onset detector against vowel onsets marked by ear. labels:
-    {"takes": {"<take path basename or index>": {"<event id>": seconds | null}}}.
-    A null mark means 'could not tell' and is left out."""
-    rows, skipped = [], 0
-    marks_by_take = labels.get("takes", {})
-    for i, path in enumerate(take_paths):
-        key_candidates = [str(i), os.path.basename(os.path.dirname(path)), os.path.basename(path), path.replace("\\", "/")]
-        marks = next((marks_by_take[k] for k in key_candidates if k in marks_by_take), None)
-        if marks is None:
-            continue
-        for r in take_errors(clock, path):
-            hand = marks.get(r["id"])
-            if hand is None or r["t_vowel"] is None:
-                skipped += 1
-                continue
-            rows.append({"take": i, "id": r["id"], "word": r["word"], "group": r["group"],
-                         "detector_minus_hand_ms": round((float(r["t_vowel"]) - float(hand)) * 1000.0, 2),
-                         "hand_minus_score_ms": round((float(hand) - float(r["t_score"])) * 1000.0, 2)})
-    if not rows:
-        raise SystemExit("no take had both a hand mark and a detected onset: check the labels file's take keys")
-    diffs = [r["detector_minus_hand_ms"] for r in rows]
-    s = _stats(diffs)
-    margin = abs(s["mean_ms"]) + 2 * s["sd_ms"]
-    return {
-        "schema": SCHEMA + "#detector-error",
-        "compared": len(rows), "skipped": skipped,
-        "detector_minus_hand": s,
-        "within_10_ms": sum(1 for d in diffs if abs(d) <= 10),
-        "within_20_ms": sum(1 for d in diffs if abs(d) <= 20),
-        "per_group": {g: _stats([r["detector_minus_hand_ms"] for r in rows if r["group"] == g]) for g in GROUPS},
-        # What the 40 ms gate can promise about the TRUE onset, given how far the
-        # detector strays from the ear (bias plus two spreads).
-        "effective_gate_ms": round(GATE_MS - margin, 1),
-        "rows": rows,
-        "detector": vc.detector_info(),
-    }
-
-
-# ─── Hand-labelling page ───────────────────────────────────────────────────
-
-# The marking page lives beside this script so it can be edited as HTML.
-LABEL_TEMPLATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "soundcheck_label.html")
-
-
-def label_page(clock: dict, take_paths: list[str]) -> str:
-    """One self-contained HTML file: the takes are embedded, so it opens straight
-    from disk. Nothing the detector found is in it."""
-    takes = []
-    for p in take_paths:
-        with open(p, "rb") as fh:
-            takes.append({"key": os.path.basename(os.path.dirname(p)) or os.path.basename(p),
-                          "wav_b64": base64.b64encode(fh.read()).decode("ascii")})
-    data = {"clock_id": clock.get("song_id"),
-            "events": [{"id": e["id"], "word": e["word"], "t_sec": e["t_sec"]} for e in clock["events"]],
-            "takes": takes}
-    with open(LABEL_TEMPLATE, encoding="utf-8") as fh:
-        return fh.read().replace("__DATA__", json.dumps(data))
 
 
 # ─── Rendering (the one step that needs the GPU) ───────────────────────────
@@ -371,7 +373,7 @@ def _expand(patterns: list[str]) -> list[str]:
 
 
 def print_report(r: dict) -> None:
-    print(f"Sound check over {len(r['takes'])} take(s), gate ±{r['gate_ms']:.0f} ms")
+    print(f"Sound check over {len(r['takes'])} take(s), gate ±{r['gate_ms']:.0f} ms, primary instrument: {r['primary']}")
     print(f"{'group':<10} {'dated':>6} {'clear':>6} {'mean':>8} {'sd':>7} {'raw in gate':>12}  correction")
     for g, s in r["groups"].items():
         mean = "-" if s["mean_ms"] is None else f"{s['mean_ms']:+.1f}"
@@ -379,16 +381,26 @@ def print_report(r: dict) -> None:
         corr = f"{s['correction_ms']:+.1f} ms" if s["correction_ms"] is not None else s["why"]
         print(f"{g:<10} {s['dated']:>3}/{s['syllables']:<2} {s['clear']:>3}/{s['syllables']:<2} {mean:>8} {sd:>7} "
               f"{s['within_gate']:>8}/{s['syllables']:<3}  {corr}")
-    for k, v in r["length_risk"].items():
-        print(f"{k:<6} notes: {v['hits']}/{v['n']} dated (smoothed p = {v['p']:.3f})")
+    c = r["cross_check"]
+    if c:
+        print(f"Cross-check: detector reads {c['offset_ms']:+.1f} ms from the aligner by definition ({c['offset_from']});"
+              f" agree within ±{c['agree_ms']:.0f} ms ({c['agree_ms_status']})")
+        for g, s in c["groups"].items():
+            gap = "-" if s["median_abs_gap_ms"] is None else f"{s['median_abs_gap_ms']:.1f}"
+            print(f"  {g:<10} aligner dated {s['aligner_dated']}/{s['syllables']}, agree {s['agree']}/{s['both']}, median |gap| {gap} ms")
+        for f in c["flagged"]:
+            print(f"  flag {f['word']:<5} {f['status']:<13} detector {f['detector_ms']} ms, aligner {f['aligner_ms']} ms, gap {f['gap_ms']}")
     sh = r["shift_ms"]
     if sh["n"]:
         print(f"Placement shift: mean {sh['mean_ms']:.0f} ms, max {sh['max_abs_ms']:.0f} ms")
     if r["plans"]:
         p = r["plans"]
-        print(f"Takes needed for {p['dated']['song_syllables']} syllables at {p['dated']['confidence']:.0%} confidence: "
-              f"{p['dated']['takes_needed']} (picker can place: vowel dated); {p['clear']['takes_needed']} for clear onsets; "
-              f"{p['raw_in_gate']['takes_needed']} without placement")
+        line = f"Takes needed for {p['dated']['song_syllables']} syllables at {p['dated']['confidence']:.0%} confidence: "
+        parts = [f"{p['dated']['takes_needed']} placeable (vowel dated)"]
+        if "agreed" in p:
+            parts.insert(0, f"{p['agreed']['takes_needed']} confirmed by both instruments")
+        parts += [f"{p['clear']['takes_needed']} with clear onsets", f"{p['raw_in_gate']['takes_needed']} without placement"]
+        print(line + "; ".join(parts))
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -399,9 +411,8 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--out-dir", required=True); s.add_argument("--prompt-wav", required=True); s.add_argument("--prompt-meta", required=True)
     s = sub.add_parser("analyze"); s.add_argument("--clock", required=True); s.add_argument("--takes", nargs="+", required=True)
     s.add_argument("--song"); s.add_argument("--confidence", type=float, default=0.95); s.add_argument("--receipt")
-    s = sub.add_parser("label-page"); s.add_argument("--clock", required=True); s.add_argument("--takes", nargs="+", required=True); s.add_argument("--out", required=True)
-    s = sub.add_parser("detector-error"); s.add_argument("--clock", required=True); s.add_argument("--takes", nargs="+", required=True)
-    s.add_argument("--labels", required=True); s.add_argument("--receipt")
+    s.add_argument("--aligner", action="store_true", help="measure with the singing forced aligner too (onset_aligner.py)")
+    s.add_argument("--work-dir", help="where the aligner's input and output go (default: beside the clock)")
     a = ap.parse_args(argv)
 
     if a.cmd == "clock":
@@ -418,23 +429,13 @@ def main(argv: list[str] | None = None) -> int:
             print(f"take -> {p}")
         return 0
     takes = _expand(a.takes)
-    if a.cmd == "analyze":
-        r = analyze(clock, takes, vc.load_clock(a.song) if a.song else None, a.confidence)
-        print_report(r)
-        if a.receipt:
-            json.dump(r, open(a.receipt, "w", encoding="utf-8"), indent=2)
-            print(f"receipt -> {a.receipt}")
-        return 0
-    if a.cmd == "label-page":
-        os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
-        open(a.out, "w", encoding="utf-8").write(label_page(clock, takes))
-        print(f"label page -> {a.out}")
-        return 0
-    r = detector_error(clock, takes, json.load(open(a.labels, encoding="utf-8")))
-    s = r["detector_minus_hand"]
-    print(f"Detector vs hand over {r['compared']} onsets ({r['skipped']} skipped): mean {s['mean_ms']:+.1f} ms, "
-          f"sd {s['sd_ms']:.1f} ms, max {s['max_abs_ms']:.1f} ms; within 10 ms {r['within_10_ms']}, within 20 ms {r['within_20_ms']}")
-    print(f"The 40 ms gate promises about ±{r['effective_gate_ms']} ms on the true onset.")
+    aligner = None
+    if a.aligner:
+        import onset_aligner
+        aligner = onset_aligner.align(takes, [e["word"] for e in clock["events"]],
+                                      a.work_dir or os.path.dirname(os.path.abspath(a.clock)))
+    r = analyze(clock, takes, vc.load_clock(a.song) if a.song else None, a.confidence, aligner)
+    print_report(r)
     if a.receipt:
         json.dump(r, open(a.receipt, "w", encoding="utf-8"), indent=2)
         print(f"receipt -> {a.receipt}")

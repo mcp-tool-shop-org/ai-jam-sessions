@@ -16,35 +16,36 @@
     }
   ],
   "gate_ms": 40.0,
+  "primary": "aligner",
   "groups": {
     "none": {
-      "n": 8,
-      "mean_ms": -55.29,
-      "sd_ms": 149.23,
-      "max_abs_ms": 233.89,
-      "missed": 4,
+      "n": 12,
+      "mean_ms": -62.22,
+      "sd_ms": 71.53,
+      "max_abs_ms": 190.56,
+      "missed": 0,
       "per_take_mean_ms": [
-        -108.08,
-        13.78,
-        -48.56
+        -91.41,
+        -36.2,
+        -59.06
       ],
       "dated": 8,
       "clear": 2,
       "syllables": 12,
-      "within_gate": 0,
+      "within_gate": 7,
       "correction_ms": null,
       "why": "not corrected: spread over 20 ms"
     },
     "stop": {
-      "n": 11,
-      "mean_ms": 56.22,
-      "sd_ms": 82.71,
-      "max_abs_ms": 253.97,
-      "missed": 1,
+      "n": 12,
+      "mean_ms": 50.65,
+      "sd_ms": 82.27,
+      "max_abs_ms": 242.28,
+      "missed": 0,
       "per_take_mean_ms": [
-        56.3,
-        95.75,
-        3.42
+        49.34,
+        81.54,
+        21.08
       ],
       "dated": 11,
       "clear": 11,
@@ -55,40 +56,258 @@
     },
     "fricative": {
       "n": 12,
-      "mean_ms": 66.63,
-      "sd_ms": 64.13,
-      "max_abs_ms": 234.26,
+      "mean_ms": 47.43,
+      "sd_ms": 33.03,
+      "max_abs_ms": 96.19,
       "missed": 0,
       "per_take_mean_ms": [
-        39.56,
-        86.3,
-        74.03
+        29.99,
+        32.66,
+        79.64
       ],
       "dated": 12,
       "clear": 11,
       "syllables": 12,
-      "within_gate": 5,
+      "within_gate": 6,
       "correction_ms": null,
       "why": "not corrected: spread over 20 ms"
     },
     "sonorant": {
       "n": 12,
-      "mean_ms": -33.8,
-      "sd_ms": 96.7,
-      "max_abs_ms": 273.55,
+      "mean_ms": 16.97,
+      "sd_ms": 28.96,
+      "max_abs_ms": 56.27,
       "missed": 0,
       "per_take_mean_ms": [
-        -90.05,
-        -29.19,
-        17.85
+        20.79,
+        17.39,
+        12.72
       ],
       "dated": 12,
       "clear": 4,
       "syllables": 12,
-      "within_gate": 8,
+      "within_gate": 9,
       "correction_ms": null,
       "why": "not corrected: spread over 20 ms"
     }
+  },
+  "cross_check": {
+    "offset_ms": 11.7,
+    "offset_from": "median detector-minus-aligner over 23 stop/fricative syllables",
+    "agree_ms": 20.0,
+    "agree_ms_status": "provisional: pending validation against hand-annotated singing",
+    "groups": {
+      "none": {
+        "syllables": 12,
+        "aligner_dated": 12,
+        "both": 8,
+        "agree": 1,
+        "median_abs_gap_ms": 79.2,
+        "statuses": {
+          "agree": 1,
+          "disagree": 7,
+          "aligner-only": 4,
+          "detector-only": 0,
+          "neither": 0
+        }
+      },
+      "stop": {
+        "syllables": 12,
+        "aligner_dated": 12,
+        "both": 11,
+        "agree": 11,
+        "median_abs_gap_ms": 2.5,
+        "statuses": {
+          "agree": 11,
+          "disagree": 0,
+          "aligner-only": 1,
+          "detector-only": 0,
+          "neither": 0
+        }
+      },
+      "fricative": {
+        "syllables": 12,
+        "aligner_dated": 12,
+        "both": 12,
+        "agree": 10,
+        "median_abs_gap_ms": 3.6,
+        "statuses": {
+          "agree": 10,
+          "disagree": 2,
+          "aligner-only": 0,
+          "detector-only": 0,
+          "neither": 0
+        }
+      },
+      "sonorant": {
+        "syllables": 12,
+        "aligner_dated": 12,
+        "both": 12,
+        "agree": 7,
+        "median_abs_gap_ms": 18.7,
+        "statuses": {
+          "agree": 7,
+          "disagree": 5,
+          "aligner-only": 0,
+          "detector-only": 0,
+          "neither": 0
+        }
+      }
+    },
+    "flagged": [
+      {
+        "word": "oh",
+        "id": "s00",
+        "status": "disagree",
+        "gap_ms": 168.2,
+        "detector_ms": 138,
+        "aligner_ms": -42
+      },
+      {
+        "word": "low",
+        "id": "s03",
+        "status": "disagree",
+        "gap_ms": -142.6,
+        "detector_ms": -108,
+        "aligner_ms": 23
+      },
+      {
+        "word": "all",
+        "id": "s05",
+        "status": "disagree",
+        "gap_ms": -49.0,
+        "detector_ms": -228,
+        "aligner_ms": -191
+      },
+      {
+        "word": "new",
+        "id": "s08",
+        "status": "disagree",
+        "gap_ms": -26.3,
+        "detector_ms": 33,
+        "aligner_ms": 48
+      },
+      {
+        "word": "eye",
+        "id": "s11",
+        "status": "disagree",
+        "gap_ms": -108.8,
+        "detector_ms": -234,
+        "aligner_ms": -137
+      },
+      {
+        "word": "row",
+        "id": "s13",
+        "status": "disagree",
+        "gap_ms": -304.7,
+        "detector_ms": -274,
+        "aligner_ms": 19
+      },
+      {
+        "word": "on",
+        "id": "s14",
+        "status": "aligner-only",
+        "gap_ms": null,
+        "detector_ms": null,
+        "aligner_ms": 4
+      },
+      {
+        "word": "oh",
+        "id": "s00",
+        "status": "disagree",
+        "gap_ms": 78.3,
+        "detector_ms": 100,
+        "aligner_ms": 10
+      },
+      {
+        "word": "low",
+        "id": "s03",
+        "status": "disagree",
+        "gap_ms": -185.2,
+        "detector_ms": -151,
+        "aligner_ms": 23
+      },
+      {
+        "word": "all",
+        "id": "s05",
+        "status": "aligner-only",
+        "gap_ms": null,
+        "detector_ms": null,
+        "aligner_ms": -121
+      },
+      {
+        "word": "new",
+        "id": "s08",
+        "status": "disagree",
+        "gap_ms": -23.0,
+        "detector_ms": 26,
+        "aligner_ms": 38
+      },
+      {
+        "word": "eye",
+        "id": "s11",
+        "status": "disagree",
+        "gap_ms": -67.0,
+        "detector_ms": -72,
+        "aligner_ms": -17
+      },
+      {
+        "word": "zoo",
+        "id": "s12",
+        "status": "disagree",
+        "gap_ms": 184.8,
+        "detector_ms": 234,
+        "aligner_ms": 38
+      },
+      {
+        "word": "on",
+        "id": "s14",
+        "status": "aligner-only",
+        "gap_ms": null,
+        "detector_ms": null,
+        "aligner_ms": -17
+      },
+      {
+        "word": "oh",
+        "id": "s00",
+        "status": "disagree",
+        "gap_ms": 114.1,
+        "detector_ms": 93,
+        "aligner_ms": -32
+      },
+      {
+        "word": "key",
+        "id": "s04",
+        "status": "aligner-only",
+        "gap_ms": null,
+        "detector_ms": null,
+        "aligner_ms": 116
+      },
+      {
+        "word": "few",
+        "id": "s07",
+        "status": "disagree",
+        "gap_ms": -81.3,
+        "detector_ms": 15,
+        "aligner_ms": 85
+      },
+      {
+        "word": "eye",
+        "id": "s11",
+        "status": "disagree",
+        "gap_ms": -80.1,
+        "detector_ms": -85,
+        "aligner_ms": -17
+      },
+      {
+        "word": "on",
+        "id": "s14",
+        "status": "aligner-only",
+        "gap_ms": null,
+        "detector_ms": null,
+        "aligner_ms": -17
+      }
+    ]
   },
   "length_risk": {
     "held": {
@@ -107,12 +326,12 @@
     }
   },
   "plan": {
-    "basis": "dated",
+    "basis": "agreed",
     "song_syllables": 14,
     "held": 14,
     "short": 0,
     "confidence": 0.95,
-    "takes_needed": 4
+    "takes_needed": 7
   },
   "plans": {
     "dated": {
@@ -123,6 +342,14 @@
       "confidence": 0.95,
       "takes_needed": 4
     },
+    "agreed": {
+      "basis": "agreed",
+      "song_syllables": 14,
+      "held": 14,
+      "short": 0,
+      "confidence": 0.95,
+      "takes_needed": 7
+    },
     "clear": {
       "basis": "clear",
       "song_syllables": 14,
@@ -131,13 +358,21 @@
       "confidence": 0.95,
       "takes_needed": 6
     },
+    "aligned": {
+      "basis": "aligned",
+      "song_syllables": 14,
+      "held": 14,
+      "short": 0,
+      "confidence": 0.95,
+      "takes_needed": 2
+    },
     "raw_in_gate": {
       "basis": "raw_in_gate",
       "song_syllables": 14,
       "held": 14,
       "short": 0,
       "confidence": 0.95,
-      "takes_needed": 14
+      "takes_needed": 7
     }
   },
   "shift_ms": {
@@ -155,11 +390,17 @@
         "length": "held",
         "t_score": 3.0,
         "t_vowel": 3.137552307444112,
-        "error_ms": 137.55230744411185,
+        "detector_ms": 137.55230744411185,
         "reason": "ok",
         "dip_db": 10.0,
+        "t_aligner": 2.9576150800287726,
+        "aligner_ms": -42.3849199712274,
+        "error_ms": -42.3849199712274,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": 168.2,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s01",
@@ -168,11 +409,17 @@
         "length": "short",
         "t_score": 3.75,
         "t_vowel": 3.7693748376315366,
-        "error_ms": 19.37483763153658,
+        "detector_ms": 19.37483763153658,
         "reason": "ok",
         "dip_db": 50.0,
+        "t_aligner": 3.767555490732193,
+        "aligner_ms": 17.55549073219287,
+        "error_ms": 17.55549073219287,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -9.9,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s02",
@@ -181,11 +428,17 @@
         "length": "held",
         "t_score": 4.125,
         "t_vowel": 4.203498934041362,
-        "error_ms": 78.49893404136222,
+        "detector_ms": 78.49893404136222,
         "reason": "ok",
         "dip_db": 38.0,
+        "t_aligner": 4.188510953783989,
+        "aligner_ms": 63.51095378398863,
+        "error_ms": 63.51095378398863,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 3.3,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s03",
@@ -194,11 +447,17 @@
         "length": "short",
         "t_score": 4.875,
         "t_vowel": 4.767137096091298,
-        "error_ms": -107.86290390870157,
+        "detector_ms": -107.86290390870157,
         "reason": "ok",
         "dip_db": 8.1,
+        "t_aligner": 4.898087110519409,
+        "aligner_ms": 23.087110519409038,
+        "error_ms": 23.087110519409038,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -142.6,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s04",
@@ -207,11 +466,17 @@
         "length": "held",
         "t_score": 5.25,
         "t_vowel": 5.355039288891632,
-        "error_ms": 105.03928889163205,
+        "detector_ms": 105.03928889163205,
         "reason": "ok",
         "dip_db": 43.8,
+        "t_aligner": 5.346545819044113,
+        "aligner_ms": 96.5458190441133,
+        "error_ms": 96.5458190441133,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -3.2,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s05",
@@ -220,11 +485,17 @@
         "length": "short",
         "t_score": 6.0,
         "t_vowel": 5.77211344678488,
-        "error_ms": -227.88655321511976,
+        "detector_ms": -227.88655321511976,
         "reason": "ok",
         "dip_db": 6.6,
+        "t_aligner": 5.80943754836917,
+        "aligner_ms": -190.56245163083042,
+        "error_ms": -190.56245163083042,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -49.0,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s06",
@@ -233,11 +504,17 @@
         "length": "held",
         "t_score": 6.375,
         "t_vowel": 6.362778009156533,
-        "error_ms": -12.22199084346709,
+        "detector_ms": -12.22199084346709,
         "reason": "ok",
         "dip_db": 14.0,
+        "t_aligner": 6.367586638182402,
+        "aligner_ms": -7.4133618175977745,
+        "error_ms": -7.4133618175977745,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -16.5,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s07",
@@ -246,11 +523,17 @@
         "length": "short",
         "t_score": 7.125,
         "t_vowel": 7.150261848013126,
-        "error_ms": 25.26184801312592,
+        "detector_ms": 25.26184801312592,
         "reason": "ok",
         "dip_db": 32.2,
+        "t_aligner": 7.148414958566427,
+        "aligner_ms": 23.414958566426947,
+        "error_ms": 23.414958566426947,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -9.8,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s08",
@@ -259,11 +542,17 @@
         "length": "held",
         "t_score": 7.5,
         "t_vowel": 7.533433735786681,
-        "error_ms": 33.43373578668096,
+        "detector_ms": 33.43373578668096,
         "reason": "ok",
         "dip_db": 13.1,
+        "t_aligner": 7.548048149347306,
+        "aligner_ms": 48.048149347305724,
+        "error_ms": 48.048149347305724,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -26.3,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s09",
@@ -272,11 +561,17 @@
         "length": "short",
         "t_score": 8.25,
         "t_vowel": 8.256000924753835,
-        "error_ms": 6.000924753834624,
+        "detector_ms": 6.000924753834624,
         "reason": "ok",
         "dip_db": 22.5,
+        "t_aligner": 8.246521601378918,
+        "aligner_ms": -3.478398621082235,
+        "error_ms": -3.478398621082235,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -2.2,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s10",
@@ -285,11 +580,17 @@
         "length": "held",
         "t_score": 8.625,
         "t_vowel": 8.65860970792912,
-        "error_ms": 33.60970792911999,
+        "detector_ms": 33.60970792911999,
         "reason": "ok",
         "dip_db": 47.4,
+        "t_aligner": 8.64669880270958,
+        "aligner_ms": 21.698802709579468,
+        "error_ms": 21.698802709579468,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 0.2,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s11",
@@ -298,11 +599,17 @@
         "length": "short",
         "t_score": 9.375,
         "t_vowel": 9.141107867696162,
-        "error_ms": -233.89213230383808,
+        "detector_ms": -233.89213230383808,
         "reason": "ok",
         "dip_db": 8.7,
+        "t_aligner": 9.238260322660208,
+        "aligner_ms": -136.73967733979174,
+        "error_ms": -136.73967733979174,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -108.8,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s12",
@@ -311,11 +618,17 @@
         "length": "held",
         "t_score": 9.75,
         "t_vowel": 9.798463307353696,
-        "error_ms": 48.463307353696194,
+        "detector_ms": 48.463307353696194,
         "reason": "ok",
         "dip_db": 41.8,
+        "t_aligner": 9.786532134115696,
+        "aligner_ms": 36.53213411569567,
+        "error_ms": 36.53213411569567,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 0.2,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s13",
@@ -324,11 +637,17 @@
         "length": "short",
         "t_score": 10.5,
         "t_vowel": 10.22644903406889,
-        "error_ms": -273.5509659311095,
+        "detector_ms": -273.5509659311095,
         "reason": "ok",
         "dip_db": 7.8,
+        "t_aligner": 10.519455388933421,
+        "aligner_ms": 19.455388933421247,
+        "error_ms": 19.455388933421247,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -304.7,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s14",
@@ -337,11 +656,17 @@
         "length": "held",
         "t_score": 10.875,
         "t_vowel": null,
-        "error_ms": null,
+        "detector_ms": null,
         "reason": "no-rise-in-window",
         "dip_db": null,
+        "t_aligner": 10.879041952490807,
+        "aligner_ms": 4.041952490807077,
+        "error_ms": 4.041952490807077,
         "dated": false,
-        "clear": false
+        "clear": false,
+        "gap_ms": null,
+        "agree": false,
+        "status": "aligner-only"
       },
       {
         "id": "s15",
@@ -350,11 +675,17 @@
         "length": "short",
         "t_score": 11.625,
         "t_vowel": 11.692193922357028,
-        "error_ms": 67.1939223570277,
+        "detector_ms": 67.1939223570277,
         "reason": "ok",
         "dip_db": 38.8,
+        "t_aligner": 11.68655263543129,
+        "aligner_ms": 61.552635431290526,
+        "error_ms": 61.552635431290526,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -6.0,
+        "agree": true,
+        "status": "agree"
       }
     ],
     [
@@ -365,11 +696,17 @@
         "length": "held",
         "t_score": 3.0,
         "t_vowel": 3.099558969921998,
-        "error_ms": 99.55896992199786,
+        "detector_ms": 99.55896992199786,
         "reason": "ok",
         "dip_db": 27.2,
+        "t_aligner": 3.0095413491129874,
+        "aligner_ms": 9.54134911298743,
+        "error_ms": 9.54134911298743,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 78.3,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s01",
@@ -378,11 +715,17 @@
         "length": "short",
         "t_score": 3.75,
         "t_vowel": 3.771037566834809,
-        "error_ms": 21.037566834809063,
+        "detector_ms": 21.037566834809063,
         "reason": "ok",
         "dip_db": 25.8,
+        "t_aligner": 3.756894508600235,
+        "aligner_ms": 6.894508600235216,
+        "error_ms": 6.894508600235216,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 2.5,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s02",
@@ -391,11 +734,17 @@
         "length": "held",
         "t_score": 4.125,
         "t_vowel": 4.206589610750873,
-        "error_ms": 81.58961075087312,
+        "detector_ms": 81.58961075087312,
         "reason": "ok",
         "dip_db": 41.7,
+        "t_aligner": 4.196898130178452,
+        "aligner_ms": 71.89813017845204,
+        "error_ms": 71.89813017845204,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -2.0,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s03",
@@ -404,11 +753,17 @@
         "length": "short",
         "t_score": 4.875,
         "t_vowel": 4.724125703985448,
-        "error_ms": -150.87429601455239,
+        "detector_ms": -150.87429601455239,
         "reason": "ok",
         "dip_db": 7.5,
+        "t_aligner": 4.8976549208164215,
+        "aligner_ms": 22.65492081642151,
+        "error_ms": 22.65492081642151,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -185.2,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s04",
@@ -417,11 +772,17 @@
         "length": "held",
         "t_score": 5.25,
         "t_vowel": 5.357439316588895,
-        "error_ms": 107.43931658889494,
+        "detector_ms": 107.43931658889494,
         "reason": "ok",
         "dip_db": 27.7,
+        "t_aligner": 5.345809553861618,
+        "aligner_ms": 95.80955386161793,
+        "error_ms": 95.80955386161793,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -0.1,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s05",
@@ -430,11 +791,17 @@
         "length": "short",
         "t_score": 6.0,
         "t_vowel": null,
-        "error_ms": null,
+        "detector_ms": null,
         "reason": "no-rise-in-window",
         "dip_db": null,
+        "t_aligner": 5.8789913275837895,
+        "aligner_ms": -121.00867241621049,
+        "error_ms": -121.00867241621049,
         "dated": false,
-        "clear": false
+        "clear": false,
+        "gap_ms": null,
+        "agree": false,
+        "status": "aligner-only"
       },
       {
         "id": "s06",
@@ -443,11 +810,17 @@
         "length": "held",
         "t_score": 6.375,
         "t_vowel": 6.39012018899006,
-        "error_ms": 15.120188990059624,
+        "detector_ms": 15.120188990059624,
         "reason": "ok",
         "dip_db": 15.1,
+        "t_aligner": 6.385579317510128,
+        "aligner_ms": 10.579317510128305,
+        "error_ms": 10.579317510128305,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -7.1,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s07",
@@ -456,11 +829,17 @@
         "length": "short",
         "t_score": 7.125,
         "t_vowel": 7.137016183036931,
-        "error_ms": 12.016183036931416,
+        "detector_ms": 12.016183036931416,
         "reason": "ok",
         "dip_db": 45.4,
+        "t_aligner": 7.139988263621927,
+        "aligner_ms": 14.988263621926734,
+        "error_ms": 14.988263621926734,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -14.7,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s08",
@@ -469,11 +848,17 @@
         "length": "held",
         "t_score": 7.5,
         "t_vowel": 7.526289475570896,
-        "error_ms": 26.28947557089578,
+        "detector_ms": 26.28947557089578,
         "reason": "ok",
         "dip_db": 9.3,
+        "t_aligner": 7.537649001330138,
+        "aligner_ms": 37.64900133013782,
+        "error_ms": 37.64900133013782,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -23.0,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s09",
@@ -482,11 +867,17 @@
         "length": "short",
         "t_score": 8.25,
         "t_vowel": 8.267330182709575,
-        "error_ms": 17.33018270957487,
+        "detector_ms": 17.33018270957487,
         "reason": "ok",
         "dip_db": 27.2,
+        "t_aligner": 8.255955867171288,
+        "aligner_ms": 5.955867171287821,
+        "error_ms": 5.955867171287821,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -0.3,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s10",
@@ -495,11 +886,17 @@
         "length": "held",
         "t_score": 8.625,
         "t_vowel": 8.625546461231789,
-        "error_ms": 0.5464612317886974,
+        "detector_ms": 0.5464612317886974,
         "reason": "ok",
         "dip_db": 38.2,
+        "t_aligner": 8.606169519126416,
+        "aligner_ms": -18.830480873583966,
+        "error_ms": -18.830480873583966,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 7.7,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s11",
@@ -508,11 +905,17 @@
         "length": "short",
         "t_score": 9.375,
         "t_vowel": 9.303,
-        "error_ms": -71.99999999999918,
+        "detector_ms": -71.99999999999918,
         "reason": "ok",
         "dip_db": null,
+        "t_aligner": 9.35826611429453,
+        "aligner_ms": -16.733885705470186,
+        "error_ms": -16.733885705470186,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -67.0,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s12",
@@ -521,11 +924,17 @@
         "length": "held",
         "t_score": 9.75,
         "t_vowel": 9.98425657464151,
-        "error_ms": 234.25657464150973,
+        "detector_ms": 234.25657464150973,
         "reason": "ok",
         "dip_db": 8.6,
+        "t_aligner": 9.787782808989286,
+        "aligner_ms": 37.78280898928621,
+        "error_ms": 37.78280898928621,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": 184.8,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s13",
@@ -534,11 +943,17 @@
         "length": "short",
         "t_score": 10.5,
         "t_vowel": 10.492717940611765,
-        "error_ms": -7.282059388234785,
+        "detector_ms": -7.282059388234785,
         "reason": "ok",
         "dip_db": 8.6,
+        "t_aligner": 10.498683678209781,
+        "aligner_ms": -1.3163217902185664,
+        "error_ms": -1.3163217902185664,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -17.7,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s14",
@@ -547,11 +962,17 @@
         "length": "held",
         "t_score": 10.875,
         "t_vowel": null,
-        "error_ms": null,
+        "detector_ms": null,
         "reason": "no-rise-in-window",
         "dip_db": null,
+        "t_aligner": 10.858396235108376,
+        "aligner_ms": -16.60376489162374,
+        "error_ms": -16.60376489162374,
         "dated": false,
-        "clear": false
+        "clear": false,
+        "gap_ms": null,
+        "agree": false,
+        "status": "aligner-only"
       },
       {
         "id": "s15",
@@ -560,11 +981,17 @@
         "length": "short",
         "t_score": 11.625,
         "t_vowel": 11.878971047033103,
-        "error_ms": 253.9710470331027,
+        "detector_ms": 253.9710470331027,
         "reason": "ok",
         "dip_db": 37.1,
+        "t_aligner": 11.86728216290474,
+        "aligner_ms": 242.2821629047398,
+        "error_ms": 242.2821629047398,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 0.0,
+        "agree": true,
+        "status": "agree"
       }
     ],
     [
@@ -575,11 +1002,17 @@
         "length": "held",
         "t_score": 3.0,
         "t_vowel": 3.0934290619439144,
-        "error_ms": 93.42906194391443,
+        "detector_ms": 93.42906194391443,
         "reason": "ok",
         "dip_db": 13.4,
+        "t_aligner": 2.9676103918254375,
+        "aligner_ms": -32.38960817456249,
+        "error_ms": -32.38960817456249,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 114.1,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s01",
@@ -588,11 +1021,17 @@
         "length": "short",
         "t_score": 3.75,
         "t_vowel": 3.6852742775860574,
-        "error_ms": -64.72572241394259,
+        "detector_ms": -64.72572241394259,
         "reason": "ok",
         "dip_db": 66.8,
+        "t_aligner": 3.6760924738645553,
+        "aligner_ms": -73.90752613544471,
+        "error_ms": -73.90752613544471,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -2.5,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s02",
@@ -601,11 +1040,17 @@
         "length": "held",
         "t_score": 4.125,
         "t_vowel": 4.2207290539820965,
-        "error_ms": 95.72905398209653,
+        "detector_ms": 95.72905398209653,
         "reason": "ok",
         "dip_db": 39.8,
+        "t_aligner": 4.205901243984699,
+        "aligner_ms": 80.901243984699,
+        "error_ms": 80.901243984699,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 3.1,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s03",
@@ -614,11 +1059,17 @@
         "length": "short",
         "t_score": 4.875,
         "t_vowel": 4.8433178639387,
-        "error_ms": -31.682136061299992,
+        "detector_ms": -31.682136061299992,
         "reason": "ok",
         "dip_db": 7.7,
+        "t_aligner": 4.818733813464641,
+        "aligner_ms": -56.26618653535864,
+        "error_ms": -56.26618653535864,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": 12.9,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s04",
@@ -627,11 +1078,17 @@
         "length": "held",
         "t_score": 5.25,
         "t_vowel": null,
-        "error_ms": null,
+        "detector_ms": null,
         "reason": "no-rise-in-window",
         "dip_db": null,
+        "t_aligner": 5.366048697531223,
+        "aligner_ms": 116.04869753122316,
+        "error_ms": 116.04869753122316,
         "dated": false,
-        "clear": false
+        "clear": false,
+        "gap_ms": null,
+        "agree": false,
+        "status": "aligner-only"
       },
       {
         "id": "s05",
@@ -640,11 +1097,17 @@
         "length": "short",
         "t_score": 6.0,
         "t_vowel": 5.846,
-        "error_ms": -153.99999999999991,
+        "detector_ms": -153.99999999999991,
         "reason": "ok",
         "dip_db": null,
+        "t_aligner": 5.829628034234047,
+        "aligner_ms": -170.3719657659528,
+        "error_ms": -170.3719657659528,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": 4.7,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s06",
@@ -653,11 +1116,17 @@
         "length": "held",
         "t_score": 6.375,
         "t_vowel": 6.428109512108455,
-        "error_ms": 53.10951210845527,
+        "detector_ms": 53.10951210845527,
         "reason": "ok",
         "dip_db": 18.0,
+        "t_aligner": 6.426268405914307,
+        "aligner_ms": 51.268405914306925,
+        "error_ms": 51.268405914306925,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -9.8,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s07",
@@ -666,11 +1135,17 @@
         "length": "short",
         "t_score": 7.125,
         "t_vowel": 7.140358310137394,
-        "error_ms": 15.358310137393971,
+        "detector_ms": 15.358310137393971,
         "reason": "ok",
         "dip_db": 39.9,
+        "t_aligner": 7.20997473359108,
+        "aligner_ms": 84.97473359108021,
+        "error_ms": 84.97473359108021,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": -81.3,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s08",
@@ -679,11 +1154,17 @@
         "length": "held",
         "t_score": 7.5,
         "t_vowel": 7.528459251231369,
-        "error_ms": 28.45925123136883,
+        "detector_ms": 28.45925123136883,
         "reason": "ok",
         "dip_db": 7.4,
+        "t_aligner": 7.526340368390083,
+        "aligner_ms": 26.340368390083135,
+        "error_ms": 26.340368390083135,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -9.6,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s09",
@@ -692,11 +1173,17 @@
         "length": "short",
         "t_score": 8.25,
         "t_vowel": 8.322127106957721,
-        "error_ms": 72.12710695772095,
+        "detector_ms": 72.12710695772095,
         "reason": "ok",
         "dip_db": 30.3,
+        "t_aligner": 8.306499908566476,
+        "aligner_ms": 56.49990856647591,
+        "error_ms": 56.49990856647591,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 3.9,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s10",
@@ -705,11 +1192,17 @@
         "length": "held",
         "t_score": 8.625,
         "t_vowel": 8.626202942217951,
-        "error_ms": 1.2029422179509197,
+        "detector_ms": 1.2029422179509197,
         "reason": "ok",
         "dip_db": 54.3,
+        "t_aligner": 8.605775583386421,
+        "aligner_ms": -19.224416613578654,
+        "error_ms": -19.224416613578654,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 8.7,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s11",
@@ -718,11 +1211,17 @@
         "length": "short",
         "t_score": 9.375,
         "t_vowel": 9.28988016912593,
-        "error_ms": -85.1198308740706,
+        "detector_ms": -85.1198308740706,
         "reason": "ok",
         "dip_db": 6.5,
+        "t_aligner": 9.358330423384905,
+        "aligner_ms": -16.669576615095494,
+        "error_ms": -16.669576615095494,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -80.1,
+        "agree": false,
+        "status": "disagree"
       },
       {
         "id": "s12",
@@ -731,11 +1230,17 @@
         "length": "held",
         "t_score": 9.75,
         "t_vowel": 9.862924735300352,
-        "error_ms": 112.92473530035174,
+        "detector_ms": 112.92473530035174,
         "reason": "ok",
         "dip_db": 41.2,
+        "t_aligner": 9.84619059741497,
+        "aligner_ms": 96.19059741497082,
+        "error_ms": 96.19059741497082,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 5.0,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s13",
@@ -744,11 +1249,17 @@
         "length": "short",
         "t_score": 10.5,
         "t_vowel": 10.52150422564824,
-        "error_ms": 21.50422564823984,
+        "detector_ms": 21.50422564823984,
         "reason": "ok",
         "dip_db": 10.1,
+        "t_aligner": 10.529535393863917,
+        "aligner_ms": 29.53539386391668,
+        "error_ms": 29.53539386391668,
         "dated": true,
-        "clear": false
+        "clear": false,
+        "gap_ms": -19.7,
+        "agree": true,
+        "status": "agree"
       },
       {
         "id": "s14",
@@ -757,11 +1268,17 @@
         "length": "held",
         "t_score": 10.875,
         "t_vowel": null,
-        "error_ms": null,
+        "detector_ms": null,
         "reason": "no-rise-in-window",
         "dip_db": null,
+        "t_aligner": 10.858195582926273,
+        "aligner_ms": -16.80441707372715,
+        "error_ms": -16.80441707372715,
         "dated": false,
-        "clear": false
+        "clear": false,
+        "gap_ms": null,
+        "agree": false,
+        "status": "aligner-only"
       },
       {
         "id": "s15",
@@ -770,11 +1287,17 @@
         "length": "short",
         "t_score": 11.625,
         "t_vowel": 11.698773272200148,
-        "error_ms": 73.77327220014784,
+        "detector_ms": 73.77327220014784,
         "reason": "ok",
         "dip_db": 34.3,
+        "t_aligner": 11.68640753865242,
+        "aligner_ms": 61.40753865241955,
+        "error_ms": 61.40753865241955,
         "dated": true,
-        "clear": true
+        "clear": true,
+        "gap_ms": 0.7,
+        "agree": true,
+        "status": "agree"
       }
     ]
   ],

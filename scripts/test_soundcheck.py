@@ -172,37 +172,129 @@ def test_an_undated_vowel_is_what_costs_takes(tmp_path, clock):
     assert r["plans"]["dated"]["takes_needed"] > sc.takes_needed(r["length_risk"]["short"]["p"], 14)
 
 
-def test_detector_error_measures_the_detector_against_the_ear(tmp_path, clock):
-    take = write_take(tmp_path, "take-01", clock, lambda e: 0.0)
-    rows = sc.take_errors(clock, take)
-    # the "ear" marks each vowel 8 ms before the detector does, except one it can't tell
-    labels = {"takes": {"take-01": {r["id"]: (None if r["id"] == "s03" else r["t_vowel"] - 0.008) for r in rows}}}
-    r = sc.detector_error(clock, [take], labels)
-    assert r["compared"] == 15 and r["skipped"] == 1
-    assert r["detector_minus_hand"]["mean_ms"] == pytest.approx(8.0, abs=0.01)
-    assert r["detector_minus_hand"]["sd_ms"] == pytest.approx(0.0, abs=0.01)
-    assert r["effective_gate_ms"] == pytest.approx(40 - 8, abs=0.1)
+def aligner_at(clock, takes_offsets):
+    """Fake aligner output: per take, each vowel's onset at score + offset_ms(e)."""
+    return [[e["t_sec"] + off(e) / 1000.0 for e in clock["events"]] for off in takes_offsets]
 
 
-def test_detector_error_refuses_labels_for_no_known_take(tmp_path, clock):
-    take = write_take(tmp_path, "take-01", clock, lambda e: 0.0)
-    with pytest.raises(SystemExit, match="no take had both"):
-        sc.detector_error(clock, [take], {"takes": {"some-other-take": {"s00": 1.0}}})
+def test_the_aligner_is_primary_and_the_offset_between_instruments_is_measured(tmp_path, clock):
+    # every vowel exactly on the clock; the aligner says so, and the detector reads
+    # half-way up a 10 ms attack: 5 ms later, on every word, by definition
+    takes = [write_take(tmp_path, f"take-{k:02d}", clock, lambda e: 0.0) for k in range(2)]
+    r = sc.analyze(clock, takes, None, aligner=aligner_at(clock, [lambda e: 0.0] * 2))
+    c = r["cross_check"]
+    assert r["primary"] == "aligner"
+    assert c["offset_ms"] == pytest.approx(ATTACK_LAG_MS, abs=1.5)
+    assert all(s["agree"] == s["both"] == 8 for s in c["groups"].values())
+    assert c["flagged"] == []
+    # the footprint is the aligner's reading: exactly on the clock
+    assert all(abs(g["mean_ms"]) < 0.5 for g in r["groups"].values())
+    assert r["plan"]["basis"] == "agreed"
 
 
-def test_label_page_embeds_the_takes_and_hides_the_detector(tmp_path, clock):
-    take = write_take(tmp_path, "take-01", clock, lambda e: 0.0)
-    html = sc.label_page(clock, [take])
-    assert html.startswith("<!doctype html>")
-    data = json.loads(html.split("const DATA = ", 1)[1].split(";\n", 1)[0])
-    assert data["takes"][0]["key"] == "take-01"
-    assert len(data["events"]) == 16
-    # the page carries the words and the window centre, never a detected onset
-    assert set(data["events"][0]) == {"id", "word", "t_sec"}
-    assert "t_vowel" not in html and "error_ms" not in html
-    # the listening aids are there: up to / from the mark, slow motion, gating by bisection
-    for needle in ('id="pUpTo"', 'id="pFrom"', 'data-r="0.25"', "function answer(startsBefore)", ':test'):
-        assert needle in html
+def test_a_disagreement_is_flagged_and_does_not_count_as_confirmed(tmp_path, clock):
+    takes = [write_take(tmp_path, f"take-{k:02d}", clock, lambda e: 0.0) for k in range(2)]
+    # the aligner places "low" 120 ms early in take 1: the detector does not
+    wrong = lambda e: -120.0 if e["word"] == "low" else 0.0  # noqa: E731
+    r = sc.analyze(clock, takes, None, aligner=aligner_at(clock, [wrong, lambda e: 0.0]))
+    c = r["cross_check"]
+    flagged = [f for f in c["flagged"] if f["status"] == "disagree"]
+    assert [f["word"] for f in flagged] == ["low"]
+    assert flagged[0]["gap_ms"] == pytest.approx(120, abs=2)
+    assert c["groups"]["sonorant"]["agree"] == 7
+    # confirmed placements count one fewer than placeable ones
+    agreed = sc.hit_rate(r["rows"], basis="agreed")["hits"]
+    dated = sc.hit_rate(r["rows"], basis="dated")["hits"]
+    assert dated - agreed == 1
+
+
+def test_a_vowel_only_the_aligner_finds_is_reported_as_aligner_only(tmp_path, clock):
+    p = write_take(tmp_path, "take-00", clock, lambda e: 0.0)
+    data, sr = sf.read(p)
+    e = next(e for e in clock["events"] if e["word"] == "on")
+    data[int((e["t_sec"] - 0.12) * sr):int((e["t_sec"] + e["dur_sec"]) * sr)] = 0.0
+    sf.write(p, data, sr, subtype="PCM_16")
+    r = sc.analyze(clock, [p], None, aligner=aligner_at(clock, [lambda e: 0.0]))
+    row = next(x for x in r["rows"][0] if x["word"] == "on")
+    assert row["status"] == "aligner-only"
+    assert row["error_ms"] == pytest.approx(0.0, abs=0.01)   # the primary reading still exists
+    assert r["cross_check"]["groups"]["none"]["statuses"]["aligner-only"] == 1
+
+
+def test_without_the_aligner_the_detector_is_primary(tmp_path, clock):
+    take = write_take(tmp_path, "take-00", clock, lambda e: 0.0)
+    r = sc.analyze(clock, [take], None)
+    assert r["primary"] == "detector" and r["cross_check"] is None
+    assert "agreed" not in r["plans"] and r["plan"]["basis"] == "dated"
+
+
+TEXTGRID = """File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0
+xmax = 3.0
+tiers? <exists>
+size = 2
+item []:
+	item [1]:
+		class = "IntervalTier"
+		name = "words"
+		xmin = 0.0
+		xmax = 3.0
+		intervals: size = 4
+			intervals [1]:
+				xmin = 0.0
+				xmax = 0.5
+				text = "SP"
+			intervals [2]:
+				xmin = 0.5
+				xmax = 1.2
+				text = "day"
+			intervals [3]:
+				xmin = 1.2
+				xmax = 2.0
+				text = "oh"
+			intervals [4]:
+				xmin = 2.0
+				xmax = 3.0
+				text = "SP"
+	item [2]:
+		class = "IntervalTier"
+		name = "phones"
+		xmin = 0.0
+		xmax = 3.0
+		intervals: size = 5
+			intervals [1]:
+				xmin = 0.0
+				xmax = 0.5
+				text = "SP"
+			intervals [2]:
+				xmin = 0.5
+				xmax = 0.58
+				text = "d"
+			intervals [3]:
+				xmin = 0.58
+				xmax = 1.2
+				text = "ey"
+			intervals [4]:
+				xmin = 1.2
+				xmax = 2.0
+				text = "ow"
+			intervals [5]:
+				xmin = 2.0
+				xmax = 3.0
+				text = "SP"
+"""
+
+
+def test_the_textgrid_reader_finds_each_words_first_vowel():
+    import onset_aligner as oa
+    tiers = oa.read_textgrid(TEXTGRID)
+    assert len(tiers["words"]) == 4 and len(tiers["phones"]) == 5
+    # "day": the vowel starts after the d; "oh": the word IS the vowel
+    assert oa.vowel_onsets(tiers, ["day", "oh"]) == [0.58, 1.2]
+    with pytest.raises(ValueError, match="do not match"):
+        oa.vowel_onsets(tiers, ["day", "go"])
 
 
 @pytest.mark.xfail(strict=True, reason=(
