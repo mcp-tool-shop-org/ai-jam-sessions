@@ -99,48 +99,84 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 11,
-      "changed": 10,
+      "added": 73,
+      "changed": 55,
       "moved": 0,
-      "parts": 3,
-      "removed": 0
+      "parts": 9,
+      "removed": 5
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "CI runs 11 more files than before.",
+        "sentence": "CI runs 38 more files than before.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
         "kind": "door",
-        "sentence": "Release runs 11 more files than before.",
+        "sentence": "Release runs 37 more files than before.",
         "subjects": [
           ".github/workflows/release.yml"
         ]
       },
       {
+        "kind": "landing",
+        "sentence": "site/src/data/hymns.visual.json is now written by scripts/site-hymn-visual.ts.",
+        "subjects": [
+          "site/src/data/hymns.visual.json",
+          "scripts/site-hymn-visual.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "tmp/planter is now written by scripts/planter.py.",
+        "subjects": [
+          "tmp/planter",
+          "scripts/planter.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "docs/hf-cards/jam-actions-v1.md is now also read by src/dataset/acoustic-v1/coverage-tail.test.ts.",
+        "subjects": [
+          "docs/hf-cards/jam-actions-v1.md",
+          "src/dataset/acoustic-v1/coverage-tail.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 14 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "sequence",
+        "sentence": "src/cli.ts now starts at `runCli`; it started at `main`.",
+        "subjects": [
+          "src/cli.ts"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "11 files added and 10 changed content, across 3 parts.",
+        "sentence": "73 files added, 5 removed and 55 changed content, across 9 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
-      "generatedAt": "2026-10-01T02:13:24.770Z"
+      "commit": "aaf8685af34ae644a32be956ed25f63893a2cb00",
+      "generatedAt": "2026-10-06T16:51:56.427Z"
     },
     "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
-    "2 files changed together with their own tests, as expected.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "4 files changed together with their own tests, as expected.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 2,
-  "commit": "aaf8685af34ae644a32be956ed25f63893a2cb00",
+  "changesTogetherWithTests": 4,
+  "commit": "04a1f6c44db636317bd0f70c32de7e2db0cebb10",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (574), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
+  "derived": "14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (611), Python (65), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
     {
       "builds": [
@@ -165,36 +201,29 @@
         "src/compose/human-audio-catalog.ts",
         "src/compose/human-audio-panel.ts",
         "src/compose/index.ts",
-        "src/compose/llm-panel.ts",
         "src/dataset/abc-adapter.ts",
         "src/dataset/acoustic-v1/allowlist.ts",
         "src/dataset/acoustic-v1/builder.ts",
         "src/dataset/acoustic-v1/coverage.ts",
-        "src/dataset/acoustic-v1/f5-acoustic.ts",
-        "src/dataset/acoustic-v1/generate-corpus.ts",
-        "src/dataset/acoustic-v1/generate-probe.ts",
-        "src/dataset/acoustic-v1/generate-public.ts",
-        "src/dataset/acoustic-v1/library.ts",
         "src/dataset/acoustic/builder.ts",
         "src/dataset/acoustic/generate-corpus.ts",
         "src/dataset/acoustic/index.ts",
         "src/dataset/acoustic/phrases.ts",
-        "src/dataset/acoustic/release-adapter.ts",
         "src/dataset/derived-content.ts",
         "src/dataset/enrichment.ts",
         "src/dataset/eval/annotation-grounding-tool.ts",
         "src/dataset/eval/annotation-grounding.ts",
         "src/dataset/eval/corpus-sampler.ts",
-        "src/dataset/eval/llm-backends/",
+        "src/dataset/eval/llm-backends/anthropic.ts",
+        "src/dataset/eval/llm-backends/ollama-intern.ts",
+        "src/dataset/eval/llm-backends/ollama.ts",
         "src/dataset/eval/llm-runner.ts",
-        "src/dataset/eval/markov-foil.ts",
         "src/dataset/experiment/env.ts",
         "src/dataset/experiment/eval.ts",
         "src/dataset/experiment/format-sft.ts",
         "src/dataset/experiment/index.ts",
         "src/dataset/experiment/mcp-executor.ts",
         "src/dataset/package-public.ts",
-        "src/dataset/phrase-slicer.ts",
         "src/dataset/release/release-gate.ts",
         "src/dataset/search-v0/env.ts",
         "src/dataset/search-v0/generate.ts",
@@ -203,12 +232,10 @@
         "src/dataset/synth-v0/env.ts",
         "src/dataset/synth-v0/generate.ts",
         "src/dataset/synth-v0/task.ts",
-        "src/entry-guard.ts",
         "src/maker/abc-chord-proposer.ts",
         "src/maker/abc-syntax.ts",
         "src/maker/auto-reharmonize-tool.ts",
         "src/maker/chord-proposer.ts",
-        "src/maker/er-gate.ts",
         "src/midi/parser.ts",
         "src/midi/types.ts",
         "src/playback/controls.ts",
@@ -232,9 +259,7 @@
         "src/vendor/",
         "src/vocal/align-lyrics.ts",
         "src/vocal/breath.ts",
-        "src/vocal/g2p.ts",
-        "src/vocal/index.ts",
-        "src/vocal/kokoro-lead.ts"
+        "src/vocal/g2p.ts"
       ],
       "checks": [
         "scripts/analysis-chords.ts",
@@ -243,11 +268,20 @@
         "scripts/analysis-validate.ts",
         "scripts/analyze-carriers.ts"
       ],
-      "checksCount": 60,
-      "checksMore": 57,
+      "checksCount": 61,
+      "checksMore": 58,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "datasets/jam-actions-v1/PROVENANCE-NOTE.md",
+        "datasets/jam-actions-v1/README.md",
+        "datasets/jam-actions-v1/checksums.sha256",
+        "datasets/jam-actions-v1/coverage.json",
+        "datasets/jam-actions-v1/manifest.json",
+        "datasets/jam-actions-v1/records/",
+        "datasets/jam-actions-v1/records.jsonl",
+        "datasets/jam-actions-v1/splits.json"
+      ],
       "name": "CI",
       "packs": [
         "LICENSE",
@@ -281,12 +315,12 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 12
+          "files": 13
         },
         {
           "boundary": "src",
           "depth": 0,
-          "files": 382
+          "files": 417
         }
       ],
       "runs": [
@@ -319,30 +353,38 @@
         "src/audio/db.test.ts",
         "src/audio/defects.test.ts",
         "src/chord-detect.test.ts",
+        "src/cli-commands.test.ts",
         "src/cli.test.ts",
         "src/compose/bws.test.ts",
+        "src/compose/human-audio-catalog.test.ts",
         "src/compose/human-audio-panel.test.ts",
         "src/compose/llm-panel.test.ts",
         "src/dataset/abc-adapter.test.ts",
         "src/dataset/acoustic-v1/allowlist.test.ts",
-        "src/dataset/acoustic-v1/probe.test.ts",
+        "src/dataset/acoustic-v1/builder-shelf.test.ts",
+        "src/dataset/acoustic-v1/builder-short-shelf.test.ts",
+        "src/dataset/acoustic-v1/corpus-cli.test.ts",
+        "src/dataset/acoustic-v1/corpus-io.test.ts",
+        "src/dataset/acoustic-v1/coverage-tail.test.ts",
         "src/dataset/acoustic/builder.test.ts",
+        "src/dataset/acoustic/corpus-write.test.ts",
         "src/dataset/acoustic/corpus.test.ts",
         "src/dataset/acoustic/measured.test.ts",
         "src/dataset/acoustic/release-adapter.test.ts",
-        "src/dataset/acoustic/reproduce.test.ts",
         "src/dataset/derived-content.test.ts",
         "src/dataset/enrichment.test.ts",
         "src/dataset/eval/annotation-grounding-tool.test.ts",
         "src/dataset/eval/annotation-grounding.test.ts",
         "src/dataset/eval/corpus-sampler.test.ts",
+        "src/dataset/eval/llm-backends/anthropic.test.ts",
+        "src/dataset/eval/llm-backends/ollama-intern.test.ts",
+        "src/dataset/eval/llm-backends/ollama.test.ts",
         "src/dataset/eval/llm-runner.test.ts",
         "src/dataset/eval/markov-foil.test.ts",
         "src/dataset/experiment/env.test.ts",
         "src/dataset/experiment/eval.test.ts",
+        "src/dataset/experiment/format-sft.test.ts",
         "src/dataset/experiment/mcp-executor.test.ts",
-        "src/dataset/experiment/published-set.test.ts",
-        "src/dataset/experiment/registry.test.ts",
         "src/dataset/package-public.test.ts",
         "src/dataset/phrase-slicer.test.ts",
         "src/dataset/release/release-gate.test.ts",
@@ -351,7 +393,7 @@
         "src/dataset/search-v0/window.test.ts",
         "src/dataset/synth-v0/env.test.ts",
         "src/dataset/synth-v0/generate.test.ts",
-        "src/entry-guard.test.ts",
+        "src/dataset/synth-v0/synth-env.test.ts",
         "src/maker/abc-chord-proposer.test.ts",
         "src/maker/abc-syntax.test.ts",
         "src/maker/auto-reharmonize-tool.test.ts",
@@ -362,6 +404,7 @@
         "src/playback/engine.test.ts",
         "src/playback/integration.test.ts",
         "src/playback/metronome.test.ts",
+        "src/songs/config/loader.stage4.test.ts",
         "src/songs/config/loader.test.ts",
         "src/songs/fetch.test.ts",
         "src/songs/jam.regression.test.ts",
@@ -372,11 +415,13 @@
         "src/songs/midi/meta.test.ts",
         "src/vocal/align-lyrics.test.ts",
         "src/vocal/breath.test.ts",
+        "src/vocal/g2p-fallback.test.ts",
+        "src/vocal/g2p.stage4.test.ts",
         "src/vocal/g2p.test.ts",
-        "src/vocal/kokoro-lead.test.ts"
+        "src/vocal/hymns.test.ts"
       ],
-      "runsCount": 308,
-      "runsMore": 305,
+      "runsCount": 356,
+      "runsMore": 353,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -410,16 +455,11 @@
         "src/compose/human-audio-catalog.ts",
         "src/compose/human-audio-panel.ts",
         "src/compose/index.ts",
-        "src/compose/llm-panel.ts",
         "src/dataset/abc-adapter.ts",
         "src/dataset/acoustic-v1/allowlist.ts",
         "src/dataset/acoustic-v1/builder.ts",
         "src/dataset/acoustic-v1/coverage.ts",
         "src/dataset/acoustic-v1/f5-acoustic.ts",
-        "src/dataset/acoustic-v1/generate-corpus.ts",
-        "src/dataset/acoustic-v1/generate-probe.ts",
-        "src/dataset/acoustic-v1/generate-public.ts",
-        "src/dataset/acoustic-v1/library.ts",
         "src/dataset/acoustic/builder.ts",
         "src/dataset/acoustic/generate-corpus.ts",
         "src/dataset/acoustic/index.ts",
@@ -430,7 +470,9 @@
         "src/dataset/eval/annotation-grounding-tool.ts",
         "src/dataset/eval/annotation-grounding.ts",
         "src/dataset/eval/corpus-sampler.ts",
-        "src/dataset/eval/llm-backends/",
+        "src/dataset/eval/llm-backends/anthropic.ts",
+        "src/dataset/eval/llm-backends/ollama-intern.ts",
+        "src/dataset/eval/llm-backends/ollama.ts",
         "src/dataset/eval/llm-runner.ts",
         "src/dataset/eval/markov-foil.ts",
         "src/dataset/experiment/env.ts",
@@ -439,7 +481,6 @@
         "src/dataset/experiment/index.ts",
         "src/dataset/experiment/mcp-executor.ts",
         "src/dataset/package-public.ts",
-        "src/dataset/phrase-slicer.ts",
         "src/dataset/release/release-gate.ts",
         "src/dataset/search-v0/env.ts",
         "src/dataset/search-v0/generate.ts",
@@ -448,12 +489,10 @@
         "src/dataset/synth-v0/env.ts",
         "src/dataset/synth-v0/generate.ts",
         "src/dataset/synth-v0/task.ts",
-        "src/entry-guard.ts",
         "src/maker/abc-chord-proposer.ts",
         "src/maker/abc-syntax.ts",
         "src/maker/auto-reharmonize-tool.ts",
         "src/maker/chord-proposer.ts",
-        "src/maker/er-gate.ts",
         "src/midi/parser.ts",
         "src/midi/types.ts",
         "src/playback/controls.ts",
@@ -461,7 +500,6 @@
         "src/playback/metronome.ts",
         "src/playback/midi-engine.ts",
         "src/playback/position.ts",
-        "src/playback/timing.ts",
         "src/songs/config/loader.ts",
         "src/songs/config/schema.ts",
         "src/songs/fetch.ts",
@@ -478,16 +516,23 @@
         "src/vendor/",
         "src/vocal/align-lyrics.ts",
         "src/vocal/breath.ts",
-        "src/vocal/g2p.ts",
-        "src/vocal/index.ts",
-        "src/vocal/kokoro-lead.ts"
+        "src/vocal/g2p.ts"
       ],
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
-      "landings": [],
+      "landings": [
+        "datasets/jam-actions-v1/PROVENANCE-NOTE.md",
+        "datasets/jam-actions-v1/README.md",
+        "datasets/jam-actions-v1/checksums.sha256",
+        "datasets/jam-actions-v1/coverage.json",
+        "datasets/jam-actions-v1/manifest.json",
+        "datasets/jam-actions-v1/records/",
+        "datasets/jam-actions-v1/records.jsonl",
+        "datasets/jam-actions-v1/splits.json"
+      ],
       "name": "Release",
       "packs": [
         "LICENSE",
@@ -521,12 +566,12 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 19
+          "files": 20
         },
         {
           "boundary": "src",
           "depth": 0,
-          "files": 382
+          "files": 417
         }
       ],
       "runs": [
@@ -571,30 +616,38 @@
         "src/audio/db.test.ts",
         "src/audio/defects.test.ts",
         "src/chord-detect.test.ts",
+        "src/cli-commands.test.ts",
         "src/cli.test.ts",
         "src/compose/bws.test.ts",
+        "src/compose/human-audio-catalog.test.ts",
         "src/compose/human-audio-panel.test.ts",
         "src/compose/llm-panel.test.ts",
         "src/dataset/abc-adapter.test.ts",
         "src/dataset/acoustic-v1/allowlist.test.ts",
-        "src/dataset/acoustic-v1/probe.test.ts",
+        "src/dataset/acoustic-v1/builder-shelf.test.ts",
+        "src/dataset/acoustic-v1/builder-short-shelf.test.ts",
+        "src/dataset/acoustic-v1/corpus-cli.test.ts",
+        "src/dataset/acoustic-v1/corpus-io.test.ts",
+        "src/dataset/acoustic-v1/coverage-tail.test.ts",
         "src/dataset/acoustic/builder.test.ts",
+        "src/dataset/acoustic/corpus-write.test.ts",
         "src/dataset/acoustic/corpus.test.ts",
         "src/dataset/acoustic/measured.test.ts",
         "src/dataset/acoustic/release-adapter.test.ts",
-        "src/dataset/acoustic/reproduce.test.ts",
         "src/dataset/derived-content.test.ts",
         "src/dataset/enrichment.test.ts",
         "src/dataset/eval/annotation-grounding-tool.test.ts",
         "src/dataset/eval/annotation-grounding.test.ts",
         "src/dataset/eval/corpus-sampler.test.ts",
+        "src/dataset/eval/llm-backends/anthropic.test.ts",
+        "src/dataset/eval/llm-backends/ollama-intern.test.ts",
+        "src/dataset/eval/llm-backends/ollama.test.ts",
         "src/dataset/eval/llm-runner.test.ts",
         "src/dataset/eval/markov-foil.test.ts",
         "src/dataset/experiment/env.test.ts",
         "src/dataset/experiment/eval.test.ts",
+        "src/dataset/experiment/format-sft.test.ts",
         "src/dataset/experiment/mcp-executor.test.ts",
-        "src/dataset/experiment/published-set.test.ts",
-        "src/dataset/experiment/registry.test.ts",
         "src/dataset/package-public.test.ts",
         "src/dataset/phrase-slicer.test.ts",
         "src/dataset/release/release-gate.test.ts",
@@ -603,7 +656,7 @@
         "src/dataset/search-v0/window.test.ts",
         "src/dataset/synth-v0/env.test.ts",
         "src/dataset/synth-v0/generate.test.ts",
-        "src/entry-guard.test.ts",
+        "src/dataset/synth-v0/synth-env.test.ts",
         "src/maker/abc-chord-proposer.test.ts",
         "src/maker/abc-syntax.test.ts",
         "src/maker/auto-reharmonize-tool.test.ts",
@@ -614,23 +667,24 @@
         "src/playback/engine.test.ts",
         "src/playback/integration.test.ts",
         "src/playback/metronome.test.ts",
+        "src/songs/config/loader.stage4.test.ts",
         "src/songs/config/loader.test.ts",
         "src/songs/fetch.test.ts",
         "src/songs/jam.regression.test.ts",
         "src/songs/jam.test.ts",
         "src/songs/library.test.ts",
-        "src/songs/loader.test.ts",
         "src/songs/midi/ingest.test.ts",
         "src/songs/midi/measures.test.ts",
         "src/songs/midi/meta.test.ts",
         "src/vocal/align-lyrics.test.ts",
         "src/vocal/breath.test.ts",
+        "src/vocal/g2p-fallback.test.ts",
+        "src/vocal/g2p.stage4.test.ts",
         "src/vocal/g2p.test.ts",
-        "src/vocal/kokoro-lead.test.ts",
-        "src/vocal/melody-notes.test.ts"
+        "src/vocal/hymns.test.ts"
       ],
-      "runsCount": 315,
-      "runsMore": 312,
+      "runsCount": 361,
+      "runsMore": 358,
       "sends": [
         "publishes to npm and a container image"
       ],
@@ -658,7 +712,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 5
+          "files": 8
         },
         {
           "boundary": "src",
@@ -673,7 +727,7 @@
         "site/src/"
       ],
       "runsCount": 4,
-      "runsMore": 2,
+      "runsMore": 3,
       "sends": [
         "deploys the site"
       ],
@@ -1588,6 +1642,12 @@
       ]
     },
     {
+      "place": "site/src/data/hymns.visual.json",
+      "writers": [
+        "scripts/site-hymn-visual.ts"
+      ]
+    },
+    {
       "place": "songs/library/",
       "writers": [
         "scripts/annotate-batch.ts",
@@ -1631,13 +1691,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-06T16:51:56.427Z",
+  "generatedAt": "2026-10-07T23:09:11.313Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
-    "48 writes and 112 reads use paths built at run time and are not named here.",
-    "26 writes go to places this repository does not track, so they are not listed as generated.",
-    "100 writes and 376 reads go to a path their caller passes, not to this repository.",
+    "56 writes and 116 reads use paths built at run time and are not named here.",
+    "27 writes go to places this repository does not track, so they are not listed as generated.",
+    "110 writes and 391 reads go to a path their caller passes, not to this repository.",
     "1 write and 18 reads go to the directory the command is run in, not to this repository.",
     "3 writes and 11 reads go to the home directory (.ssh/), not to this repository.",
     "8 writes and 4 reads go to a temporary directory, not to this repository.",
@@ -1647,8 +1707,8 @@
     "20 commands are built at run time and not followed, 2 of them in tests.",
     "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.",
-    "CI runs or checks 479 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs or checks 417 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "CI runs or checks 517 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 454 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -1669,7 +1729,17 @@
     "src": "src"
   },
   "parts": 14,
-  "readers": [],
+  "readers": [
+    {
+      "readers": [
+        "experiments/coverage-v1-sft/format-sft.ts",
+        "src/dataset/acoustic-v1/generate-public.ts",
+        "src/dataset/acoustic-v1/toolless-baseline.mjs"
+      ],
+      "target": "datasets/jam-actions-v1/",
+      "tests": 2
+    }
+  ],
   "repo": "mcp-tool-shop-org/ai-jam-sessions",
   "sequences": [
     {
@@ -1736,15 +1806,15 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 200,
+  "testFiles": 244,
   "testedBy": {
     "cockpit": 13,
     "experiments": 10,
-    "scripts": 12,
+    "scripts": 23,
     "spaces": 0,
-    "src": 177
+    "src": 211
   },
-  "unnamedWrites": 48,
+  "unnamedWrites": 56,
   "unread": [
     {
       "place": "datasets/jam-actions-v0/evals/e1-tool-use-results.json",
@@ -1807,5 +1877,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 108
+  "written": 109
 }
