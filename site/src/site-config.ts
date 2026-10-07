@@ -51,7 +51,7 @@ export const config: SiteConfig = {
           desc: "Whole hymns sung by a score-conditioned singer and placed on the piano's clock (listen above), plus vocal tract synthesis with 20 voice presets and a sing-along mode with solfege, contour and syllable narration.",
         },
         {
-          title: '54 MCP Tools + 4 Prompts',
+          title: '56 MCP Tools + 4 Prompts',
           desc: 'Learn, play, sing, build, score — browse songs, transpose keys, mute hands, preview teaching cues, render piano rolls, write annotations, and journal reflections.',
         },
         {
@@ -221,7 +221,7 @@ ai-jam-sessions list --genre folk`,
       kind: 'data-table',
       id: 'tools',
       title: 'MCP tools',
-      subtitle: '54 tools and 4 prompt templates across eight categories: Learn, Play, Practice, Sing, Guitar, Build, Score, and Listen.',
+      subtitle: '56 tools and 4 prompt templates across eight categories: Learn, Play, Practice, Sing, Guitar, Build, Score, and Listen.',
       columns: ['Tool', 'Category', 'Description'],
       rows: [
         ['`list_songs`', 'Learn', 'Browse by genre, difficulty, or keyword'],

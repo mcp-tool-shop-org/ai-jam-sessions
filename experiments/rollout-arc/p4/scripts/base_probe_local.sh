@@ -23,8 +23,8 @@ say "pipe check first -- a slow download is indistinguishable from a hang"
 curl -s -o /dev/null -w "[probe] cloudflare 10MB: %{speed_download} B/s http=%{http_code}\n" https://speed.cloudflare.com/__down?bytes=10000000
 
 # Ollama can hold ~19 GB resident and generation needs the card.
-/c/Users/mikey/AppData/Local/Programs/Ollama/ollama ps 2>/dev/null | tail -n +2 | awk '{print $1}' | while read -r m; do
-  [ -n "$m" ] && /c/Users/mikey/AppData/Local/Programs/Ollama/ollama stop "$m" >/dev/null 2>&1
+"${OLLAMA_BIN:-ollama}" ps 2>/dev/null | tail -n +2 | awk '{print $1}' | while read -r m; do
+  [ -n "$m" ] && "${OLLAMA_BIN:-ollama}" stop "$m" >/dev/null 2>&1
 done
 say "free VRAM: $(nvidia-smi --query-gpu=memory.free --format=csv,noheader)"
 

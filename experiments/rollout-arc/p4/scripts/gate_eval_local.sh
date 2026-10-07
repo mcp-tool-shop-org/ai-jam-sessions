@@ -33,8 +33,8 @@ done
 echo "[eval] training done $(date -u +%H:%M:%SZ)"
 
 # Ollama can hold 19 GB resident and generation needs the card. Unload before starting.
-/c/Users/mikey/AppData/Local/Programs/Ollama/ollama ps 2>/dev/null | tail -n +2 | awk '{print $1}' | while read -r m; do
-  [ -n "$m" ] && /c/Users/mikey/AppData/Local/Programs/Ollama/ollama stop "$m" >/dev/null 2>&1
+"${OLLAMA_BIN:-ollama}" ps 2>/dev/null | tail -n +2 | awk '{print $1}' | while read -r m; do
+  [ -n "$m" ] && "${OLLAMA_BIN:-ollama}" stop "$m" >/dev/null 2>&1
 done
 nvidia-smi --query-gpu=memory.free --format=csv,noheader
 
