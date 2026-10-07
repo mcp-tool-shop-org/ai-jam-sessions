@@ -117,3 +117,19 @@ def test_the_setup_script_pins_what_it_installs():
     assert "set -euo pipefail" in text
     patch = open(os.path.join(POD, "soulx-audio-utils.patch"), encoding="utf-8", newline="").read()
     assert "\r" not in patch and patch.startswith("diff --git a/soulxsinger/utils/audio_utils.py")
+
+
+def test_assemble_drops_each_segments_lead_pad_and_tiles_on_the_clock():
+    sr = 100
+    segs = [{"time": [0, 1000], "lead_pad_ms": 500}, {"time": [1000, 2000], "lead_pad_ms": 500}]
+    # each render: 0.5 s of the singer's noisy start (9s), then the segment proper
+    a = np.concatenate([np.full(50, 9.0), np.full(100, 1.0)])
+    b = np.concatenate([np.full(50, 9.0), np.full(100, 2.0)])
+    out = soulx_batch.assemble(segs, [a, b], sr)
+    assert len(out) == 200 and not np.any(out == 9.0), "the pad, and the noise in it, never reaches the take"
+    assert np.all(out[:100] == 1.0) and np.all(out[100:] == 2.0)
+
+
+def test_assemble_without_pads_is_soulx_own_tiling():
+    out = soulx_batch.assemble([{"time": [0, 500]}, {"time": [500, 1000]}], [np.ones(50), np.full(50, 2.0)], 100)
+    assert np.all(out[:50] == 1.0) and np.all(out[50:] == 2.0)

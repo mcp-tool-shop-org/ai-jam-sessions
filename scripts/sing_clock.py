@@ -73,6 +73,7 @@ def main() -> int:
     ap.add_argument("--phrase-scores", help="reuse a phrase_scores.py output instead of scoring the takes (needs the local listener otherwise)")
     ap.add_argument("--aligner", action="store_true", help="cross-check the placed vocal's onsets with the singing forced aligner (onset_aligner.py, HubertFA)")
     ap.add_argument("--segment-gap", type=float, help="export the target in phrase segments split at rests of at least this many seconds (a whole song; must match how the takes were rendered)")
+    ap.add_argument("--lead-pad", type=float, default=0.0, help="the target's lead pad (export_soulx_target.py --lead-pad); must match how the takes were rendered")
     ap.add_argument("--warp", action="store_true", help="place by time-warping each run of one take instead of cutting every syllable (vocal_clock.py place --warp)")
     ap.add_argument("--transcribe", action="store_true", help="also upload + transcribe the placed stem on Comfy Cloud (order / one-voice gates)")
     ap.add_argument("--vocal-over-bed-db", type=float, default=4.0)
@@ -91,6 +92,8 @@ def main() -> int:
         cmd.append("--syllable-words")
     if a.segment_gap:
         cmd += ["--segment-gap", str(a.segment_gap)]
+    if a.lead_pad:
+        cmd += ["--lead-pad", str(a.lead_pad)]
     if run(cmd).returncode:
         return 2
 
