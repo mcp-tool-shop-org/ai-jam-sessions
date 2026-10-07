@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — the landing page, rewritten around the two sung hymns
+- Amazing Grace and America the Beautiful are front and centre: every verse, sung by a synthetic
+  voice over the project's own piano, each with a player. A three.js view shows the sung line over
+  the piano bed, lighting notes as the recording reaches them, with the line being sung underneath
+  and its current syllable marked. A table gives what the gates measured on each performance.
+- "How a take becomes a performance" explains the pipeline: score clock, sixteen takes on a rented
+  GPU, one take per phrase, warp placement, two timing instruments and a pitch gate, then a person.
+- `scripts/site-hymn-visual.ts` generates `site/src/data/hymns.visual.json` from the score clocks and
+  the arrangements the beds were rendered from. A test fails if it drifts.
+- The older partial vocal clips, superseded by the full performances, are removed from the site.
+
 ### Fixed — honks at phrase ends
 - Warp placement ends each run at its last note plus a 0.15 s release, and at every rest
   in the score. The Director's A/B put every remaining honk in the raw takes, at the

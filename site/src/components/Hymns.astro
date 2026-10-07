@@ -1,0 +1,171 @@
+---
+// The two sung hymns: a player for each, a three.js view of the sung line over the piano bed with
+// the words being sung underneath, and what the gates measured on each performance. The notes come
+// from site/src/data/hymns.visual.json (scripts/site-hymn-visual.ts: each hymn's score clock and the
+// arrangement its piano bed was rendered from).
+import data from '../data/hymns.visual.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const songs = (data as { songs: Array<{ id: string; title: string; tune: string; composer: string; textAuthor: string; key: string; bpm: number; verses: number; duration: number }> }).songs;
+const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`; // as an audio player shows it
+// Measured on the published performances (receipts in tmp/vocal-clock/sing-pad/<id>/, 2026-10-07).
+const measured: Record<string, { timing: string; pitch: string; heard: string; phrases: string; tone: string }> = {
+  'amazing-grace-new-britain': { timing: '109 of 112', pitch: '136 of 140', heard: '95–100%', phrases: '16 phrases from 10 takes', tone: 'ag' },
+  'america-the-beautiful-materna': { timing: '218 of 224', pitch: '221 of 224', heard: '85–94%', phrases: '20 phrases from 13 takes', tone: 'atb' },
+};
+---
+
+<div class="hy">
+  <div class="hy-players">
+    {songs.map((s) => (
+      <figure class={`hy-player hy-${measured[s.id].tone}`}>
+        <figcaption>
+          <span class="hy-swatch" aria-hidden="true"></span>
+          <strong>{s.title}</strong>
+          <span class="hy-meta">{s.tune} · {s.key} · {s.bpm} BPM · {s.verses} verses · {mmss(s.duration)}</span>
+        </figcaption>
+        <audio controls preload="metadata" data-song={s.id}>
+          <source src={`${base}audio/${s.id}.opus`} type='audio/ogg; codecs="opus"' />
+          <source src={`${base}audio/${s.id}.mp3`} type="audio/mpeg" />
+        </audio>
+        <p class="hy-credit-line">Music: {s.composer}. Words: {s.textAuthor}.</p>
+      </figure>
+    ))}
+  </div>
+
+  <div class="hy-view">
+    <div class="hy-bar">
+      <div class="hy-picks" role="group" aria-label="Show a hymn">
+        {songs.map((s, i) => (
+          <button type="button" aria-pressed={i === 0 ? 'true' : 'false'}>{s.title}</button>
+        ))}
+      </div>
+      <div class="hy-modes" role="group" aria-label="Camera">
+        <button type="button" data-mode="follow" aria-pressed="true">Follow</button>
+        <button type="button" data-mode="whole" aria-pressed="false">Whole song</button>
+      </div>
+    </div>
+    <div class="hy-stage">
+      <canvas
+        role="img"
+        aria-label="The hymn as a 3D score: the sung line on the upper lane, the piano below it, time running left to right. Notes light up as the recording reaches them."
+      ></canvas>
+      <p class="hy-legend" aria-hidden="true">
+        <span class="hy-now">{songs[0].title}</span>
+        <span class="hy-key"><span class="hy-swatch hy-voice"></span>voice</span>
+        <span class="hy-key"><span class="hy-swatch hy-piano"></span>piano</span>
+      </p>
+      <p class="hy-line" aria-live="off"></p>
+      <p class="hy-nogl-msg">This browser could not start WebGL, so the 3D view is off. The recordings above still play.</p>
+    </div>
+    <p class="hy-hint">Press play on either hymn: the view follows the voice, and the words light as they are sung.</p>
+  </div>
+
+  <div class="hy-numbers">
+    <h3>What the gates measured on these two performances</h3>
+    <div class="hy-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            {songs.map((s) => <th scope="col">{s.title}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Syllables whose vowel lands within 40 ms of the score</th>{songs.map((s) => <td>{measured[s.id].timing}</td>)}</tr>
+          <tr><th scope="row">Notes within 50 cents of the score</th>{songs.map((s) => <td>{measured[s.id].pitch}</td>)}</tr>
+          <tr><th scope="row">Words a local listener heard, per take</th>{songs.map((s) => <td>{measured[s.id].heard}</td>)}</tr>
+          <tr><th scope="row">Built from</th>{songs.map((s) => <td>{measured[s.id].phrases}</td>)}</tr>
+          <tr><th scope="row">The Director's ear</th>{songs.map(() => <td>Pass</td>)}</tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="hy-note">
+      Timing is checked by two instruments: an energy detector for the vowel's onset, cross-checked by a
+      singing forced aligner, and a syllable fails only when both say it is off. Pitch is tracked per note
+      with pYIN. These are honest numbers, not a pass/fail stamp: the misses are listed in the receipts.
+    </p>
+  </div>
+
+  <p class="hy-credit">
+    The voice is synthetic: <a href="https://github.com/Soul-AILab/SoulX-Singer">SoulX-Singer</a> (Apache-2.0),
+    sung from the score, with the timbre of SoulX-Singer's own example voice. It imitates no real singer. The
+    piano bed is this project's own oscillator grand, rendered from the same arrangement. Both hymns are in the
+    public domain.
+  </p>
+</div>
+
+<style>
+  .hy { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .hy > * { min-width: 0; }
+  .hy-players { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 1rem; }
+  .hy-player { margin: 0; padding: 1rem; border: 1px solid var(--color-edge); border-radius: 12px; background: var(--color-surface-raised); }
+  .hy-player figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.6rem; color: var(--color-heading); }
+  .hy-meta { color: var(--color-dim); font-size: 0.85rem; }
+  .hy-player audio { width: 100%; margin: 0.75rem 0 0.4rem; }
+  .hy-credit-line { margin: 0; font-size: 0.8rem; color: var(--color-dim); }
+  .hy-swatch { display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 3px; vertical-align: -1px; }
+  .hy-ag .hy-swatch { background: #ffc857; }
+  .hy-atb .hy-swatch { background: #7cc4ff; }
+  .hy-voice { background: linear-gradient(90deg, #ffc857 50%, #7cc4ff 50%); }
+  .hy-piano { background: #9b8cff; }
+  .hy-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.6rem; }
+  .hy-picks, .hy-modes { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .hy-bar button {
+    font: inherit; font-size: 0.78rem; padding: 0.25rem 0.65rem; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--color-edge); background: var(--color-surface-raised); color: var(--color-body);
+  }
+  .hy-bar button[aria-pressed='true'] { border-color: #ffc857; color: #ffc857; }
+  .hy-bar button:focus-visible { outline: 2px solid #ffc857; outline-offset: 2px; }
+  .hy-stage {
+    position: relative; height: clamp(320px, 52vw, 560px); overflow: hidden;
+    border: 1px solid var(--color-edge); border-radius: 12px; background: #09090b;
+  }
+  .hy-stage canvas { display: block; width: 100%; height: 100%; }
+  .hy-legend {
+    position: absolute; top: 0.6rem; left: 0.75rem; right: 0.75rem; margin: 0; display: flex; flex-wrap: wrap;
+    gap: 0.3rem 0.9rem; font-size: 0.78rem; color: var(--color-dim); pointer-events: none;
+  }
+  .hy-now { color: var(--color-heading); font-weight: 600; }
+  .hy-key { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .hy-line {
+    position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.75rem; margin: 0; padding: 0.55rem 0.8rem;
+    border-radius: 8px; background: rgba(9, 9, 11, 0.8); color: var(--color-dim);
+    font-size: clamp(0.95rem, 2.2vw, 1.25rem); line-height: 1.4; text-align: center; pointer-events: none;
+  }
+  .hy-line:empty { display: none; }
+  .hy-line :global(.hy-sung) { color: var(--color-body); }
+  .hy-line :global(.hy-on) { color: #ffc857; }
+  .hy-hint { margin: 0.5rem 0 0; font-size: 0.82rem; color: var(--color-dim); }
+  .hy-nogl-msg { display: none; margin: 0; padding: 1.5rem; color: var(--color-dim); }
+  .hy-stage.hy-nogl { height: auto; }
+  .hy-stage.hy-nogl canvas, .hy-stage.hy-nogl .hy-line, .hy-stage.hy-nogl .hy-legend { display: none; }
+  .hy-stage.hy-nogl .hy-nogl-msg { display: block; }
+  .hy-numbers h3 { margin: 0 0 0.5rem; color: var(--color-heading); font-size: 1.05rem; }
+  .hy-scroll { overflow-x: auto; }
+  .hy-numbers table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 0.85rem; }
+  .hy-numbers th, .hy-numbers td {
+    padding: 0.45rem 0.5rem; text-align: left; vertical-align: top;
+    border-bottom: 1px solid var(--color-edge-subtle); color: var(--color-body);
+  }
+  .hy-numbers thead th { color: var(--color-dim); font-weight: 600; }
+  .hy-numbers tbody th { font-weight: 400; color: var(--color-dim); }
+  .hy-note, .hy-credit { margin: 0.6rem 0 0; font-size: 0.82rem; color: var(--color-dim); }
+  .hy-credit a { color: var(--color-body); text-decoration: underline; }
+</style>
+
+<script>
+  // three.js and the notes load only when the section comes near the viewport.
+  const root = document.querySelector<HTMLElement>('.hy');
+  if (root) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        import('../lib/hymn-view').then((m) => m.start(root));
+      },
+      { rootMargin: '600px' },
+    );
+    io.observe(root);
+  }
+</script>

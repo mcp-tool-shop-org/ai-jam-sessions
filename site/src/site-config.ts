@@ -2,7 +2,7 @@ import type { SiteConfig } from '@mcptoolshop/site-theme';
 
 export const config: SiteConfig = {
   title: 'AI Jam Sessions',
-  description: 'An MCP server that teaches AI to play piano and guitar — and sing. 109 annotated songs across 12 genres (now including a public-domain patriotic hymn), six sound engines, browser cockpit, practice journal — and jam-actions-v0, a public 57-record tool-use dataset.',
+  description: 'Two public-domain hymns, sung by a synthetic voice on the beat and measured before they were called a mix, from an MCP server that teaches AI to play piano and guitar, and to sing.',
   logoBadge: '♪',
   brandName: 'AI Jam Sessions',
   repoUrl: 'https://github.com/mcp-tool-shop-org/ai-jam-sessions',
@@ -10,12 +10,12 @@ export const config: SiteConfig = {
   footerText: 'MIT Licensed — built by <a href="https://github.com/mcp-tool-shop-org" style="color:var(--color-muted);text-decoration:underline">mcp-tool-shop-org</a>',
 
   hero: {
-    badge: 'MCP Server',
-    headline: 'AI Jam Sessions.',
-    headlineAccent: 'Machine learning the old fashioned way.',
-    description: 'An MCP server that teaches AI to play piano and guitar — and sing. 109 annotated songs across 12 genres (now including a public-domain patriotic hymn). Six sound engines. Interactive guitar tablature. A browser cockpit with a sampled Concert Grand, a vocal synthesizer, and a blind listening panel. A practice journal that remembers everything. Plus jam-actions-v0, a 57-record public dataset of multi-turn MCP tool-use traces over classical piano.',
-    primaryCta: { href: '#quick-start', label: 'Get started' },
-    secondaryCta: { href: 'handbook/', label: 'Read the Handbook' },
+    badge: 'Listen first',
+    headline: 'Two hymns, sung on the beat.',
+    headlineAccent: 'Assembled from sixteen takes, measured, then heard.',
+    description: "Amazing Grace and America the Beautiful, every verse, sung by a synthetic voice over this project's own piano: each phrase chosen by a listener, placed on the score by warping, checked by two timing instruments and a pitch tracker, and passed by ear. Part of AI Jam Sessions, an MCP server that teaches AI to read, play and sing music.",
+    primaryCta: { href: '#listen', label: 'Listen' },
+    secondaryCta: { href: '#how', label: 'How it was made' },
     previews: [
       { label: 'Install', code: 'npm install -g @mcptoolshop/ai-jam-sessions' },
       { label: 'Play', code: 'ai-jam-sessions play fur-elise --engine piano --speed 0.7' },
@@ -48,7 +48,7 @@ export const config: SiteConfig = {
         },
         {
           title: 'Singing',
-          desc: 'Vocal tract synthesis with 20 voice presets. Sing-along mode with solfege, contour, and syllable narration.',
+          desc: "Whole hymns sung by a score-conditioned singer and placed on the piano's clock (listen above), plus vocal tract synthesis with 20 voice presets and a sing-along mode with solfege, contour and syllable narration.",
         },
         {
           title: '54 MCP Tools + 4 Prompts',
