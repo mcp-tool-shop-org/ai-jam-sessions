@@ -1345,6 +1345,64 @@ def pitch_rows(clock: dict, trk: dict, onsets: dict | None = None) -> list[dict]
     return rows
 
 
+# Pitch is read by two instruments, as timing is (cross_check above): FCPE reads
+# every note, and pYIN re-reads only the notes FCPE does not pass, over that note's
+# own window plus some context. A note fails only when both trackers say it is off,
+# so one tracker's octave slip or voicing miss cannot fail a note on its own.
+# Measured 2026-10-07: on 721 notes of real hymn takes FCPE's per-note median sat
+# a median 2.7 c from pYIN's and over 25 c on 1% of notes; FCPE takes 0.2 s a take,
+# pYIN over a whole take about 3 minutes.
+PITCH_RANK = {"PASS": 0, "WARN": 1, "FAIL": 2, "untrackable": 3, "unvoiced": 3}
+PITCH_RECHECK_PAD_S = 0.25
+PITCH_OFF = ("FAIL", "untrackable", "unvoiced")   # the statuses that decide the verdict; WARN does not
+
+
+def recheck_pitch(rows: list[dict], alt: dict[str, dict]) -> dict:
+    """Merge the second tracker's reading into the rows it re-read. `alt` maps a
+    note id to pYIN's row for it. The better status stands; a note the second
+    tracker reads within the gate (PASS or WARN) is "rescued"; one still FAIL,
+    untrackable or unvoiced after both readings is "both_off"; otherwise "confirmed".
+    Returns the summary for the receipt."""
+    rescued, both = [], []
+    for r in rows:
+        x = alt.get(r["id"])
+        if x is None:
+            continue
+        r["pyin_cents_mean"] = x["cents_mean"]
+        r["pyin_status"] = x["status"]
+        if PITCH_RANK[x["status"]] < PITCH_RANK[r["status"]]:
+            r.update({"cents_mean": x["cents_mean"], "cents_median": x["cents_median"], "cents_sd": x["cents_sd"],
+                      "status": x["status"], "reason": x.get("reason", ""), "tracker": "pyin"})
+        if r["status"] in PITCH_OFF:
+            r["cross_check"] = "both_off"           # neither tracker passes it
+            both.append(r["id"])
+        elif r.get("tracker") == "pyin":
+            r["cross_check"] = "rescued"            # pYIN passes what FCPE did not
+            rescued.append(r["id"])
+        else:
+            r["cross_check"] = "confirmed"
+    return {"tracker": "pyin", "rechecked": len(alt), "rescued": len(rescued), "both_off": len(both),
+            "rescued_ids": rescued, "both_off_ids": both}
+
+
+def pyin_recheck(clock: dict, mono: np.ndarray, sr: int, rows: list[dict], onsets: dict | None) -> dict[str, dict]:
+    """pYIN's rows for the notes FCPE puts off (FAIL, untrackable, unvoiced), each
+    read from its own window. A WARN does not decide the verdict, so it is not re-read."""
+    alt = {}
+    for r in rows:
+        if r["status"] not in PITCH_OFF:
+            continue
+        a, b = r["window"]
+        lo = max(0, int((a - PITCH_RECHECK_PAD_S) * sr))
+        hi = min(len(mono), int((b + PITCH_RECHECK_PAD_S) * sr))
+        seg = track_f0(mono[lo:hi], sr, "pyin")
+        seg = {**seg, "times": seg["times"] + lo / sr}
+        got = [x for x in pitch_rows(clock, seg, onsets) if x["id"] == r["id"]]
+        if got:
+            alt[r["id"]] = got[0]
+    return alt
+
+
 def pitch_gate(rows: list[dict]) -> dict:
     means = [r["cents_mean"] for r in rows if r["cents_mean"] is not None and r["status"] in ("PASS", "WARN", "FAIL")]
     global_offset = float(np.median(means)) if means else None
@@ -1371,8 +1429,13 @@ def cmd_pitch(a):
         onsets = {t["id"]: t["t_vowel"] for t in rec["table"] if t.get("t_vowel") is not None}
     trk = track_f0(mono, sr, a.tracker)
     rows = pitch_rows(clock, trk, onsets)
+    recheck = None
+    if trk["tracker"] == "fcpe" and not a.no_recheck:
+        recheck = recheck_pitch(rows, pyin_recheck(clock, mono, sr, rows, onsets))
     res = pitch_gate(rows)
     res["tracker"] = trk["tracker"]
+    if recheck is not None:
+        res["recheck"] = recheck
     if a.cross_check and trk["tracker"] != "swift-f0":
         try:
             alt = pitch_rows(clock, track_f0(mono, sr, "swift"), onsets)
@@ -1390,6 +1453,8 @@ def cmd_pitch(a):
         f = lambda v, w: ("-" * 1).rjust(w) if v is None else f"{v:{w}.1f}"
         sw = "" if r.get("cents_swift") is None else f" swift {r['cents_swift']:+.0f}c{' DISAGREE' if r.get('tracker_disagree') else ''}"
         print(f"{r['id']:4} {r['lyric']:7} {r['midi']:4d} {r['ref_hz']:7.1f} {f(r['cents_mean'], 7)} {f(r['cents_median'], 7)} {f(r['cents_sd'], 6)} {r['voiced_fraction']:6.0%}  {r['status']} {r['reason']}{sw}")
+    if recheck is not None:
+        print(f"  recheck pyin: {recheck['rechecked']} notes re-read, {recheck['rescued']} rescued, {recheck['both_off']} off on both")
     print(f"  tracker {trk['tracker']}; global offset {res['global_offset_cents']} c ({'PASS' if res['global_pass'] else 'FAIL'} @ {PITCH_GLOBAL_FAIL_CENTS}); "
           f"scatter SD {res['scatter_sd_cents']} c{' WARN' if res['scatter_warn'] else ''}")
     print(f"PITCH {res['verdict']}")
@@ -1684,7 +1749,7 @@ def main(argv=None) -> int:
     s = sub.add_parser("verify"); s.add_argument("--clock", required=True); s.add_argument("--vocal", required=True); s.add_argument("--bed"); s.add_argument("--words"); s.add_argument("--plan"); s.add_argument("--receipt")
     s.add_argument("--aligner", action="store_true", help="cross-check onsets with the singing forced aligner (onset_aligner.py): a detector miss the aligner places on time is rescued")
     s.add_argument("--aligner-work", help="work directory for the aligner (default: an aligner/ folder next to the receipt)"); s.set_defaults(fn=cmd_verify)
-    s = sub.add_parser("pitch"); s.add_argument("--clock", required=True); s.add_argument("--vocal", required=True); s.add_argument("--verify-receipt"); s.add_argument("--tracker", default="auto", choices=["auto", "swift", "pyin"]); s.add_argument("--cross-check", action="store_true"); s.add_argument("--receipt"); s.set_defaults(fn=cmd_pitch)
+    s = sub.add_parser("pitch"); s.add_argument("--clock", required=True); s.add_argument("--vocal", required=True); s.add_argument("--verify-receipt"); s.add_argument("--tracker", default="fcpe", choices=["fcpe", "auto", "swift", "pyin"], help="default fcpe, with pYIN re-reading the notes it does not pass ('auto' and 'pyin' are pYIN alone)"); s.add_argument("--no-recheck", action="store_true", help="fcpe alone, without pYIN's second reading"); s.add_argument("--cross-check", action="store_true"); s.add_argument("--receipt"); s.set_defaults(fn=cmd_pitch)
     s = sub.add_parser("mix"); s.add_argument("--bed", required=True); s.add_argument("--vocal", required=True); s.add_argument("--vocal-key", default=""); s.add_argument("--plan", required=True); s.add_argument("--local", action="store_true", help="mix with numpy instead of the cloud")
     s.add_argument("--out-dir", required=True); s.add_argument("--out-info", required=True); s.add_argument("--prefix", default="jam/vocal-clock/mix")
     s.add_argument("--vocal-over-bed-db", type=float, default=4.0); s.add_argument("--bed-gain-db", type=float, default=-9.0); s.set_defaults(fn=cmd_mix)
