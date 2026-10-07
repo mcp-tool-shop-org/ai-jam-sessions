@@ -99,3 +99,16 @@ def test_a_note_that_overlaps_the_next_is_refused():
     events = [ev(0, "oh", 0.5, 1.0), ev(1, "see", 1.2, 1.0)]
     with pytest.raises(SystemExit, match="before the previous note ends"):
         ex.build_target(clock(events, 3.0), g2p)
+
+
+def test_a_lead_pad_lengthens_each_segments_opening_rest_and_is_recorded():
+    segs = ex.build_target(clock(PHRASES, 8.0), g2p, segment_gap=1.0, lead_pad=1.0)
+    assert [s["time"] for s in segs] == [[0, 3240], [3240, 8000]], "the clock does not move"
+    assert all(s["lead_pad_ms"] == 1000 for s in segs)
+    for s in segs:
+        assert sum(d for *_, d in rows(s)) == pytest.approx((s["time"][1] - s["time"][0]) / 1000 + 1.0)
+    assert rows(segs[1])[0] == ("<SP>", "<SP>", 0, 1, pytest.approx(1.76))
+
+
+def test_no_pad_leaves_the_target_as_it_was():
+    assert all("lead_pad_ms" not in s for s in ex.build_target(clock(PHRASES, 8.0), g2p, segment_gap=1.0))

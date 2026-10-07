@@ -139,10 +139,17 @@ def segment_bounds(notes: list[dict], total: float, gap: float | None) -> list[t
 
 
 def build_target(clock: dict, g2p, language: str = "English", syllable_words: bool = False,
-                 segment_gap: float | None = None) -> list[dict]:
+                 segment_gap: float | None = None, lead_pad: float = 0.0) -> list[dict]:
     """`syllable_words`: emit every syllable as its own word (note_type 2) with
     its own phonemes, so the singer re-articulates each one instead of gliding
-    through the word — then a cut between syllables is a word boundary."""
+    through the word — then a cut between syllables is a word boundary.
+
+    `lead_pad`: sing this many seconds of extra silence before every segment and
+    record it (`lead_pad_ms`), so the renderer can drop it. SoulX makes a loud,
+    pitched sound in a segment's first 0.2-0.5 s, where the score has a rest
+    (measured on all 32 takes of the two hymns, 2026-10-07); with the pad, that
+    sound falls in audio that is thrown away. `time` is unchanged: the segment
+    still lands where the clock puts it."""
     total = float(clock["total_seconds"])
     notes = sung_notes(clock, g2p, syllable_words)
     segments = []
@@ -162,6 +169,12 @@ def build_target(clock: dict, g2p, language: str = "English", syllable_words: bo
             raise SystemExit(f"a note runs past its segment's end ({cursor:.4f} > {end:.4f})")
         if end - cursor > 1e-6:
             rows.append(("<SP>", "<SP>", 0, 1, end - cursor))
+        pad_ms = int(round(lead_pad * 1000))
+        if pad_ms > 0:
+            if rows and rows[0][0] == "<SP>":
+                rows[0] = rows[0][:4] + (rows[0][4] + pad_ms / 1000,)
+            else:
+                rows.insert(0, ("<SP>", "<SP>", 0, 1, pad_ms / 1000))
         a_ms, b_ms = int(round(start * 1000)), int(round(end * 1000))
         segments.append({
             "index": f"{clock['song_id']}_{a_ms}_{b_ms}",
@@ -172,6 +185,7 @@ def build_target(clock: dict, g2p, language: str = "English", syllable_words: bo
             "phoneme": " ".join(p for _, p, _, _, _ in rows),
             "note_pitch": " ".join(str(m) for _, _, m, _, _ in rows),
             "note_type": " ".join(str(k) for _, _, _, k, _ in rows),
+            **({"lead_pad_ms": pad_ms} if pad_ms > 0 else {}),
         })
     return segments
 
@@ -185,6 +199,7 @@ def main() -> int:
     ap.add_argument("--gain", type=float, default=1.0, help="fraction of the measured error to feed back (default 1.0)")
     ap.add_argument("--syllable-words", action="store_true", help="every syllable is its own word with its own phonemes (re-articulated, cuttable between)")
     ap.add_argument("--segment-gap", type=float, help="split into segments at every rest of at least this many seconds (default: one segment)")
+    ap.add_argument("--lead-pad", type=float, default=0.0, help="extra seconds of silence sung before every segment and dropped by soulx_batch.py (SoulX's noisy segment starts)")
     a = ap.parse_args()
     clock = json.load(open(a.clock, encoding="utf-8"))
     if clock.get("schema") != "ai-jam-sessions/score-clock/v1":
@@ -199,7 +214,7 @@ def main() -> int:
     except ImportError:
         raise SystemExit("g2p_en is not installed in this interpreter; run inside the SoulX venv")
     g2p = G2p()
-    target = build_target(clock, g2p, a.language, syllable_words=a.syllable_words, segment_gap=a.segment_gap)
+    target = build_target(clock, g2p, a.language, syllable_words=a.syllable_words, segment_gap=a.segment_gap, lead_pad=a.lead_pad)
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
     if comp_log is not None:
         target[0]["_compensation"] = {"from": a.compensate.replace("\\", "/"), "gain": a.gain, "shifts": comp_log}

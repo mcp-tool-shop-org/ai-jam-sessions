@@ -51,6 +51,42 @@ def absolute_paths(a):
     return a
 
 
+def assemble(segments: list[dict], audios: list, sr: int):
+    """Tile rendered segments onto the clock the way SoulX's own inference does
+    (each written at its `time` start, a later one overwriting an overlap), after
+    dropping each segment's `lead_pad_ms`: the extra silence export_soulx_target.py
+    asked the singer for, which is where its noisy segment start now falls."""
+    import numpy as np
+    out = np.zeros(int(segments[-1]["time"][1] / 1000 * sr), dtype=np.float32)
+    for seg, audio in zip(segments, audios):
+        audio = np.asarray(audio, dtype=np.float32)[int(round(seg.get("lead_pad_ms", 0) / 1000 * sr)):]
+        start = int(seg["time"][0] / 1000 * sr)
+        n = max(0, min(len(audio), len(out) - start))
+        out[start:start + n] = audio[:n]
+    return out
+
+
+def render_padded(args, config, model) -> None:
+    """SoulX's cli.inference.process, with assemble() in place of its own tiling."""
+    import json
+    import soundfile as sf
+    import torch
+    from soulxsinger.utils.data_processor import DataProcessor
+    dp = DataProcessor(hop_size=config.audio.hop_size, sample_rate=config.audio.sample_rate,
+                       phoneset_path=args.phoneset_path, device=args.device)
+    prompt = dp.process(json.load(open(args.prompt_metadata_path, encoding="utf-8"))[0], args.prompt_wav_path)
+    segments = json.load(open(args.target_metadata_path, encoding="utf-8"))
+    audios = []
+    for seg in segments:
+        with torch.no_grad():
+            audio = model.infer({"prompt": prompt, "target": dp.process(seg, None)}, auto_shift=args.auto_shift,
+                                pitch_shift=args.pitch_shift, n_steps=config.infer.n_steps, cfg=config.infer.cfg,
+                                control=args.control, use_fp16=args.use_fp16)
+        audios.append(audio.squeeze().cpu().numpy())
+    os.makedirs(args.save_dir, exist_ok=True)
+    sf.write(os.path.join(args.save_dir, "generated.wav"), assemble(segments, audios, config.audio.sample_rate), config.audio.sample_rate)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--target", required=True)
@@ -76,7 +112,9 @@ def main() -> int:
     sys.path.insert(0, SOULX_ROOT)
     os.chdir(SOULX_ROOT)
     import torch
+    import json
     from cli.inference import build_model, process
+    padded = any(seg.get("lead_pad_ms") for seg in json.load(open(a.target, encoding="utf-8")))
     from soulxsinger.utils.file_utils import load_config
 
     fp16 = not a.no_fp16
@@ -102,7 +140,7 @@ def main() -> int:
             phoneset_path=os.path.join(SOULX_ROOT, "soulxsinger", "utils", "phoneme", "phone_set.json"),
             save_dir=tdir)
         t = time.time()
-        process(args, config, model)
+        (render_padded if padded else process)(args, config, model)
         receipt = finish_take(os.path.join(tdir, "generated.wav"), tdir, a.sample_rate, time.time() - t, fields)
         print(f"take {receipt['take']} ({receipt['seconds']:.3f}s) peak {receipt['peak']:.3f} in {receipt['elapsed_s']}s", flush=True)
     return 0
