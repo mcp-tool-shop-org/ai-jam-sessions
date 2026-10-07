@@ -110,6 +110,8 @@ def joins(syl: list[dict], gaps: dict[str, float] | None = None, warp: dict[str,
             shift_diff = 0                                           # one continuous piece: nothing replayed or skipped
             st = wa.get("stretch")
             stretch = st if st is not None and not STRETCH[0] <= st <= STRETCH[1] else None
+        elif wa and wb and air_ms > 0:
+            shift_diff = 0                                           # separate runs with silence between: nothing overlaps
         if switch or air_ms > AIR_MS or abs(shift_diff) > SHIFT_MS or stretch is not None:
             out.append({"t": b["start"], "after": a["id"], "before": b["id"], "from_take": a["take"], "to_take": b["take"],
                         "switch": switch, "air_ms": air_ms, "shift_diff_ms": shift_diff, "lyric": b["lyric"],

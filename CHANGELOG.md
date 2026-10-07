@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — honks at phrase ends
+- Warp placement ends each run at its last note plus a 0.15 s release, and at every rest
+  in the score. The Director's A/B put every remaining honk in the raw takes, at the
+  boundary between two separately rendered phrase segments. The old placement played
+  on through that rest to the next syllable and carried the noise in.
+
 ### Added — warp placement
 - `vocal_clock.py place --local --warp` (and `sing_clock.py --warp`) places each run of
   syllables from one take as one continuous, time-warped piece (WSOLA). The old placement

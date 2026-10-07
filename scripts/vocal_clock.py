@@ -845,17 +845,29 @@ def place_local(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np
 WARP_FRAME_S = 0.04          # WSOLA frame (a few periods of the lowest sung note)
 WARP_TOL_S = 0.01            # how far a frame may slide to stay in phase with the last
 WARP_RUN_GAP_S = 1.5         # a source gap this long between same-take syllables starts a new run
+WARP_REST_S = 0.25           # a rest this long in the score ends a run, even inside one take
+WARP_RELEASE_S = 0.15        # a run sounds this long past its last note's end, then fades
+WARP_RELEASE_FADE_S = 0.06
+# Why runs end at the score: a whole song is rendered in phrase segments, split at
+# rests, and the singer makes noise in the rest where two segments meet (the
+# Director heard every remaining "honk" there, 2026-10-07: a raw take, the placed
+# vocal and the mix all honked at the segment boundary). A clip that ran on to the
+# next syllable's lead-in carried that noise in; a rest belongs to the bed.
 
 
-def warp_runs(cuts: list[dict]) -> list[list[dict]]:
+def warp_runs(cuts: list[dict], ends: dict[str, float] | None = None) -> list[list[dict]]:
     """Consecutive clips (in placed order) from one take, in source order and close
-    in the source: each run is played as one continuous, warped stretch."""
+    in the source: each run is played as one continuous, warped stretch. With
+    `ends` (event id -> score time its note ends), a rest of WARP_REST_S in the
+    score also ends a run."""
+    ends = ends or {}
     runs: list[list[dict]] = []
     for c in sorted(cuts, key=lambda c: c["placed_start"]):
         if runs:
             p = runs[-1][-1]
+            rest = c["t_sec"] - ends[p["id"]] if p["id"] in ends and "t_sec" in c else 0.0
             if (c["source_key"] == p["source_key"] and c["cut_start"] >= p["cut_start"]
-                    and c["cut_start"] - p["cut_end"] < WARP_RUN_GAP_S):
+                    and c["cut_start"] - p["cut_end"] < WARP_RUN_GAP_S and rest < WARP_REST_S):
                 runs[-1].append(c)
                 continue
         runs.append([c])
@@ -919,16 +931,19 @@ def wsola(x: np.ndarray, sr: int, src: list[float], dst: list[float]) -> np.ndar
     return out[:length]
 
 
-def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np.ndarray, list[dict]]:
+def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int, clock: dict | None = None) -> tuple[np.ndarray, list[dict]]:
     """Warp placement (see above). Runs meet the way phrases do: the earlier run
     ends at its own last syllable and fades; if the next run starts before that,
     they crossfade for at most XFADE_S, so two takes never sing over each other
-    for longer than a crossfade."""
+    for longer than a crossfade. With the clock, a run ends at its last note plus
+    WARP_RELEASE_S, so the rest after a phrase is silence, not the take."""
+    ends = {e["id"]: e["t_sec"] + e["dur_sec"] for e in (clock or {}).get("events", [])}
     total = int(plan["total_samples"])
     out = np.zeros((total, 2))
     cuts = [c for c in plan["cuts"] if c.get("word_clip_id", c["id"]) == c["id"]]
-    runs = warp_runs(cuts)
+    runs = warp_runs(cuts, ends)
     nf = int(FADE_S * sr)
+    nr = int(WARP_RELEASE_FADE_S * sr)
     nx = int(XFADE_S * sr)
     spans = []
     for run in runs:
@@ -938,7 +953,15 @@ def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np.
             x = np.repeat(x[:, None], 2, axis=1)
         a0 = int(round(src_t[0] * sr))
         seg = wsola(x[a0:int(round(src_t[-1] * sr)) + 1], sr, [s - a0 / sr for s in src_t], dst_t)
-        spans.append((int(round(dst_t[0] * sr)), seg, src_t, dst_t))
+        start = int(round(dst_t[0] * sr))
+        last = run[-1]["id"]
+        if last in ends:
+            stop = int(round((ends[last] + WARP_RELEASE_S) * sr)) - start
+            if 0 < stop < len(seg):
+                seg = seg[:stop].copy()
+                k = min(nr, len(seg) // 2)
+                seg[len(seg) - k:] *= _fade(k)[::-1][:, None]
+        spans.append((start, seg, src_t, dst_t))
     joins = []
     for k, (start, seg, src_t, dst_t) in enumerate(spans):
         nxt = spans[k + 1][0] if k + 1 < len(spans) else None
@@ -1476,8 +1499,13 @@ def cmd_place(a):
             if sr != plan["sample_rate"]:
                 raise SystemExit(f"{path} is {sr} Hz, plan is {plan['sample_rate']} Hz")
             sources[k] = data
-        place = place_warp if a.warp else place_local
-        out, joins = place(plan, sources, int(plan["sample_rate"]))
+        if a.warp:
+            clock = load_clock(plan["clock"]) if isinstance(plan.get("clock"), str) and os.path.exists(plan["clock"]) else None
+            if clock is None:
+                print("warp: the plan's clock was not found, so runs are not ended at the score's rests")
+            out, joins = place_warp(plan, sources, int(plan["sample_rate"]), clock)
+        else:
+            out, joins = place_local(plan, sources, int(plan["sample_rate"]))
         os.makedirs(a.out_dir, exist_ok=True)
         path = os.path.join(a.out_dir, "placed-local.wav")
         sf.write(path, out, int(plan["sample_rate"]), subtype="PCM_16")

@@ -146,3 +146,11 @@ def test_a_warped_stretch_far_from_one_is_named():
     assert j["before"] == "v01" and j["stretch"] == 2.1
     r = rm.explain({"t": 2.3}, {"syllables": syl, "joins": rm.joins(syl, {}, warp)}, {}, {})
     assert "stretches 'oh' x2.1" in r["findings"][0]
+
+
+def test_warped_runs_with_silence_between_neither_replay_nor_skip():
+    syl = rm.syllables(moved(PLAN, 1, 120))
+    warp = {"v00": {"run": 0, "stretch": None}, "v01": {"run": 1, "stretch": None},
+            "v02": {"run": 2, "stretch": None}, "v03": {"run": 2, "stretch": None}}
+    js = {j["before"]: j for j in rm.joins(syl, {"v00": 400.0}, warp)}
+    assert js["v01"]["shift_diff_ms"] == 0 and js["v01"]["air_ms"] == 400.0

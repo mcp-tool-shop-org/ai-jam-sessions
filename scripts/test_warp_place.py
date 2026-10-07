@@ -59,3 +59,22 @@ def test_warp_placement_never_plays_a_source_moment_twice():
     assert {j["run"] for j in joins} == {0}
     v = out[int(0.7 * SR):int(2.2 * SR), 0]
     assert np.all(np.diff(v) > -1e-3), "the source never runs backwards"
+
+
+def test_a_rest_in_the_score_ends_a_run_even_inside_one_take():
+    cuts = [dict(cut(0, "A", 1.0, 1.1, 1.8, 0.0), t_sec=1.1), dict(cut(1, "A", 1.8, 1.9, 2.6, 0.0), t_sec=1.9),
+            dict(cut(2, "A", 2.6, 2.7, 3.4, 0.0), t_sec=2.7)]
+    ends = {"v00": 1.8, "v01": 2.3, "v02": 3.4}                    # a 0.4 s rest after v01
+    assert [[c["id"] for c in r] for r in vc.warp_runs(cuts, ends)] == [["v00", "v01"], ["v02"]]
+
+
+def test_a_run_falls_silent_after_its_last_note_and_release():
+    # the take keeps "singing" through the rest (as a segment boundary's noise does);
+    # the placed run must stop at the note's end plus the release
+    take = np.ones((int(4.0 * SR), 1)) * 0.5
+    plan = {"total_samples": int(4.0 * SR), "cuts": [dict(cut(0, "A", 0.5, 0.6, 2.5, 0.0), t_sec=0.6)]}
+    clock = {"events": [{"id": "v00", "t_sec": 0.6, "dur_sec": 1.0}]}  # the note ends at 1.6
+    out, _ = vc.place_warp(plan, {"A": take}, SR, clock)
+    stop = 1.6 + vc.WARP_RELEASE_S
+    assert np.abs(out[int(1.0 * SR):int(1.5 * SR)]).min() > 0.4
+    assert np.abs(out[int((stop + 0.01) * SR):]).max() == 0.0
