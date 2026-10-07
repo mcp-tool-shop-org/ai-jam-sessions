@@ -38,6 +38,19 @@ def take_dirs(out_dir: str, first: int, takes: int) -> list[str]:
     return [os.path.join(out_dir, f"take-{i:02d}") for i in range(first, first + takes)]
 
 
+PATH_ARGS = ("target", "prompt_wav", "prompt_meta", "out_dir", "model", "config")
+
+
+def absolute_paths(a):
+    """Resolve every path argument against the caller's directory. main() then
+    changes into SOULX_ROOT (its code reads paths relative to it), and a relative
+    --target would no longer point at the caller's file: the first pod run
+    stopped on exactly that."""
+    for name in PATH_ARGS:
+        setattr(a, name, os.path.abspath(getattr(a, name)))
+    return a
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--target", required=True)
@@ -52,9 +65,9 @@ def main() -> int:
     ap.add_argument("--pitch-shift", type=int, default=0)
     ap.add_argument("--no-fp16", action="store_true")
     ap.add_argument("--sample-rate", type=int, default=48000)
-    a = ap.parse_args()
+    a = absolute_paths(ap.parse_args())
 
-    out_dir = os.path.abspath(a.out_dir)
+    out_dir = a.out_dir
     todo = [d for d in take_dirs(out_dir, a.first, a.takes) if not os.path.exists(os.path.join(d, "take-48k.wav"))]
     if not todo:
         print(f"all {a.takes} takes already rendered in {out_dir}")

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — soulx_batch.py with relative paths
+- `soulx_batch.py` resolves its path arguments before it changes into the SoulX-Singer
+  checkout. A relative `--target` pointed at nothing after the change of directory; the first
+  pod run stopped on it before rendering (it renders with absolute paths on the pod since).
+
 ### Added — whole songs on the score clock
 - Held syllables: a `_` token in the clock's lyrics holds the previous syllable onto the next
   note (a melisma, as in New Britain's "A-ma-zing _ grace"). The clock keeps one event per
