@@ -267,6 +267,11 @@ describe("deriveScoreClock: a melody that breathes", () => {
     expect(clock.events.map((e) => [e.lyric, e.dur_sec])).toEqual([["do", 3], ["re", 1], ["mi", 2]]);
   });
 
+  it("refuses a song that ends on a pickup: with notated rests it has no end", () => {
+    // An off-beat note in the clock's first bar is taken as a pickup, which carries no length.
+    expect(() => build([[72, 3 * Q, Q]])("do", true)).toThrow(/a pickup cannot close a song/);
+  });
+
   it("refuses a rest inside a held syllable", () => {
     const gapped: N[] = [[72, B, 2 * Q], [74, B + 3 * Q, Q], [76, B + 4 * Q, Q / 2], [77, B + 5 * Q, Q], [79, B + 6 * Q, 2 * Q]];
     expect(() => build(gapped)("do re mi _ sol", true)).toThrow(/a rest inside a held syllable/);
