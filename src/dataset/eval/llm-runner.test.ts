@@ -27,10 +27,12 @@ import {
   parseE3Response,
   E3_ABSTAIN,
   majorityPass,
+  checkE1Pass,
   checkE3Margins,
   runE1ForRecord,
   runE2ForPair,
   runE3Question,
+  runE3ForRecord,
   isNoteEmptyRemi,
   E1_GOLD_PASS_RATE_THRESHOLD,
   E2_GROOVE_THRESHOLD,
@@ -38,6 +40,7 @@ import {
   type LlmBackend,
   type ToolUseResult,
   type CallMeta,
+  type E1RunResult,
   type E3RecordResult,
   type E3Context,
 } from "./llm-runner.js";
@@ -1362,5 +1365,247 @@ describe("run aggregation", () => {
   it("majority pass for n=2: ceil(2/2)=1, one pass is enough", () => {
     expect(majorityPass([{ score: 1 }, { score: 0 }])).toBe(true);
     expect(majorityPass([{ score: 0 }, { score: 0 }])).toBe(false);
+  });
+});
+
+describe("checkE1Pass", () => {
+  function e1(passed: boolean, run: number): E1RunResult {
+    return {
+      run,
+      meta: {
+        runId: `rec:E1:run${run}`,
+        backend: "fake",
+        modelId: "fake-model",
+        promptTokens: 1,
+        completionTokens: 1,
+        costUsd: 0,
+        latencyMs: 1,
+        parseOk: passed,
+        parseError: passed ? null : "no",
+      },
+      toolCalls: [],
+      evaluation: null,
+      passed,
+    };
+  }
+
+  it("majority-passes 2 of 3 and fails 1 of 3", () => {
+    expect(checkE1Pass([e1(true, 1), e1(true, 2), e1(false, 3)])).toBe(true);
+    expect(checkE1Pass([e1(true, 1), e1(false, 2), e1(false, 3)])).toBe(false);
+  });
+});
+
+describe("runE2ForPair hard failure and structured retry", () => {
+  const metaFor = (calls: number) =>
+    calls === 1
+      ? { promptTokens: 11, completionTokens: 3, latencyMs: 5, costEstimate: 0 }
+      : { promptTokens: 22, completionTokens: 4, latencyMs: 6, costEstimate: 0 };
+
+  const noteEmpty = {
+    tokens_remi: ["Bar_1", "Position_0", "Velocity_64", "Duration_4"],
+    tokens_abc: "X:1\nK:C\n|",
+  };
+  const pitched = {
+    tokens_remi: ["Bar_1", "Position_0", "Pitch_60", "Velocity_64", "Duration_4"],
+    tokens_abc: "X:1\nK:C\n|C",
+  };
+
+  function retryBackend(second: "pitch" | "malformed" | "null" | "throw") {
+    let calls = 0;
+    const backend: LlmBackend = {
+      name: "structured",
+      model: "structured-model",
+      callWithTools: async () => ({ toolCalls: [], rawText: null }),
+      callStructured: async () => {
+        calls += 1;
+        if (calls === 1) return noteEmpty;
+        if (second === "throw") throw new Error("retry boom");
+        if (second === "null") return null;
+        if (second === "malformed") return { missing: true };
+        return pitched;
+      },
+      callPlain: async () => "",
+      lastCallMetadata: () => metaFor(calls),
+    };
+    return { backend, calls: () => calls };
+  }
+
+  it("returns unrecoverable immediately when the throw has no raw text and zero completion tokens", async () => {
+    const backend: LlmBackend = {
+      name: "structured",
+      model: "structured-model",
+      callWithTools: async () => ({ toolCalls: [], rawText: null }),
+      callStructured: async () => {
+        throw new Error("hard fail");
+      },
+      callPlain: async () => "",
+      lastCallMetadata: () => ({
+        promptTokens: 8,
+        completionTokens: 0,
+        latencyMs: 4,
+        costEstimate: 0,
+      }),
+    };
+    const result = await runE2ForPair(FIXTURE_PROMPT_RECORD, FIXTURE_TARGET_PAIR_RECORD, backend, 0);
+    expect(result.passed).toBe(false);
+    expect(result.parsedOutput).toBeNull();
+    expect(result.meta.parseOk).toBe(false);
+    expect(result.meta.parseError).toBe("Error: hard fail");
+    expect(result.meta.promptTokens).toBe(8);
+    expect(result.meta.completionTokens).toBe(0);
+    expect(result.parseResult).toEqual({
+      status: "unrecoverable",
+      tokens_remi: [],
+      tokens_abc: "",
+      reason: "Error: hard fail",
+    });
+    expect(result.retryFired).toBeUndefined();
+  });
+
+  it("rescues a note-empty first pass from structured retry output", async () => {
+    const { backend, calls } = retryBackend("pitch");
+    const result = await runE2ForPair(FIXTURE_PROMPT_RECORD, FIXTURE_TARGET_PAIR_RECORD, backend, 0);
+    expect(calls()).toBe(2);
+    expect(result.firstPassNoteEmpty).toBe(true);
+    expect(result.retryFired).toBe(true);
+    expect(result.retryPassNoteEmpty).toBe(false);
+    expect(result.parsedOutput).toEqual(pitched);
+    expect(result.meta.promptTokens).toBe(33);
+    expect(result.meta.completionTokens).toBe(7);
+    expect(result.meta.latencyMs).toBe(11);
+  });
+
+  it("keeps the first pass when the structured retry does not parse", async () => {
+    const { backend, calls } = retryBackend("malformed");
+    const result = await runE2ForPair(FIXTURE_PROMPT_RECORD, FIXTURE_TARGET_PAIR_RECORD, backend, 0);
+    expect(calls()).toBe(2);
+    expect(result.retryFired).toBe(true);
+    expect(result.retryPassNoteEmpty).toBe(true);
+    expect(result.parsedOutput).toBeNull();
+    expect(result.passed).toBe(false);
+  });
+
+  it("keeps the first pass when the structured retry returns null", async () => {
+    const { backend, calls } = retryBackend("null");
+    const result = await runE2ForPair(FIXTURE_PROMPT_RECORD, FIXTURE_TARGET_PAIR_RECORD, backend, 0);
+    expect(calls()).toBe(2);
+    expect(result.retryFired).toBe(true);
+    expect(result.retryPassNoteEmpty).toBe(true);
+    expect(result.parsedOutput).toBeNull();
+    expect(result.meta.parseError).toBeNull();
+  });
+
+  it("keeps the first pass when the structured retry throws", async () => {
+    const { backend, calls } = retryBackend("throw");
+    const result = await runE2ForPair(FIXTURE_PROMPT_RECORD, FIXTURE_TARGET_PAIR_RECORD, backend, 0);
+    expect(calls()).toBe(2);
+    expect(result.retryFired).toBe(true);
+    expect(result.retryPassNoteEmpty).toBe(true);
+    expect(result.parsedOutput).toBeNull();
+    expect(result.passed).toBe(false);
+    expect(result.meta.promptTokens).toBe(33);
+  });
+});
+
+describe("runE3ForRecord", () => {
+  function abstainBackend() {
+    const prompts: string[] = [];
+    const backend: LlmBackend = {
+      name: "fake",
+      model: "fake-model",
+      callWithTools: async () => ({ toolCalls: [], rawText: null }),
+      callStructured: async () => ({}),
+      callPlain: async (args) => {
+        prompts.push(args.userMessage);
+        return "E";
+      },
+      lastCallMetadata: () => ({
+        promptTokens: 4,
+        completionTokens: 1,
+        latencyMs: 2,
+        costEstimate: 0.25,
+      }),
+    };
+    return { backend, prompts };
+  }
+
+  it("scores an abstain letter as not-correct and appends the prose questions", async () => {
+    const partner: E3Record = {
+      ...FIXTURE_E3_RECORD,
+      id: "other-song:m001-004:piano:mcp-session:v1",
+      scope: { ...FIXTURE_E3_RECORD.scope, song_id: "other-song" },
+    };
+    const { backend, prompts } = abstainBackend();
+    const result = await runE3ForRecord(
+      FIXTURE_E3_RECORD,
+      [FIXTURE_E3_RECORD, partner],
+      backend,
+      1,
+      { abstain: true },
+    );
+
+    expect(result.recordId).toBe(FIXTURE_E3_RECORD.id);
+    expect(result.randomMidiPartnerId).toBe(partner.id);
+    expect(result.questions.map((q) => q.questionType)).toEqual([
+      "pitch_class_count",
+      "hand_register",
+      "rhythm_onset",
+      "annotation_grounding",
+      "key_time_sig",
+      "measure_range",
+      "provenance",
+    ]);
+    expect(result.aggregate).toEqual({ full: 0, text_only: 0, random_midi: 0 });
+    expect(result.totalCostUsd).toBe(3.75);
+    const full = result.questions[0].runs.full[0];
+    expect(full.outcome).toBe("abstain");
+    expect(full.score).toBe(0);
+    expect(full.correct).toBe(false);
+    expect(full.selectedOptionIndex).toBeNull();
+    expect(full.context).toBe("full");
+    expect(full.meta.costUsd).toBe(0.25);
+    expect(result.questions[0].majorityScore).toEqual({ full: 0, text_only: 0, random_midi: 0 });
+
+    const textOnly = prompts.find((p) => p.startsWith("Key: Db major."));
+    expect(textOnly).toContain("E) cannot be determined from what is given");
+    expect(textOnly).toContain("Time signature: 9/8.");
+    expect(textOnly).toContain("Phrase: measures 1-4.");
+    expect(textOnly).not.toContain("MIDI tokens");
+    const fullPrompt = prompts.find((p) => p.startsWith("Song: clair-de-lune\n"));
+    expect(fullPrompt).toContain("E) cannot be determined from what is given");
+    expect(fullPrompt).toContain("MIDI tokens:\n(no tokens)");
+  });
+
+  it("skips not-computable load-bearing and provenance questions and leaves the aggregate null", async () => {
+    const empty: E3Record = {
+      ...FIXTURE_E3_RECORD,
+      id: "empty-events:m001-004:piano:mcp-session:v1",
+      provenance: { ...FIXTURE_E3_RECORD.provenance, arrangement_creator: null },
+      observation: { midi_sidecar: { timed_events: [] } },
+    };
+    const partner: E3Record = {
+      ...FIXTURE_E3_RECORD,
+      id: "other-song:m001-004:piano:mcp-session:v1",
+      scope: { ...FIXTURE_E3_RECORD.scope, song_id: "other-song" },
+    };
+    const { backend } = abstainBackend();
+    const result = await runE3ForRecord(empty, [empty, partner], backend, 1, { abstain: true });
+
+    expect(result.questions.map((q) => q.questionType)).toEqual([
+      "key_time_sig",
+      "measure_range",
+    ]);
+    expect(result.aggregate).toEqual({ full: null, text_only: null, random_midi: null });
+    expect(result.totalCostUsd).toBe(0.5);
+    expect(result.randomMidiPartnerId).toBe(partner.id);
+    const run = result.questions[0].runs.text_only[0];
+    expect(run.outcome).toBe("abstain");
+    expect(run.score).toBe(0);
+    expect(run.context).toBe("text_only");
+    expect(run.correct).toBe(false);
+    expect(run.selectedOptionIndex).toBeNull();
+    expect(result.questions[0].runs.full).toEqual([]);
+    expect(result.questions[0].runs.random_midi).toEqual([]);
+    expect(result.questions[0].majorityScore).toEqual({ full: 0, text_only: 0, random_midi: 0 });
   });
 });

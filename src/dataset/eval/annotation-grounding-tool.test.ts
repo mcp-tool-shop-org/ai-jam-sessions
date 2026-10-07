@@ -15,12 +15,14 @@
 // NO real LLM calls. NO fetch. NO live Ollama dependency.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { describe, it, expect } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   runToolInspectedQuestion,
   runToolInspectedForRecord,
   buildE3ToolUserPrompt,
+  createOllamaMultiTurnBackend,
   MAX_TOOL_ITERATIONS,
+  OllamaMultiTurnBackend,
   type MultiTurnBackend,
   type MultiTurnResponse,
   type ToolUseMessage,
@@ -387,5 +389,351 @@ describe("runToolInspectedForRecord — record-level aggregation", () => {
     expect(result.toolUseStats.mean_calls_per_question).toBe(0);
     expect(result.toolUseStats.questions_with_zero_calls).toBe(8);
     expect(result.toolUseStats.model_answered_count).toBe(8);
+  });
+
+  it("tallies 0, 1, 2, and 3-plus calls plus every termination reason", async () => {
+    const record = makeFixtureRecord();
+    const partner: E3Record = {
+      ...record,
+      id: "test-rec-2:m001-002:piano:mcp-session:v1",
+      scope: { ...record.scope, song_id: "other-song" },
+    };
+    const qs = generateQuestionSet(record);
+    const qByText = new Map<string, MCQuestion>();
+    for (const q of qs.questions) {
+      if (!isNotComputable(q)) qByText.set((q as MCQuestion).questionText, q as MCQuestion);
+    }
+    const plans = ["one", "two", "three", "silent", "throw", "cap", "one", "silent"] as const;
+    let question = -1;
+    const turnOf = new Map<number, number>();
+    const call = { tool: "get_hand_balance", arguments: {} };
+
+    const backend: MultiTurnBackend = {
+      name: "tally",
+      model: "tally-model",
+      async chat(args) {
+        const assistants = args.messages.filter((m) => m.role === "assistant").length;
+        let turn: number;
+        if (assistants === 0) {
+          question += 1;
+          turn = 1;
+        } else {
+          turn = (turnOf.get(question) ?? 1) + 1;
+        }
+        turnOf.set(question, turn);
+        const plan = plans[question];
+        if (plan === "throw" && turn === 1) throw new Error("backend down");
+        if (plan === "silent") return { content: "", tool_calls: [] };
+        if (plan === "cap") return { content: "", tool_calls: [call] };
+        if (turn === 1) {
+          const n = plan === "one" ? 1 : plan === "two" ? 2 : 3;
+          return { content: "", tool_calls: Array.from({ length: n }, () => ({ ...call })) };
+        }
+        const user = args.messages.find((m) => m.role === "user")?.content ?? "";
+        let matched: MCQuestion | null = null;
+        for (const [qt, q] of qByText) {
+          if (user.includes(qt)) {
+            matched = q;
+            break;
+          }
+        }
+        if (!matched) throw new Error("question text was not in the user message");
+        return { content: ["A", "B", "C", "D"][matched.correctOptionIndex], tool_calls: [] };
+      },
+      lastCallMetadata: () => ({
+        promptTokens: 1,
+        completionTokens: 1,
+        latencyMs: 1,
+        costEstimate: 0,
+      }),
+    };
+
+    const result = await runToolInspectedForRecord(record, [record, partner], backend, 2, 3);
+    expect(result.aggregate.tool_inspected).toBe(0.75);
+    expect(result.toolUseStats).toEqual({
+      total_tool_calls: 10,
+      mean_calls_per_question: 1.25,
+      questions_with_zero_calls: 3,
+      questions_with_one_call: 2,
+      questions_with_2_calls: 1,
+      questions_with_3plus_calls: 2,
+      tool_histogram: { get_hand_balance: 10 },
+      iteration_cap_hit_count: 1,
+      backend_error_count: 1,
+      model_silent_count: 2,
+      model_answered_count: 4,
+    });
+  });
+
+  it("scores an empty run list as a failed majority", async () => {
+    const record = makeFixtureRecord();
+    const backend: MultiTurnBackend = {
+      name: "unused",
+      model: "unused",
+      async chat() {
+        throw new Error("n=0 must not chat");
+      },
+      lastCallMetadata: () => ({
+        promptTokens: 0,
+        completionTokens: 0,
+        latencyMs: 0,
+        costEstimate: 0,
+      }),
+    };
+    const result = await runToolInspectedForRecord(record, [record], backend, 0);
+    expect(result.questions).toHaveLength(4);
+    expect(result.questions.map((q) => q.majorityScore)).toEqual([0, 0, 0, 0]);
+    expect(result.aggregate.tool_inspected).toBe(0);
+    expect(result.toolUseStats.mean_calls_per_question).toBe(0);
+    expect(result.toolUseStats.total_tool_calls).toBe(0);
+  });
+
+  it("skips load-bearing questions that are not computable", async () => {
+    const record = makeFixtureRecord();
+    record.observation = { midi_sidecar: { timed_events: [] } };
+    const backend: MultiTurnBackend = {
+      name: "unused",
+      model: "unused",
+      async chat() {
+        throw new Error("not-computable questions must not chat");
+      },
+      lastCallMetadata: () => ({
+        promptTokens: 0,
+        completionTokens: 0,
+        latencyMs: 0,
+        costEstimate: 0,
+      }),
+    };
+    const result = await runToolInspectedForRecord(record, [record], backend, 1);
+    expect(result.questions).toEqual([]);
+    expect(result.aggregate.tool_inspected).toBeNull();
+  });
+});
+
+describe("runToolInspectedQuestion — tool throw, silence, and abstain", () => {
+  it("records a tool that throws and still accepts the later letter", async () => {
+    const clean = makeFixtureRecord();
+    const q = findMCQ(clean, "hand_register");
+    const broken = makeFixtureRecord();
+    (broken.observation.midi_sidecar as { timed_events: unknown[] }).timed_events = [null];
+    const backend = makeScriptedBackend([
+      { content: "", tool_calls: [{ tool: "get_events_in_measure", arguments: { measure_number: 1 } }] },
+      { content: "A", tool_calls: [] },
+    ]);
+    const result = await runToolInspectedQuestion(broken, q, backend, 0);
+    expect(result.trace.calls[0].is_error).toBe(true);
+    expect(result.trace.calls[0].error_reason).toBe(
+      "tool get_events_in_measure threw: TypeError: Cannot read properties of null (reading 'measure')",
+    );
+    expect(result.trace.calls[0].result).toEqual({
+      error: "tool get_events_in_measure threw: TypeError: Cannot read properties of null (reading 'measure')",
+    });
+    expect(result.trace.termination_reason).toBe("model_answered");
+  });
+
+  it("records model_silent when the reply is empty", async () => {
+    const record = makeFixtureRecord();
+    const q = findMCQ(record, "hand_register");
+    const backend = makeScriptedBackend([{ content: "", tool_calls: [] }]);
+    const result = await runToolInspectedQuestion(record, q, backend, 0);
+    expect(result.trace.termination_reason).toBe("model_silent");
+    expect(result.score).toBe(0);
+    expect(result.outcome).toBe("wrong");
+    expect(result.meta.parseError).toBe("no final answer");
+  });
+
+  it("scores an E reply as abstain when abstain mode is on", async () => {
+    const record = makeFixtureRecord();
+    const q = findMCQ(record, "hand_register");
+    const backend = makeScriptedBackend([{ content: "E", tool_calls: [] }]);
+    const result = await runToolInspectedQuestion(record, q, backend, 0, MAX_TOOL_ITERATIONS, {
+      abstain: true,
+    });
+    expect(result.outcome).toBe("abstain");
+    expect(result.score).toBe(0);
+    expect(result.correct).toBe(false);
+    expect(result.selectedOptionIndex).toBeNull();
+    expect(result.trace.termination_reason).toBe("model_answered");
+    expect(backend.lastMessages().find((m) => m.role === "user")?.content).toContain(
+      "E) cannot be determined from what is given",
+    );
+  });
+});
+
+describe("buildE3ToolUserPrompt abstain", () => {
+  it("appends the E option only when abstain is requested", () => {
+    const record = makeFixtureRecord();
+    const q = findMCQ(record, "pitch_class_count");
+    expect(buildE3ToolUserPrompt(record, q, { abstain: true })).toContain(
+      "E) cannot be determined from what is given",
+    );
+    expect(buildE3ToolUserPrompt(record, q)).not.toContain("cannot be determined");
+  });
+});
+
+describe("OllamaMultiTurnBackend", () => {
+  const previousHost = process.env.OLLAMA_HOST;
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    if (previousHost === undefined) delete process.env.OLLAMA_HOST;
+    else process.env.OLLAMA_HOST = previousHost;
+  });
+
+  function installFetch(response: {
+    ok: boolean;
+    status: number;
+    json?: () => Promise<unknown>;
+    text?: () => Promise<string>;
+  }) {
+    const fetchMock = vi.fn(async () => response);
+    vi.stubGlobal("fetch", fetchMock);
+    return fetchMock;
+  }
+
+  it("posts the chat body and maps tool calls", async () => {
+    const fetchMock = installFetch({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        model: "panel-model",
+        message: {
+          role: "assistant",
+          content: "A",
+          tool_calls: [{ function: { name: "get_hand_balance", arguments: { hand: "right" } } }],
+        },
+        done: true,
+        prompt_eval_count: 12,
+        eval_count: 3,
+      }),
+    });
+    const backend = new OllamaMultiTurnBackend("panel-model", "http://ollama.invalid:11434");
+    const messages: ToolUseMessage[] = [{ role: "user", content: "q" }];
+    const tools = [{ name: "get_hand_balance", description: "balance", inputSchema: { type: "object" } }];
+    const result = await backend.chat({ messages, tools });
+    expect(fetchMock.mock.calls[0][0]).toBe("http://ollama.invalid:11434/api/chat");
+    const init = fetchMock.mock.calls[0][1] as RequestInit;
+    expect(init.method).toBe("POST");
+    expect(JSON.parse(String(init.body))).toEqual({
+      model: "panel-model",
+      messages,
+      tools: [
+        {
+          type: "function",
+          function: {
+            name: "get_hand_balance",
+            description: "balance",
+            parameters: { type: "object" },
+          },
+        },
+      ],
+      stream: false,
+    });
+    expect(result).toEqual({
+      content: "A",
+      tool_calls: [{ tool: "get_hand_balance", arguments: { hand: "right" } }],
+    });
+    const meta = backend.lastCallMetadata();
+    expect(meta.promptTokens).toBe(12);
+    expect(meta.completionTokens).toBe(3);
+    expect(meta.costEstimate).toBe(0);
+    expect(meta.latencyMs).toBeGreaterThanOrEqual(0);
+  });
+
+  it("prefixes a host that has no scheme", async () => {
+    const fetchMock = installFetch({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        model: "m",
+        message: { role: "assistant", content: "B" },
+        done: true,
+      }),
+    });
+    const backend = new OllamaMultiTurnBackend("m", "ollama.invalid:11434");
+    const result = await backend.chat({
+      messages: [{ role: "user", content: "q" }],
+      tools: [],
+    });
+    expect(fetchMock.mock.calls[0][0]).toBe("http://ollama.invalid:11434/api/chat");
+    expect(result).toEqual({ content: "B", tool_calls: [] });
+    expect(backend.lastCallMetadata().promptTokens).toBe(0);
+    expect(backend.lastCallMetadata().completionTokens).toBe(0);
+  });
+
+  it("defaults the host to localhost:11434 when none is configured", async () => {
+    delete process.env.OLLAMA_HOST;
+    const fetchMock = installFetch({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        model: "m",
+        message: { role: "assistant" },
+        done: true,
+      }),
+    });
+    const backend = new OllamaMultiTurnBackend("m");
+    const result = await backend.chat({ messages: [{ role: "user", content: "q" }], tools: [] });
+    expect(fetchMock.mock.calls[0][0]).toBe("http://localhost:11434/api/chat");
+    expect(result).toEqual({ content: "", tool_calls: [] });
+  });
+
+  it("throws the reachability error when fetch rejects", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => {
+      throw new Error("ECONNREFUSED");
+    }));
+    const backend = new OllamaMultiTurnBackend("m", "http://ollama.invalid:9");
+    await expect(
+      backend.chat({ messages: [{ role: "user", content: "q" }], tools: [] }),
+    ).rejects.toThrow(
+      "Ollama not reachable at http://ollama.invalid:9. Underlying error: Error: ECONNREFUSED",
+    );
+  });
+
+  it("throws the HTTP status and body on a non-ok response", async () => {
+    installFetch({
+      ok: false,
+      status: 503,
+      text: async () => "busy",
+    });
+    const backend = new OllamaMultiTurnBackend("m", "http://ollama.invalid:11434");
+    await expect(
+      backend.chat({ messages: [{ role: "user", content: "q" }], tools: [] }),
+    ).rejects.toThrow("Ollama returned HTTP 503: busy");
+  });
+
+  it("uses an empty body when the error text cannot be read", async () => {
+    installFetch({
+      ok: false,
+      status: 418,
+      text: async () => {
+        throw new Error("unreadable");
+      },
+    });
+    const backend = new OllamaMultiTurnBackend("m", "http://ollama.invalid:11434");
+    await expect(
+      backend.chat({ messages: [{ role: "user", content: "q" }], tools: [] }),
+    ).rejects.toThrow("Ollama returned HTTP 418: ");
+  });
+
+  it("createOllamaMultiTurnBackend returns a backend with that model", async () => {
+    const fetchMock = installFetch({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        model: "panel-model",
+        message: { role: "assistant", content: "C" },
+        done: true,
+        prompt_eval_count: 1,
+        eval_count: 1,
+      }),
+    });
+    const backend = createOllamaMultiTurnBackend("panel-model", "http://ollama.invalid:11434");
+    expect(backend.model).toBe("panel-model");
+    expect(backend.name).toBe("ollama");
+    await expect(
+      backend.chat({ messages: [{ role: "user", content: "q" }], tools: [] }),
+    ).resolves.toEqual({ content: "C", tool_calls: [] });
+    expect(fetchMock.mock.calls[0][0]).toBe("http://ollama.invalid:11434/api/chat");
   });
 });

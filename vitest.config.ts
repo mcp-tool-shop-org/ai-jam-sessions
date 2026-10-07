@@ -6,9 +6,9 @@ import { defineConfig } from "vitest/config";
 // CI run (ci.yml, Node 22 leg) but nothing ever gated on it. This config adds
 // a local, Codecov-independent floor so a real regression (coverage collection
 // breaking, a large new module landing untested) fails the build on its own.
-// Codecov only reports: ci.yml's codecov job uploads with OIDC, and
-// codecov.yml keeps both of its statuses informational, so this floor is the
-// one gate on coverage.
+// codecov.yml blocks patch and project coverage at 90% lines (the project
+// status allows a 1% drop). This floor is the local gate, so a regression
+// fails here before the upload.
 //
 // Vitest 4 removed `coverage.all`; the explicit `include` below is its
 // replacement — every file matching `include` appears in the report even
@@ -17,31 +17,12 @@ import { defineConfig } from "vitest/config";
 // "a large new module lands at 10% coverage and nobody notices" failure
 // mode C-B1-001 called out.
 //
-// Threshold floor: 30% statements/lines/functions, 20% branches. This is a
-// conservative *static estimate*, not a measured baseline — this fix was
-// authored under a wave-level constraint that forbids running
-// `pnpm test`/`pnpm test:coverage` (parallel wave, shared tree, coordinator
-// runs the one real verify pass after collection). The estimate comes from
-// bucketing the ~33k in-scope lines across 74 src/ files by whether/how
-// well each has dedicated test coverage (1621 tests exist repo-wide as of
-// this stage) and weighting by file size; that exercise landed a central
-// estimate around ~45% with a wide uncertainty band, pulled down hard by
-// several large, confirmed-thin-or-untested files: cli.ts (1381 lines, no
-// test file at all), most of mcp-server.ts (2945 lines against a 309-line
-// test focused on tool registration/protocol behavior, not handler bodies),
-// and the whole audio engine layer (audio-engine.ts, guitar-engine.ts,
-// sample-engine.ts, vocal-engine.ts, vocal-tract-engine.ts, piano-voices.ts,
-// guitar-voices.ts — confirmed by Stage A/B audit findings to have no
-// dedicated unit tests exercising them).
-//
-// The floor is set well below that central estimate on purpose: the goal is
-// a number that (a) almost certainly passes the first real CI run, so
-// coverage tracking goes from "never enforced" to "enforced" without
-// breaking the build on the PR that adds it, and (b) still catches a real
-// regression (collection silently breaking, a wholesale test deletion, or a
-// large new module landing at ~0%). RAISE this floor in a follow-up PR once
-// a real `pnpm test:coverage` run has printed the actual number — the
-// coverage step's own console output ("text" reporter below) has it.
+// Threshold floor, measured 2026-10-06 with SKIP_DSP_VERIFICATION=1, which is
+// what the coverage leg sets. Lines 16444/17368 (94.67%), statements
+// 18326/19706 (92.99%), functions 2718/2856 (95.16%), branches 9690/11690
+// (82.89%). Every included src file with executable lines is at 80% lines or
+// better. The floor is that measurement minus 2 points, rounded down. It
+// only moves up.
 // ─── Test timeout ──────────────────────────────────────────────────────────
 //
 // Vitest's 5 s default is too tight for this repo, and the failure it produces
@@ -91,10 +72,10 @@ export default defineConfig({
       // Keep "json" — ci.yml saves ./coverage/coverage-final.json for Codecov.
       reporter: ["text", "json", "json-summary", "html"],
       thresholds: {
-        statements: 30,
-        lines: 30,
-        functions: 30,
-        branches: 20,
+        statements: 90,
+        lines: 92,
+        functions: 93,
+        branches: 80,
       },
     },
   },

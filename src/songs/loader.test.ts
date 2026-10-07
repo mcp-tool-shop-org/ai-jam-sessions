@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync, readFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { clearRegistry } from "./registry.js";
+import { clearRegistry, getSong, registerSong } from "./registry.js";
 import type { SongEntry } from "./types.js";
 
 // ─── node:fs mock (write/rename-interception scaffold for the saveSong ─────
@@ -46,7 +46,7 @@ vi.mock("node:fs", async (importOriginal) => {
 
 // Imported after vi.mock (vi.mock calls are hoisted by vitest regardless of
 // import order — written this way for readability, per piano-voices.test.ts).
-import { loadSongsFromDir, loadSongFile, saveSong } from "./loader.js";
+import { initializeRegistry, loadSongsFromDir, loadSongFile, saveSong } from "./loader.js";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -143,6 +143,28 @@ describe("sanitizeSongId (via saveSong)", () => {
   it("rejects uppercase IDs", () => {
     const song = makeSong({ id: "Bad" });
     expect(() => saveSong(song, tmp)).toThrow("Invalid song ID");
+  });
+
+  it('rejects Bad_ID with the kebab-case sentence', () => {
+    let message = "";
+    try {
+      saveSong(makeSong({ id: "Bad_ID" }), tmp);
+    } catch (err) {
+      message = err instanceof Error ? err.message : String(err);
+    }
+    expect(message).toBe('Invalid song ID: "Bad_ID". Must be kebab-case (a-z, 0-9, hyphens).');
+  });
+
+  it("rejects path-like ids with the kebab-case sentence, not the path-separator sentence", () => {
+    for (const id of ["../evil", "a/b", "song\\bad"]) {
+      let message = "";
+      try {
+        saveSong(makeSong({ id }), tmp);
+      } catch (err) {
+        message = err instanceof Error ? err.message : String(err);
+      }
+      expect(message).toBe(`Invalid song ID: "${id}". Must be kebab-case (a-z, 0-9, hyphens).`);
+    }
   });
 });
 
@@ -314,5 +336,34 @@ describe("saveSong — atomic write (write-temp-then-rename)", () => {
     const content = JSON.parse(readFileSync(join(tmp, "atomic-song-4.json"), "utf8"));
     expect(content.title).toBe("Recovered");
     expect(readdirSync(tmp)).toEqual(["atomic-song-4.json"]);
+  });
+});
+
+describe("initializeRegistry", () => {
+  it("skips a duplicate builtin and a duplicate user song, then logs how many builtin files loaded", () => {
+    const builtin = join(tmp, "builtin");
+    const user = join(tmp, "user");
+    mkdirSync(builtin);
+    mkdirSync(user);
+    writeFileSync(join(builtin, "alpha-song.json"), JSON.stringify(makeSong({ id: "alpha-song", title: "Alpha" })));
+    writeFileSync(join(builtin, "alpha-again.json"), JSON.stringify(makeSong({ id: "alpha-song", title: "Alpha Copy" })));
+    writeFileSync(join(user, "alpha-song.json"), JSON.stringify(makeSong({ id: "alpha-song", title: "User Alpha" })));
+    writeFileSync(join(user, "user-etude.json"), JSON.stringify(makeSong({ id: "user-etude", title: "User Etude" })));
+    registerSong(makeSong({ id: "sentinel-song", title: "Gone" }));
+
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      initializeRegistry(builtin, user);
+      expect(getSong("sentinel-song")).toBeUndefined();
+      expect(getSong("alpha-song")?.id).toBe("alpha-song");
+      expect(getSong("user-etude")?.title).toBe("User Etude");
+      expect(errorSpy.mock.calls.map((call) => call[0])).toEqual([
+        '  SKIP builtin alpha-song: Duplicate song ID: "alpha-song"',
+        '  SKIP user alpha-song: Duplicate song ID: "alpha-song"',
+        "Song registry initialized: 2 builtin songs loaded",
+      ]);
+    } finally {
+      errorSpy.mockRestore();
+    }
   });
 });
