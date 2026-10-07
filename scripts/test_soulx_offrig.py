@@ -65,6 +65,15 @@ def test_batch_numbers_takes_the_way_sing_clock_reads_them(tmp_path):
         soulx_batch.take_dirs(str(tmp_path), 1, 0)
 
 
+def test_batch_paths_are_resolved_before_it_changes_directory(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    monkeypatch.chdir(tmp_path)
+    a = soulx_batch.absolute_paths(SimpleNamespace(target="ajs/t.json", prompt_wav="p.mp3", prompt_meta="p.json",
+                                                   out_dir="out", model="m.pt", config="c.yaml"))
+    assert a.target == os.path.join(str(tmp_path), "ajs", "t.json")
+    assert all(os.path.isabs(getattr(a, n)) for n in soulx_batch.PATH_ARGS)
+
+
 def test_a_take_from_the_same_target_is_reused(tmp_path):
     tdir = str(tmp_path / "take-01")
     assert sing_clock.stale_take(tdir, "sha-a") is None, "no take yet: nothing to refuse"
