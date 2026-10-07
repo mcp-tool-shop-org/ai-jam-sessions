@@ -1226,6 +1226,12 @@ def track_f0(mono: np.ndarray, sr: int, tracker: str = "auto") -> dict:
     vibrato it reads +2.8 c mean with the full swing; SwiftF0 read +20.6 c mean
     and clipped the excursion (measured 2026-09-05), a bias a 25/50 c gate
     cannot afford. SwiftF0 stays available as a cross-check (`tracker="swift"`).
+
+    `tracker="fcpe"` (torchfcpe, MIT, CUDA): on the same kind of vibrato it read
+    +0.3 c with the full swing, and on 721 notes of real hymn takes its per-note
+    median sat 2.7 c (median) from pYIN's, at 0.2 s a take against pYIN's ~3 min
+    (measured 2026-10-07). It ranks takes in phrase_scores.py; the gate's default
+    stays pYIN until a change of instrument is made on purpose.
     Returns which tracker answered so the receipt can say so."""
     if tracker == "swift":
         try:
@@ -1236,12 +1242,43 @@ def track_f0(mono: np.ndarray, sr: int, tracker: str = "auto") -> dict:
         r = SwiftF0(confidence_threshold=0.0).detect_from_array(x, sr)
         return {"tracker": "swift-f0", "times": np.asarray(r.timestamps, dtype=float),
                 "f0": np.asarray(r.pitch_hz, dtype=float), "conf": np.asarray(r.confidence, dtype=float)}
+    if tracker == "fcpe":
+        return _track_fcpe(mono, sr)
     import librosa
     f0, voiced, prob = librosa.pyin(mono.astype(np.float32), fmin=librosa.note_to_hz("C2"), fmax=librosa.note_to_hz("C7"),
                                    sr=sr, frame_length=2048, hop_length=240)
     times = librosa.times_like(f0, sr=sr, hop_length=240)
     f0 = np.where(np.isnan(f0), 0.0, f0)
     return {"tracker": "pyin", "times": times, "f0": f0, "conf": np.where(voiced, prob, 0.0)}
+
+
+_FCPE = None
+FCPE_HOP = 240   # samples at 48 kHz, the same 5 ms frames pYIN reads
+
+
+def _track_fcpe(mono: np.ndarray, sr: int) -> dict:
+    """torchfcpe's bundled model on the GPU (CPU when there is none). The input is
+    scaled under a 1.0 peak: the mel extractor complains above it."""
+    global _FCPE
+    try:
+        import torch
+        from torchfcpe import spawn_bundled_infer_model
+    except ImportError:
+        raise SystemExit("torchfcpe is not installed in this interpreter")
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    if _FCPE is None:
+        _FCPE = spawn_bundled_infer_model(device=device)
+    x = mono.astype(np.float32)
+    peak = float(np.abs(x).max()) if len(x) else 0.0
+    if peak > 0.99:
+        x = x * (0.99 / peak)
+    n = len(x) // FCPE_HOP
+    with torch.no_grad():
+        f0 = _FCPE.infer(torch.from_numpy(x)[None, :, None].to(device), sr=sr, decoder_mode="local_argmax", threshold=0.006,
+                         f0_min=65, f0_max=1100, interp_uv=False, output_interp_target_length=n)
+    f0 = f0.squeeze().float().cpu().numpy().reshape(-1)
+    times = (np.arange(len(f0)) * FCPE_HOP + FCPE_HOP / 2) / sr
+    return {"tracker": "fcpe", "times": times, "f0": f0, "conf": (f0 > 0).astype(float)}
 
 
 def nucleus_window(onset: float, offset: float) -> tuple[float, float]:

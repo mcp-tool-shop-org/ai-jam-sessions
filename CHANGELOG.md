@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — phrase scoring ranks pitch with FCPE
+- `vocal_clock.track_f0(tracker="fcpe")` adds torchfcpe (MIT). On a ±40 c synthetic vibrato it
+  reads +0.3 c with the full swing (pYIN +1.1 c, SwiftF0 +5.7 c with the swing clipped). On 721 notes
+  of real hymn takes its per-note median sits a median 2.7 c from pYIN's (p90 7.0 c), at 0.2 s a
+  take against pYIN's ~3 minutes.
+- `phrase_scores.py` ranks with it by default (`--tracker`), so scoring 16 takes takes seconds,
+  not 45 minutes. Each tracker gets its own pitch cache. The pitch gate still defaults to pYIN:
+  changing the gate's instrument is a separate change.
+
 ### Changed — the landing page, rewritten around the two sung hymns
 - Amazing Grace and America the Beautiful are front and centre: every verse, sung by a synthetic
   voice over the project's own piano, each with a player. A three.js view shows the sung line over

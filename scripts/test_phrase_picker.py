@@ -147,7 +147,7 @@ def test_a_takes_pitch_pass_is_cached_and_reused(tmp_path, monkeypatch):
     c = clock()
     spans = onset_aligner.phrase_spans(c, 0.3)
     runs = []
-    monkeypatch.setattr(ps.vc, "track_f0", lambda mono, sr: runs.append(1) or None)
+    monkeypatch.setattr(ps.vc, "track_f0", lambda mono, sr, tracker="pyin": runs.append(tracker) or None)
     monkeypatch.setattr(ps.vc, "pitch_rows", lambda clk, f0, onsets: [
         {"id": e["id"], "cents_mean": 10.0, "status": "PASS"} for e in clk["events"]])
     first = ps.take_pitch(str(wav), c, spans, 0.3, None, 48000)
@@ -155,3 +155,38 @@ def test_a_takes_pitch_pass_is_cached_and_reused(tmp_path, monkeypatch):
     assert first == again and len(runs) == 1, "the second call reads the cache"
     ps.take_pitch(str(wav), c, spans, 0.5, None, 48000)
     assert len(runs) == 2, "a different phrase gap is a different key"
+
+
+def test_the_tracker_is_part_of_the_pitch_cache_key(tmp_path, monkeypatch):
+    import numpy as np
+    import soundfile as sf
+    import onset_aligner
+    take_dir = tmp_path / "take-01"
+    take_dir.mkdir()
+    wav = take_dir / "take-48k.wav"
+    sf.write(wav, np.zeros(48000 * 5), 48000)
+    c = clock()
+    spans = onset_aligner.phrase_spans(c, 0.3)
+    runs = []
+    monkeypatch.setattr(ps.vc, "track_f0", lambda mono, sr, tracker="pyin": runs.append(tracker) or None)
+    monkeypatch.setattr(ps.vc, "pitch_rows", lambda clk, f0, onsets: [
+        {"id": e["id"], "cents_mean": 10.0, "status": "PASS"} for e in clk["events"]])
+    ps.take_pitch(str(wav), c, spans, 0.3, None, 48000)
+    ps.take_pitch(str(wav), c, spans, 0.3, None, 48000, tracker="pyin")
+    ps.take_pitch(str(wav), c, spans, 0.3, None, 48000)
+    assert runs == ["fcpe", "pyin"], "FCPE by default; a different tracker is a different key; a repeat reads the cache"
+
+
+def test_fcpe_holds_a_vibratos_depth_without_bias():
+    import numpy as np
+    pytest.importorskip("torchfcpe")
+    sr = 48000
+    t = np.arange(4 * sr) / sr
+    f0 = 293.66 * 2 ** (40 / 1200 * np.sin(2 * np.pi * 5.5 * t))
+    ph = 2 * np.pi * np.cumsum(f0) / sr
+    x = (sum((0.6 / k) * np.sin(k * ph) for k in range(1, 8)) * 0.3).astype(np.float32)
+    tr = ps.vc.track_f0(x, sr, tracker="fcpe")
+    sel = (tr["times"] > 0.5) & (tr["times"] < 3.5) & (tr["f0"] > 0)
+    cents = 1200 * np.log2(tr["f0"][sel] / 293.66)
+    assert abs(cents.mean()) < 3.0, "no bias on a vibrato (pYIN +1.1 c, SwiftF0 +5.7 c with the swing clipped)"
+    assert np.percentile(cents, 95) > 35 and np.percentile(cents, 5) < -35, "the full +/-40 c swing"
