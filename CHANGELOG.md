@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — per-phrase evidence of audible defects
+- `scripts/phrase_evidence.py` writes `phrase-evidence.json` (`ai-jam-sessions/phrase-evidence/v1`)
+  for a reviewed mix. Each phrase gets plan facts (joins, switches between takes, air, shift
+  differences, stretches, distance from a rendered-segment boundary) and four measurements at
+  every join, each ranked against non-join controls in the same take: spectral jump,
+  repeat/skip similarity (on frame-to-frame spectral change, because a held vowel is
+  self-similar), click/noise, and F0 step / octave / voicing flip. It never reads review
+  marks, which are the labels it is evaluated against.
+- First look on the 124 marked phrases: pooled, several features separate marked phrases
+  (AUC up to 0.69), but within a mix most of that vanishes (switches 0.63 and spectral jump
+  0.65 hold up). The cut-placement mix carries both the most joins and the most marks, so any
+  evaluation must keep each mix's phrases in one fold.
+
 ## [2.8.0] - 2026-10-07
 
 **Two hymns, sung.** Amazing Grace and America the Beautiful are sung whole, every verse, on the
