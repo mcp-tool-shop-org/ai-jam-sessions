@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — the pitch gate reads with two trackers
+- `vocal_clock.py pitch` now reads every note with FCPE, and pYIN re-reads only the notes FCPE
+  puts off (FAIL, untrackable, unvoiced), each over its own window. A note fails only when both
+  trackers put it off, as the timing gate already requires of its two instruments. The receipt
+  records `recheck` (re-read, rescued, both_off with ids), and each re-read row carries
+  `pyin_cents_mean`, `pyin_status` and `cross_check`.
+- On the two passed hymn performances: Amazing Grace 5 re-read, 1 rescued, 4 off on both (pYIN
+  alone: 4 off); America 8 re-read, 4 rescued, 4 off on both (pYIN alone: 3). The gate takes
+  11–13 s a performance instead of about 3 minutes. `--tracker pyin` keeps the old instrument,
+  and `--no-recheck` gives FCPE alone.
+
 ### Changed — phrase scoring ranks pitch with FCPE
 - `vocal_clock.track_f0(tracker="fcpe")` adds torchfcpe (MIT). On a ±40 c synthetic vibrato it
   reads +0.3 c with the full swing (pYIN +1.1 c, SwiftF0 +5.7 c with the swing clipped). On 721 notes

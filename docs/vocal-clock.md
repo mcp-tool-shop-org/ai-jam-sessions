@@ -454,6 +454,26 @@ Timing is unchanged, because the vowels land in the same places. The
 both-off syllables are the ones neither instrument dates within 40 ms.
 America's 13 large stretches sit mostly around breaths and held notes ("A-mer-i-ca").
 
+## Pitch with two trackers (2026-10-07)
+
+The pitch gate used pYIN alone. On a +/-40 c vibrato pYIN reads +1.1 c with the full swing,
+but it takes about 3 minutes over a whole take. A three-way check on the R&D seat's advice
+(entry 2026-10-07-singing-pitch-trackers in mcp-tool-shop-org/research-and-development)
+compared it with SwiftF0 and FCPE:
+
+| | pYIN | SwiftF0 | FCPE |
+|---|---|---|---|
+| vibrato: mean, swing | +1.1 c, ±40 | +5.7 c, −22..+33 (clipped) | +0.3 c, ±42 |
+| 721 real hymn notes: median abs diff from pYIN | — | 8.0 c | 2.7 c |
+| notes over 25 c from pYIN | — | 4.0% | 1.0% |
+| time per take | 160–190 s | 2–3 s | 0.2 s |
+
+FCPE now reads every note. pYIN re-reads only the notes FCPE puts off (FAIL, untrackable,
+unvoiced), over each note's window plus 0.25 s. A note fails only when both trackers put it
+off. A WARN does not decide the verdict, so it is not re-read. On the two passed performances
+the gate counts what pYIN alone counted, plus one America note (v44 "thy", 108 c sharp on both
+trackers), in 11–13 s instead of about 3 minutes.
+
 ## Standards compliance
 
 | standard | score | evidence |
