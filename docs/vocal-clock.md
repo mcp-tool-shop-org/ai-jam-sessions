@@ -281,9 +281,19 @@ pnpm exec tsx scripts/render-piano-bed.mjs --clock scores/amazing-grace-new-brit
 $PY scripts/export_soulx_target.py --clock scores/amazing-grace-new-britain.score-clock.v1.json --out <run>/target.json --syllable-words --segment-gap 0.3
 ```
 
-(America: `--measures 1-75`.) The clocks: America 224 syllables; Amazing
-Grace 112 syllables with 28 held notes. Each has 12 breaths and 3 piano
-passages between verses, and 16 phrase segments. The library's own
+(America: `--measures 1-75`.) The clocks: America 224 syllables, 16 breaths,
+20 phrase segments; Amazing Grace 112 syllables with 28 held notes, 12
+breaths, 16 phrase segments; each has 3 piano passages between verses. Pass
+`--segment-gap 0.3` to `sing_clock.py` as well, so its target matches the one
+the takes were rendered from.
+
+The first full render (offrig `jam` pod, A40, 2026-10-07: 16 takes in 7
+minutes, $0.13 with setup) taught two lyric rules. A word whose dictionary
+syllables differ from its notes is sung as one held syllable, so its second
+note has no vowel onset to date: America sings "ev-'ry", as the 1919 book
+prints it. And a vowel sung straight out of another vowel cannot be dated by
+the energy detector: America breathes after the first "A-mer-i-ca!", or its
+second "A" was undated in 7-8 of 8 takes and the picker could not place it. The library's own
 `america-the-beautiful` is now one verse of the same tune and setting
 (`scripts/create-america-the-beautiful.ts`).
 

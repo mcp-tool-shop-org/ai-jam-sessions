@@ -14,6 +14,11 @@
  *   `R:2`     a rest (the piano plays the bar's chord)
  *   `~G4:0.5` a held note: the previous syllable continues onto it (`_` in the clock's lyrics)
  *   `G4:3,`   a breath after the note: the singer stops BREATH_BEATS early, the piano does not
+ *
+ * Lyrics follow the 1919 book where a word's dictionary syllables differ from
+ * the tune's ("ev-'ry", two notes, not "ev-er-y"), and America breathes after
+ * the first "A-mer-i-ca!": a vowel sung straight out of another vowel has no
+ * onset the timing gate can date, and the picker needs every syllable dated.
  * Chords: `C:4 G/B:2 D7:1`, each with its length in beats, aligned to the melody.
  *
  * The session engine plays each piano hand as a gapless chain of chords as
@@ -90,7 +95,7 @@ export const AMERICA_THE_BEAUTIFUL: Hymn = {
       "R:3 G4:1",
       "G4:1.5 E4:0.5 E4:1 G4:1 | G4:1.5 D4:0.5 D4:1 E4:1 | F4:1 G4:1 A4:1 B4:1 | G4:3, G4:1",
       "G4:1.5 E4:0.5 E4:1 G4:1 | G4:1.5 D4:0.5 D4:1 D5:1 | C#5:1 D5:1 E5:1 A4:1 | D5:3, G4:1",
-      "E5:1.5 E5:0.5 D5:1 C5:1 | C5:1.5 B4:0.5 B4:1 C5:1 | D5:1 B4:1 A4:1 G4:1 | C5:3, C5:1",
+      "E5:1.5 E5:0.5 D5:1, C5:1 | C5:1.5 B4:0.5 B4:1 C5:1 | D5:1 B4:1 A4:1 G4:1 | C5:3, C5:1",
       "C5:1.5 A4:0.5 A4:1 C5:1 | C5:1.5 G4:0.5 G4:1 G4:1 | A4:1 C5:1 G4:1 D5:1 | C5:3 R:1",
     ].join(" | "),
     chords: [
@@ -104,8 +109,8 @@ export const AMERICA_THE_BEAUTIFUL: Hymn = {
   ending: { melody: "R:4 | R:4", chords: "C:4 | C:4" },
   verses: [
     "O beau-ti-ful for spa-cious skies for am-ber waves of grain for pur-ple moun-tain maj-es-ties a-bove the fruit-ed plain A-mer-i-ca A-mer-i-ca God shed his grace on thee and crown thy good with broth-er-hood from sea to shi-ning sea",
-    "O beau-ti-ful for pil-grim feet whose stern im-pas-sioned stress a thor-ough-fare for free-dom beat a-cross the wil-der-ness A-mer-i-ca A-mer-i-ca God mend thine ev-ery flaw con-firm thy soul in self-con-trol thy lib-er-ty in law",
-    "O beau-ti-ful for he-roes proved in lib-er-at-ing strife who more than self their coun-try loved and mer-cy more than life A-mer-i-ca A-mer-i-ca may God thy gold re-fine till all suc-cess be no-ble-ness and ev-ery gain di-vine",
+    "O beau-ti-ful for pil-grim feet whose stern im-pas-sioned stress a thor-ough-fare for free-dom beat a-cross the wil-der-ness A-mer-i-ca A-mer-i-ca God mend thine ev-'ry flaw con-firm thy soul in self-con-trol thy lib-er-ty in law",
+    "O beau-ti-ful for he-roes proved in lib-er-at-ing strife who more than self their coun-try loved and mer-cy more than life A-mer-i-ca A-mer-i-ca may God thy gold re-fine till all suc-cess be no-ble-ness and ev-'ry gain di-vine",
     "O beau-ti-ful for pa-triot dream that sees be-yond the years thine al-a-bas-ter ci-ties gleam un-dimmed by hu-man tears A-mer-i-ca A-mer-i-ca God shed his grace on thee and crown thy good with broth-er-hood from sea to shi-ning sea",
   ],
   incipit: "553355223456755",

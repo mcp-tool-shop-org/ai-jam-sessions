@@ -47,7 +47,7 @@
     "terms_quote": "Melody Materna (Samuel A. Ward, 1882) and text (Katharine Lee Bates) are in the public domain. The melody follows The One Hundred and One Best Songs (Cable Company, Chicago, 1919), cross-checked against The Everyday Song Book (1927) and Hymnary.org's incipit 55335 52234 56755.",
     "verified_at": "2026-10-07",
     "verifier": "https://hymnary.org/tune/materna_ward",
-    "midi_sha256": "9581d824ce316f8c3a48c767df0c024b0d868bd700a58b090dc275d69f6884b7",
+    "midi_sha256": "c3079e55c9bce637400b0dfc110b50b45706e8838e4a4a80132cd6bc2509c6e2",
     "midi_title_events": [
       "America the Beautiful",
       "MELODY",
