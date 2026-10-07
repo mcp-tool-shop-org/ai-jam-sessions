@@ -29,11 +29,34 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PY = sys.executable
+sys.path.insert(0, HERE)
+from soulx_take import sha256  # noqa: E402
 
 
 def run(cmd: list[str], **kw) -> subprocess.CompletedProcess:
     print("+", " ".join(cmd), flush=True)
     return subprocess.run(cmd, **kw)
+
+
+def stale_take(take_dir: str, target_sha: str) -> str | None:
+    """Why a take already on disk cannot be used with this target, or None.
+
+    sing_clock.py renders only the takes that are missing, which is what lets takes
+    rendered elsewhere (soulx_batch.py on an offrig pod, docs/vocal-offrig.md) drop
+    in. That reuse is only sound when the take was sung from the same target, so a
+    take whose receipt names another target, or has no receipt, is refused rather
+    than judged against a clock it was not sung to."""
+    if not os.path.exists(os.path.join(take_dir, "take-48k.wav")):
+        return None
+    path = os.path.join(take_dir, "take.receipt.json")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            got = json.load(fh).get("target_sha256")
+    except (OSError, ValueError):
+        return f"{take_dir} has a take but no readable take.receipt.json"
+    if got != target_sha:
+        return f"{take_dir} was sung from target {str(got)[:12]}, not this one ({target_sha[:12]}); render it again or use another --out-dir"
+    return None
 
 
 def main() -> int:
@@ -64,11 +87,16 @@ def main() -> int:
     if run(cmd).returncode:
         return 2
 
+    target_sha = sha256(target)
     candidates = []
     for i in range(1, a.takes + 1):
         tdir = os.path.join(out, f"take-{i:02d}")
         take = os.path.join(tdir, "take-48k.wav")
         receipt = os.path.join(tdir, "verify-energy.json")
+        stale = stale_take(tdir, target_sha)
+        if stale:
+            print(f"STALE TAKE: {stale}")
+            return 2
         if not os.path.exists(take):
             if run([PY, os.path.join(HERE, "soulx_take.py"), "--target", target, "--prompt-wav", a.prompt_wav, "--prompt-meta", a.prompt_meta,
                     "--out-dir", tdir, "--pitch-shift", str(a.pitch_shift)]).returncode:

@@ -35,6 +35,34 @@ def sha256(path: str) -> str:
     return h.hexdigest()
 
 
+def finish_take(src: str, out_dir: str, sample_rate: int, elapsed: float, fields: dict) -> dict:
+    """Turn SoulX's 24 kHz `generated.wav` into the clock's stereo take and write its
+    receipt. `fields` says how the take was made (target, prompt, model, settings);
+    soulx_take.py and soulx_batch.py both end here, so a take reads the same wherever
+    it was rendered."""
+    if not os.path.isfile(src):
+        raise SystemExit(f"no generated.wav in {out_dir}")
+    import numpy as np
+    import soundfile as sf
+    from scipy.signal import resample_poly
+    y, sr = sf.read(src, always_2d=True, dtype="float64")
+    generated_frames = int(y.shape[0])
+    if sr != sample_rate:
+        from math import gcd
+        g = gcd(sample_rate, sr)
+        y = resample_poly(y, sample_rate // g, sr // g, axis=0)
+    stereo = np.repeat(y, 2, axis=1) if y.shape[1] == 1 else y
+    out = os.path.join(out_dir, "take-48k.wav")
+    sf.write(out, stereo, sample_rate, subtype="PCM_16")
+    peak = float(np.abs(stereo).max())
+    receipt = {"generated_24k": src.replace("\\", "/"), "generated_sha256": sha256(src), "generated_sr": sr, "generated_frames": generated_frames,
+               "take": out.replace("\\", "/"), "take_sha256": sha256(out), "take_sr": sample_rate, "take_frames": int(stereo.shape[0]),
+               "peak": peak, "seconds": stereo.shape[0] / sample_rate, "elapsed_s": round(elapsed, 1), **fields}
+    with open(os.path.join(out_dir, "take.receipt.json"), "w", encoding="utf-8") as fh:
+        json.dump(receipt, fh, indent=2)
+    return receipt
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--target", required=True)
@@ -70,30 +98,12 @@ def main() -> int:
         raise SystemExit(f"cli.inference exited {proc.returncode}")
     elapsed = time.time() - t0
     src = os.path.join(out_dir, "generated.wav")
-    if not os.path.isfile(src):
-        raise SystemExit(f"no generated.wav in {out_dir}")
-
-    import numpy as np
-    import soundfile as sf
-    from scipy.signal import resample_poly
-    y, sr = sf.read(src, always_2d=True, dtype="float64")
-    if sr != a.sample_rate:
-        from math import gcd
-        g = gcd(a.sample_rate, sr)
-        y = resample_poly(y, a.sample_rate // g, sr // g, axis=0)
-    stereo = np.repeat(y, 2, axis=1) if y.shape[1] == 1 else y
-    out = os.path.join(out_dir, "take-48k.wav")
-    sf.write(out, stereo, a.sample_rate, subtype="PCM_16")
-    peak = float(np.abs(stereo).max())
-    receipt = {"generated_24k": src.replace("\\", "/"), "generated_sha256": sha256(src), "generated_sr": sr, "generated_frames": int(y.shape[0]),
-               "take": out.replace("\\", "/"), "take_sha256": sha256(out), "take_sr": a.sample_rate, "take_frames": int(stereo.shape[0]),
-               "peak": peak, "seconds": stereo.shape[0] / a.sample_rate, "elapsed_s": round(elapsed, 1),
-               "target": os.path.abspath(a.target).replace("\\", "/"), "target_sha256": sha256(a.target),
-               "prompt_wav": os.path.abspath(a.prompt_wav).replace("\\", "/"), "prompt_meta": os.path.abspath(a.prompt_meta).replace("\\", "/"),
-               "model": os.path.abspath(a.model).replace("\\", "/"), "model_sha256": sha256(a.model),
-               "control": a.control, "pitch_shift": a.pitch_shift, "auto_shift": a.auto_shift, "fp16": not a.no_fp16, "cmd": cmd}
-    json.dump(receipt, open(os.path.join(out_dir, "take.receipt.json"), "w", encoding="utf-8"), indent=2)
-    print(f"take {out} {stereo.shape[0]} frames ({stereo.shape[0] / a.sample_rate:.3f}s) peak {peak:.3f} in {elapsed:.0f}s")
+    receipt = finish_take(src, out_dir, a.sample_rate, elapsed, {
+        "target": os.path.abspath(a.target).replace("\\", "/"), "target_sha256": sha256(a.target),
+        "prompt_wav": os.path.abspath(a.prompt_wav).replace("\\", "/"), "prompt_meta": os.path.abspath(a.prompt_meta).replace("\\", "/"),
+        "model": os.path.abspath(a.model).replace("\\", "/"), "model_sha256": sha256(a.model),
+        "control": a.control, "pitch_shift": a.pitch_shift, "auto_shift": a.auto_shift, "fp16": not a.no_fp16, "cmd": cmd})
+    print(f"take {receipt['take']} {receipt['take_frames']} frames ({receipt['seconds']:.3f}s) peak {receipt['peak']:.3f} in {elapsed:.0f}s")
     return 0
 
 

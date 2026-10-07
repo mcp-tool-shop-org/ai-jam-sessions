@@ -76,3 +76,6 @@ songs/quarantine/**/*.json text eol=lf
 *.mid binary
 *.ogg binary
 samples/**/*.wav binary
+# The rest of scripts/pod travels to a RunPod host with the .sh beside it: a CRLF
+# patch fails `git apply` there, and a CRLF requirements line is a different pin.
+scripts/pod/** text eol=lf
