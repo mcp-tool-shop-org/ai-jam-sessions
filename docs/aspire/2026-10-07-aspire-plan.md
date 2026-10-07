@@ -74,7 +74,7 @@ From ai-jam-sessions:
 - Item files with note content are committed only if they pass the derived-content guard (`src/dataset/derived-content.test.ts`).
 
 **Held-out sets (both are reported):**
-- **E-R's 22 frozen items, untouched.** They come from 10 of the 13 songs: Bach BWV 846, Bethena, Elite Syncopations, Maple Leaf Rag, Mozart K545, Peacherine, Pineapple, Solace, The Easy Winners and The Entertainer. Training windows must not overlap any held-out measure, with a 4-measure buffer on each side.
+- **E-R's 22 frozen items, untouched.** They come from 10 of the 13 songs: Bach BWV 846, Bethena, Elite Syncopations, Maple Leaf Rag, Mozart K545, Peacherine, Pineapple, Solace, The Easy Winners and The Entertainer. Training windows must not overlap any held-out measure, with a 4-measure buffer on each side, **in any of the 12 transpositions**. A training window that is a held-out passage in another key is still a leak.
 - **A song-level hold-out.** Two whole songs (proposed: Solace and Bethena) never appear in training. This is the stricter test of generalization. Holding out by song for every E-R song would leave too little to train on.
 
 ### Track (a): vocal choices (which take sings each phrase)
@@ -105,7 +105,7 @@ This is the decision `rank_phrases` makes by hand today.
 - Today there are 2 songs × 16 takes × 36 phrases, which makes 576 choice items. That is too few, with too few songs to hold out.
 - Before (a) runs, more public-domain hymns get exemplars, built the way `src/vocal/hymns.ts` builds Materna and New Britain, with the melody checked against a cited source. Each gets 16 takes rendered on the offrig jam lane. The aim is at least 8 songs, which makes 2 held out by song possible.
 - The takes are our own renders.
-- The aligner's private validation figures (see section 6) never enter this data.
+- Nothing from the aligner's private validation sets enters this data (see section 6).
 
 **Held-out set.** Two whole songs, never in training.
 
@@ -129,7 +129,9 @@ This is the decision `rank_phrases` makes by hand today.
 - Seeds 42, 43 and 44. The verdict stands only if all three seeds agree.
 
 **Test 3: do detection and diagnosis separate?**
-- **Detection half (runnable now):** does the critic's score predict where a listener marks a problem? Items with a listener mark against items without, over the rendered held-out sample. **Passes** if AUC ≥ 0.65.
+- **Detection half (runnable now):** does the critic's score predict where a listener marks a problem? Items with a listener mark against items without, over the rendered held-out sample.
+  - **Passes** if AUC ≥ 0.65 and its bootstrap 95 % lower bound is above 0.5.
+  - **Too small to decide** below 20 marked and 20 unmarked items. Today's 37 marks come from 4 mixes of 2 songs, so they are nowhere near this.
 - **Diagnosis half (deferred):** it needs a second reviewer at the musician or professional level. Until one exists, it is not run, and the plan says so in every report rather than claiming it.
 
 **Not tested:** whether the student gets better. That needs aspire-si #11. When #11 lands, a Test 4 is written the same way, before it runs.
@@ -159,7 +161,10 @@ This is the decision `rank_phrases` makes by hand today.
    - 12-key transposition.
    - Both hold-outs plus the overlap buffer.
    - A manifest with sha256 per item.
-   - Tests: a withheld song is refused; no training window touches a held-out measure.
+   - Tests:
+     - a withheld song is refused;
+     - no training window touches a held-out measure or its buffer;
+     - no transposed training window is a transposition of a held-out passage.
 2. **Rule scorer CLI:** `scripts/aspire/rule-score.ts`. It reads an item and an answer as JSON and writes `R` plus every component as JSON. Tests pin known answers to known scores: E-R's gold and Claude answers, and malformed JSON, which scores 0 and is never a silent default.
 3. **Taste rubric and prompt** for the local panel. It gives a deterministic text rendering of the measures and parses strict JSON. A parse failure is an error, never the 5.0 fallback aspire-si's runs found.
 4. **Track (a):**
@@ -170,9 +175,9 @@ This is the decision `rank_phrases` makes by hand today.
 **aspire-si** (aspire-si's maintainer owns these; filed there as issues, not written from here):
 1. **An `ExternalTeacher`.** `evaluate` runs a command and reads its JSON score. `challenge` turns the first failing rule into a challenge, for example "measure 3: the voicing does not spell Am7". The rule teachers in integrations/code and integrations/isaac show the pattern, but they use their own interfaces, not `BaseTeacher`.
 2. **Domain dimensions.** Configurable score dimensions instead of the fixed 9-member enum, so the geometry names rule and taste directions honestly.
-3. **A configurable `max_new_tokens`.**
+3. **A configurable `max_new_tokens` for the student's generation in the trainer.** It is still fixed at 256 in `aspire/dialogue/generator.py` on main. `eval_heldout` is already configurable.
 4. **A critic report on held-out items:** MAE against the mean baseline, Spearman, pairwise accuracy with bootstrap CI, written into the run's exports.
-5. **A seed option on the CLI.** The next-runs branch adds `seed_configs.py`.
+5. **A `--seed` CLI flag, for convenience only.** Configs already take a top-level `seed:`, which reaches `torch.manual_seed` and the dialogue seed, and `seed_configs.py` is on main (5ffbbc9).
 
 ## 5. The offrig lane
 
@@ -193,6 +198,8 @@ This is the decision `rank_phrases` makes by hand today.
 | 3 | (a) data: hymn takes | `jam` | none (SoulX-Singer) |
 | 4 | Tests 1 and 2 on (a) | `jam` for rule only, `job` with the listener | rule scorer; Qwen3-Omni Q4 for taste |
 
+**Budget.** These runs need their own cap in this project (`offrig budget` in E:/AI/ai-jam-sessions, set by the Director). The cap the Director approved for aspire-si's own plan does not cover them. The cap is set after Run 0 and the code in section 4 are done, priced from `offrig_plan`.
+
 **Hours and cost.** aspire-si has no per-step costs yet. Its measured runs:
 - about 50 min for a local-teacher run and 80 min for a composite run, on 32 prompts;
 - its next-runs plan expects about 2.9 h and $6.1 per pod.
@@ -209,7 +216,7 @@ This plan prices nothing until those per-step costs exist. Each run's expected a
 
 ## 6. Hard rules
 
-- **No figures from NUS-48E or GTSinger in anything published.** They were used only to validate the onset aligner privately. They do not appear in this repository, and they stay out of every item, export, log and report.
+- **Nothing from the aligner's private validation sets is published:** no figures, items, exports, logs or reports.
 - **Withheld songs stay out.** Only songs that pass `evidenceRefusal`, minus `EXCLUDED_SONG_IDS`, plus the public-domain hymn exemplars, may enter an item. Quarantined songs never do.
 - **The derived-content guard runs before anything is committed or pushed:** items, exports, reports. Note-level or measurement-level content keyed to an uncleared song is a stop.
 - **No Ollama Cloud.** Teachers are local models or models on the pod.
