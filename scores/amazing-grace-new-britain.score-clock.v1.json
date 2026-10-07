@@ -1,0 +1,2711 @@
+{
+  "schema": "ai-jam-sessions/score-clock/v1",
+  "song_id": "amazing-grace-new-britain",
+  "bpm": 72,
+  "time_signature": "3/4",
+  "sample_rate": 48000,
+  "total_seconds": 165,
+  "total_samples": 7920000,
+  "last_event_end_sec": 160,
+  "clock": {
+    "source": "session-nominal",
+    "bed_measures": [
+      1,
+      66
+    ],
+    "measure_starts_sec": {
+      "1": 0,
+      "2": 2.5,
+      "3": 5,
+      "4": 7.5,
+      "5": 10,
+      "6": 12.5,
+      "7": 15,
+      "8": 17.5,
+      "9": 20,
+      "10": 22.5,
+      "11": 25,
+      "12": 27.5,
+      "13": 30,
+      "14": 32.5,
+      "15": 35,
+      "16": 37.5,
+      "17": 40,
+      "18": 42.5,
+      "19": 45,
+      "20": 47.5,
+      "21": 50,
+      "22": 52.5,
+      "23": 55,
+      "24": 57.5,
+      "25": 60,
+      "26": 62.5,
+      "27": 65,
+      "28": 67.5,
+      "29": 70,
+      "30": 72.5,
+      "31": 75,
+      "32": 77.5,
+      "33": 80,
+      "34": 82.5,
+      "35": 85,
+      "36": 87.5,
+      "37": 90,
+      "38": 92.5,
+      "39": 95,
+      "40": 97.5,
+      "41": 100,
+      "42": 102.5,
+      "43": 105,
+      "44": 107.5,
+      "45": 110,
+      "46": 112.5,
+      "47": 115,
+      "48": 117.5,
+      "49": 120,
+      "50": 122.5,
+      "51": 125,
+      "52": 127.5,
+      "53": 130,
+      "54": 132.5,
+      "55": 135,
+      "56": 137.5,
+      "57": 140,
+      "58": 142.5,
+      "59": 145,
+      "60": 147.5,
+      "61": 150,
+      "62": 152.5,
+      "63": 155,
+      "64": 157.5,
+      "65": 160,
+      "66": 162.5
+    },
+    "measure_durations_sec": {
+      "1": 2.5,
+      "2": 2.5,
+      "3": 2.5,
+      "4": 2.5,
+      "5": 2.5,
+      "6": 2.5,
+      "7": 2.5,
+      "8": 2.5,
+      "9": 2.5,
+      "10": 2.5,
+      "11": 2.5,
+      "12": 2.5,
+      "13": 2.5,
+      "14": 2.5,
+      "15": 2.5,
+      "16": 2.5,
+      "17": 2.5,
+      "18": 2.5,
+      "19": 2.5,
+      "20": 2.5,
+      "21": 2.5,
+      "22": 2.5,
+      "23": 2.5,
+      "24": 2.5,
+      "25": 2.5,
+      "26": 2.5,
+      "27": 2.5,
+      "28": 2.5,
+      "29": 2.5,
+      "30": 2.5,
+      "31": 2.5,
+      "32": 2.5,
+      "33": 2.5,
+      "34": 2.5,
+      "35": 2.5,
+      "36": 2.5,
+      "37": 2.5,
+      "38": 2.5,
+      "39": 2.5,
+      "40": 2.5,
+      "41": 2.5,
+      "42": 2.5,
+      "43": 2.5,
+      "44": 2.5,
+      "45": 2.5,
+      "46": 2.5,
+      "47": 2.5,
+      "48": 2.5,
+      "49": 2.5,
+      "50": 2.5,
+      "51": 2.5,
+      "52": 2.5,
+      "53": 2.5,
+      "54": 2.5,
+      "55": 2.5,
+      "56": 2.5,
+      "57": 2.5,
+      "58": 2.5,
+      "59": 2.5,
+      "60": 2.5,
+      "61": 2.5,
+      "62": 2.5,
+      "63": 2.5,
+      "64": 2.5,
+      "65": 2.5,
+      "66": 2.5
+    },
+    "durations": "notated"
+  },
+  "midi": {
+    "file": "src/vocal/hymns.ts#amazing-grace-new-britain",
+    "ppq": 480,
+    "ticks_per_measure": 1440,
+    "melody_track": "MELODY",
+    "sec_per_tick": 0.00173611
+  },
+  "events": [
+    {
+      "id": "v00",
+      "lyric": "A",
+      "word": "Amazing",
+      "syllable": 0,
+      "syllables": 3,
+      "midi": 62,
+      "t_sec": 11.666666666666666,
+      "t_samples": 560000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m5:right:beat1",
+      "midi_tick": 6720,
+      "t_midi_sec": 11.666662,
+      "engine_note": {
+        "measure": 5,
+        "hand": "right",
+        "t_sec": 11.666666666666666
+      }
+    },
+    {
+      "id": "v01",
+      "lyric": "ma",
+      "word": "Amazing",
+      "syllable": 1,
+      "syllables": 3,
+      "midi": 67,
+      "t_sec": 12.5,
+      "t_samples": 600000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m6:right:beat0",
+      "midi_tick": 7200,
+      "t_midi_sec": 12.499995,
+      "engine_note": {
+        "measure": 6,
+        "hand": "right",
+        "t_sec": 12.5
+      }
+    },
+    {
+      "id": "v02",
+      "lyric": "zing",
+      "word": "Amazing",
+      "syllable": 2,
+      "syllables": 3,
+      "midi": 71,
+      "t_sec": 14.166666666666666,
+      "t_samples": 680000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m6:right:beat1",
+      "midi_tick": 8160,
+      "t_midi_sec": 14.166661,
+      "engine_note": {
+        "measure": 6,
+        "hand": "right",
+        "t_sec": 14.166666666666666
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 14.583333333333334,
+          "t_samples": 700000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m6:right:beat2",
+          "midi_tick": 8400,
+          "engine_note": {
+            "measure": 6,
+            "hand": "right",
+            "t_sec": 14.583333333333334
+          }
+        }
+      ]
+    },
+    {
+      "id": "v03",
+      "lyric": "grace",
+      "word": "grace",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 15,
+      "t_samples": 720000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m7:right:beat0",
+      "midi_tick": 8640,
+      "t_midi_sec": 14.999994,
+      "engine_note": {
+        "measure": 7,
+        "hand": "right",
+        "t_sec": 15
+      }
+    },
+    {
+      "id": "v04",
+      "lyric": "how",
+      "word": "how",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 69,
+      "t_sec": 16.666666666666668,
+      "t_samples": 800000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m7:right:beat1",
+      "midi_tick": 9600,
+      "t_midi_sec": 16.66666,
+      "engine_note": {
+        "measure": 7,
+        "hand": "right",
+        "t_sec": 16.666666666666668
+      }
+    },
+    {
+      "id": "v05",
+      "lyric": "sweet",
+      "word": "sweet",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 17.5,
+      "t_samples": 840000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m8:right:beat0",
+      "midi_tick": 10080,
+      "t_midi_sec": 17.499993,
+      "engine_note": {
+        "measure": 8,
+        "hand": "right",
+        "t_sec": 17.5
+      }
+    },
+    {
+      "id": "v06",
+      "lyric": "the",
+      "word": "the",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 64,
+      "t_sec": 19.166666666666668,
+      "t_samples": 920000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m8:right:beat1",
+      "midi_tick": 11040,
+      "t_midi_sec": 19.166659,
+      "engine_note": {
+        "measure": 8,
+        "hand": "right",
+        "t_sec": 19.166666666666668
+      }
+    },
+    {
+      "id": "v07",
+      "lyric": "sound",
+      "word": "sound",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 20,
+      "t_samples": 960000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m9:right:beat0",
+      "midi_tick": 11520,
+      "t_midi_sec": 19.999992,
+      "engine_note": {
+        "measure": 9,
+        "hand": "right",
+        "t_sec": 20
+      }
+    },
+    {
+      "id": "v08",
+      "lyric": "that",
+      "word": "that",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 21.666666666666668,
+      "t_samples": 1040000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m9:right:beat1",
+      "midi_tick": 12480,
+      "t_midi_sec": 21.666658,
+      "engine_note": {
+        "measure": 9,
+        "hand": "right",
+        "t_sec": 21.666666666666668
+      }
+    },
+    {
+      "id": "v09",
+      "lyric": "saved",
+      "word": "saved",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 22.5,
+      "t_samples": 1080000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m10:right:beat0",
+      "midi_tick": 12960,
+      "t_midi_sec": 22.499991,
+      "engine_note": {
+        "measure": 10,
+        "hand": "right",
+        "t_sec": 22.5
+      }
+    },
+    {
+      "id": "v10",
+      "lyric": "a",
+      "word": "a",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 24.166666666666668,
+      "t_samples": 1160000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m10:right:beat1",
+      "midi_tick": 13920,
+      "t_midi_sec": 24.166657,
+      "engine_note": {
+        "measure": 10,
+        "hand": "right",
+        "t_sec": 24.166666666666668
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 24.583333333333332,
+          "t_samples": 1180000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m10:right:beat2",
+          "midi_tick": 14160,
+          "engine_note": {
+            "measure": 10,
+            "hand": "right",
+            "t_sec": 24.583333333333332
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11",
+      "lyric": "wretch",
+      "word": "wretch",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 25,
+      "t_samples": 1200000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m11:right:beat0",
+      "midi_tick": 14400,
+      "t_midi_sec": 24.99999,
+      "engine_note": {
+        "measure": 11,
+        "hand": "right",
+        "t_sec": 25
+      }
+    },
+    {
+      "id": "v12",
+      "lyric": "like",
+      "word": "like",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 69,
+      "t_sec": 26.666666666666668,
+      "t_samples": 1280000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m11:right:beat1",
+      "midi_tick": 15360,
+      "t_midi_sec": 26.666656,
+      "engine_note": {
+        "measure": 11,
+        "hand": "right",
+        "t_sec": 26.666666666666668
+      }
+    },
+    {
+      "id": "v13",
+      "lyric": "me",
+      "word": "me",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 74,
+      "t_sec": 27.5,
+      "t_samples": 1320000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m12:right:beat0",
+      "midi_tick": 15840,
+      "t_midi_sec": 27.499989,
+      "engine_note": {
+        "measure": 12,
+        "hand": "right",
+        "t_sec": 27.5
+      }
+    },
+    {
+      "id": "v14",
+      "lyric": "I",
+      "word": "I",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 29.166666666666668,
+      "t_samples": 1400000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m12:right:beat1",
+      "midi_tick": 16800,
+      "t_midi_sec": 29.166655,
+      "engine_note": {
+        "measure": 12,
+        "hand": "right",
+        "t_sec": 29.166666666666668
+      }
+    },
+    {
+      "id": "v15",
+      "lyric": "once",
+      "word": "once",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 74,
+      "t_sec": 30,
+      "t_samples": 1440000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m13:right:beat0",
+      "midi_tick": 17280,
+      "t_midi_sec": 29.999988,
+      "engine_note": {
+        "measure": 13,
+        "hand": "right",
+        "t_sec": 30
+      },
+      "melisma": [
+        {
+          "midi": 71,
+          "t_sec": 31.25,
+          "t_samples": 1500000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m13:right:beat1",
+          "midi_tick": 18000,
+          "engine_note": {
+            "measure": 13,
+            "hand": "right",
+            "t_sec": 31.25
+          }
+        }
+      ]
+    },
+    {
+      "id": "v16",
+      "lyric": "was",
+      "word": "was",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 74,
+      "t_sec": 31.666666666666668,
+      "t_samples": 1520000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m13:right:beat2",
+      "midi_tick": 18240,
+      "t_midi_sec": 31.666654,
+      "engine_note": {
+        "measure": 13,
+        "hand": "right",
+        "t_sec": 31.666666666666668
+      },
+      "melisma": [
+        {
+          "midi": 71,
+          "t_sec": 32.083333333333336,
+          "t_samples": 1540000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m13:right:beat3",
+          "midi_tick": 18480,
+          "engine_note": {
+            "measure": 13,
+            "hand": "right",
+            "t_sec": 32.083333333333336
+          }
+        }
+      ]
+    },
+    {
+      "id": "v17",
+      "lyric": "lost",
+      "word": "lost",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 32.5,
+      "t_samples": 1560000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m14:right:beat0",
+      "midi_tick": 18720,
+      "t_midi_sec": 32.499987,
+      "engine_note": {
+        "measure": 14,
+        "hand": "right",
+        "t_sec": 32.5
+      }
+    },
+    {
+      "id": "v18",
+      "lyric": "but",
+      "word": "but",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 34.166666666666664,
+      "t_samples": 1640000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m14:right:beat1",
+      "midi_tick": 19680,
+      "t_midi_sec": 34.166653,
+      "engine_note": {
+        "measure": 14,
+        "hand": "right",
+        "t_sec": 34.166666666666664
+      }
+    },
+    {
+      "id": "v19",
+      "lyric": "now",
+      "word": "now",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 64,
+      "t_sec": 35,
+      "t_samples": 1680000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m15:right:beat0",
+      "midi_tick": 20160,
+      "t_midi_sec": 34.999986,
+      "engine_note": {
+        "measure": 15,
+        "hand": "right",
+        "t_sec": 35
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 36.25,
+          "t_samples": 1740000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m15:right:beat1",
+          "midi_tick": 20880,
+          "engine_note": {
+            "measure": 15,
+            "hand": "right",
+            "t_sec": 36.25
+          }
+        }
+      ]
+    },
+    {
+      "id": "v20",
+      "lyric": "am",
+      "word": "am",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 36.666666666666664,
+      "t_samples": 1760000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m15:right:beat2",
+      "midi_tick": 21120,
+      "t_midi_sec": 36.666652,
+      "engine_note": {
+        "measure": 15,
+        "hand": "right",
+        "t_sec": 36.666666666666664
+      },
+      "melisma": [
+        {
+          "midi": 64,
+          "t_sec": 37.083333333333336,
+          "t_samples": 1780000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m15:right:beat3",
+          "midi_tick": 21360,
+          "engine_note": {
+            "measure": 15,
+            "hand": "right",
+            "t_sec": 37.083333333333336
+          }
+        }
+      ]
+    },
+    {
+      "id": "v21",
+      "lyric": "found",
+      "word": "found",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 37.5,
+      "t_samples": 1800000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m16:right:beat0",
+      "midi_tick": 21600,
+      "t_midi_sec": 37.499985,
+      "engine_note": {
+        "measure": 16,
+        "hand": "right",
+        "t_sec": 37.5
+      }
+    },
+    {
+      "id": "v22",
+      "lyric": "was",
+      "word": "was",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 39.166666666666664,
+      "t_samples": 1880000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m16:right:beat1",
+      "midi_tick": 22560,
+      "t_midi_sec": 39.166651,
+      "engine_note": {
+        "measure": 16,
+        "hand": "right",
+        "t_sec": 39.166666666666664
+      }
+    },
+    {
+      "id": "v23",
+      "lyric": "blind",
+      "word": "blind",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 40,
+      "t_samples": 1920000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m17:right:beat0",
+      "midi_tick": 23040,
+      "t_midi_sec": 39.999984,
+      "engine_note": {
+        "measure": 17,
+        "hand": "right",
+        "t_sec": 40
+      }
+    },
+    {
+      "id": "v24",
+      "lyric": "but",
+      "word": "but",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 41.666666666666664,
+      "t_samples": 2000000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m17:right:beat1",
+      "midi_tick": 24000,
+      "t_midi_sec": 41.66665,
+      "engine_note": {
+        "measure": 17,
+        "hand": "right",
+        "t_sec": 41.666666666666664
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 42.083333333333336,
+          "t_samples": 2020000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m17:right:beat2",
+          "midi_tick": 24240,
+          "engine_note": {
+            "measure": 17,
+            "hand": "right",
+            "t_sec": 42.083333333333336
+          }
+        }
+      ]
+    },
+    {
+      "id": "v25",
+      "lyric": "now",
+      "word": "now",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 42.5,
+      "t_samples": 2040000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m18:right:beat0",
+      "midi_tick": 24480,
+      "t_midi_sec": 42.499983,
+      "engine_note": {
+        "measure": 18,
+        "hand": "right",
+        "t_sec": 42.5
+      }
+    },
+    {
+      "id": "v26",
+      "lyric": "I",
+      "word": "I",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 69,
+      "t_sec": 44.166666666666664,
+      "t_samples": 2120000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m18:right:beat1",
+      "midi_tick": 25440,
+      "t_midi_sec": 44.166649,
+      "engine_note": {
+        "measure": 18,
+        "hand": "right",
+        "t_sec": 44.166666666666664
+      }
+    },
+    {
+      "id": "v27",
+      "lyric": "see",
+      "word": "see",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 45,
+      "t_samples": 2160000,
+      "dur_sec": 2.5,
+      "anchor": "piano-onset:m19:right:beat0",
+      "midi_tick": 25920,
+      "t_midi_sec": 44.999982,
+      "engine_note": {
+        "measure": 19,
+        "hand": "right",
+        "t_sec": 45
+      }
+    },
+    {
+      "id": "v28",
+      "lyric": "'Twas",
+      "word": "'Twas",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 49.166666666666664,
+      "t_samples": 2360000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m20:right:beat1",
+      "midi_tick": 28320,
+      "t_midi_sec": 49.166647,
+      "engine_note": {
+        "measure": 20,
+        "hand": "right",
+        "t_sec": 49.166666666666664
+      }
+    },
+    {
+      "id": "v29",
+      "lyric": "grace",
+      "word": "grace",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 50,
+      "t_samples": 2400000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m21:right:beat0",
+      "midi_tick": 28800,
+      "t_midi_sec": 49.99998,
+      "engine_note": {
+        "measure": 21,
+        "hand": "right",
+        "t_sec": 50
+      }
+    },
+    {
+      "id": "v30",
+      "lyric": "that",
+      "word": "that",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 51.666666666666664,
+      "t_samples": 2480000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m21:right:beat1",
+      "midi_tick": 29760,
+      "t_midi_sec": 51.666646,
+      "engine_note": {
+        "measure": 21,
+        "hand": "right",
+        "t_sec": 51.666666666666664
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 52.083333333333336,
+          "t_samples": 2500000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m21:right:beat2",
+          "midi_tick": 30000,
+          "engine_note": {
+            "measure": 21,
+            "hand": "right",
+            "t_sec": 52.083333333333336
+          }
+        }
+      ]
+    },
+    {
+      "id": "v31",
+      "lyric": "taught",
+      "word": "taught",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 52.5,
+      "t_samples": 2520000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m22:right:beat0",
+      "midi_tick": 30240,
+      "t_midi_sec": 52.499979,
+      "engine_note": {
+        "measure": 22,
+        "hand": "right",
+        "t_sec": 52.5
+      }
+    },
+    {
+      "id": "v32",
+      "lyric": "my",
+      "word": "my",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 69,
+      "t_sec": 54.166666666666664,
+      "t_samples": 2600000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m22:right:beat1",
+      "midi_tick": 31200,
+      "t_midi_sec": 54.166645,
+      "engine_note": {
+        "measure": 22,
+        "hand": "right",
+        "t_sec": 54.166666666666664
+      }
+    },
+    {
+      "id": "v33",
+      "lyric": "heart",
+      "word": "heart",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 55,
+      "t_samples": 2640000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m23:right:beat0",
+      "midi_tick": 31680,
+      "t_midi_sec": 54.999978,
+      "engine_note": {
+        "measure": 23,
+        "hand": "right",
+        "t_sec": 55
+      }
+    },
+    {
+      "id": "v34",
+      "lyric": "to",
+      "word": "to",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 64,
+      "t_sec": 56.666666666666664,
+      "t_samples": 2720000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m23:right:beat1",
+      "midi_tick": 32640,
+      "t_midi_sec": 56.666644,
+      "engine_note": {
+        "measure": 23,
+        "hand": "right",
+        "t_sec": 56.666666666666664
+      }
+    },
+    {
+      "id": "v35",
+      "lyric": "fear",
+      "word": "fear",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 57.5,
+      "t_samples": 2760000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m24:right:beat0",
+      "midi_tick": 33120,
+      "t_midi_sec": 57.499977,
+      "engine_note": {
+        "measure": 24,
+        "hand": "right",
+        "t_sec": 57.5
+      }
+    },
+    {
+      "id": "v36",
+      "lyric": "and",
+      "word": "and",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 59.166666666666664,
+      "t_samples": 2840000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m24:right:beat1",
+      "midi_tick": 34080,
+      "t_midi_sec": 59.166643,
+      "engine_note": {
+        "measure": 24,
+        "hand": "right",
+        "t_sec": 59.166666666666664
+      }
+    },
+    {
+      "id": "v37",
+      "lyric": "grace",
+      "word": "grace",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 60,
+      "t_samples": 2880000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m25:right:beat0",
+      "midi_tick": 34560,
+      "t_midi_sec": 59.999976,
+      "engine_note": {
+        "measure": 25,
+        "hand": "right",
+        "t_sec": 60
+      }
+    },
+    {
+      "id": "v38",
+      "lyric": "my",
+      "word": "my",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 61.666666666666664,
+      "t_samples": 2960000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m25:right:beat1",
+      "midi_tick": 35520,
+      "t_midi_sec": 61.666642,
+      "engine_note": {
+        "measure": 25,
+        "hand": "right",
+        "t_sec": 61.666666666666664
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 62.083333333333336,
+          "t_samples": 2980000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m25:right:beat2",
+          "midi_tick": 35760,
+          "engine_note": {
+            "measure": 25,
+            "hand": "right",
+            "t_sec": 62.083333333333336
+          }
+        }
+      ]
+    },
+    {
+      "id": "v39",
+      "lyric": "fears",
+      "word": "fears",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 62.5,
+      "t_samples": 3000000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m26:right:beat0",
+      "midi_tick": 36000,
+      "t_midi_sec": 62.499975,
+      "engine_note": {
+        "measure": 26,
+        "hand": "right",
+        "t_sec": 62.5
+      }
+    },
+    {
+      "id": "v40",
+      "lyric": "re",
+      "word": "relieved",
+      "syllable": 0,
+      "syllables": 2,
+      "midi": 69,
+      "t_sec": 64.16666666666667,
+      "t_samples": 3080000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m26:right:beat1",
+      "midi_tick": 36960,
+      "t_midi_sec": 64.166641,
+      "engine_note": {
+        "measure": 26,
+        "hand": "right",
+        "t_sec": 64.16666666666667
+      }
+    },
+    {
+      "id": "v41",
+      "lyric": "lieved",
+      "word": "relieved",
+      "syllable": 1,
+      "syllables": 2,
+      "midi": 74,
+      "t_sec": 65,
+      "t_samples": 3120000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m27:right:beat0",
+      "midi_tick": 37440,
+      "t_midi_sec": 64.999974,
+      "engine_note": {
+        "measure": 27,
+        "hand": "right",
+        "t_sec": 65
+      }
+    },
+    {
+      "id": "v42",
+      "lyric": "how",
+      "word": "how",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 66.66666666666667,
+      "t_samples": 3200000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m27:right:beat1",
+      "midi_tick": 38400,
+      "t_midi_sec": 66.66664,
+      "engine_note": {
+        "measure": 27,
+        "hand": "right",
+        "t_sec": 66.66666666666667
+      }
+    },
+    {
+      "id": "v43",
+      "lyric": "pre",
+      "word": "precious",
+      "syllable": 0,
+      "syllables": 2,
+      "midi": 74,
+      "t_sec": 67.5,
+      "t_samples": 3240000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m28:right:beat0",
+      "midi_tick": 38880,
+      "t_midi_sec": 67.499973,
+      "engine_note": {
+        "measure": 28,
+        "hand": "right",
+        "t_sec": 67.5
+      },
+      "melisma": [
+        {
+          "midi": 71,
+          "t_sec": 68.75,
+          "t_samples": 3300000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m28:right:beat1",
+          "midi_tick": 39600,
+          "engine_note": {
+            "measure": 28,
+            "hand": "right",
+            "t_sec": 68.75
+          }
+        }
+      ]
+    },
+    {
+      "id": "v44",
+      "lyric": "cious",
+      "word": "precious",
+      "syllable": 1,
+      "syllables": 2,
+      "midi": 74,
+      "t_sec": 69.16666666666667,
+      "t_samples": 3320000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m28:right:beat2",
+      "midi_tick": 39840,
+      "t_midi_sec": 69.166639,
+      "engine_note": {
+        "measure": 28,
+        "hand": "right",
+        "t_sec": 69.16666666666667
+      },
+      "melisma": [
+        {
+          "midi": 71,
+          "t_sec": 69.58333333333333,
+          "t_samples": 3340000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m28:right:beat3",
+          "midi_tick": 40080,
+          "engine_note": {
+            "measure": 28,
+            "hand": "right",
+            "t_sec": 69.58333333333333
+          }
+        }
+      ]
+    },
+    {
+      "id": "v45",
+      "lyric": "did",
+      "word": "did",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 70,
+      "t_samples": 3360000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m29:right:beat0",
+      "midi_tick": 40320,
+      "t_midi_sec": 69.999972,
+      "engine_note": {
+        "measure": 29,
+        "hand": "right",
+        "t_sec": 70
+      }
+    },
+    {
+      "id": "v46",
+      "lyric": "that",
+      "word": "that",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 71.66666666666667,
+      "t_samples": 3440000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m29:right:beat1",
+      "midi_tick": 41280,
+      "t_midi_sec": 71.666638,
+      "engine_note": {
+        "measure": 29,
+        "hand": "right",
+        "t_sec": 71.66666666666667
+      }
+    },
+    {
+      "id": "v47",
+      "lyric": "grace",
+      "word": "grace",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 64,
+      "t_sec": 72.5,
+      "t_samples": 3480000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m30:right:beat0",
+      "midi_tick": 41760,
+      "t_midi_sec": 72.499971,
+      "engine_note": {
+        "measure": 30,
+        "hand": "right",
+        "t_sec": 72.5
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 73.75,
+          "t_samples": 3540000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m30:right:beat1",
+          "midi_tick": 42480,
+          "engine_note": {
+            "measure": 30,
+            "hand": "right",
+            "t_sec": 73.75
+          }
+        }
+      ]
+    },
+    {
+      "id": "v48",
+      "lyric": "ap",
+      "word": "appear",
+      "syllable": 0,
+      "syllables": 2,
+      "midi": 67,
+      "t_sec": 74.16666666666667,
+      "t_samples": 3560000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m30:right:beat2",
+      "midi_tick": 42720,
+      "t_midi_sec": 74.166637,
+      "engine_note": {
+        "measure": 30,
+        "hand": "right",
+        "t_sec": 74.16666666666667
+      },
+      "melisma": [
+        {
+          "midi": 64,
+          "t_sec": 74.58333333333333,
+          "t_samples": 3580000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m30:right:beat3",
+          "midi_tick": 42960,
+          "engine_note": {
+            "measure": 30,
+            "hand": "right",
+            "t_sec": 74.58333333333333
+          }
+        }
+      ]
+    },
+    {
+      "id": "v49",
+      "lyric": "pear",
+      "word": "appear",
+      "syllable": 1,
+      "syllables": 2,
+      "midi": 62,
+      "t_sec": 75,
+      "t_samples": 3600000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m31:right:beat0",
+      "midi_tick": 43200,
+      "t_midi_sec": 74.99997,
+      "engine_note": {
+        "measure": 31,
+        "hand": "right",
+        "t_sec": 75
+      }
+    },
+    {
+      "id": "v50",
+      "lyric": "the",
+      "word": "the",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 76.66666666666667,
+      "t_samples": 3680000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m31:right:beat1",
+      "midi_tick": 44160,
+      "t_midi_sec": 76.666636,
+      "engine_note": {
+        "measure": 31,
+        "hand": "right",
+        "t_sec": 76.66666666666667
+      }
+    },
+    {
+      "id": "v51",
+      "lyric": "hour",
+      "word": "hour",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 77.5,
+      "t_samples": 3720000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m32:right:beat0",
+      "midi_tick": 44640,
+      "t_midi_sec": 77.499969,
+      "engine_note": {
+        "measure": 32,
+        "hand": "right",
+        "t_sec": 77.5
+      }
+    },
+    {
+      "id": "v52",
+      "lyric": "I",
+      "word": "I",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 79.16666666666667,
+      "t_samples": 3800000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m32:right:beat1",
+      "midi_tick": 45600,
+      "t_midi_sec": 79.166635,
+      "engine_note": {
+        "measure": 32,
+        "hand": "right",
+        "t_sec": 79.16666666666667
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 79.58333333333333,
+          "t_samples": 3820000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m32:right:beat2",
+          "midi_tick": 45840,
+          "engine_note": {
+            "measure": 32,
+            "hand": "right",
+            "t_sec": 79.58333333333333
+          }
+        }
+      ]
+    },
+    {
+      "id": "v53",
+      "lyric": "first",
+      "word": "first",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 80,
+      "t_samples": 3840000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m33:right:beat0",
+      "midi_tick": 46080,
+      "t_midi_sec": 79.999968,
+      "engine_note": {
+        "measure": 33,
+        "hand": "right",
+        "t_sec": 80
+      }
+    },
+    {
+      "id": "v54",
+      "lyric": "be",
+      "word": "believed",
+      "syllable": 0,
+      "syllables": 2,
+      "midi": 69,
+      "t_sec": 81.66666666666667,
+      "t_samples": 3920000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m33:right:beat1",
+      "midi_tick": 47040,
+      "t_midi_sec": 81.666634,
+      "engine_note": {
+        "measure": 33,
+        "hand": "right",
+        "t_sec": 81.66666666666667
+      }
+    },
+    {
+      "id": "v55",
+      "lyric": "lieved",
+      "word": "believed",
+      "syllable": 1,
+      "syllables": 2,
+      "midi": 67,
+      "t_sec": 82.5,
+      "t_samples": 3960000,
+      "dur_sec": 2.5,
+      "anchor": "piano-onset:m34:right:beat0",
+      "midi_tick": 47520,
+      "t_midi_sec": 82.499967,
+      "engine_note": {
+        "measure": 34,
+        "hand": "right",
+        "t_sec": 82.5
+      }
+    },
+    {
+      "id": "v56",
+      "lyric": "Through",
+      "word": "Through",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 86.66666666666667,
+      "t_samples": 4160000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m35:right:beat1",
+      "midi_tick": 49920,
+      "t_midi_sec": 86.666632,
+      "engine_note": {
+        "measure": 35,
+        "hand": "right",
+        "t_sec": 86.66666666666667
+      }
+    },
+    {
+      "id": "v57",
+      "lyric": "ma",
+      "word": "many",
+      "syllable": 0,
+      "syllables": 2,
+      "midi": 67,
+      "t_sec": 87.5,
+      "t_samples": 4200000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m36:right:beat0",
+      "midi_tick": 50400,
+      "t_midi_sec": 87.499965,
+      "engine_note": {
+        "measure": 36,
+        "hand": "right",
+        "t_sec": 87.5
+      }
+    },
+    {
+      "id": "v58",
+      "lyric": "ny",
+      "word": "many",
+      "syllable": 1,
+      "syllables": 2,
+      "midi": 71,
+      "t_sec": 89.16666666666667,
+      "t_samples": 4280000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m36:right:beat1",
+      "midi_tick": 51360,
+      "t_midi_sec": 89.166631,
+      "engine_note": {
+        "measure": 36,
+        "hand": "right",
+        "t_sec": 89.16666666666667
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 89.58333333333333,
+          "t_samples": 4300000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m36:right:beat2",
+          "midi_tick": 51600,
+          "engine_note": {
+            "measure": 36,
+            "hand": "right",
+            "t_sec": 89.58333333333333
+          }
+        }
+      ]
+    },
+    {
+      "id": "v59",
+      "lyric": "dan",
+      "word": "dangers",
+      "syllable": 0,
+      "syllables": 2,
+      "midi": 71,
+      "t_sec": 90,
+      "t_samples": 4320000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m37:right:beat0",
+      "midi_tick": 51840,
+      "t_midi_sec": 89.999964,
+      "engine_note": {
+        "measure": 37,
+        "hand": "right",
+        "t_sec": 90
+      }
+    },
+    {
+      "id": "v60",
+      "lyric": "gers",
+      "word": "dangers",
+      "syllable": 1,
+      "syllables": 2,
+      "midi": 69,
+      "t_sec": 91.66666666666667,
+      "t_samples": 4400000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m37:right:beat1",
+      "midi_tick": 52800,
+      "t_midi_sec": 91.66663,
+      "engine_note": {
+        "measure": 37,
+        "hand": "right",
+        "t_sec": 91.66666666666667
+      }
+    },
+    {
+      "id": "v61",
+      "lyric": "toils",
+      "word": "toils",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 92.5,
+      "t_samples": 4440000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m38:right:beat0",
+      "midi_tick": 53280,
+      "t_midi_sec": 92.499963,
+      "engine_note": {
+        "measure": 38,
+        "hand": "right",
+        "t_sec": 92.5
+      }
+    },
+    {
+      "id": "v62",
+      "lyric": "and",
+      "word": "and",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 64,
+      "t_sec": 94.16666666666667,
+      "t_samples": 4520000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m38:right:beat1",
+      "midi_tick": 54240,
+      "t_midi_sec": 94.166629,
+      "engine_note": {
+        "measure": 38,
+        "hand": "right",
+        "t_sec": 94.16666666666667
+      }
+    },
+    {
+      "id": "v63",
+      "lyric": "snares",
+      "word": "snares",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 95,
+      "t_samples": 4560000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m39:right:beat0",
+      "midi_tick": 54720,
+      "t_midi_sec": 94.999962,
+      "engine_note": {
+        "measure": 39,
+        "hand": "right",
+        "t_sec": 95
+      }
+    },
+    {
+      "id": "v64",
+      "lyric": "I",
+      "word": "I",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 96.66666666666667,
+      "t_samples": 4640000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m39:right:beat1",
+      "midi_tick": 55680,
+      "t_midi_sec": 96.666628,
+      "engine_note": {
+        "measure": 39,
+        "hand": "right",
+        "t_sec": 96.66666666666667
+      }
+    },
+    {
+      "id": "v65",
+      "lyric": "have",
+      "word": "have",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 97.5,
+      "t_samples": 4680000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m40:right:beat0",
+      "midi_tick": 56160,
+      "t_midi_sec": 97.499961,
+      "engine_note": {
+        "measure": 40,
+        "hand": "right",
+        "t_sec": 97.5
+      }
+    },
+    {
+      "id": "v66",
+      "lyric": "al",
+      "word": "already",
+      "syllable": 0,
+      "syllables": 3,
+      "midi": 71,
+      "t_sec": 99.16666666666667,
+      "t_samples": 4760000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m40:right:beat1",
+      "midi_tick": 57120,
+      "t_midi_sec": 99.166627,
+      "engine_note": {
+        "measure": 40,
+        "hand": "right",
+        "t_sec": 99.16666666666667
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 99.58333333333333,
+          "t_samples": 4780000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m40:right:beat2",
+          "midi_tick": 57360,
+          "engine_note": {
+            "measure": 40,
+            "hand": "right",
+            "t_sec": 99.58333333333333
+          }
+        }
+      ]
+    },
+    {
+      "id": "v67",
+      "lyric": "rea",
+      "word": "already",
+      "syllable": 1,
+      "syllables": 3,
+      "midi": 71,
+      "t_sec": 100,
+      "t_samples": 4800000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m41:right:beat0",
+      "midi_tick": 57600,
+      "t_midi_sec": 99.99996,
+      "engine_note": {
+        "measure": 41,
+        "hand": "right",
+        "t_sec": 100
+      }
+    },
+    {
+      "id": "v68",
+      "lyric": "dy",
+      "word": "already",
+      "syllable": 2,
+      "syllables": 3,
+      "midi": 69,
+      "t_sec": 101.66666666666667,
+      "t_samples": 4880000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m41:right:beat1",
+      "midi_tick": 58560,
+      "t_midi_sec": 101.666626,
+      "engine_note": {
+        "measure": 41,
+        "hand": "right",
+        "t_sec": 101.66666666666667
+      }
+    },
+    {
+      "id": "v69",
+      "lyric": "come",
+      "word": "come",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 74,
+      "t_sec": 102.5,
+      "t_samples": 4920000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m42:right:beat0",
+      "midi_tick": 59040,
+      "t_midi_sec": 102.499959,
+      "engine_note": {
+        "measure": 42,
+        "hand": "right",
+        "t_sec": 102.5
+      }
+    },
+    {
+      "id": "v70",
+      "lyric": "'Tis",
+      "word": "'Tis",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 104.16666666666667,
+      "t_samples": 5000000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m42:right:beat1",
+      "midi_tick": 60000,
+      "t_midi_sec": 104.166625,
+      "engine_note": {
+        "measure": 42,
+        "hand": "right",
+        "t_sec": 104.16666666666667
+      }
+    },
+    {
+      "id": "v71",
+      "lyric": "grace",
+      "word": "grace",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 74,
+      "t_sec": 105,
+      "t_samples": 5040000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m43:right:beat0",
+      "midi_tick": 60480,
+      "t_midi_sec": 104.999958,
+      "engine_note": {
+        "measure": 43,
+        "hand": "right",
+        "t_sec": 105
+      },
+      "melisma": [
+        {
+          "midi": 71,
+          "t_sec": 106.25,
+          "t_samples": 5100000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m43:right:beat1",
+          "midi_tick": 61200,
+          "engine_note": {
+            "measure": 43,
+            "hand": "right",
+            "t_sec": 106.25
+          }
+        }
+      ]
+    },
+    {
+      "id": "v72",
+      "lyric": "hath",
+      "word": "hath",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 74,
+      "t_sec": 106.66666666666667,
+      "t_samples": 5120000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m43:right:beat2",
+      "midi_tick": 61440,
+      "t_midi_sec": 106.666624,
+      "engine_note": {
+        "measure": 43,
+        "hand": "right",
+        "t_sec": 106.66666666666667
+      },
+      "melisma": [
+        {
+          "midi": 71,
+          "t_sec": 107.08333333333333,
+          "t_samples": 5140000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m43:right:beat3",
+          "midi_tick": 61680,
+          "engine_note": {
+            "measure": 43,
+            "hand": "right",
+            "t_sec": 107.08333333333333
+          }
+        }
+      ]
+    },
+    {
+      "id": "v73",
+      "lyric": "brought",
+      "word": "brought",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 107.5,
+      "t_samples": 5160000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m44:right:beat0",
+      "midi_tick": 61920,
+      "t_midi_sec": 107.499957,
+      "engine_note": {
+        "measure": 44,
+        "hand": "right",
+        "t_sec": 107.5
+      }
+    },
+    {
+      "id": "v74",
+      "lyric": "me",
+      "word": "me",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 109.16666666666667,
+      "t_samples": 5240000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m44:right:beat1",
+      "midi_tick": 62880,
+      "t_midi_sec": 109.166623,
+      "engine_note": {
+        "measure": 44,
+        "hand": "right",
+        "t_sec": 109.16666666666667
+      }
+    },
+    {
+      "id": "v75",
+      "lyric": "safe",
+      "word": "safe",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 64,
+      "t_sec": 110,
+      "t_samples": 5280000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m45:right:beat0",
+      "midi_tick": 63360,
+      "t_midi_sec": 109.999956,
+      "engine_note": {
+        "measure": 45,
+        "hand": "right",
+        "t_sec": 110
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 111.25,
+          "t_samples": 5340000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m45:right:beat1",
+          "midi_tick": 64080,
+          "engine_note": {
+            "measure": 45,
+            "hand": "right",
+            "t_sec": 111.25
+          }
+        }
+      ]
+    },
+    {
+      "id": "v76",
+      "lyric": "thus",
+      "word": "thus",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 111.66666666666667,
+      "t_samples": 5360000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m45:right:beat2",
+      "midi_tick": 64320,
+      "t_midi_sec": 111.666622,
+      "engine_note": {
+        "measure": 45,
+        "hand": "right",
+        "t_sec": 111.66666666666667
+      },
+      "melisma": [
+        {
+          "midi": 64,
+          "t_sec": 112.08333333333333,
+          "t_samples": 5380000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m45:right:beat3",
+          "midi_tick": 64560,
+          "engine_note": {
+            "measure": 45,
+            "hand": "right",
+            "t_sec": 112.08333333333333
+          }
+        }
+      ]
+    },
+    {
+      "id": "v77",
+      "lyric": "far",
+      "word": "far",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 112.5,
+      "t_samples": 5400000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m46:right:beat0",
+      "midi_tick": 64800,
+      "t_midi_sec": 112.499955,
+      "engine_note": {
+        "measure": 46,
+        "hand": "right",
+        "t_sec": 112.5
+      }
+    },
+    {
+      "id": "v78",
+      "lyric": "and",
+      "word": "and",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 114.16666666666667,
+      "t_samples": 5480000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m46:right:beat1",
+      "midi_tick": 65760,
+      "t_midi_sec": 114.166621,
+      "engine_note": {
+        "measure": 46,
+        "hand": "right",
+        "t_sec": 114.16666666666667
+      }
+    },
+    {
+      "id": "v79",
+      "lyric": "grace",
+      "word": "grace",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 115,
+      "t_samples": 5520000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m47:right:beat0",
+      "midi_tick": 66240,
+      "t_midi_sec": 114.999954,
+      "engine_note": {
+        "measure": 47,
+        "hand": "right",
+        "t_sec": 115
+      }
+    },
+    {
+      "id": "v80",
+      "lyric": "will",
+      "word": "will",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 116.66666666666667,
+      "t_samples": 5600000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m47:right:beat1",
+      "midi_tick": 67200,
+      "t_midi_sec": 116.66662,
+      "engine_note": {
+        "measure": 47,
+        "hand": "right",
+        "t_sec": 116.66666666666667
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 117.08333333333333,
+          "t_samples": 5620000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m47:right:beat2",
+          "midi_tick": 67440,
+          "engine_note": {
+            "measure": 47,
+            "hand": "right",
+            "t_sec": 117.08333333333333
+          }
+        }
+      ]
+    },
+    {
+      "id": "v81",
+      "lyric": "lead",
+      "word": "lead",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 117.5,
+      "t_samples": 5640000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m48:right:beat0",
+      "midi_tick": 67680,
+      "t_midi_sec": 117.499953,
+      "engine_note": {
+        "measure": 48,
+        "hand": "right",
+        "t_sec": 117.5
+      }
+    },
+    {
+      "id": "v82",
+      "lyric": "me",
+      "word": "me",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 69,
+      "t_sec": 119.16666666666667,
+      "t_samples": 5720000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m48:right:beat1",
+      "midi_tick": 68640,
+      "t_midi_sec": 119.166619,
+      "engine_note": {
+        "measure": 48,
+        "hand": "right",
+        "t_sec": 119.16666666666667
+      }
+    },
+    {
+      "id": "v83",
+      "lyric": "home",
+      "word": "home",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 120,
+      "t_samples": 5760000,
+      "dur_sec": 2.5,
+      "anchor": "piano-onset:m49:right:beat0",
+      "midi_tick": 69120,
+      "t_midi_sec": 119.999952,
+      "engine_note": {
+        "measure": 49,
+        "hand": "right",
+        "t_sec": 120
+      }
+    },
+    {
+      "id": "v84",
+      "lyric": "When",
+      "word": "When",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 124.16666666666667,
+      "t_samples": 5960000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m50:right:beat1",
+      "midi_tick": 71520,
+      "t_midi_sec": 124.166617,
+      "engine_note": {
+        "measure": 50,
+        "hand": "right",
+        "t_sec": 124.16666666666667
+      }
+    },
+    {
+      "id": "v85",
+      "lyric": "we've",
+      "word": "we've",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 125,
+      "t_samples": 6000000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m51:right:beat0",
+      "midi_tick": 72000,
+      "t_midi_sec": 124.99995,
+      "engine_note": {
+        "measure": 51,
+        "hand": "right",
+        "t_sec": 125
+      }
+    },
+    {
+      "id": "v86",
+      "lyric": "been",
+      "word": "been",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 126.66666666666667,
+      "t_samples": 6080000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m51:right:beat1",
+      "midi_tick": 72960,
+      "t_midi_sec": 126.666616,
+      "engine_note": {
+        "measure": 51,
+        "hand": "right",
+        "t_sec": 126.66666666666667
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 127.08333333333333,
+          "t_samples": 6100000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m51:right:beat2",
+          "midi_tick": 73200,
+          "engine_note": {
+            "measure": 51,
+            "hand": "right",
+            "t_sec": 127.08333333333333
+          }
+        }
+      ]
+    },
+    {
+      "id": "v87",
+      "lyric": "there",
+      "word": "there",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 127.5,
+      "t_samples": 6120000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m52:right:beat0",
+      "midi_tick": 73440,
+      "t_midi_sec": 127.499949,
+      "engine_note": {
+        "measure": 52,
+        "hand": "right",
+        "t_sec": 127.5
+      }
+    },
+    {
+      "id": "v88",
+      "lyric": "ten",
+      "word": "ten",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 69,
+      "t_sec": 129.16666666666666,
+      "t_samples": 6200000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m52:right:beat1",
+      "midi_tick": 74400,
+      "t_midi_sec": 129.166615,
+      "engine_note": {
+        "measure": 52,
+        "hand": "right",
+        "t_sec": 129.16666666666666
+      }
+    },
+    {
+      "id": "v89",
+      "lyric": "thou",
+      "word": "thousand",
+      "syllable": 0,
+      "syllables": 2,
+      "midi": 67,
+      "t_sec": 130,
+      "t_samples": 6240000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m53:right:beat0",
+      "midi_tick": 74880,
+      "t_midi_sec": 129.999948,
+      "engine_note": {
+        "measure": 53,
+        "hand": "right",
+        "t_sec": 130
+      }
+    },
+    {
+      "id": "v90",
+      "lyric": "sand",
+      "word": "thousand",
+      "syllable": 1,
+      "syllables": 2,
+      "midi": 64,
+      "t_sec": 131.66666666666666,
+      "t_samples": 6320000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m53:right:beat1",
+      "midi_tick": 75840,
+      "t_midi_sec": 131.666614,
+      "engine_note": {
+        "measure": 53,
+        "hand": "right",
+        "t_sec": 131.66666666666666
+      }
+    },
+    {
+      "id": "v91",
+      "lyric": "years",
+      "word": "years",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 132.5,
+      "t_samples": 6360000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m54:right:beat0",
+      "midi_tick": 76320,
+      "t_midi_sec": 132.499947,
+      "engine_note": {
+        "measure": 54,
+        "hand": "right",
+        "t_sec": 132.5
+      }
+    },
+    {
+      "id": "v92",
+      "lyric": "bright",
+      "word": "bright",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 134.16666666666666,
+      "t_samples": 6440000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m54:right:beat1",
+      "midi_tick": 77280,
+      "t_midi_sec": 134.166613,
+      "engine_note": {
+        "measure": 54,
+        "hand": "right",
+        "t_sec": 134.16666666666666
+      }
+    },
+    {
+      "id": "v93",
+      "lyric": "shi",
+      "word": "shining",
+      "syllable": 0,
+      "syllables": 2,
+      "midi": 67,
+      "t_sec": 135,
+      "t_samples": 6480000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m55:right:beat0",
+      "midi_tick": 77760,
+      "t_midi_sec": 134.999946,
+      "engine_note": {
+        "measure": 55,
+        "hand": "right",
+        "t_sec": 135
+      }
+    },
+    {
+      "id": "v94",
+      "lyric": "ning",
+      "word": "shining",
+      "syllable": 1,
+      "syllables": 2,
+      "midi": 71,
+      "t_sec": 136.66666666666666,
+      "t_samples": 6560000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m55:right:beat1",
+      "midi_tick": 78720,
+      "t_midi_sec": 136.666612,
+      "engine_note": {
+        "measure": 55,
+        "hand": "right",
+        "t_sec": 136.66666666666666
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 137.08333333333334,
+          "t_samples": 6580000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m55:right:beat2",
+          "midi_tick": 78960,
+          "engine_note": {
+            "measure": 55,
+            "hand": "right",
+            "t_sec": 137.08333333333334
+          }
+        }
+      ]
+    },
+    {
+      "id": "v95",
+      "lyric": "as",
+      "word": "as",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 137.5,
+      "t_samples": 6600000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m56:right:beat0",
+      "midi_tick": 79200,
+      "t_midi_sec": 137.499945,
+      "engine_note": {
+        "measure": 56,
+        "hand": "right",
+        "t_sec": 137.5
+      }
+    },
+    {
+      "id": "v96",
+      "lyric": "the",
+      "word": "the",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 69,
+      "t_sec": 139.16666666666666,
+      "t_samples": 6680000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m56:right:beat1",
+      "midi_tick": 80160,
+      "t_midi_sec": 139.166611,
+      "engine_note": {
+        "measure": 56,
+        "hand": "right",
+        "t_sec": 139.16666666666666
+      }
+    },
+    {
+      "id": "v97",
+      "lyric": "sun",
+      "word": "sun",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 74,
+      "t_sec": 140,
+      "t_samples": 6720000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m57:right:beat0",
+      "midi_tick": 80640,
+      "t_midi_sec": 139.999944,
+      "engine_note": {
+        "measure": 57,
+        "hand": "right",
+        "t_sec": 140
+      }
+    },
+    {
+      "id": "v98",
+      "lyric": "we've",
+      "word": "we've",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 141.66666666666666,
+      "t_samples": 6800000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m57:right:beat1",
+      "midi_tick": 81600,
+      "t_midi_sec": 141.66661,
+      "engine_note": {
+        "measure": 57,
+        "hand": "right",
+        "t_sec": 141.66666666666666
+      }
+    },
+    {
+      "id": "v99",
+      "lyric": "no",
+      "word": "no",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 74,
+      "t_sec": 142.5,
+      "t_samples": 6840000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m58:right:beat0",
+      "midi_tick": 82080,
+      "t_midi_sec": 142.499943,
+      "engine_note": {
+        "measure": 58,
+        "hand": "right",
+        "t_sec": 142.5
+      },
+      "melisma": [
+        {
+          "midi": 71,
+          "t_sec": 143.75,
+          "t_samples": 6900000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m58:right:beat1",
+          "midi_tick": 82800,
+          "engine_note": {
+            "measure": 58,
+            "hand": "right",
+            "t_sec": 143.75
+          }
+        }
+      ]
+    },
+    {
+      "id": "v100",
+      "lyric": "less",
+      "word": "less",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 74,
+      "t_sec": 144.16666666666666,
+      "t_samples": 6920000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m58:right:beat2",
+      "midi_tick": 83040,
+      "t_midi_sec": 144.166609,
+      "engine_note": {
+        "measure": 58,
+        "hand": "right",
+        "t_sec": 144.16666666666666
+      },
+      "melisma": [
+        {
+          "midi": 71,
+          "t_sec": 144.58333333333334,
+          "t_samples": 6940000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m58:right:beat3",
+          "midi_tick": 83280,
+          "engine_note": {
+            "measure": 58,
+            "hand": "right",
+            "t_sec": 144.58333333333334
+          }
+        }
+      ]
+    },
+    {
+      "id": "v101",
+      "lyric": "days",
+      "word": "days",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 145,
+      "t_samples": 6960000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m59:right:beat0",
+      "midi_tick": 83520,
+      "t_midi_sec": 144.999942,
+      "engine_note": {
+        "measure": 59,
+        "hand": "right",
+        "t_sec": 145
+      }
+    },
+    {
+      "id": "v102",
+      "lyric": "to",
+      "word": "to",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 146.66666666666666,
+      "t_samples": 7040000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m59:right:beat1",
+      "midi_tick": 84480,
+      "t_midi_sec": 146.666608,
+      "engine_note": {
+        "measure": 59,
+        "hand": "right",
+        "t_sec": 146.66666666666666
+      }
+    },
+    {
+      "id": "v103",
+      "lyric": "sing",
+      "word": "sing",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 64,
+      "t_sec": 147.5,
+      "t_samples": 7080000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m60:right:beat0",
+      "midi_tick": 84960,
+      "t_midi_sec": 147.499941,
+      "engine_note": {
+        "measure": 60,
+        "hand": "right",
+        "t_sec": 147.5
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 148.75,
+          "t_samples": 7140000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m60:right:beat1",
+          "midi_tick": 85680,
+          "engine_note": {
+            "measure": 60,
+            "hand": "right",
+            "t_sec": 148.75
+          }
+        }
+      ]
+    },
+    {
+      "id": "v104",
+      "lyric": "God's",
+      "word": "God's",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 149.16666666666666,
+      "t_samples": 7160000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m60:right:beat2",
+      "midi_tick": 85920,
+      "t_midi_sec": 149.166607,
+      "engine_note": {
+        "measure": 60,
+        "hand": "right",
+        "t_sec": 149.16666666666666
+      },
+      "melisma": [
+        {
+          "midi": 64,
+          "t_sec": 149.58333333333334,
+          "t_samples": 7180000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m60:right:beat3",
+          "midi_tick": 86160,
+          "engine_note": {
+            "measure": 60,
+            "hand": "right",
+            "t_sec": 149.58333333333334
+          }
+        }
+      ]
+    },
+    {
+      "id": "v105",
+      "lyric": "praise",
+      "word": "praise",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 150,
+      "t_samples": 7200000,
+      "dur_sec": 1.25,
+      "anchor": "piano-onset:m61:right:beat0",
+      "midi_tick": 86400,
+      "t_midi_sec": 149.99994,
+      "engine_note": {
+        "measure": 61,
+        "hand": "right",
+        "t_sec": 150
+      }
+    },
+    {
+      "id": "v106",
+      "lyric": "than",
+      "word": "than",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 62,
+      "t_sec": 151.66666666666666,
+      "t_samples": 7280000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m61:right:beat1",
+      "midi_tick": 87360,
+      "t_midi_sec": 151.666606,
+      "engine_note": {
+        "measure": 61,
+        "hand": "right",
+        "t_sec": 151.66666666666666
+      }
+    },
+    {
+      "id": "v107",
+      "lyric": "when",
+      "word": "when",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 67,
+      "t_sec": 152.5,
+      "t_samples": 7320000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m62:right:beat0",
+      "midi_tick": 87840,
+      "t_midi_sec": 152.499939,
+      "engine_note": {
+        "measure": 62,
+        "hand": "right",
+        "t_sec": 152.5
+      }
+    },
+    {
+      "id": "v108",
+      "lyric": "we",
+      "word": "we",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 154.16666666666666,
+      "t_samples": 7400000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m62:right:beat1",
+      "midi_tick": 88800,
+      "t_midi_sec": 154.166605,
+      "engine_note": {
+        "measure": 62,
+        "hand": "right",
+        "t_sec": 154.16666666666666
+      },
+      "melisma": [
+        {
+          "midi": 67,
+          "t_sec": 154.58333333333334,
+          "t_samples": 7420000,
+          "dur_sec": 0.4166666666666667,
+          "anchor": "piano-onset:m62:right:beat2",
+          "midi_tick": 89040,
+          "engine_note": {
+            "measure": 62,
+            "hand": "right",
+            "t_sec": 154.58333333333334
+          }
+        }
+      ]
+    },
+    {
+      "id": "v109",
+      "lyric": "first",
+      "word": "first",
+      "syllable": 0,
+      "syllables": 1,
+      "midi": 71,
+      "t_sec": 155,
+      "t_samples": 7440000,
+      "dur_sec": 1.6666666666666667,
+      "anchor": "piano-onset:m63:right:beat0",
+      "midi_tick": 89280,
+      "t_midi_sec": 154.999938,
+      "engine_note": {
+        "measure": 63,
+        "hand": "right",
+        "t_sec": 155
+      }
+    },
+    {
+      "id": "v110",
+      "lyric": "be",
+      "word": "begun",
+      "syllable": 0,
+      "syllables": 2,
+      "midi": 69,
+      "t_sec": 156.66666666666666,
+      "t_samples": 7520000,
+      "dur_sec": 0.8333333333333334,
+      "anchor": "piano-onset:m63:right:beat1",
+      "midi_tick": 90240,
+      "t_midi_sec": 156.666604,
+      "engine_note": {
+        "measure": 63,
+        "hand": "right",
+        "t_sec": 156.66666666666666
+      }
+    },
+    {
+      "id": "v111",
+      "lyric": "gun",
+      "word": "begun",
+      "syllable": 1,
+      "syllables": 2,
+      "midi": 67,
+      "t_sec": 157.5,
+      "t_samples": 7560000,
+      "dur_sec": 2.5,
+      "anchor": "piano-onset:m64:right:beat0",
+      "midi_tick": 90720,
+      "t_midi_sec": 157.499937,
+      "engine_note": {
+        "measure": 64,
+        "hand": "right",
+        "t_sec": 157.5
+      }
+    }
+  ]
+}

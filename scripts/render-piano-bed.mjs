@@ -23,6 +23,7 @@ import { createHash } from "node:crypto";
 import { join, dirname } from "node:path";
 import { OfflineAudioContext } from "node-web-audio-api";
 import { initializeFromLibrary, getSong } from "../src/songs/index.ts";
+import { loadExemplarSong } from "../src/vocal/hymns.ts";
 import { createSampleEngine } from "../src/sample-engine.ts";
 import { createAudioEngine } from "../src/audio-engine.ts";
 import { preferredPianoEngineId, resolvePianoSamplesDir } from "../src/sample-paths.ts";
@@ -46,8 +47,9 @@ initializeFromLibrary(
   join(process.cwd(), "songs", "library"),
   join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".ai-jam-sessions", "songs"),
 );
-const song = getSong(clock.song_id);
-if (!song) throw new Error(`song ${clock.song_id} not in library`);
+// A sung exemplar's arrangement is built from src/vocal/hymns.ts, outside the library.
+const song = loadExemplarSong(clock.song_id)?.song ?? getSong(clock.song_id);
+if (!song) throw new Error(`song ${clock.song_id} not in the library or src/vocal/hymns.ts`);
 
 const schedule = sessionSchedule(song, startMeasure, endMeasure, clock.bpm);
 if (Math.round(schedule.endSec * sr) !== totalSamples) {

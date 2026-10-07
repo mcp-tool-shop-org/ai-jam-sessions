@@ -40,13 +40,13 @@ import { config } from '../site-config';
       <em>America the Beautiful</em> — sourced from the public domain, arranged with the project's own <code>midi-file</code> pipeline, ready for the SoulX-Singer vocal route.
     </p>
     <img
-      src={`${import.meta.env.BASE_URL}/america-the-beautiful-m2-5.svg`.replace(/\/\//g, '/')}
-      alt="Piano-roll visualization of America the Beautiful measures 2–5 — right hand in blue, left hand in coral, on a deep navy grid"
+      src={`${import.meta.env.BASE_URL}/america-the-beautiful-m2-6.svg`.replace(/\/\//g, '/')}
+      alt="Piano-roll visualization of America the Beautiful measures 2–6, the first phrase of Materna — right hand in blue, left hand in coral, on a deep navy grid"
       style="width:100%;height:auto;border:1px solid #2a2a3e;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.4);margin-top:1rem;"
       loading="lazy"
     />
     <p style="color:var(--color-muted,#8888aa);font-size:0.9rem;margin-top:0.75rem;">
-      Melody by Samuel A. Ward, 1882 (public domain). Block-chord hymn harmonization generated locally with midi-file. Measures 2–5 in F major, 80 BPM — clean provenance, no third-party arrangement licence uncertainty.
+      Melody: <em>Materna</em> by Samuel A. Ward, 1882 (public domain), checked against a 1919 hymnal and Hymnary.org. Block-chord hymn harmonization generated locally with midi-file. Measures 2–6, the first phrase, in B♭ major at 92 BPM — clean provenance, no third-party arrangement licence uncertainty.
     </p>
   </section>
 
@@ -65,6 +65,9 @@ import { config } from '../site-config';
         <audio controls preload="none" style="width:100%;" src={`${import.meta.env.BASE_URL}/audio/america-the-beautiful-vocal-only.mp3`.replace(/\/\//g, '/')}></audio>
       </div>
     </div>
+    <p style="color:var(--color-muted,#8888aa);font-size:0.95rem;line-height:1.5;">
+      <strong>Correction (2026-10-07):</strong> these takes sing the melody of the earlier arrangement, which was not Ward's <em>Materna</em>. The piano roll above is the corrected tune; a whole-song remake on it is in progress.
+    </p>
     <p style="color:var(--color-muted,#8888aa);font-size:0.95rem;line-height:1.5;">
       <strong>What is true about this take:</strong> every syllable's pitch, onset and duration come from the song's MIDI on the player's own timeline (the score clock);
       a local, Apache-2.0 score-conditioned singer (SoulX-Singer) sang four takes in F major; the best syllable of each was picked and joined with crossfades;
@@ -90,6 +93,9 @@ import { config } from '../site-config';
         <audio controls preload="none" style="width:100%;" src={`${import.meta.env.BASE_URL}/audio/amazing-grace-vocal-only-2026-09-05.mp3`.replace(/\/\//g, '/')}></audio>
       </div>
     </div>
+    <p style="color:var(--color-muted,#8888aa);font-size:0.95rem;line-height:1.5;">
+      <strong>Correction (2026-10-07):</strong> this sung line leaves the hymn tune <em>New Britain</em> after its fourth note ("grace how sweet" is sung to the wrong notes). The timing and pitch gates measured it against the same wrong score. A whole-song remake on the corrected tune is in progress.
+    </p>
     <p style="color:var(--color-muted,#8888aa);font-size:0.95rem;line-height:1.5;">
       <strong>What is true about this take:</strong> every syllable's pitch, onset and duration come from the song's MIDI on the player's own timeline (the score clock);
       a local, Apache-2.0 score-conditioned singer (SoulX-Singer) sang six takes; the best syllable of each was picked and joined with crossfades;

@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — whole-song hymn arrangements for the sung exemplars
+- America the Beautiful to *Materna* (B♭, four verses, 3:16) and Amazing Grace to *New
+  Britain* (G, four verses, 2:45), each with a piano introduction and ending. Public-domain
+  melodies and texts, checked against published sources and Hymnary.org's incipits; original
+  block-chord settings, dedicated to the public domain. Kept out of the song library, which
+  feeds the datasets, and built in memory: no exemplar MIDI file is committed.
+- `src/vocal/hymns.ts` holds the tunes, chords, verses and sources; `realizeHymn` writes every
+  piano hand as a gapless chain of chords, so the session clock is the score.
+  `build-score-clock.mjs` and `render-piano-bed.mjs` build an exemplar from it.
+- Committed whole-song clocks: `scores/america-the-beautiful-materna.score-clock.v1.json`
+  (224 syllables) and `scores/amazing-grace-new-britain.score-clock.v1.json` (112 syllables,
+  28 held notes), each with a breath at every phrase end.
+
+### Fixed
+- The library's `america-the-beautiful` now sings *Materna*: one verse of the exemplar's tune
+  and setting (B♭, 92 BPM, 19 bars), with corrected musical-language text and provenance. Its
+  earlier melody was not Ward's tune. The chord snapshot's America rows, the landing page's
+  piano roll (now bars 2-6) and its caption follow; the landing page's older takes carry a
+  correction note until the remake replaces them. The song stays outside the jam-actions-v1
+  corpus (`POST_V1_CORPUS_IDS`), so no dataset changes.
+
+### Found
+- Both earlier exemplars sang the wrong melody: America's arrangement script wrote a line that
+  is not *Materna*, and Amazing Grace's sung tune leaves *New Britain* after its fourth note. The
+  pitch gate checked them against the same wrong score.
+
 ### Fixed — soulx_batch.py with relative paths
 - `soulx_batch.py` resolves its path arguments before it changes into the SoulX-Singer
   checkout. A relative `--target` pointed at nothing after the change of directory; the first

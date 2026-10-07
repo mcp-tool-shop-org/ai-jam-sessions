@@ -2,8 +2,8 @@
  * Render a piano-roll SVG for the landing page exemplar.
  *
  *   pnpm exec tsx scripts/render-landing-pianoroll.ts \
- *       --song america-the-beautiful --measures 2-5 \
- *       --out site/public/america-the-beautiful-m2-5.svg
+ *       --song america-the-beautiful --measures 2-6 \
+ *       --out site/public/america-the-beautiful-m2-6.svg
  */
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -17,7 +17,7 @@ const opt = (name: string, dflt: string) => {
 };
 
 const songId = opt("song", "america-the-beautiful");
-const [startMeasure, endMeasure] = opt("measures", "2-5").split("-").map(Number);
+const [startMeasure, endMeasure] = opt("measures", "2-6").split("-").map(Number);
 const out = opt("out", join("site", "public", `${songId}-m${startMeasure}-${endMeasure}.svg`));
 
 initializeFromLibrary(

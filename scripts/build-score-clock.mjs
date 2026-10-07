@@ -15,6 +15,7 @@ import { join, dirname } from "node:path";
 import { initializeFromLibrary, getSong } from "../src/songs/index.ts";
 import { deriveScoreClock, parseMidiTracks } from "../src/vocal/score-clock.ts";
 import { getVocalTune } from "../src/vocal/tunes.ts";
+import { hymnLyrics, loadExemplarSong } from "../src/vocal/hymns.ts";
 
 const args = process.argv.slice(2);
 const opt = (name, dflt) => {
@@ -38,18 +39,21 @@ initializeFromLibrary(
   join(process.cwd(), "songs", "library"),
   join(process.env.USERPROFILE ?? process.env.HOME ?? "", ".ai-jam-sessions", "songs"),
 );
-const song = getSong(songId);
+// A sung exemplar's arrangement is built from src/vocal/hymns.ts, outside the library.
+const exemplar = loadExemplarSong(songId);
+const song = exemplar?.song ?? getSong(songId);
 if (!song) {
-  console.error(`song '${songId}' not in the library`);
+  console.error(`song '${songId}' not in the library or src/vocal/hymns.ts`);
   process.exit(2);
 }
-const midiFile = join("songs", "library", song.genre, `${songId}.mid`);
-if (!existsSync(midiFile)) {
+const midiFile = exemplar?.midiFile ?? join("songs", "library", song.genre, `${songId}.mid`);
+const midiBytesOf = () => exemplar?.midiBytes ?? readFileSync(midiFile);
+if (!exemplar && !existsSync(midiFile)) {
   console.error(`no MIDI source at ${midiFile}`);
   process.exit(2);
 }
 if (listTracks) {
-  const { info, tracks } = parseMidiTracks(readFileSync(midiFile));
+  const { info, tracks } = parseMidiTracks(midiBytesOf());
   console.error(`${midiFile}: ${info.ppq} ppq, ${info.numerator}/${info.denominator}, ${info.bpm} BPM, ${info.ticksPerMeasure} ticks/measure`);
   for (const t of tracks) {
     if (t.notes.length === 0) continue;
@@ -61,7 +65,8 @@ if (listTracks) {
   process.exit(0);
 }
 const tune = getVocalTune(songId);
-const lyrics = lyricsArg ?? tune?.lyrics;
+// A whole-song hymn (src/vocal/hymns.ts) carries every verse, holds included.
+const lyrics = lyricsArg ?? tune?.lyrics ?? hymnLyrics(songId);
 if (!lyrics) {
   console.error(`no lyrics: pass --lyrics "A-ma-zing grace how sweet…" (one token per melody note, syllables joined by '-') or register a tune in src/vocal/tunes.ts`);
   process.exit(2);
@@ -69,7 +74,7 @@ if (!lyrics) {
 
 const clock = deriveScoreClock(song, {
   midiFile: midiFile.replace(/\\/g, "/"),
-  midiBytes: readFileSync(midiFile),
+  midiBytes: midiBytesOf(),
   melodyTrack: track,
   lyrics,
   startMeasure,

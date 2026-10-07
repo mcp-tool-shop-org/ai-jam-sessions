@@ -4,9 +4,9 @@
   "genre": "folk",
   "composer": "Samuel A. Ward",
   "difficulty": "beginner",
-  "key": "F major",
-  "splitPoint": 61,
-  "tempo": 80,
+  "key": "Bb major",
+  "splitPoint": 53,
+  "tempo": 92,
   "timeSignature": "4/4",
   "tags": [
     "folk",
@@ -16,40 +16,46 @@
   ],
   "status": "ready",
   "musicalLanguage": {
-    "description": "Samuel A. Ward composed the hymn tune 'Materna' in 1882; it became inseparable from Katharine Lee Bates's 1895 poem 'Pikes Peak,' retitled 'America the Beautiful.' This arrangement presents the melody as a simple block-chord hymn in F major at a stately 80 BPM — four clear quarter-note phrases over a steady tonic-dominant bass. The melody sits in F4–C5 (the hymn's peak F5 is written an octave lower so a vocal model can sing it in tune), well-suited to a female vocal model. The piece's dignified, stepwise melody and unambiguous I-V-I harmony make it an ideal beginner piece and a natural patriotic exemplar.",
-    "structure": "Strophic hymn form — the same four-measure tune repeats for each verse. The harmonic motion is textbook tonic-dominant: measures 2 and 4 sit on F major (I), measure 3 moves to C major (V), and measure 5 returns to F major (I) for a perfect authentic cadence. The melody spans a fifth (F4 to C5), comfortably within a soprano/alto range.",
+    "description": "Samuel A. Ward composed the hymn tune 'Materna' in 1882; it became inseparable from Katharine Lee Bates's poem, published in 1895 and revised by 1911, as 'America the Beautiful.' This arrangement is one verse of the tune in B-flat major at 92 BPM, set in plain block chords that double the melody. The melody runs from C4 to D5, a comfortable range for a singer, and its dotted rhythm and steady four-bar phrases make it a natural first hymn at the keyboard.",
+    "structure": "One verse of four four-bar phrases (19 bars, with a bar of piano before and after). The first two phrases rise and fall back ('O beautiful for spacious skies… for amber waves of grain'); the second half opens at the tune's high point ('America! America!') and closes with a full cadence ('from sea to shining sea'). The harmony follows the 1919 hymnal setting: tonic, dominant and subdominant, with a secondary dominant that turns the second phrase toward the dominant.",
     "keyMoments": [
-      "Measure 2: the opening F-major tonic — the melody begins on the root and immediately establishes the key.",
-      "Measure 3: the dominant shift to C major — the only harmonic departure in the excerpt, creating gentle tension before the return.",
-      "Measure 4: the high point on C5 — the melody's registral peak in this arrangement (the hymn's F5, written an octave lower), a natural place for a breath or slight emphasis.",
-      "Measure 5: the perfect authentic cadence — dominant resolves back to tonic on the final beat, closing the phrase with certainty."
+      "Bar 2, beat 4: the pickup 'O' leads into the first phrase; the dotted 'beau-ti-ful' sets the tune's lilt.",
+      "Bar 9: the second phrase climbs to D5 through a secondary dominant ('above the fruited plain') and lands on the dominant in bar 10.",
+      "Bar 11: 'A-mer-i-ca' starts high, the climax of the verse.",
+      "Bars 15-18: the last phrase descends to a full cadence on the tonic ('from sea to shining sea')."
     ],
     "teachingGoals": [
-      "Tonic-dominant recognition: hear how every phrase moves I → V → I and learn to predict the bass before it arrives.",
-      "Hymn accompaniment pattern: practice playing a root-position triad on beat 1 and holding it through the measure — the most basic and beautiful church-piano texture.",
-      "Melodic contour singing: the tune is almost entirely stepwise; practice singing it on solfege (fa-fa-sol-la-do-do-la-sol-fa) before playing.",
-      "Patriotic phrasing: this is a public-processional hymn, not a solo showpiece — keep the tempo steady and the tone dignified."
+      "Dotted rhythm: the dotted quarter and eighth that open most bars of the tune.",
+      "Hymn harmony: tonic, dominant and subdominant chords under a singable melody, plus one secondary dominant.",
+      "Four-bar phrasing: breathe, or lift the hands, at the end of each phrase.",
+      "Pickups: each phrase begins on the beat before the bar."
     ],
     "styleTips": [
-      "Play the opening F-major chord genuinely full-voiced — the block-chord texture is the point, not a reduction.",
-      "Resist rushing the dominant in measure 3; the stately tempo earns its effect through patience.",
-      "Bring out the melody slightly over the accompaniment — a gentle thumb emphasis is enough.",
-      "Think of a congregation singing together in a high-ceilinged space, not a concert-hall solo."
+      "Keep the dotted rhythm crisp but unhurried: a hymn, not a march.",
+      "Bring the melody out over the chord tone beneath it.",
+      "Let the 'America! America!' climax swell, then settle into the final cadence.",
+      "Hold the last chord its full length."
     ]
   },
   "provenance": {
     "schema": 1,
-    "source_url": "https://en.wikipedia.org/wiki/America_the_Beautiful",
-    "source_site": "en.wikipedia.org",
+    "source_url": "https://abcnotation.com/tunePage?a=trillian.mit.edu/~jc/music/abc/src/jaabc2ps-1.1.0/release/101best/0007",
+    "source_site": "abcnotation.com",
     "arrangement_creator": "mcp-tool-shop-org",
     "arrangement_license": "Public-Domain",
-    "terms_url": "https://en.wikipedia.org/wiki/America_the_Beautiful",
-    "terms_quote": "America the Beautiful is an American patriotic song. Its lyrics were written by Katharine Lee Bates and its music was composed by church organist and choirmaster Samuel A. Ward at Grace Episcopal Church in Newark, New Jersey, though the two never met.",
-    "verified_at": "2026-09-29",
-    "verifier": "https://en.wikipedia.org/wiki/America_the_Beautiful",
-    "midi_sha256": "53ee63721851092b58b2861a559801b6b3ddc784fb49a7ff5eec8065d9f59d00",
+    "terms_url": "https://hymnary.org/tune/materna_ward",
+    "terms_quote": "Melody Materna (Samuel A. Ward, 1882) and text (Katharine Lee Bates) are in the public domain. The melody follows The One Hundred and One Best Songs (Cable Company, Chicago, 1919), cross-checked against The Everyday Song Book (1927) and Hymnary.org's incipit 55335 52234 56755.",
+    "verified_at": "2026-10-07",
+    "verifier": "https://hymnary.org/tune/materna_ward",
+    "midi_sha256": "c3079e55c9bce637400b0dfc110b50b45706e8838e4a4a80132cd6bc2509c6e2",
     "midi_title_events": [
-      "America the Beautiful"
+      "America the Beautiful",
+      "MELODY",
+      "INTRO",
+      "ALTO",
+      "FILL",
+      "TENOR",
+      "BASS"
     ],
     "midi_credit_events": [],
     "credited_parties": [

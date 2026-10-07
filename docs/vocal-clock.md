@@ -247,6 +247,56 @@ before:
   memory grows with the phrase, not the song (one 35 s phrase: 2.8 GB to load,
   3.4 GB reserved to render, measured on the RTX 5090).
 
+## The whole-song exemplars (2026-10-07)
+
+The first exemplars sang one phrase each, and both phrases had the wrong
+melody. America's arrangement script had written a melody that is not
+*Materna*, and Amazing Grace's sung line (`src/vocal/tunes.ts`) leaves *New
+Britain* after its fourth note. The pitch gate could not see either: it checks
+the singer against our own score. The remake starts from the tunes themselves.
+
+| | Tune | Key, tempo | Form | Sources |
+|---|---|---|---|---|
+| `america-the-beautiful-materna` | *Materna* (Ward, 1882) | B♭, 92 BPM, 4/4 | piano intro, 4 verses (Bates), held ending: 75 bars, 3:16 | *The One Hundred and One Best Songs* (1919) for melody, chords and verses; *The Everyday Song Book* (1927) cross-check |
+| `amazing-grace-new-britain` | *New Britain* | G, 72 BPM, 3/4 | piano intro, 4 verses (Newton 1779 ×3, *Sacred Ballads* 1790), held ending: 66 bars, 2:45 | the Amazing Grace article's engraving and quotations |
+
+Both melodies match Hymnary.org's incipits (`src/vocal/hymns.test.ts` checks
+the first 15 notes as scale degrees). The settings are this project's own
+block chords, dedicated to the public domain; America's follows the 1919
+book's chords. They are not in the song library, which feeds the datasets,
+the audited song count and the npm ship list, and no exemplar MIDI file is
+committed (the derived-content guard admits a tracked MIDI only as a cleared
+library song's): the clock builder and the bed renderer build the arrangement
+in memory from `src/vocal/hymns.ts`, which is deterministic.
+
+The arrangement is written for the engine: each piano hand is a gapless chain
+of chords (the melody with a chord tone under it, or the bar's chord where the
+singer rests; a bass and a tenor per chord), and `realizeHymn` refuses
+anything else. So the session clock is the score. The sung line breathes for
+half a beat at every phrase end while the piano holds.
+
+```bash
+pnpm exec tsx scripts/build-score-clock.mjs --song amazing-grace-new-britain --track MELODY --measures 1-66 --rests
+pnpm exec tsx scripts/render-piano-bed.mjs --clock scores/amazing-grace-new-britain.score-clock.v1.json --out <run>/piano-bed.wav
+$PY scripts/export_soulx_target.py --clock scores/amazing-grace-new-britain.score-clock.v1.json --out <run>/target.json --syllable-words --segment-gap 0.3
+```
+
+(America: `--measures 1-75`.) The clocks: America 224 syllables, 16 breaths,
+20 phrase segments; Amazing Grace 112 syllables with 28 held notes, 12
+breaths, 16 phrase segments; each has 3 piano passages between verses. Pass
+`--segment-gap 0.3` to `sing_clock.py` as well, so its target matches the one
+the takes were rendered from.
+
+The first full render (offrig `jam` pod, A40, 2026-10-07: 16 takes in 7
+minutes, $0.13 with setup) taught two lyric rules. A word whose dictionary
+syllables differ from its notes is sung as one held syllable, so its second
+note has no vowel onset to date: America sings "ev-'ry", as the 1919 book
+prints it. And a vowel sung straight out of another vowel cannot be dated by
+the energy detector: America breathes after the first "A-mer-i-ca!", or its
+second "A" was undated in 7-8 of 8 takes and the picker could not place it. The library's own
+`america-the-beautiful` is now one verse of the same tune and setting
+(`scripts/create-america-the-beautiful.ts`).
+
 ## Standards compliance
 
 | standard | score | evidence |
