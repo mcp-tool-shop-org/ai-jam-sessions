@@ -850,7 +850,7 @@ WARP_RELEASE_S = 0.15        # a run sounds this long past its last note's end, 
 WARP_RELEASE_FADE_S = 0.06
 # Why runs end at the score: a whole song is rendered in phrase segments, split at
 # rests, and the singer makes noise in the rest where two segments meet (the
-# Director heard every remaining "honk" there, 2026-10-07: a raw take, the placed
+# Director heard every remaining honk there, 2026-10-07: a raw take, the placed
 # vocal and the mix all honked at the segment boundary). A clip that ran on to the
 # next syllable's lead-in carried that noise in; a rest belongs to the bed.
 
