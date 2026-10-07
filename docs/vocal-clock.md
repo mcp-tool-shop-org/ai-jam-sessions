@@ -328,7 +328,7 @@ off, all in "stress" and the "A-mer-i-ca" passages.
 
 ## The phrase-by-phrase pick (2026-10-07)
 
-The Director heard the first whole-song mixes as "a bit jittery at times". The
+The Director heard the first whole-song mixes as jittery at times. The
 word-level pick switches takes at almost every word, and each switch is a
 crossfade between two renders with slightly different tone and level.
 `repin --by-phrase` takes each phrase whole from one take. Syllables are still
@@ -358,8 +358,8 @@ gates. Measured on the first renders (one placed vocal each): Amazing Grace
 ## The listening review (2026-10-07)
 
 The gates measure timing and pitch syllable by syllable, and both picks of the
-16-take run cleared most of them. The Director still heard "stuttering at times",
-and "it's stuttering" gives the next fix nothing to aim at. The listening review
+16-take run cleared most of them. The Director still heard stuttering at times,
+and a general report of stuttering gives the next fix nothing to aim at. The listening review
 turns an ear into data:
 
 ```bash
