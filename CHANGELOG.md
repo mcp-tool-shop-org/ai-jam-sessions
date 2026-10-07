@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-- Coverage gates. Measured 2026-10-06 with `SKIP_DSP_VERIFICATION=1`: lines 88.35% (15346/17368) to 94.67% (16444/17368), statements 86.65% (17076/19706) to 92.99% (18326/19706), functions 87.32% (2494/2856) to 95.16% (2718/2856), branches 77.7% (9084/11690) to 82.89% (9690/11690). The local vitest floor moved from 30% statements/lines/functions and 20% branches to 90/92/93/80, two points under that measurement, rounded down. Codecov patch and project statuses now block at 90% lines. The project status allows a 1% drop.
+### Changed — coverage gates
+- Lines 88.35% (15346/17368) → 94.67% (16444/17368). Statements 86.65% (17076/19706) → 92.99% (18326/19706). Functions 87.32% (2494/2856) → 95.16% (2718/2856). Branches 77.7% (9084/11690) → 82.89% (9690/11690). Measured 2026-10-06 with `SKIP_DSP_VERIFICATION=1`. The local vitest floor is statements 90, lines 92, functions 93, branches 80. Codecov patch and project statuses block at 90% lines, and the project status allows a 1% drop.
 
 ### Added — the vocal sound check, stage 1: a timing footprint before the song
 - `scripts/soundcheck.py`: the same voice sings a 16-word calibration phrase several times at the
