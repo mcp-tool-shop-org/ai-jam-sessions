@@ -141,15 +141,18 @@ def file_sha(path: str) -> str:
     return h.hexdigest()
 
 
-def take_pitch(take: str, clock: dict, spans: list, gap: float, mono, sr) -> dict:
+def take_pitch(take: str, clock: dict, spans: list, gap: float, mono, sr, tracker: str = "fcpe") -> dict:
     """Pitch over each phrase of one take, cached next to the take
-    (phrase-pitch.json) and keyed by everything it depends on: the take, the
+    (phrase-pitch-<tracker>.json) and keyed by everything it depends on: the take, the
     onsets it reads, the clock and the phrase gap. The pass is the slow part
-    (about 3 minutes a take), so a run that stops later resumes without it."""
+    (about 3 minutes a take with pYIN), so a run that stops later resumes without it.
+
+    The tracker defaults to FCPE: it only ranks takes here, it agrees with pYIN to
+    a median 2.7 c on real hymn takes, and it takes 0.2 s instead of ~3 minutes."""
     ver = os.path.join(os.path.dirname(take), "verify-energy.json")
-    key = {"take": file_sha(take), "onsets": file_sha(ver) if os.path.isfile(ver) else None,
+    key = {"tracker": tracker, "take": file_sha(take), "onsets": file_sha(ver) if os.path.isfile(ver) else None,
            "clock": file_sha(clock["_path"]) if clock.get("_path") and os.path.isfile(clock["_path"]) else None, "gap": gap}
-    cache = os.path.join(os.path.dirname(take), "phrase-pitch.json")
+    cache = os.path.join(os.path.dirname(take), f"phrase-pitch-{tracker}.json")   # one per tracker, so neither evicts the other
     if os.path.isfile(cache):
         try:
             got = json.load(open(cache, encoding="utf-8"))
@@ -161,7 +164,7 @@ def take_pitch(take: str, clock: dict, spans: list, gap: float, mono, sr) -> dic
     if os.path.isfile(ver):
         onsets = {r["id"]: r["t_vowel"] for r in json.load(open(ver, encoding="utf-8"))["table"] if r.get("t_vowel") is not None}
     cents, bad = {}, {}
-    for r in vc.pitch_rows(clock, vc.track_f0(mono, sr), onsets):
+    for r in vc.pitch_rows(clock, vc.track_f0(mono, sr, tracker=tracker), onsets):
         k = r["id"].split(".")[0]
         if r["cents_mean"] is not None:
             cents.setdefault(k, []).append(abs(r["cents_mean"]))
@@ -186,6 +189,7 @@ def main() -> int:
     ap.add_argument("--server", default="http://127.0.0.1:8091")
     ap.add_argument("--start-server", action="store_true", help="start llama-server for this run and stop it after")
     ap.add_argument("--no-listen", action="store_true", help="pitch only (no intelligibility)")
+    ap.add_argument("--tracker", default="fcpe", choices=["fcpe", "pyin", "swift"], help="pitch tracker for ranking (default fcpe; the gate keeps pYIN)")
     a = ap.parse_args()
 
     clock = vc.load_clock(a.clock)
@@ -202,7 +206,7 @@ def main() -> int:
         name = os.path.basename(os.path.dirname(take))
         mono, sr, _frames = vc.read_audio(take)
         audio[name] = (mono, sr)
-        phrases = take_pitch(take, clock, spans, a.gap, mono, sr)
+        phrases = take_pitch(take, clock, spans, a.gap, mono, sr, a.tracker)
         out["takes"][name] = {"path": take.replace("\\", "/"), "phrases": phrases}
         print(f"{name}: pitch over {len(phrases)} phrases", flush=True)
     if not a.no_listen:
