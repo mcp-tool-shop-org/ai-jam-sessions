@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — the timing gate's second instrument
+- `vocal_clock.py verify --aligner` (and `sing_clock.py --aligner`) cross-checks every syllable
+  with the singing forced aligner (HubertFA via `onset_aligner.align_phrases`, phrase by phrase).
+  The detector stays the gate's instrument; the two instruments' steady offset (13-16 ms) is
+  measured each run from the syllables the detector passes. A detector miss the aligner places
+  within 40 ms is rescued; a syllable fails only when both instruments say it is off. The
+  aligner alone never fails a syllable (it has gross errors of its own on long phrases); where it
+  disputes a detector pass, the row is marked.
+- Measured on the first whole-song renders: every large detector miss at a phrase end (up to
+  +286 ms) was a detector error the aligner placed within 32 ms. Amazing Grace's timing passes;
+  America keeps 7 syllables that both instruments call off.
+
+### Fixed
+- The aligner's vowel set lacked the dictionary's schwa (`ax`), so a word whose first vowel is a
+  schwa ("the", "a", "a-bove") had no vowel onset. Six hymn words outside the aligner's dictionary
+  are spelled from in-dictionary parts (`EXTRA_WORDS`), "ev'ry" as two syllables.
+
 ### Added — whole-song hymn arrangements for the sung exemplars
 - America the Beautiful to *Materna* (B♭, four verses, 3:16) and Amazing Grace to *New
   Britain* (G, four verses, 2:45), each with a piano introduction and ending. Public-domain

@@ -67,6 +67,11 @@ CUT_LEAD_IN_S = 0.04         # keep this much before the vowel (the consonant) s
 CUT_TAIL_S = 0.06
 CLIP_GAP_S = 0.010           # placed clips never overlap; this much air between them
 STT_WARN_MS = 60.0           # transcript word start vs clock: cross-check, not the gate
+# The singing forced aligner (onset_aligner.py) is the timing gate's second instrument.
+# Its onset definition sits a steady ~12-16 ms before the detector's (the phoneme
+# boundary vs half-way up the energy rise), so that offset is measured on every run
+# from the syllables the detector passes, and removed before the aligner is read.
+ALIGNER_MIN_AGREEING = 10
 HEADROOM_PEAK = 0.9          # the mix bus sums; bed peak + vocal peak must fit under this (-0.9 dBFS)
 
 FXDUB_TOOLS = os.environ.get("FXDUB_TOOLS", r"E:/AI/fx-dub/tools")
@@ -777,7 +782,49 @@ def measure_events(clock: dict, mono: np.ndarray, sr: int, plan: dict | None = N
     return rows
 
 
-def gate(clock: dict, rows: list[dict], words: list[dict] | None, vocal_frames: int, bed_frames: int | None, plan: dict | None) -> dict:
+def cross_check(table: list[dict], aligner: dict[str, float | None], gate_ms: float = GATE_MS) -> dict:
+    """Read the aligner against the detector's table, in place.
+
+    The detector stays the gate's instrument. A syllable it fails is RESCUED when the
+    aligner, an instrument of a different kind, puts the same vowel within the gate
+    after the measured offset: on the first whole-song renders every large detector
+    miss (up to +286 ms, at phrase ends in the stitched stem) was a detector error the
+    aligner placed within 32 ms. A syllable fails only when both instruments say it
+    is off, or the detector fails it and the aligner has no answer. The aligner alone
+    never fails a syllable: on long phrases it has gross errors of its own (up to
+    1.4 s), so where it disagrees with a detector pass the row is only marked."""
+    agree = [(aligner[t["id"]] - t["t_score"]) * 1000.0 for t in table
+             if t["pass"] and aligner.get(t["id"]) is not None]
+    if len(agree) < ALIGNER_MIN_AGREEING:
+        return {"info": True, "used": False, "reason": f"only {len(agree)} syllables to measure the instruments' offset from"}
+    offset = float(np.median(agree))
+    counts = {"rescued": 0, "both_off": 0, "unconfirmed": 0, "disputed": 0}
+    for t in table:
+        al = aligner.get(t["id"])
+        t["aligner_err_ms"] = None if al is None else round((al - t["t_score"]) * 1000.0 - offset, 1)
+        if t["pass"]:
+            if t["aligner_err_ms"] is not None and abs(t["aligner_err_ms"]) > gate_ms:
+                t["cross_check"] = "disputed"
+                counts["disputed"] += 1
+            continue
+        if t["aligner_err_ms"] is None:
+            t["cross_check"] = "unconfirmed"
+            counts["unconfirmed"] += 1
+        elif abs(t["aligner_err_ms"]) <= gate_ms:
+            t["cross_check"] = "rescued"
+            t["pass"] = True
+            counts["rescued"] += 1
+        else:
+            t["cross_check"] = "both_off"
+            counts["both_off"] += 1
+    return {"info": True, "used": True, "offset_ms": round(offset, 1), "measured_from": len(agree), **counts,
+            "rescued_ids": [t["id"] for t in table if t.get("cross_check") == "rescued"],
+            "failing_ids": [t["id"] for t in table if t.get("cross_check") in ("both_off", "unconfirmed")],
+            "disputed_ids": [t["id"] for t in table if t.get("cross_check") == "disputed"]}
+
+
+def gate(clock: dict, rows: list[dict], words: list[dict] | None, vocal_frames: int, bed_frames: int | None, plan: dict | None,
+         aligner: dict[str, float | None] | None = None) -> dict:
     checks = {}
     table = []
     worst = 0.0
@@ -790,6 +837,8 @@ def gate(clock: dict, rows: list[dict], words: list[dict] | None, vocal_frames: 
             ok = abs(err) <= GATE_MS and r["reason"] == "ok"
             worst = max(worst, abs(err))
         table.append({**r, "err_ms": None if err is None else round(err, 2), "pass": ok})
+    if aligner is not None:
+        checks["aligner_cross_check"] = cross_check(table, aligner)
     checks["onset_abs_ms"] = {"pass": all(t["pass"] for t in table), "gate_ms": GATE_MS, "worst_ms": round(worst, 2)}
     total = float(clock["total_seconds"])
     if words is not None:
@@ -835,7 +884,8 @@ def print_table(result: dict) -> None:
         tv = "       -" if t["t_vowel"] is None else f"{t['t_vowel']:8.4f}"
         em = "       -" if t["err_ms"] is None else f"{t['err_ms']:8.1f}"
         st = "      -" if t.get("stt_err_ms") is None else f"{t['stt_err_ms']:7.1f}"
-        print(f"{t['id']:4} {t['lyric']:7} {t['t_score']:8.4f} {tv} {em} {st} {str(t.get('method') or '-'):6}  {'PASS' if t['pass'] else 'FAIL'} {'' if t['reason']=='ok' else t['reason']}")
+        xc = f" [{t['cross_check']}: aligner {t.get('aligner_err_ms')} ms]" if t.get("cross_check") else ""
+        print(f"{t['id']:4} {t['lyric']:7} {t['t_score']:8.4f} {tv} {em} {st} {str(t.get('method') or '-'):6}  {'PASS' if t['pass'] else 'FAIL'} {'' if t['reason']=='ok' else t['reason']}{xc}")
     for name, c in result["checks"].items():
         if c.get("info"):
             print(f"  {name:15} info  {json.dumps({k: v for k, v in c.items() if k != 'info'})}")
@@ -1235,7 +1285,12 @@ def cmd_verify(a):
     words = load_words(a.words) if a.words else None
     plan = json.load(open(a.plan, encoding="utf-8")) if a.plan else None
     rows = measure_events(clock, mono, sr, plan)
-    result = gate(clock, rows, words, frames, bed_frames, plan)
+    aligner = None
+    if a.aligner:
+        import onset_aligner
+        work = a.aligner_work or os.path.join(os.path.dirname(os.path.abspath(a.receipt or a.vocal)), "aligner")
+        aligner = onset_aligner.align_phrases(a.vocal, clock, work)
+    result = gate(clock, rows, words, frames, bed_frames, plan, aligner)
     result["artifacts"] = {"clock": clock["_path"], "vocal": a.vocal.replace("\\", "/"), "vocal_sha256": sha256(a.vocal),
                            "bed": a.bed.replace("\\", "/") if a.bed else None, "bed_sha256": sha256(a.bed) if a.bed else None,
                            "words": a.words.replace("\\", "/") if a.words else None, "plan": a.plan.replace("\\", "/") if a.plan else None}
@@ -1322,7 +1377,9 @@ def main(argv=None) -> int:
     s = sub.add_parser("place"); s.add_argument("--plan", required=True); s.add_argument("--key", default=""); s.add_argument("--out-dir", required=True)
     s.add_argument("--out-info", required=True); s.add_argument("--out-graph", required=True); s.add_argument("--prefix", default="jam/vocal-clock/placed"); s.add_argument("--dry-run", action="store_true")
     s.add_argument("--local", action="store_true", help="place with numpy (fades + crossfaded joins) instead of the cloud"); s.add_argument("--take", action="append", help="--local: <source_key>=<wav path>"); s.set_defaults(fn=cmd_place)
-    s = sub.add_parser("verify"); s.add_argument("--clock", required=True); s.add_argument("--vocal", required=True); s.add_argument("--bed"); s.add_argument("--words"); s.add_argument("--plan"); s.add_argument("--receipt"); s.set_defaults(fn=cmd_verify)
+    s = sub.add_parser("verify"); s.add_argument("--clock", required=True); s.add_argument("--vocal", required=True); s.add_argument("--bed"); s.add_argument("--words"); s.add_argument("--plan"); s.add_argument("--receipt")
+    s.add_argument("--aligner", action="store_true", help="cross-check onsets with the singing forced aligner (onset_aligner.py): a detector miss the aligner places on time is rescued")
+    s.add_argument("--aligner-work", help="work directory for the aligner (default: an aligner/ folder next to the receipt)"); s.set_defaults(fn=cmd_verify)
     s = sub.add_parser("pitch"); s.add_argument("--clock", required=True); s.add_argument("--vocal", required=True); s.add_argument("--verify-receipt"); s.add_argument("--tracker", default="auto", choices=["auto", "swift", "pyin"]); s.add_argument("--cross-check", action="store_true"); s.add_argument("--receipt"); s.set_defaults(fn=cmd_pitch)
     s = sub.add_parser("mix"); s.add_argument("--bed", required=True); s.add_argument("--vocal", required=True); s.add_argument("--vocal-key", default=""); s.add_argument("--plan", required=True); s.add_argument("--local", action="store_true", help="mix with numpy instead of the cloud")
     s.add_argument("--out-dir", required=True); s.add_argument("--out-info", required=True); s.add_argument("--prefix", default="jam/vocal-clock/mix")

@@ -297,6 +297,35 @@ second "A" was undated in 7-8 of 8 takes and the picker could not place it. The 
 `america-the-beautiful` is now one verse of the same tune and setting
 (`scripts/create-america-the-beautiful.ts`).
 
+## The second instrument in the gate (2026-10-07)
+
+The detector that dates vowel onsets for the gate is the same one the picker
+places with, so the gate partly checks the detector against itself, and it is
+weakest exactly where a stitched whole-song stem is hardest: phrase ends and
+vowels sung out of vowels. `verify --aligner` reads every syllable a second
+way, with the singing forced aligner (`onset_aligner.align_phrases`: the clock
+split at its rests, each phrase aligned with its known words, each word's vowel
+phones mapped onto its syllables).
+
+| Detector | Aligner (after the measured offset) | Syllable |
+|---|---|---|
+| within 40 ms | anything | PASS (an aligner reading beyond 40 ms is marked `disputed`) |
+| beyond 40 ms or undated | within 40 ms | PASS, `rescued` |
+| beyond 40 ms or undated | beyond 40 ms | FAIL, `both_off` |
+| beyond 40 ms or undated | no answer | FAIL, `unconfirmed` |
+
+The offset between the instruments' definitions (the phoneme boundary vs half
+way up the energy rise) is measured on every run from the syllables the
+detector passes: 14.8 ms on Amazing Grace, 16.2 ms on America, in line with the
+~12 ms the sound check measured. The aligner never fails a syllable on its own:
+on whole songs it has gross errors of its own (up to 1.4 s on long phrases, and
+a 45 ms median on America's vowel-first syllables).
+
+First whole-song renders, cross-checked: Amazing Grace's two misses ("snares"
++94 ms, "come" +286 ms) are rescued (aligner −14 and +1 ms): timing PASS.
+America: "feet", "self" and "ful" rescued; 7 syllables both instruments call
+off, all in "stress" and the "A-mer-i-ca" passages.
+
 ## Standards compliance
 
 | standard | score | evidence |
