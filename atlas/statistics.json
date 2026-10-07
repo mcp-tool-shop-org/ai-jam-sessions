@@ -168,7 +168,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "scripts",
-      "qualifyingSourceCommits": 103,
+      "qualifyingSourceCommits": 105,
       "rebaseline": null
     },
     {
@@ -1195,8 +1195,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 12,
-        "lines": 919,
+        "commits": 13,
+        "lines": 932,
         "path": "atlas/README.md"
       },
       {
@@ -1205,18 +1205,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 12,
-        "lines": 5286,
+        "commits": 13,
+        "lines": 5356,
         "path": "atlas/page.json"
       },
       {
-        "commits": 12,
-        "lines": 58821,
+        "commits": 13,
+        "lines": 58883,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 12,
-        "lines": 138025,
+        "commits": 13,
+        "lines": 138055,
         "path": "atlas/structure.json"
       },
       {
@@ -13655,8 +13655,8 @@
         "path": "scripts/phrase_scores.py"
       },
       {
-        "commits": 1,
-        "lines": 371,
+        "commits": 2,
+        "lines": 389,
         "path": "scripts/planter.py"
       },
       {
@@ -13815,8 +13815,13 @@
         "path": "scripts/test_pitch_recheck.py"
       },
       {
-        "commits": 1,
-        "lines": 271,
+        "commits": 2,
+        "lines": 174,
+        "path": "scripts/test_placer_overrides.py"
+      },
+      {
+        "commits": 2,
+        "lines": 289,
         "path": "scripts/test_planter.py"
       },
       {
@@ -13880,8 +13885,8 @@
         "path": "scripts/verify-public-package-execution.ts"
       },
       {
-        "commits": 28,
-        "lines": 7760,
+        "commits": 30,
+        "lines": 7810,
         "path": "scripts/vocal_clock.py"
       },
       {
@@ -16905,9 +16910,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-07T23:11:17.907Z",
+  "generatedAt": "2026-10-07T23:35:20.338Z",
   "generatedFrom": {
-    "commit": "ca87856fea77c6d83b52d47ed9e7e50d22c5f7c2"
+    "commit": "6dd65d5aba44e11442131b6f860dfb58d85a1d57"
   },
   "pairs": [
     {
@@ -17123,43 +17128,43 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 7,
-      "shared": 7,
+      "either": 8,
+      "shared": 8,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 7,
-      "shared": 7,
+      "either": 8,
+      "shared": 8,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 7,
-      "shared": 7,
+      "either": 8,
+      "shared": 8,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 7,
-      "shared": 7,
+      "either": 8,
+      "shared": 8,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 7,
-      "shared": 7,
+      "either": 8,
+      "shared": 8,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 7,
-      "shared": 7,
+      "either": 8,
+      "shared": 8,
       "strength": 1
     },
     {
@@ -17254,13 +17259,6 @@
       "strength": 0.708333
     },
     {
-      "a": "docs/vocal-clock.md",
-      "b": "scripts/vocal_clock.py",
-      "either": 18,
-      "shared": 9,
-      "strength": 0.5
-    },
-    {
       "a": "experiments/rollout-arc/p2/BUILD.md",
       "b": "experiments/rollout-arc/p2/compensator-drill.json",
       "either": 8,
@@ -17306,16 +17304,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-10-07T19:09:43-04:00",
-    "inScopeFiles": 3034,
+    "headDate": "2026-10-07T19:21:08-04:00",
+    "inScopeFiles": 3035,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 649,
+    "qualifyingCommits": 651,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-10T23:09:43.000Z",
+    "since": "2026-04-10T23:21:08.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

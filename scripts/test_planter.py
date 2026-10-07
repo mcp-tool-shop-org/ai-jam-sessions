@@ -25,14 +25,18 @@ LEAD_S = 1.0
 
 
 def take(seconds: float = 5.0, seed: int = 0) -> np.ndarray:
-    """A sung-ish take whose pitch changes every syllable, so material played
-    twice is recognisable."""
+    """A sung-ish take: the pitch changes every syllable, and a fast random
+    loudness texture (like consonants and vibrato on a real voice) gives the
+    spectrum movement everywhere, so material played twice is recognisable."""
     rng = np.random.default_rng(seed)
     t = np.arange(int(seconds * SR)) / SR
     hz = 200.0 * 2 ** (np.floor(t / SYL_S) % 5 * 2 / 12)
     f = hz * 2 ** (15 / 1200 * np.sin(2 * np.pi * 5 * t))
     ph = 2 * np.pi * np.cumsum(f) / SR
-    x = sum((0.5 / k) * np.sin(k * ph) for k in range(1, 6)) + 0.003 * rng.standard_normal(len(t))
+    x = sum((0.5 / k) * np.sin(k * ph) * (1 + 0.4 * np.sin(2 * np.pi * (3 + 2 * k) * t + k)) for k in range(1, 6))
+    knots = np.arange(0, seconds + 0.04, 0.02)
+    env = np.interp(t, knots, rng.uniform(0.4, 1.0, len(knots)))
+    x = x * env + 0.003 * rng.standard_normal(len(t))
     return np.repeat((0.3 * x)[:, None], 2, axis=1)
 
 
@@ -177,6 +181,27 @@ def test_local_sham_splits_the_cut_into_continuous_halves():
     assert "t_sec" not in tail
 
 
+def test_a_warp_sham_continues_the_take_exactly_or_refuses():
+    if not supports_break_before():
+        pytest.skip("needs break_before")
+    p = plan_of()
+    q, w = pl.mutate(p, spec("sham", mode="warp", join_type="inside"))
+    c = next(c for c in q["cuts"] if c["id"] == "v04")
+    prev = next(c for c in q["cuts"] if c["id"] == "v03")
+    assert c["cut_start"] == pytest.approx(prev["cut_end"])          # continuous in the take
+    # a 0.1 s hole in the take before the cut: seamless would move the vowel too far
+    p2 = plan_of()
+    for cc in p2["cuts"][4:]:
+        cc["cut_start"] += 0.1; cc["cut_end"] += 0.1; cc["src_vowel_onset"] += 0.1
+    with pytest.raises(ValueError, match="move the vowel"):
+        pl.mutate(p2, spec("sham", mode="warp", join_type="inside"))
+
+
+def test_replay_and_skip_record_any_gap_before_the_seam():
+    _, w = pl.mutate(plan_of(), spec("skip", sev=0.05))
+    assert w["gap_s"] == pytest.approx(0.0, abs=1e-3)
+
+
 def test_unknown_kind_and_cut_are_refused():
     with pytest.raises(ValueError):
         pl.make_spec("smear", {"cut_id": "v01", "join_type": "boundary"}, 0.1, "local", 0)
@@ -226,7 +251,9 @@ def test_the_clean_render_verifies_as_none():
 def test_a_hard_seam_clicks():
     p = plan_of()
     clean = pl.render(p, SOURCES, None, "local")
-    q, w = pl.mutate(p, spec("replay", sev=0.05))
+    # 53 ms: not a whole number of the 200 Hz test tone's periods, so the two sides
+    # of a butt splice are out of phase (a real voice is never exactly periodic)
+    q, w = pl.mutate(p, spec("replay", sev=0.053))
     q, w = pl.mutate(q, spec("click", sev=0.0))
     assert pl.verify("click", pl.render(p, SOURCES, None, "local"), pl.render(q, SOURCES, None, "local"), SR, w["t"])["present"]
     assert clean.shape == pl.render(q, SOURCES, None, "local").shape
@@ -237,7 +264,10 @@ def test_warp_forced_break_makes_a_seam_and_a_replay_there_is_measurable():
     p = plan_of()
     clean = pl.render(p, SOURCES, None, "warp")
     q, w = pl.mutate(p, spec("sham", mode="warp", join_type="inside"))
-    assert pl.verify("sham", clean, pl.render(q, SOURCES, None, "warp"), SR, w["t"])["present"]
+    c = next(c for c in q["cuts"] if c["id"] == "v04")
+    assert c["break_before"] is True and abs(w["vowel_moved_s"]) <= pl.SHAM_TIMING_S
+    sham = pl.verify("sham", clean, pl.render(q, SOURCES, None, "warp"), SR, w["t"])
+    assert sham["present"]          # a warp seam re-cuts WSOLA phase, so the samples may differ
     q, w = pl.mutate(p, spec("replay", mode="warp", join_type="inside", sev=0.1))
     assert pl.verify("replay", clean, pl.render(q, SOURCES, None, "warp"), SR, w["t"], w["lag_s"])["present"]
 

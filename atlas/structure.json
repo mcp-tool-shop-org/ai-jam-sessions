@@ -14205,60 +14205,85 @@
             {
               "in": "make_spec",
               "kind": "raise",
-              "line": 109
+              "line": 111
             },
             {
               "in": "_run_of",
               "kind": "raise",
-              "line": 121
+              "line": 123
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 134
+              "line": 136
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 137
+              "line": 139
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 144
+              "line": 146
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 147
+              "line": 149
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 161
+              "line": 163
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 174
+              "line": 176
+            },
+            {
+              "in": "_seamless",
+              "kind": "raise",
+              "line": 204
+            },
+            {
+              "in": "_seamless",
+              "kind": "raise",
+              "line": 207
+            },
+            {
+              "in": "_seamless",
+              "kind": "raise",
+              "line": 211
+            },
+            {
+              "in": "_seamless",
+              "kind": "raise",
+              "line": 214
             },
             {
               "in": "load_sources",
               "kind": "raise",
-              "line": 215
+              "line": 248
+            },
+            {
+              "in": "_plantable",
+              "kind": "except",
+              "line": 352
             },
             {
               "in": "build",
               "kind": "raise",
-              "line": 323
+              "line": 365
             },
             {
               "in": "build",
               "kind": "except",
-              "line": 333
+              "line": 384
             }
           ],
-          "hash": "d4c85a8b10b16cc27a3fb27f1ab78dac6cc25ee6d473631c4173a5d448df70b9",
+          "hash": "c1fe1eef982daac6473e478a329edf22e40444a23e0f28f9abb5702598c6f13e",
           "importsFiles": [
             "scripts/phrase_evidence.py",
             "scripts/vocal_clock.py"
@@ -15005,6 +15030,25 @@
         },
         {
           "exports": [
+            "cut",
+            "jump_at",
+            "plan",
+            "test_a_forced_break_with_continuous_source_is_a_seam_and_nothing_else",
+            "test_a_zero_crossfade_leaves_a_hard_edge_at_the_join",
+            "test_an_explicit_default_crossfade_changes_nothing",
+            "test_break_before_starts_a_new_warp_run",
+            "test_production_cuts_carry_neither_field_by_default",
+            "tone",
+            "two_cuts"
+          ],
+          "hash": "341ec0238ebbe81947428c379c522422164ce9162a9f8c1cecee92525e6bf9c5",
+          "importsFiles": [
+            "scripts/vocal_clock.py"
+          ],
+          "path": "scripts/test_placer_overrides.py"
+        },
+        {
+          "exports": [
             "clock_of",
             "plan_of",
             "spec",
@@ -15016,6 +15060,7 @@
             "test_a_local_skip_changes_the_audio",
             "test_a_warp_click_inside_a_run_also_breaks_the_run",
             "test_a_warp_click_refuses_a_cut_that_does_not_start_a_run",
+            "test_a_warp_sham_continues_the_take_exactly_or_refuses",
             "test_build_writes_labels_and_drops_unplantable_specs",
             "test_click_sets_the_seam_crossfade",
             "test_inside_joins_get_a_forced_break_in_warp_mode_only",
@@ -15023,6 +15068,7 @@
             "test_local_sham_splits_the_cut_into_continuous_halves",
             "test_mutate_never_changes_the_given_plan",
             "test_replay_and_skip_need_the_same_take_before_the_join",
+            "test_replay_and_skip_record_any_gap_before_the_seam",
             "test_replay_is_measured_from_where_the_previous_clip_had_got_to",
             "test_replay_starts_the_cut_earlier_and_keeps_its_end",
             "test_skip_starts_later_and_refuses_to_eat_the_cut",
@@ -15033,7 +15079,7 @@
             "test_warp_forced_break_makes_a_seam_and_a_replay_there_is_measurable",
             "test_warp_replay_refuses_when_the_placer_ignores_break_before"
           ],
-          "hash": "b35cdd23f05363086535e625e5a2a370c796bf1dcafe844a8380198e7acee4dc",
+          "hash": "3b7d42eb0a41e2c4e02aefe4d5abfa99dbd53c44859be1f8a8d5bf80c6bab8d1",
           "importsFiles": [
             "scripts/planter.py",
             "scripts/vocal_clock.py"
@@ -15438,75 +15484,75 @@
             {
               "in": "track_f0",
               "kind": "except",
-              "line": 1239
+              "line": 1250
             },
             {
               "in": "track_f0",
               "kind": "raise",
-              "line": 1240
+              "line": 1251
             },
             {
               "in": "_track_fcpe",
               "kind": "except",
-              "line": 1266
+              "line": 1277
             },
             {
               "in": "_track_fcpe",
               "kind": "raise",
-              "line": 1267
+              "line": 1278
             },
             {
               "in": "cmd_pitch",
               "kind": "except",
-              "line": 1446
+              "line": 1457
             },
             {
               "in": "load_clock",
               "kind": "raise",
-              "line": 1472
+              "line": 1483
             },
             {
               "in": "cmd_bed_check",
               "kind": "raise",
-              "line": 1491
+              "line": 1502
             },
             {
               "in": "cmd_transcribe",
               "kind": "except",
-              "line": 1524
+              "line": 1535
             },
             {
               "in": "cmd_transcribe",
               "kind": "raise",
-              "line": 1525
+              "line": 1536
             },
             {
               "in": "cmd_plan",
               "kind": "raise",
-              "line": 1537
+              "line": 1548
             },
             {
               "in": "cmd_place",
               "kind": "raise",
-              "line": 1599
+              "line": 1610
             },
             {
               "in": "cmd_place",
               "kind": "raise",
-              "line": 1602
+              "line": 1613
             },
             {
               "in": "cmd_verify",
               "kind": "raise",
-              "line": 1648
+              "line": 1659
             },
             {
               "in": "cmd_mix",
               "kind": "raise",
-              "line": 1678
+              "line": 1689
             }
           ],
-          "hash": "ec642dfdabeb805f0b2553da65b06ef2bb2363b9737f4bdf2af310eff4d5d47e",
+          "hash": "d7c2ee30360bb55c76e9677bdb054de2589c295218dc470b9a21511fc4f97ddd",
           "importOrder": [
             "scripts/onset_aligner.py",
             "scripts/comfy_rest.py"
@@ -15549,7 +15595,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 23,
+      "testedBy": 24,
       "unresolvedNamed": [
         {
           "path": "scripts/cast-kokoro-lock.mjs",
@@ -37114,8 +37160,8 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "ca87856fea77c6d83b52d47ed9e7e50d22c5f7c2",
-    "tracked": 3029
+    "commit": "6dd65d5aba44e11442131b6f860dfb58d85a1d57",
+    "tracked": 3030
   },
   "landings": [
     {
@@ -49632,13 +49678,14 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 244,
+  "testFiles": 245,
   "testsNotRun": [
     "scripts/test_aligner_gate.py",
     "scripts/test_export_soulx_target.py",
     "scripts/test_phrase_evidence.py",
     "scripts/test_phrase_picker.py",
     "scripts/test_pitch_recheck.py",
+    "scripts/test_placer_overrides.py",
     "scripts/test_planter.py",
     "scripts/test_review_marks.py",
     "scripts/test_soulx_offrig.py",

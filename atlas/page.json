@@ -99,8 +99,8 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 2,
+      "added": 1,
+      "changed": 3,
       "moved": 0,
       "parts": 1,
       "removed": 0
@@ -108,13 +108,13 @@
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-07; 2 files changed content.",
+        "sentence": "Nothing structural changed since 2026-10-07; 1 file added and 3 changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "04a1f6c44db636317bd0f70c32de7e2db0cebb10",
-      "generatedAt": "2026-10-07T23:09:11.313Z"
+      "commit": "ca87856fea77c6d83b52d47ed9e7e50d22c5f7c2",
+      "generatedAt": "2026-10-07T23:11:17.907Z"
     },
     "unchanged": true
   },
@@ -124,9 +124,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 4,
-  "commit": "ca87856fea77c6d83b52d47ed9e7e50d22c5f7c2",
+  "commit": "6dd65d5aba44e11442131b6f860dfb58d85a1d57",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (611), Python (65), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
+  "derived": "14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (611), Python (66), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
     {
       "builds": [
@@ -1641,7 +1641,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-07T23:11:17.907Z",
+  "generatedAt": "2026-10-07T23:35:20.338Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
@@ -1756,11 +1756,11 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 244,
+  "testFiles": 245,
   "testedBy": {
     "cockpit": 13,
     "experiments": 10,
-    "scripts": 23,
+    "scripts": 24,
     "spaces": 0,
     "src": 211
   },

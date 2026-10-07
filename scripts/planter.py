@@ -17,7 +17,8 @@ Kinds, by mutation of one cut at a join:
           take is never heard;
   click   the seam's crossfade is shortened to `severity` s (shorter is harsher);
   sham    a real seam with continuous source and no defect: what a detector that
-          only finds splices must fail on;
+          only finds splices must fail on (in warp mode the new run starts exactly
+          where the run before ended, in the take and on the timeline);
   none    no change: a clean clip around a clean join.
 
 In warp mode (the default, what ships) a seam exists only between runs. A join
@@ -64,6 +65,7 @@ UNITS = {
     "none": "none",
 }
 MIN_CUT_S = 0.05             # a skip never leaves less of the cut than this
+SHAM_TIMING_S = 0.03         # a warp sham may move the cut's vowel by at most this
 CLIP_S = 10.0
 CLIP_EDGE_S = 2.0            # the join sits at least this far inside a clip
 REPEAT_DELTA = 0.1           # replay present: repeat similarity rises at least this much
@@ -181,9 +183,40 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None) -> tuple[dict, dic
         c["xfade_s"] = s
         if spec["mode"] == "warp":
             _run_of(out, c, clock)          # place_warp reads xfade_s only from a run's first cut
-    elif kind == "sham" and spec["mode"] == "local":
-        where["t"] = _split(out, c)
+    elif kind == "sham":
+        if spec["mode"] == "local":
+            where["t"] = _split(out, c)
+        else:
+            where.update(_seamless(out, c, clock))
+    if kind in ("replay", "skip"):
+        s_end, to_timeline = _prev_play(out, c, spec["mode"], clock)
+        where["gap_s"] = round(max(0.0, where["t"] - to_timeline(s_end)), 4)
     return out, where
+
+
+def _seamless(plan: dict, c: dict, clock: dict | None) -> dict:
+    """Warp sham: cut c starts a run exactly where the run before it ended, in its
+    take and on the timeline, so the seam replays, skips and pauses nothing. Its
+    vowel then lands by the previous run's shift; refused if that moves it more than
+    SHAM_TIMING_S (an onset-timing defect, not a clean seam)."""
+    runs, k = _run_of(plan, c, clock)
+    if k == 0:
+        raise ValueError(f"{c['id']}: no audio before the first run")
+    prev = runs[k - 1]
+    if prev[-1]["source_key"] != c["source_key"]:
+        raise ValueError(f"{c['id']}: the run before is another take, so no seam can be seamless")
+    src, dst = vc.warp_map(prev)
+    start, placed = src[-1], dst[-1]
+    if start > c["cut_end"] - MIN_CUT_S:
+        raise ValueError(f"{c['id']}: the run before already covers this cut")
+    moved = (placed - start) - (c["placed_start"] - c["cut_start"])
+    if abs(moved) > SHAM_TIMING_S:
+        raise ValueError(f"{c['id']}: a seamless seam here would move the vowel {moved * 1000:.0f} ms")
+    end = c["cut_start"] + c.get("clip_seconds", c["cut_end"] - c["cut_start"])
+    c["cut_start"], c["placed_start"] = float(start), float(placed)
+    if "clip_seconds" in c:
+        c["clip_seconds"] = end - start
+    return {"t": float(placed), "vowel_moved_s": round(moved, 4)}
 
 
 def _split(plan: dict, c: dict) -> float:
@@ -232,10 +265,13 @@ def _db(x: np.ndarray) -> float:
 
 
 def repeat_at_lag(f: "pe.Features", t: float, lag_s: float) -> float | None:
-    """phrase_evidence's repeat measurement at one known lag: how well the spectral
-    changes just after t match those lag_s earlier."""
-    i, w = f._frame(t), max(2, int(pe.REPEAT_WIN_S * f.fps))
-    lag = max(1, int(round(lag_s * f.fps)))
+    """phrase_evidence's repeat measurement, at one known lag and over exactly the
+    repeated span: how well the spectral changes in [t, t + lag] match those in
+    [t - lag, t] (capped at REPEAT_WIN_S), so the earlier window never crosses the
+    seam."""
+    i = f._frame(t)
+    lag = max(2, int(round(lag_s * f.fps)))
+    w = min(lag, max(2, int(pe.REPEAT_WIN_S * f.fps)))
     if i - lag < 0 or i + w >= len(f.dmel):
         return None
     a, b = f.dmel[i:i + w].ravel(), f.dmel[i - lag:i - lag + w].ravel()
@@ -247,7 +283,7 @@ def verify(kind: str, clean: np.ndarray, planted: np.ndarray, sr: int, t: float,
     """Is the planted defect measurably there (or, for sham and none, measurably
     absent)? Compares the planted render with the clean one around the join, with
     phrase_evidence's own join measurements. A replay is measured at its known lag,
-    just after the seam's crossfade."""
+    over exactly the span played twice."""
     a, b = _mono(clean), _mono(planted)
     n = min(len(a), len(b))
     lo, hi = max(0, int((t - 0.2) * sr)), min(n, int((t + 0.6) * sr))
@@ -260,8 +296,7 @@ def verify(kind: str, clean: np.ndarray, planted: np.ndarray, sr: int, t: float,
         m[f"{name}_clean"] = None if va is None else round(va, 3)
         m[f"{name}_planted"] = None if vb is None else round(vb, 3)
     if lag_s is not None:
-        at = t + vc.XFADE_S
-        va, vb = repeat_at_lag(fa, at, lag_s), repeat_at_lag(fb, at, lag_s)
+        va, vb = repeat_at_lag(fa, t, lag_s), repeat_at_lag(fb, t, lag_s)
         m["repeat_clean"] = None if va is None else round(va, 3)
         m["repeat_planted"] = None if vb is None else round(vb, 3)
         m["lag_s"] = lag_s
@@ -273,12 +308,11 @@ def verify(kind: str, clean: np.ndarray, planted: np.ndarray, sr: int, t: float,
         present = change_db is not None and change_db > CHANGE_DB
     elif kind == "click":
         present = clk is not None and clk >= CLICK_DELTA
-    elif kind == "sham":
-        # A warp-mode seam re-cuts the WSOLA output, so the waveform may differ in
-        # phase while sounding the same: judge it by the join measurements, the way a
-        # detector would, not by sample differences.
-        present = (rep is None or rep < REPEAT_DELTA) and (clk is None or clk < CLICK_DELTA)
-    else:                                   # none: the clean render itself
+    else:
+        # sham and none are clean by construction: a sham's seam continues the take
+        # exactly (mutate refuses any that cannot). A seam is still a seam, so its
+        # measurements may move; they are recorded for the study, never used to drop
+        # it, or the shams would be filtered towards whatever the detector finds easy.
         present = True
     return {"present": bool(present), "measured": m}
 
@@ -311,6 +345,14 @@ def clip_window(t: float, total_s: float, rng: np.random.Generator, clip_s: floa
 
 # ─── the batch ───────────────────────────────────────────────────────────────
 
+def _plantable(plan: dict, spec: dict, clock: dict | None) -> bool:
+    try:
+        mutate(plan, spec, clock)
+        return True
+    except ValueError:
+        return False
+
+
 def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp", seed: int = 7) -> dict:
     import soundfile as sf
     plan = json.load(open(os.path.join(vdir, "plan.json"), encoding="utf-8"))
@@ -322,11 +364,20 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
     if not joins:
         raise SystemExit(f"{vdir}: no joins to plant at")
     rng = np.random.default_rng(seed)
+    pools = {k: joins for k in kinds}
+    if "sham" in kinds:
+        # In warp mode most joins sit inside a stretched run, where no seam can be
+        # seamless; draw shams only from the joins that can take one.
+        pools["sham"] = [j for j in joins if _plantable(plan, make_spec("sham", j, 0.0, mode, 0), clock)]
     os.makedirs(os.path.join(out_dir, "clips"), exist_ok=True)
     kept, dropped = [], []
     for i in range(n):
         kind = kinds[i % len(kinds)]
-        join = joins[int(rng.integers(len(joins)))]
+        pool = pools[kind]
+        if not pool:
+            dropped.append({"spec": {"kind": kind}, "reason": "no join here can take this kind"})
+            continue
+        join = pool[int(rng.integers(len(pool)))]
         spec = make_spec(kind, join, float(rng.choice(LEVELS[kind])), mode, int(rng.integers(1 << 31)))
         try:
             planted_plan, where = mutate(plan, spec, clock)
@@ -352,6 +403,7 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
             fh.write(json.dumps(row) + "\n")
     summary = {"schema": LABELS_SCHEMA, "pick": os.path.basename(os.path.normpath(vdir)), "mode": mode, "seed": seed,
                "requested": n, "kept": len(kept), "dropped": len(dropped), "joins": len(joins),
+               "sham_joins": len(pools.get("sham", [])),
                "by_kind": {k: sum(r["kind"] == k for r in kept) for k in kinds}, "dropped_rows": dropped}
     with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=1)
