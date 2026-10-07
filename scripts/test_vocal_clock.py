@@ -273,3 +273,35 @@ def test_rise_onset_still_dates_a_quiet_real_syllable():
     r = vc.rise_onset(times, env, 1.3, 1.9)
     assert r["reason"] == "ok"
     assert abs(r["t"] - (1.5 + 0.01)) < 0.006
+
+
+def test_pitch_judges_each_note_of_a_held_syllable_against_its_own_pitch():
+    clock = {"events": [
+        {"id": "v00", "lyric": "A", "midi": 58, "t_sec": 1.0, "dur_sec": 1.0},
+        {"id": "v01", "lyric": "zing", "midi": 67, "t_sec": 2.0, "dur_sec": 2.0,
+         "melisma": [{"midi": 63, "t_sec": 3.0, "dur_sec": 1.0}]},
+        {"id": "v02", "lyric": "grace", "midi": 67, "t_sec": 4.0, "dur_sec": 1.0},
+    ]}
+    notes = vc.sung_notes(clock, {"v01": 2.05})
+    assert [(n["id"], n["midi"]) for n in notes] == [("v00", 58), ("v01", 67), ("v01.1", 63), ("v02", 67)]
+    zing, held = notes[1], notes[2]
+    assert zing["t_on"] == 2.05 and zing["t_off"] == 3.0, "the first note ends where the held note begins"
+    assert held["t_on"] == 3.0 and held["t_off"] == pytest.approx(4.0 - vc.NUCLEUS_NEXT_GUARD_S), "the last note stops short of the next syllable"
+    # A clean 2-note melisma passes; the old one-pitch-per-syllable gate would have failed the held note.
+    sr = 100
+    times = np.arange(0, 5.5, 1 / sr)
+    f0 = np.zeros_like(times)
+    for n in notes:
+        f0[(times >= n["t_on"]) & (times < n["t_off"])] = vc.midi_hz(n["midi"])
+    rows = vc.pitch_rows(clock, {"times": times, "f0": f0, "conf": np.where(f0 > 0, 1.0, 0.0)}, {"v01": 2.05})
+    assert [r["status"] for r in rows] == ["PASS", "PASS", "PASS", "PASS"]
+    assert [r["id"] for r in rows] == ["v00", "v01", "v01.1", "v02"]
+
+
+def test_pitch_windows_are_unchanged_for_a_clock_without_held_notes():
+    clock = {"events": [
+        {"id": "v00", "lyric": "a", "midi": 60, "t_sec": 0.0, "dur_sec": 1.0},
+        {"id": "v01", "lyric": "b", "midi": 62, "t_sec": 1.0, "dur_sec": 0.5},
+    ]}
+    notes = vc.sung_notes(clock)
+    assert [(n["t_on"], n["t_off"]) for n in notes] == [(0.0, pytest.approx(1.0 - vc.NUCLEUS_NEXT_GUARD_S)), (1.0, 1.5)]

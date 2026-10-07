@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — whole songs on the score clock
+- Held syllables: a `_` token in the clock's lyrics holds the previous syllable onto the next
+  note (a melisma, as in New Britain's "A-ma-zing _ grace"). The clock keeps one event per
+  syllable and lists the extra notes in its `melisma`; the SoulX exporter sends them as
+  continuation notes, and the pitch gate judges each note against its own pitch.
+- Notated rests: `build-score-clock.mjs --rests` ends each note where the melody track's note
+  ends, so breaths and interludes are silence on the clock instead of a held note.
+- Segments: `export_soulx_target.py --segment-gap S` splits a long target at rests into
+  segments that tile the clock, so SoulX renders a phrase at a time.
+- All three are opt-in. Without them, the existing clocks and targets are byte-identical
+  (checked against `main` for both exemplars). Tests: `src/vocal/score-clock.test.ts`,
+  `scripts/test_export_soulx_target.py` (new), `scripts/test_vocal_clock.py`.
+
 ### Added — vocal takes rendered on a rented GPU
 - `scripts/soulx_batch.py` loads SoulX-Singer once and renders N takes into the `take-NN`
   layout `sing_clock.py` reads, skipping takes already on disk. On the local RTX 5090 a 35 s

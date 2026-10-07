@@ -4,10 +4,16 @@
     python scripts/export_soulx_target.py --clock scores/amazing-grace.score-clock.v1.json \
         --out tmp/vocal-clock/soulx/target.json
 
-One segment spanning the whole clock (`time` = [0, total_ms]) so the model's
-merged output lands on the clock natively: a leading <SP> up to the first
-event, one note per syllable with the clock's `dur_sec` (legato: each note is
-held to the next onset), a trailing <SP> to `total_seconds`.
+By default one segment spans the whole clock (`time` = [0, total_ms]) so the
+model's merged output lands on the clock natively: a leading <SP> up to the
+first event, one note per syllable with the clock's `dur_sec`, <SP> in any rest,
+a trailing <SP> to `total_seconds`. A held syllable (the clock's `melisma`)
+continues onto its extra notes as note_type 3 with the same phonemes.
+
+`--segment-gap S` splits a long song at every rest of at least S seconds. The
+segments tile the clock (each boundary is the middle of its rest, on a 20 ms
+frame), so the merged output still lands on the clock, and the model renders a
+phrase at a time: its memory grows with the segment, not the song.
 
 SoulX-Singer conventions (soulxsinger/utils/data_processor.py, preprocess/tools/
 midi_parser.py, example/audio/en_target.json):
@@ -88,24 +94,14 @@ def syllabify_arpabet(phones: list[str], n: int) -> list[list[str]]:
     return out
 
 
-def build_target(clock: dict, g2p, language: str = "English", syllable_words: bool = False) -> list[dict]:
-    """`syllable_words`: emit every syllable as its own word (note_type 2) with
-    its own phonemes, so the singer re-articulates each one instead of gliding
-    through the word — then a cut between syllables is a word boundary."""
-    events = clock["events"]
-    total = float(clock["total_seconds"])
-    notes: list[tuple[str, str, int, int, float]] = []  # text, phoneme, pitch, type, dur
-    t0 = float(events[0]["t_sec"])
-    if t0 > 0:
-        notes.append(("<SP>", "<SP>", 0, 1, t0))
-    cursor = t0
-    for ev in events:
-        if abs(float(ev["t_sec"]) - cursor) > 1e-6:
-            gap = float(ev["t_sec"]) - cursor
-            if gap < 0:
-                raise SystemExit(f"{ev['id']}: onset before previous note end")
-            notes.append(("<SP>", "<SP>", 0, 1, gap))
-            cursor += gap
+FRAME_SEC = 0.02  # SoulX frames: hop 480 @ 24 kHz
+
+
+def sung_notes(clock: dict, g2p, syllable_words: bool = False) -> list[dict]:
+    """Every sung note on the clock, in order, with its absolute onset: one per
+    syllable plus one per held note. `event` is the clock event it belongs to."""
+    out = []
+    for ev in clock["events"]:
         word = ev["word"]
         ph = arpabet(word, g2p)
         ntype = 2 if ev["syllable"] == 0 else 3
@@ -115,21 +111,69 @@ def build_target(clock: dict, g2p, language: str = "English", syllable_words: bo
                 word = ev["lyric"]
                 ph = "en_" + "-".join(parts[ev["syllable"]])
                 ntype = 2
-        notes.append((word, ph, int(ev["midi"]), ntype, float(ev["dur_sec"])))
-        cursor += float(ev["dur_sec"])
-    if total - cursor > 1e-6:
-        notes.append(("<SP>", "<SP>", 0, 1, total - cursor))
-    seg = {
-        "index": f"{clock['song_id']}_0_{int(round(total * 1000))}",
-        "language": language,
-        "time": [0, int(round(total * 1000))],
-        "duration": " ".join(f"{d:.4f}" for _, _, _, _, d in notes),
-        "text": " ".join(t for t, _, _, _, _ in notes),
-        "phoneme": " ".join(p for _, p, _, _, _ in notes),
-        "note_pitch": " ".join(str(m) for _, _, m, _, _ in notes),
-        "note_type": " ".join(str(n) for _, _, _, n, _ in notes),
-    }
-    return [seg]
+        t = float(ev["t_sec"])
+        held = ev.get("melisma") or []
+        first_dur = (float(held[0]["t_sec"]) - t) if held else float(ev["dur_sec"])
+        out.append({"event": ev["id"], "text": word, "phoneme": ph, "midi": int(ev["midi"]), "type": ntype, "t": t, "dur": first_dur})
+        for h in held:
+            out.append({"event": ev["id"], "text": word, "phoneme": ph, "midi": int(h["midi"]), "type": 3,
+                        "t": float(h["t_sec"]), "dur": float(h["dur_sec"])})
+    return out
+
+
+def segment_bounds(notes: list[dict], total: float, gap: float | None) -> list[tuple[float, float]]:
+    """[start, end) of each segment. One segment over the whole clock unless
+    `gap` is set; then a boundary sits in the middle of every rest of at least
+    `gap` seconds between two syllables, rounded to a frame."""
+    if not gap:
+        return [(0.0, total)]
+    cuts = []
+    for a, b in zip(notes, notes[1:]):
+        if a["event"] == b["event"]:
+            continue
+        end = a["t"] + a["dur"]
+        if b["t"] - end >= gap:
+            cuts.append(round(((end + b["t"]) / 2) / FRAME_SEC) * FRAME_SEC)
+    edges = [0.0, *cuts, total]
+    return list(zip(edges, edges[1:]))
+
+
+def build_target(clock: dict, g2p, language: str = "English", syllable_words: bool = False,
+                 segment_gap: float | None = None) -> list[dict]:
+    """`syllable_words`: emit every syllable as its own word (note_type 2) with
+    its own phonemes, so the singer re-articulates each one instead of gliding
+    through the word — then a cut between syllables is a word boundary."""
+    total = float(clock["total_seconds"])
+    notes = sung_notes(clock, g2p, syllable_words)
+    segments = []
+    for start, end in segment_bounds(notes, total, segment_gap):
+        inside = [n for n in notes if start <= n["t"] < end]
+        rows: list[tuple[str, str, int, int, float]] = []  # text, phoneme, pitch, type, dur
+        cursor = start
+        for n in inside:
+            gap = n["t"] - cursor
+            if gap < -1e-6:
+                raise SystemExit(f"{n['event']}: onset before the previous note ends")
+            if gap > 1e-6:
+                rows.append(("<SP>", "<SP>", 0, 1, gap))
+            rows.append((n["text"], n["phoneme"], n["midi"], n["type"], n["dur"]))
+            cursor = n["t"] + n["dur"]
+        if cursor - end > 1e-6:
+            raise SystemExit(f"a note runs past its segment's end ({cursor:.4f} > {end:.4f})")
+        if end - cursor > 1e-6:
+            rows.append(("<SP>", "<SP>", 0, 1, end - cursor))
+        a_ms, b_ms = int(round(start * 1000)), int(round(end * 1000))
+        segments.append({
+            "index": f"{clock['song_id']}_{a_ms}_{b_ms}",
+            "language": language,
+            "time": [a_ms, b_ms],
+            "duration": " ".join(f"{d:.4f}" for _, _, _, _, d in rows),
+            "text": " ".join(t for t, _, _, _, _ in rows),
+            "phoneme": " ".join(p for _, p, _, _, _ in rows),
+            "note_pitch": " ".join(str(m) for _, _, m, _, _ in rows),
+            "note_type": " ".join(str(k) for _, _, _, k, _ in rows),
+        })
+    return segments
 
 
 def main() -> int:
@@ -140,6 +184,7 @@ def main() -> int:
     ap.add_argument("--compensate", help="verify receipt of a previous take: shift note onsets by minus its vowel errors")
     ap.add_argument("--gain", type=float, default=1.0, help="fraction of the measured error to feed back (default 1.0)")
     ap.add_argument("--syllable-words", action="store_true", help="every syllable is its own word with its own phonemes (re-articulated, cuttable between)")
+    ap.add_argument("--segment-gap", type=float, help="split into segments at every rest of at least this many seconds (default: one segment)")
     a = ap.parse_args()
     clock = json.load(open(a.clock, encoding="utf-8"))
     if clock.get("schema") != "ai-jam-sessions/score-clock/v1":
@@ -154,17 +199,17 @@ def main() -> int:
     except ImportError:
         raise SystemExit("g2p_en is not installed in this interpreter; run inside the SoulX venv")
     g2p = G2p()
-    target = build_target(clock, g2p, a.language, syllable_words=a.syllable_words)
+    target = build_target(clock, g2p, a.language, syllable_words=a.syllable_words, segment_gap=a.segment_gap)
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
     if comp_log is not None:
         target[0]["_compensation"] = {"from": a.compensate.replace("\\", "/"), "gain": a.gain, "shifts": comp_log}
     target[0]["_syllable_words"] = bool(a.syllable_words)
     json.dump(target, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    seg = target[0]
-    durs = [float(x) for x in seg["duration"].split()]
-    print(f"{len(durs)} notes, {sum(durs):.4f}s, time {seg['time']}")
-    for t, p, m, n, d in zip(seg["text"].split(), seg["phoneme"].split(), seg["note_pitch"].split(), seg["note_type"].split(), durs):
-        print(f"  {t:8} {p:28} midi {m:>3} type {n} dur {d:.4f}")
+    for seg in target:
+        durs = [float(x) for x in seg["duration"].split()]
+        print(f"{len(durs)} notes, {sum(durs):.4f}s, time {seg['time']}")
+        for t, p, m, n, d in zip(seg["text"].split(), seg["phoneme"].split(), seg["note_pitch"].split(), seg["note_type"].split(), durs):
+            print(f"  {t:8} {p:28} midi {m:>3} type {n} dur {d:.4f}")
     print(f"wrote {a.out}")
     return 0
 
