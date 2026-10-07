@@ -442,6 +442,14 @@ Phrase picks from 16 takes, cut against warp:
 | pitch scatter SD | 27.3 c | 17.0 c | 17.8 c | 18.3 c |
 | both_off syllables (timing) | 2 | 2 | 5 | 5 |
 
+**Honks were the singer's.** The second review (Amazing Grace from 21 marks to
+6) left honks, and an A/B of raw take / placed vocal / mix put every one in the raw
+take, at a boundary between two phrase segments, which a whole song is rendered
+in. A run that played on to the next syllable's lead-in carried the noise of that
+rest in. A run now also ends at every rest of `WARP_REST_S` in the score, and is
+silent after its last note plus `WARP_RELEASE_S` (0.15 s, with a 60 ms fade): a
+rest belongs to the bed.
+
 Timing is unchanged, because the vowels land in the same places. The
 both-off syllables are the ones neither instrument dates within 40 ms.
 America's 13 large stretches sit mostly around breaths and held notes ("A-mer-i-ca").
