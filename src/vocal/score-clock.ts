@@ -341,25 +341,30 @@ export const HOLD_TOKEN = "_";
 
 /**
  * "A-ma-zing grace how sweet the sound" → one entry per melody note, each
- * knowing which whole word a transcriber will report it inside. A `_` token
- * holds the previous syllable onto the next note ("A-ma-zing _ grace" sings
- * "zing" across two notes, as New Britain does).
+ * knowing which whole word a transcriber will report it inside. A `_` holds
+ * the previous syllable onto the next note: as its own token after a word
+ * ("A-ma-zing _ grace" sings "zing" across two notes, as New Britain does),
+ * or as a part inside one ("pre-_-cious" holds "pre").
  */
 export function syllabify(lyrics: string): LyricSyllable[] {
   const out: LyricSyllable[] = [];
   for (const word of lyrics.trim().split(/\s+/)) {
-    if (word === HOLD_TOKEN) {
-      const prev = out[out.length - 1];
-      if (!prev) throw new Error(`lyrics cannot start with '${HOLD_TOKEN}': there is no syllable to hold`);
-      out.push({ lyric: prev.lyric, word: prev.word, syllable: prev.syllable, syllables: prev.syllables, continues: true });
-      continue;
-    }
     const parts = word.split("-");
-    if (parts.some((p) => p === "" || p === HOLD_TOKEN)) {
-      throw new Error(`lyric '${word}': empty syllable or '${HOLD_TOKEN}' inside a word; hold a syllable with a separate '${HOLD_TOKEN}' token`);
+    if (parts.some((p) => p === "")) throw new Error(`lyric '${word}': empty syllable`);
+    const real = parts.filter((p) => p !== HOLD_TOKEN);
+    const whole = real.join("");
+    let k = -1;
+    for (const p of parts) {
+      if (p === HOLD_TOKEN) {
+        const prev = out[out.length - 1];
+        if (!prev) throw new Error(`lyrics cannot start with '${HOLD_TOKEN}': there is no syllable to hold`);
+        if (k < 0 && real.length > 0) throw new Error(`lyric '${word}': '${HOLD_TOKEN}' before the word's first syllable`);
+        out.push({ lyric: prev.lyric, word: prev.word, syllable: prev.syllable, syllables: prev.syllables, continues: true });
+      } else {
+        k += 1;
+        out.push({ lyric: p, word: whole, syllable: k, syllables: real.length });
+      }
     }
-    const whole = parts.join("");
-    parts.forEach((p, i) => out.push({ lyric: p, word: whole, syllable: i, syllables: parts.length }));
   }
   return out;
 }

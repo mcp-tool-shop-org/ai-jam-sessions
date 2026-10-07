@@ -81,9 +81,20 @@ describe("syllabify: held syllables", () => {
     expect(s[4]).toEqual({ lyric: "grace", word: "grace", syllable: 0, syllables: 1 });
   });
 
-  it("refuses a hold with nothing to hold, or a hold inside a word", () => {
+  it("holds a syllable inside a word, and the word stays whole", () => {
+    const s = syllabify("how pre-_-cious");
+    expect(s.map((x) => [x.lyric, x.word, x.syllable, x.syllables, x.continues ?? false])).toEqual([
+      ["how", "how", 0, 1, false],
+      ["pre", "precious", 0, 2, false],
+      ["pre", "precious", 0, 2, true],
+      ["cious", "precious", 1, 2, false],
+    ]);
+    expect(syllabify("A-ma-zing-_ grace")).toEqual(syllabify("A-ma-zing _ grace"));
+  });
+
+  it("refuses a hold with nothing to hold", () => {
     expect(() => syllabify("_ grace")).toThrow(/cannot start with '_'/);
-    expect(() => syllabify("A-ma-_ grace")).toThrow(/inside a word/);
+    expect(() => syllabify("how _-pre-cious")).toThrow(/before the word's first syllable/);
     expect(() => syllabify("A--ma")).toThrow(/empty syllable/);
   });
 });
