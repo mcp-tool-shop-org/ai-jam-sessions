@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — the listening review
+- `scripts/review_marks.py page` builds a listening page for one or more picks. A
+  reviewer plays the mix or the vocal alone and presses M wherever something sounds
+  off, then picks a category and writes a note. Each mark records the reviewer's name
+  and level (listener, musician, professional, or AI listener).
+- `review_marks.py report` joins every mark to the second before it: the syllables
+  and their takes, nearby switches between takes, air left by placement, and timing
+  and pitch failures. When none of these explains a mark, the report names the raw
+  take span to listen to. Marks from several reviewers are clustered and weighed by
+  level, with separate weights for where something sounds off and what it is.
+
 ### Added — the phrase-by-phrase pick
 - `vocal_clock.py repin --by-phrase` (and `sing_clock.py --by-phrase`) picks one take per phrase
   instead of one per word, so a phrase is never stitched from several renders: a join between

@@ -355,6 +355,51 @@ beautiful" for "may God thy gold refine"), which is why it ranks and never
 gates. Measured on the first renders (one placed vocal each): Amazing Grace
 89% of words heard in order, America 75%.
 
+## The listening review (2026-10-07)
+
+The gates measure timing and pitch syllable by syllable, and both picks of the
+16-take run cleared most of them. The Director still heard "stuttering at times",
+and "it's stuttering" gives the next fix nothing to aim at. The listening review
+turns an ear into data:
+
+```bash
+python scripts/review_marks.py page --run tmp/vocal-clock/sing/<song> --variant phrase16     --variant word16 --out tmp/vocal-clock/review
+python -m http.server 8766 --bind 127.0.0.1 --directory tmp/vocal-clock/review
+python scripts/review_marks.py report --review tmp/vocal-clock/review --marks review-marks.json
+```
+
+The page plays the mix (or the vocal alone, with V), and M drops a mark: the song
+pauses, the reviewer picks what it sounded like (stutter, click, wrong word, off
+pitch, early or late, volume jump, voice change, breath or noise) and writes a
+note, and Enter carries on. The overview shows the switches between takes, and
+the close-up shows each syllable coloured by the take it came from. Marks live in
+that browser's localStorage. `?test` uses a separate store, so a check of the page
+never touches real marks, and Export downloads them.
+
+`report` joins each mark to the second before it (a listener presses after the
+sound): the syllables sung there and their takes, any join nearby (a switch
+between takes, or air that placement left, from `placed.json`), and the timing
+and pitch rows of those syllables. A mark that none of these explains points at
+the render itself, and the report names the raw take and span to listen to.
+
+**Who is listening** (the Director: his ear is a non-musician's, and a trained
+ear, human or AI, should carry more weight). Every mark records the reviewer's
+name and level, and the report weighs two questions apart:
+
+| level | where it sounds off | what it is |
+|---|---|---|
+| listener (no music training) | 1.0 | 0.25 |
+| musician | 1.0 | 0.6 |
+| vocal or audio professional | 1.0 | 1.0 |
+| AI listener, unvalidated | 0.4 | 0.2 |
+
+Anyone in the audience can say where something sounds off, and these songs are
+for an audience. Naming the cause takes training. An AI listener earns higher
+weights by validation against human marks; until then it counts for little.
+Marks from several reviewers within 1 s become one finding: "heard" combines
+their detection weights (one vote per reviewer), and the categories are voted
+with diagnosis weights.
+
 ## Standards compliance
 
 | standard | score | evidence |

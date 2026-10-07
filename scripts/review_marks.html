@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Listening review</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1f2328;--muted:#5d646c;--line:#d9d6cf;--accent:#2f6fde;--mark:#d4472f;--head:#1f9d55;--panel:#fff;--shade:rgba(212,71,47,.12);--band:rgba(47,111,222,.06)}
+@media (prefers-color-scheme:dark){:root{--bg:#141619;--fg:#e8e6e3;--muted:#9aa1a9;--line:#2c3036;--accent:#6d9cf0;--mark:#f0745f;--head:#4cc38a;--panel:#1c1f23;--shade:rgba(240,116,95,.16);--band:rgba(109,156,240,.08)}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:16px}h1{font-size:20px;margin:0 0 4px}p{margin:6px 0;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+button,select{font:inherit;padding:6px 11px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:6px;cursor:pointer}
+button.primary{background:var(--mark);color:#fff;border-color:var(--mark);font-weight:600}button.on{outline:2px solid var(--accent)}
+canvas{width:100%;height:auto;display:block;background:var(--panel);border:1px solid var(--line);border-radius:6px;cursor:pointer}
+.label{font-size:12px;color:var(--muted);margin:10px 0 3px;text-transform:uppercase;letter-spacing:.04em}
+.now{font-size:26px;font-weight:650;min-height:36px}.status{font-variant-numeric:tabular-nums;color:var(--muted)}
+kbd{border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:12px}
+label.opt{color:var(--muted);display:flex;gap:6px;align-items:center}
+#marks{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.card{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:10px}
+.card.active{border-color:var(--mark);border-width:2px}
+.card .top{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}.card .num{font-weight:700;color:var(--mark)}
+.card .ctx{color:var(--muted);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}.chip{font-size:13px;padding:2px 9px;border-radius:12px;border:1px solid var(--line);cursor:pointer;user-select:none}
+.chip.on{background:var(--mark);border-color:var(--mark);color:#fff}
+textarea{width:100%;font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);resize:vertical;min-height:38px}
+.card .btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.card .btns button{padding:3px 9px;font-size:13px}
+.empty{color:var(--muted);font-style:italic}
+</style></head><body><main>
+<h1>Listening review</h1>
+<p>Play the song. When you hear a stutter or anything else wrong, press <b>M</b>. The song pauses so you can say what you heard;
+press <kbd>Enter</kbd> to keep listening. You don't need to be quick or exact: a mark looks back over the second before you pressed.
+Marks are saved in this browser as you go. Tell Claude when you're done.</p>
+<div class="row"><span class="status">Listening as</span><input id="who" placeholder="your name" style="font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg)">
+<select id="level"></select><span class="status" id="levelNote"></span></div>
+<div class="row">
+<select id="entry"></select>
+<button class="src on" data-s="mix">Mix</button><button class="src" data-s="vocal">Vocal only <kbd>V</kbd></button>
+<span class="status">Speed</span><button class="spd on" data-r="1">1×</button><button class="spd" data-r="0.75">¾×</button><button class="spd" data-r="0.5">½×</button>
+</div>
+<div class="label">The whole song (click to jump; ticks under the wave are switches between takes)</div>
+<canvas id="over" width="960" height="110"></canvas>
+<div class="label">Around the playhead (each block is one sung syllable, coloured by the take it came from)</div>
+<canvas id="zoom" width="960" height="150"></canvas>
+<div class="row">
+<button id="back">⏪ 5 s</button><button id="play">▶ Play <kbd>Space</kbd></button><button id="fwd">5 s ⏩</button>
+<button id="mark" class="primary">Mark <kbd>M</kbd></button>
+<label class="opt"><input type="checkbox" id="pause" checked> pause when I mark</label>
+<span class="status" id="clock"></span>
+</div>
+<div class="now" id="now"></div>
+<div class="row"><span class="label" style="margin:0">Marks</span><span class="status" id="count"></span>
+<button id="export">Export marks</button></div>
+<div id="marks"></div>
+<p><kbd>←</kbd>/<kbd>→</kbd> skip 2 s (<kbd>Shift</kbd> 5 s) · <kbd>R</kbd> replays the selected mark · slow speeds keep the pitch.</p>
+</main>
+<audio id="a-mix" preload="auto"></audio><audio id="a-vocal" preload="auto"></audio>
+<script>
+const DATA = __DATA__;
+const NAMES = {stutter: "Stutter / repeat", click: "Click / pop", word: "Wrong or slurred word", pitch: "Off pitch", timing: "Early / late",
+  level: "Volume jump", tone: "Voice changes", noise: "Breath / noise", other: "Other"};
+// "?test" keeps its own storage, so checking the page can never touch real marks.
+const KEY = "review-marks:v1" + (new URLSearchParams(location.search).has("test") ? ":test" : "");
+let store = {}; try { store = JSON.parse(localStorage.getItem(KEY) || "{}") } catch (e) { store = {} }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)) } catch (e) {} };
+const $ = id => document.getElementById(id), css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const WHO = KEY.replace("review-marks:v1", "review-marks:reviewer");
+let who = {name: "", level: "listener"}; try { who = Object.assign(who, JSON.parse(localStorage.getItem(WHO) || "{}")) } catch (e) {}
+let E = DATA.entries[0], src = "mix", rate = 1, active = null, pausedByMark = false, base = null;
+const audio = () => $("a-" + src), marks = () => (store[E.key] = store[E.key] || []);
+const takeHue = t => (parseInt(String(t).replace(/\D/g, "") || "0", 10) * 137.5) % 360;
+const fmt = t => { const m = Math.floor(t / 60), s = t - m * 60; return m + ":" + s.toFixed(1).padStart(4, "0") };
+
+function fillEntries(){
+  const sel = $("entry"), keep = sel.value; sel.innerHTML = "";
+  DATA.entries.forEach((e, i) => { const o = document.createElement("option"); o.value = i;
+    const n = (store[e.key] || []).length; o.textContent = `${e.song} · ${e.variant}` + (n ? ` · ${n} marks` : ""); sel.appendChild(o) });
+  sel.value = keep || DATA.entries.indexOf(E);
+}
+// Each file is fetched whole into a blob: a blob seeks anywhere, while a plain
+// static server without range requests snaps every seek back to 0.
+const blobs = {};
+async function blobUrl(f){ if (!blobs[f]) blobs[f] = URL.createObjectURL(await (await fetch(f)).blob()); return blobs[f] }
+async function load(i){
+  ["mix", "vocal"].forEach(s => $("a-" + s).pause());
+  E = DATA.entries[i]; active = null; stopAt = null;
+  drawOver(); render(); $("now").textContent = "loading…";
+  const urls = await Promise.all(["mix", "vocal"].map(s => blobUrl(E.files[s])));
+  ["mix", "vocal"].forEach((s, k) => { const a = $("a-" + s); a.src = urls[k]; a.preservesPitch = true; a.playbackRate = rate });
+  tick();
+}
+// Mix and vocal share one timeline: switching keeps the position and the play state.
+function setSrc(s){
+  if (s === src) return; const from = audio(), was = !from.paused, t = from.currentTime;
+  from.pause(); src = s; const to = audio(); to.currentTime = t; to.playbackRate = rate; if (was) to.play();
+  document.querySelectorAll(".src").forEach(b => b.classList.toggle("on", b.dataset.s === s));
+}
+const now = () => audio().currentTime;
+function seek(t){ const a = audio(); a.currentTime = Math.max(0, Math.min(E.duration, t)); tick() }
+function toggle(){ const a = audio(); if (a.paused) { pausedByMark = false; a.play() } else a.pause() }
+
+function near(t){
+  const lo = t - DATA.before, hi = t + DATA.after;
+  const syl = E.syllables.filter(s => s.end > lo && s.start < hi);
+  const sw = E.joins.filter(j => j.switch && j.t >= lo - 0.25 && j.t <= hi + 0.25);
+  return {syl, sw};
+}
+function context(t){
+  const {syl, sw} = near(t); if (!syl.length) return "between phrases";
+  let words = [], last = null; syl.forEach(s => { if (s.word !== last) { words.push(s.word); last = s.word } });
+  const takes = [...new Set(syl.map(s => s.take))].join(", ");
+  return `“${words.join(" ")}” · ${takes}` + (sw.length ? ` · ${sw.length === 1 ? "a switch" : sw.length + " switches"} between takes` : "");
+}
+
+function addMark(){
+  const t = +now().toFixed(3), m = {id: Date.now().toString(36), t, cats: [], note: "", at: new Date().toISOString(), by: {name: who.name, level: who.level}};
+  marks().push(m); marks().sort((a, b) => a.t - b.t); active = m.id; save();
+  if ($("pause").checked && !audio().paused) { audio().pause(); pausedByMark = true }
+  render(); fillEntries(); drawOver();
+  const ta = document.querySelector(`.card[data-id="${m.id}"] textarea`); if (ta && $("pause").checked) ta.focus();
+}
+function update(id, fn){ const m = marks().find(x => x.id === id); if (!m) return; fn(m); marks().sort((a, b) => a.t - b.t); save() }
+function replay(m){ if (!m) return; active = m.id; seek(m.t - 2.0); const a = audio(); pausedByMark = false; a.play(); stopAt = m.t + 0.6; render() }
+let stopAt = null;
+
+function render(){ setTimeout(tick, 0);
+  const list = $("marks"); list.innerHTML = "";
+  const ms = marks(); $("count").textContent = ms.length ? `${ms.length} in this song` : "";
+  if (!ms.length) { list.innerHTML = '<div class="empty">No marks yet.</div>'; return }
+  ms.forEach((m, i) => {
+    const c = document.createElement("div"); c.className = "card" + (m.id === active ? " active" : ""); c.dataset.id = m.id;
+    c.innerHTML = `<div class="top"><span class="num">#${i + 1}</span><b>${fmt(m.t)}</b><span class="ctx"></span></div><div class="chips"></div><textarea rows="1" placeholder="What did you hear? (Enter to keep listening)"></textarea><div class="btns"></div>`;
+    c.querySelector(".ctx").textContent = context(m.t);
+    DATA.categories.forEach(k => { const ch = document.createElement("span"); ch.className = "chip" + (m.cats.includes(k) ? " on" : ""); ch.textContent = NAMES[k] || k;
+      ch.onclick = () => { update(m.id, x => { x.cats = x.cats.includes(k) ? x.cats.filter(y => y !== k) : [...x.cats, k] }); active = m.id; render() };
+      c.querySelector(".chips").appendChild(ch) });
+    const ta = c.querySelector("textarea"); ta.value = m.note;
+    ta.oninput = () => update(m.id, x => { x.note = ta.value });
+    ta.onfocus = () => { if (active !== m.id) { active = m.id; document.querySelectorAll(".card").forEach(x => x.classList.toggle("active", x.dataset.id === m.id)) } };
+    ta.onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); ta.blur(); if (pausedByMark) { pausedByMark = false; audio().play() } }
+      else if (e.key === "Escape") ta.blur() };
+    const b = c.querySelector(".btns");
+    [["▶ Replay", () => replay(m)], ["−0.1 s", () => { update(m.id, x => { x.t = +(x.t - 0.1).toFixed(3) }); render(); drawOver() }],
+     ["+0.1 s", () => { update(m.id, x => { x.t = +(x.t + 0.1).toFixed(3) }); render(); drawOver() }],
+     ["Delete", () => { store[E.key] = marks().filter(x => x.id !== m.id); if (active === m.id) active = null; save(); render(); fillEntries(); drawOver() }]]
+      .forEach(([t, fn]) => { const bt = document.createElement("button"); bt.textContent = t; bt.onclick = fn; b.appendChild(bt) });
+    list.appendChild(c);
+  });
+}
+
+function drawOver(){
+  const cv = $("over"), g = cv.getContext("2d"), W = cv.width, H = cv.height, D = E.duration, x = t => t / D * W;
+  g.clearRect(0, 0, W, H);
+  (E.phrases || []).forEach((p, i) => { if (i % 2) { g.fillStyle = css("--band"); g.fillRect(x(p.start), 0, x(p.end) - x(p.start), H) } });
+  g.fillStyle = css("--fg"); g.globalAlpha = 0.55; const n = E.peaks.length, mid = (H - 14) / 2;
+  E.peaks.forEach((v, i) => { const h = Math.max(1, v * (H - 18)); g.fillRect(i / n * W, mid - h / 2, Math.max(1, W / n), h) });
+  g.globalAlpha = 1; g.fillStyle = css("--accent");
+  E.joins.filter(j => j.switch).forEach(j => g.fillRect(x(j.t) - 1, H - 10, 2, 8));
+  marks().forEach((m, i) => { g.fillStyle = css("--mark"); g.fillRect(x(m.t) - 1, 0, 2, H - 12);
+    g.font = "bold 11px system-ui"; g.fillText(String(i + 1), x(m.t) + 3, 11) });
+  base = g.getImageData(0, 0, W, H);
+}
+const ZOOM = 6, LEAD = 2;   // seconds shown, seconds before the playhead
+function drawZoom(t){
+  const cv = $("zoom"), g = cv.getContext("2d"), W = cv.width, H = cv.height, a = t - LEAD, b = a + ZOOM, x = s => (s - a) / ZOOM * W;
+  g.clearRect(0, 0, W, H);
+  marks().forEach(m => { g.fillStyle = css("--shade"); g.fillRect(x(m.t - DATA.before), 0, x(m.t + DATA.after) - x(m.t - DATA.before), H) });
+  g.font = "13px system-ui"; g.textBaseline = "middle";
+  E.syllables.forEach(s => { if (s.end < a || s.start > b) return; const h = takeHue(s.take);
+    g.fillStyle = `hsla(${h},65%,55%,.35)`; g.fillRect(x(s.start), 34, x(s.end) - x(s.start), 70);
+    g.fillStyle = css("--fg"); g.fillText(s.lyric, x(s.start) + 3, 56);
+    g.fillStyle = css("--muted"); g.font = "11px system-ui"; g.fillText(s.take.replace("take-", "t"), x(s.start) + 3, 88); g.font = "13px system-ui" });
+  E.joins.forEach(j => { if (j.t < a || j.t > b) return; g.strokeStyle = css("--accent"); g.lineWidth = j.switch ? 2 : 1;
+    g.setLineDash(j.switch ? [] : [4, 3]); g.beginPath(); g.moveTo(x(j.t), 28); g.lineTo(x(j.t), 110); g.stroke(); g.setLineDash([]) });
+  marks().forEach((m, i) => { if (m.t < a || m.t > b) return; g.strokeStyle = css("--mark"); g.lineWidth = 2;
+    g.beginPath(); g.moveTo(x(m.t), 0); g.lineTo(x(m.t), H); g.stroke(); g.fillStyle = css("--mark"); g.font = "bold 12px system-ui"; g.fillText("#" + (marks().indexOf(m) + 1), x(m.t) + 4, 12); g.font = "13px system-ui" });
+  g.fillStyle = css("--muted"); g.font = "11px system-ui";
+  for (let s = Math.ceil(a); s <= b; s++) { g.fillRect(x(s), H - 8, 1, 8); g.fillText(fmt(s).replace(/\.0$/, ""), x(s) + 3, H - 18) }
+  g.strokeStyle = css("--head"); g.lineWidth = 2; g.beginPath(); g.moveTo(x(t), 0); g.lineTo(x(t), H); g.stroke(); g.lineWidth = 1;
+}
+function tick(){
+  const t = now();
+  if (stopAt !== null && t >= stopAt) { audio().pause(); stopAt = null }
+  if (base) { const cv = $("over"), g = cv.getContext("2d"); g.putImageData(base, 0, 0); g.fillStyle = css("--head"); g.fillRect(t / E.duration * cv.width - 1, 0, 2, cv.height) }
+  drawZoom(t);
+  const s = E.syllables.find(s => s.start <= t && t < s.end);
+  $("now").textContent = s ? `${s.word}  ·  ${s.take}` : "";
+  $("clock").textContent = `${fmt(t)} / ${fmt(E.duration)}`;
+  $("play").textContent = audio().paused ? "▶ Play" : "⏸ Pause";
+}
+(function loop(){ if (!audio().paused) tick(); requestAnimationFrame(loop) })();
+
+function clickSeek(cv, toTime){ cv.onclick = e => { const r = cv.getBoundingClientRect(); seek(toTime((e.clientX - r.left) / r.width)) } }
+clickSeek($("over"), f => f * E.duration); clickSeek($("zoom"), f => now() - LEAD + f * ZOOM);
+$("entry").onchange = () => load(+$("entry").value);
+document.querySelectorAll(".src").forEach(b => b.onclick = () => setSrc(b.dataset.s));
+document.querySelectorAll(".spd").forEach(b => b.onclick = () => { rate = +b.dataset.r; ["mix", "vocal"].forEach(s => $("a-" + s).playbackRate = rate);
+  document.querySelectorAll(".spd").forEach(x => x.classList.toggle("on", x === b)) });
+$("play").onclick = toggle; $("back").onclick = () => seek(now() - 5); $("fwd").onclick = () => seek(now() + 5); $("mark").onclick = addMark;
+["mix", "vocal"].forEach(s => { $("a-" + s).onpause = tick; $("a-" + s).onplay = tick; $("a-" + s).onseeked = tick });
+$("export").onclick = () => {
+  const out = {schema: DATA.schema, exported_at: new Date().toISOString(), reviewer: who, entries: {}};
+  DATA.entries.forEach(e => { if ((store[e.key] || []).length) out.entries[e.key] = {song: e.song, variant: e.variant, marks: store[e.key]} });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], {type: "application/json"}));
+  a.download = "review-marks.json"; a.click() };
+addEventListener("keydown", e => {
+  if (["TEXTAREA", "INPUT", "SELECT"].includes(e.target.tagName) || e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (k === " ") { e.preventDefault(); toggle() } else if (k === "m") { e.preventDefault(); addMark() }
+  else if (k === "v") setSrc(src === "mix" ? "vocal" : "mix")
+  else if (k === "r") replay(marks().find(m => m.id === active) || marks()[marks().length - 1])
+  else if (k === "arrowleft" || k === "arrowright") { e.preventDefault(); seek(now() + (k === "arrowright" ? 1 : -1) * (e.shiftKey ? 5 : 2)) }
+});
+// Who is listening, and at what level, travels with every mark: a listener's ear
+// settles where something sounds off; naming the cause weighs more from training.
+Object.entries(DATA.levels).forEach(([k, label]) => { const o = document.createElement("option"); o.value = k; o.textContent = label; $("level").appendChild(o) });
+$("who").value = who.name; $("level").value = who.level;
+const saveWho = () => { who = {name: $("who").value.trim(), level: $("level").value}; try { localStorage.setItem(WHO, JSON.stringify(who)) } catch (e) {} };
+$("who").oninput = saveWho; $("level").onchange = saveWho;
+window.__review = {store: () => JSON.parse(JSON.stringify(store)), key: KEY};
+fillEntries(); load(0);
+</script></body></html>
