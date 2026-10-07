@@ -14191,12 +14191,14 @@
             "candidate_joins",
             "chain",
             "clip_window",
+            "load_plan_clock",
             "load_sources",
             "main",
             "make_spec",
             "mutate",
             "render",
             "repeat_at_lag",
+            "run_stretch",
             "score_ends",
             "verify",
             "word_cuts"
@@ -14245,45 +14247,50 @@
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 204
+              "line": 209
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 207
+              "line": 212
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 211
+              "line": 216
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 214
+              "line": 219
             },
             {
               "in": "load_sources",
               "kind": "raise",
-              "line": 248
+              "line": 253
+            },
+            {
+              "in": "load_plan_clock",
+              "kind": "raise",
+              "line": 376
             },
             {
               "in": "_plantable",
               "kind": "except",
-              "line": 352
+              "line": 384
             },
             {
               "in": "build",
               "kind": "raise",
-              "line": 365
+              "line": 397
             },
             {
               "in": "build",
               "kind": "except",
-              "line": 384
+              "line": 416
             }
           ],
-          "hash": "c1fe1eef982daac6473e478a329edf22e40444a23e0f28f9abb5702598c6f13e",
+          "hash": "947608240b6892574620f0c70c6667ffd4773f04bdcdae1212dfa42ddc380b2b",
           "importsFiles": [
             "scripts/phrase_evidence.py",
             "scripts/vocal_clock.py"
@@ -15058,8 +15065,10 @@
             "test_a_hard_seam_clicks",
             "test_a_local_replay_renders_measurably_and_a_sham_does_not",
             "test_a_local_skip_changes_the_audio",
+            "test_a_named_clock_that_is_missing_is_refused_in_warp_mode",
             "test_a_warp_click_inside_a_run_also_breaks_the_run",
             "test_a_warp_click_refuses_a_cut_that_does_not_start_a_run",
+            "test_a_warp_replay_reports_the_stretch_its_run_absorbed",
             "test_a_warp_sham_continues_the_take_exactly_or_refuses",
             "test_build_writes_labels_and_drops_unplantable_specs",
             "test_click_sets_the_seam_crossfade",
@@ -15069,6 +15078,7 @@
             "test_mutate_never_changes_the_given_plan",
             "test_replay_and_skip_need_the_same_take_before_the_join",
             "test_replay_and_skip_record_any_gap_before_the_seam",
+            "test_replay_and_skip_record_how_far_the_vowel_moved",
             "test_replay_is_measured_from_where_the_previous_clip_had_got_to",
             "test_replay_starts_the_cut_earlier_and_keeps_its_end",
             "test_skip_starts_later_and_refuses_to_eat_the_cut",
@@ -15079,7 +15089,7 @@
             "test_warp_forced_break_makes_a_seam_and_a_replay_there_is_measurable",
             "test_warp_replay_refuses_when_the_placer_ignores_break_before"
           ],
-          "hash": "3b7d42eb0a41e2c4e02aefe4d5abfa99dbd53c44859be1f8a8d5bf80c6bab8d1",
+          "hash": "62ee9f33f4ab5ef2d8c70d6704475e0b7b1b0645ab908b206f00e4036cbdecae",
           "importsFiles": [
             "scripts/planter.py",
             "scripts/vocal_clock.py"
@@ -37160,7 +37170,7 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "6dd65d5aba44e11442131b6f860dfb58d85a1d57",
+    "commit": "6f1a151d19282b15564c6c2511772c9dc27ea8b1",
     "tracked": 3030
   },
   "landings": [

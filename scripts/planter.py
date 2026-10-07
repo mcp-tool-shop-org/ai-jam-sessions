@@ -174,6 +174,11 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None) -> tuple[dict, dic
         start = s_end - s if kind == "replay" else s_end + s
         if start < 0 or start > c["cut_end"] - MIN_CUT_S:
             raise ValueError(f"{c['id']}: no room for a {s} s {kind}")
+        # placed_start stays, so the cut's shift (placed_start - cut_start) changes by
+        # the same amount and its vowel lands that much later (replay) or earlier
+        # (skip): a replay IS a relative shift between neighbours. Recorded so a heard
+        # replay can be told from a heard late vowel.
+        where["vowel_moved_s"] = round(float(c["cut_start"] - start), 4)
         c["cut_start"] = start
         if "clip_seconds" in c:
             c["clip_seconds"] = end - start
@@ -250,10 +255,21 @@ def load_sources(plan: dict) -> dict[str, np.ndarray]:
     return sources
 
 
-def render(plan: dict, sources: dict, clock: dict | None, mode: str = "warp") -> np.ndarray:
+def render(plan: dict, sources: dict, clock: dict | None, mode: str = "warp", joins: bool = False):
+    """The placed vocal (and, with joins=True, the placer's joins too)."""
     sr = int(plan["sample_rate"])
-    out, _ = vc.place_warp(plan, sources, sr, clock) if mode == "warp" else vc.place_local(plan, sources, sr)
-    return out
+    out, js = vc.place_warp(plan, sources, sr, clock) if mode == "warp" else vc.place_local(plan, sources, sr)
+    return (out, js) if joins else out
+
+
+def run_stretch(placed_joins: list[dict], cut_id: str) -> dict:
+    """The stretch range (warp ratio between vowels) across the placed run that holds
+    `cut_id`: what the rest of a planted run absorbed. Empty in local mode."""
+    me = next((j for j in placed_joins if j["id"] == cut_id), None)
+    if me is None or "run" not in me:
+        return {}
+    ratios = [j["stretch"] for j in placed_joins if j.get("run") == me["run"] and j.get("stretch") is not None]
+    return {"run_stretch_min": min(ratios), "run_stretch_max": max(ratios)} if ratios else {}
 
 
 def _mono(x: np.ndarray) -> np.ndarray:
@@ -345,6 +361,22 @@ def clip_window(t: float, total_s: float, rng: np.random.Generator, clip_s: floa
 
 # ─── the batch ───────────────────────────────────────────────────────────────
 
+def load_plan_clock(plan: dict, mode: str) -> dict | None:
+    """The plan's score clock. In warp mode it decides where runs end (score rests)
+    and the release trim, so a clock the plan names but that is not on disk would
+    silently change the clean render: every plant would be measured against audio
+    that is not the shipped audio. That is refused. A plan with no clock renders
+    without one."""
+    path = plan.get("clock")
+    if not path:
+        return None
+    if isinstance(path, str) and os.path.exists(path):
+        return vc.load_clock(path)
+    if mode == "warp":
+        raise SystemExit(f"the plan's clock {path!r} is not on disk; a warp render without it is not the shipped audio")
+    return None
+
+
 def _plantable(plan: dict, spec: dict, clock: dict | None) -> bool:
     try:
         mutate(plan, spec, clock)
@@ -356,10 +388,10 @@ def _plantable(plan: dict, spec: dict, clock: dict | None) -> bool:
 def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp", seed: int = 7) -> dict:
     import soundfile as sf
     plan = json.load(open(os.path.join(vdir, "plan.json"), encoding="utf-8"))
-    clock = vc.load_clock(plan["clock"]) if isinstance(plan.get("clock"), str) and os.path.exists(plan["clock"]) else None
+    clock = load_plan_clock(plan, mode)
     sources = load_sources(plan)
     sr = int(plan["sample_rate"])
-    clean = render(plan, sources, clock, mode)
+    clean, clean_joins = render(plan, sources, clock, mode, joins=True)
     joins = candidate_joins(plan, clock, mode)
     if not joins:
         raise SystemExit(f"{vdir}: no joins to plant at")
@@ -385,8 +417,14 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
             dropped.append({"spec": spec, "reason": str(exc)})
             continue
         t = where["t"]
-        planted = clean if kind == "none" else render(planted_plan, sources, clock, mode)
+        if kind == "none":
+            planted, placed_joins = clean, clean_joins
+        else:
+            planted, placed_joins = render(planted_plan, sources, clock, mode, joins=True)
         check = verify(kind, clean, planted, sr, t, where.get("lag_s"))
+        timing = {k: where[k] for k in ("vowel_moved_s", "gap_s", "lag_s") if k in where}
+        if mode == "warp" and kind != "none":
+            timing.update(run_stretch(placed_joins, spec["cut_id"]))
         if not check["present"]:
             dropped.append({"spec": spec, "reason": "not measurably as intended", "measured": check["measured"]})
             continue
@@ -397,7 +435,7 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
         kept.append({"clip": name, "kind": kind, "defect": kind in ("replay", "skip", "click"),
                      "t_in_clip": round(t - lo, 4), "severity": spec["severity"], "units": spec["units"],
                      "join_type": spec["join_type"], "cut_id": spec["cut_id"], "chain": proc,
-                     "measured": check["measured"], "spec": spec})
+                     "timing": timing, "measured": check["measured"], "spec": spec})
     with open(os.path.join(out_dir, "labels.jsonl"), "w", encoding="utf-8") as fh:
         for row in kept:
             fh.write(json.dumps(row) + "\n")

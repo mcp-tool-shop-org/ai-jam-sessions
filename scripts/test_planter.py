@@ -202,6 +202,30 @@ def test_replay_and_skip_record_any_gap_before_the_seam():
     assert w["gap_s"] == pytest.approx(0.0, abs=1e-3)
 
 
+def test_replay_and_skip_record_how_far_the_vowel_moved():
+    _, w = pl.mutate(plan_of(), spec("replay", sev=0.1))
+    assert w["vowel_moved_s"] == pytest.approx(0.1)               # later by the replayed span
+    _, w = pl.mutate(plan_of(), spec("skip", sev=0.05))
+    assert w["vowel_moved_s"] == pytest.approx(-0.05)             # earlier by the skipped span
+
+
+@needs_break
+def test_a_warp_replay_reports_the_stretch_its_run_absorbed():
+    q, w = pl.mutate(plan_of(), spec("replay", mode="warp", join_type="inside", sev=0.1))
+    _, joins = pl.render(q, SOURCES, None, "warp", joins=True)
+    got = pl.run_stretch(joins, "v04")
+    assert got and got["run_stretch_min"] < 1.0 <= got["run_stretch_max"] + 1e-9
+
+
+def test_a_named_clock_that_is_missing_is_refused_in_warp_mode():
+    p = plan_of()
+    p["clock"] = "nowhere/score-clock.json"
+    with pytest.raises(SystemExit, match="not on disk"):
+        pl.load_plan_clock(p, "warp")
+    assert pl.load_plan_clock(p, "local") is None
+    assert pl.load_plan_clock(plan_of(), "warp") is None          # no clock named: fine
+
+
 def test_unknown_kind_and_cut_are_refused():
     with pytest.raises(ValueError):
         pl.make_spec("smear", {"cut_id": "v01", "join_type": "boundary"}, 0.1, "local", 0)
@@ -315,3 +339,4 @@ def test_build_writes_labels_and_drops_unplantable_specs(tmp_path):
     assert {r["kind"] for r in rows} <= {"replay", "skip", "sham", "none"}
     assert all((tmp_path / "out" / r["clip"]).is_file() for r in rows)
     assert all(r["defect"] == (r["kind"] in ("replay", "skip", "click")) for r in rows)
+    assert all("vowel_moved_s" in r["timing"] for r in rows if r["kind"] in ("replay", "skip"))
