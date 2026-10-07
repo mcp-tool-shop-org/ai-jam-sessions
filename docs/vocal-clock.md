@@ -326,6 +326,33 @@ First whole-song renders, cross-checked: Amazing Grace's two misses ("snares"
 America: "feet", "self" and "ful" rescued; 7 syllables both instruments call
 off, all in "stress" and the "A-mer-i-ca" passages.
 
+## The phrase-by-phrase pick (2026-10-07)
+
+The Director heard the first whole-song mixes as "a bit jittery at times". The
+word-level pick switches takes at almost every word, and each switch is a
+crossfade between two renders with slightly different tone and level.
+`repin --by-phrase` takes each phrase whole from one take. Syllables are still
+moved onto the clock, but only within that take.
+
+Takes are ranked per phrase (`rank_phrases`):
+
+1. **intelligibility**: the share of the phrase's words a local listener heard,
+   in order (`phrase_scores.py`: Qwen3-Omni Q4 through `llama-server`, the
+   phrase's audio and no lyrics, temperature 0);
+2. syllables already within the gate in the raw take (the fewest moves);
+3. the smallest mean |cents| over the phrase's notes.
+
+The first take in that order that sings every word of the phrase inside the
+word limit is used. A phrase no single take can sing falls back to the
+word-level pick, and the plan's `phrases` records each choice.
+
+The listener was checked for reciting from memory before it was trusted to
+rank. Half a phrase came back as that half, and swapped halves came back
+swapped. But on unclear singing it can fill in a famous line ("America the
+beautiful" for "may God thy gold refine"), which is why it ranks and never
+gates. Measured on the first renders (one placed vocal each): Amazing Grace
+89% of words heard in order, America 75%.
+
 ## Standards compliance
 
 | standard | score | evidence |
