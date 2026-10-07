@@ -275,6 +275,25 @@ export interface ScoreClockEvent {
   midi_tick: number;
   t_midi_sec: number;
   engine_note: { measure: number; hand: "right" | "left"; t_sec: number } | null;
+  /**
+   * The notes after the first that this syllable is held across (a melisma,
+   * `_` in the lyrics), in order. `t_sec` / `midi` above are the first note;
+   * `dur_sec` spans the whole syllable, so the first note's own length is
+   * `melisma[0].t_sec - t_sec`. Absent when the syllable has one note. One
+   * event is one vowel onset: the timing gate and the picker never see these.
+   */
+  melisma?: ScoreClockNote[];
+}
+
+/** A note a held syllable continues onto. */
+export interface ScoreClockNote {
+  midi: number;
+  t_sec: number;
+  t_samples: number;
+  dur_sec: number;
+  anchor: string;
+  midi_tick: number;
+  engine_note: { measure: number; hand: "right" | "left"; t_sec: number } | null;
 }
 
 export interface ScoreClock {
@@ -291,6 +310,12 @@ export interface ScoreClock {
     bed_measures: [number, number];
     measure_starts_sec: Record<string, number>;
     measure_durations_sec: Record<string, number>;
+    /**
+     * "notated": a note ends where the arrangement's note ends, so a rest is
+     * silence on the clock. Absent: legato, every note held to the next onset
+     * (the single-phrase clocks).
+     */
+    durations?: "notated";
   };
   midi: {
     file: string;
@@ -307,16 +332,32 @@ export interface LyricSyllable {
   word: string;
   syllable: number;
   syllables: number;
+  /** A `_` token: the previous syllable is held onto the next melody note. */
+  continues?: true;
 }
 
+/** The lyric token that holds the previous syllable onto the next note. */
+export const HOLD_TOKEN = "_";
+
 /**
- * "A-ma-zing grace how sweet the sound" → one entry per syllable, each
- * knowing which whole word a transcriber will report it inside.
+ * "A-ma-zing grace how sweet the sound" → one entry per melody note, each
+ * knowing which whole word a transcriber will report it inside. A `_` token
+ * holds the previous syllable onto the next note ("A-ma-zing _ grace" sings
+ * "zing" across two notes, as New Britain does).
  */
 export function syllabify(lyrics: string): LyricSyllable[] {
   const out: LyricSyllable[] = [];
   for (const word of lyrics.trim().split(/\s+/)) {
+    if (word === HOLD_TOKEN) {
+      const prev = out[out.length - 1];
+      if (!prev) throw new Error(`lyrics cannot start with '${HOLD_TOKEN}': there is no syllable to hold`);
+      out.push({ lyric: prev.lyric, word: prev.word, syllable: prev.syllable, syllables: prev.syllables, continues: true });
+      continue;
+    }
     const parts = word.split("-");
+    if (parts.some((p) => p === "" || p === HOLD_TOKEN)) {
+      throw new Error(`lyric '${word}': empty syllable or '${HOLD_TOKEN}' inside a word; hold a syllable with a separate '${HOLD_TOKEN}' token`);
+    }
     const whole = parts.join("");
     parts.forEach((p, i) => out.push({ lyric: p, word: whole, syllable: i, syllables: parts.length }));
   }
@@ -336,7 +377,17 @@ export interface DeriveOptions {
   startMeasure: number;
   endMeasure: number;
   sampleRate?: number;
+  /**
+   * End each note where the arrangement's own note ends, so a notated rest is
+   * silence on the clock (a full song: breaths between phrases, the piano's
+   * interludes between verses). Default false: legato, each note held to the
+   * next onset, which is what the single-phrase clocks were derived with.
+   */
+  rests?: boolean;
 }
+
+/** A gap shorter than this between a note's end and the next onset is legato, not a rest. */
+export const REST_MIN_SEC = 0.05;
 
 /**
  * Derive the clock: melody notes come from the MIDI track (the tick map);
@@ -359,14 +410,19 @@ export function deriveScoreClock(song: SongEntry, opts: DeriveOptions): ScoreClo
   const starts = new Map(schedule.measureStarts.map((m) => [m.number, m]));
 
   const syllables = syllabify(opts.lyrics);
+  const rests = opts.rests ?? false;
   const lastTick = (opts.endMeasure) * info.ticksPerMeasure;
   const melody = track.notes.filter((n) => n.tick < lastTick);
-  if (melody.length < syllables.length + 1) {
-    throw new Error(`melody track has ${melody.length} notes before measure ${opts.endMeasure + 1}; need ${syllables.length + 1} (syllables + terminator)`);
+  // Legato needs one note past the last syllable (its onset ends the last
+  // note). With notated rests every note carries its own end.
+  if (melody.length < syllables.length + (rests ? 0 : 1)) {
+    throw new Error(rests
+      ? `melody track has ${melody.length} notes before measure ${opts.endMeasure + 1}; need ${syllables.length} (one per syllable and '${HOLD_TOKEN}')`
+      : `melody track has ${melody.length} notes before measure ${opts.endMeasure + 1}; need ${syllables.length + 1} (syllables + terminator)`);
   }
 
   const events: ScoreClockEvent[] = [];
-  const onsetFor = (n: MidiMelodyNote): { t: number; anchor: string; engine: ScoreClockEvent["engine_note"] } => {
+  const onsetFor = (n: MidiMelodyNote): { t: number; dur: number | null; anchor: string; engine: ScoreClockEvent["engine_note"] } => {
     const measure = Math.floor(n.tick / info.ticksPerMeasure) + 1;
     const frac = (n.tick % info.ticksPerMeasure) / info.ticksPerMeasure;
     const bar = starts.get(measure);
@@ -377,7 +433,7 @@ export function deriveScoreClock(song: SongEntry, opts: DeriveOptions): ScoreClo
       // downbeat, inside the piano's rest.
       const next = starts.get(measure + 1);
       if (!next) throw new Error("pickup needs a following measure");
-      return { t: next.start - bar.dur / 3, anchor: "hymn-pickup-during-piano-rest", engine: null };
+      return { t: next.start - bar.dur / 3, dur: null, anchor: "hymn-pickup-during-piano-rest", engine: null };
     }
     const candidates = schedule.notes.filter((s) => s.measure === measure && s.midi === n.midi);
     if (candidates.length === 0) {
@@ -393,20 +449,48 @@ export function deriveScoreClock(song: SongEntry, opts: DeriveOptions): ScoreClo
     if (ties.length > 0) throw new Error(`ambiguous piano onset for melody tick ${n.tick} (midi ${n.midi}, m${measure})`);
     return {
       t: best.t,
+      dur: best.dur,
       anchor: `piano-onset:m${measure}:${best.hand}:beat${best.beatIndex}`,
       engine: { measure, hand: best.hand, t_sec: roundToSample(best.t, sr) },
     };
   };
 
   const onsets = melody.slice(0, syllables.length + 1).map(onsetFor);
+  const spanOf = (k: number): { t: number; end: number } => {
+    const t = roundToSample(onsets[k].t, sr);
+    const next = k + 1 < onsets.length ? roundToSample(onsets[k + 1].t, sr) : null;
+    if (next !== null && next <= t) throw new Error(`non-increasing clock at event ${k}: ${t} -> ${next}`);
+    let end = next;
+    const own = onsets[k].dur;
+    if (rests && own !== null) {
+      const noteEnd = roundToSample(t + own, sr);
+      if (next === null || noteEnd < next - REST_MIN_SEC) end = noteEnd;
+    }
+    if (end === null) throw new Error(`the last note (event ${k}) has no end: a pickup cannot close a song`);
+    return { t, end };
+  };
   for (let k = 0; k < syllables.length; k++) {
     const n = melody[k];
     const s = syllables[k];
-    const t = roundToSample(onsets[k].t, sr);
-    const tNext = roundToSample(onsets[k + 1].t, sr);
-    if (tNext <= t) throw new Error(`non-increasing clock at event ${k}: ${t} -> ${tNext}`);
+    const { t, end } = spanOf(k);
+    if (s.continues) {
+      const prev = events[events.length - 1];
+      const prevEnd = roundToSample(prev.t_sec + prev.dur_sec, sr);
+      if (prevEnd !== t) throw new Error(`a rest inside a held syllable at note ${k} ('${s.lyric}'): ${prevEnd} -> ${t}`);
+      (prev.melisma ??= []).push({
+        midi: n.midi,
+        t_sec: t,
+        t_samples: Math.round(t * sr),
+        dur_sec: roundToSample(end - t, sr),
+        anchor: onsets[k].anchor,
+        midi_tick: n.tick,
+        engine_note: onsets[k].engine,
+      });
+      prev.dur_sec = roundToSample(end - prev.t_sec, sr);
+      continue;
+    }
     events.push({
-      id: `v${String(k).padStart(2, "0")}`,
+      id: `v${String(events.length).padStart(2, "0")}`,
       lyric: s.lyric,
       word: s.word,
       syllable: s.syllable,
@@ -414,7 +498,7 @@ export function deriveScoreClock(song: SongEntry, opts: DeriveOptions): ScoreClo
       midi: n.midi,
       t_sec: t,
       t_samples: Math.round(t * sr),
-      dur_sec: roundToSample(tNext - t, sr),
+      dur_sec: roundToSample(end - t, sr),
       anchor: onsets[k].anchor,
       midi_tick: n.tick,
       t_midi_sec: +(n.tick * secPerTick).toFixed(6),
@@ -444,6 +528,7 @@ export function deriveScoreClock(song: SongEntry, opts: DeriveOptions): ScoreClo
       bed_measures: [opts.startMeasure, opts.endMeasure],
       measure_starts_sec: measureStarts,
       measure_durations_sec: measureDurs,
+      ...(rests ? { durations: "notated" as const } : {}),
     },
     midi: {
       file: opts.midiFile,

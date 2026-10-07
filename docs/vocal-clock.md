@@ -221,6 +221,31 @@ timing PASS worst **6.05 ms**, no gaps at any join, order PASS, one voice,
 lengths exact; pitch PASS 14/14 (two WARNs at +28 c), global **−2.7 c**,
 scatter 14 c. `scripts/sing_clock.py` runs the whole chain in one command.
 
+## A whole song: held syllables, rests and segments (2026-10-07)
+
+The clocks above are one phrase, sung legato: every note is held to the next
+onset. A whole song (several verses with the piano between them) needs three
+more things, all off by default so the phrase clocks derive byte for byte as
+before:
+
+- **Held syllables.** A `_` token in `--lyrics` holds the previous syllable
+  onto the next melody note: `A-ma-zing _ grace` sings "zing" across two notes,
+  as New Britain does. The clock keeps one event per syllable (one vowel onset,
+  so the timing gate and the picker are unchanged) and lists the extra notes
+  in the event's `melisma`. The exporter sends them as SoulX continuation
+  notes (note_type 3, same phonemes), and the pitch gate judges each note
+  against its own pitch (`v03`, `v03.1`, ...).
+- **Notated rests.** `build-score-clock.mjs --rests` ends each note where the
+  arrangement's own note ends, so a breath or an interlude is silence on the
+  clock (`clock.durations: "notated"`), and the exporter writes `<SP>` there.
+  A rest inside a held syllable is refused.
+- **Segments.** `export_soulx_target.py --segment-gap S` splits the target at
+  every rest of at least S seconds. The segments tile the clock, with each
+  boundary in the middle of its rest on a 20 ms frame, so the model's merged
+  output still lands on the clock. SoulX renders a segment at a time, so its
+  memory grows with the phrase, not the song (one 35 s phrase: 2.8 GB to load,
+  3.4 GB reserved to render, measured on the RTX 5090).
+
 ## Standards compliance
 
 | standard | score | evidence |

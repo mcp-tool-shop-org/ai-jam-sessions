@@ -949,16 +949,32 @@ def nucleus_window(onset: float, offset: float) -> tuple[float, float]:
     return a, b
 
 
-def pitch_rows(clock: dict, trk: dict, onsets: dict | None = None) -> list[dict]:
+def sung_notes(clock: dict, onsets: dict | None = None) -> list[dict]:
+    """Every note the pitch gate judges, with the span it is judged over: one per
+    syllable, plus one per note a held syllable continues onto (the clock's
+    `melisma`, ids `v03.1`, `v03.2`, ...). A syllable's first note ends where its
+    held note begins, so each note is judged against its own pitch."""
     evs = clock["events"]
-    rows = []
+    out = []
     for k, ev in enumerate(evs):
-        t_on = float((onsets or {}).get(ev["id"], ev["t_sec"]))
-        t_off = float(ev["t_sec"]) + float(ev["dur_sec"])
+        t_end = float(ev["t_sec"]) + float(ev["dur_sec"])
         if k + 1 < len(evs):
             # the next syllable's voiced consonant (a nasal, a glide) carries the
             # NEXT pitch and begins up to a lead-in before its vowel: stop there
-            t_off = min(t_off, float((onsets or {}).get(evs[k + 1]["id"], evs[k + 1]["t_sec"])) - NUCLEUS_NEXT_GUARD_S)
+            t_end = min(t_end, float((onsets or {}).get(evs[k + 1]["id"], evs[k + 1]["t_sec"])) - NUCLEUS_NEXT_GUARD_S)
+        held = ev.get("melisma") or []
+        spans = [(ev["id"], int(ev["midi"]), float((onsets or {}).get(ev["id"], ev["t_sec"])))]
+        spans += [(f"{ev['id']}.{j}", int(h["midi"]), float(h["t_sec"])) for j, h in enumerate(held, 1)]
+        for i, (nid, midi, t_on) in enumerate(spans):
+            t_off = spans[i + 1][2] if i + 1 < len(spans) else t_end
+            out.append({"id": nid, "lyric": ev["lyric"], "midi": midi, "t_on": t_on, "t_off": t_off})
+    return out
+
+
+def pitch_rows(clock: dict, trk: dict, onsets: dict | None = None) -> list[dict]:
+    rows = []
+    for ev in sung_notes(clock, onsets):
+        t_on, t_off = ev["t_on"], ev["t_off"]
         a, b = nucleus_window(t_on, t_off)
         sel = np.where((trk["times"] >= a) & (trk["times"] <= b))[0]
         f0 = trk["f0"][sel]

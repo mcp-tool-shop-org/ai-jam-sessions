@@ -5,6 +5,7 @@
  *
  *   pnpm exec tsx scripts/build-score-clock.mjs [--song amazing-grace]
  *       [--track TUBULARBEL] [--measures 1-10] [--out scores/...json] [--check]
+ *       [--rests]   (notes end where the arrangement's notes end; '_' in --lyrics holds a syllable)
  *
  * `--check` re-derives and exits 1 if the committed file differs (CI-style
  * drift guard). See src/vocal/score-clock.ts for what the clock means.
@@ -25,6 +26,9 @@ const track = opt("track", "TUBULARBEL");
 const [startMeasure, endMeasure] = opt("measures", "1-10").split("-").map(Number);
 const out = opt("out", join("scores", `${songId}.score-clock.v1.json`));
 const check = args.includes("--check");
+// Notated rests: each note ends where the arrangement's note ends (a full song
+// with breaths and interludes). Without it, every note is held to the next onset.
+const rests = args.includes("--rests");
 const listTracks = args.includes("--list-tracks");
 // Lyrics: one token per melody note, syllables joined by "-" inside a word
 // ("A-ma-zing grace how sweet…"). Overrides the tune registered in tunes.ts.
@@ -70,6 +74,7 @@ const clock = deriveScoreClock(song, {
   lyrics,
   startMeasure,
   endMeasure,
+  rests,
 });
 const text = JSON.stringify(clock, null, 2) + "\n";
 

@@ -70,6 +70,21 @@ describe("syllabify", () => {
   });
 });
 
+describe("syllabify: held syllables", () => {
+  it("'_' holds the previous syllable onto the next note", () => {
+    const s = syllabify("A-ma-zing _ grace");
+    expect(s).toHaveLength(5);
+    expect(s[3]).toEqual({ lyric: "zing", word: "Amazing", syllable: 2, syllables: 3, continues: true });
+    expect(s[4]).toEqual({ lyric: "grace", word: "grace", syllable: 0, syllables: 1 });
+  });
+
+  it("refuses a hold with nothing to hold, or a hold inside a word", () => {
+    expect(() => syllabify("_ grace")).toThrow(/cannot start with '_'/);
+    expect(() => syllabify("A-ma-_ grace")).toThrow(/inside a word/);
+    expect(() => syllabify("A--ma")).toThrow(/empty syllable/);
+  });
+});
+
 describe("detectMelodyTrack", () => {
   it("prefers a track named 'treble:' over 'bass:' for Gymnopédie", () => {
     const { tracks } = parseMidiTracks(readFileSync(MIDI));
@@ -133,6 +148,48 @@ describe("deriveScoreClock", () => {
     expect(clock.events[1].midi_tick).toBe(1152);
     expect(clock.events[1].t_midi_sec).toBeCloseTo(3, 6);
     expect(clock.midi.ticks_per_measure).toBe(1152);
+  });
+
+  const derive = (lyrics: string, rests?: boolean) => deriveScoreClock(song, {
+    midiFile: "x.mid", midiBytes: readFileSync(MIDI), melodyTrack: "bass:", lyrics, startMeasure: 1, endMeasure: 8, rests,
+  });
+
+  it("is legato by default: each note is held to the next onset, and the clock says nothing about durations", () => {
+    const clock = derive(LYRICS);
+    expect(clock.events.map((e) => e.dur_sec)).toEqual([5, 5, 5, 5]);
+    expect(clock.clock.durations).toBeUndefined();
+  });
+
+  it("with notated rests a note ends where the arrangement's note ends", () => {
+    // Gymnopédie's bass is a dotted half (3 s at 60 BPM) in each 5 s measure: 2 s of rest.
+    const clock = derive(LYRICS, true);
+    expect(clock.events.map((e) => +e.t_sec.toFixed(4))).toEqual([0, 5, 10, 15]);
+    expect(clock.events.map((e) => e.dur_sec)).toEqual([3, 3, 3, 3]);
+    expect(clock.clock.durations).toBe("notated");
+    expect(clock.last_event_end_sec).toBeCloseTo(18, 4);
+  });
+
+  it("a held syllable is one event, with the notes it continues onto", () => {
+    const clock = derive("Gym-no _ pe");
+    expect(clock.events.map((e) => e.id)).toEqual(["v00", "v01", "v02"]);
+    const no = clock.events[1];
+    expect([no.lyric, no.midi, no.t_sec, no.dur_sec]).toEqual(["no", 38, 5, 10]);
+    expect(no.melisma).toHaveLength(1);
+    expect(no.melisma![0]).toMatchObject({ midi: 43, t_sec: 10, dur_sec: 5, midi_tick: 2304 });
+    expect(no.melisma![0].anchor.startsWith("piano-onset:m3:")).toBe(true);
+    expect(clock.events[0].melisma).toBeUndefined();
+    expect(clock.events[2].t_sec).toBe(15);
+  });
+
+  it("refuses a rest inside a held syllable", () => {
+    expect(() => derive("Gym-no _ pe", true)).toThrow(/a rest inside a held syllable/);
+  });
+
+  it("with notated rests needs no terminator note, and still refuses too few notes", () => {
+    const four = derive(LYRICS, true);
+    expect(four.events).toHaveLength(4);
+    expect(() => derive("a b c d e f g h i", true)).toThrow(/need 9 \(one per syllable/);
+    expect(() => derive("a b c d e f g h i")).toThrow(/need 10 \(syllables \+ terminator\)/);
   });
 
   it("fails closed on a melody track that is not there", () => {
