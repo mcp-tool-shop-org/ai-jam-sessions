@@ -506,6 +506,40 @@ body.panel-mode #app {
   grid-template-columns: 1fr;
   grid-template-rows: 44px 1fr;
 }
+/* Review mode (review.ts) hides the roll the same way, and reuses the panel's rail/main styles. */
+body.review-mode #piano-roll-container,
+body.review-mode #transport,
+body.review-mode #keyboard-area,
+body.review-mode #tuning-audit,
+body.review-mode #inspector { display: none !important; }
+body.review-mode .instr-only,
+body.review-mode .vocal-only { display: none !important; }
+body.review-mode #app { grid-template-columns: 1fr; grid-template-rows: 44px 1fr; }
+#review-view { display: none; }
+body.review-mode #review-view {
+  display: grid; grid-template-columns: 280px 1fr; grid-column: 1 / -1; grid-row: 2;
+  min-height: 0; min-width: 0; overflow: hidden;
+}
+.review-field {
+  width: 100%; margin: 0 0 8px; background: var(--surface2); color: var(--text);
+  border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; font-family: var(--font); font-size: 12px;
+}
+.review-canvas { width: 100%; height: auto; display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; margin: 0 0 6px; }
+.panel-transport button.review-mark-btn { background: var(--danger-dim); border-color: var(--danger-border); color: var(--danger); font-weight: 700; }
+#review-now { font-size: 22px; font-weight: 650; min-height: 32px; margin: 6px 0; }
+#review-marks { display: flex; flex-direction: column; gap: 8px; margin: 8px 0; }
+.review-card { border: 1px solid var(--border); border-radius: 8px; background: var(--surface); padding: 10px; }
+.review-card.active { border-color: var(--danger-border); box-shadow: inset 0 0 0 1px var(--danger-border); }
+.review-card-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.review-card-top .panel-note { margin: 0; }
+.review-num { color: var(--danger); }
+.review-chips { margin: 8px 0; }
+.review-chips .panel-chip { cursor: pointer; background: transparent; color: var(--text); font-family: var(--font); }
+.review-chips .panel-chip.on { background: var(--danger); border-color: var(--danger); color: var(--bg); }
+.review-card textarea {
+  width: 100%; min-height: 34px; resize: vertical; background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 4px; padding: 6px 8px; font-family: var(--font); font-size: 13px;
+}
 #panel-view { display: none; }
 body.panel-mode #panel-view {
   display: grid;
@@ -783,6 +817,7 @@ body.vocal-mode .pr-note-vocal .pr-vowel-label { display: block; }
       <button class="mode-btn active" id="mode-instrument" data-tip="Instrument synthesis" aria-pressed="true">Instr</button>
       <button class="mode-btn" id="mode-vocal" data-tip="Vocal synthesis" aria-pressed="false"><svg class="icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="6" y="1.6" width="4" height="7.2" rx="2"/><path d="M4 7.6a4 4 0 0 0 8 0"/><path d="M8 11.6v2.8"/><path d="M5.6 14.4h4.8"/></svg> Vocal</button>
       <button class="mode-btn" id="mode-panel" data-tip="Human-audio composition panel" aria-pressed="false">Panel</button>
+      <button class="mode-btn" id="mode-review" data-tip="Listening review: mark what sounds wrong in a sung mix" aria-pressed="false">Review</button>
     </div>
 
     <div class="sep"></div>
@@ -932,6 +967,63 @@ body.vocal-mode .pr-note-vocal .pr-vowel-label { display: block; }
         </div>
       </div>
       <div id="panel-outcome"></div>
+    </section>
+  </div>
+
+  <!-- ─── Review mode: the listening review (review.ts) ─── -->
+  <div id="review-view">
+    <aside class="panel-rail" aria-label="Review setup">
+      <h2>Listening review</h2>
+      <p class="panel-note">Open a folder written by <code>python scripts/review_marks.py page</code>. Play the mix, and press <b>M</b> wherever something sounds wrong.</p>
+      <div class="panel-transport">
+        <button type="button" id="review-open">Open review folder</button>
+        <input type="file" id="review-folder" webkitdirectory multiple hidden>
+      </div>
+      <select id="review-entry" class="review-field" aria-label="Mix to review" disabled></select>
+      <h2>Who is listening</h2>
+      <input id="review-who" class="review-field" placeholder="Your name" aria-label="Your name">
+      <select id="review-level" class="review-field" aria-label="Your level"></select>
+      <h2>Listening on</h2>
+      <select id="review-device" class="review-field" aria-label="What you are listening on"></select>
+      <div class="panel-transport">
+        <button type="button" id="review-level-check">Play level check</button>
+        <button type="button" id="review-level-ok">This volume is comfortable</button>
+      </div>
+      <p class="panel-note" id="review-level-note">The level check plays at the same loudness as every mix.</p>
+      <p class="panel-note" id="review-level-state"></p>
+      <div class="panel-transport">
+        <button type="button" id="review-start">Start session</button>
+      </div>
+      <p class="panel-note" id="review-session"></p>
+      <h2>Marks</h2>
+      <div class="panel-transport">
+        <button type="button" id="review-export">Export marks</button>
+        <span class="panel-note" id="review-count"></span>
+      </div>
+    </aside>
+    <section class="panel-main" aria-label="Review">
+      <p id="review-status" class="panel-banner empty" hidden></p>
+      <p class="panel-note">The whole mix (click to jump; ticks under the wave are switches between takes)</p>
+      <canvas id="review-over" class="review-canvas" width="960" height="110"></canvas>
+      <p class="panel-note">Around the playhead (each block is one sung syllable, coloured by the take it came from)</p>
+      <canvas id="review-zoom" class="review-canvas" width="960" height="150"></canvas>
+      <div class="panel-transport">
+        <button type="button" id="review-back">⏪ 5 s</button>
+        <button type="button" id="review-play">▶ Play</button>
+        <button type="button" id="review-fwd">5 s ⏩</button>
+        <button type="button" id="review-mark" class="review-mark-btn">Mark (M)</button>
+        <button type="button" data-review-src="mix" class="active">Mix</button>
+        <button type="button" data-review-src="vocal">Vocal only (V)</button>
+        <button type="button" data-review-rate="1" class="active">1×</button>
+        <button type="button" data-review-rate="0.75">¾×</button>
+        <button type="button" data-review-rate="0.5">½×</button>
+        <label class="panel-note"><input type="checkbox" id="review-pause" checked> pause when I mark</label>
+        <span class="panel-note" id="review-clock"></span>
+      </div>
+      <p class="panel-note" id="review-loudness"></p>
+      <div id="review-now"></div>
+      <div id="review-marks"></div>
+      <p class="panel-note">Space plays · ←/→ skip 2 s (Shift 5 s) · R replays the selected mark · slow speeds keep the pitch.</p>
     </section>
   </div>
 

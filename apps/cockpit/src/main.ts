@@ -82,6 +82,7 @@ import {
   bindPanel, enterPanelMode, leavePanelMode, handlePanelKey,
   rememberScoreMode, getLastScoreMode,
 } from "./panel.js";
+import { bindReview, enterReviewMode, leaveReviewMode, handleReviewKey, openUrl as openReviewUrl } from "./review.js";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -180,7 +181,10 @@ let synth: Synth;
 const sampler: SalamanderSampler = createSalamanderSampler();
 let vocalSynth: VocalSynth;
 let transport: Transport;
-let mode: "instrument" | "vocal" | "panel" = "instrument";
+type UiMode = "instrument" | "vocal" | "panel" | "review";
+let mode: UiMode = "instrument";
+/** The panel and the review have no score of their own: settings follow the last score mode. */
+const scoreModeOf = (m: UiMode): "instrument" | "vocal" => (m === "instrument" || m === "vocal" ? m : getLastScoreMode());
 let looping = false;
 let bpm = DEFAULT_BPM;
 const heldKeys = new Set<string>();
@@ -416,7 +420,7 @@ function saveStateNow() {
     voice: ($("sel-vocal-voice") as HTMLSelectElement).value,
     tuning: ($("sel-tuning") as HTMLSelectElement).value,
     refPitch: synth.getRefPitch(),
-    mode: mode === "panel" ? getLastScoreMode() : mode,
+    mode: scoreModeOf(mode),
     // Persist the actual cent offsets, not just the "custom" label — a
     // reload otherwise re-labels the badge "Custom" but plays 12-TET
     // (F-A1-004).
@@ -823,6 +827,7 @@ function populateSelectors() {
   $("mode-instrument").addEventListener("click", () => setMode("instrument"));
   $("mode-vocal").addEventListener("click", () => setMode("vocal"));
   $("mode-panel").addEventListener("click", () => setMode("panel"));
+  $("mode-review").addEventListener("click", () => setMode("review"));
 
   const ts = $("sel-tuning") as HTMLSelectElement;
   for (const id of TUNING_IDS) {
@@ -858,11 +863,12 @@ function populateSelectors() {
 
 // ─── Mode Switching ──────────────────────────────────────────────────────────
 
-function setMode(m: "instrument" | "vocal" | "panel") {
+function setMode(m: UiMode) {
   if (m === mode) return;
   panic();
   if (mode === "instrument" || mode === "vocal") rememberScoreMode(mode);
   if (mode === "panel" && m !== "panel") leavePanelMode();
+  if (mode === "review" && m !== "review") leaveReviewMode();
   mode = m;
   document.body.classList.toggle("vocal-mode", m === "vocal");
   $("mode-instrument").classList.toggle("active", m === "instrument");
@@ -870,6 +876,7 @@ function setMode(m: "instrument" | "vocal" | "panel") {
   $("mode-instrument").setAttribute("aria-pressed", String(m === "instrument"));
   $("mode-vocal").setAttribute("aria-pressed", String(m === "vocal"));
   if (m === "panel") enterPanelMode();
+  else if (m === "review") enterReviewMode();
   else {
     leavePanelMode();
     rerenderAllNotes();
@@ -2517,6 +2524,10 @@ function buildKeyboard() {
       if (handlePanelKey(e)) e.preventDefault();
       return;
     }
+    if (mode === "review") {
+      if (handleReviewKey(e)) e.preventDefault();
+      return;
+    }
 
     // Undo/redo (Wave C1) — carved out of the Ctrl/Cmd-bail below so
     // Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y (+ Cmd on mac, via metaKey) reach the
@@ -2714,7 +2725,7 @@ function buildKeyboard() {
   });
 
   window.addEventListener("keyup", (e) => {
-    if (mode === "panel") return;
+    if (mode === "panel" || mode === "review") return;
     // Lens-J findings 2/3 — the tool-hold release check runs BEFORE the
     // isTypingTarget bail, and checks e.code (physical KeyA — see the
     // matching keydown branch's own rationale above), not e.key: releasing
@@ -3817,7 +3828,7 @@ function clearTuningStatus() {
  *  "before" and "after" snapshot of exactly the same shape and hand both
  *  to applySettings() below. */
 function captureSettings(): ImportSettings {
-  const scoreMode = mode === "panel" ? getLastScoreMode() : mode;
+  const scoreMode = scoreModeOf(mode);
   return {
     mode: scoreMode,
     bpm,
@@ -4172,7 +4183,7 @@ declare global {
       play: () => void;
       stop: () => void;
       panic: () => void;
-      setMode: (m: "instrument" | "vocal" | "panel") => void;
+      setMode: (m: UiMode) => void;
       getScore: () => Note[];
       addNote: (n: NoteInit) => void;
       undo: () => void;
@@ -4199,6 +4210,20 @@ async function boot() {
     },
     voiceId: () => ($("sel-voice") as HTMLSelectElement).value as VoiceId,
   });
+  bindReview({
+    ensureAudio: async () => {
+      await ensureAudioUnlocked();
+      const ctx = synth.getContext();
+      if (!ctx) throw new Error("audio context unavailable");
+      return ctx;
+    },
+  });
+  // ?review=<folder URL> opens the listening review on that folder.
+  const reviewUrl = new URLSearchParams(location.search).get("review");
+  if (reviewUrl) {
+    setMode("review");
+    void openReviewUrl(reviewUrl);
+  }
 
   // Expose LLM-facing API
   window.__cockpit = {
