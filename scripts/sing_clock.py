@@ -69,6 +69,8 @@ def main() -> int:
     ap.add_argument("--takes", type=int, default=8)
     ap.add_argument("--whole-words", action="store_true", help="sing multi-syllable words as one legato word (default: every syllable re-articulated so joins can fall between syllables)")
     ap.add_argument("--pitch-shift", type=int, default=0)
+    ap.add_argument("--by-phrase", action="store_true", help="pick one take per phrase, ranked by a local listener's intelligibility, then timing, then pitch (phrase_scores.py)")
+    ap.add_argument("--phrase-scores", help="reuse a phrase_scores.py output instead of scoring the takes (needs the local listener otherwise)")
     ap.add_argument("--aligner", action="store_true", help="cross-check the placed vocal's onsets with the singing forced aligner (onset_aligner.py, HubertFA)")
     ap.add_argument("--segment-gap", type=float, help="export the target in phrase segments split at rests of at least this many seconds (a whole song; must match how the takes were rendered)")
     ap.add_argument("--transcribe", action="store_true", help="also upload + transcribe the placed stem on Comfy Cloud (order / one-voice gates)")
@@ -111,6 +113,12 @@ def main() -> int:
 
     plan = os.path.join(out, "plan.json")
     cmd = [PY, vc, "repin", "--clock", clock, "--out", plan]
+    if a.by_phrase:
+        scores = a.phrase_scores or os.path.join(out, "phrase-scores.json")
+        if not a.phrase_scores:
+            if run([PY, os.path.join(HERE, "phrase_scores.py"), "--clock", clock, "--run", out, "--out", scores, "--start-server"]).returncode:
+                return 2
+        cmd += ["--by-phrase", "--phrase-scores", scores]
     if not a.whole_words:
         cmd.append("--split-words")
     for c in candidates:

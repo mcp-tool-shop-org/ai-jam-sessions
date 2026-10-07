@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — the phrase-by-phrase pick
+- `vocal_clock.py repin --by-phrase` (and `sing_clock.py --by-phrase`) picks one take per phrase
+  instead of one per word, so a phrase is never stitched from several renders: a join between
+  takes, with their different tone and level, made the word-level pick sound jittery. Takes are
+  ranked per phrase by intelligibility, then notes the pitch gate would fail, then syllables
+  already in the gate; the first
+  that sings every word of the phrase inside the word limit is used, and a phrase no single take
+  can sing falls back to the word-level pick (the plan's `phrases` says which).
+- `scripts/phrase_scores.py` scores every take per phrase: a local listener (Qwen3-Omni through
+  llama.cpp's `llama-server`, given no lyrics) and the pitch gate's tracker. The listener only
+  ranks takes: it writes what is sung on clear audio, but can fill in a famous line on unclear
+  audio, so it never passes or fails one.
+
 ### Added — the timing gate's second instrument
 - `vocal_clock.py verify --aligner` (and `sing_clock.py --aligner`) cross-checks every syllable
   with the singing forced aligner (HubertFA via `onset_aligner.align_phrases`, phrase by phrase).

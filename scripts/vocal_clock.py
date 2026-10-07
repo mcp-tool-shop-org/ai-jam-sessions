@@ -462,7 +462,53 @@ DIP_CLEAR_DB = 12.0          # an onset preceded by at least this much dip is "c
 WORD_INTERNAL_MAX_MS = 35.0  # a word is usable from a take only if its syllables sit this close to the clock relative to each other
 
 
-def repin_words(clock: dict, candidates: list[dict], total_seconds_of: dict[str, float], split_words: bool = False) -> dict:
+def take_name(key: str) -> str:
+    """A take's name as phrase scores record it: its folder (take-07), not its path."""
+    return os.path.basename(os.path.dirname(key.replace("\\", "/"))) or key
+
+
+def rank_phrases(clock: dict, candidates: list[dict], scores: dict | None = None, gap: float = 0.3) -> list[dict]:
+    """For each phrase (the clock split at its rests, as onset_aligner.phrase_spans),
+    the takes in the order a phrase-by-phrase pick prefers them:
+
+      1. intelligibility: the share of the phrase's words a local transcriber
+         heard in order (phrase_scores.py), so a phrase the listener can follow
+         beats one with a better onset;
+      2. the fewest notes the pitch gate would fail, then the smallest mean
+         |cents|: a wrong note stays audible, while timing is moved onto the
+         clock afterwards (ranking timing before pitch took the first Amazing
+         Grace run from 8 pitch fails to 14);
+      3. syllables already within the gate in the raw take, so the phrase needs
+         the fewest moves.
+
+    Without scores, timing alone."""
+    import onset_aligner
+    spans = onset_aligner.phrase_spans(clock, gap)
+    takes = (scores or {}).get("takes", {})
+    out = []
+    for i, (lo, hi, groups) in enumerate(spans):
+        ids = [e["id"] for g in groups for e in g]
+        ranked = []
+        for ci, c in enumerate(candidates):
+            tab = {r["id"]: r for r in c["rows"]}
+            within = sum(1 for k in ids if tab.get(k, {}).get("t_vowel") is not None
+                         and abs(float(tab[k]["t_vowel"]) - float(tab[k]["t_score"])) * 1000.0 <= GATE_MS)
+            ph = (takes.get(take_name(c["key"]), {}).get("phrases") or {}).get(str(i)) or {}
+            intel = ph.get("intelligibility")
+            cents = ph.get("mean_abs_cents")
+            fails = ph.get("pitch_fails")
+            info = {"take": take_name(c["key"]), "intelligibility": intel, "pitch_fails": fails, "mean_abs_cents": cents,
+                    "within_gate": within, "of": len(ids)}
+            ranked.append(((-(intel if intel is not None else 0.0), fails if fails is not None else 0,
+                            cents if cents is not None else 0.0, -within, ci), ci, info))
+        ranked.sort(key=lambda r: r[0])
+        out.append({"index": i, "start": round(lo, 3), "end": round(hi, 3), "ids": ids,
+                    "ranked": [{"candidate": ci, **info} for _, ci, info in ranked]})
+    return out
+
+
+def repin_words(clock: dict, candidates: list[dict], total_seconds_of: dict[str, float], split_words: bool = False,
+                phrases: list[dict] | None = None) -> dict:
     """Word-level bag of takes. A sung word is legato inside (portamento between
     its syllables — measured on SoulX take-01: "A"→"ma" glides Bb3→Eb4 over
     180 ms with no dip), so cutting inside a word breaks the line. Instead,
@@ -473,7 +519,14 @@ def repin_words(clock: dict, candidates: list[dict], total_seconds_of: dict[str,
     `candidates`: [{"key": take path, "rows": verify table}]. Returns a plan
     whose `cuts` has one entry per EVENT (so the gate can address every
     syllable) but interior syllables share their word's clip (`word_clip_id`);
-    placement places each word clip once."""
+    placement places each word clip once.
+
+    `phrases` (rank_phrases): pick by phrase instead. Each phrase takes the first
+    take in its ranking that sings every word of the phrase inside the word limit,
+    so a phrase is never stitched from several renders: a join between takes, with
+    their different tone and level, is what made the word-level pick sound jittery.
+    A phrase no single take can sing falls back to the word-level choice, and the
+    plan says so."""
     evs = clock["events"]
     total = float(clock["total_seconds"])
     groups: list[list[int]] = []
@@ -483,22 +536,51 @@ def repin_words(clock: dict, candidates: list[dict], total_seconds_of: dict[str,
         else:
             groups[-1].append(k)
     tables = [{r["id"]: r for r in c["rows"]} for c in candidates]
-    chosen = []   # per group: (candidate index, internal_ms, e0)
-    for g in groups:
-        best = None
-        for ci, tab in enumerate(tables):
-            vow = [tab.get(evs[k]["id"], {}).get("t_vowel") for k in g]
-            if any(v is None for v in vow):
+
+    def word_in(ci: int, g: list[int]):
+        """(candidate, internal_ms, e0, score) for word g sung by take ci, or None if undated."""
+        tab = tables[ci]
+        vow = [tab.get(evs[k]["id"], {}).get("t_vowel") for k in g]
+        if any(v is None for v in vow):
+            return None
+        errs = [float(v) - float(evs[k]["t_sec"]) for v, k in zip(vow, g)]
+        internal = max(abs(e - errs[0]) for e in errs) * 1000.0
+        # tightest inside the word first; among equals, the take that needs the
+        # smallest shift (least splicing), then the earlier take
+        dips = [tab[evs[k]["id"]].get("dip_db") for k in g]
+        clarity = min((d if d is not None else 0.0) for d in dips)      # weakest onset in the word
+        return (ci, internal, errs[0], (round(internal, 1), -min(clarity, DIP_CLEAR_DB), round(abs(errs[0]) * 1000, 1)))
+
+    forced: dict[int, tuple] = {}      # group index -> word_in() of the phrase's take
+    phrase_log = []
+    if phrases is not None:
+        group_of = {evs[g[0]]["id"]: gi for gi, g in enumerate(groups)}
+        for ph in phrases:
+            gis = [group_of[i] for i in ph["ids"] if i in group_of]
+            pick = None
+            for rank, r in enumerate(ph["ranked"]):
+                words = [word_in(r["candidate"], groups[gi]) for gi in gis]
+                if all(w is not None and w[1] <= WORD_INTERNAL_MAX_MS for w in words):
+                    pick = (rank, r, words)
+                    break
+            if pick is None:
+                phrase_log.append({"index": ph["index"], "start": ph["start"], "end": ph["end"], "take": None, "fallback": "word-level"})
                 continue
-            errs = [float(v) - float(evs[k]["t_sec"]) for v, k in zip(vow, g)]
-            internal = max(abs(e - errs[0]) for e in errs) * 1000.0
-            # tightest inside the word first; among equals, the take that needs the
-            # smallest shift (least splicing), then the earlier take
-            dips = [tab[evs[k]["id"]].get("dip_db") for k in g]
-            clarity = min((d if d is not None else 0.0) for d in dips)      # weakest onset in the word
-            score = (round(internal, 1), -min(clarity, DIP_CLEAR_DB), round(abs(errs[0]) * 1000, 1))
-            if best is None or score < best[3]:
-                best = (ci, internal, errs[0], score)
+            rank, r, words = pick
+            forced.update(dict(zip(gis, words)))
+            phrase_log.append({"index": ph["index"], "start": ph["start"], "end": ph["end"], "take": r["take"], "rank": rank,
+                               "intelligibility": r["intelligibility"], "pitch_fails": r.get("pitch_fails"),
+                               "mean_abs_cents": r["mean_abs_cents"], "within_gate": r["within_gate"], "of": r["of"]})
+    chosen = []   # per group: (candidate index, internal_ms, e0)
+    for gi, g in enumerate(groups):
+        if gi in forced:
+            chosen.append(forced[gi])
+            continue
+        best = None
+        for ci in range(len(tables)):
+            w = word_in(ci, g)
+            if w is not None and (best is None or w[3] < best[3]):
+                best = w
         if best is None:
             raise SystemExit(f"no take offers the word '{evs[g[0]]['word']}' with every syllable dated")
         if best[1] > WORD_INTERNAL_MAX_MS:
@@ -552,9 +634,11 @@ def repin_words(clock: dict, candidates: list[dict], total_seconds_of: dict[str,
             d.update({"cut_end": head.cut_end, "clip_seconds": head.clip_seconds, "placed_end": head.placed_end, "word_clip_id": head.id})
             out_cuts.append(d)
     return {"clock": clock.get("_path"), "total_seconds": total, "total_samples": int(clock["total_samples"]), "sample_rate": int(clock["sample_rate"]),
-            "alignment": {"missing": [], "extra": []}, "detector": detector_info(), "skipped": [], "mode": "repin-words",
+            "alignment": {"missing": [], "extra": []}, "detector": detector_info(), "skipped": [],
+            "mode": "repin-phrases" if phrases is not None else "repin-words",
             "word_internal_max_ms": WORD_INTERNAL_MAX_MS,
             "candidates": [{"key": c["key"], "receipt": c.get("receipt")} for c in candidates],
+            **({"phrases": phrase_log} if phrases is not None else {}),
             "cuts": out_cuts}
 
 
@@ -570,8 +654,16 @@ def cmd_repin(a):
             key = take.replace("\\", "/")
             totals[key] = frames / sr
             cands.append({"key": key, "rows": rec["table"], "receipt": receipt.replace("\\", "/"), "sha256": sha256(take)})
-        plan = repin_words(clock, cands, totals, split_words=a.split_words)
+        phrases = None
+        if a.by_phrase:
+            scores = json.load(open(a.phrase_scores, encoding="utf-8")) if a.phrase_scores else None
+            phrases = rank_phrases(clock, cands, scores, a.phrase_gap)
+        plan = repin_words(clock, cands, totals, split_words=a.split_words, phrases=phrases)
         json.dump(plan, open(a.out, "w", encoding="utf-8"), indent=2)
+        for ph in plan.get("phrases", []):
+            got = "word-level fallback" if ph["take"] is None else (
+                f"{ph['take']} (rank {ph['rank']}, heard {ph['intelligibility']}, {ph.get('pitch_fails')} pitch fails, {ph['mean_abs_cents']} c, {ph['within_gate']}/{ph['of']} in gate)")
+            print(f"phrase {ph['index']:2} [{ph['start']:7.2f},{ph['end']:7.2f}] {got}")
         for c in plan["cuts"]:
             if c["word_clip_id"] != c["id"]:
                 continue
@@ -1373,7 +1465,10 @@ def main(argv=None) -> int:
     s = sub.add_parser("upload"); s.add_argument("--path", required=True); s.set_defaults(fn=cmd_upload)
     s = sub.add_parser("repin"); s.add_argument("--clock", required=True); s.add_argument("--verify-receipt"); s.add_argument("--take"); s.add_argument("--source-key", default="")
     s.add_argument("--candidate", action="append", help="word-level bag of takes: <take.wav>=<verify receipt.json> (repeat)")
-    s.add_argument("--split-words", action="store_true", help="treat every syllable as its own word (use with a --syllable-words target)"); s.add_argument("--out", required=True); s.set_defaults(fn=cmd_repin)
+    s.add_argument("--split-words", action="store_true", help="treat every syllable as its own word (use with a --syllable-words target)"); s.add_argument("--out", required=True)
+    s.add_argument("--by-phrase", action="store_true", help="one take per phrase (rank_phrases), never a join between takes inside a phrase")
+    s.add_argument("--phrase-scores", help="phrase_scores.py output: per take and phrase, intelligibility and pitch")
+    s.add_argument("--phrase-gap", type=float, default=0.3, help="a rest this long ends a phrase (default 0.3 s)"); s.set_defaults(fn=cmd_repin)
     s = sub.add_parser("place"); s.add_argument("--plan", required=True); s.add_argument("--key", default=""); s.add_argument("--out-dir", required=True)
     s.add_argument("--out-info", required=True); s.add_argument("--out-graph", required=True); s.add_argument("--prefix", default="jam/vocal-clock/placed"); s.add_argument("--dry-run", action="store_true")
     s.add_argument("--local", action="store_true", help="place with numpy (fades + crossfaded joins) instead of the cloud"); s.add_argument("--take", action="append", help="--local: <source_key>=<wav path>"); s.set_defaults(fn=cmd_place)
