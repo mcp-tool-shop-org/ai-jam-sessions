@@ -66,6 +66,7 @@ UNITS = {
 }
 MIN_CUT_S = 0.05             # a skip never leaves less of the cut than this
 SHAM_TIMING_S = 0.03         # a warp sham may move the cut's vowel by at most this
+MAX_VOWEL_MOVE_S = 0.03      # a replay/skip may move its vowel at most this far beyond its own shift
 CLIP_S = 10.0
 CLIP_EDGE_S = 2.0            # the join sits at least this far inside a clip
 REPEAT_DELTA = 0.1           # replay present: repeat similarity rises at least this much
@@ -152,11 +153,16 @@ def _prev_play(plan: dict, cut: dict, mode: str, clock: dict | None) -> tuple[fl
     return s_end, (lambda x: p["placed_start"] + (x - p["cut_start"]))
 
 
-def mutate(plan: dict, spec: dict, clock: dict | None = None) -> tuple[dict, dict]:
+def mutate(plan: dict, spec: dict, clock: dict | None = None,
+           max_vowel_move: float | None = MAX_VOWEL_MOVE_S) -> tuple[dict, dict]:
     """A new plan with the spec's defect, and where it is: {"t": the join's time on
     the timeline, "lag_s": for a replay, how far back the repeated audio was first
-    heard}. The given plan is never changed. Raises ValueError when the defect
-    cannot be planted here."""
+    heard, ...}. The given plan is never changed. Raises ValueError when the defect
+    cannot be planted here.
+
+    A replay of d moves its vowel +d and a skip -d: that shift IS the defect. Where
+    the source gap before the cut moves it further, the plant is a compound defect
+    (a replay plus a late vowel), refused unless `max_vowel_move` is None."""
     out = copy.deepcopy(plan)
     byid = {c["id"]: c for c in out["cuts"]}
     if spec["cut_id"] not in byid:
@@ -179,6 +185,9 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None) -> tuple[dict, dic
         # (skip): a replay IS a relative shift between neighbours. Recorded so a heard
         # replay can be told from a heard late vowel.
         where["vowel_moved_s"] = round(float(c["cut_start"] - start), 4)
+        beyond = where["vowel_moved_s"] - (s if kind == "replay" else -s)
+        if max_vowel_move is not None and abs(beyond) > max_vowel_move:
+            raise ValueError(f"vowel moves {beyond * 1000:.0f} ms beyond the plant")
         c["cut_start"] = start
         if "clip_seconds" in c:
             c["clip_seconds"] = end - start
@@ -385,7 +394,8 @@ def _plantable(plan: dict, spec: dict, clock: dict | None) -> bool:
         return False
 
 
-def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp", seed: int = 7) -> dict:
+def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp", seed: int = 7,
+          max_vowel_move: float | None = MAX_VOWEL_MOVE_S) -> dict:
     import soundfile as sf
     plan = json.load(open(os.path.join(vdir, "plan.json"), encoding="utf-8"))
     clock = load_plan_clock(plan, mode)
@@ -412,7 +422,7 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
         join = pool[int(rng.integers(len(pool)))]
         spec = make_spec(kind, join, float(rng.choice(LEVELS[kind])), mode, int(rng.integers(1 << 31)))
         try:
-            planted_plan, where = mutate(plan, spec, clock)
+            planted_plan, where = mutate(plan, spec, clock, max_vowel_move)
         except ValueError as exc:
             dropped.append({"spec": spec, "reason": str(exc)})
             continue
@@ -440,6 +450,7 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
         for row in kept:
             fh.write(json.dumps(row) + "\n")
     summary = {"schema": LABELS_SCHEMA, "pick": os.path.basename(os.path.normpath(vdir)), "mode": mode, "seed": seed,
+               "max_vowel_move_s": max_vowel_move,
                "requested": n, "kept": len(kept), "dropped": len(dropped), "joins": len(joins),
                "sham_joins": len(pools.get("sham", [])),
                "by_kind": {k: sum(r["kind"] == k for r in kept) for k in kinds}, "dropped_rows": dropped}
@@ -455,6 +466,9 @@ def main() -> int:
     ap.add_argument("--kinds", default="replay,skip,click,sham,none")
     ap.add_argument("--mode", choices=("warp", "local"), default="warp")
     ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--max-vowel-move", default=str(MAX_VOWEL_MOVE_S),
+                    help="seconds a replay/skip may move its vowel beyond its own shift (default 0.03); "
+                         "'off' keeps compound plants")
     ap.add_argument("--out", help="output folder (default tmp/planter/<pick>-<mode>-<seed>)")
     a = ap.parse_args()
     kinds = [k.strip() for k in a.kinds.split(",") if k.strip()]
@@ -462,7 +476,8 @@ def main() -> int:
     if bad:
         ap.error(f"unknown kinds {bad}; choose from {', '.join(KINDS)}")
     out = a.out or os.path.join("tmp", "planter", f"{os.path.basename(os.path.normpath(a.dir))}-{a.mode}-{a.seed}")
-    s = build(a.dir, out, a.n, kinds, a.mode, a.seed)
+    mvm = None if a.max_vowel_move.lower() == "off" else float(a.max_vowel_move)
+    s = build(a.dir, out, a.n, kinds, a.mode, a.seed, mvm)
     print(f"{out}: kept {s['kept']} of {s['requested']} ({s['by_kind']}), dropped {s['dropped']}, {s['joins']} candidate joins")
     return 0
 

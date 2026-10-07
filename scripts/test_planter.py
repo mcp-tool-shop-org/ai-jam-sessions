@@ -217,6 +217,20 @@ def test_a_warp_replay_reports_the_stretch_its_run_absorbed():
     assert got and got["run_stretch_min"] < 1.0 <= got["run_stretch_max"] + 1e-9
 
 
+def test_a_replay_that_would_also_move_its_vowel_is_refused_unless_allowed():
+    # the clip before reaches 60 ms short of this cut's start in the take, so a
+    # 0.05 s replay must start the cut 110 ms earlier: its vowel moves 60 ms too far
+    p = plan_of()
+    prev = next(c for c in p["cuts"] if c["id"] == "v03")
+    prev["placed_start"] += 0.06
+    with pytest.raises(ValueError, match="beyond the plant"):
+        pl.mutate(p, spec("replay", sev=0.05))
+    _, w = pl.mutate(p, spec("replay", sev=0.05), max_vowel_move=None)
+    assert w["vowel_moved_s"] == pytest.approx(0.11)
+    _, w = pl.mutate(p, spec("replay", sev=0.05), max_vowel_move=0.07)
+    assert w["vowel_moved_s"] == pytest.approx(0.11)
+
+
 def test_a_named_clock_that_is_missing_is_refused_in_warp_mode():
     p = plan_of()
     p["clock"] = "nowhere/score-clock.json"

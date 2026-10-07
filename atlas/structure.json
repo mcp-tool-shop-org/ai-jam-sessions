@@ -14207,90 +14207,95 @@
             {
               "in": "make_spec",
               "kind": "raise",
-              "line": 111
+              "line": 112
             },
             {
               "in": "_run_of",
               "kind": "raise",
-              "line": 123
+              "line": 124
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 136
+              "line": 137
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 139
+              "line": 140
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 146
+              "line": 147
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 149
+              "line": 150
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 163
+              "line": 169
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 176
+              "line": 182
+            },
+            {
+              "in": "mutate",
+              "kind": "raise",
+              "line": 190
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 209
+              "line": 218
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 212
+              "line": 221
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 216
+              "line": 225
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 219
+              "line": 228
             },
             {
               "in": "load_sources",
               "kind": "raise",
-              "line": 253
+              "line": 262
             },
             {
               "in": "load_plan_clock",
               "kind": "raise",
-              "line": 376
+              "line": 385
             },
             {
               "in": "_plantable",
               "kind": "except",
-              "line": 384
+              "line": 393
             },
             {
               "in": "build",
               "kind": "raise",
-              "line": 397
+              "line": 407
             },
             {
               "in": "build",
               "kind": "except",
-              "line": 416
+              "line": 426
             }
           ],
-          "hash": "947608240b6892574620f0c70c6667ffd4773f04bdcdae1212dfa42ddc380b2b",
+          "hash": "55947303856bb0ffcf4c782fbf9035c0ae6b76fb202a066dcea2a9dbbae77fe2",
           "importsFiles": [
             "scripts/phrase_evidence.py",
             "scripts/vocal_clock.py"
@@ -15066,6 +15071,7 @@
             "test_a_local_replay_renders_measurably_and_a_sham_does_not",
             "test_a_local_skip_changes_the_audio",
             "test_a_named_clock_that_is_missing_is_refused_in_warp_mode",
+            "test_a_replay_that_would_also_move_its_vowel_is_refused_unless_allowed",
             "test_a_warp_click_inside_a_run_also_breaks_the_run",
             "test_a_warp_click_refuses_a_cut_that_does_not_start_a_run",
             "test_a_warp_replay_reports_the_stretch_its_run_absorbed",
@@ -15089,7 +15095,7 @@
             "test_warp_forced_break_makes_a_seam_and_a_replay_there_is_measurable",
             "test_warp_replay_refuses_when_the_placer_ignores_break_before"
           ],
-          "hash": "62ee9f33f4ab5ef2d8c70d6704475e0b7b1b0645ab908b206f00e4036cbdecae",
+          "hash": "319892ee66987bddb524e8ba92f6ae79e9481f7c2ac733d7b13fe3e0bb140edb",
           "importsFiles": [
             "scripts/planter.py",
             "scripts/vocal_clock.py"
@@ -37170,7 +37176,7 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "6f1a151d19282b15564c6c2511772c9dc27ea8b1",
+    "commit": "42615267988c88f8bb8423a9b636d1a0a2588eb0",
     "tracked": 3030
   },
   "landings": [
