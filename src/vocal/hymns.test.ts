@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { deriveScoreClock, sessionSchedule, syllabify } from "./score-clock.js";
 import {
   HYMNS, AMAZING_GRACE, AMERICA_THE_BEAUTIFUL, BREATH_BEATS, PPQ,
-  hymnLyrics, hymnMidi, loadExemplarSong, parseMelody, realizeHymn, verseLyrics, assertGapless, type Hymn,
+  hymnLyrics, hymnMidi, loadExemplarSong, parseChords, parseMelody, pitch, realizeHymn, verseLyrics, assertGapless, type Hymn,
 } from "./hymns.js";
 
 /** Scale degree (1-7) of a pitch in a major key, or 0 if it is chromatic. */
@@ -98,6 +98,33 @@ describe("hymn realization refuses what the engine cannot play on time", () => {
   it("refuses a bar with the wrong number of beats, and a verse that does not fit its tune", () => {
     expect(() => parseMelody("G4:2 | G4:1", 3)).toThrow(/bar 1 has 2 beats/);
     expect(() => verseLyrics(AMERICA_THE_BEAUTIFUL, "O beau-ti-ful")).toThrow(/4 syllables, the tune 56/);
+  });
+
+  it("refuses notation it cannot read", () => {
+    expect(() => pitch("H4")).toThrow(/not a pitch/);
+    expect(() => parseMelody("G4 G4:2", 3)).toThrow(/melody token 'G4'/);
+    expect(() => parseMelody("~R:3", 3)).toThrow(/a rest cannot be held or breathed/);
+    expect(() => parseMelody("R:3,", 3)).toThrow(/a rest cannot be held or breathed/);
+    expect(() => parseChords("Gsus4:3", 3)).toThrow(/chord token 'Gsus4:3'/);
+    expect(() => parseChords("G/A:3", 3)).toThrow(/the bass is not a chord tone/);
+    expect(parseChords("G/D:2 D7:1", 3).map((c) => [c.name, c.bass, c.pcs])).toEqual([["G/D", 2, [7, 11, 2]], ["D7", 2, [2, 6, 9, 0]]]);
+  });
+
+  it("refuses an arrangement that cannot be played as written", () => {
+    expect(() => realizeHymn(AMAZING_GRACE, { verses: 0 })).toThrow(/0 verses/);
+    expect(() => realizeHymn(AMAZING_GRACE, { verses: 5 })).toThrow(/5 verses \(it has 4\)/);
+    expect(() => realizeHymn(AMAZING_GRACE, { intro: { melody: "R:3 | R:3", chords: "G:3" } })).toThrow(/no chord at tick 1440/);
+    expect(() => realizeHymn(AMAZING_GRACE, { intro: { melody: "R:3", chords: "G:3 | G:3" } })).toThrow(/melody .* and chords .* differ in length/);
+    // A split above the melody leaves no right-hand room for a chord tone beneath it.
+    expect(() => realizeHymn({ ...AMAZING_GRACE, splitPoint: 70 })).toThrow(/no chord tone under/);
+  });
+
+  it("a library copy is one verse between its own intro and ending", () => {
+    const one = realizeHymn(AMERICA_THE_BEAUTIFUL, { intro: { melody: "R:4", chords: "C:4" }, verses: 1, ending: { melody: "R:4", chords: "C:4" } });
+    expect(one.bars).toBe(19);
+    expect(one.verseBars).toEqual([2]);
+    expect(one.tracks.MELODY).toHaveLength(56);
+    expect(one.tracks.INTRO).toHaveLength(0);
   });
 
   it("marks a held note inside a word as part of it", () => {
