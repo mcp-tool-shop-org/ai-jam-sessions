@@ -69,6 +69,7 @@ def main() -> int:
     ap.add_argument("--takes", type=int, default=8)
     ap.add_argument("--whole-words", action="store_true", help="sing multi-syllable words as one legato word (default: every syllable re-articulated so joins can fall between syllables)")
     ap.add_argument("--pitch-shift", type=int, default=0)
+    ap.add_argument("--aligner", action="store_true", help="cross-check the placed vocal's onsets with the singing forced aligner (onset_aligner.py, HubertFA)")
     ap.add_argument("--segment-gap", type=float, help="export the target in phrase segments split at rests of at least this many seconds (a whole song; must match how the takes were rendered)")
     ap.add_argument("--transcribe", action="store_true", help="also upload + transcribe the placed stem on Comfy Cloud (order / one-voice gates)")
     ap.add_argument("--vocal-over-bed-db", type=float, default=4.0)
@@ -135,6 +136,8 @@ def main() -> int:
     cmd = [PY, vc, "verify", "--clock", clock, "--vocal", placed, "--bed", bed, "--plan", plan, "--receipt", receipt]
     if words:
         cmd += ["--words", words]
+    if a.aligner:
+        cmd.append("--aligner")
     timing = run(cmd).returncode
     pitch = run([PY, vc, "pitch", "--clock", clock, "--vocal", placed, "--verify-receipt", receipt, "--receipt", os.path.join(out, "pitch.json")]).returncode
     if timing or pitch:
