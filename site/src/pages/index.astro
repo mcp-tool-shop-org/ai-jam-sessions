@@ -7,7 +7,46 @@ import FeatureGrid from '@mcptoolshop/site-theme/components/FeatureGrid.astro';
 import DataTable from '@mcptoolshop/site-theme/components/DataTable.astro';
 import CodeCardGrid from '@mcptoolshop/site-theme/components/CodeCardGrid.astro';
 import ApiList from '@mcptoolshop/site-theme/components/ApiList.astro';
+import Hymns from '../components/Hymns.astro';
 import { config } from '../site-config';
+
+const nav = [
+  { href: '#listen', label: 'Listen' },
+  { href: '#how', label: 'How it was made' },
+  { href: '#features', label: 'Features' },
+  { href: '#quick-start', label: 'Quick start' },
+  { href: '#training-dataset', label: 'Dataset' },
+  { href: '#tools', label: 'MCP tools' },
+];
+const handbook = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}handbook/vocals/`;
+
+// How a take becomes a performance, in the order the pipeline runs.
+const steps = [
+  {
+    title: 'A score clock',
+    desc: "Every syllable gets its pitch, its onset and its length from the hymn's own arrangement, on the same timeline the piano plays. Held notes, rests and breaths included.",
+  },
+  {
+    title: 'Sixteen takes on a rented GPU',
+    desc: "A score-conditioned singer renders each hymn sixteen times on a rented A40 through offrig, so the local card stays free. Each phrase is sung with a second of silence in front, then trimmed, which keeps the model's start-up noise out.",
+  },
+  {
+    title: 'One take per phrase',
+    desc: 'A local listener transcribes every phrase of every take without being given the lyrics, and pitch is measured note by note. Each phrase comes whole from the take that was understood best and sung most in tune.',
+  },
+  {
+    title: 'Placed by warping, not cutting',
+    desc: 'Each phrase is time-warped onto the score so every vowel lands on its beat, with nothing replayed or skipped inside the phrase. Takes meet only at the rests between phrases.',
+  },
+  {
+    title: 'Two gates, two instruments',
+    desc: 'Timing: an energy detector dates each vowel, a singing forced aligner checks it, and a syllable fails only when both say it is off. Pitch: every note is tracked against the score in cents.',
+  },
+  {
+    title: 'A person listens last',
+    desc: "A review page lets a listener mark anything that sounds wrong, and a report joins each mark to the take, the join and the gates at that moment. A listener's ear settles where something sounds off; naming the cause weighs more from training.",
+  },
+];
 ---
 
 <BaseLayout
@@ -18,94 +57,28 @@ import { config } from '../site-config';
   repoUrl={config.repoUrl}
   npmUrl={config.npmUrl}
   footerText={config.footerText}
-  nav={[...config.sections.map(s => ({ href: `#${s.id}`, label: s.title })), { href: '#vocals-today', label: 'Vocals' }]}
+  nav={nav}
 >
   <Hero {...config.hero} />
 
-  <section id="piano-roll-showcase" style="max-width:960px;margin:0 auto;padding:2rem 1.5rem 0;text-align:center;">
-    <img
-      src={`${import.meta.env.BASE_URL}/fur-elise-m1-8.svg`.replace(/\/\//g, '/')}
-      alt="Piano-roll visualization of Für Elise measures 1–8 — right hand in blue, left hand in coral, on a deep navy grid"
-      style="width:100%;height:auto;border:1px solid #2a2a3e;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.4);"
-      loading="lazy"
-    />
-    <p style="color:var(--color-muted,#8888aa);font-size:0.9rem;margin-top:0.75rem;">
-      <em>How the AI sees music.</em> Für Elise, m.1–8 — the piano roll renders any song as SVG the model can read back and verify.
-    </p>
-  </section>
+  <Section
+    id="listen"
+    title="Listen: two hymns, sung on the beat"
+    subtitle="Amazing Grace and America the Beautiful, every verse, sung by a synthetic voice over this project's own piano. Press play and the score follows the voice."
+  >
+    <Hymns />
+  </Section>
 
-  <section id="patriotic-exemplar" style="max-width:960px;margin:0 auto;padding:2.5rem 1.5rem 0;text-align:center;">
-    <h2 style="margin-bottom:0.25rem;">A patriotic exemplar</h2>
-    <p style="color:var(--color-muted,#8888aa);margin-top:0;">
-      <em>America the Beautiful</em> — sourced from the public domain, arranged with the project's own <code>midi-file</code> pipeline, ready for the SoulX-Singer vocal route.
+  <Section
+    id="how"
+    title="How a take becomes a performance"
+    subtitle="No single render was good enough on its own. Each performance is assembled from sixteen, and measured before it is called a mix."
+  >
+    <FeatureGrid features={steps} />
+    <p class="how-more">
+      The full route, its receipts and what is still imperfect: <a href={handbook}>handbook → Vocals</a>.
     </p>
-    <img
-      src={`${import.meta.env.BASE_URL}/america-the-beautiful-m2-6.svg`.replace(/\/\//g, '/')}
-      alt="Piano-roll visualization of America the Beautiful measures 2–6, the first phrase of Materna — right hand in blue, left hand in coral, on a deep navy grid"
-      style="width:100%;height:auto;border:1px solid #2a2a3e;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.4);margin-top:1rem;"
-      loading="lazy"
-    />
-    <p style="color:var(--color-muted,#8888aa);font-size:0.9rem;margin-top:0.75rem;">
-      Melody: <em>Materna</em> by Samuel A. Ward, 1882 (public domain), checked against a 1919 hymnal and Hymnary.org. Block-chord hymn harmonization generated locally with midi-file. Measures 2–6, the first phrase, in B♭ major at 92 BPM — clean provenance, no third-party arrangement licence uncertainty.
-    </p>
-  </section>
-
-  <section id="patriotic-vocals" style="max-width:960px;margin:0 auto;padding:2.5rem 1.5rem 0;">
-    <h2 style="text-align:center;margin-bottom:0.25rem;">Patriotic vocals, as they stand today</h2>
-    <p style="text-align:center;color:var(--color-muted,#8888aa);margin-top:0;">
-      <em>America the Beautiful</em> — four SoulX-Singer takes in F major (melody capped at C5 for model comfort), word-level pick, local placement. Recorded 2026-09-29. Honest state, not a demo reel.
-    </p>
-    <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin:1.25rem 0;">
-      <div style="border:1px solid #2a2a3e;border-radius:12px;padding:1rem;">
-        <div style="font-weight:600;margin-bottom:0.5rem;">The mix — voice over the piano bed</div>
-        <audio controls preload="none" style="width:100%;" src={`${import.meta.env.BASE_URL}/audio/america-the-beautiful-vocal-route.mp3`.replace(/\/\//g, '/')}></audio>
-      </div>
-      <div style="border:1px solid #2a2a3e;border-radius:12px;padding:1rem;">
-        <div style="font-weight:600;margin-bottom:0.5rem;">The vocal alone — what the gates measured</div>
-        <audio controls preload="none" style="width:100%;" src={`${import.meta.env.BASE_URL}/audio/america-the-beautiful-vocal-only.mp3`.replace(/\/\//g, '/')}></audio>
-      </div>
-    </div>
-    <p style="color:var(--color-muted,#8888aa);font-size:0.95rem;line-height:1.5;">
-      <strong>Correction (2026-10-07):</strong> these takes sing the melody of the earlier arrangement, which was not Ward's <em>Materna</em>. The piano roll above is the corrected tune; a whole-song remake on it is in progress.
-    </p>
-    <p style="color:var(--color-muted,#8888aa);font-size:0.95rem;line-height:1.5;">
-      <strong>What is true about this take:</strong> every syllable's pitch, onset and duration come from the song's MIDI on the player's own timeline (the score clock);
-      a local, Apache-2.0 score-conditioned singer (SoulX-Singer) sang four takes in F major; the best syllable of each was picked and joined with crossfades;
-      then two gates measured the result — <strong>timing</strong>: all 14 syllables within 40 ms of the score (worst 5.6 ms);
-      <strong>pitch</strong>: all notes within 50 cents (global offset −5.6 cents, scatter SD 19.9 cents). The voice is the model's example prompt, not a cast one.
-      <strong>What is still wrong:</strong> three syllables show WARN (&gt;25 cents): "O" and "beau" sit flat (~−32 cents), "cious" sits sharp (+40 cents). The octave peak was lowered to C5 to keep the model in its sweet spot — a compromise, not a feature.
-      Receipts, route and levers: <a href={`${import.meta.env.BASE_URL}/handbook/vocals/`.replace(/\/\//g, '/')}>handbook → Vocals</a>.
-    </p>
-  </section>
-
-  <section id="vocals-today" style="max-width:960px;margin:0 auto;padding:2.5rem 1.5rem 0;">
-    <h2 style="text-align:center;margin-bottom:0.25rem;">Vocals, as they stand today</h2>
-    <p style="text-align:center;color:var(--color-muted,#8888aa);margin-top:0;">
-      <em>Amazing Grace, mm.1–10 — a real sung line on the piano's clock. Recorded 2026-09-05. Honest state, not a demo reel.</em>
-    </p>
-    <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin:1.25rem 0;">
-      <div style="border:1px solid #2a2a3e;border-radius:12px;padding:1rem;">
-        <div style="font-weight:600;margin-bottom:0.5rem;">The mix — voice over the piano bed</div>
-        <audio controls preload="none" style="width:100%;" src={`${import.meta.env.BASE_URL}/audio/amazing-grace-vocal-route-2026-09-05.mp3`.replace(/\/\//g, '/')}></audio>
-      </div>
-      <div style="border:1px solid #2a2a3e;border-radius:12px;padding:1rem;">
-        <div style="font-weight:600;margin-bottom:0.5rem;">The vocal alone — what the gates measured</div>
-        <audio controls preload="none" style="width:100%;" src={`${import.meta.env.BASE_URL}/audio/amazing-grace-vocal-only-2026-09-05.mp3`.replace(/\/\//g, '/')}></audio>
-      </div>
-    </div>
-    <p style="color:var(--color-muted,#8888aa);font-size:0.95rem;line-height:1.5;">
-      <strong>Correction (2026-10-07):</strong> this sung line leaves the hymn tune <em>New Britain</em> after its fourth note ("grace how sweet" is sung to the wrong notes). The timing and pitch gates measured it against the same wrong score. A whole-song remake on the corrected tune is in progress.
-    </p>
-    <p style="color:var(--color-muted,#8888aa);font-size:0.95rem;line-height:1.5;">
-      <strong>What is true about this take:</strong> every syllable's pitch, onset and duration come from the song's MIDI on the player's own timeline (the score clock);
-      a local, Apache-2.0 score-conditioned singer (SoulX-Singer) sang six takes; the best syllable of each was picked and joined with crossfades;
-      then two gates measured the result before it was called a mix — <strong>timing</strong>: every vowel onset within 40 ms of the score (worst 6 ms);
-      <strong>pitch</strong>: every note within 50 cents (global offset −2.7 cents). The voice is the model's example prompt, not a cast one.
-      <strong>What is still wrong:</strong> the opening still breaks — the pickup "A" and "ma" come from different takes and the splice is audible.
-      That is the next handoff, not a feature. Receipts, route and levers:
-      <a href={`${import.meta.env.BASE_URL}/handbook/vocals/`.replace(/\/\//g, '/')}>handbook → Vocals</a>.
-    </p>
-  </section>
+  </Section>
 
   {config.sections.map((s) => (
     <Section id={s.id} title={s.title} subtitle={s.subtitle}>
@@ -116,3 +89,8 @@ import { config } from '../site-config';
     </Section>
   ))}
 </BaseLayout>
+
+<style>
+  .how-more { max-width: 960px; margin: 1.25rem auto 0; color: var(--color-dim); font-size: 0.9rem; text-align: center; }
+  .how-more a { color: var(--color-body); text-decoration: underline; }
+</style>
