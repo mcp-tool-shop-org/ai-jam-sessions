@@ -115,12 +115,18 @@ The gates measure what they can name. A person hears what they cannot:
 
 ```bash
 python scripts/review_marks.py page --run tmp/vocal-clock/sing/<song> --variant <pick> --out tmp/vocal-clock/review
-python -m http.server 8766 --bind 127.0.0.1 --directory tmp/vocal-clock/review
 python scripts/review_marks.py report --review tmp/vocal-clock/review --marks review-marks.json
 ```
 
-The page plays the mix (or the vocal alone) and **M** drops a mark wherever
-something sounds wrong, with a category and a note. The report joins each mark
+Open the folder in the cockpit's **Review** mode (Open review folder, or start
+the cockpit with `?review=<folder URL>`). Before marking, say who you are,
+what you are listening on, and set a comfortable volume against the level
+check; that starts a session, and every mark carries it. Every mix and the
+level check play at one loudness (−23 LUFS), so the volume you set is the
+volume you review at. Then play the mix (or the vocal alone) and **M** drops a
+mark wherever something sounds wrong, with a category and a note. Export
+writes the file `report` reads. (`page` still writes a standalone
+`index.html` for a browser without the cockpit.) The report joins each mark
 to the second before it: the syllables and their takes, the joins nearby, and
 the gates' rows. When nothing there explains a mark, it names the raw take and
 the span to listen to.
@@ -135,8 +141,10 @@ Every mark records who made it and at what level. A listener's ear settles
 | vocal or audio professional | 1.0 | 1.0 |
 | AI listener, unvalidated | 0.4 | 0.2 |
 
-Today the review is a local listening page; it is moving into the cockpit
-next, beside the player it reviews.
+Your conditions are recorded rather than assumed: the device and the level
+check travel with every session. Next, sessions will mix in a few planted
+defects and sham edits, unannounced, so each session also measures how
+sharp the ear was that day.
 
 The first reviews found two defects no gate could see — audio replayed or
 skipped where syllables were cut and moved one by one, and noise the singer
