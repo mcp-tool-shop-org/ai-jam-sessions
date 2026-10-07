@@ -3,6 +3,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { initializeFromLibrary, getSong } from "../songs/index.js";
 import type { SongEntry } from "../songs/types.js";
+import { writeMidi } from "midi-file";
+import { midiToSongEntry } from "../songs/midi/ingest.js";
+import type { SongConfig } from "../songs/config/schema.js";
 import {
   parseMidiTracks,
   sessionSchedule,
@@ -160,13 +163,11 @@ describe("deriveScoreClock", () => {
     expect(clock.clock.durations).toBeUndefined();
   });
 
-  it("with notated rests a note ends where the arrangement's note ends", () => {
-    // Gymnopédie's bass is a dotted half (3 s at 60 BPM) in each 5 s measure: 2 s of rest.
+  it("with notated rests and a melody that never rests, nothing changes but the label", () => {
+    // Gymnopédie's bass note fills its bar in the MIDI, so it is legato either way.
     const clock = derive(LYRICS, true);
-    expect(clock.events.map((e) => +e.t_sec.toFixed(4))).toEqual([0, 5, 10, 15]);
-    expect(clock.events.map((e) => e.dur_sec)).toEqual([3, 3, 3, 3]);
+    expect(clock.events.map((e) => e.dur_sec)).toEqual([5, 5, 5, 5]);
     expect(clock.clock.durations).toBe("notated");
-    expect(clock.last_event_end_sec).toBeCloseTo(18, 4);
   });
 
   it("a held syllable is one event, with the notes it continues onto", () => {
@@ -181,10 +182,6 @@ describe("deriveScoreClock", () => {
     expect(clock.events[2].t_sec).toBe(15);
   });
 
-  it("refuses a rest inside a held syllable", () => {
-    expect(() => derive("Gym-no _ pe", true)).toThrow(/a rest inside a held syllable/);
-  });
-
   it("with notated rests needs no terminator note, and still refuses too few notes", () => {
     const four = derive(LYRICS, true);
     expect(four.events).toHaveLength(4);
@@ -196,5 +193,71 @@ describe("deriveScoreClock", () => {
     expect(() => deriveScoreClock(song, {
       midiFile: "x.mid", midiBytes: readFileSync(MIDI), melodyTrack: "NOPE", lyrics: LYRICS, startMeasure: 1, endMeasure: 8,
     })).toThrow(/melody track 'NOPE'/);
+  });
+});
+
+// A 4/4 song at 60 BPM (4 s bars): one bar of piano, then two bars sung with a
+// breath and a held syllable in the melody. The piano plays the melody over an
+// alto that never rests, so the right hand is gapless and the session clock
+// matches the score, as an arrangement for singing is written; the breath
+// exists only in the melody. The sung line starts in bar 2 because the clock
+// treats any off-beat melody note in its first bar as a pickup.
+describe("deriveScoreClock: a melody that breathes", () => {
+  const Q = 480;
+  const B = 4 * Q; // the piano's opening bar
+  type N = [midi: number, tick: number, dur: number];
+  const track = (name: string, notes: N[]) => {
+    const raw = notes.flatMap(([midi, tick, dur]) => [
+      { tick, ev: { type: "noteOn", channel: 0, noteNumber: midi, velocity: 80 } },
+      { tick: tick + dur, ev: { type: "noteOff", channel: 0, noteNumber: midi, velocity: 0 } },
+    ]).sort((a, b) => a.tick - b.tick || (a.ev.type === "noteOff" ? -1 : 1));
+    let prev = 0;
+    return [
+      { deltaTime: 0, type: "trackName", meta: true, text: name },
+      ...raw.map((r) => { const e = { deltaTime: r.tick - prev, ...r.ev }; prev = r.tick; return e; }),
+      { deltaTime: 0, type: "endOfTrack", meta: true },
+    ];
+  };
+  const build = (melody: N[]) => {
+    const meta = [
+      { deltaTime: 0, type: "timeSignature", meta: true, numerator: 4, denominator: 4, metronome: 24, thirtyseconds: 8 },
+      { deltaTime: 0, type: "setTempo", meta: true, microsecondsPerBeat: 1_000_000 },
+      { deltaTime: 0, type: "endOfTrack", meta: true },
+    ];
+    // Alto under the melody's onsets, gapless: whole | half, quarter, quarter | quarter, quarter, half.
+    const alto: N[] = [[69, 0, 4 * Q], ...[[0, 2], [2, 1], [3, 1], [4, 1], [5, 1], [6, 2]].map(([b, d]): N => [69, B + b * Q, d * Q])];
+    const bass: N[] = [[48, 0, 4 * Q], [48, B, 4 * Q], [48, B + 4 * Q, 4 * Q]];
+    const bytes = new Uint8Array(writeMidi({
+      header: { format: 1, numTracks: 4, ticksPerBeat: Q },
+      tracks: [meta, track("MEL", melody), track("ALTO", alto), track("BASS", bass)],
+    } as any));
+    const song = midiToSongEntry(bytes, {
+      id: "breath-test", title: "Breath Test", genre: "folk", difficulty: "beginner", key: "C major",
+      tags: ["test"], status: "raw", tempo: 60, timeSignature: "4/4",
+    } as SongConfig);
+    return (lyrics: string, rests?: boolean) => deriveScoreClock(song, {
+      midiFile: "breath.mid", midiBytes: bytes, melodyTrack: "MEL", lyrics, startMeasure: 1, endMeasure: 3, rests,
+    });
+  };
+  // do (half, then a quarter rest) re | mi (held onto fa) fa-note | sol (half)
+  const melody: N[] = [[72, B, 2 * Q], [74, B + 3 * Q, Q], [76, B + 4 * Q, Q], [77, B + 5 * Q, Q], [79, B + 6 * Q, 2 * Q]];
+
+  it("ends a note where the melody's note ends: the breath is silence", () => {
+    const clock = build(melody)("do re mi _ sol", true);
+    expect(clock.events.map((e) => [e.lyric, e.t_sec, e.dur_sec])).toEqual([
+      ["do", 4, 2], ["re", 7, 1], ["mi", 8, 2], ["sol", 10, 2],
+    ]);
+    expect(clock.events[2].melisma).toEqual([expect.objectContaining({ midi: 77, t_sec: 9, dur_sec: 1 })]);
+    expect(clock.last_event_end_sec).toBe(12);
+  });
+
+  it("is legato without --rests: the breath is held over", () => {
+    const clock = build(melody)("do re mi _", false);
+    expect(clock.events.map((e) => [e.lyric, e.dur_sec])).toEqual([["do", 3], ["re", 1], ["mi", 2]]);
+  });
+
+  it("refuses a rest inside a held syllable", () => {
+    const gapped: N[] = [[72, B, 2 * Q], [74, B + 3 * Q, Q], [76, B + 4 * Q, Q / 2], [77, B + 5 * Q, Q], [79, B + 6 * Q, 2 * Q]];
+    expect(() => build(gapped)("do re mi _ sol", true)).toThrow(/a rest inside a held syllable/);
   });
 });

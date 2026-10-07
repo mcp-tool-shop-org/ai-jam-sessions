@@ -236,8 +236,9 @@ before:
   notes (note_type 3, same phonemes), and the pitch gate judges each note
   against its own pitch (`v03`, `v03.1`, ...).
 - **Notated rests.** `build-score-clock.mjs --rests` ends each note where the
-  arrangement's own note ends, so a breath or an interlude is silence on the
-  clock (`clock.durations: "notated"`), and the exporter writes `<SP>` there.
+  melody track's own note ends (its ticks scaled into the bar's session length;
+  not the piano's, which holds its chords through a singer's breath), so a
+  breath or an interlude is silence on the clock (`clock.durations: "notated"`), and the exporter writes `<SP>` there.
   A rest inside a held syllable is refused.
 - **Segments.** `export_soulx_target.py --segment-gap S` splits the target at
   every rest of at least S seconds. The segments tile the clock, with each

@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   note (a melisma, as in New Britain's "A-ma-zing _ grace"). The clock keeps one event per
   syllable and lists the extra notes in its `melisma`; the SoulX exporter sends them as
   continuation notes, and the pitch gate judges each note against its own pitch.
-- Notated rests: `build-score-clock.mjs --rests` ends each note where the arrangement's note
+- Notated rests: `build-score-clock.mjs --rests` ends each note where the melody track's note
   ends, so breaths and interludes are silence on the clock instead of a held note.
 - Segments: `export_soulx_target.py --segment-gap S` splits a long target at rests into
   segments that tile the clock, so SoulX renders a phrase at a time.

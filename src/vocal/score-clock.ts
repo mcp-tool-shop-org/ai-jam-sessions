@@ -311,7 +311,7 @@ export interface ScoreClock {
     measure_starts_sec: Record<string, number>;
     measure_durations_sec: Record<string, number>;
     /**
-     * "notated": a note ends where the arrangement's note ends, so a rest is
+     * "notated": a note ends where the melody track's note ends, so a rest is
      * silence on the clock. Absent: legato, every note held to the next onset
      * (the single-phrase clocks).
      */
@@ -378,10 +378,13 @@ export interface DeriveOptions {
   endMeasure: number;
   sampleRate?: number;
   /**
-   * End each note where the arrangement's own note ends, so a notated rest is
-   * silence on the clock (a full song: breaths between phrases, the piano's
-   * interludes between verses). Default false: legato, each note held to the
-   * next onset, which is what the single-phrase clocks were derived with.
+   * End each note where the melody track's own note ends, so a notated rest
+   * is silence on the clock (a full song: breaths between phrases, the piano's
+   * interludes between verses). The length is the note's ticks scaled into its
+   * bar's session length, not the piano's: the session plays each hand as a
+   * chain of chords as long as their longest note, so a breath the piano holds
+   * through never shows in the schedule. Default false: legato, each note held
+   * to the next onset, which is what the single-phrase clocks were derived with.
    */
   rests?: boolean;
 }
@@ -449,7 +452,7 @@ export function deriveScoreClock(song: SongEntry, opts: DeriveOptions): ScoreClo
     if (ties.length > 0) throw new Error(`ambiguous piano onset for melody tick ${n.tick} (midi ${n.midi}, m${measure})`);
     return {
       t: best.t,
-      dur: best.dur,
+      dur: (n.durationTicks / info.ticksPerMeasure) * bar.dur,
       anchor: `piano-onset:m${measure}:${best.hand}:beat${best.beatIndex}`,
       engine: { measure, hand: best.hand, t_sec: roundToSample(best.t, sr) },
     };
