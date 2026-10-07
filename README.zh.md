@@ -18,6 +18,7 @@
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/ai-jam-sessions/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://codecov.io/gh/mcp-tool-shop-org/ai-jam-sessions"><img src="https://codecov.io/gh/mcp-tool-shop-org/ai-jam-sessions/graph/badge.svg" alt="Coverage"></a>
   <a href="https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions"><img src="https://img.shields.io/npm/v/@mcptoolshop/ai-jam-sessions" alt="npm"></a>
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/songs-109_across_12_genres-blue" alt="Songs"></a>
   <a href="https://github.com/mcp-tool-shop-org/ai-jam-sessions"><img src="https://img.shields.io/badge/annotated-109%2F109-green" alt="Ready"></a>
@@ -27,19 +28,43 @@
 
 ---
 
+## 先听听：两首赞美诗，伴随着节奏演唱
+
+**[《奇异恩典》和《美丽的美国》](https://mcp-tool-shop-org.github.io/ai-jam-sessions/#listen)**，每一节，
+由合成声音演唱，伴随着本项目中的钢琴。着陆页播放这些歌曲，并配有 3D 乐谱，乐谱会跟随声音移动，
+歌词在演唱时会高亮显示。
+
+每个乐曲都是由 16 个基于乐谱的演唱片段组合而成：
+- 每个乐句一个片段，由本地听众和音高跟踪器选择；
+- 通过时间扭曲将其放置在乐谱上，因此乐句内的任何部分都不会被剪切；
+- 由两个计时乐器和两个音高跟踪器进行检查；
+- 通过听觉进行确认，所有问题都会在听觉评论中标记，并追溯到其原因。
+
+在每首歌曲之前都会进行声音检查，以测量声音的时间特征，并说明该歌曲需要多少个片段。
+
+制作过程：[手册 → 人声](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/)。
+
+| | 奇异恩典 | 美丽的美国 |
+|---|---|---|
+| 歌词与乐谱在 40 毫秒内的同步 | 109 首中的 112 首 | 218 首中的 224 首 |
+| 音符与乐谱在 50 厘音内的同步 | 136 首中的 140 首 | 221 首中的 224 首 |
+
+声音是合成的：[SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer)（Apache-2.0），具有其自身的示例音色，
+不模仿任何真实的人声。这两首赞美诗都属于公共领域。
+
 ## 这是什么？
 
 一台钢琴和一把吉他，AI学习如何演奏。它不是合成器，也不是 MIDI 库——而是一种教学乐器。
 
 大型语言模型可以阅读和书写文本，但它无法像我们一样体验音乐。它没有耳朵，没有手指，也没有肌肉记忆。AI 即兴演奏会通过赋予模型它可以实际使用的感官来弥补这一差距：
 
-- **阅读**——带有深入音乐注释的真实 MIDI 乐谱。不是手写的近似版本——而是经过解析、分析和解释的版本。
-- **聆听**——六个音频引擎（振荡器钢琴、采样钢琴、人声采样、物理人声声道、加法人声合成器、物理建模吉他），通过扬声器播放，使房间里的人成为人工智能的“耳朵”。现在，该模型也有了自己的“耳朵”，而且是双重的：它可以事后测量录音（参见[聆听](#聆听）），并且可以在**音乐仍在播放时**观察乐队（参见[现场合奏](#现场合奏））。
-- **观看**——一个钢琴卷帘，它将播放的内容渲染为 SVG，模型可以读取并验证。一个交互式吉他谱编辑器。一个带有视觉键盘、双模式音符编辑器和调音实验室的浏览器控制面板。
-- **记忆**——一个练习日志，可以跨会话保存，因此学习效果会随着时间的推移而累积。
-- **演唱**——带有 20 种人声预设的人声声道合成，从歌剧女高音到电子合唱。带有音阶、轮廓和音节叙述的合唱模式。以及在钢琴时钟上进行真实的演唱：一种基于歌曲 MIDI 驱动的、在时序（40 毫秒）和音高（50 分）上进行门控的、在您听到之前进行评分的歌手（参见[演唱](#演唱））。
+- **阅读**——带有深入音乐注释的真实 MIDI 乐谱。不是手写的近似乐谱——而是经过解析、分析和解释。
+- **听觉**——六个音频引擎（振荡器钢琴、采样钢琴、人声样本、物理人声声道、加法人声合成器、物理建模吉他），通过扬声器播放，让房间里的人成为人工智能的“耳朵”。现在，该模型也有了自己的“耳朵”，而且是双重的：它可以对录音进行测量（参见[听觉](#listening）），也可以在音乐播放时观察乐队（参见[现场合奏](#the-live-ensemble））。
+- **视觉**——一个钢琴卷帘，以 SVG 格式呈现所演奏的内容，模型可以读取并验证。一个交互式吉他谱编辑器。一个带有视觉键盘、双模式音符编辑器和调音实验室的浏览器控制面板。
+- **记忆**——一个练习日志，可以跨会话保存，因此学习会随着时间的推移而积累。
+- **演唱**——具有 20 种人声预设的人声声道合成，从歌剧女高音到电子合唱。带有音阶、轮廓和音节叙述的合唱模式。以及所有歌曲都以钢琴的时钟为基础进行演唱：一种基于歌曲编排的、基于乐谱的演唱者，从许多片段中逐句组合而成，并在您听到之前，根据时间和音高（分别为 40 毫秒和 50 厘音）进行筛选——参见[演唱](#sing)。
 
-这 109 首歌曲中的每一首现在都已完全注释——包括历史背景、逐小节的结构分析、关键时刻、教学目标和演奏技巧，涵盖所有 12 个流派。早期版本的 README 中提到，原始歌曲“正在等待 AI 吸收模式、演奏音乐并编写自己的注释”。而这正是发生的事情：这些注释是由 AI 根据每首歌曲的确定性分析（和弦、重复结构、乐段边界、经过验证的内容）编写的，并受到质量标准的约束，并且对每个声明进行对抗性的事实核查——包括小节编号、和弦范围和结构计数，所有这些都经过验证，以确保与实际 MIDI 文件一致，然后才发布。
+现在，这 109 首歌曲中的每一首都已完全注释——包括历史背景、逐小节的结构分析、关键时刻、教学目标和表演技巧，涵盖所有 12 种流派。早期版本的 README 中提到，原始歌曲“正在等待人工智能吸收模式、演奏音乐并编写自己的注释”。这正是发生的事情：注释是由人工智能根据每首歌曲的确定性分析（和弦、重复结构、乐段边界、经过内容验证的调性）编写的，并由质量标准进行筛选，然后以对抗的方式逐条进行事实核查——所有测量数字、和弦窗口和结构计数都经过验证，以确保与实际 MIDI 相符，然后才发布。
 
 基于相同的工作，我们还发布了 **[jam-actions-v0](#training-dataset)**——一个包含 57 个多轮 MCP 工具使用轨迹的公共数据集，这些轨迹基于真实的古典钢琴。它教会大型语言模型进行*基于符号音乐的实际工具使用*，而不仅仅是文本生成，并且附带一个 7 轴发布门，用于区分“传递证据”和“因为任务很简单而通过”。有关完整信息，请参阅下方的 [训练数据集](#training-dataset)。
 
@@ -49,10 +74,26 @@
 
 将其指向一个 WAV 文件，它会测量其中的内容。不是通过查看图像并进行猜测——而是通过将信号传递到它已经用于乐谱的相同类型的工具：
 
-- **`analyze_audio`**——起音、音高轮廓和音量。音高以音符名称返回，并带有半音偏差，而不是原始频率。
-- **`transcribe_audio`**——将录音转换为音符：音高、起始时间、持续时间和每个音符与标准音高的距离。
-- **`score_audio_take`**——通过“耳朵”对库中的歌曲进行性能评估。它转录录音，将其与乐谱匹配，并报告哪些音符播放正确，哪些音符偏离，以及哪些音符遗漏。然后，`view_scored_piano_roll`将结果绘制在乐谱上，就像它对捕获的 MIDI 录音一样。这就是评估真实乐器、演唱录音或任何没有 MIDI 录音的材料的方式。
-- **`view_spectrogram`**——查看声音。一个恒定 Q 值的频谱图，左侧边缘带有钢琴键盘，因此可以一目了然地读取音高，并且可以根据要求在上面绘制歌曲的预期音符。
+- **`analyze_audio`**——起音、音高轮廓和音量。音高会以音符名称返回，并带有
+厘音偏差，而不是原始频率。音量是指现在的实际数值：BS.1770-4
+集成的响度，以 LUFS 为单位；采样峰值，以 dBFS 为单位；以及剪切采样计数，此外还有一个
+完整性检查，用于报告掉帧和噪声爆发——这是渲染质量保证中“咔嗒声和杂音”的部分。
+“平衡”部分显示能量的分布，从超低音到高音：每个频段与
+粉红噪声的比例、亮度以及倾斜度。
+- **`transcribe_audio`**——将录音转换为音符：音高、起始时间、持续时间和每个音符与
+标准音高的距离。
+- **`score_audio_take`**——通过听觉对库中的歌曲进行性能评估。它
+转录录音，将其与乐谱匹配，并报告哪些音符已演奏，哪些音符偏离，以及哪些音符遗漏。然后，`view_scored_piano_roll` 将结果绘制在乐谱上，
+就像它对捕获的 MIDI 片段所做的那样。这就是评估真实乐器、演唱片段或任何没有 MIDI 录音的乐器的
+方法。
+- **`view_spectrogram`**——查看声音。一个恒定 Q 值的频谱图，左侧边缘带有钢琴键盘，
+因此可以一目了然地读取音高，并且可以在请求时将歌曲的预期音符绘制在上面。
+- **`check_loop_seam`**——评估循环渲染，以查看它在循环时的表现：波形在推断尾部斜率后的步骤、
+连接处的脉冲状能量以及跨接缝的电平变化。一个相位完美的循环即使原始边界样本发生跳跃，
+也能呈现出清晰的效果。
+- **`compare_balance`**——将渲染的声音与已知正确的参考声音进行比较，按频段以 dB 为单位。
+一个应该与同类声音相似的提示，一个应该与它所替换的片段匹配的重新渲染。响度会被抵消，
+因此只比较音色。
 
 **它不会告诉您什么。**图像用于查找*哪里*出了问题；每个数字都来自信号处理，而不是来自模型读取图像。转录器一次处理一行，因此和弦或完整的混音会产生一个确定的错误结果，并且会明确指出。在最先进的技术中，起音检测的准确率约为 F1 0.88，因此“遗漏”的音符可能只是转录器无法听到的音符，而不是您没有播放的音符——这些工具会在其自身的输出中包含这一警告，而不是将其隐藏在这里。
 
@@ -133,16 +174,20 @@ cd apps/cockpit && npm install && npm run dev   # Vite dev server, opens in your
 
 ## 歌曲库
 
-109 首注释歌曲，涵盖 12 个流派，基于真实的 MIDI 文件构建。每个流派都有一首深度注释的示例——包括历史背景、逐小节的和谐分析、关键时刻、教学目标和演奏技巧（包括人声指导）。这些示例充当模板：AI 研究其中一个，然后注释其余的。
+109 首带有注释的歌曲，涵盖 12 种流派，由真实的 MIDI 文件构建而成。每种流派都有一首深度注释的示例歌曲——
+包括历史背景、逐小节的和谐分析、关键时刻、教学目标和表演技巧（包括人声指导）。
+这些示例歌曲作为模板：人工智能研究其中一个，然后注释其余的歌曲。民谣示例是
+**《美丽的美国》**（塞缪尔·A·沃德，1882 年，公共领域）：一首 F 大调赞美诗，
+在本仓库中编排，旋律为 F4–C5。
 
-**What ships, and what you fetch.** The annotations are ours and ship with every song. The MIDI files were downloaded from public MIDI sites when the library was built, and a per-file provenance audit ([`docs/findings/library-provenance-audit.md`](docs/findings/library-provenance-audit.md)) found that only 14 of them carry a licence that permits redistribution — Bernd Krueger's piano-midi.de arrangements (CC-BY-SA-3.0-DE) and the Mutopia Project's public-domain typesettings. Those 14 are in the npm package. The other 94 are not: their `.json` ships, with a `provenance` block naming the source, its terms and the file's SHA-256, and `ai-jam-sessions library fetch --accept-source-terms` downloads each one from the site that published it, under that site's terms, refusing any file whose hash no longer matches what the annotations were verified against. Twelve files that turned out to be a different piece than their name were quarantined, which is why that downloaded library is 108 songs and not the 120 earlier versions claimed. America the Beautiful is the 109th song and the fifteenth MIDI the package ships: the arrangement was made here and dedicated to the public domain. Versions before this one shipped all 120 MIDI files; that was a mistake, and it is corrected here rather than papered over.
+**What ships, and what you fetch.** The annotations are ours and ship with every song. The MIDI files were downloaded from public MIDI sites when the library was built, and a per-file provenance audit ([`docs/findings/library-provenance-audit.md`](docs/findings/library-provenance-audit.md)) found that only 14 of those downloads carry a licence that permits redistribution — Bernd Krueger's piano-midi.de arrangements (CC-BY-SA-3.0-DE) and the Mutopia Project's public-domain typesettings. Those 14 are in the npm package. The other 94 downloads are not: their `.json` ships, with a `provenance` block naming the source, its terms and the file's SHA-256, and `ai-jam-sessions library fetch --accept-source-terms` downloads each one from the site that published it, under that site's terms, refusing any file whose hash no longer matches what the annotations were verified against. Twelve files that turned out to be a different piece than their name were quarantined, which is why that downloaded library is 108 songs and not the 120 earlier versions claimed. **America the Beautiful** is the 109th song and the fifteenth MIDI the package ships: the arrangement was made here and dedicated to the public domain. Versions before 2.6.0 shipped all 120 MIDI files; that was a mistake, and it is corrected here rather than papered over.
 
 | 类型 | 范例 | 关键 | 它教授的内容 |
 |-------|----------|-----|-----------------|
 | 布鲁斯 | 《The Thrill Is Gone》（B.B. King） | B 小调 | 小调布鲁斯形式、呼应式，在节拍之后演奏 |
 | 古典 | 《致爱丽丝》（贝多芬） | A 小调 | 回旋曲形式、触键差异、踏板技巧 |
 | 电影 | 《另一个夏天的圆舞曲》（蒂尔森） | E 小调 | 琶音织体，动态架构，没有和声变化 |
-| 民谣 | 《America the Beautiful》（Ward） | F 大调 | 主-属赞美诗和声，爱国乐句，旋律在 F4–C5 |
+| 民谣 | 《美国之美》（沃德） | F 大调 | 主音-属音圣歌和声，爱国主义的乐句，旋律在 F4–C5 音域 |
 | 爵士 | 《秋叶》（科斯马） | G 小调 | ii-V-I 级进行、引导音、摇摆八分音符、无根音和弦 |
 | 拉丁 | 《伊帕内玛的女孩》（若比姆） | F 大调 | 波萨诺瓦节奏、半音调制、声乐克制 |
 | 新世纪音乐 | 《河流在你心中流淌》（Yiruma） | A 大调 | I-V-vi-IV 识别、流畅的琶音、自由节奏 |
@@ -251,7 +296,7 @@ pnpm build && pnpm exec tsx scripts/verify-public-package-execution.ts
 
 ### 声学语料库
 
-**jam-actions-acoustic-v0**——这是上述轨迹的对应版本，处理的是**音频**而非符号音乐。包含 108 条记录，每条记录都将一个经过故意扰动的公共领域乐句的合成渲染与分析工具实际返回的判断结果配对，因此，每个标签都针对乐器进行检查，而不仅仅是针对其自身进行检查。
+**jam-actions-acoustic-v0**——与上述痕迹相对，处理的是**音频**而不是符号音乐。72 条记录，每条记录都将一个经过故意扰动的公共领域乐句的合成渲染与分析工具实际返回的结果配对，因此，每个标签都会针对乐器进行检查，而不仅仅是针对其自身进行检查。
 
 | | |
 |---|---|
@@ -264,9 +309,9 @@ pnpm build && pnpm exec tsx scripts/verify-public-package-execution.ts
 
 这九个类别中有两个是存在的，因为一个简单的模型会自信且错误地回答它们：一个音准颤音，其正确的判断结果是*音准*，以及一段静音，其正确的判断结果是*无需评级*。所有判断结果所依赖的阈值都复制到记录中，因为它们在构建过程中都发生过一次变化。
 
-该语料库可以从这个仓库中重现。重新生成它会生成所有 115 个已发布的文件和一个字节完全相同的 `checksums.sha256`，并且一个测试会精确地验证这一点，而无需写入已发布的树。
+该语料库可以从这个仓库中重现。重新生成它会生成所有 79 个已发布的 文件和一个字节完全相同的 `checksums.sha256`，并且一个测试会精确地验证这一点，而无需写入已发布的树。
 
-**一个需要注意的点，是实际测量而不是假设。** 每个记录都包含 `wav_sha256`，即其配方生成的波形的哈希值，并且渲染器会为每个样本调用 `Math.pow` 和 `Math.sin`。两者都不需要正确地进行四舍五入，并且 V8 的结果在 Node 22 和 Node 24 之间发生了变化：在这 27,869 个不同的 `Math.pow(2, x)` 参数中，有 253 个返回不同的双精度浮点数。其中大部分在 16 位量化下都会消失，但 **108 个记录中的 2 个**——都是《致爱丽丝》的 `extra` 扰动，其主题位于半音比例本身不同的音高——在 Node 24 上的哈希值不同。每个记录的每个其他字段在任何引擎上都会重现，并且仓库会分别测试这两个声明。如果您重新渲染并看到这两个不匹配，那是因为这个原因，而不是下载文件损坏。使波形具有比特可移植性意味着替换超越函数，这将改变每个哈希值，因此需要新的模式版本。
+**一个注意事项，是测量而不是假设。** 每条记录都包含 `wav_sha256`，即其配方生成的波形的哈希值，并且渲染器会为每个样本调用 `Math.pow` 和 `Math.sin` 一次。两者都不需要正确地进行四舍五入，并且 V8 的结果在 Node 22 和 Node 24 之间发生了变化：在原始语料库评估的 27,869 个不同的 `Math.pow(2, x)` 参数中，有 253 个返回不同的双精度浮点数。其中大部分在 16 位量化下都会消失，但**72 条记录中的 2 条**——都是《致爱丽丝》的 `extra` 扰动，其旋律位于半音比例本身不同的音高——在 Node 24 上哈希值不同。每条记录的每个其他字段都在任何引擎上进行重现，并且该仓库会分别测试这两个声明。如果您重新渲染并看到这两个不匹配，那就是这个原因，而不是下载损坏。使波形具有比特可移植性意味着替换超越函数，这将改变每个哈希值，因此需要一个新的模式版本。
 
 ### 构建你自己的
 
@@ -316,7 +361,7 @@ npm install -g @mcptoolshop/ai-jam-sessions
 
 ## MCP 工具
 
-54 个工具和 4 个提示模板，分为八个类别：
+八个类别中的 56 个工具和 4 个提示模板：
 
 ### 学习
 
@@ -367,7 +412,13 @@ npm install -g @mcptoolshop/ai-jam-sessions
 | `auto_reharmonize` | 创作者循环（一次性）：本地模型提出重新和声方案，`verify_harmony` 的确定性门检查每个配音，选择最佳的 n 个方案，直到返回经过验证的诠释方案 |
 | `compose_panel` | 对任何歌曲运行声部进行作曲面板：四个系统生成伴奏，盲目交叉家族的 LLM 评判者对其进行排名，Bradley-Terry 聚合——并设置一个区分阈值门，以排除无法解释的运行结果（仅方向信号，绝不提供质量评分）。运行时间长达几分钟，并在运行过程中流式传输进度通知。 |
 
-**时钟上的演唱乐句——人声路径。** 任何库中的歌曲都可以包含一首真实的演唱乐句，并与钢琴同步：一个**乐谱时钟**（`scripts/build-score-clock.mjs`）从歌曲的 MIDI 中提取每个音节的音高、起始时间和持续时间，并将其应用于播放器的自己的时间轴；一个本地的、Apache-2.0 许可的、受乐谱影响的歌手（[SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer)）根据该时钟进行演唱；并且两个门限会测量音频，然后再将其混合——**时间**：每个元音的起始时间与乐谱的偏差在 40 毫秒以内；**音高**：每个音符的偏差在 50 厘以内，全局偏移在 20 厘以内。音节从一组录音中选择，并且仅在单词边界处使用交叉淡入淡出进行连接。控制参数：`--track`（哪个 MIDI 音轨是旋律；`--list-tracks`用于查看），`--lyrics "A-ma-zing grace …"`（每个音符一个令牌，音节由`-`连接），`--measures`，提示片段（人声），录音数量以及门限值——每个参数都有其引用出处在`scripts/vocal_clock.py`中。路径、控制参数和结果：[手册 → 人声](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/)，[`docs/vocal-clock.md`](docs/vocal-clock.md)；研究的背景：[`docs/vocal-singing-study-2026-09.md`](docs/vocal-singing-study-2026-09.md)。
+**一首完整的歌曲，以人声为基础。** 任何歌曲都可以包含一首实际演唱的人声，并将其与钢琴结合。
+- **时钟。** 一个乐谱时钟（`scripts/build-score-clock.mjs`）从歌曲的乐谱中推导出每个音节的音高、起始时间和持续时间，并将其与播放器的自己的时间线对齐。
+- **声音检查。** 在渲染歌曲之前，同一人声会以歌曲的速度演唱一首包含 16 个单词的校准短语（`scripts/soundcheck.py`）。其时间特征，针对辅音组和长音与短音，说明了歌曲需要多少次录制，以及哪些单词存在风险，然后再花费任何 GPU 时间来处理歌曲本身。
+- **歌手。** 一个基于乐谱的歌手（[SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer)，Apache-2.0）会从该时钟中渲染 16 次录音，可以在本地或通过 offrig 在租用的 GPU 上进行。
+- **选择。** `scripts/sing_clock.py --by-phrase --warp` 会为每个乐句选择一次录音。本地听者的转录和 FCPE 音高决定了这一点，并且乐句会被时间扭曲到乐谱上。
+- **门控。** **时间：** 一个能量检测器，通过一个唱歌的强制对齐器进行交叉检查，将每个元音放在 40 毫秒以内。**音高：** FCPE，并使用 pYIN 重新读取其标记的内容，将每个音符放在 50 厘以内。
+- **耳朵。** 听力审查（`scripts/review_marks.py`）允许一个人在任何听起来不对劲的地方按下 **M** 键，并附带一个类别和一个注释。该报告会将每个标记追溯到其录音、连接和门控，并根据审查者的级别对其进行加权：听者的耳朵会确定*哪里*听起来不对劲，而命名*是什么*则需要更多的训练。今天，它是一个本地的听力页面；它将在下一步中移动到控制舱中。路线、控制杆和收据：[手册 → 人声](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/)，[`docs/vocal-clock.md`](docs/vocal-clock.md)；研究背景：[`docs/vocal-singing-study-2026-09.md`](docs/vocal-singing-study-2026-09.md)。
 
 ### 吉他
 
@@ -412,10 +463,12 @@ npm install -g @mcptoolshop/ai-jam-sessions
 
 | 工具 | 它做什么 |
 |------|--------------|
-| `analyze_audio` | 测量一个 WAV 文件——起始时间、音高轮廓（以音符名称和半音为单位）和音量。 |
+| `analyze_audio` | 测量一个 WAV 文件——起始时间、音高轮廓（以音符名称和厘为单位）、电平（BS.1770-4 LUFS、峰值 dBFS、削波样本）、按频段划分的频谱平衡以及完整性检查（掉帧、噪声爆发、咔嗒声） |
 | `transcribe_audio` | 将一个单声道录音转换为音符，并记录每个音符与标准音高的偏差。省略跟踪器无法跟随的音符，而不是猜测。 |
 | `score_audio_take` | 通过**听觉**对表演与库歌曲进行评分，然后将结果传递给 `view_scored_piano_roll`。 |
 | `view_spectrogram` | 查看声音——在钢琴键盘轴上显示一个恒定 Q 值的声谱图，可以选择叠加预期的音符。默认情况下，会隐藏声音。 |
+| `check_loop_seam` | 判断一个循环的结尾如何回到其开始——外推波形步长、连接处的爆发能量、跨越它的电平变化 |
+| `compare_balance` | 将渲染的音色平衡与参考进行比较，按频段划分，以 dB 为单位，并计算亮度和倾斜度的变化。响度会被抵消 |
 | `ensemble_now` | 每个乐器**现在正在演奏什么**，在演奏过程中。音符来自已发送的内容，因此它们是精确的，而不是估计的。 |
 
 ### MCP 提示
@@ -452,22 +505,26 @@ ai-jam-sessions --version
 
 ## 状态
 
+**v2.8.0：两首圣歌，由人声演唱。** 《奇异恩典》和《美国之美》整首歌曲，包括每一节，都由人声演唱，并与钢琴结合：16 次录音，每次录音对应一个乐句，时间扭曲放置，以及两乐器的时序和音高门控，最后由一个人进行听力审查。两者都通过了听力审查，并且[登录页面](https://mcp-tool-shop-org.github.io/ai-jam-sessions/)以这两首歌曲作为特色。库中的《美国之美》现在是沃德自己的 Materna 旋律。请参阅[CHANGELOG](CHANGELOG.md)。
+
+**v2.7.0 — 美丽的美国。** 库中包含 109 首带有注释的歌曲。 包含 15 个 MIDI 文件；另外 94 个文件仍从其原始来源获取。 新版本是一个公共领域的乐曲，在此仓库中创作（旋律由塞缪尔·A·沃德创作，1882 年），采用 F 大调，是民间音乐的典范。 SoulX-Singer 引擎演唱这首乐曲：时间门和音高门均通过，着陆页保留了三个音高警告。 请参阅 [CHANGELOG](CHANGELOG.md)。
+
 **v2.6.0 — 停止发布其没有授权发布的内容**（参见[CHANGELOG](CHANGELOG.md））。
 对歌曲库中的每个文件进行来源审计，发现 108 个 MIDI 乐曲中，有 14 个具有允许重新分发的许可，而 94 个则没有——并且有十二个文件的内容与其文件名不符。现在，每首歌曲都包含一个基于证据的`provenance`块（来源 URL、网站条款、将文件命名为其自身版权事件的编曲者、SHA-256、标题判决）；这十二个文件已被隔离；npm 包包含这 14 个文件，并将剩余的文件标记为*未获取*，并且`ai-jam-sessions library fetch --accept-source-terms`会从发布该文件的网站下载每个文件，并遵守该网站的条款，拒绝任何哈希值不再匹配的文件。早期版本包含所有 120 个文件，并且在 npm 上已被弃用。相同的审计将 jam-actions-v1 数据集重置为 11 首经过验证的乐曲（三首 Krueger CC-BY-SA-3.0-DE，八首 Mutopia Public Domain）；该语料库、其近门探测以及发现所示作品目标的训练弧——一个 3B 秩 16 LoRA，使用一个不变的配方，从一个先验类别开始，在 54/54 个保留样本和 72/72 个近门样本中进行训练，一旦助手完成，它就会写出比较的数字——都位于仓库中的`datasets/`和`experiments/coverage-v1-sft/`中，并将发布到 Hugging Face 和 Zenodo，以供经过验证的语料库使用。此外，在此版本中：`scorePerformance`将正确的窗口限制在调用者的门限处，因此 40 毫秒的规则恰好是判决窗口。
 
-**v2.5.0——模型可以观看乐队演奏的版本（参见 [CHANGELOG](CHANGELOG.md)）。**
-`ensemble_now` 报告每个乐器在音乐播放时正在做什么：每个乐器保持的音符、每个音符保持了多长时间以及组合的和弦。它运行在两个通道上，并且廉价的通道是准确的通道——当此服务器执行时，它确切地知道它发送了什么，因此，一个和弦是三个音符，而不是转录问题，而一个单独的声学传感器会测量每个引擎**在源头**进行验证。测量的成本约为**每个音频回调 9 微秒**；延迟是明确说明的，而不是暗示的（~23 毫秒音高，~70 毫秒确认的起始时间）；并且限制已记录，因为它们是可以操作的——跟踪器是单声道的，分层子项是单独跟踪的，而不是作为混合进行跟踪，并且没有传感器的乐器不是静音乐器。
-在同一个版本中，数据集机制被转换为一个协议，任何人都可以对其进行声明，并提供了一个可用的模板，因此用户可以构建自己的语料库，并针对相同的标准训练自己的适配器。在此过程中，发现声学语料库的可重现性门控覆盖了其 115 个已发布路径中的 109 个，并且它遗漏的六个路径中的三个根本没有由生成器发出——重新生成会删除它们。现在，完全重新生成可以重现每个文件和校验和清单中的每个字节。实时界面包含**54 个工具和 4 个提示模板**，并且**165 个文件中有 3,389 个测试通过（1 个跳过）**。
+此前在 v2.5.0 版本中——该版本允许模型观看乐队演奏。
+`ensemble_now` 报告了音乐播放期间每种乐器所做的事情：每种乐器的持续音符、每个音符的持续时间以及组合和弦。 它在两个通道上运行，其中廉价的通道是准确的通道——当此服务器执行时，它确切地知道它发送了什么，因此和弦是三个音符，而不是转录问题，而一个单独的声学传感器会测量每个引擎**在源头**进行验证。 测得的成本约为**每个音频回调 9 微秒**；延迟是明确说明的，而不是暗示的（~23 毫秒音高，~70 毫秒确认的起始时间）；并且限制已记录，因为它们是可以操作的——音轨是单音的，分层子音轨是单独测量的，而不是作为混合音测量，并且没有声学传感器的乐器不是静音乐器。
+在同一版本中，数据集机制被转化为一种契约，任何人都可以对其进行声明，并提供了一个可用的模板，因此用户可以构建自己的语料库，并针对相同的规范训练自己的适配器。 在此过程中，发现声学语料库的可重复性门覆盖了其 115 个已发布路径中的 109 个，并且它遗漏的六个路径中的三个根本没有由生成器发出——重新生成会删除它们。 现在完全重新生成可以逐字节地再现每个文件和校验和清单。 实时界面包含**54 个工具和 4 个提示模板**，**165 个文件中有 3,389 个测试通过（1 个跳过）**。
 
 之前在 v2.4.0 中——模型获得了“耳朵”的版本。四个工具弥合了音频渲染和音频检查之间的差距：`analyze_audio` 用于起始时间、音高轮廓和音量；
 `transcribe_audio` 用于将单声道录音转换为音符；`score_audio_take` 用于通过听觉对表演进行评分，并将结果传递给现有的已评分钢琴卷帘，而无需更改；以及 `view_spectrogram` 用于在恒定 Q 值、钢琴键盘轴上查看声音。所有这些都是无依赖性的信号处理，用这个仓库中的代码编写——它自己的 FFT、窗口、梅尔和恒定 Q 变换、起始时间检测和音高跟踪——因为模型不能可靠地通过眼睛来观察图像，并且确定性查询比推理更适合于具有精确答案的问题。该版本还发布了
 **jam-actions-acoustic-v0**，108 条可构建的黄金记录，用于对音频进行工具使用。
 
-**v2.3.0——乐器学会时钟上演唱的发布版本**（请参见[CHANGELOG](CHANGELOG.md)）。现在，任何库中的歌曲都可以包含一首真实的演唱乐句，并与钢琴同步：一个**乐谱时钟**从歌曲的 MIDI 中提取每个音节的音高、起始时间和持续时间，并将其应用于播放器的自己的时间轴；一个本地的、Apache-2.0 许可的、受乐谱影响的歌手（[SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer)）根据该时钟进行演唱；并且两个门限会测量音频，然后再将其混合——时间（每个元音与乐谱的偏差在 40 毫秒以内）和音高（每个音符的偏差在 50 厘以内）。已发布的《奇异恩典》的测试结果显示，最差时间偏差为 6 毫秒，全局音高偏差为 -2.7 厘，并且已记录结果；着陆页以诚实的状态呈现，并标明了剩余的缺陷（即开头的拼接部分）。路径、控制参数及其背后的研究（五个研究方向，均有引用）均在[手册](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/)和[`docs/`](docs/)中。现场界面保持不变，为**49 个工具和 4 个提示模板**，并且**3,080 个测试通过（1 个跳过）**，此外还有人声乐器的 pytest 测试套件。**发布状态：**已发布——[`@mcptoolshop/ai-jam-sessions@2.3.0`](https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions) 在 npm 上，并已证明其来源。
+此前在 v2.3.0 版本中——该版本中，乐器学会了按照节拍唱歌（请参阅 [CHANGELOG](CHANGELOG.md)）。 现在，任何库中的歌曲都可以包含一首实际演唱的乐曲，该乐曲会与钢琴同步：**乐谱时钟**从歌曲的 MIDI 中推导出每个音节的音高、起始时间和持续时间，并将其与播放器的自己的时间轴对齐；一个本地的、Apache-2.0 许可的、基于乐谱的歌手（[SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer)）从中演唱；并且在任何内容被视为混合音之前，两个门会测量伪影——时间（每个元音与乐谱的偏差在 40 毫秒以内）和音高（每个音符与乐谱的偏差在 50 厘以下）。 随附的《奇异恩典》乐曲的测量结果显示，最差时间偏差为 6 毫秒，全局音高偏差为 -2.7 厘，并且已提交了相关记录；着陆页将其作为真实状态呈现，并标明了剩余的一个缺陷（开头的拼接部分）。 该音轨、其控制杆以及每种选择背后的研究（五个研究方向，已引用）都包含在 [手册](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/) 和 [`docs/`](docs/) 中。 实时界面保持不变，为**49 个工具和 4 个提示模板**，**3,080 个测试通过（1 个跳过）**，以及人声乐器的 pytest 测试套件。 **发布状态：**已发布——[`@mcptoolshop/ai-jam-sessions@2.3.0`](https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions) 在 npm 上，已证明其来源。
 
 之前在 v2.2.0 中——该版本使乐器真正拥有了耳朵和一个聆听室。驾驶舱的默认钢琴现在是**采样 Concert Grand**——一个经过修剪的 Salamander 音色包，在您进行第一次操作时加载，并在准备就绪之前回退到调谐振荡器合成器——并且服务器会在安装完整的音色包时自动选择采样引擎。在其之上是**作曲面板**：一个盲目、响度匹配的 A/B 聆听室，其中人类对作曲引擎的配音与理论有效和理论无效的锚点进行排名（Bootstrap 置信区间 Bradley-Terry，MUSHRA 风格的区分阈值，PROVISIONAL 和 UNINTERPRETABLE 作为第一类结果），旁边是一个本地模型面板，它使用跨家族的 LLM 评判者运行相同的排名，以及一个比较视图（Kendall τ），用于确定廉价的代理是否跟踪人类的真实结果。
 
-相同的发布版本还包含一个构成引擎，该引擎为面板提供支持（`src/compose/`：一个具有命名风格预设的确定性人声引导门限，基于构建的成员关系的人声规范，一次处理一个乐器的优化器），以及完整的健康检查（修复了 45 个问题——安全性、人性化的字符串、保留视觉效果的视觉修改），来自已记录的 Mutopia 公有领域字节的重新资源化的萨蒂和德彪西库条目，以及一个陌生人测试的强化：描述性的验证错误、结构化的`{code, message, hint}`错误信封、精选的 tarball、长时间工具的进度通知以及 CLI 错误语法。该版本以[`@mcptoolshop/ai-jam-sessions@2.2.0`](https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions)的形式发布，包含 49 个工具、4 个提示模板和 3,033 个测试。
+在同一版本中，还包含一个构成面板的乐曲引擎（`src/compose/`：一个具有命名风格预设的确定性声部进行门，基于构建的声部规范，逐个乐器进行细化的精炼器），以及完整的健康检查（修复了 45 个问题——安全性货币、人性化的字符串、保留外观的视觉修改），Satie 和 Debussy 库条目是从已记录的 Mutopia 公共领域字节重新获取的，以及一个陌生人测试强化过程：描述性验证错误、结构化的 `{code, message, hint}` 错误信封、精选的 tar 压缩包、长时间工具的进度通知以及 CLI 错误语法。 该版本以 [`@mcptoolshop/ai-jam-sessions@2.2.0`](https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions) 的形式发布，包含 49 个工具、4 个提示模板和 3,033 个测试。
 
 此前在 v2.1.0 版本中——这个版本标志着分析师转变为**创作者**。创作者循环以产品的形式发布：一个模型会提出对任何音乐库歌曲进行重新编排的方案，并且平台的确定性工具会对该方案进行审核——和弦引擎必须确认每个预期的音符（`verify_harmony`），每个旋律音符都必须与新的和声对应，并且只有经过验证的演绎才能进入 `add_song` → `play_song` → `view_piano_roll`。通过构建来验证生成结果——没有评分标准，没有自我评分；编写即兴演奏概要的 `inferChord` 也是评审者。 `maker_loop` 提示模板指导整个循环。
 

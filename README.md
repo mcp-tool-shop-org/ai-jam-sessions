@@ -28,6 +28,30 @@
 
 ---
 
+## Listen first: two hymns, sung on the beat
+
+**[Amazing Grace and America the Beautiful](https://mcp-tool-shop-org.github.io/ai-jam-sessions/#listen)**, every verse,
+sung by a synthetic voice over this project's own piano. The landing page plays them with a 3D score that follows the voice
+and the words lighting up as they are sung.
+
+Each performance was assembled from sixteen takes of a score-conditioned singer:
+- one take per phrase, chosen by a local listener and a pitch tracker;
+- placed on the score by time-warping, so nothing inside a phrase is cut;
+- checked by two timing instruments and two pitch trackers;
+- passed by ear, with every problem marked on a listening review that traced it back to its cause.
+
+A sound check before each song measures the voice's timing footprint, and says how many takes the song will need.
+
+How it was made: [handbook → Vocals](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/).
+
+| | Amazing Grace | America the Beautiful |
+|---|---|---|
+| syllables within 40 ms of the score | 109 of 112 | 218 of 224 |
+| notes within 50 cents | 136 of 140 | 221 of 224 |
+
+The voice is synthetic: [SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer) (Apache-2.0), with its own example timbre,
+imitating no real singer. Both hymns are in the public domain.
+
 ## What is this?
 
 A piano and guitar that AI learns to play. Not a synthesizer, not a MIDI library — a teaching instrument.
@@ -38,7 +62,7 @@ An LLM can read and write text, but it can't experience music the way we do. No 
 - **Hearing** — six audio engines (oscillator piano, sample piano, vocal samples, physical vocal tract, additive vocal synth, physically-modeled guitar) that play through your speakers, so the humans in the room become the AI's ears. And now the model has ears of its own, twice over: it can measure a recording after the fact (see [Listening](#listening)) and it can watch the band **while the music is still going** (see [The Live Ensemble](#the-live-ensemble)).
 - **Seeing** — a piano roll that renders what was played as SVG the model can read back and verify. An interactive guitar tablature editor. A browser cockpit with a visual keyboard, dual-mode note editor, and tuning lab.
 - **Remembering** — a practice journal that persists across sessions, so learning compounds over time.
-- **Singing** — vocal tract synthesis with 20 voice presets, from operatic soprano to electronic choir. Sing-along mode with solfege, contour, and syllable narration. And a real sung lead on the piano's clock: a score-conditioned singer driven by the song's MIDI, gated on timing (40 ms) and pitch (50 cents) before you hear it — see [Sing](#sing).
+- **Singing** — vocal tract synthesis with 20 voice presets, from operatic soprano to electronic choir. Sing-along mode with solfege, contour, and syllable narration. And whole songs sung on the piano's clock: a score-conditioned singer driven by the song's arrangement, assembled phrase by phrase from many takes, and gated on timing (40 ms) and pitch (50 cents) before you hear it — see [Sing](#sing).
 
 Every one of the 109 songs is now fully annotated — historical context, bar-by-bar structural analysis, key moments, teaching goals, and performance tips, in all 12 genres. An earlier version of this README said the raw songs were "waiting for the AI to absorb the patterns, play the music, and write its own annotations." That is exactly what happened: the annotations were written by AI against a deterministic per-song analysis (chords, repetition structure, section boundaries, content-verified keys), gated by a quality rubric, and adversarially fact-checked claim by claim — measure numbers, chord windows, and structural counts all verified against the actual MIDI before anything shipped.
 
@@ -437,7 +461,13 @@ in Ollama, with the measured cost of a 4-bit base: [docs/ollama-adapters.md](doc
 | `auto_reharmonize` | The maker loop in one call — a local model proposes a reharmonization, `verify_harmony`'s deterministic gate checks every voicing, best-of-n until a verified interpretation comes back |
 | `compose_panel` | Run the voice-leading composition panel on any songs: four systems realize accompaniments, blind cross-family LLM judges rank them, Bradley-Terry aggregates — with a discrimination-floor gate that voids uninterpretable runs (directional signal only, never a quality score). Runs for minutes and streams progress notifications while it works. |
 
-**A sung line on the clock — the vocal route.** Any library song can carry a real sung vocal that lands on the piano: a **score clock** (`scripts/build-score-clock.mjs`) derives every syllable's pitch, onset and duration from the song's MIDI on the player's own timeline; a local, Apache-2.0, score-conditioned singer ([SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer)) sings from that clock on your GPU; and two gates measure the artifact before anything is called a mix — **timing**: every vowel onset within 40 ms of the score; **pitch**: every note within 50 cents, global offset within 20. Words are picked from a bag of takes and joined only at word boundaries with crossfades. Levers: `--track` (which MIDI track is the tune; `--list-tracks` to look), `--lyrics "A-ma-zing grace …"` (one token per note, syllables joined by `-`), `--measures`, the prompt clip (the voice), how many takes, and the gate thresholds — each with its citation in `scripts/vocal_clock.py`. Route, levers and receipts: [handbook → Vocals](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/), [`docs/vocal-clock.md`](docs/vocal-clock.md); the research behind the choices: [`docs/vocal-singing-study-2026-09.md`](docs/vocal-singing-study-2026-09.md).
+**A whole song on the clock: the vocal route.** Any song can carry a real sung vocal that lands on the piano.
+- **The clock.** A score clock (`scripts/build-score-clock.mjs`) derives every syllable's pitch, onset and duration from the song's arrangement, on the player's own timeline.
+- **The sound check.** Before a song is rendered, the same voice sings a sixteen-word calibration phrase at the song's tempo (`scripts/soundcheck.py`). Its timing footprint, per consonant group and for held against short notes, says how many takes the song needs and which words are risky, before any GPU time is spent on the song itself.
+- **The singer.** A score-conditioned singer ([SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer), Apache-2.0) renders sixteen takes from that clock, locally or on a rented GPU through offrig.
+- **The pick.** `scripts/sing_clock.py --by-phrase --warp` picks one take per phrase. A local listener's transcript and FCPE pitch decide, and the phrase is time-warped onto the score.
+- **The gates.** **Timing:** an energy detector, cross-checked by a singing forced aligner, puts every vowel within 40 ms. **Pitch:** FCPE, with pYIN re-reading what it flags, puts every note within 50 cents.
+- **The ear.** The listening review (`scripts/review_marks.py`) lets a person press **M** wherever something sounds wrong, with a category and a note. The report traces each mark to its take, its join and the gates, and weighs it by the reviewer's level: a listener's ear settles *where* it sounds off, while naming *what* it is weighs more from training. Today it is a local listening page; it is moving into the cockpit next. Route, levers and receipts: [handbook → Vocals](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/), [`docs/vocal-clock.md`](docs/vocal-clock.md); the research behind the choices: [`docs/vocal-singing-study-2026-09.md`](docs/vocal-singing-study-2026-09.md).
 
 ### Guitar
 
@@ -525,6 +555,8 @@ ai-jam-sessions --version
 ```
 
 ## Status
+
+**v2.8.0: two hymns, sung.** Amazing Grace and America the Beautiful are sung whole, every verse, on the piano's clock: sixteen takes, one take per phrase, warp placement, two-instrument timing and pitch gates, and a person listening last. Both passed by ear, and the [landing page](https://mcp-tool-shop-org.github.io/ai-jam-sessions/) leads with them. The library's America the Beautiful is now Ward's own Materna melody. See [CHANGELOG](CHANGELOG.md).
 
 **v2.7.0 — America the Beautiful.** The library is 109 annotated songs. Fifteen MIDI files ship; 94 are still fetched from their sources. The new one is a public-domain arrangement made in this repository (melody by Samuel A. Ward, 1882), in F major, and it is the folk exemplar. A SoulX-Singer route sings it: timing and pitch gates pass, and the landing page keeps the three pitch warnings. See [CHANGELOG](CHANGELOG.md).
 

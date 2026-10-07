@@ -27,6 +27,10 @@ const steps = [
     desc: "Every syllable gets its pitch, its onset and its length from the hymn's own arrangement, on the same timeline the piano plays. Held notes, rests and breaths included.",
   },
   {
+    title: 'A sound check first',
+    desc: "Before a song is rendered, the same voice sings a sixteen-word calibration phrase at the song's tempo. Its timing footprint, per consonant group and for held against short notes, says how many takes the song needs and which words are risky.",
+  },
+  {
     title: 'Sixteen takes on a rented GPU',
     desc: "A score-conditioned singer renders each hymn sixteen times on a rented A40 through offrig, so the local card stays free. Each phrase is sung with a second of silence in front, then trimmed, which keeps the model's start-up noise out.",
   },
@@ -44,7 +48,7 @@ const steps = [
   },
   {
     title: 'A person listens last',
-    desc: "A review page lets a listener mark anything that sounds wrong, and a report joins each mark to the take, the join and the gates at that moment. A listener's ear settles where something sounds off; naming the cause weighs more from training.",
+    desc: "The listening review: press M wherever something sounds wrong, and a report joins each mark to the take, the join and the gates at that moment. A listener's ear settles where something sounds off; naming the cause weighs more from training. Its first marks found two defects no gate could see, both fixed at the root. It is moving into the cockpit next.",
   },
 ];
 ---

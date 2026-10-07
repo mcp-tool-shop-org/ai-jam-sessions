@@ -16,7 +16,7 @@ export default defineConfig({
         // (see Stage-D asset prompts); the tags are in place so a link preview
         // renders as soon as the image lands in site/public/.
         { tag: 'meta', attrs: { property: 'og:title', content: 'AI Jam Sessions' } },
-        { tag: 'meta', attrs: { property: 'og:description', content: 'An MCP server that teaches AI to play piano and guitar — and sing. 120 songs, 6 engines, a browser cockpit, and a public tool-use dataset.' } },
+        { tag: 'meta', attrs: { property: 'og:description', content: 'Two public-domain hymns sung on the beat by a synthetic voice, from an MCP server that teaches AI to play piano and guitar, and to sing. 109 songs, 6 engines, a browser cockpit and public tool-use datasets.' } },
         { tag: 'meta', attrs: { property: 'og:type', content: 'website' } },
         { tag: 'meta', attrs: { property: 'og:image', content: 'https://mcp-tool-shop-org.github.io/ai-jam-sessions/og-card.png' } },
         { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
