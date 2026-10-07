@@ -111,3 +111,47 @@ def test_take_names_come_from_the_take_folder_on_any_platform():
 ])
 def test_the_listener_is_scored_on_words_heard_in_order(expected, heard, want):
     assert ps.heard_matches(expected.split(), heard) == want
+
+
+def test_the_listener_retries_a_dropped_connection(monkeypatch):
+    import urllib.error
+    calls = []
+
+    def flaky(server, wav, seed=1):
+        calls.append(1)
+        if len(calls) < 3:
+            raise urllib.error.URLError(TimeoutError("timed out"))
+        return "amazing grace"
+    monkeypatch.setattr(ps, "_listen_once", flaky)
+    assert ps.listen("http://x", b"", wait=0) == "amazing grace" and len(calls) == 3
+
+
+def test_the_listener_gives_up_after_its_tries(monkeypatch):
+    import urllib.error
+
+    def down(server, wav, seed=1):
+        raise ConnectionError("refused")
+    monkeypatch.setattr(ps, "_listen_once", down)
+    with pytest.raises(ConnectionError):
+        ps.listen("http://x", b"", tries=2, wait=0)
+
+
+def test_a_takes_pitch_pass_is_cached_and_reused(tmp_path, monkeypatch):
+    import numpy as np
+    import soundfile as sf
+    import onset_aligner
+    take_dir = tmp_path / "take-01"
+    take_dir.mkdir()
+    wav = take_dir / "take-48k.wav"
+    sf.write(wav, np.zeros(48000 * 5), 48000)
+    c = clock()
+    spans = onset_aligner.phrase_spans(c, 0.3)
+    runs = []
+    monkeypatch.setattr(ps.vc, "track_f0", lambda mono, sr: runs.append(1) or None)
+    monkeypatch.setattr(ps.vc, "pitch_rows", lambda clk, f0, onsets: [
+        {"id": e["id"], "cents_mean": 10.0, "status": "PASS"} for e in clk["events"]])
+    first = ps.take_pitch(str(wav), c, spans, 0.3, None, 48000)
+    again = ps.take_pitch(str(wav), c, spans, 0.3, None, 48000)
+    assert first == again and len(runs) == 1, "the second call reads the cache"
+    ps.take_pitch(str(wav), c, spans, 0.5, None, 48000)
+    assert len(runs) == 2, "a different phrase gap is a different key"

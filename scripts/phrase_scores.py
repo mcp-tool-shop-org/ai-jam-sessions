@@ -27,6 +27,7 @@ import argparse
 import base64
 import difflib
 import glob
+import hashlib
 import io
 import json
 import os
@@ -34,6 +35,7 @@ import re
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -86,7 +88,24 @@ def wav_bytes(mono, sr) -> bytes:
     return buf.getvalue()
 
 
-def listen(server: str, wav: bytes, seed: int = 1) -> str:
+LISTEN_TRIES = 3
+
+
+def listen(server: str, wav: bytes, seed: int = 1, tries: int = LISTEN_TRIES, wait: float = 5.0) -> str:
+    """The listener's transcript of one phrase. A refused or timed-out connection
+    is retried: one such hiccup on 2026-10-07 threw away a 45-minute pitch pass."""
+    for attempt in range(1, tries + 1):
+        try:
+            return _listen_once(server, wav, seed)
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
+            if attempt == tries:
+                raise
+            print(f"listener: {e}; retrying ({attempt}/{tries - 1})", flush=True)
+            time.sleep(wait * attempt)
+    raise AssertionError("unreachable")
+
+
+def _listen_once(server: str, wav: bytes, seed: int = 1) -> str:
     body = {"messages": [{"role": "user", "content": [
         {"type": "input_audio", "input_audio": {"data": base64.b64encode(wav).decode(), "format": "wav"}},
         {"type": "text", "text": PROMPT}]}], "temperature": 0, "seed": seed, "max_tokens": 200}
@@ -114,6 +133,50 @@ def start_server(port: int, log_path: str) -> subprocess.Popen:
     raise SystemExit("llama-server did not become ready in 300 s")
 
 
+def file_sha(path: str) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def take_pitch(take: str, clock: dict, spans: list, gap: float, mono, sr) -> dict:
+    """Pitch over each phrase of one take, cached next to the take
+    (phrase-pitch.json) and keyed by everything it depends on: the take, the
+    onsets it reads, the clock and the phrase gap. The pass is the slow part
+    (about 3 minutes a take), so a run that stops later resumes without it."""
+    ver = os.path.join(os.path.dirname(take), "verify-energy.json")
+    key = {"take": file_sha(take), "onsets": file_sha(ver) if os.path.isfile(ver) else None,
+           "clock": file_sha(clock["_path"]) if clock.get("_path") and os.path.isfile(clock["_path"]) else None, "gap": gap}
+    cache = os.path.join(os.path.dirname(take), "phrase-pitch.json")
+    if os.path.isfile(cache):
+        try:
+            got = json.load(open(cache, encoding="utf-8"))
+            if got.get("key") == key:
+                return got["phrases"]
+        except (OSError, ValueError, KeyError):
+            pass
+    onsets = {}
+    if os.path.isfile(ver):
+        onsets = {r["id"]: r["t_vowel"] for r in json.load(open(ver, encoding="utf-8"))["table"] if r.get("t_vowel") is not None}
+    cents, bad = {}, {}
+    for r in vc.pitch_rows(clock, vc.track_f0(mono, sr), onsets):
+        k = r["id"].split(".")[0]
+        if r["cents_mean"] is not None:
+            cents.setdefault(k, []).append(abs(r["cents_mean"]))
+        if r["status"] not in ("PASS", "WARN"):
+            bad[k] = bad.get(k, 0) + 1
+    phrases = {}
+    for i, (_lo, _hi, groups) in enumerate(spans):
+        ids = [e["id"] for g in groups for e in g]
+        c = [x for k in ids for x in cents.get(k, [])]
+        phrases[str(i)] = {"words": len(groups), "mean_abs_cents": round(sum(c) / len(c), 1) if c else None, "notes": len(c),
+                           "pitch_fails": sum(bad.get(k, 0) for k in ids)}
+    json.dump({"key": key, "phrases": phrases}, open(cache, "w", encoding="utf-8"), indent=1)
+    return phrases
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--clock", required=True)
@@ -139,23 +202,7 @@ def main() -> int:
         name = os.path.basename(os.path.dirname(take))
         mono, sr, _frames = vc.read_audio(take)
         audio[name] = (mono, sr)
-        onsets = {}
-        ver = os.path.join(os.path.dirname(take), "verify-energy.json")
-        if os.path.isfile(ver):
-            onsets = {r["id"]: r["t_vowel"] for r in json.load(open(ver, encoding="utf-8"))["table"] if r.get("t_vowel") is not None}
-        cents, bad = {}, {}
-        for r in vc.pitch_rows(clock, vc.track_f0(mono, sr), onsets):
-            k = r["id"].split(".")[0]
-            if r["cents_mean"] is not None:
-                cents.setdefault(k, []).append(abs(r["cents_mean"]))
-            if r["status"] not in ("PASS", "WARN"):
-                bad[k] = bad.get(k, 0) + 1
-        phrases = {}
-        for i, (_lo, _hi, groups) in enumerate(spans):
-            ids = [e["id"] for g in groups for e in g]
-            c = [x for k in ids for x in cents.get(k, [])]
-            phrases[str(i)] = {"words": len(groups), "mean_abs_cents": round(sum(c) / len(c), 1) if c else None, "notes": len(c),
-                               "pitch_fails": sum(bad.get(k, 0) for k in ids)}
+        phrases = take_pitch(take, clock, spans, a.gap, mono, sr)
         out["takes"][name] = {"path": take.replace("\\", "/"), "phrases": phrases}
         print(f"{name}: pitch over {len(phrases)} phrases", flush=True)
     if not a.no_listen:
