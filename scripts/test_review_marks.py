@@ -21,6 +21,14 @@ def cut(i, lyric, take, start, end):
 
 PLAN = {"cuts": [cut(0, "oh", "take-01", 1.0, 1.9), cut(1, "say", "take-01", 2.0, 2.9), cut(2, "can", "take-02", 4.0, 4.9),
                  cut(3, "you", "take-02", 5.0, 5.9)]}
+
+
+def moved(plan, i, ms):
+    """The plan with clip i moved `ms` later on the timeline than its neighbours."""
+    cuts = [dict(c) for c in plan["cuts"]]
+    cuts[i]["placed_start"] += ms / 1000.0
+    cuts[i]["placed_end"] += ms / 1000.0
+    return {"cuts": cuts}
 GAPS = {"v00": 60.0, "v01": 5.0}       # air after v00; v01's join to v02 is a clean switch
 
 
@@ -104,3 +112,21 @@ def test_a_mark_without_a_reviewer_is_a_listeners():
 def test_marks_cluster_by_time():
     groups = rm.cluster([{"t": 5.0}, {"t": 1.0}, {"t": 1.8}, {"t": 2.7}])
     assert [[m["t"] for m in g] for g in groups] == [[1.0, 1.8, 2.7], [5.0]]
+
+
+def test_a_syllable_moved_later_than_its_neighbour_replays_its_start():
+    syl = rm.syllables(moved(PLAN, 3, 120))
+    j = [j for j in rm.joins(syl) if j["before"] == "v03"][0]
+    assert j["shift_diff_ms"] == 120 and not j["switch"]
+    r = rm.explain({"t": 5.5}, {"syllables": syl, "joins": rm.joins(syl)}, {}, {})
+    assert "replays 120 ms of 'you's start" in r["findings"][0]
+
+
+def test_a_syllable_moved_earlier_skips_audio():
+    syl = rm.syllables(moved(PLAN, 3, -80))
+    r = rm.explain({"t": 5.3}, {"syllables": syl, "joins": rm.joins(syl)}, {}, {})
+    assert "skips 80 ms before 'you'" in r["findings"][0]
+
+
+def test_neighbours_moved_alike_make_no_join():
+    assert [j["before"] for j in rm.joins(rm.syllables(PLAN))] == ["v02"]

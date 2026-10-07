@@ -42,6 +42,7 @@ BEFORE = 1.0            # a marker looks back this far: the press comes after th
 AFTER = 0.2             # and a little forward, for an early press
 JOIN_NEAR = 0.25        # a join this close to a syllable in the window counts as near it
 AIR_MS = 15.0           # silence between two clips longer than this is a gap a listener can hear
+SHIFT_MS = 30.0         # neighbours moved this differently: the join replays or skips audio
 CATEGORIES = ["stutter", "click", "word", "pitch", "timing", "level", "tone", "noise", "other"]
 CLUSTER_S = 1.0         # marks by different reviewers this close together are one finding
 
@@ -80,7 +81,14 @@ def syllables(plan: dict) -> list[dict]:
 
 
 def joins(syl: list[dict], gaps: dict[str, float] | None = None) -> list[dict]:
-    """Every boundary between consecutive clips: a switch between takes, air, or both.
+    """Every boundary between consecutive clips that a listener may hear: a switch
+    between takes, air, or neighbours moved by different amounts.
+
+    Placement runs each clip on in its own source until just after the next one
+    starts. When the next clip was moved later than this one (shift_diff_ms > 0),
+    that run-on already holds the next syllable's start, which then plays again:
+    "Gr-grace". Moved earlier, the difference is skipped. The Director's first marks
+    (2026-10-07) named exactly these sounds at exactly these joins.
 
     Air is what placement left (placed.json `joins[].gap_ms`, the silence after a
     clip once it has been extended toward the next): the plan's own spans leave
@@ -90,9 +98,10 @@ def joins(syl: list[dict], gaps: dict[str, float] | None = None) -> list[dict]:
     for a, b in zip(syl, syl[1:]):
         air_ms = float(gaps.get(a["id"], 0.0))
         switch = a["take"] != b["take"]
-        if switch or air_ms > AIR_MS:
+        shift_diff = round(((b["start"] - b["src_start"]) - (a["start"] - a["src_start"])) * 1000.0)
+        if switch or air_ms > AIR_MS or abs(shift_diff) > SHIFT_MS:
             out.append({"t": b["start"], "after": a["id"], "before": b["id"], "from_take": a["take"], "to_take": b["take"],
-                        "switch": switch, "air_ms": air_ms})
+                        "switch": switch, "air_ms": air_ms, "shift_diff_ms": shift_diff, "lyric": b["lyric"]})
     return out
 
 
@@ -155,7 +164,10 @@ def cmd_page(a) -> int:
         f.write(html)
     for e in entries:
         n = sum(1 for j in e["joins"] if j["switch"])
-        print(f"{e['key']}: {len(e['syllables'])} syllables, {n} take switches, {len(e['joins']) - n} air gaps")
+        rp = sum(1 for j in e["joins"] if not j["switch"] and j["shift_diff_ms"] > SHIFT_MS)
+        sk = sum(1 for j in e["joins"] if not j["switch"] and j["shift_diff_ms"] < -SHIFT_MS)
+        air = sum(1 for j in e["joins"] if not j["switch"] and j["air_ms"] > AIR_MS)
+        print(f"{e['key']}: {len(e['syllables'])} syllables, {n} take switches; inside takes {rp} joins replay, {sk} skip, {air} leave air")
     print(f"page -> {os.path.join(a.out, 'index.html')}  (serve the folder; marks live in the browser)")
     return 0
 
@@ -188,7 +200,12 @@ def explain(mark: dict, e: dict, timing: dict, pitch: dict) -> dict:
     js = [dict(j, ms_before_press=round((t - j["t"]) * 1000.0)) for j in e["joins"] if lo - JOIN_NEAR <= j["t"] <= hi + JOIN_NEAR]
     findings = []
     for j in js:
-        what = f"switch {j['from_take']} -> {j['to_take']}" if j["switch"] else "join inside one take"
+        what = f"switch {j['from_take']} -> {j['to_take']}" if j["switch"] else f"join inside {j['from_take']}"
+        d = j.get("shift_diff_ms", 0)
+        if not j["switch"] and d > SHIFT_MS:
+            what += f" replays {d} ms of '{j.get('lyric', '')}'s start"
+        elif not j["switch"] and d < -SHIFT_MS:
+            what += f" skips {-d} ms before '{j.get('lyric', '')}'"
         if j["air_ms"] > AIR_MS:
             what += f" with {j['air_ms']:.0f} ms of air"
         findings.append(f"{what} at {j['t']:.2f} s ({j['ms_before_press']} ms before the press)")

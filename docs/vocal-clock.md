@@ -382,6 +382,21 @@ between takes, or air that placement left, from `placed.json`), and the timing
 and pitch rows of those syllables. A mark that none of these explains points at
 the render itself, and the report names the raw take and span to listen to.
 
+**What the first marks found** (the Director, Amazing Grace phrase pick, 21 marks).
+The stutters are made by placement, not by the singer. Each syllable is cut and
+moved onto the clock on its own, so neighbours from the same take move by
+different amounts (32 joins move the next syllable later, 45 earlier). A clip
+runs on in its own source until just after the next one starts. When the next
+syllable was moved later, that run-on already holds its start, which then plays
+twice. When it was moved earlier, the difference is skipped.
+- The marks named this exactly: "Gr Grace" where the join replays 202 ms of
+  "grace", "G-God" where it replays 116 ms, and "Amazinmisses grace" where it
+  skips 113 ms.
+- All seven "honk" findings sit within 250 ms of one of the 15 switches between
+  takes, where the outgoing take runs on under the incoming one.
+- Joins are dense, so being near one proves little by itself. The evidence is
+  that each named sound matches its join's direction (replay or skip).
+
 **Who is listening** (the Director: his ear is a non-musician's, and a trained
 ear, human or AI, should carry more weight). Every mark records the reviewer's
 name and level, and the report weighs two questions apart:
