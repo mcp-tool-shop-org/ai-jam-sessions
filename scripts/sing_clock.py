@@ -73,6 +73,7 @@ def main() -> int:
     ap.add_argument("--phrase-scores", help="reuse a phrase_scores.py output instead of scoring the takes (needs the local listener otherwise)")
     ap.add_argument("--aligner", action="store_true", help="cross-check the placed vocal's onsets with the singing forced aligner (onset_aligner.py, HubertFA)")
     ap.add_argument("--segment-gap", type=float, help="export the target in phrase segments split at rests of at least this many seconds (a whole song; must match how the takes were rendered)")
+    ap.add_argument("--warp", action="store_true", help="place by time-warping each run of one take instead of cutting every syllable (vocal_clock.py place --warp)")
     ap.add_argument("--transcribe", action="store_true", help="also upload + transcribe the placed stem on Comfy Cloud (order / one-voice gates)")
     ap.add_argument("--vocal-over-bed-db", type=float, default=4.0)
     ap.add_argument("--bed-gain-db", type=float, default=-9.0)
@@ -128,7 +129,8 @@ def main() -> int:
         return 1
 
     placed_info = os.path.join(out, "placed.json")
-    if run([PY, vc, "place", "--local", "--plan", plan, "--out-dir", out, "--out-info", placed_info, "--out-graph", os.path.join(out, "graph.json")]).returncode:
+    if run([PY, vc, "place", "--local", "--plan", plan, "--out-dir", out, "--out-info", placed_info, "--out-graph", os.path.join(out, "graph.json")]
+           + (["--warp"] if a.warp else [])).returncode:
         return 1
     placed = json.load(open(placed_info, encoding="utf-8"))["path"]
 

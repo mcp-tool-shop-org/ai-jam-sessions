@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — warp placement
+- `vocal_clock.py place --local --warp` (and `sing_clock.py --warp`) places each run of
+  syllables from one take as one continuous, time-warped piece (WSOLA). The old placement
+  cut every syllable and moved it alone, so a syllable moved later than its neighbour had
+  its start played twice ("Gr-grace") and one moved earlier skipped audio. On the
+  16-take phrase picks this removes 77 (Amazing Grace) and 166 (America) such joins.
+  Timing is unchanged, and Amazing Grace's pitch fails drop from 5 to 1.
+
 ### Added — the listening review
 - `scripts/review_marks.py page` builds a listening page for one or more picks. A
   reviewer plays the mix or the vocal alone and presses M wherever something sounds

@@ -130,3 +130,19 @@ def test_a_syllable_moved_earlier_skips_audio():
 
 def test_neighbours_moved_alike_make_no_join():
     assert [j["before"] for j in rm.joins(rm.syllables(PLAN))] == ["v02"]
+
+
+def test_inside_a_warped_run_a_join_neither_replays_nor_skips():
+    syl = rm.syllables(moved(PLAN, 1, 120))
+    warp = {"v00": {"run": 0, "stretch": 1.13}, "v01": {"run": 0, "stretch": None},
+            "v02": {"run": 1, "stretch": 1.0}, "v03": {"run": 1, "stretch": None}}
+    assert [j["before"] for j in rm.joins(syl, {}, warp)] == ["v02"]
+
+
+def test_a_warped_stretch_far_from_one_is_named():
+    syl = rm.syllables(PLAN)
+    warp = {"v00": {"run": 0, "stretch": 2.1}, "v01": {"run": 0, "stretch": None}}
+    j = rm.joins(syl, {}, warp)[0]
+    assert j["before"] == "v01" and j["stretch"] == 2.1
+    r = rm.explain({"t": 2.3}, {"syllables": syl, "joins": rm.joins(syl, {}, warp)}, {}, {})
+    assert "stretches 'oh' x2.1" in r["findings"][0]

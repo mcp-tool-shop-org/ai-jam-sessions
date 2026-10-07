@@ -43,6 +43,7 @@ AFTER = 0.2             # and a little forward, for an early press
 JOIN_NEAR = 0.25        # a join this close to a syllable in the window counts as near it
 AIR_MS = 15.0           # silence between two clips longer than this is a gap a listener can hear
 SHIFT_MS = 30.0         # neighbours moved this differently: the join replays or skips audio
+STRETCH = (0.67, 1.5)   # warp placement: a stretch outside this may be heard as smeared or rushed
 CATEGORIES = ["stutter", "click", "word", "pitch", "timing", "level", "tone", "noise", "other"]
 CLUSTER_S = 1.0         # marks by different reviewers this close together are one finding
 
@@ -80,7 +81,7 @@ def syllables(plan: dict) -> list[dict]:
     return out
 
 
-def joins(syl: list[dict], gaps: dict[str, float] | None = None) -> list[dict]:
+def joins(syl: list[dict], gaps: dict[str, float] | None = None, warp: dict[str, dict] | None = None) -> list[dict]:
     """Every boundary between consecutive clips that a listener may hear: a switch
     between takes, air, or neighbours moved by different amounts.
 
@@ -95,13 +96,24 @@ def joins(syl: list[dict], gaps: dict[str, float] | None = None) -> list[dict]:
     out that extension and overstate it."""
     gaps = gaps or {}
     out = []
+    # Warp placement (placed.json mode local-warp) plays a run of one take as one
+    # stretched piece: a join inside a run neither replays nor skips, but a
+    # stretch far from 1 may be heard.
+    warp = warp or {}
     for a, b in zip(syl, syl[1:]):
         air_ms = float(gaps.get(a["id"], 0.0))
         switch = a["take"] != b["take"]
         shift_diff = round(((b["start"] - b["src_start"]) - (a["start"] - a["src_start"])) * 1000.0)
-        if switch or air_ms > AIR_MS or abs(shift_diff) > SHIFT_MS:
+        wa, wb = warp.get(a["id"]), warp.get(b["id"])
+        stretch = None
+        if wa and wb and wa["run"] == wb["run"]:
+            shift_diff = 0                                           # one continuous piece: nothing replayed or skipped
+            st = wa.get("stretch")
+            stretch = st if st is not None and not STRETCH[0] <= st <= STRETCH[1] else None
+        if switch or air_ms > AIR_MS or abs(shift_diff) > SHIFT_MS or stretch is not None:
             out.append({"t": b["start"], "after": a["id"], "before": b["id"], "from_take": a["take"], "to_take": b["take"],
-                        "switch": switch, "air_ms": air_ms, "shift_diff_ms": shift_diff, "lyric": b["lyric"]})
+                        "switch": switch, "air_ms": air_ms, "shift_diff_ms": shift_diff, "lyric": b["lyric"],
+                        "stretch": stretch, "after_lyric": a["lyric"]})
     return out
 
 
@@ -135,7 +147,9 @@ def entry(run: str, variant: str, out_dir: str) -> dict:
     placed = os.path.join(vdir, "placed.json")
     if not os.path.isfile(placed):
         raise SystemExit(f"{placed} is missing: it records the air placement left between clips")
-    gaps = {j["id"]: j["gap_ms"] for j in load(placed).get("joins", [])}
+    pinfo = load(placed)
+    gaps = {j["id"]: j["gap_ms"] for j in pinfo.get("joins", [])}
+    warp = {j["id"]: j for j in pinfo.get("joins", []) if "run" in j} if pinfo.get("mode") == "local-warp" else None
     key = f"{song}:{variant}"
     files = {}
     for kind, name in (("mix", "mix-local.wav"), ("vocal", "placed-local.wav")):
@@ -148,7 +162,8 @@ def entry(run: str, variant: str, out_dir: str) -> dict:
     phrases = [{"start": p["start"], "end": p["end"], "take": p.get("take")} for p in plan.get("phrases", [])]
     return {"key": key, "song": song, "variant": variant, "dir": os.path.abspath(vdir).replace("\\", "/"),
             "duration": plan["total_seconds"], "files": files, "peaks": peaks(os.path.join(vdir, "placed-local.wav")),
-            "syllables": syl, "joins": joins(syl, gaps), "phrases": phrases}
+            "syllables": syl, "joins": joins(syl, gaps, warp), "phrases": phrases,
+            "placement": pinfo.get("mode", "local")}
 
 
 def cmd_page(a) -> int:
@@ -164,10 +179,11 @@ def cmd_page(a) -> int:
         f.write(html)
     for e in entries:
         n = sum(1 for j in e["joins"] if j["switch"])
+        st = sum(1 for j in e["joins"] if j.get("stretch") is not None)
         rp = sum(1 for j in e["joins"] if not j["switch"] and j["shift_diff_ms"] > SHIFT_MS)
         sk = sum(1 for j in e["joins"] if not j["switch"] and j["shift_diff_ms"] < -SHIFT_MS)
         air = sum(1 for j in e["joins"] if not j["switch"] and j["air_ms"] > AIR_MS)
-        print(f"{e['key']}: {len(e['syllables'])} syllables, {n} take switches; inside takes {rp} joins replay, {sk} skip, {air} leave air")
+        print(f"{e['key']}: {len(e['syllables'])} syllables, {n} take switches; inside takes {rp} joins replay, {sk} skip, {air} leave air" + (f"; {st} stretch outside {STRETCH[0]}-{STRETCH[1]}" if e["placement"] == "local-warp" else ""))
     print(f"page -> {os.path.join(a.out, 'index.html')}  (serve the folder; marks live in the browser)")
     return 0
 
@@ -206,6 +222,8 @@ def explain(mark: dict, e: dict, timing: dict, pitch: dict) -> dict:
             what += f" replays {d} ms of '{j.get('lyric', '')}'s start"
         elif not j["switch"] and d < -SHIFT_MS:
             what += f" skips {-d} ms before '{j.get('lyric', '')}'"
+        if j.get("stretch") is not None:
+            what += f" stretches '{j.get('after_lyric', '')}' x{j['stretch']}"
         if j["air_ms"] > AIR_MS:
             what += f" with {j['air_ms']:.0f} ms of air"
         findings.append(f"{what} at {j['t']:.2f} s ({j['ms_before_press']} ms before the press)")

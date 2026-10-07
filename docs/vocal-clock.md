@@ -415,6 +415,37 @@ Marks from several reviewers within 1 s become one finding: "heard" combines
 their detection weights (one vote per reviewer), and the categories are voted
 with diagnosis weights.
 
+## Warp placement (2026-10-07)
+
+The first review marks (above) traced the stutters to how syllables were placed.
+`place --warp` (and `sing_clock.py --warp`) keeps each run of syllables from one
+take as one continuous piece of that take and time-warps it, so nothing is cut
+inside the run:
+
+- **The map.** Each vowel onset still lands where the plan puts it
+  (`src_vowel_onset` plus the clip's shift). The run's edges keep their own
+  clips' shifts, and time between anchors stretches linearly (`warp_map`).
+- **The stretch.** WSOLA (Verhelst & Roelands 1993) does the stretching: 40 ms
+  frames, each slid up to 10 ms to continue the last frame's waveform, added at
+  50 % overlap. Pitch and timbre are kept.
+- **Between takes.** Runs meet at phrase boundaries. The outgoing take ends at
+  its own last syllable and fades, and two takes overlap for no more than one
+  50 ms crossfade.
+
+Phrase picks from 16 takes, cut against warp:
+
+| | AG cut | AG warp | America cut | America warp |
+|---|---|---|---|---|
+| joins inside takes that replay / skip | 32 / 45 | 0 / 0 | 80 / 86 | 0 / 0 |
+| stretches outside 0.67-1.5 | - | 0 | - | 13 |
+| pitch-gate fails | 5 | 1 | 0 | 2 |
+| pitch scatter SD | 27.3 c | 17.0 c | 17.8 c | 18.3 c |
+| both_off syllables (timing) | 2 | 2 | 5 | 5 |
+
+Timing is unchanged, because the vowels land in the same places. The
+both-off syllables are the ones neither instrument dates within 40 ms.
+America's 13 large stretches sit mostly around breaths and held notes ("A-mer-i-ca").
+
 ## Standards compliance
 
 | standard | score | evidence |
