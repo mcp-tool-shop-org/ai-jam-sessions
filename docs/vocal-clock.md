@@ -355,6 +355,97 @@ beautiful" for "may God thy gold refine"), which is why it ranks and never
 gates. Measured on the first renders (one placed vocal each): Amazing Grace
 89% of words heard in order, America 75%.
 
+## The listening review (2026-10-07)
+
+The gates measure timing and pitch syllable by syllable, and both picks of the
+16-take run cleared most of them. The Director still heard "stuttering at times",
+and "it's stuttering" gives the next fix nothing to aim at. The listening review
+turns an ear into data:
+
+```bash
+python scripts/review_marks.py page --run tmp/vocal-clock/sing/<song> --variant phrase16     --variant word16 --out tmp/vocal-clock/review
+python -m http.server 8766 --bind 127.0.0.1 --directory tmp/vocal-clock/review
+python scripts/review_marks.py report --review tmp/vocal-clock/review --marks review-marks.json
+```
+
+The page plays the mix (or the vocal alone, with V), and M drops a mark: the song
+pauses, the reviewer picks what it sounded like (stutter, click, wrong word, off
+pitch, early or late, volume jump, voice change, breath or noise) and writes a
+note, and Enter carries on. The overview shows the switches between takes, and
+the close-up shows each syllable coloured by the take it came from. Marks live in
+that browser's localStorage. `?test` uses a separate store, so a check of the page
+never touches real marks, and Export downloads them.
+
+`report` joins each mark to the second before it (a listener presses after the
+sound): the syllables sung there and their takes, any join nearby (a switch
+between takes, or air that placement left, from `placed.json`), and the timing
+and pitch rows of those syllables. A mark that none of these explains points at
+the render itself, and the report names the raw take and span to listen to.
+
+**What the first marks found** (the Director, Amazing Grace phrase pick, 21 marks).
+The stutters are made by placement, not by the singer. Each syllable is cut and
+moved onto the clock on its own, so neighbours from the same take move by
+different amounts (32 joins move the next syllable later, 45 earlier). A clip
+runs on in its own source until just after the next one starts. When the next
+syllable was moved later, that run-on already holds its start, which then plays
+twice. When it was moved earlier, the difference is skipped.
+- The marks named this exactly: "Gr Grace" where the join replays 202 ms of
+  "grace", "G-God" where it replays 116 ms, and "Amazinmisses grace" where it
+  skips 113 ms.
+- All seven "honk" findings sit within 250 ms of one of the 15 switches between
+  takes, where the outgoing take runs on under the incoming one.
+- Joins are dense, so being near one proves little by itself. The evidence is
+  that each named sound matches its join's direction (replay or skip).
+
+**Who is listening** (the Director: his ear is a non-musician's, and a trained
+ear, human or AI, should carry more weight). Every mark records the reviewer's
+name and level, and the report weighs two questions apart:
+
+| level | where it sounds off | what it is |
+|---|---|---|
+| listener (no music training) | 1.0 | 0.25 |
+| musician | 1.0 | 0.6 |
+| vocal or audio professional | 1.0 | 1.0 |
+| AI listener, unvalidated | 0.4 | 0.2 |
+
+Anyone in the audience can say where something sounds off, and these songs are
+for an audience. Naming the cause takes training. An AI listener earns higher
+weights by validation against human marks; until then it counts for little.
+Marks from several reviewers within 1 s become one finding: "heard" combines
+their detection weights (one vote per reviewer), and the categories are voted
+with diagnosis weights.
+
+## Warp placement (2026-10-07)
+
+The first review marks (above) traced the stutters to how syllables were placed.
+`place --warp` (and `sing_clock.py --warp`) keeps each run of syllables from one
+take as one continuous piece of that take and time-warps it, so nothing is cut
+inside the run:
+
+- **The map.** Each vowel onset still lands where the plan puts it
+  (`src_vowel_onset` plus the clip's shift). The run's edges keep their own
+  clips' shifts, and time between anchors stretches linearly (`warp_map`).
+- **The stretch.** WSOLA (Verhelst & Roelands 1993) does the stretching: 40 ms
+  frames, each slid up to 10 ms to continue the last frame's waveform, added at
+  50 % overlap. Pitch and timbre are kept.
+- **Between takes.** Runs meet at phrase boundaries. The outgoing take ends at
+  its own last syllable and fades, and two takes overlap for no more than one
+  50 ms crossfade.
+
+Phrase picks from 16 takes, cut against warp:
+
+| | AG cut | AG warp | America cut | America warp |
+|---|---|---|---|---|
+| joins inside takes that replay / skip | 32 / 45 | 0 / 0 | 80 / 86 | 0 / 0 |
+| stretches outside 0.67-1.5 | - | 0 | - | 13 |
+| pitch-gate fails | 5 | 1 | 0 | 2 |
+| pitch scatter SD | 27.3 c | 17.0 c | 17.8 c | 18.3 c |
+| both_off syllables (timing) | 2 | 2 | 5 | 5 |
+
+Timing is unchanged, because the vowels land in the same places. The
+both-off syllables are the ones neither instrument dates within 40 ms.
+America's 13 large stretches sit mostly around breaths and held notes ("A-mer-i-ca").
+
 ## Standards compliance
 
 | standard | score | evidence |

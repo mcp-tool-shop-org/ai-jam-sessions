@@ -832,6 +832,145 @@ def place_local(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np
     return out, joins
 
 
+# ─── warp placement: stretch a take, never cut it inside a run ───────────────
+#
+# place_local cuts every syllable out and moves it alone. Neighbours from one
+# take move by different amounts, and since each clip runs on in its own source
+# until the next starts, a syllable moved later than its neighbour has its start
+# played twice ("Gr-grace") and one moved earlier skips audio. The Director's
+# review marks found exactly that (2026-10-07). Warp placement keeps every run of
+# syllables from one take as one continuous stretch of that take and time-warps
+# it (WSOLA) so each vowel onset still lands where the plan puts it.
+
+WARP_FRAME_S = 0.04          # WSOLA frame (a few periods of the lowest sung note)
+WARP_TOL_S = 0.01            # how far a frame may slide to stay in phase with the last
+WARP_RUN_GAP_S = 1.5         # a source gap this long between same-take syllables starts a new run
+
+
+def warp_runs(cuts: list[dict]) -> list[list[dict]]:
+    """Consecutive clips (in placed order) from one take, in source order and close
+    in the source: each run is played as one continuous, warped stretch."""
+    runs: list[list[dict]] = []
+    for c in sorted(cuts, key=lambda c: c["placed_start"]):
+        if runs:
+            p = runs[-1][-1]
+            if (c["source_key"] == p["source_key"] and c["cut_start"] >= p["cut_start"]
+                    and c["cut_start"] - p["cut_end"] < WARP_RUN_GAP_S):
+                runs[-1].append(c)
+                continue
+        runs.append([c])
+    return runs
+
+
+def warp_map(run: list[dict]) -> tuple[list[float], list[float]]:
+    """Source times -> timeline times for a run: each vowel onset goes where the
+    plan puts it (src_vowel_onset + the clip's shift), the run's edges keep the
+    first and last clip's own shift, and time between anchors is stretched
+    linearly. An anchor that would run backwards is dropped."""
+    def shift(c):
+        return c["placed_start"] - c["cut_start"]
+    pts = [(run[0]["cut_start"], run[0]["cut_start"] + shift(run[0]))]
+    for c in run:
+        v = c.get("src_vowel_onset")
+        if v is not None:
+            pts.append((v, v + shift(c)))
+    last = run[-1]
+    pts.append((last["cut_end"], last["cut_end"] + shift(last)))
+    src, dst = [pts[0][0]], [pts[0][1]]
+    for s, d in pts[1:]:
+        if s > src[-1] + 1e-4 and d > dst[-1] + 1e-4:
+            src.append(s)
+            dst.append(d)
+    return src, dst
+
+
+def wsola(x: np.ndarray, sr: int, src: list[float], dst: list[float]) -> np.ndarray:
+    """Time-warp x (frames x channels) so source time src[i] lands at dst[i]
+    (seconds; the output starts at dst[0]). Waveform-similarity overlap-add
+    (Verhelst & Roelands 1993): each output frame is read near where the map says,
+    slid up to WARP_TOL_S to continue the previous frame's waveform, and added
+    under a Hann window at 50 % overlap, so pitch and timbre are kept."""
+    from scipy.signal import correlate
+    n = int(round(WARP_FRAME_S * sr)) // 2 * 2
+    hs = n // 2
+    tol = int(round(WARP_TOL_S * sr))
+    length = int(round((dst[-1] - dst[0]) * sr))
+    win = 0.5 - 0.5 * np.cos(2 * np.pi * np.arange(n) / n)          # periodic Hann: sums to 1 at hop n/2
+    ch = x.shape[1]
+    off = n + 2 * tol
+    xp = np.concatenate([np.zeros((off, ch)), x, np.zeros((off, ch))])   # index i of x is i + off in xp
+    mono = xp.mean(axis=1)
+    out = np.zeros((length + 2 * n, ch))
+    out_t = np.arange(0, length + hs, hs)
+    want = np.interp(dst[0] + out_t / sr, dst, src) * sr              # source sample each output frame should read
+    prev = None
+    for k, t in enumerate(out_t):
+        p = int(round(want[k])) + off
+        if prev is not None:
+            nat = mono[prev + hs:prev + hs + n]                      # how the last frame's waveform goes on
+            region = mono[p - tol:p + tol + n]
+            if len(nat) == n and len(region) == n + 2 * tol and np.any(nat):
+                p = p - tol + int(np.argmax(correlate(region, nat, mode="valid", method="fft")))
+        seg = xp[p:p + n]
+        if len(seg) < n:
+            break
+        out[t:t + n] += seg * win[:, None]
+        prev = p
+    return out[:length]
+
+
+def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np.ndarray, list[dict]]:
+    """Warp placement (see above). Runs meet the way phrases do: the earlier run
+    ends at its own last syllable and fades; if the next run starts before that,
+    they crossfade for at most XFADE_S, so two takes never sing over each other
+    for longer than a crossfade."""
+    total = int(plan["total_samples"])
+    out = np.zeros((total, 2))
+    cuts = [c for c in plan["cuts"] if c.get("word_clip_id", c["id"]) == c["id"]]
+    runs = warp_runs(cuts)
+    nf = int(FADE_S * sr)
+    nx = int(XFADE_S * sr)
+    spans = []
+    for run in runs:
+        src_t, dst_t = warp_map(run)
+        x = sources[run[0]["source_key"]]
+        if x.ndim == 1:
+            x = np.repeat(x[:, None], 2, axis=1)
+        a0 = int(round(src_t[0] * sr))
+        seg = wsola(x[a0:int(round(src_t[-1] * sr)) + 1], sr, [s - a0 / sr for s in src_t], dst_t)
+        spans.append((int(round(dst_t[0] * sr)), seg, src_t, dst_t))
+    joins = []
+    for k, (start, seg, src_t, dst_t) in enumerate(spans):
+        nxt = spans[k + 1][0] if k + 1 < len(spans) else None
+        n = len(seg)
+        if nxt is not None and start + n > nxt + nx:
+            n = max(1, nxt + nx - start)                              # never under the next run past a crossfade
+        seg = seg[:n].copy()
+        prev_end = spans[k - 1][0] + len(spans[k - 1][1]) if k > 0 else None
+        head = min(nx if prev_end is not None and prev_end > start else nf, n // 2)
+        tail = min(nx if nxt is not None and start + n > nxt else nf, n // 2)
+        seg[:head] *= _fade(head)[:, None]
+        seg[n - tail:] *= _fade(tail)[::-1][:, None]
+        lo, hi = max(0, start), min(total, start + n)
+        if hi > lo:
+            out[lo:hi] += seg[lo - start:hi - start]
+        run = runs[k]
+        gap_after = max(0.0, (nxt - (start + n)) / sr * 1000) if nxt is not None else 0.0
+        for i, c in enumerate(run):
+            ratio = None
+            if i + 1 < len(run) and c.get("src_vowel_onset") is not None and run[i + 1].get("src_vowel_onset") is not None:
+                s0, s1 = c["src_vowel_onset"], run[i + 1]["src_vowel_onset"]
+                d0, d1 = np.interp([s0, s1], src_t, dst_t)
+                ratio = round(float((d1 - d0) / (s1 - s0)), 3) if s1 > s0 else None
+            joins.append({"id": c["id"], "run": k, "placed_start": float(np.interp(c["cut_start"], src_t, dst_t)),
+                          "placed_end": float(np.interp(c["cut_end"], src_t, dst_t)), "stretch": ratio,
+                          "gap_ms": round(gap_after, 1) if i == len(run) - 1 else 0.0, "extended_ms": 0.0})
+    peak = float(np.abs(out).max())
+    if peak > 1.0:
+        out /= peak
+    return out, joins
+
+
 def mix_local(bed: np.ndarray, vocal: np.ndarray, vo_gain_db: float, bed_gain_db: float) -> np.ndarray:
     return bed * 10 ** (bed_gain_db / 20) + vocal * 10 ** (vo_gain_db / 20)
 
@@ -1337,16 +1476,20 @@ def cmd_place(a):
             if sr != plan["sample_rate"]:
                 raise SystemExit(f"{path} is {sr} Hz, plan is {plan['sample_rate']} Hz")
             sources[k] = data
-        out, joins = place_local(plan, sources, int(plan["sample_rate"]))
+        place = place_warp if a.warp else place_local
+        out, joins = place(plan, sources, int(plan["sample_rate"]))
         os.makedirs(a.out_dir, exist_ok=True)
         path = os.path.join(a.out_dir, "placed-local.wav")
         sf.write(path, out, int(plan["sample_rate"]), subtype="PCM_16")
-        info = {"mode": "local", "key": None, "path": path.replace("\\", "/"), "frames": int(out.shape[0]), "sample_rate": int(plan["sample_rate"]),
+        info = {"mode": "local-warp" if a.warp else "local", "key": None, "path": path.replace("\\", "/"), "frames": int(out.shape[0]), "sample_rate": int(plan["sample_rate"]),
                 "seconds": out.shape[0] / plan["sample_rate"], "sha256": sha256(path), "plan": a.plan.replace("\\", "/"),
                 "fade_s": FADE_S, "xfade_s": XFADE_S, "join_extend_max_s": JOIN_EXTEND_MAX_S, "joins": joins}
         json.dump(info, open(a.out_info, "w", encoding="utf-8"), indent=2)
         gaps = [j for j in joins if j["gap_ms"] > 0]
-        print(f"placed (local) {path} frames {out.shape[0]} ({out.shape[0] / plan['sample_rate']:.4f}s); crossfade {XFADE_S * 1000:.0f} ms; "
+        if a.warp:
+            ratios = [j["stretch"] for j in joins if j.get("stretch")]
+            print(f"warp: {len({j['run'] for j in joins})} runs; stretch {min(ratios, default=1):.2f}-{max(ratios, default=1):.2f}")
+        print(f"placed (local{'-warp' if a.warp else ''}) {path} frames {out.shape[0]} ({out.shape[0] / plan['sample_rate']:.4f}s); crossfade {XFADE_S * 1000:.0f} ms; "
               f"{len(gaps)} joins left air: " + (", ".join(f"{j['id']} {j['gap_ms']}ms" for j in gaps) or "none"))
         return 0
     import comfy_rest
@@ -1471,7 +1614,8 @@ def main(argv=None) -> int:
     s.add_argument("--phrase-gap", type=float, default=0.3, help="a rest this long ends a phrase (default 0.3 s)"); s.set_defaults(fn=cmd_repin)
     s = sub.add_parser("place"); s.add_argument("--plan", required=True); s.add_argument("--key", default=""); s.add_argument("--out-dir", required=True)
     s.add_argument("--out-info", required=True); s.add_argument("--out-graph", required=True); s.add_argument("--prefix", default="jam/vocal-clock/placed"); s.add_argument("--dry-run", action="store_true")
-    s.add_argument("--local", action="store_true", help="place with numpy (fades + crossfaded joins) instead of the cloud"); s.add_argument("--take", action="append", help="--local: <source_key>=<wav path>"); s.set_defaults(fn=cmd_place)
+    s.add_argument("--local", action="store_true", help="place with numpy (fades + crossfaded joins) instead of the cloud"); s.add_argument("--take", action="append", help="--local: <source_key>=<wav path>")
+    s.add_argument("--warp", action="store_true", help="--local: time-warp each run of one take onto the clock instead of cutting every syllable (no replayed or skipped audio at joins)"); s.set_defaults(fn=cmd_place)
     s = sub.add_parser("verify"); s.add_argument("--clock", required=True); s.add_argument("--vocal", required=True); s.add_argument("--bed"); s.add_argument("--words"); s.add_argument("--plan"); s.add_argument("--receipt")
     s.add_argument("--aligner", action="store_true", help="cross-check onsets with the singing forced aligner (onset_aligner.py): a detector miss the aligner places on time is rescued")
     s.add_argument("--aligner-work", help="work directory for the aligner (default: an aligner/ folder next to the receipt)"); s.set_defaults(fn=cmd_verify)
