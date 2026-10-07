@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `vocal_clock.py repin --by-phrase` (and `sing_clock.py --by-phrase`) picks one take per phrase
   instead of one per word, so a phrase is never stitched from several renders: a join between
   takes, with their different tone and level, made the word-level pick sound jittery. Takes are
-  ranked per phrase by intelligibility, then syllables already in the gate, then pitch; the first
+  ranked per phrase by intelligibility, then notes the pitch gate would fail, then syllables
+  already in the gate; the first
   that sings every word of the phrase inside the word limit is used, and a phrase no single take
   can sing falls back to the word-level pick (the plan's `phrases` says which).
 - `scripts/phrase_scores.py` scores every take per phrase: a local listener (Qwen3-Omni through

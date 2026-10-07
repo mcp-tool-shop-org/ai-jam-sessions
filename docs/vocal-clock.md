@@ -339,8 +339,10 @@ Takes are ranked per phrase (`rank_phrases`):
 1. **intelligibility**: the share of the phrase's words a local listener heard,
    in order (`phrase_scores.py`: Qwen3-Omni Q4 through `llama-server`, the
    phrase's audio and no lyrics, temperature 0);
-2. syllables already within the gate in the raw take (the fewest moves);
-3. the smallest mean |cents| over the phrase's notes.
+2. the fewest notes the pitch gate would fail, then the smallest mean |cents|:
+   a wrong note stays audible, while timing is moved onto the clock afterwards
+   (ranking timing first took Amazing Grace from 8 pitch fails to 14);
+3. syllables already within the gate in the raw take (the fewest moves).
 
 The first take in that order that sings every word of the phrase inside the
 word limit is used. A phrase no single take can sing falls back to the
