@@ -774,6 +774,13 @@ XFADE_S = 0.05               # crossfade at every join: the earlier clip keeps s
 JOIN_EXTEND_MAX_S = REPIN_LEAD_IN_S + XFADE_S   # never reach past the next syllable's lead-in into its vowel
 
 
+def _xfade(c: dict, sr: int) -> int:
+    """Samples of crossfade at the join INTO clip `c`: XFADE_S, unless the cut carries
+    its own `xfade_s` (the planter's click plants; production plans never set it)."""
+    x = c.get("xfade_s")
+    return int(XFADE_S * sr) if x is None else int(round(x * sr))
+
+
 def _fade(n: int) -> np.ndarray:
     return 0.5 - 0.5 * np.cos(np.pi * np.arange(n) / max(1, n))
 
@@ -792,9 +799,10 @@ def place_local(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np
     cuts = plan["cuts"]
     joins = []
     nf = int(FADE_S * sr)
-    nx = int(XFADE_S * sr)
     cuts = [c for c in cuts if c.get("word_clip_id", c["id"]) == c["id"]]   # one clip per word
     for k, c in enumerate(cuts):
+        nx_in = _xfade(c, sr)                                  # the join into this clip
+        nx = _xfade(cuts[k + 1], sr) if k + 1 < len(cuts) else nx_in   # the join out of it
         src = sources[c["source_key"]]
         if src.ndim == 1:
             src = np.repeat(src[:, None], 2, axis=1)
@@ -809,7 +817,7 @@ def place_local(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np
             b0 = max(b0, a0 + 1)
             seg = src[a0:b0].copy()
             n = len(seg)
-            head = min(nx if k > 0 else nf, n // 2)
+            head = min(nx_in if k > 0 else nf, n // 2)
             tail = min(nx, n // 2)
             seg[:head] *= _fade(head)[:, None]
             seg[n - tail:] *= _fade(tail)[::-1][:, None]
@@ -817,7 +825,7 @@ def place_local(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np
         else:
             seg = src[a0:nat_end].copy()
             n = len(seg)
-            head = min(nx, n // 2)
+            head = min(nx_in, n // 2)
             tail = min(nf, n // 2)
             seg[:head] *= _fade(head)[:, None]
             seg[n - tail:] *= _fade(tail)[::-1][:, None]
@@ -859,14 +867,15 @@ def warp_runs(cuts: list[dict], ends: dict[str, float] | None = None) -> list[li
     """Consecutive clips (in placed order) from one take, in source order and close
     in the source: each run is played as one continuous, warped stretch. With
     `ends` (event id -> score time its note ends), a rest of WARP_REST_S in the
-    score also ends a run."""
+    score also ends a run. A cut with `break_before` always starts a new run (the
+    planter's seams; production plans never set it)."""
     ends = ends or {}
     runs: list[list[dict]] = []
     for c in sorted(cuts, key=lambda c: c["placed_start"]):
         if runs:
             p = runs[-1][-1]
             rest = c["t_sec"] - ends[p["id"]] if p["id"] in ends and "t_sec" in c else 0.0
-            if (c["source_key"] == p["source_key"] and c["cut_start"] >= p["cut_start"]
+            if (not c.get("break_before") and c["source_key"] == p["source_key"] and c["cut_start"] >= p["cut_start"]
                     and c["cut_start"] - p["cut_end"] < WARP_RUN_GAP_S and rest < WARP_REST_S):
                 runs[-1].append(c)
                 continue
@@ -944,7 +953,7 @@ def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int, clock: dict 
     runs = warp_runs(cuts, ends)
     nf = int(FADE_S * sr)
     nr = int(WARP_RELEASE_FADE_S * sr)
-    nx = int(XFADE_S * sr)
+    xf = [_xfade(run[0], sr) for run in runs]                 # the join into each run
     spans = []
     for run in runs:
         src_t, dst_t = warp_map(run)
@@ -965,12 +974,14 @@ def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int, clock: dict 
     joins = []
     for k, (start, seg, src_t, dst_t) in enumerate(spans):
         nxt = spans[k + 1][0] if k + 1 < len(spans) else None
+        nx_in = xf[k]
+        nx = xf[k + 1] if k + 1 < len(spans) else nx_in
         n = len(seg)
         if nxt is not None and start + n > nxt + nx:
             n = max(1, nxt + nx - start)                              # never under the next run past a crossfade
         seg = seg[:n].copy()
         prev_end = spans[k - 1][0] + len(spans[k - 1][1]) if k > 0 else None
-        head = min(nx if prev_end is not None and prev_end > start else nf, n // 2)
+        head = min(nx_in if prev_end is not None and prev_end > start else nf, n // 2)
         tail = min(nx if nxt is not None and start + n > nxt else nf, n // 2)
         seg[:head] *= _fade(head)[:, None]
         seg[n - tail:] *= _fade(tail)[::-1][:, None]
