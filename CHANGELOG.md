@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — vocal takes rendered on a rented GPU
+- `scripts/soulx_batch.py` loads SoulX-Singer once and renders N takes into the `take-NN`
+  layout `sing_clock.py` reads, skipping takes already on disk. On the local RTX 5090 a 35 s
+  phrase took 2.8 s once the model was loaded (5.3 s), against about 12 s per take when every
+  take starts a new process.
+- `scripts/pod/`: the setup for an offrig `jam` pod. SoulX-Singer at a pinned commit with the
+  one local patch, Python 3.10.20, the 72-package environment the local renders use (torch
+  2.11.0+cu128), and the weights checked by Hugging Face revision and sha256. The session, from
+  plan to shutdown: `docs/vocal-offrig.md`.
+- `sing_clock.py` refuses a take on disk that was sung from another target, or that has no
+  receipt (`STALE TAKE`), instead of judging it against a clock it was not sung to. That check
+  is what makes takes rendered elsewhere safe to drop in.
+
+### Fixed
+- A take receipt's `generated_frames` now counts SoulX's own 24 kHz output. It counted the
+  frames after resampling to 48 kHz. Nothing read the field.
+
 ### Changed — coverage gates
 - Lines 88.35% (15346/17368) → 94.67% (16444/17368). Statements 86.65% (17076/19706) → 92.99% (18326/19706). Functions 87.32% (2494/2856) → 95.16% (2718/2856). Branches 77.7% (9084/11690) → 82.89% (9690/11690). Measured 2026-10-06 with `SKIP_DSP_VERIFICATION=1`. The local vitest floor is statements 90, lines 92, functions 93, branches 80. Codecov patch and project statuses block at 90% lines, and the project status allows a 1% drop.
 
