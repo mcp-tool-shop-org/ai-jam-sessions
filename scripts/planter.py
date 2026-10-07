@@ -111,6 +111,17 @@ def make_spec(kind: str, join: dict, severity: float, mode: str, seed: int) -> d
             "severity": float(severity), "units": UNITS[kind], "mode": mode, "seed": int(seed)}
 
 
+def _run_of(plan: dict, cut: dict, clock: dict | None) -> tuple[list[list[dict]], int]:
+    """Warp runs of the plan as the placer will build them, and the index of the
+    run holding `cut`. Raises ValueError unless `cut` starts that run: in warp mode
+    a seam, and the run's `xfade_s`, exist only at a run's first cut."""
+    runs = vc.warp_runs(word_cuts(plan), score_ends(clock))
+    k = next(i for i, r in enumerate(runs) if any(c["id"] == cut["id"] for c in r))
+    if runs[k][0]["id"] != cut["id"]:
+        raise ValueError(f"{cut['id']}: the placer did not start a run here (break_before not honoured)")
+    return runs, k
+
+
 def _prev_play(plan: dict, cut: dict, mode: str, clock: dict | None) -> tuple[float, "callable"]:
     """Where, in its take, the audio before the join has got to when cut `cut`
     starts (s_end), and a map from that take's time to the timeline. Replay and
@@ -118,10 +129,7 @@ def _prev_play(plan: dict, cut: dict, mode: str, clock: dict | None) -> tuple[fl
     never. Raises ValueError when the audio before is another take."""
     t = float(cut["placed_start"])
     if mode == "warp":
-        runs = vc.warp_runs(word_cuts(plan), score_ends(clock))
-        k = next(i for i, r in enumerate(runs) if any(c["id"] == cut["id"] for c in r))
-        if runs[k][0]["id"] != cut["id"]:
-            raise ValueError(f"{cut['id']}: the placer did not start a run here (break_before not honoured)")
+        runs, k = _run_of(plan, cut, clock)
         if k == 0:
             raise ValueError(f"{cut['id']}: no audio before the first run")
         prev = runs[k - 1]
@@ -171,6 +179,8 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None) -> tuple[dict, dic
             where["lag_s"] = round(where["t"] - to_timeline(start), 4)
     elif kind == "click":
         c["xfade_s"] = s
+        if spec["mode"] == "warp":
+            _run_of(out, c, clock)          # place_warp reads xfade_s only from a run's first cut
     elif kind == "sham" and spec["mode"] == "local":
         where["t"] = _split(out, c)
     return out, where

@@ -99,74 +99,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 73,
-      "changed": 55,
+      "added": 0,
+      "changed": 2,
       "moved": 0,
-      "parts": 9,
-      "removed": 5
+      "parts": 1,
+      "removed": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI runs 38 more files than before.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release runs 37 more files than before.",
-        "subjects": [
-          ".github/workflows/release.yml"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "site/src/data/hymns.visual.json is now written by scripts/site-hymn-visual.ts.",
-        "subjects": [
-          "site/src/data/hymns.visual.json",
-          "scripts/site-hymn-visual.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "tmp/planter is now written by scripts/planter.py.",
-        "subjects": [
-          "tmp/planter",
-          "scripts/planter.py"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "docs/hf-cards/jam-actions-v1.md is now also read by src/dataset/acoustic-v1/coverage-tail.test.ts.",
-        "subjects": [
-          "docs/hf-cards/jam-actions-v1.md",
-          "src/dataset/acoustic-v1/coverage-tail.test.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 14 more new writers and readers of places.",
-        "subjects": []
-      },
-      {
-        "kind": "sequence",
-        "sentence": "src/cli.ts now starts at `runCli`; it started at `main`.",
-        "subjects": [
-          "src/cli.ts"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "73 files added, 5 removed and 55 changed content, across 9 parts.",
+        "sentence": "Nothing structural changed since 2026-10-07; 2 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "aaf8685af34ae644a32be956ed25f63893a2cb00",
-      "generatedAt": "2026-10-06T16:51:56.427Z"
+      "commit": "04a1f6c44db636317bd0f70c32de7e2db0cebb10",
+      "generatedAt": "2026-10-07T23:09:11.313Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -174,7 +124,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 4,
-  "commit": "04a1f6c44db636317bd0f70c32de7e2db0cebb10",
+  "commit": "ca87856fea77c6d83b52d47ed9e7e50d22c5f7c2",
   "defaultBranch": "main",
   "derived": "14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (611), Python (65), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
@@ -1691,7 +1641,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-07T23:09:11.313Z",
+  "generatedAt": "2026-10-07T23:11:17.907Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",

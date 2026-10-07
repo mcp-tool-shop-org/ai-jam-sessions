@@ -168,7 +168,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "scripts",
-      "qualifyingSourceCommits": 102,
+      "qualifyingSourceCommits": 103,
       "rebaseline": null
     },
     {
@@ -1195,8 +1195,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 11,
-        "lines": 868,
+        "commits": 12,
+        "lines": 919,
         "path": "atlas/README.md"
       },
       {
@@ -1205,18 +1205,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 11,
-        "lines": 5052,
+        "commits": 12,
+        "lines": 5286,
         "path": "atlas/page.json"
       },
       {
-        "commits": 11,
-        "lines": 58004,
+        "commits": 12,
+        "lines": 58821,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 11,
-        "lines": 133862,
+        "commits": 12,
+        "lines": 138025,
         "path": "atlas/structure.json"
       },
       {
@@ -13655,6 +13655,11 @@
         "path": "scripts/phrase_scores.py"
       },
       {
+        "commits": 1,
+        "lines": 371,
+        "path": "scripts/planter.py"
+      },
+      {
         "commits": 6,
         "lines": 422,
         "path": "scripts/play-comfy-over-piano.mjs"
@@ -13808,6 +13813,11 @@
         "commits": 3,
         "lines": 165,
         "path": "scripts/test_pitch_recheck.py"
+      },
+      {
+        "commits": 1,
+        "lines": 271,
+        "path": "scripts/test_planter.py"
       },
       {
         "commits": 6,
@@ -16895,9 +16905,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-07T23:09:11.313Z",
+  "generatedAt": "2026-10-07T23:11:17.907Z",
   "generatedFrom": {
-    "commit": "04a1f6c44db636317bd0f70c32de7e2db0cebb10"
+    "commit": "ca87856fea77c6d83b52d47ed9e7e50d22c5f7c2"
   },
   "pairs": [
     {
@@ -17113,43 +17123,43 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 6,
-      "shared": 6,
+      "either": 7,
+      "shared": 7,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 6,
-      "shared": 6,
+      "either": 7,
+      "shared": 7,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 6,
-      "shared": 6,
+      "either": 7,
+      "shared": 7,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 6,
-      "shared": 6,
+      "either": 7,
+      "shared": 7,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 6,
-      "shared": 6,
+      "either": 7,
+      "shared": 7,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 6,
-      "shared": 6,
+      "either": 7,
+      "shared": 7,
       "strength": 1
     },
     {
@@ -17296,16 +17306,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-10-07T13:47:00-07:00",
+    "headDate": "2026-10-07T19:09:43-04:00",
     "inScopeFiles": 3034,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 648,
+    "qualifyingCommits": 649,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-10T20:47:00.000Z",
+    "since": "2026-04-10T23:09:43.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

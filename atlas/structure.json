@@ -14208,57 +14208,57 @@
               "line": 109
             },
             {
-              "in": "_prev_play",
+              "in": "_run_of",
               "kind": "raise",
-              "line": 124
+              "line": 121
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 126
+              "line": 134
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 129
+              "line": 137
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 136
+              "line": 144
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 139
+              "line": 147
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 153
+              "line": 161
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 166
+              "line": 174
             },
             {
               "in": "load_sources",
               "kind": "raise",
-              "line": 205
+              "line": 215
             },
             {
               "in": "build",
               "kind": "raise",
-              "line": 313
+              "line": 323
             },
             {
               "in": "build",
               "kind": "except",
-              "line": 323
+              "line": 333
             }
           ],
-          "hash": "a277c1632f27e69213dda63ba280ec6b259b172f2ce3f2f6880b36a3ace85565",
+          "hash": "d4c85a8b10b16cc27a3fb27f1ab78dac6cc25ee6d473631c4173a5d448df70b9",
           "importsFiles": [
             "scripts/phrase_evidence.py",
             "scripts/vocal_clock.py"
@@ -15014,6 +15014,8 @@
             "test_a_hard_seam_clicks",
             "test_a_local_replay_renders_measurably_and_a_sham_does_not",
             "test_a_local_skip_changes_the_audio",
+            "test_a_warp_click_inside_a_run_also_breaks_the_run",
+            "test_a_warp_click_refuses_a_cut_that_does_not_start_a_run",
             "test_build_writes_labels_and_drops_unplantable_specs",
             "test_click_sets_the_seam_crossfade",
             "test_inside_joins_get_a_forced_break_in_warp_mode_only",
@@ -15031,7 +15033,7 @@
             "test_warp_forced_break_makes_a_seam_and_a_replay_there_is_measurable",
             "test_warp_replay_refuses_when_the_placer_ignores_break_before"
           ],
-          "hash": "e0a2418c675288c4fa1cf16bce44d6344745d246478409816daa110248f1a6e1",
+          "hash": "b35cdd23f05363086535e625e5a2a370c796bf1dcafe844a8380198e7acee4dc",
           "importsFiles": [
             "scripts/planter.py",
             "scripts/vocal_clock.py"
@@ -37112,7 +37114,7 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "04a1f6c44db636317bd0f70c32de7e2db0cebb10",
+    "commit": "ca87856fea77c6d83b52d47ed9e7e50d22c5f7c2",
     "tracked": 3029
   },
   "landings": [

@@ -139,13 +139,29 @@ def test_skip_starts_later_and_refuses_to_eat_the_cut():
 def test_inside_joins_get_a_forced_break_in_warp_mode_only():
     q, _ = pl.mutate(plan_of(), spec("sham", mode="warp", join_type="inside"))
     assert next(c for c in q["cuts"] if c["id"] == "v04")["break_before"] is True
-    q, _ = pl.mutate(plan_of(), spec("click", mode="warp", join_type="boundary"))
+    q, _ = pl.mutate(plan_of(), spec("click", mode="local", join_type="boundary"))
     assert "break_before" not in next(c for c in q["cuts"] if c["id"] == "v04")
 
 
 def test_click_sets_the_seam_crossfade():
     q, _ = pl.mutate(plan_of(), spec("click", sev=0.001))
     assert next(c for c in q["cuts"] if c["id"] == "v04")["xfade_s"] == 0.001
+
+
+def test_a_warp_click_inside_a_run_also_breaks_the_run():
+    if not supports_break_before():
+        with pytest.raises(ValueError, match="break_before"):
+            pl.mutate(plan_of(), spec("click", sev=0.0, mode="warp", join_type="inside"))
+        return
+    q, _ = pl.mutate(plan_of(), spec("click", sev=0.0, mode="warp", join_type="inside"))
+    c = next(c for c in q["cuts"] if c["id"] == "v04")
+    assert c["break_before"] is True and c["xfade_s"] == 0.0
+
+
+def test_a_warp_click_refuses_a_cut_that_does_not_start_a_run():
+    # labelled "boundary" but the cut sits inside a run: xfade_s alone would be ignored
+    with pytest.raises(ValueError, match="start a run"):
+        pl.mutate(plan_of(), spec("click", sev=0.0, mode="warp", join_type="boundary"))
 
 
 def test_local_sham_splits_the_cut_into_continuous_halves():

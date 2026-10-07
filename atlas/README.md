@@ -1,21 +1,14 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-10-07 from commit 04a1f6c by Atlas 1.24.0.
+Mapped at 2026-10-07 from commit ca87856 by Atlas 1.24.0.
 
 ## What this is
 
 14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (611), Python (65), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-10-06 (aaf8685)
+## What changed since 2026-10-07 (04a1f6c)
 
-- CI runs 38 more files than before.
-- Release runs 37 more files than before.
-- site/src/data/hymns.visual.json is now written by scripts/site-hymn-visual.ts.
-- tmp/planter is now written by scripts/planter.py.
-- docs/hf-cards/jam-actions-v1.md is now also read by src/dataset/acoustic-v1/coverage-tail.test.ts.
-- And 14 more new writers and readers of places.
-- src/cli.ts now starts at `runCli`; it started at `main`.
-- 73 files added, 5 removed and 55 changed content, across 9 parts.
+Nothing structural changed since 2026-10-07; 2 files changed content.
 
 ## What comes in
 
