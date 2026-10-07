@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.0] - 2026-10-07
+
+**Two hymns, sung.** Amazing Grace and America the Beautiful are sung whole, every verse, on the
+piano's clock, and both passed by ear:
+- a sound check first;
+- sixteen takes of a score-conditioned singer (SoulX-Singer), rendered on a rented GPU through offrig;
+- one take per phrase, chosen by a local listener and a pitch tracker;
+- warp placement, so nothing inside a phrase is cut;
+- timing and pitch gates that each read with two instruments;
+- a listening review whose marks traced the remaining defects to their causes.
+
+The landing page is rewritten around the two performances, with a three.js view of the voice over
+the piano. The library's America the Beautiful is now Ward's own Materna melody.
+
+### Changed — the v2.8.0 treatment
+- README: "Listen first: two hymns, sung on the beat", the whole-song vocal route with the sound
+  check and the listening review, and seven translations regenerated locally.
+- Handbook: the Vocals page is rewritten for the whole-song route. MCP tools lists all 56 tools,
+  adding `check_loop_seam` and `compare_balance`, which were missing.
+- Tool and song counts corrected where they had drifted (56 tools; the share description no longer
+  says 120 songs).
+- Three experiment scripts named a home-directory path to the Ollama binary. They now use
+  `${OLLAMA_BIN:-ollama}`.
+
 ### Changed — the pitch gate reads with two trackers
 - `vocal_clock.py pitch` now reads every note with FCPE, and pYIN re-reads only the notes FCPE
   puts off (FAIL, untrackable, unvoiced), each over its own window. A note fails only when both
