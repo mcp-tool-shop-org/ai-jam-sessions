@@ -6,6 +6,8 @@
  *   pnpm exec tsx scripts/build-score-clock.mjs [--song amazing-grace]
  *       [--track TUBULARBEL] [--measures 1-10] [--out scores/...json] [--check]
  *       [--rests]   (notes end where the arrangement's notes end; '_' in --lyrics holds a syllable)
+ *       [--interpretation '{"amount":1,"rules":{"glory":1}}']   (an arrangement hymn: a variant
+ *        performance for an A/B, recorded in the clock; write it with --out, not over the canonical clock)
  *
  * `--check` re-derives and exits 1 if the committed file differs (CI-style
  * drift guard). See src/vocal/score-clock.ts for what the clock means.
@@ -28,6 +30,12 @@ const track = opt("track", "TUBULARBEL");
 const [startMeasure, endMeasure] = opt("measures", "1-10").split("-").map(Number);
 const out = opt("out", join("scores", `${songId}.score-clock.v1.json`));
 const check = args.includes("--check");
+const interpArg = opt("interpretation", undefined);
+const interp = interpArg === undefined ? undefined : JSON.parse(interpArg);
+if (interp !== undefined && !args.includes("--out")) {
+  console.error("--interpretation builds a variant: give it its own --out");
+  process.exit(2);
+}
 // Notated rests: each note ends where the arrangement's note ends (a full song
 // with breaths and interludes). Without it, every note is held to the next onset.
 const rests = args.includes("--rests");
@@ -74,7 +82,7 @@ if (!lyrics) {
 }
 
 // A hymn sung over an arrangement is timed by the arrangement, not the session engine.
-const clock = getHymn(songId)?.arrangement ? arrangementClock(getHymn(songId)) : deriveScoreClock(song, {
+const clock = getHymn(songId)?.arrangement ? arrangementClock(getHymn(songId), interp) : deriveScoreClock(song, {
   midiFile: midiFile.replace(/\\/g, "/"),
   midiBytes: midiBytesOf(),
   melodyTrack: track,

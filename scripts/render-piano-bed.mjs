@@ -54,11 +54,11 @@ if (!song) throw new Error(`song ${clock.song_id} not in the library or src/voca
 
 // An exemplar sung over an arrangement (src/vocal/arrangement.ts) is not played by the
 // session engine: its bed is the arrangement's own notes, timed by its own tempo map,
-// the same map its clock was built from.
+// the same map its clock was built from (a variant clock carries its interpretation).
 const arranged = clock.clock.source === "arrangement";
 const schedule = arranged
   ? (() => {
-      const notes = bedNotes(getHymn(clock.song_id)).map((n) => ({ t: n.t, dur: n.dur, midi: n.midi, velocity: n.vel, measure: null, hand: null }));
+      const notes = bedNotes(getHymn(clock.song_id), clock.clock.interpretation).map((n) => ({ t: n.t, dur: n.dur, midi: n.midi, velocity: n.vel, measure: null, hand: null }));
       return { notes, endSec: clock.total_seconds };
     })()
   : sessionSchedule(song, startMeasure, endMeasure, clock.bpm);

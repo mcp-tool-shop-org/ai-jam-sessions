@@ -77,7 +77,7 @@ export interface Hymn {
    */
   arrangement?: string;
   /** How an arrangement exemplar is performed (src/vocal/interpretation.ts); absent: as written. */
-  interpretation?: { amount: number };
+  interpretation?: import("./interpretation.js").Interpretation;
   ending: HymnSection;
   /** Each verse's syllables, `-` inside a word; no `_` (the tune's held notes add them). */
   verses: string[];

@@ -1715,20 +1715,28 @@ def cmd_verify(a):
     return 0 if result["verdict"] == "PASS" else 1
 
 
+BREATH_DB = -40.0
+
+
 def emphasis_gain(clock: dict | None, frames: int, sr: int) -> np.ndarray | None:
     """The interpretation's per-syllable gain (clock events' gain_db, src/vocal/interpretation.ts)
     as a linear gain per sample: held across each syllable, moving in straight lines between
-    neighbours, so no step is ever audible as a click. None when the clock carries no gains."""
+    neighbours, so no step is ever audible as a click. A syllable with breath_before_s has
+    the voice gated down (BREATH_DB) across the breath before it, with 10 ms ramps.
+    None when the clock carries no gains."""
     evs = [e for e in (clock or {}).get("events", []) if e.get("gain_db") is not None]
     if not evs:
         return None
-    pts_t, pts_db = [], []
+    pts = []
     for e in evs:
         t0, t1 = float(e["t_sec"]), float(e["t_sec"]) + float(e["dur_sec"])
         edge = min(0.02, (t1 - t0) / 4)
-        pts_t += [t0 + edge, t1 - edge]
-        pts_db += [float(e["gain_db"]), float(e["gain_db"])]
-    db = np.interp(np.arange(frames) / sr, pts_t, pts_db)
+        pts += [(t0 + edge, float(e["gain_db"])), (t1 - edge, float(e["gain_db"]))]
+        b = float(e.get("breath_before_s") or 0)
+        if b >= 0.03:
+            pts += [(t0 - b + 0.01, BREATH_DB), (t0 - 0.01, BREATH_DB)]
+    pts.sort()
+    db = np.interp(np.arange(frames) / sr, [p[0] for p in pts], [p[1] for p in pts])
     return 10 ** (db / 20)
 
 

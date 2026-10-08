@@ -124,3 +124,12 @@ def test_the_emphasis_gain_holds_across_each_syllable_and_ramps_between():
     assert abs(db[int(0.2 * SR)]) < 1e-9 and abs(db[int(0.75 * SR)] - 4.0) < 1e-9
     assert 0 < db[int(0.5 * SR)] < 4                      # a ramp across the join, not a step
     assert vc.emphasis_gain({"events": [{"t_sec": 0, "dur_sec": 1}]}, SR, SR) is None
+
+
+def test_a_breath_gates_the_voice_down_before_its_syllable_and_only_there():
+    ev = [{"t_sec": 0.0, "dur_sec": 0.43, "gain_db": 0.0}, {"t_sec": 0.5, "dur_sec": 0.5, "gain_db": 2.0, "breath_before_s": 0.07}]
+    db = 20 * np.log10(vc.emphasis_gain({"events": ev}, SR, SR))
+    assert abs(db[int(0.465 * SR)] - vc.BREATH_DB) < 1e-6     # inside the breath
+    assert abs(db[int(0.2 * SR)]) < 1e-9 and abs(db[int(0.75 * SR)] - 2.0) < 1e-9
+    plain = 20 * np.log10(vc.emphasis_gain({"events": [dict(ev[0]), {k: v for k, v in ev[1].items() if k != "breath_before_s"}]}, SR, SR))
+    assert plain.min() > -1e-9                                  # no breath, no dip

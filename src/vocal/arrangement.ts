@@ -27,7 +27,19 @@ import {
   type ScoreClockEvent,
 } from "./score-clock.js";
 import { readFileSync } from "node:fs";
-import { applyMoves, dottedMoves, shapedTempos, syllableGains, type Shape } from "./interpretation.js";
+import {
+  GLORY_BREATH_S,
+  GLORY_STRETCH,
+  applyMoves,
+  dottedMoves,
+  ruleAmount,
+  shapedTempos,
+  shapes,
+  stretchSpans,
+  syllableGains,
+  type Interpretation,
+  type Shape,
+} from "./interpretation.js";
 
 export interface ArrangementNote {
   tick: number;
@@ -151,33 +163,58 @@ export function unmatched(sung: SungNote[], p: Placed): SungNote[] {
 }
 
 /**
- * The score clock of a hymn sung over its arrangement: the same schema the block-chord
- * exemplars' clocks have, timed by the arrangement's tempo map. Each syllable is one
- * event; a held note becomes its melisma. Anchors name the arrangement onset.
- */
-/**
  * The arrangement and the sung line as performed: placed on the grid, then shaped by
- * the hymn's interpretation (src/vocal/interpretation.ts) at `amount` (default: the
- * hymn's own; 0 = as written). Piano and voice are shaped together.
+ * the hymn's interpretation (src/vocal/interpretation.ts), or by `interp` when given
+ * (a number is every rule at that amount; 0 = as written). Piano and voice are shaped
+ * together. `glory` marks each sung note that is a stressed "Glo" of the refrain.
  */
-export function performed(hymn: Hymn, amount = hymn.interpretation?.amount ?? 0): { p: Placed; sung: SungNote[]; shape: Shape } {
+export function performed(hymn: Hymn, interp: Interpretation | number = hymn.interpretation ?? 0): { p: Placed; sung: SungNote[]; shape: Shape; glory: boolean[]; breathBefore: number[] } {
   if (!hymn.arrangement) throw new Error(`${hymn.id} has no arrangement`);
   const p = place(getArrangement(hymn.arrangement), hymn.transpose);
   let sung = sungNotes(hymn, p);
   const bar = p.ppq * p.beatsPerBar;
   const shape: Shape = { verseStarts: p.verseUpbeats.map((u) => Math.ceil(u / bar) * bar), barTicks: bar, totalTicks: p.totalTicks, tempos: p.tempos };
-  if (amount > 0) {
-    const moves = dottedMoves(sung, p.ppq, amount);
+  const syl = syllabify(hymnLyrics(hymn.id) ?? "");
+  // a "Glo" of the refrain ("Glory, glory, hallelujah"), not the verses' "the glory of"
+  const word = (i: number) => syl[i]?.word ?? "";
+  const isGlo = (i: number) => syl.length === sung.length && !syl[i].continues && /^glo/i.test(syl[i].lyric)
+    && (/^glory$/i.test(word(i - 1)) || /^(glory|hallelujah)$/i.test(word(i + 2)));
+  const glory = sung.map((_, i) => isGlo(i));
+  const breathBefore = sung.map(() => 0);
+  if (shapes(interp)) {
+    const moves = dottedMoves(sung, p.ppq, ruleAmount(interp, "dotted"));
     sung = applyMoves(sung, moves);
     p.notes = applyMoves(p.notes, moves);
-    p.tempos = shapedTempos(shape, p.ppq, amount);
+    p.tempos = shapedTempos(shape, p.ppq, interp);
+    const aGlory = ruleAmount(interp, "glory");
+    if (aGlory > 0) {
+      // each stressed "Glo" lengthened (the tempo slows across it, piano with it) ...
+      const spans = sung.flatMap((n, i) => (glory[i] && sung[i + 1] ? [{ from: n.tick, to: sung[i + 1].tick }] : []));
+      p.tempos = stretchSpans(p.tempos, spans, 1 + GLORY_STRETCH * aGlory);
+      // ... and a breath before the refrain's first "Glory": the note before it ends early
+      sung = sung.map((n, i) => {
+        if (!glory[i + 1] || /glory|hallelujah/i.test(syl[i].word)) return n;
+        let bpm = p.tempos[0].bpm;
+        for (const t of p.tempos) if (t.tick <= n.tick + n.dur) bpm = t.bpm;
+        const breath = Math.round(GLORY_BREATH_S * aGlory * (bpm / 60) * p.ppq);
+        if (n.dur - breath < p.ppq / 4) return n;
+        breathBefore[i + 1] = GLORY_BREATH_S * aGlory;
+        return { ...n, dur: n.dur - breath };
+      });
+    }
   }
-  return { p, sung, shape };
+  return { p, sung, shape, glory, breathBefore };
 }
 
-export function arrangementClock(hymn: Hymn, amount?: number): ScoreClock {
-  const { p, sung, shape } = performed(hymn, amount);
-  const gainAmount = amount ?? hymn.interpretation?.amount ?? 0;
+/**
+ * The score clock of a hymn sung over its arrangement: the same schema the block-chord
+ * exemplars' clocks have, timed by the arrangement's tempo map. Each syllable is one
+ * event; a held note becomes its melisma. Anchors name the arrangement onset. Given
+ * `interp`, the clock records it, so the bed renderer plays the same performance.
+ */
+export function arrangementClock(hymn: Hymn, interp?: Interpretation | number): ScoreClock {
+  const it = interp ?? hymn.interpretation ?? 0;
+  const { p, sung, shape, glory, breathBefore } = performed(hymn, it);
   const bad = unmatched(sung, p);
   if (bad.length) throw new Error(`${hymn.id}: ${bad.length} sung notes have no arrangement note under them (first at tick ${bad[0].tick})`);
   const syl = syllabify(hymnLyrics(hymn.id)!);
@@ -186,6 +223,7 @@ export function arrangementClock(hymn: Hymn, amount?: number): ScoreClock {
   const sec = (t: number) => roundToSample(tickToSec(p, t));
   const anchor = (t: number) => `arrangement-onset:m${Math.floor(t / bar) + 1}:beat${(t % bar) / p.ppq}`;
   const events: ScoreClockEvent[] = [];
+  const eventGlory: boolean[] = [];
   sung.forEach((n, i) => {
     const t = sec(n.tick);
     const end = sec(n.tick + n.dur);
@@ -204,9 +242,11 @@ export function arrangementClock(hymn: Hymn, amount?: number): ScoreClock {
       midi: n.midi, t_sec: t, t_samples: Math.round(t * SCORE_CLOCK_SAMPLE_RATE), dur_sec: roundToSample(end - t),
       anchor: anchor(n.tick), midi_tick: n.tick, t_midi_sec: Math.round(tickToSec(p, n.tick) * 1e6) / 1e6, engine_note: null,
     });
+    eventGlory.push(glory[i]);
+    if (breathBefore[i] > 0) events[events.length - 1].breath_before_s = breathBefore[i];
   });
-  if (gainAmount > 0) {
-    const gains = syllableGains(events.map((e) => ({ tick: e.midi_tick, midi: e.midi })), shape, p.ppq, gainAmount);
+  if (shapes(it)) {
+    const gains = syllableGains(events.map((e, i) => ({ tick: e.midi_tick, midi: e.midi, glory: eventGlory[i] })), shape, p.ppq, it);
     events.forEach((e, i) => { e.gain_db = gains[i]; });
   }
   const bars = p.totalTicks / bar;
@@ -227,15 +267,18 @@ export function arrangementClock(hymn: Hymn, amount?: number): ScoreClock {
     total_seconds: total,
     total_samples: Math.round(total * SCORE_CLOCK_SAMPLE_RATE),
     last_event_end_sec: roundToSample(last.t_sec + last.dur_sec),
-    clock: { source: "arrangement", bed_measures: [1, bars], measure_starts_sec: starts, measure_durations_sec: durs, durations: "notated" },
+    clock: {
+      source: "arrangement", bed_measures: [1, bars], measure_starts_sec: starts, measure_durations_sec: durs, durations: "notated",
+      ...(interp !== undefined ? { interpretation: typeof interp === "number" ? { amount: interp } : interp } : {}),
+    },
     midi: { file: `src/vocal/arrangements/${hymn.arrangement}.json`, ppq: p.ppq, ticks_per_measure: bar, melody_track: "hymn", sec_per_tick: 60 / hymn.bpm / p.ppq },
     events,
   };
 }
 
 /** The bed's notes in seconds, for the offline renderer. */
-export function bedNotes(hymn: Hymn, amount?: number): { t: number; dur: number; midi: number; vel: number }[] {
-  const { p } = performed(hymn, amount);
+export function bedNotes(hymn: Hymn, interp?: Interpretation | number): { t: number; dur: number; midi: number; vel: number }[] {
+  const { p } = performed(hymn, interp);
   return p.notes.map((n) => {
     const t = tickToSec(p, n.tick);
     return { t, dur: tickToSec(p, n.tick + n.dur) - t, midi: n.midi, vel: n.vel };
