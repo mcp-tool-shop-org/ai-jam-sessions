@@ -60,7 +60,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "8b805feeb8d674efe35a61613c8ef4843679392dc07c1ad98466483c3770b7fc",
+          "hash": "d5008378780d8b040c0b4ab08c602a84198dc247c47d93611370f5b1f82f6202",
           "path": "apps/cockpit/index.html"
         },
         {
@@ -546,80 +546,85 @@
             {
               "in": "safeLoadRaw",
               "kind": "catch",
-              "line": 375
+              "line": 379
             },
             {
               "in": "safeClearStorage",
               "kind": "catch",
-              "line": 383
+              "line": 387
             },
             {
               "in": "ensureAudioUnlocked",
               "kind": "catch",
-              "line": 709
+              "line": 713
             },
             {
               "in": "startMarqueeDrag",
               "kind": "catch",
-              "line": 1080
+              "line": 1087
             },
             {
               "in": "cleanup",
               "kind": "catch",
-              "line": 1114
+              "line": 1121
             },
             {
               "in": "startNoteResizeDrag",
               "kind": "catch",
-              "line": 1229
+              "line": 1236
             },
             {
               "in": "cleanup",
               "kind": "catch",
-              "line": 1236
+              "line": 1243
             },
             {
               "in": "startGroupDrag",
               "kind": "catch",
-              "line": 1353
+              "line": 1360
             },
             {
               "in": "cleanup",
               "kind": "catch",
-              "line": 1369
+              "line": 1376
             },
             {
               "in": "buildRuler",
               "kind": "catch",
-              "line": 1873
+              "line": 1880
             },
             {
               "in": "cleanup",
               "kind": "catch",
-              "line": 1880
+              "line": 1887
             },
             {
               "in": "bindOnScreenKeyPointer",
               "kind": "catch",
-              "line": 2429
+              "line": 2436
             },
             {
               "in": "bindAuditControls",
               "kind": "catch",
-              "line": 3791
+              "line": 3802
             },
             {
               "in": "bindScoreControls",
               "kind": "catch",
-              "line": 4158
+              "line": 4169
             },
             {
               "in": "ensureAudio",
               "kind": "throw",
-              "line": 4197
+              "line": 4208
+            },
+            {
+              "in": "ensureAudio",
+              "kind": "throw",
+              "line": 4217
             }
           ],
-          "hash": "013773db45e390845dba25d57e15163726edae8f74ee0f0c7b74a1f4d730b37d",
+          "hash": "6af968e5c92377e06cba86f4a53084ab72886953a83e2be7a8511a07f2ad57b4",
           "importOrder": [
             "apps/cockpit/src/synth.ts",
             "apps/cockpit/src/vocal-synth.ts",
@@ -637,7 +642,8 @@
             "apps/cockpit/src/preview.ts",
             "apps/cockpit/src/salamander-sampler.ts",
             "apps/cockpit/src/salamander-logic.ts",
-            "apps/cockpit/src/panel.ts"
+            "apps/cockpit/src/panel.ts",
+            "apps/cockpit/src/review.ts"
           ],
           "importsFiles": [
             "apps/cockpit/src/capture.ts",
@@ -647,6 +653,7 @@
             "apps/cockpit/src/persistence.ts",
             "apps/cockpit/src/platform-status.ts",
             "apps/cockpit/src/preview.ts",
+            "apps/cockpit/src/review.ts",
             "apps/cockpit/src/ruler.ts",
             "apps/cockpit/src/salamander-logic.ts",
             "apps/cockpit/src/salamander-sampler.ts",
@@ -880,6 +887,52 @@
           ],
           "path": "apps/cockpit/src/pure-logic.test.ts",
           "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "bindReview",
+            "enterReviewMode",
+            "handleReviewKey",
+            "leaveReviewMode",
+            "openUrl"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadStore",
+              "kind": "catch",
+              "line": 93
+            },
+            {
+              "in": "save",
+              "kind": "catch",
+              "line": 99
+            },
+            {
+              "in": "openUrl",
+              "kind": "throw",
+              "line": 147
+            },
+            {
+              "in": "openUrl",
+              "kind": "catch",
+              "line": 152
+            },
+            {
+              "in": "openBundle",
+              "kind": "catch",
+              "line": 161
+            },
+            {
+              "in": "loadEntry",
+              "kind": "catch",
+              "line": 234
+            }
+          ],
+          "hash": "4010e806953fbb5936d9656d677272eb48d5099a8e06cd01ca297664f22d5de6",
+          "importsFiles": [
+            "src/vocal/listening-review.ts"
+          ],
+          "path": "apps/cockpit/src/review.ts"
         },
         {
           "hash": "aa652046d04293ca31a077f66957e8fd13974d57f4bb69fecb19a5a68c3db9ff",
@@ -1326,7 +1379,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 12,
+          "reads": 15,
           "where": [
             "caller"
           ],
@@ -1340,7 +1393,7 @@
           "writes": 0
         }
       ],
-      "outsideReads": 13,
+      "outsideReads": 16,
       "role": "code",
       "testRunners": [
         "vitest"
@@ -14256,52 +14309,62 @@
               "line": 197
             },
             {
-              "in": "_seamless",
+              "in": "mutate",
+              "kind": "except",
+              "line": 213
+            },
+            {
+              "in": "mutate",
               "kind": "raise",
-              "line": 222
+              "line": 216
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 225
+              "line": 233
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 229
+              "line": 236
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 232
+              "line": 240
+            },
+            {
+              "in": "_seamless",
+              "kind": "raise",
+              "line": 243
             },
             {
               "in": "load_sources",
               "kind": "raise",
-              "line": 266
+              "line": 277
             },
             {
               "in": "load_plan_clock",
               "kind": "raise",
-              "line": 392
+              "line": 409
             },
             {
               "in": "_plantable",
               "kind": "except",
-              "line": 401
+              "line": 418
             },
             {
               "in": "build",
               "kind": "raise",
-              "line": 425
+              "line": 442
             },
             {
               "in": "build",
               "kind": "except",
-              "line": 444
+              "line": 461
             }
           ],
-          "hash": "98b30378d4ae145b8882476e3217c52829d5c2bdb992ba59a7f74e542c180def",
+          "hash": "e421f80ffdb9ede386660b709fdf3f87bdfc559a52bd6ca848eafd4ad65a613c",
           "importsFiles": [
             "scripts/phrase_evidence.py",
             "scripts/vocal_clock.py"
@@ -15054,12 +15117,13 @@
             "test_a_forced_break_with_continuous_source_is_a_seam_and_nothing_else",
             "test_a_zero_crossfade_leaves_a_hard_edge_at_the_join",
             "test_an_explicit_default_crossfade_changes_nothing",
+            "test_an_explicit_zero_crossfade_is_a_hard_seam_in_warp_too",
             "test_break_before_starts_a_new_warp_run",
             "test_production_cuts_carry_neither_field_by_default",
             "tone",
             "two_cuts"
           ],
-          "hash": "341ec0238ebbe81947428c379c522422164ce9162a9f8c1cecee92525e6bf9c5",
+          "hash": "94c7570cd2adc6a97fa7bab3f2d7064161c095b0a84d320e85851cd96f5ab613",
           "importsFiles": [
             "scripts/vocal_clock.py"
           ],
@@ -15073,6 +15137,8 @@
             "supports_break_before",
             "supports_xfade",
             "take",
+            "test_a_click_after_a_pause_is_refused",
+            "test_a_click_is_found_at_the_earlier_edge_when_the_audio_before_stops_first",
             "test_a_hard_seam_clicks",
             "test_a_local_replay_renders_measurably_and_a_sham_does_not",
             "test_a_local_skip_changes_the_audio",
@@ -15081,6 +15147,7 @@
             "test_a_replay_that_would_also_move_its_vowel_is_refused_unless_allowed",
             "test_a_warp_click_inside_a_run_also_breaks_the_run",
             "test_a_warp_click_refuses_a_cut_that_does_not_start_a_run",
+            "test_a_warp_hard_seam_clicks_with_an_explicit_crossfade",
             "test_a_warp_replay_reports_the_stretch_its_run_absorbed",
             "test_a_warp_sham_continues_the_take_exactly_or_refuses",
             "test_build_writes_labels_and_drops_unplantable_specs",
@@ -15103,7 +15170,7 @@
             "test_warp_forced_break_makes_a_seam_and_a_replay_there_is_measurable",
             "test_warp_replay_refuses_when_the_placer_ignores_break_before"
           ],
-          "hash": "ff52cec800acc865eab24ed0761a1ae11e5b21315c696b27bf2a5610d53525df",
+          "hash": "4a7a184d08ea462f965f39e2d0448cbc7dc4d195beee30cf144ab655ec647ba9",
           "importsFiles": [
             "scripts/planter.py",
             "scripts/vocal_clock.py"
@@ -15508,75 +15575,75 @@
             {
               "in": "track_f0",
               "kind": "except",
-              "line": 1250
+              "line": 1251
             },
             {
               "in": "track_f0",
               "kind": "raise",
-              "line": 1251
+              "line": 1252
             },
             {
               "in": "_track_fcpe",
               "kind": "except",
-              "line": 1277
+              "line": 1278
             },
             {
               "in": "_track_fcpe",
               "kind": "raise",
-              "line": 1278
+              "line": 1279
             },
             {
               "in": "cmd_pitch",
               "kind": "except",
-              "line": 1457
+              "line": 1458
             },
             {
               "in": "load_clock",
               "kind": "raise",
-              "line": 1483
+              "line": 1484
             },
             {
               "in": "cmd_bed_check",
               "kind": "raise",
-              "line": 1502
+              "line": 1503
             },
             {
               "in": "cmd_transcribe",
               "kind": "except",
-              "line": 1535
+              "line": 1536
             },
             {
               "in": "cmd_transcribe",
               "kind": "raise",
-              "line": 1536
+              "line": 1537
             },
             {
               "in": "cmd_plan",
               "kind": "raise",
-              "line": 1548
+              "line": 1549
             },
             {
               "in": "cmd_place",
               "kind": "raise",
-              "line": 1610
+              "line": 1611
             },
             {
               "in": "cmd_place",
               "kind": "raise",
-              "line": 1613
+              "line": 1614
             },
             {
               "in": "cmd_verify",
               "kind": "raise",
-              "line": 1659
+              "line": 1660
             },
             {
               "in": "cmd_mix",
               "kind": "raise",
-              "line": 1689
+              "line": 1690
             }
           ],
-          "hash": "d7c2ee30360bb55c76e9677bdb054de2589c295218dc470b9a21511fc4f97ddd",
+          "hash": "bc111c57078228a81c5984daa37004a0a97ae86740ef9908851a06d5da15c344",
           "importOrder": [
             "scripts/onset_aligner.py",
             "scripts/comfy_rest.py"
@@ -15759,7 +15826,7 @@
           "path": "site/src/content/docs/handbook/troubleshooting.md"
         },
         {
-          "hash": "5670249fc972bb63efa1eb8a8f32457e4ce2a034569c5d7ca020af65186ce42e",
+          "hash": "4d5454885cfaa45522cd17b713f0856c7d1530d4d9803cb2003a61ecab85d8fb",
           "path": "site/src/content/docs/handbook/vocals.md"
         },
         {
@@ -28123,6 +28190,43 @@
           "path": "src/vocal/kokoro-lead.ts"
         },
         {
+          "hash": "0c094a91d69706b220d38c0ef17bcace19511123a2529f635c9b8fda35899fe5",
+          "importsFiles": [
+            "src/vocal/listening-review.ts"
+          ],
+          "names": [
+            "scripts/review_marks.py"
+          ],
+          "path": "src/vocal/listening-review.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "addMark",
+            "exportMarks",
+            "integratedLoudness",
+            "isDevice",
+            "isLevel",
+            "kWeighting",
+            "markContext",
+            "newMark",
+            "nudgeMark",
+            "parseBundle",
+            "peakOf",
+            "playbackGain",
+            "removeMark",
+            "scoreClip",
+            "sessionBlocker",
+            "startSession",
+            "summarizeCatch",
+            "syllableAt",
+            "toggleCategory",
+            "updateMark"
+          ],
+          "hash": "76516d7a63fdfc2c830e36e9d2b4c7c36b7e1dce35dcc8b891573b11da370c54",
+          "path": "src/vocal/listening-review.ts"
+        },
+        {
           "hash": "0326780fcc2820a48eec0b3ffd5f5ba8acf8cda7e253a80a00862636c0aa2f0d",
           "importOrder": [
             "src/vocal/melody-notes.ts",
@@ -28935,7 +29039,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 211,
+      "testedBy": 212,
       "unresolvedSites": 0
     }
   ],
@@ -29320,7 +29424,7 @@
         {
           "boundary": "cockpit",
           "depth": 0,
-          "files": 33
+          "files": 34
         },
         {
           "boundary": "experiments",
@@ -29340,7 +29444,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 417
+          "files": 419
         }
       ],
       "readers": [
@@ -33222,7 +33326,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 517,
+      "runsCount": 519,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -33238,7 +33342,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 232,
+          "files": 233,
           "job": "ci",
           "runner": "vitest",
           "step": "Test",
@@ -33249,7 +33353,7 @@
         {
           "config": "vitest.config.ts",
           "coverage": true,
-          "files": 232,
+          "files": 233,
           "job": "ci",
           "runner": "vitest",
           "step": "Test with coverage",
@@ -33259,7 +33363,7 @@
         },
         {
           "config": "vitest.config.ts",
-          "files": 232,
+          "files": 233,
           "job": "pnpm10-install",
           "runner": "vitest",
           "step": "Test",
@@ -33425,7 +33529,7 @@
         {
           "boundary": "cockpit",
           "depth": 0,
-          "files": 33
+          "files": 34
         },
         {
           "boundary": "site",
@@ -33439,7 +33543,7 @@
             "file": "src/compose/human-audio-panel.ts",
             "from": "apps/cockpit/src/panel-clip.ts"
           },
-          "files": 34
+          "files": 35
         }
       ],
       "readers": [],
@@ -34298,7 +34402,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 417
+          "files": 419
         }
       ],
       "readers": [
@@ -36800,7 +36904,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 454,
+      "runsCount": 456,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -36828,7 +36932,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 232,
+          "files": 233,
           "job": "publish-npm",
           "runner": "vitest",
           "step": "5",
@@ -37184,8 +37288,8 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "45f1f1ab08be4d863214409fa1c8ee41d930b0d8",
-    "tracked": 3030
+    "commit": "d7c64b4f101d0525632fc8595f00e63514e71e01",
+    "tracked": 3033
   },
   "landings": [
     {
@@ -49702,7 +49806,7 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 245,
+  "testFiles": 246,
   "testsNotRun": [
     "scripts/test_aligner_gate.py",
     "scripts/test_export_soulx_target.py",

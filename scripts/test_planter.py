@@ -380,3 +380,36 @@ def test_build_writes_labels_and_drops_unplantable_specs(tmp_path):
     assert all((tmp_path / "out" / r["clip"]).is_file() for r in rows)
     assert all(r["defect"] == (r["kind"] in ("replay", "skip", "click")) for r in rows)
     assert all("vowel_moved_s" in r["timing"] for r in rows if r["kind"] in ("replay", "skip"))
+
+
+@needs_break
+def test_a_warp_hard_seam_clicks_with_an_explicit_crossfade():
+    # #93: a run's first cut carrying xfade_s sets that seam's head and the previous
+    # run's tail even without overlap, so a zero crossfade is a butt splice
+    p = plan_of()
+    q, _ = pl.mutate(p, spec("replay", mode="warp", join_type="inside", sev=0.053))
+    hard, w = pl.mutate(q, spec("click", sev=0.0, mode="warp", join_type="inside"))
+    soft = pl.render(q, SOURCES, None, "warp")
+    got = pl.verify("click", soft, pl.render(hard, SOURCES, None, "warp"), SR, w["t"])
+    assert got["present"], got
+
+
+def test_a_click_is_found_at_the_earlier_edge_when_the_audio_before_stops_first():
+    # a hard edge 15 ms before the cut, nothing at the cut: still a click
+    rng = np.random.default_rng(1)
+    clean = take()[: 3 * SR]
+    planted = clean.copy()
+    planted[int(1.985 * SR)] += 0.6
+    got = pl.verify("click", clean, planted, SR, 2.0, gap_s=0.015)
+    assert got["present"], got
+    assert not pl.verify("click", clean, planted, SR, 2.0)["present"]     # looking only at the cut misses it
+
+
+def test_a_click_after_a_pause_is_refused():
+    p = plan_of()
+    prev = next(c for c in p["cuts"] if c["id"] == "v03")
+    prev["placed_start"] -= 0.06 + vc.JOIN_EXTEND_MAX_S
+    with pytest.raises(ValueError, match="pause before the seam"):
+        pl.mutate(p, spec("click", sev=0.0))
+    _, w = pl.mutate(p, spec("click", sev=0.0), max_gap=None)
+    assert w["gap_s"] > 0.05

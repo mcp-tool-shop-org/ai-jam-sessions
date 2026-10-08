@@ -204,6 +204,17 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None,
         c["xfade_s"] = s
         if spec["mode"] == "warp":
             _run_of(out, c, clock)          # place_warp reads xfade_s only from a run's first cut
+        # With no crossfade the seam has two hard edges: where the audio before it
+        # stops and where this cut starts. Where those are apart, the seam is a click
+        # plus a pause, refused beyond max_gap like a replay's.
+        try:
+            s_end, to_timeline = _prev_play(out, c, spec["mode"], clock)
+            gap = max(0.0, where["t"] - to_timeline(s_end))
+        except ValueError:                  # another take before: no source gap to measure
+            gap = 0.0
+        if max_gap is not None and gap > max_gap:
+            raise ValueError(f"a {gap * 1000:.0f} ms pause before the seam")
+        where["gap_s"] = round(gap, 4)
     elif kind == "sham":
         if spec["mode"] == "local":
             where["t"] = _split(out, c)
@@ -311,7 +322,7 @@ def repeat_at_lag(f: "pe.Features", t: float, lag_s: float, span_s: float | None
 
 
 def verify(kind: str, clean: np.ndarray, planted: np.ndarray, sr: int, t: float, lag_s: float | None = None,
-           span_s: float | None = None) -> dict:
+           span_s: float | None = None, gap_s: float | None = None) -> dict:
     """Is the planted defect measurably there (or, for sham and none, measurably
     absent)? Compares the planted render with the clean one around the join, with
     phrase_evidence's own join measurements. A replay is measured at its known lag,
@@ -339,7 +350,13 @@ def verify(kind: str, clean: np.ndarray, planted: np.ndarray, sr: int, t: float,
     elif kind == "skip":
         present = change_db is not None and change_db > CHANGE_DB
     elif kind == "click":
-        present = clk is not None and clk >= CLICK_DELTA
+        # the audio before the seam may stop up to gap_s before the cut starts: a
+        # hard edge at either end counts
+        edges = [clk] + ([fb.click(t - gap_s) - fa.click(t - gap_s)]
+                         if gap_s and fa.click(t - gap_s) is not None and fb.click(t - gap_s) is not None else [])
+        best = max((e for e in edges if e is not None), default=None)
+        m["click_delta_best"] = None if best is None else round(best, 3)
+        present = best is not None and best >= CLICK_DELTA
     else:
         # sham and none are clean by construction: a sham's seam continues the take
         # exactly (mutate refuses any that cannot). A seam is still a seam, so its
@@ -449,7 +466,8 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
             planted, placed_joins = clean, clean_joins
         else:
             planted, placed_joins = render(planted_plan, sources, clock, mode, joins=True)
-        check = verify(kind, clean, planted, sr, t, where.get("lag_s"), spec["severity"] if kind == "replay" else None)
+        check = verify(kind, clean, planted, sr, t, where.get("lag_s"), spec["severity"] if kind == "replay" else None,
+                       where.get("gap_s"))
         timing = {k: where[k] for k in ("vowel_moved_s", "gap_s", "lag_s") if k in where}
         if mode == "warp" and kind != "none":
             timing.update(run_stretch(placed_joins, spec["cut_id"]))
