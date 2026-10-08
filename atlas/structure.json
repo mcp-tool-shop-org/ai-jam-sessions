@@ -14280,6 +14280,7 @@
             "chain",
             "clip_window",
             "eligible_pools",
+            "event_span",
             "load_plan_clock",
             "load_sources",
             "main",
@@ -14434,25 +14435,25 @@
             {
               "in": "load_plan_clock",
               "kind": "raise",
-              "line": 576
+              "line": 604
             },
             {
               "in": "_plantable",
               "kind": "except",
-              "line": 585
+              "line": 613
             },
             {
               "in": "build",
               "kind": "raise",
-              "line": 612
+              "line": 640
             },
             {
               "in": "build",
               "kind": "except",
-              "line": 631
+              "line": 659
             }
           ],
-          "hash": "f181cfa1f83568bcd75d3d5256584470de771f52f39c7a1d430248903cc54821",
+          "hash": "babaf88eed5067071e69317793f8a5b629c27981554df8c13d81997659cc513e",
           "importOrder": [
             "scripts/phrase_evidence.py",
             "scripts/vocal_clock.py",
@@ -15265,8 +15266,10 @@
             "test_click_sets_the_seam_crossfade",
             "test_compound_kinds_require_their_own_excess_and_refuse_the_other",
             "test_compounds_stay_out_of_the_clean_pools",
+            "test_event_spans_cover_each_kind",
             "test_inside_joins_get_a_forced_break_in_warp_mode_only",
             "test_joins_skip_score_rests_and_type_warp_joins",
+            "test_labels_carry_the_event_inside_the_clip",
             "test_labels_carry_the_pick_and_alternate",
             "test_local_sham_splits_the_cut_into_continuous_halves",
             "test_mutate_never_changes_the_given_plan",
@@ -15286,7 +15289,7 @@
             "test_warp_forced_break_makes_a_seam_and_a_replay_there_is_measurable",
             "test_warp_replay_refuses_when_the_placer_ignores_break_before"
           ],
-          "hash": "ce37d97fa8bf206edaf0bad36de932c3752a9f864ee6e09134b6f1e0993538fe",
+          "hash": "6343c36af9f8535dd1e72c0b57c064e51bcb1fab19fa097a4d46deacdb3a20f4",
           "importsFiles": [
             "scripts/planter.py",
             "scripts/vocal_clock.py"
@@ -37404,7 +37407,7 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "5db3c85e3f83ed21084c444f2ae34181dbefc77e",
+    "commit": "2a9072c6561a82bf8c51463312822cae625ccd61",
     "tracked": 3035
   },
   "landings": [
