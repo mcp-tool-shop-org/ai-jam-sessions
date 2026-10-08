@@ -31,6 +31,16 @@ interface ClockEvent {
 
 const r3 = (x: number) => Math.round(x * 1000) / 1000;
 
+// Pronouns for God or Christ are capitalized in the captions, as most of the Battle
+// Hymn's source already has them. Only the captions: the clock's lyric is what the
+// singer was given, and changing it would make every take stale. Keyed by clock event
+// id, and checked, so a rebuilt clock that moves a syllable stops the build.
+const REVERENT: Record<string, string[]> = {
+  "america-the-beautiful-materna": ["v38", "v206"], // God shed His grace
+  "battle-hymn-of-the-republic": ["v208", "v351", "v362"], // His heel, His bosom, As He died
+};
+const capital = (s: string) => s[0].toUpperCase() + s.slice(1);
+
 export function songData(hymn: Hymn, clockPath: string) {
   const clock = JSON.parse(readFileSync(clockPath, "utf8")) as { total_seconds: number; events: ClockEvent[] };
   const sec = 60 / hymn.bpm / PPQ;
@@ -49,13 +59,21 @@ export function songData(hymn: Hymn, clockPath: string) {
 
   const melody: number[][] = []; // [t, dur, midi, syllable index]
   const syllables: Array<{ t: number; text: string; word: string; end: number; pos: number }> = [];
+  const reverent = new Set(REVERENT[hymn.id] ?? []);
+  for (const id of reverent) {
+    const w = clock.events.find((x) => x.id === id)?.word;
+    if (!w || !/^(he|him|his)$/.test(w)) {
+      throw new Error(`${hymn.id}: ${id} should be a lowercase he/him/his, the clock has ${JSON.stringify(w)}`);
+    }
+  }
   clock.events.forEach((e, i) => {
     const held = e.melisma ?? [];
     const end = held.length ? held[held.length - 1].t_sec + held[held.length - 1].dur_sec : e.t_sec + e.dur_sec;
     const firstDur = held.length ? held[0].t_sec - e.t_sec : e.dur_sec;
     melody.push([r3(e.t_sec), r3(firstDur), e.midi, i]);
     for (const h of held) melody.push([r3(h.t_sec), r3(h.dur_sec), h.midi, i]);
-    syllables.push({ t: r3(e.t_sec), text: e.lyric, word: e.word, end: r3(end), pos: e.syllable });
+    const up = reverent.has(e.id);
+    syllables.push({ t: r3(e.t_sec), text: up ? capital(e.lyric) : e.lyric, word: up ? capital(e.word) : e.word, end: r3(end), pos: e.syllable });
   });
 
   // Lines: split where the singer rests at least LINE_GAP_S.
