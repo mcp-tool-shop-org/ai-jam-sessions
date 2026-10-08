@@ -1715,6 +1715,23 @@ def cmd_verify(a):
     return 0 if result["verdict"] == "PASS" else 1
 
 
+def emphasis_gain(clock: dict | None, frames: int, sr: int) -> np.ndarray | None:
+    """The interpretation's per-syllable gain (clock events' gain_db, src/vocal/interpretation.ts)
+    as a linear gain per sample: held across each syllable, moving in straight lines between
+    neighbours, so no step is ever audible as a click. None when the clock carries no gains."""
+    evs = [e for e in (clock or {}).get("events", []) if e.get("gain_db") is not None]
+    if not evs:
+        return None
+    pts_t, pts_db = [], []
+    for e in evs:
+        t0, t1 = float(e["t_sec"]), float(e["t_sec"]) + float(e["dur_sec"])
+        edge = min(0.02, (t1 - t0) / 4)
+        pts_t += [t0 + edge, t1 - edge]
+        pts_db += [float(e["gain_db"]), float(e["gain_db"])]
+    db = np.interp(np.arange(frames) / sr, pts_t, pts_db)
+    return 10 ** (db / 20)
+
+
 def cmd_mix(a):
     if not a.local:
         import comfy_rest
@@ -1725,6 +1742,11 @@ def cmd_mix(a):
     if abs(bed_frames - vo_frames) > 1:
         raise SystemExit(f"refusing to mix: bed {bed_frames} frames, vocal {vo_frames} frames")
     plan = json.load(open(a.plan, encoding="utf-8"))
+    clock = load_clock(plan["clock"]) if isinstance(plan.get("clock"), str) and os.path.exists(plan["clock"]) else plan.get("clock") if isinstance(plan.get("clock"), dict) else None
+    shape = emphasis_gain(clock, vo_frames, vsr)
+    if shape is not None:
+        vo_mono = vo_mono * shape
+        print(f"emphasis: per-syllable gain {20 * np.log10(shape.min()):+.1f} to {20 * np.log10(shape.max()):+.1f} dB from the clock")
     # gain-stage from a meter: vocal measured over its placed clips, bed over its whole length
     idx = np.zeros(vo_frames, dtype=bool)
     for c in plan["cuts"]:
@@ -1748,6 +1770,8 @@ def cmd_mix(a):
         import soundfile as sf
         bed_st, _ = sf.read(a.bed, always_2d=True, dtype="float64")
         vo_st, _ = sf.read(a.vocal, always_2d=True, dtype="float64")
+        if shape is not None:
+            vo_st = vo_st * shape[:len(vo_st), None]
         n = min(len(bed_st), len(vo_st))
         out = mix_local(bed_st[:n], vo_st[:n], vo_gain, a.bed_gain_db)
         os.makedirs(a.out_dir, exist_ok=True)
