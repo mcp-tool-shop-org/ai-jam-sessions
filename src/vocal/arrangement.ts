@@ -173,7 +173,8 @@ export function performed(hymn: Hymn, interp: Interpretation | number = hymn.int
   const p = place(getArrangement(hymn.arrangement), hymn.transpose);
   let sung = sungNotes(hymn, p);
   const bar = p.ppq * p.beatsPerBar;
-  const shape: Shape = { verseStarts: p.verseUpbeats.map((u) => Math.ceil(u / bar) * bar), barTicks: bar, totalTicks: p.totalTicks, tempos: p.tempos };
+  const hymnShape = (typeof interp === "number" ? undefined : interp.shape) ?? hymn.interpretation?.shape;
+  const shape: Shape = { ...hymnShape, verseStarts: p.verseUpbeats.map((u) => Math.ceil(u / bar) * bar), barTicks: bar, totalTicks: p.totalTicks, tempos: p.tempos };
   const syl = syllabify(hymnLyrics(hymn.id) ?? "");
   // a "Glo" of the refrain ("Glory, glory, hallelujah"), not the verses' "the glory of"
   const word = (i: number) => syl[i]?.word ?? "";

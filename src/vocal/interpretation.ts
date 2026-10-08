@@ -40,9 +40,32 @@ export type Rule =
 /** Rules that are off unless named: not yet chosen by ear. */
 export const OPT_IN_RULES: readonly Rule[] = ["glory"];
 
+/**
+ * A hymn's own shaping: its verse tempos, how long its lines are and which beats are
+ * strong. Absent fields are the Battle Hymn's (a 4/4 march in two-bar lines).
+ */
+export interface HymnShape {
+  /** Each verse's tempo; the last value holds for any further verse. */
+  verseBpm?: number[];
+  /** Bars in one sung line (the arch's span). */
+  lineBars?: number;
+  /** The emphasis in dB on each beat of the bar (index 0 = the downbeat); beats past the end get none. */
+  beatDb?: number[];
+  /** The line arch's depth, as a fraction of the tempo (+-). */
+  lineArch?: number;
+  /** A smaller arch over each half line, as a fraction of the tempo (KTH: sub-phrase arches inside the phrase). */
+  halfLineArch?: number;
+  /** Where the coda's ritard ends, before the fermata (default: the arrangement's last written tempo). */
+  codaEndBpm?: number;
+  /** The bar (0-based, on the placed grid) where the coda starts, when the arrangement writes no tempo change there. */
+  codaBar?: number;
+}
+
 export interface Interpretation {
   /** Scales every rule: 0 = as written, 1 = the brief's preferred amount. */
   amount: number;
+  /** This hymn's shape (verse tempos, line length, strong beats). */
+  shape?: HymnShape;
   /** One rule's own amount, overriding `amount` for that rule. */
   rules?: Partial<Record<Rule, number>>;
 }
@@ -110,8 +133,8 @@ export function applyMoves<T extends TimedNote>(notes: T[], moves: Map<number, n
   });
 }
 
-export interface Shape {
-  /** First tick of the sung verse (its downbeat) and its 16 bars. */
+export interface Shape extends HymnShape {
+  /** First tick of each sung verse (its downbeat). */
   verseStarts: number[];
   barTicks: number;
   totalTicks: number;
@@ -143,11 +166,13 @@ export function shapedTempos(s: Shape, ppq: number, interp: Interpretation | num
   const aCoda = ruleAmount(interp, "coda");
   const beat = ppq;
   const out: { tick: number; bpm: number }[] = [];
-  const codaStart = s.tempos.length > 1 ? s.tempos[1].tick : s.totalTicks;
+  const codaStart = s.codaBar !== undefined ? s.codaBar * s.barTicks : s.tempos.length > 1 ? s.tempos[1].tick : s.totalTicks;
   const codaEnd = s.totalTicks - s.barTicks;            // the last bar is the fermata
   const startBpm = writtenBpm(s.tempos, 0);
-  const endBpm = writtenBpm(s.tempos, s.totalTicks - 1);
-  const lineTicks = 2 * s.barTicks;
+  const endBpm = s.codaEndBpm ?? writtenBpm(s.tempos, s.totalTicks - 1);
+  const lineTicks = (s.lineBars ?? 2) * s.barTicks;
+  const verseBpm = s.verseBpm ?? VERSE_BPM;
+  const lineArch = s.lineArch ?? LINE_ARCH;
   for (let tick = 0; tick < s.totalTicks; tick += beat) {
     let bpm = writtenBpm(s.tempos, tick);
     const v = s.verseStarts.findIndex((st, i) => tick >= st && tick < (s.verseStarts[i + 1] ?? codaStart));
@@ -155,12 +180,14 @@ export function shapedTempos(s: Shape, ppq: number, interp: Interpretation | num
       // one smooth curve from the opening tempo to the written last tempo, then hold
       const x = codaEnd > codaStart ? (tick - codaStart) / (codaEnd - codaStart) : 1;
       const smooth = startBpm * finalRitard(x, endBpm / startBpm);
-      bpm = tick >= codaEnd ? endBpm : bpm + (smooth - bpm) * aCoda;
+      bpm = bpm + ((tick >= codaEnd ? endBpm : smooth) - bpm) * aCoda;
     } else if (v >= 0) {
-      const base = VERSE_BPM[Math.min(v, VERSE_BPM.length - 1)] ?? bpm;
+      const base = verseBpm[Math.min(v, verseBpm.length - 1)] ?? bpm;
       const within = tick - s.verseStarts[v];
       const x = (within % lineTicks) / lineTicks;
-      const arch = LINE_ARCH * (Math.sin(Math.PI * x) - 2 / Math.PI);   // slow-fast-slow, mean zero
+      const x2 = (2 * x) % 1;
+      const arch = lineArch * (Math.sin(Math.PI * x) - 2 / Math.PI)      // slow-fast-slow, mean zero
+        + (s.halfLineArch ?? 0) * (Math.sin(Math.PI * x2) - 2 / Math.PI);
       const verseLen = (s.verseStarts[v + 1] ?? codaStart) - s.verseStarts[v];
       const lastLines = v === s.verseStarts.length - 1 && within >= verseLen - 2 * lineTicks
         ? -LAST_VERSE_EASE * ((within - (verseLen - 2 * lineTicks)) / (2 * lineTicks)) : 0;
@@ -209,10 +236,11 @@ export function syllableGains(events: GainInput[], s: Shape, ppq: number, interp
   const amount = Math.max(aEmph, aArch, aHigh, aGlory);
   const sorted = [...events.map((e) => e.midi)].sort((a, b) => a - b);
   const median = sorted[Math.floor(sorted.length / 2)];
-  const lineTicks = 2 * s.barTicks;
+  const lineTicks = (s.lineBars ?? 2) * s.barTicks;
+  const beatDb = s.beatDb ?? [EMPHASIS_DB, 0, EMPHASIS_DB, 0];
   const raw = events.map((e) => {
     const inBar = e.tick % s.barTicks;
-    const strong = inBar === 0 || inBar === 2 * ppq ? EMPHASIS_DB : 0;
+    const strong = inBar % ppq === 0 ? (beatDb[inBar / ppq] ?? 0) : 0;
     let v = -1;
     s.verseStarts.forEach((st, i) => { if (e.tick >= st) v = i; });
     const x = v >= 0 ? ((e.tick - s.verseStarts[v]) % lineTicks) / lineTicks : 0.5;

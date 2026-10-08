@@ -4,7 +4,7 @@
  *
  *   pnpm exec tsx scripts/import-arrangement.ts --midi <file.mid> --out src/vocal/arrangements/<id>.json \
  *       --id <id> --source-url <url> --source-commit <sha> --licence CC0-1.0 --credit "<who made it>" \
- *       [--pickup-ticks 192 --pickups 4608,29376,...]
+ *       [--pickup-ticks 192 --pickups 4608,29376,...] [--beats-per-bar 3] [--offset-ticks 768]
  *
  * The notes are committed as JSON, not as a MIDI file: the derived-content guard
  * admits a tracked MIDI file only as a cleared library song's evidenced file, and an
@@ -14,6 +14,10 @@
  * `--pickups` names the ticks where the source starts a partial measure of
  * `--pickup-ticks` (LilyPond's mid-piece \partial). The arrangement module moves each
  * pickup into the last beat of the bar before, so every downbeat lands on the bar grid.
+ *
+ * `--offset-ticks` delays every note (and every tempo change after the first) by that
+ * much: a piece that opens with an upbeat (`\partial` at the start) gets silent beats
+ * before it, so its first full bar starts on the grid. `--pickups` are given after it.
  */
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -51,6 +55,9 @@ midi.tracks.forEach((track, i) => {
     }
   }
 });
+const offset = Number(opt("offset-ticks", "0"));
+for (const n of notes) n.tick += offset;
+for (const t of tempos) if (t.tick > 0) t.tick += offset;
 notes.sort((a, b) => a.tick - b.tick || a.midi - b.midi);
 const doc = {
   schema: "ai-jam-sessions/arrangement/v1",
@@ -59,7 +66,7 @@ const doc = {
   licence: opt("licence"),
   source: { url: opt("source-url"), commit: opt("source-commit"), file: midiPath.replace(/\\/g, "/").split("/").pop(), sha256: createHash("sha256").update(bytes).digest("hex") },
   ppq: midi.header.ticksPerBeat,
-  beats_per_bar: 4,
+  beats_per_bar: Number(opt("beats-per-bar", "4")),
   pickup_ticks: Number(opt("pickup-ticks", "0")),
   pickups: (opt("pickups", "") as string).split(",").filter(Boolean).map(Number),
   tempos,
