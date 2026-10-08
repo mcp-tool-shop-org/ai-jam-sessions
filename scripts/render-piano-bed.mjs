@@ -128,6 +128,20 @@ for (const q of quanta) {
 
 const buffer = await ctx.startRendering();
 if (buffer.length !== totalSamples) throw new Error(`rendered ${buffer.length} samples, expected ${totalSamples}`);
+// An arrangement's loudest passages (ff with full chords) can sum past full scale, and
+// the 16-bit write below would clip them; scale such a bed under ARRANGED_PEAK. The
+// mix sets the bed's level from a meter afterwards, so only the clipping changes.
+const ARRANGED_PEAK = 0.95;
+let bedScale = 1;
+if (arranged) {
+  let peak = 0;
+  for (let c = 0; c < buffer.numberOfChannels; c++) for (const v of buffer.getChannelData(c)) peak = Math.max(peak, Math.abs(v));
+  if (peak > ARRANGED_PEAK) {
+    bedScale = ARRANGED_PEAK / peak;
+    for (let c = 0; c < buffer.numberOfChannels; c++) { const d = buffer.getChannelData(c); for (let i = 0; i < d.length; i++) d[i] *= bedScale; }
+    console.error(`arrangement bed peaked at ${peak.toFixed(3)}: scaled by ${bedScale.toFixed(3)} so the 16-bit write does not clip`);
+  }
+}
 
 // 16-bit PCM stereo WAV
 const ch0 = buffer.getChannelData(0);
@@ -160,6 +174,7 @@ const receipt = {
   clock: clockPath.replace(/\\/g, "/"),
   bed: outPath.replace(/\\/g, "/"),
   engine: engineId,
+  bed_scale: bedScale,
   samples_dir: samplesDir,
   sample_rate: sr,
   channels: 2,
