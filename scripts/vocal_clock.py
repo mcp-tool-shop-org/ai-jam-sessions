@@ -642,6 +642,36 @@ def repin_words(clock: dict, candidates: list[dict], total_seconds_of: dict[str,
             "cuts": out_cuts}
 
 
+DATE_OUTLIER_S = 0.3         # a dated onset this far from where its neighbours put the take is not trusted
+DATE_NEIGHBOURS = 4          # syllables on each side that set where the take is
+
+
+def undate_outliers(rows: list[dict]) -> list[str]:
+    """Undate the syllables whose dated onset is far from where their neighbours put the
+    take: more than DATE_OUTLIER_S from the median offset (t_vowel - t_score) of up to
+    DATE_NEIGHBOURS dated syllables on each side. The onset detector can date a vowel on a
+    later rise in its own fading tail, and the aligner can misdate one too: the Battle
+    Hymn's "jah" at 0:52 was dated 0.7 s late (its neighbours within 0.1 s), cut from the
+    tail and placed as near silence (2026-10-08, found by voice_gate.py). It runs before
+    the aligner fills the undated syllables and again after, so a syllable no instrument
+    dates near its neighbours is taken from another take. The rejected date is kept as
+    `outlier_t_vowel`. Returns the ids undated."""
+    off = [None if r.get("t_vowel") is None or r.get("t_score") is None else float(r["t_vowel"]) - float(r["t_score"]) for r in rows]
+    out = []
+    for i, r in enumerate(rows):
+        if off[i] is None:
+            continue
+        near = [off[j] for j in range(max(0, i - DATE_NEIGHBOURS), min(len(rows), i + DATE_NEIGHBOURS + 1)) if j != i and off[j] is not None]
+        if len(near) < 2:
+            continue
+        if abs(off[i] - float(np.median(near))) > DATE_OUTLIER_S:
+            r["outlier_t_vowel"] = r["t_vowel"]
+            r["t_vowel"] = None
+            r["method"] = "outlier"
+            out.append(r["id"])
+    return out
+
+
 def fill_undated(rows: list[dict], aligned: dict[str, float | None]) -> list[str]:
     """Date the syllables the onset detector left undated with the singing aligner's
     reading of the same take (method "aligner"). Rows the detector dated are never
@@ -669,6 +699,9 @@ def cmd_repin(a):
             key = take.replace("\\", "/")
             totals[key] = frames / sr
             rows = rec["table"]
+            undated = undate_outliers(rows)
+            if undated:
+                print(f"{take_name(key)}: undated {len(undated)} onset(s) far from their neighbours: {', '.join(undated)}")
             if a.aligner_fill and any(r.get("t_vowel") is None for r in rows):
                 import onset_aligner
                 work = os.path.join(os.path.dirname(os.path.abspath(take)), "aligner-fill")
@@ -678,6 +711,9 @@ def cmd_repin(a):
                     print(f"{take_name(key)}: aligner fill skipped ({exc})")
                     filled = []
                 print(f"{take_name(key)}: the aligner dated {len(filled)} of {len(filled) + sum(1 for r in rows if r.get('t_vowel') is None)} undated syllables")
+                late = undate_outliers(rows)          # the aligner can misdate too: the Battle Hymn's "jah" at 0:52 was its
+                if late:                              # date, 0.7 s late; such a syllable is left to another take
+                    print(f"{take_name(key)}: undated {len(late)} aligner date(s) far from their neighbours: {', '.join(late)}")
             cands.append({"key": key, "rows": rows, "receipt": receipt.replace("\\", "/"), "sha256": sha256(take)})
         phrases = None
         if a.by_phrase:
