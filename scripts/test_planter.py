@@ -413,3 +413,122 @@ def test_a_click_after_a_pause_is_refused():
         pl.mutate(p, spec("click", sev=0.0))
     _, w = pl.mutate(p, spec("click", sev=0.0), max_gap=None)
     assert w["gap_s"] > 0.05
+
+
+# ─── PR 2: stretch, compounds, pitch ─────────────────────────────────────────
+
+def test_a_stretch_keeps_both_vowels_on_time_sets_the_ratio_and_never_breaks_the_run():
+    p = plan_of()
+
+    def on_time(x):
+        return x["src_vowel_onset"] + x["placed_start"] - x["cut_start"]
+
+    for ratio in (1.6, 2.0):               # < 1 needs more take between vowels than this grid has
+        q, w = pl.mutate(p, spec("stretch", sev=ratio, mode="warp", join_type="inside"))
+        c = next(c for c in q["cuts"] if c["id"] == "v04")
+        prev = next(c for c in q["cuts"] if c["id"] == "v03")
+        orig = next(c for c in p["cuts"] if c["id"] == "v04")
+        assert "break_before" not in c
+        assert on_time(c) == pytest.approx(on_time(orig))
+        assert (on_time(c) - on_time(prev)) / (c["src_vowel_onset"] - prev["src_vowel_onset"]) == pytest.approx(ratio)
+        assert w["stretch_of"] == "v03"
+
+
+def test_a_stretch_is_refused_in_local_mode_and_past_a_neighbour():
+    with pytest.raises(ValueError, match="warp"):
+        pl.mutate(plan_of(), spec("stretch", sev=2.0, mode="local"))
+    with pytest.raises(ValueError, match="neighbour"):
+        pl.mutate(plan_of(), spec("stretch", sev=0.3, mode="warp", join_type="inside"))
+
+
+def test_the_placer_reports_the_planted_stretch():
+    p = plan_of()
+    q, w = pl.mutate(p, spec("stretch", sev=1.6, mode="warp", join_type="inside"))
+    _, joins = pl.render(q, SOURCES, None, "warp", joins=True)
+    assert pl.verify_stretch(1.6, joins, w["stretch_of"])["present"]
+    _, clean_joins = pl.render(p, SOURCES, None, "warp", joins=True)
+    assert not pl.verify_stretch(1.6, clean_joins, w["stretch_of"])["present"]
+
+
+def _paused_plan():
+    """The clip before reaches exactly this cut's start in the take, but 80 ms
+    early on the timeline: a pause and no vowel move."""
+    p = plan_of()
+    prev = next(c for c in p["cuts"] if c["id"] == "v03")
+    prev["clip_seconds"] = SYL_S - (vc.JOIN_EXTEND_MAX_S - vc.XFADE_S)
+    prev["placed_start"] -= 0.08
+    return p
+
+
+def _late_plan():
+    p = plan_of()
+    next(c for c in p["cuts"] if c["id"] == "v03")["placed_start"] += 0.06
+    return p
+
+
+def test_compound_kinds_require_their_own_excess_and_refuse_the_other():
+    _, w = pl.mutate(_paused_plan(), spec("replay+pause", sev=0.05))
+    assert w["gap_s"] > pl.MAX_GAP_S
+    with pytest.raises(ValueError, match="no pause"):
+        pl.mutate(plan_of(), spec("replay+pause", sev=0.05))
+    _, w = pl.mutate(_late_plan(), spec("replay+late-vowel", sev=0.05))
+    assert w["vowel_moved_s"] - 0.05 > pl.MAX_VOWEL_MOVE_S
+    with pytest.raises(ValueError, match="enough"):
+        pl.mutate(plan_of(), spec("replay+late-vowel", sev=0.05))
+    with pytest.raises(ValueError, match="pause here too"):
+        pl.mutate(_paused_plan(), spec("skip+late-vowel", sev=0.05))
+    _, w = pl.mutate(_paused_plan(), spec("click+pause", sev=0.0))
+    assert w["gap_s"] > pl.MAX_GAP_S
+
+
+def test_compounds_stay_out_of_the_clean_pools():
+    joins = pl.candidate_joins(_late_plan(), None, "local")
+    pools = pl.eligible_pools(_late_plan(), joins, ["replay", "replay+late-vowel"], "local", None)
+    clean = {j["cut_id"] for j in pools[("replay", 0.05)]}
+    late = {j["cut_id"] for j in pools[("replay+late-vowel", 0.05)]}
+    assert "v04" in late and "v04" not in clean and not (clean & late)
+
+
+def _clock_for(plan):
+    return {"events": [{"id": c["id"], "t_sec": c["t_sec"], "dur_sec": SYL_S - 0.05} for c in plan["cuts"]]}
+
+
+def test_a_pitch_plant_shifts_one_note_and_a_vocoded_sham_does_not():
+    pytest.importorskip("pyworld")
+    p = plan_of()
+    clock = _clock_for(p)
+    clean = pl.render(p, SOURCES, None, "local")
+    for semis, expect in ((12.0, True), (1.0, True), (-1.0, True)):
+        _, w = pl.mutate(p, spec("pitch", cut="v04", sev=semis, mode="local", join_type="note"), clock)
+        planted = pl.shift_note(clean, SR, w["t"], w["note_end"], semis)
+        got = pl.verify_pitch(clean, planted, SR, w["t"], w["note_end"], semis)
+        assert got["present"] == expect, (semis, got)
+        assert got["measured"]["cents"] == pytest.approx(100 * semis, abs=40)
+    _, w = pl.mutate(p, spec("vocoded", cut="v04", sev=0.0, mode="local", join_type="note"), clock)
+    sham = pl.shift_note(clean, SR, w["t"], w["note_end"], 0.0)
+    assert pl.verify_pitch(clean, sham, SR, w["t"], w["note_end"], 0.0)["present"]
+    outside = slice(0, int((w["t"] - 0.1) * SR))
+    assert np.allclose(sham[outside], clean[outside])          # only the note is touched
+
+
+def test_pitch_needs_a_long_enough_note():
+    p = plan_of()
+    clock = {"events": [{"id": "v04", "t_sec": 3.15, "dur_sec": 0.1}]}
+    with pytest.raises(ValueError, match="no note"):
+        pl.mutate(p, spec("pitch", cut="v04", sev=1.0, mode="local", join_type="note"), clock)
+
+
+def test_labels_carry_the_pick_and_alternate(tmp_path):
+    import json
+
+    import soundfile as sf
+    src = tmp_path / "take.wav"
+    sf.write(src, SOURCES["take-a"], SR)
+    p = plan_of(key=str(src))
+    p.update({"pick_of": "song/pad16", "alt": 3})
+    pick = tmp_path / "pick"
+    pick.mkdir()
+    (pick / "plan.json").write_text(json.dumps(p), encoding="utf-8")
+    pl.build(str(pick), str(tmp_path / "out"), 4, ["skip", "none"], "local", seed=2)
+    rows = [json.loads(l) for l in (tmp_path / "out" / "labels.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert rows and all(r["pick"] == "song/pad16" and r["alt"] == 3 for r in rows)

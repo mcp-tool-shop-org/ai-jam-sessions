@@ -168,7 +168,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "scripts",
-      "qualifyingSourceCommits": 110,
+      "qualifyingSourceCommits": 114,
       "rebaseline": null
     },
     {
@@ -1200,8 +1200,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 17,
-        "lines": 956,
+        "commits": 20,
+        "lines": 1070,
         "path": "atlas/README.md"
       },
       {
@@ -1210,18 +1210,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 17,
-        "lines": 5410,
+        "commits": 20,
+        "lines": 5876,
         "path": "atlas/page.json"
       },
       {
-        "commits": 17,
-        "lines": 59150,
+        "commits": 20,
+        "lines": 61155,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 17,
-        "lines": 138294,
+        "commits": 20,
+        "lines": 147296,
         "path": "atlas/structure.json"
       },
       {
@@ -13355,6 +13355,11 @@
         "path": "scores/receipts/america-the-beautiful/soundcheck.receipt.json"
       },
       {
+        "commits": 2,
+        "lines": 406,
+        "path": "scripts/alt_picks.py"
+      },
+      {
         "commits": 1,
         "lines": 557,
         "path": "scripts/analysis-chords.test.ts"
@@ -13660,8 +13665,8 @@
         "path": "scripts/phrase_scores.py"
       },
       {
-        "commits": 6,
-        "lines": 633,
+        "commits": 11,
+        "lines": 1937,
         "path": "scripts/planter.py"
       },
       {
@@ -13800,6 +13805,11 @@
         "path": "scripts/test_aligner_gate.py"
       },
       {
+        "commits": 2,
+        "lines": 100,
+        "path": "scripts/test_alt_picks.py"
+      },
+      {
         "commits": 4,
         "lines": 228,
         "path": "scripts/test_export_soulx_target.py"
@@ -13825,8 +13835,8 @@
         "path": "scripts/test_placer_overrides.py"
       },
       {
-        "commits": 6,
-        "lines": 396,
+        "commits": 10,
+        "lines": 1378,
         "path": "scripts/test_planter.py"
       },
       {
@@ -14055,8 +14065,8 @@
         "path": "site/src/content/docs/handbook/troubleshooting.md"
       },
       {
-        "commits": 10,
-        "lines": 1042,
+        "commits": 12,
+        "lines": 1049,
         "path": "site/src/content/docs/handbook/vocals.md"
       },
       {
@@ -16925,9 +16935,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-08T00:22:41.442Z",
+  "generatedAt": "2026-10-08T00:48:42.019Z",
   "generatedFrom": {
-    "commit": "d7c64b4f101d0525632fc8595f00e63514e71e01"
+    "commit": "5db3c85e3f83ed21084c444f2ae34181dbefc77e"
   },
   "pairs": [
     {
@@ -17143,99 +17153,71 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 12,
-      "shared": 12,
+      "either": 13,
+      "shared": 13,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 12,
-      "shared": 12,
+      "either": 13,
+      "shared": 13,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 12,
-      "shared": 12,
+      "either": 13,
+      "shared": 13,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
-      "b": "scripts/planter.py",
-      "either": 12,
-      "shared": 6,
-      "strength": 0.5
-    },
-    {
-      "a": "atlas/README.md",
       "b": "scripts/test_planter.py",
-      "either": 12,
-      "shared": 6,
+      "either": 14,
+      "shared": 7,
       "strength": 0.5
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 12,
-      "shared": 12,
+      "either": 13,
+      "shared": 13,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 12,
-      "shared": 12,
+      "either": 13,
+      "shared": 13,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
-      "b": "scripts/planter.py",
-      "either": 12,
-      "shared": 6,
-      "strength": 0.5
-    },
-    {
-      "a": "atlas/page.json",
       "b": "scripts/test_planter.py",
-      "either": 12,
-      "shared": 6,
+      "either": 14,
+      "shared": 7,
       "strength": 0.5
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 12,
-      "shared": 12,
+      "either": 13,
+      "shared": 13,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
-      "b": "scripts/planter.py",
-      "either": 12,
-      "shared": 6,
-      "strength": 0.5
-    },
-    {
-      "a": "atlas/statistics.json",
       "b": "scripts/test_planter.py",
-      "either": 12,
-      "shared": 6,
-      "strength": 0.5
-    },
-    {
-      "a": "atlas/structure.json",
-      "b": "scripts/planter.py",
-      "either": 12,
-      "shared": 6,
+      "either": 14,
+      "shared": 7,
       "strength": 0.5
     },
     {
       "a": "atlas/structure.json",
       "b": "scripts/test_planter.py",
-      "either": 12,
-      "shared": 6,
+      "either": 14,
+      "shared": 7,
       "strength": 0.5
     },
     {
@@ -17346,9 +17328,9 @@
     {
       "a": "scripts/planter.py",
       "b": "scripts/test_planter.py",
-      "either": 6,
-      "shared": 6,
-      "strength": 1
+      "either": 9,
+      "shared": 8,
+      "strength": 0.888889
     },
     {
       "a": "src/dataset/eval/llm-runner.test.ts",
@@ -17382,16 +17364,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-10-07T20:09:36-04:00",
-    "inScopeFiles": 3038,
+    "headDate": "2026-10-07T20:48:01-04:00",
+    "inScopeFiles": 3040,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 657,
+    "qualifyingCommits": 662,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-11T00:09:36.000Z",
+    "since": "2026-04-11T00:48:01.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

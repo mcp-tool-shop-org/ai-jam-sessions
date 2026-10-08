@@ -1,16 +1,15 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-10-08 from commit d7c64b4 by Atlas 1.24.0.
+Mapped at 2026-10-08 from commit 5db3c85 by Atlas 1.24.0.
 
 ## What this is
 
-14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (614), Python (66), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
+14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (614), Python (68), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-10-08 (45f1f1a)
+## What changed since 2026-10-08 (d7c64b4)
 
-- CI runs 2 more files than before.
-- Release runs 2 more files than before.
-- 3 files added and 7 changed content, across 4 parts.
+- scripts/vocal_clock.py is now also read by scripts/alt_picks.py.
+- 2 files added and 3 changed content, across 2 parts.
 
 ## What comes in
 
@@ -231,9 +230,9 @@ Read those in order to follow one pull request end to end.
 
 - 5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.
 - 2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.
-- 56 writes and 116 reads use paths built at run time and are not named here.
+- 56 writes and 117 reads use paths built at run time and are not named here.
 - 27 writes go to places this repository does not track, so they are not listed as generated.
-- 110 writes and 394 reads go to a path their caller passes, not to this repository.
+- 114 writes and 397 reads go to a path their caller passes, not to this repository.
 - 1 write and 18 reads go to the directory the command is run in, not to this repository.
 - 3 writes and 11 reads go to the home directory (.ssh/), not to this repository.
 - 8 writes and 4 reads go to a temporary directory, not to this repository.
