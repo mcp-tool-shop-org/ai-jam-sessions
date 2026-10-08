@@ -35,7 +35,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "cockpit",
-      "qualifyingSourceCommits": 24,
+      "qualifyingSourceCommits": 25,
       "rebaseline": null
     },
     {
@@ -117,7 +117,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "root",
-      "qualifyingSourceCommits": 4,
+      "qualifyingSourceCommits": 5,
       "rebaseline": null
     },
     {
@@ -163,12 +163,12 @@
           "src"
         ]
       },
-      "cohesion": null,
+      "cohesion": 1,
       "cohesionDropped": false,
       "confidence": "full",
       "highWater": null,
       "name": "scripts",
-      "qualifyingSourceCommits": 79,
+      "qualifyingSourceCommits": 110,
       "rebaseline": null
     },
     {
@@ -184,7 +184,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "site",
-      "qualifyingSourceCommits": 12,
+      "qualifyingSourceCommits": 14,
       "rebaseline": null
     },
     {
@@ -237,7 +237,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 163,
+      "qualifyingSourceCommits": 184,
       "rebaseline": null
     }
   ],
@@ -250,8 +250,8 @@
         "path": ".dockerignore"
       },
       {
-        "commits": 17,
-        "lines": 203,
+        "commits": 19,
+        "lines": 209,
         "path": ".gitattributes"
       },
       {
@@ -290,8 +290,8 @@
         "path": ".github/workflows/zenodo-edit-record.yml"
       },
       {
-        "commits": 23,
-        "lines": 140,
+        "commits": 25,
+        "lines": 146,
         "path": ".gitignore"
       },
       {
@@ -300,13 +300,13 @@
         "path": ".npmignore"
       },
       {
-        "commits": 19,
-        "lines": 96458,
+        "commits": 21,
+        "lines": 108940,
         "path": ".polyglot-cache.json"
       },
       {
-        "commits": 40,
-        "lines": 1306,
+        "commits": 82,
+        "lines": 1814,
         "path": "CHANGELOG.md"
       },
       {
@@ -325,43 +325,43 @@
         "path": "Dockerfile"
       },
       {
-        "commits": 22,
-        "lines": 2102,
+        "commits": 24,
+        "lines": 2680,
         "path": "README.es.md"
       },
       {
-        "commits": 22,
-        "lines": 3028,
+        "commits": 24,
+        "lines": 3250,
         "path": "README.fr.md"
       },
       {
-        "commits": 22,
-        "lines": 2486,
+        "commits": 24,
+        "lines": 3146,
         "path": "README.hi.md"
       },
       {
-        "commits": 22,
-        "lines": 3132,
+        "commits": 24,
+        "lines": 3370,
         "path": "README.it.md"
       },
       {
-        "commits": 22,
-        "lines": 2442,
+        "commits": 24,
+        "lines": 3096,
         "path": "README.ja.md"
       },
       {
-        "commits": 40,
-        "lines": 1555,
+        "commits": 44,
+        "lines": 1629,
         "path": "README.md"
       },
       {
-        "commits": 22,
-        "lines": 2126,
+        "commits": 24,
+        "lines": 2372,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 22,
-        "lines": 3108,
+        "commits": 24,
+        "lines": 3318,
         "path": "README.zh.md"
       },
       {
@@ -545,8 +545,8 @@
         "path": "acoustic_the-entertainer_sharp_fail_0.json}"
       },
       {
-        "commits": 27,
-        "lines": 2136,
+        "commits": 30,
+        "lines": 2412,
         "path": "apps/cockpit/index.html"
       },
       {
@@ -1050,8 +1050,8 @@
         "path": "apps/cockpit/src/gesture.ts"
       },
       {
-        "commits": 25,
-        "lines": 5177,
+        "commits": 28,
+        "lines": 5288,
         "path": "apps/cockpit/src/main.ts"
       },
       {
@@ -1093,6 +1093,11 @@
         "commits": 13,
         "lines": 690,
         "path": "apps/cockpit/src/pure-logic.test.ts"
+      },
+      {
+        "commits": 3,
+        "lines": 2025,
+        "path": "apps/cockpit/src/review.ts"
       },
       {
         "commits": 1,
@@ -1195,8 +1200,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 9,
-        "lines": 822,
+        "commits": 17,
+        "lines": 956,
         "path": "atlas/README.md"
       },
       {
@@ -1205,23 +1210,23 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 9,
-        "lines": 4898,
+        "commits": 17,
+        "lines": 5410,
         "path": "atlas/page.json"
       },
       {
-        "commits": 9,
-        "lines": 56912,
+        "commits": 17,
+        "lines": 59150,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 9,
-        "lines": 131998,
+        "commits": 17,
+        "lines": 138294,
         "path": "atlas/structure.json"
       },
       {
-        "commits": 2,
-        "lines": 36,
+        "commits": 4,
+        "lines": 70,
         "path": "codecov.yml"
       },
       {
@@ -6760,6 +6765,11 @@
         "path": "docker-compose.yml"
       },
       {
+        "commits": 3,
+        "lines": 669,
+        "path": "docs/aspire/2026-10-07-aspire-plan.md"
+      },
+      {
         "commits": 5,
         "lines": 0,
         "path": "docs/assets/spectrogram-ab-cqt-viridis.png"
@@ -7785,14 +7795,24 @@
         "path": "docs/spectrogram-surface-study-2026-09.md"
       },
       {
-        "commits": 7,
-        "lines": 1200,
+        "commits": 29,
+        "lines": 1752,
         "path": "docs/vocal-clock.md"
+      },
+      {
+        "commits": 2,
+        "lines": 156,
+        "path": "docs/vocal-offrig.md"
       },
       {
         "commits": 5,
         "lines": 600,
         "path": "docs/vocal-singing-study-2026-09.md"
+      },
+      {
+        "commits": 5,
+        "lines": 606,
+        "path": "docs/vocal-soundcheck.md"
       },
       {
         "commits": 1,
@@ -10755,8 +10775,8 @@
         "path": "experiments/maker-arc/implied-chord-bass-aware-shifts.json"
       },
       {
-        "commits": 4,
-        "lines": 24134,
+        "commits": 6,
+        "lines": 24188,
         "path": "experiments/maker-arc/implied-chord-snapshot.json"
       },
       {
@@ -12450,8 +12470,8 @@
         "path": "experiments/rollout-arc/p4/scripts/base-passrate.mts"
       },
       {
-        "commits": 1,
-        "lines": 57,
+        "commits": 3,
+        "lines": 65,
         "path": "experiments/rollout-arc/p4/scripts/base_probe_local.sh"
       },
       {
@@ -12545,8 +12565,8 @@
         "path": "experiments/rollout-arc/p4/scripts/gate-variance.mts"
       },
       {
-        "commits": 1,
-        "lines": 66,
+        "commits": 3,
+        "lines": 74,
         "path": "experiments/rollout-arc/p4/scripts/gate_eval_local.sh"
       },
       {
@@ -12615,8 +12635,8 @@
         "path": "experiments/rollout-arc/p4/scripts/pil-vs-c.mts"
       },
       {
-        "commits": 2,
-        "lines": 73,
+        "commits": 4,
+        "lines": 81,
         "path": "experiments/rollout-arc/p4/scripts/pil_eval_local.sh"
       },
       {
@@ -12920,18 +12940,18 @@
         "path": "logo.svg"
       },
       {
-        "commits": 39,
-        "lines": 228,
+        "commits": 41,
+        "lines": 236,
         "path": "package.json"
       },
       {
-        "commits": 17,
-        "lines": 43,
+        "commits": 19,
+        "lines": 47,
         "path": "plugin/.claude-plugin/marketplace.json"
       },
       {
-        "commits": 17,
-        "lines": 44,
+        "commits": 19,
+        "lines": 48,
         "path": "plugin/.claude-plugin/plugin.json"
       },
       {
@@ -13025,9 +13045,19 @@
         "path": "quarantine}/rnb/ordinary-people.json"
       },
       {
+        "commits": 2,
+        "lines": 5422,
+        "path": "scores/amazing-grace-new-britain.score-clock.v1.json"
+      },
+      {
         "commits": 5,
         "lines": 1560,
         "path": "scores/amazing-grace.score-clock.v1.json"
+      },
+      {
+        "commits": 3,
+        "lines": 8894,
+        "path": "scores/america-the-beautiful-materna.score-clock.v1.json"
       },
       {
         "commits": 2,
@@ -13315,6 +13345,16 @@
         "path": "scores/receipts/amazing-grace/vocal-clock.receipt.json"
       },
       {
+        "commits": 3,
+        "lines": 711,
+        "path": "scores/receipts/america-the-beautiful/soundcheck.clock.json"
+      },
+      {
+        "commits": 4,
+        "lines": 4205,
+        "path": "scores/receipts/america-the-beautiful/soundcheck.receipt.json"
+      },
+      {
         "commits": 1,
         "lines": 557,
         "path": "scripts/analysis-chords.test.ts"
@@ -13400,8 +13440,8 @@
         "path": "scripts/build-record-fur-elise-m001-008.ts"
       },
       {
-        "commits": 6,
-        "lines": 469,
+        "commits": 10,
+        "lines": 517,
         "path": "scripts/build-score-clock.mjs"
       },
       {
@@ -13480,8 +13520,8 @@
         "path": "scripts/compute-slice16-ag-anchors.ts"
       },
       {
-        "commits": 2,
-        "lines": 516,
+        "commits": 4,
+        "lines": 1004,
         "path": "scripts/create-america-the-beautiful.ts"
       },
       {
@@ -13555,8 +13595,8 @@
         "path": "scripts/eval-jam-actions-tool-use.ts"
       },
       {
-        "commits": 6,
-        "lines": 869,
+        "commits": 10,
+        "lines": 1173,
         "path": "scripts/export_soulx_target.py"
       },
       {
@@ -13595,6 +13635,11 @@
         "path": "scripts/npm-ship-list.ts"
       },
       {
+        "commits": 5,
+        "lines": 510,
+        "path": "scripts/onset_aligner.py"
+      },
+      {
         "commits": 7,
         "lines": 717,
         "path": "scripts/package-jam-actions-public.ts"
@@ -13605,9 +13650,39 @@
         "path": "scripts/patches/soulx-singer-load_wav-soundfile.patch"
       },
       {
+        "commits": 2,
+        "lines": 510,
+        "path": "scripts/phrase_evidence.py"
+      },
+      {
+        "commits": 6,
+        "lines": 578,
+        "path": "scripts/phrase_scores.py"
+      },
+      {
+        "commits": 6,
+        "lines": 633,
+        "path": "scripts/planter.py"
+      },
+      {
         "commits": 6,
         "lines": 422,
         "path": "scripts/play-comfy-over-piano.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 44,
+        "path": "scripts/pod/soulx-audio-utils.patch"
+      },
+      {
+        "commits": 2,
+        "lines": 152,
+        "path": "scripts/pod/soulx-requirements.txt"
+      },
+      {
+        "commits": 2,
+        "lines": 136,
+        "path": "scripts/pod/soulx-setup.sh"
       },
       {
         "commits": 4,
@@ -13630,14 +13705,24 @@
         "path": "scripts/regenerate-public-package-checksums.ts"
       },
       {
-        "commits": 2,
-        "lines": 90,
+        "commits": 4,
+        "lines": 102,
         "path": "scripts/render-landing-pianoroll.ts"
       },
       {
-        "commits": 5,
-        "lines": 810,
+        "commits": 7,
+        "lines": 822,
         "path": "scripts/render-piano-bed.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 440,
+        "path": "scripts/review_marks.html"
+      },
+      {
+        "commits": 6,
+        "lines": 740,
+        "path": "scripts/review_marks.py"
       },
       {
         "commits": 1,
@@ -13680,19 +13765,94 @@
         "path": "scripts/scan-dataset-provenance.ts"
       },
       {
-        "commits": 5,
-        "lines": 600,
+        "commits": 17,
+        "lines": 698,
         "path": "scripts/sing_clock.py"
       },
       {
-        "commits": 5,
-        "lines": 505,
+        "commits": 2,
+        "lines": 230,
+        "path": "scripts/site-hymn-visual.ts"
+      },
+      {
+        "commits": 7,
+        "lines": 329,
+        "path": "scripts/soulx_batch.py"
+      },
+      {
+        "commits": 7,
+        "lines": 621,
         "path": "scripts/soulx_take.py"
       },
       {
+        "commits": 5,
+        "lines": 1824,
+        "path": "scripts/soundcheck.py"
+      },
+      {
+        "commits": 2,
+        "lines": 388,
+        "path": "scripts/soundcheck_label.html"
+      },
+      {
+        "commits": 2,
+        "lines": 260,
+        "path": "scripts/test_aligner_gate.py"
+      },
+      {
+        "commits": 4,
+        "lines": 228,
+        "path": "scripts/test_export_soulx_target.py"
+      },
+      {
+        "commits": 2,
+        "lines": 172,
+        "path": "scripts/test_phrase_evidence.py"
+      },
+      {
         "commits": 6,
-        "lines": 1265,
+        "lines": 388,
+        "path": "scripts/test_phrase_picker.py"
+      },
+      {
+        "commits": 3,
+        "lines": 165,
+        "path": "scripts/test_pitch_recheck.py"
+      },
+      {
+        "commits": 4,
+        "lines": 192,
+        "path": "scripts/test_placer_overrides.py"
+      },
+      {
+        "commits": 6,
+        "lines": 396,
+        "path": "scripts/test_planter.py"
+      },
+      {
+        "commits": 6,
+        "lines": 312,
+        "path": "scripts/test_review_marks.py"
+      },
+      {
+        "commits": 7,
+        "lines": 279,
+        "path": "scripts/test_soulx_offrig.py"
+      },
+      {
+        "commits": 6,
+        "lines": 998,
+        "path": "scripts/test_soundcheck.py"
+      },
+      {
+        "commits": 11,
+        "lines": 1395,
         "path": "scripts/test_vocal_clock.py"
+      },
+      {
+        "commits": 4,
+        "lines": 160,
+        "path": "scripts/test_warp_place.py"
       },
       {
         "commits": 1,
@@ -13730,47 +13890,77 @@
         "path": "scripts/verify-public-package-execution.ts"
       },
       {
-        "commits": 8,
-        "lines": 6589,
+        "commits": 32,
+        "lines": 7820,
         "path": "scripts/vocal_clock.py"
       },
       {
-        "commits": 2,
-        "lines": 16,
+        "commits": 4,
+        "lines": 20,
         "path": "site/astro.config.mjs"
       },
       {
-        "commits": 3,
-        "lines": 6051,
-        "path": "site/package-lock.json"
-      },
-      {
-        "commits": 1,
-        "lines": 6,
-        "path": "site/package.json"
-      },
-      {
         "commits": 2,
-        "lines": 458,
-        "path": "site/public/america-the-beautiful-m2-5.svg"
+        "lines": 8,
+        "path": "site/hymns-audio.sha256"
       },
       {
         "commits": 5,
+        "lines": 6069,
+        "path": "site/package-lock.json"
+      },
+      {
+        "commits": 3,
+        "lines": 12,
+        "path": "site/package.json"
+      },
+      {
+        "commits": 4,
+        "lines": 916,
+        "path": "site/public/america-the-beautiful-m2-5.svg"
+      },
+      {
+        "commits": 2,
+        "lines": 660,
+        "path": "site/public/america-the-beautiful-m2-6.svg"
+      },
+      {
+        "commits": 2,
+        "lines": 0,
+        "path": "site/public/audio/amazing-grace-new-britain.mp3"
+      },
+      {
+        "commits": 2,
+        "lines": 0,
+        "path": "site/public/audio/amazing-grace-new-britain.opus"
+      },
+      {
+        "commits": 7,
         "lines": 0,
         "path": "site/public/audio/amazing-grace-vocal-only-2026-09-05.mp3"
       },
       {
-        "commits": 5,
+        "commits": 7,
         "lines": 0,
         "path": "site/public/audio/amazing-grace-vocal-route-2026-09-05.mp3"
       },
       {
         "commits": 2,
         "lines": 0,
-        "path": "site/public/audio/america-the-beautiful-vocal-only.mp3"
+        "path": "site/public/audio/america-the-beautiful-materna.mp3"
       },
       {
         "commits": 2,
+        "lines": 0,
+        "path": "site/public/audio/america-the-beautiful-materna.opus"
+      },
+      {
+        "commits": 4,
+        "lines": 0,
+        "path": "site/public/audio/america-the-beautiful-vocal-only.mp3"
+      },
+      {
+        "commits": 4,
         "lines": 0,
         "path": "site/public/audio/america-the-beautiful-vocal-route.mp3"
       },
@@ -13793,6 +13983,11 @@
         "commits": 1,
         "lines": 0,
         "path": "site/public/og-card.png"
+      },
+      {
+        "commits": 2,
+        "lines": 342,
+        "path": "site/src/components/Hymns.astro"
       },
       {
         "commits": 3,
@@ -13830,8 +14025,8 @@
         "path": "site/src/content/docs/handbook/live-ensemble.md"
       },
       {
-        "commits": 12,
-        "lines": 164,
+        "commits": 14,
+        "lines": 180,
         "path": "site/src/content/docs/handbook/mcp-tools.md"
       },
       {
@@ -13860,8 +14055,8 @@
         "path": "site/src/content/docs/handbook/troubleshooting.md"
       },
       {
-        "commits": 5,
-        "lines": 540,
+        "commits": 10,
+        "lines": 1042,
         "path": "site/src/content/docs/handbook/vocals.md"
       },
       {
@@ -13870,13 +14065,23 @@
         "path": "site/src/content/docs/handbook/your-own-dataset.md"
       },
       {
-        "commits": 8,
-        "lines": 234,
+        "commits": 2,
+        "lines": 2,
+        "path": "site/src/data/hymns.visual.json"
+      },
+      {
+        "commits": 2,
+        "lines": 546,
+        "path": "site/src/lib/hymn-view.ts"
+      },
+      {
+        "commits": 14,
+        "lines": 558,
         "path": "site/src/pages/index.astro"
       },
       {
-        "commits": 19,
-        "lines": 213,
+        "commits": 23,
+        "lines": 253,
         "path": "site/src/site-config.ts"
       },
       {
@@ -14050,12 +14255,12 @@
         "path": "songs/library/folk/amazing-grace.json"
       },
       {
-        "commits": 2,
-        "lines": 134,
+        "commits": 5,
+        "lines": 248,
         "path": "songs/library/folk/america-the-beautiful.json"
       },
       {
-        "commits": 2,
+        "commits": 5,
         "lines": 0,
         "path": "songs/library/folk/america-the-beautiful.mid"
       },
@@ -14935,13 +15140,18 @@
         "path": "src/chord-detect.ts"
       },
       {
+        "commits": 5,
+        "lines": 2364,
+        "path": "src/cli-commands.test.ts"
+      },
+      {
         "commits": 16,
         "lines": 788,
         "path": "src/cli.test.ts"
       },
       {
-        "commits": 21,
-        "lines": 2053,
+        "commits": 25,
+        "lines": 2783,
         "path": "src/cli.ts"
       },
       {
@@ -14963,6 +15173,11 @@
         "commits": 6,
         "lines": 150,
         "path": "src/compose/compose-panel-tool.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 36,
+        "path": "src/compose/human-audio-catalog.test.ts"
       },
       {
         "commits": 5,
@@ -14993,6 +15208,11 @@
         "commits": 9,
         "lines": 1655,
         "path": "src/compose/llm-panel.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 94,
+        "path": "src/compose/ollama-bws-judge.test.ts"
       },
       {
         "commits": 6,
@@ -15135,9 +15355,34 @@
         "path": "src/dataset/acoustic-v1/allowlist.ts"
       },
       {
+        "commits": 2,
+        "lines": 202,
+        "path": "src/dataset/acoustic-v1/builder-shelf.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 36,
+        "path": "src/dataset/acoustic-v1/builder-short-shelf.test.ts"
+      },
+      {
         "commits": 16,
         "lines": 3844,
         "path": "src/dataset/acoustic-v1/builder.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 174,
+        "path": "src/dataset/acoustic-v1/corpus-cli.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 342,
+        "path": "src/dataset/acoustic-v1/corpus-io.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 642,
+        "path": "src/dataset/acoustic-v1/coverage-tail.test.ts"
       },
       {
         "commits": 5,
@@ -15170,6 +15415,11 @@
         "path": "src/dataset/acoustic-v1/library.ts"
       },
       {
+        "commits": 2,
+        "lines": 370,
+        "path": "src/dataset/acoustic-v1/probe-write.test.ts"
+      },
+      {
         "commits": 8,
         "lines": 770,
         "path": "src/dataset/acoustic-v1/probe.test.ts"
@@ -15188,6 +15438,11 @@
         "commits": 4,
         "lines": 528,
         "path": "src/dataset/acoustic-v1/shown-work.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 64,
+        "path": "src/dataset/acoustic-v1/task-cache.test.ts"
       },
       {
         "commits": 6,
@@ -15228,6 +15483,11 @@
         "commits": 7,
         "lines": 2871,
         "path": "src/dataset/acoustic/builder.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 144,
+        "path": "src/dataset/acoustic/corpus-write.test.ts"
       },
       {
         "commits": 9,
@@ -15310,8 +15570,8 @@
         "path": "src/dataset/enrichment.ts"
       },
       {
-        "commits": 1,
-        "lines": 391,
+        "commits": 3,
+        "lines": 1091,
         "path": "src/dataset/eval/annotation-grounding-tool.test.ts"
       },
       {
@@ -15340,9 +15600,19 @@
         "path": "src/dataset/eval/corpus-sampler.ts"
       },
       {
+        "commits": 2,
+        "lines": 608,
+        "path": "src/dataset/eval/llm-backends/anthropic.test.ts"
+      },
+      {
         "commits": 1,
         "lines": 318,
         "path": "src/dataset/eval/llm-backends/anthropic.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 210,
+        "path": "src/dataset/eval/llm-backends/ollama-intern.test.ts"
       },
       {
         "commits": 2,
@@ -15350,13 +15620,18 @@
         "path": "src/dataset/eval/llm-backends/ollama-intern.ts"
       },
       {
+        "commits": 2,
+        "lines": 412,
+        "path": "src/dataset/eval/llm-backends/ollama.test.ts"
+      },
+      {
         "commits": 4,
         "lines": 276,
         "path": "src/dataset/eval/llm-backends/ollama.ts"
       },
       {
-        "commits": 4,
-        "lines": 1368,
+        "commits": 6,
+        "lines": 1858,
         "path": "src/dataset/eval/llm-runner.test.ts"
       },
       {
@@ -15483,6 +15758,11 @@
         "commits": 5,
         "lines": 510,
         "path": "src/dataset/experiment/eval.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 140,
+        "path": "src/dataset/experiment/format-sft.test.ts"
       },
       {
         "commits": 6,
@@ -15670,6 +15950,11 @@
         "path": "src/dataset/synth-v0/generate.ts"
       },
       {
+        "commits": 2,
+        "lines": 302,
+        "path": "src/dataset/synth-v0/synth-env.test.ts"
+      },
+      {
         "commits": 4,
         "lines": 120,
         "path": "src/dataset/synth-v0/task.ts"
@@ -15688,6 +15973,21 @@
         "commits": 2,
         "lines": 288,
         "path": "src/dataset/trace-validator.ts"
+      },
+      {
+        "commits": 5,
+        "lines": 2648,
+        "path": "src/engines-offline.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 92,
+        "path": "src/entry-guard.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 70,
+        "path": "src/entry-guard.ts"
       },
       {
         "commits": 6,
@@ -15720,14 +16020,24 @@
         "path": "src/index.ts"
       },
       {
-        "commits": 5,
-        "lines": 60,
+        "commits": 7,
+        "lines": 90,
         "path": "src/journal.test.ts"
       },
       {
-        "commits": 5,
-        "lines": 20,
+        "commits": 9,
+        "lines": 66,
         "path": "src/journal.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 406,
+        "path": "src/layered-engine.stage4.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 404,
+        "path": "src/layered-engine.test.ts"
       },
       {
         "commits": 6,
@@ -15835,13 +16145,18 @@
         "path": "src/mcp-schema.ts"
       },
       {
-        "commits": 17,
-        "lines": 11364,
+        "commits": 20,
+        "lines": 12744,
         "path": "src/mcp-server.test.ts"
       },
       {
-        "commits": 44,
-        "lines": 6676,
+        "commits": 6,
+        "lines": 2388,
+        "path": "src/mcp-server.tools.test.ts"
+      },
+      {
+        "commits": 48,
+        "lines": 7102,
         "path": "src/mcp-server.ts"
       },
       {
@@ -16015,6 +16330,16 @@
         "path": "src/song-compare.ts"
       },
       {
+        "commits": 2,
+        "lines": 138,
+        "path": "src/songs/config/loader.stage4.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 198,
+        "path": "src/songs/config/loader.test.ts"
+      },
+      {
         "commits": 1,
         "lines": 9,
         "path": "src/songs/config/loader.ts"
@@ -16070,8 +16395,13 @@
         "path": "src/songs/library.ts"
       },
       {
-        "commits": 1,
-        "lines": 114,
+        "commits": 2,
+        "lines": 194,
+        "path": "src/songs/loader.stage4.test.ts"
+      },
+      {
+        "commits": 3,
+        "lines": 224,
         "path": "src/songs/loader.test.ts"
       },
       {
@@ -16150,6 +16480,16 @@
         "path": "src/state-home.ts"
       },
       {
+        "commits": 2,
+        "lines": 338,
+        "path": "src/stdio-supervisor.stage4.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 480,
+        "path": "src/stdio-supervisor.test.ts"
+      },
+      {
         "commits": 1,
         "lines": 155,
         "path": "src/stdio-supervisor.ts"
@@ -16188,6 +16528,16 @@
         "commits": 1,
         "lines": 2,
         "path": "src/version.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 538,
+        "path": "src/vmpk-connector.stage4.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 760,
+        "path": "src/vmpk-connector.test.ts"
       },
       {
         "commits": 1,
@@ -16230,6 +16580,16 @@
         "path": "src/vocal/breath.ts"
       },
       {
+        "commits": 2,
+        "lines": 114,
+        "path": "src/vocal/g2p-fallback.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 104,
+        "path": "src/vocal/g2p.stage4.test.ts"
+      },
+      {
         "commits": 5,
         "lines": 55,
         "path": "src/vocal/g2p.test.ts"
@@ -16240,19 +16600,44 @@
         "path": "src/vocal/g2p.ts"
       },
       {
+        "commits": 3,
+        "lines": 270,
+        "path": "src/vocal/hymns.test.ts"
+      },
+      {
+        "commits": 3,
+        "lines": 992,
+        "path": "src/vocal/hymns.ts"
+      },
+      {
         "commits": 11,
         "lines": 81,
         "path": "src/vocal/index.ts"
       },
       {
-        "commits": 5,
-        "lines": 155,
+        "commits": 2,
+        "lines": 284,
+        "path": "src/vocal/kokoro-lead.stage4.test.ts"
+      },
+      {
+        "commits": 7,
+        "lines": 577,
         "path": "src/vocal/kokoro-lead.test.ts"
       },
       {
         "commits": 7,
         "lines": 721,
         "path": "src/vocal/kokoro-lead.ts"
+      },
+      {
+        "commits": 3,
+        "lines": 747,
+        "path": "src/vocal/listening-review.test.ts"
+      },
+      {
+        "commits": 3,
+        "lines": 1236,
+        "path": "src/vocal/listening-review.ts"
       },
       {
         "commits": 5,
@@ -16265,18 +16650,28 @@
         "path": "src/vocal/melody-notes.ts"
       },
       {
+        "commits": 2,
+        "lines": 192,
+        "path": "src/vocal/prepare.stage4.test.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 658,
+        "path": "src/vocal/prepare.test.ts"
+      },
+      {
         "commits": 9,
         "lines": 431,
         "path": "src/vocal/prepare.ts"
       },
       {
-        "commits": 9,
-        "lines": 761,
+        "commits": 14,
+        "lines": 1055,
         "path": "src/vocal/score-clock.test.ts"
       },
       {
-        "commits": 7,
-        "lines": 2145,
+        "commits": 11,
+        "lines": 2417,
         "path": "src/vocal/score-clock.ts"
       },
       {
@@ -16290,8 +16685,8 @@
         "path": "src/vocal/score-locked.ts"
       },
       {
-        "commits": 5,
-        "lines": 80,
+        "commits": 7,
+        "lines": 946,
         "path": "src/vocal/score-singer.test.ts"
       },
       {
@@ -16300,9 +16695,19 @@
         "path": "src/vocal/score-singer.ts"
       },
       {
+        "commits": 2,
+        "lines": 40,
+        "path": "src/vocal/site-hymn-visual.test.ts"
+      },
+      {
         "commits": 5,
         "lines": 255,
         "path": "src/vocal/song-generate.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 1520,
+        "path": "src/vocal/soulx-singer-cache.test.ts"
       },
       {
         "commits": 2,
@@ -16315,8 +16720,13 @@
         "path": "src/vocal/soulx-singer.ts"
       },
       {
-        "commits": 5,
-        "lines": 185,
+        "commits": 2,
+        "lines": 128,
+        "path": "src/vocal/svs-offline.stage4.test.ts"
+      },
+      {
+        "commits": 7,
+        "lines": 353,
         "path": "src/vocal/svs-offline.test.ts"
       },
       {
@@ -16505,8 +16915,8 @@
         "path": "v0.6.0-execution-verification.json}"
       },
       {
-        "commits": 9,
-        "lines": 233,
+        "commits": 11,
+        "lines": 323,
         "path": "vitest.config.ts"
       }
     ]
@@ -16515,213 +16925,213 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-06T16:51:56.427Z",
+  "generatedAt": "2026-10-08T00:22:41.442Z",
   "generatedFrom": {
-    "commit": "aaf8685af34ae644a32be956ed25f63893a2cb00"
+    "commit": "d7c64b4f101d0525632fc8595f00e63514e71e01"
   },
   "pairs": [
     {
       "a": ".polyglot-cache.json",
       "b": "README.es.md",
-      "either": 17,
-      "shared": 10,
-      "strength": 0.588235
+      "either": 18,
+      "shared": 11,
+      "strength": 0.611111
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.fr.md",
-      "either": 17,
-      "shared": 10,
-      "strength": 0.588235
+      "either": 18,
+      "shared": 11,
+      "strength": 0.611111
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.hi.md",
-      "either": 17,
-      "shared": 10,
-      "strength": 0.588235
+      "either": 18,
+      "shared": 11,
+      "strength": 0.611111
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.it.md",
-      "either": 17,
-      "shared": 10,
-      "strength": 0.588235
+      "either": 18,
+      "shared": 11,
+      "strength": 0.611111
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.ja.md",
-      "either": 17,
-      "shared": 10,
-      "strength": 0.588235
+      "either": 18,
+      "shared": 11,
+      "strength": 0.611111
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.pt-BR.md",
-      "either": 17,
-      "shared": 10,
-      "strength": 0.588235
+      "either": 18,
+      "shared": 11,
+      "strength": 0.611111
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.zh.md",
-      "either": 17,
-      "shared": 10,
-      "strength": 0.588235
+      "either": 18,
+      "shared": 11,
+      "strength": 0.611111
     },
     {
       "a": "README.es.md",
       "b": "README.fr.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.hi.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.it.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.ja.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.pt-BR.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.zh.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.hi.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.it.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.ja.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.pt-BR.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.zh.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.it.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.ja.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.pt-BR.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.zh.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.ja.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.pt-BR.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.zh.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.pt-BR.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.zh.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "README.pt-BR.md",
       "b": "README.zh.md",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "apps/cockpit/index.html",
       "b": "apps/cockpit/src/main.ts",
-      "either": 21,
-      "shared": 13,
-      "strength": 0.619048
+      "either": 22,
+      "shared": 14,
+      "strength": 0.636364
     },
     {
       "a": "apps/cockpit/src/state.test.ts",
@@ -16733,44 +17143,100 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 5,
-      "shared": 5,
+      "either": 12,
+      "shared": 12,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 5,
-      "shared": 5,
+      "either": 12,
+      "shared": 12,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 5,
-      "shared": 5,
+      "either": 12,
+      "shared": 12,
       "strength": 1
+    },
+    {
+      "a": "atlas/README.md",
+      "b": "scripts/planter.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "atlas/README.md",
+      "b": "scripts/test_planter.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 5,
-      "shared": 5,
+      "either": 12,
+      "shared": 12,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 5,
-      "shared": 5,
+      "either": 12,
+      "shared": 12,
       "strength": 1
+    },
+    {
+      "a": "atlas/page.json",
+      "b": "scripts/planter.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "atlas/page.json",
+      "b": "scripts/test_planter.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 5,
-      "shared": 5,
+      "either": 12,
+      "shared": 12,
       "strength": 1
+    },
+    {
+      "a": "atlas/statistics.json",
+      "b": "scripts/planter.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "atlas/statistics.json",
+      "b": "scripts/test_planter.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "atlas/structure.json",
+      "b": "scripts/planter.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "atlas/structure.json",
+      "b": "scripts/test_planter.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
     },
     {
       "a": "datasets/jam-actions-v0-public/CITATION.cff",
@@ -16873,9 +17339,23 @@
     {
       "a": "plugin/.claude-plugin/marketplace.json",
       "b": "plugin/.claude-plugin/plugin.json",
-      "either": 10,
-      "shared": 10,
+      "either": 11,
+      "shared": 11,
       "strength": 1
+    },
+    {
+      "a": "scripts/planter.py",
+      "b": "scripts/test_planter.py",
+      "either": 6,
+      "shared": 6,
+      "strength": 1
+    },
+    {
+      "a": "src/dataset/eval/llm-runner.test.ts",
+      "b": "src/dataset/eval/llm-runner.ts",
+      "either": 6,
+      "shared": 4,
+      "strength": 0.666667
     },
     {
       "a": "src/dataset/synth-v0/generate.test.ts",
@@ -16883,6 +17363,13 @@
       "either": 5,
       "shared": 5,
       "strength": 1
+    },
+    {
+      "a": "src/vocal/score-clock.test.ts",
+      "b": "src/vocal/score-clock.ts",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
     }
   ],
   "parameters": {
@@ -16895,16 +17382,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-10-06T08:57:52-07:00",
-    "inScopeFiles": 2966,
+    "headDate": "2026-10-07T20:09:36-04:00",
+    "inScopeFiles": 3038,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 602,
+    "qualifyingCommits": 657,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-09T15:57:52.000Z",
+    "since": "2026-04-11T00:09:36.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
@@ -16920,7 +17407,7 @@
     ],
     "sourceFileReach": 20,
     "sourceFileRise": 25,
-    "sourceFilesReachingStrongFloor": 8,
+    "sourceFilesReachingStrongFloor": 9,
     "strength": 0.5,
     "windowDays": 180
   },
