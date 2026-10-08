@@ -46,8 +46,8 @@ Come è stato realizzato: [manuale → Voci](https://mcp-tool-shop-org.github.io
 
 | | Amazing Grace | America the Beautiful | Battle Hymn |
 |---|---|---|---|
-| sillabe entro 40 ms dalla partitura | 107 di 112 | 217 di 224 | 283 di 414 |
-| note entro 50 centesimi | 135 di 140 | 218 su 224 | 360 di 424 |
+| sillabe entro 40 ms dalla partitura | 107 di 112 | 217 di 224 | 285 su 414 |
+| note entro 50 centesimi | 135 di 140 | 218 su 224 | 368 su 424 |
 
 Le note puntate e veloci del Battle Hymn sono lasciate al ritmo del cantante, ed è da qui che derivano la maggior parte degli errori di tempismo.
 

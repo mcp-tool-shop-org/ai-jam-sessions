@@ -20,6 +20,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   numbers: timing 283 of 414, pitch 360 of 424; its quick dotted notes ride on the singer's own
   timing by design). The README's listening section and its seven translations say three hymns.
 
+### Fixed — a near-silent "jah" in the Battle Hymn
+- The voice gate (`scripts/voice_gate.py`, pyannote segmentation) found the published Battle
+  Hymn's "jah" at 0:52 at -42 dB: the aligner had dated it 0.7 s late, on its own fading tail.
+  The pick now distrusts any onset more than 0.3 s from where its neighbours put the take, and
+  takes that syllable from another take. The Battle Hymn and America the Beautiful are
+  re-published with it (Battle Hymn timing 285 of 414, pitch 368 of 424); Amazing Grace's pick
+  was unaffected. The voice gate runs by default in `sing_clock.py`.
+
 ### Added — the sung-exemplar method
 - `scripts/arrange-hymn.ts` commissions a hymn's piano arrangement in one command (brief from
   `hymns.ts`, Kimi-K3 on OpenRouter with the cost recorded, LilyPond compile, import, melody

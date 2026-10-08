@@ -93,8 +93,19 @@ NLTK_DATA=E:/AI/SoulX-Singer/nltk_data python scripts/sing_clock.py --clock scor
     --takes 16 --segment-gap 0.3 --lead-pad 1.0 --aligner --by-phrase --warp
 ```
 
-Tell the Publisher "card free" when it ends. It exits "NOT A MIX" until the transcript gates
-exist; read the gates instead (below).
+Tell the Publisher "card free" when it ends. Since 2026-10-08 the Publisher gates the card: ask
+with the job, its VRAM and how long it runs, and start only on its "granted".
+
+The pick does not trust a syllable whose dated onset sits more than 0.3 s from where its
+neighbours put the take (`undate_outliers` in `vocal_clock.py`), whether the onset detector or the
+aligner dated it: such a syllable is taken from another take. That rule found and fixed a
+near-silent "jah" in the published Battle Hymn, dated 0.7 s late on its own fading tail, and a
+misdated "all" in America the Beautiful. The one-voice gate (below) runs by default when its
+environment exists. `sing_clock.py` still exits "NOT A MIX" until the order gate exists; read the
+gates instead (below).
+
+To re-pick a song after the rules change, no new takes and no GPU are needed: rerun `repin` with
+the run's own `phrase-scores.json` (`--phrase-scores`), then `place`, the gates and the mix.
 
 ### 6. The mix
 
@@ -116,7 +127,7 @@ Director's "it reads like a stutter" into "perfect".
 - **Pitch:** notes off on both trackers (the Battle Hymn: 64 of 424, overall offset −3 cents).
 - **The voice:** the air left at joins (the placement log) and the envelope at phrase ends,
   where a cut to digital silence would be heard as a stutter.
-- **One voice** (`scripts/voice_gate.py`, or `sing_clock.py --voice-gate`): a speech-segmentation
+- **One voice** (`scripts/voice_gate.py`, run by `sing_clock.py` unless `--no-voice-gate`): a speech-segmentation
   model (pyannote/segmentation-3.0, in its own environment `E:/AI/envs/pyannote`) marks voice in
   a rest apart from any note, two voices longer than a crossfade, and sung notes with no voice.
   Measured 2026-10-08 against the Director's listening marks of 2026-10-07: no flags on the four

@@ -45,8 +45,8 @@ Cómo se hizo: [manual → Voces](https://mcp-tool-shop-org.github.io/ai-jam-ses
 
 | | Amazing Grace | America the Beautiful | Himno de Batalla |
 |---|---|---|---|
-| sílabas dentro de los 40 ms de la partitura | 107 de 112 | 217 de 224 | 283 de 414 |
-| notas dentro de 50 céntimos | 135 de 140 | 218 de 224 | 360 de 424 |
+| sílabas dentro de los 40 ms de la partitura | 107 de 112 | 217 de 224 | 285 de 414 |
+| notas dentro de 50 céntimos | 135 de 140 | 218 de 224 | 368 de 424 |
 
 Las rápidas notas punteadas del Himno de Batalla se dejan al ritmo del propio cantante, que es de donde provienen la mayoría de sus errores de sincronización.
 

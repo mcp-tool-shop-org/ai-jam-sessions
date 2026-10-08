@@ -46,8 +46,8 @@ Como foi feito: [manual → Vocais](https://mcp-tool-shop-org.github.io/ai-jam-s
 
 | | Amazing Grace | America the Beautiful | Hino de Batalha |
 |---|---|---|---|
-| sílabas dentro de 40 ms da partitura | 107 de 112 | 217 de 224 | 283 de 414 |
-| notas dentro de 50 cents | 135 de 140 | 218 de 224 | 360 de 424 |
+| sílabas dentro de 40 ms da partitura | 107 de 112 | 217 de 224 | 285 de 414 |
+| notas dentro de 50 cents | 135 de 140 | 218 de 224 | 368 de 424 |
 
 As notas pontuadas rápidas do Hino de Batalha são deixadas ao critério do cantor, o que é a causa da maioria dos erros de tempo.
 
