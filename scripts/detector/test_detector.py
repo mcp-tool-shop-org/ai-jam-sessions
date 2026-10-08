@@ -112,3 +112,26 @@ def test_events_and_auc_basics():
     assert ev.events(probs, 10.0, 0.5) == [(0.1, 0.3), (0.4, 0.5)]
     assert ev.auc([0.9, 0.8], [0.1, 0.2]) == 1.0
     assert ev.auc([], [0.1]) is None
+
+
+def test_the_operating_point_comes_from_validation_when_given():
+    rows = [row("none", i=i) for i in range(20)] + [row("replay", i=20 + i) for i in range(5)]
+    rng = np.random.default_rng(0)
+    probs = [rng.uniform(0, 0.2, (T, len(hd.OUTPUTS) + 1)) for _ in rows]
+    for p in probs[20:]:
+        p[60:65, 0] = 0.95
+    val_rows = [row("none", i=100 + i) for i in range(20)]
+    val_probs = [rng.uniform(0, 0.5, (T, len(hd.OUTPUTS) + 1)) for _ in val_rows]
+    rep = ev.evaluate(rows, probs, FPS, {"encoder": "x", "licence": "n/a"}, val_rows, val_probs)
+    assert rep["threshold_from"] == "validation clean clips"
+    assert rep["fa_realised_on_test_clean"] == 0.0                # the test's clean clips sit below the val-fitted line
+    rep2 = ev.evaluate(rows, probs, FPS, {"encoder": "x", "licence": "n/a"})
+    assert "optimistic" in rep2["threshold_from"]
+
+
+def test_inner_split_holds_out_whole_mixes():
+    rows = []
+    for m in range(8):
+        rows += [dict(row("none", i=m * 10 + j), mix=f"s1/alt{m}") for j in range(3)]
+    tr, va = hd.inner_split(rows, frac=0.25, seed=1)
+    assert {r["mix"] for r in tr}.isdisjoint({r["mix"] for r in va}) and len({r["mix"] for r in va}) == 2

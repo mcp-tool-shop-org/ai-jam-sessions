@@ -83,16 +83,28 @@ def event_f1(pred: list[list[tuple]], gold: list[list[tuple]], collar: float = C
             "precision": round(prec, 3), "recall": round(rec, 3), "tp": tp, "fp": fp, "fn": fn}
 
 
-def evaluate(rows: list[dict], probs: list[np.ndarray], fps: float, meta: dict) -> dict:
+def evaluate(rows: list[dict], probs: list[np.ndarray], fps: float, meta: dict,
+             val_rows: list[dict] | None = None, val_probs: list[np.ndarray] | None = None) -> dict:
+    """With validation clips, the operating point is fitted on their clean clips and
+    the test's realised false-alarm rate is reported beside the target; without
+    them it is fitted on the test's own clean clips, which is optimistic."""
     scores = clip_scores(probs)
     defect_peak = scores[:, : len(OUTPUTS)].max(axis=1)
     kinds = [base_kind(r["kind"]) for r in rows]
     clean_idx = [i for i, r in enumerate(rows) if r["kind"] in CLEAN]
     none_idx = [i for i, r in enumerate(rows) if r["kind"] == "none"]
     sham_idx = [i for i, r in enumerate(rows) if r["kind"] == "sham"]
-    thr = threshold_at(defect_peak[clean_idx], FA_TARGET) if clean_idx else 0.5
+    val_clean = [] if not val_rows else [i for i, r in enumerate(val_rows) if r["kind"] in CLEAN]
+    if val_clean:
+        vpeak = clip_scores(val_probs)[:, : len(OUTPUTS)].max(axis=1)
+        thr, source = threshold_at(vpeak[val_clean], FA_TARGET), "validation clean clips"
+    else:
+        thr = threshold_at(defect_peak[clean_idx], FA_TARGET) if clean_idx else 0.5
+        source = "test clean clips (optimistic)"
     report = {"encoder": meta.get("encoder"), "licence": meta.get("licence"), "clips": len(rows),
-              "threshold": round(thr, 4), "fa_target_on_clean": FA_TARGET, "per_kind": {}}
+              "threshold": round(thr, 4), "threshold_from": source, "fa_target_on_clean": FA_TARGET,
+              "fa_realised_on_test_clean": round(float(np.mean(defect_peak[clean_idx] >= thr)), 3) if clean_idx else None,
+              "per_kind": {}}
     for j, k in enumerate(OUTPUTS):
         pos = [i for i, r in enumerate(rows) if kinds[i] == k and r.get("defect")]
         if not pos:
@@ -121,7 +133,8 @@ def evaluate(rows: list[dict], probs: list[np.ndarray], fps: float, meta: dict) 
 
 def markdown(rep: dict) -> str:
     lines = [f"# Defect head: {rep['encoder']} (licence: {rep['licence']})", "",
-             f"{rep['clips']} held-out clips; threshold {rep['threshold']} flags {rep['fa_target_on_clean']:.0%} of clean clips (none, sham, vocoded).", "",
+             f"{rep['clips']} held-out clips; threshold {rep['threshold']} (fitted on {rep['threshold_from']} at "
+             f"{rep['fa_target_on_clean']:.0%} false alarms; realised on the test's clean clips: {rep['fa_realised_on_test_clean']}).", "",
              "| kind | n | AUC vs clean | hit rate by severity |", "|---|---|---|---|"]
     for k, v in rep["per_kind"].items():
         curve = ", ".join(f"{s}: {h}" for s, h in v["hit_rate_by_severity"].items())
@@ -139,11 +152,17 @@ def main() -> int:  # pragma: no cover - needs a trained run
     ap.add_argument("--run", required=True)
     a = ap.parse_args()
     run = Path(a.run)
-    rows = json.loads((run / "test_rows.json").read_text(encoding="utf-8"))
-    npz = np.load(run / "test_probs.npz")
-    probs = [npz[str(i)] for i in range(len(rows))]
+    def part(name):
+        if not (run / f"{name}_rows.json").exists():
+            return None, None
+        rows = json.loads((run / f"{name}_rows.json").read_text(encoding="utf-8"))
+        npz = np.load(run / f"{name}_probs.npz")
+        return rows, [npz[str(i)] for i in range(len(rows))]
+
+    rows, probs = part("test")
+    val_rows, val_probs = part("val")
     meta = json.loads((run.parents[1] / ".." / "features" / run.parent.name / "meta.json").resolve().read_text(encoding="utf-8"))
-    rep = evaluate(rows, probs, meta["fps"], meta)
+    rep = evaluate(rows, probs, meta["fps"], meta, val_rows, val_probs)
     (run / "report.json").write_text(json.dumps(rep, indent=1), encoding="utf-8")
     (run / "report.md").write_text(markdown(rep), encoding="utf-8")
     print(markdown(rep))

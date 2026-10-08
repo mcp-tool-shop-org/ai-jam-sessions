@@ -88,6 +88,16 @@ def split(rows: list[dict], holdout_song: str | None = None, holdout_mix: str | 
     return [r for r in rows if not test(r)], [r for r in rows if test(r)]
 
 
+def inner_split(train_rows: list[dict], frac: float = 0.15, seed: int = 0):
+    """Hold out whole mixes from the training songs as a validation set, for the
+    operating point: never threshold on the test clips."""
+    mixes = sorted({r["mix"] for r in train_rows})
+    rng = np.random.default_rng(seed)
+    n = max(1, int(round(frac * len(mixes)))) if len(mixes) > 1 else 0
+    val_mixes = set(rng.choice(mixes, size=n, replace=False)) if n else set()
+    return [r for r in train_rows if r["mix"] not in val_mixes], [r for r in train_rows if r["mix"] in val_mixes]
+
+
 def batches(rows: list[dict], fps: float, size: int, rng: np.random.Generator, load=np.load):
     order = rng.permutation(len(rows))
     for i in range(0, len(order), size):
@@ -145,15 +155,17 @@ def main() -> int:  # pragma: no cover - needs cached features
     meta = json.loads((root / "features" / a.encoder / "meta.json").read_text(encoding="utf-8"))
     rows = load_rows(root, a.encoder)
     tr, te = split(rows, a.holdout_song, a.holdout_mix)
+    tr, va = inner_split(tr, seed=a.seed)
     head = train(tr, meta["fps"], a.epochs, seed=a.seed, device=a.device)
     tag = a.holdout_song or a.holdout_mix.replace("/", "_")
     out = root / "heads" / a.encoder / f"{tag}-seed{a.seed}"
     out.mkdir(parents=True, exist_ok=True)
     torch.save(head.state_dict(), out / "head.pt")
-    probs = predict(head, te, a.device)
-    np.savez_compressed(out / "test_probs.npz", **{str(i): p for i, p in enumerate(probs)})
-    (out / "test_rows.json").write_text(json.dumps(te), encoding="utf-8")
-    print(f"{out}: trained on {len(tr)} clips, predicted {len(te)}")
+    for name, part in (("test", te), ("val", va)):
+        probs = predict(head, part, a.device)
+        np.savez_compressed(out / f"{name}_probs.npz", **{str(i): p for i, p in enumerate(probs)})
+        (out / f"{name}_rows.json").write_text(json.dumps(part), encoding="utf-8")
+    print(f"{out}: trained on {len(tr)} clips, validation {len(va)}, predicted {len(te)}")
     return 0
 
 
