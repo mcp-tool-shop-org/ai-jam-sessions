@@ -116,6 +116,14 @@ Director's "it reads like a stutter" into "perfect".
 - **Pitch:** notes off on both trackers (the Battle Hymn: 64 of 424, overall offset −3 cents).
 - **The voice:** the air left at joins (the placement log) and the envelope at phrase ends,
   where a cut to digital silence would be heard as a stutter.
+- **One voice** (`scripts/voice_gate.py`, or `sing_clock.py --voice-gate`): a speech-segmentation
+  model (pyannote/segmentation-3.0, in its own environment `E:/AI/envs/pyannote`) marks voice in
+  a rest apart from any note, two voices longer than a crossfade, and sung notes with no voice.
+  Measured 2026-10-08 against the Director's listening marks of 2026-10-07: no flags on the four
+  vocals he passed; its 3 voice-in-rest flags were all on his honk marks; it found a nearly
+  silent "jah" (−42 dB) at 0:52 of the Battle Hymn. It catches only the honks in long rests (3 of
+  20): in a short gap between phrases a honk is voice to it, and telling it from a held vowel
+  needs pitch (`scripts/phrase_evidence.py`). It runs on the CPU in about 20 s a song.
 
 ### 8. Publishing
 
