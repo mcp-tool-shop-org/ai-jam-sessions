@@ -12649,10 +12649,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 28,
+      "dynamicReads": 31,
       "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 30,
+      "dynamicWrites": 31,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -13690,6 +13690,99 @@
             "src/dataset/package-public.ts"
           ],
           "path": "scripts/derived-content-scan.ts"
+        },
+        {
+          "exports": [
+            "auc",
+            "clip_scores",
+            "evaluate",
+            "event_f1",
+            "events",
+            "main",
+            "markdown",
+            "threshold_at"
+          ],
+          "hash": "eb5df4ae8d9db04a9a2acfe05bf397261548ef178d1956cf2df9830c7cd645f8",
+          "importsFiles": [
+            "scripts/detector/heads.py"
+          ],
+          "path": "scripts/detector/evaluate.py"
+        },
+        {
+          "exports": [
+            "cache",
+            "clips",
+            "load_encoder",
+            "main",
+            "pool_frames",
+            "read_mono"
+          ],
+          "failurePaths": [
+            {
+              "in": "load_encoder",
+              "kind": "except",
+              "line": 68
+            },
+            {
+              "in": "load_encoder",
+              "kind": "raise",
+              "line": 69
+            },
+            {
+              "in": "load_encoder",
+              "kind": "raise",
+              "line": 78
+            }
+          ],
+          "hash": "bc43098ccef81a7052bad3fcb536f1dcfa477e4bcedfc2da566cf3ad6a2026e9",
+          "path": "scripts/detector/features.py"
+        },
+        {
+          "exports": [
+            "base_kind",
+            "batches",
+            "build_head",
+            "frame_targets",
+            "inner_split",
+            "load_rows",
+            "main",
+            "predict",
+            "split",
+            "train"
+          ],
+          "failurePaths": [
+            {
+              "in": "split",
+              "kind": "raise",
+              "line": 86
+            }
+          ],
+          "hash": "26dbbcb75a1de6525d51531f8ff84bb423142d1388d41c4c6effb4b70f52e1c2",
+          "path": "scripts/detector/heads.py"
+        },
+        {
+          "exports": [
+            "dataset",
+            "row",
+            "synthetic",
+            "test_a_head_learns_defects_not_seams_on_synthetic_features",
+            "test_encoder_table_states_both_licences",
+            "test_event_f1_matches_onsets_within_the_collar",
+            "test_events_and_auc_basics",
+            "test_frame_targets_mark_the_kind_and_the_seam",
+            "test_inner_split_holds_out_whole_mixes",
+            "test_pool_frames_averages_pairs_and_drops_a_ragged_tail",
+            "test_split_holds_out_a_whole_song",
+            "test_the_operating_point_comes_from_validation_when_given"
+          ],
+          "hash": "e8918258f1d24694feffbc415f5089e5aa5594aa7ca0983e514ff0048d25641a",
+          "importsFiles": [
+            "scripts/detector/evaluate.py",
+            "scripts/detector/features.py",
+            "scripts/detector/heads.py"
+          ],
+          "path": "scripts/detector/test_detector.py",
+          "testFramework": "pytest"
         },
         {
           "failurePaths": [
@@ -15785,11 +15878,11 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 71,
+          "reads": 75,
           "where": [
             "caller"
           ],
-          "writes": 44
+          "writes": 45
         },
         {
           "reads": 0,
@@ -15799,13 +15892,13 @@
           "writes": 1
         }
       ],
-      "outsideReads": 71,
-      "outsideWrites": 45,
+      "outsideReads": 75,
+      "outsideWrites": 46,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 25,
+      "testedBy": 26,
       "unresolvedNamed": [
         {
           "path": "scripts/cast-kokoro-lock.mjs",
@@ -37407,8 +37500,8 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "2a9072c6561a82bf8c51463312822cae625ccd61",
-    "tracked": 3035
+    "commit": "1b928ed0c537912a4f1e2f6587b21a9cb90660a1",
+    "tracked": 3039
   },
   "landings": [
     {
@@ -49930,8 +50023,9 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 247,
+  "testFiles": 248,
   "testsNotRun": [
+    "scripts/detector/test_detector.py",
     "scripts/test_aligner_gate.py",
     "scripts/test_alt_picks.py",
     "scripts/test_export_soulx_target.py",
