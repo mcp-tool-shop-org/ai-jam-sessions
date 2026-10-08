@@ -120,6 +120,12 @@ export const AMERICA_THE_BEAUTIFUL: Hymn = {
     ].join(" | "),
   },
   ending: { melody: "R:4 | R:4", chords: "C:4 | C:4" },
+  // Sung over Kimi-K3's piano arrangement (src/vocal/arrangements/america-the-beautiful-kimi-k3.json).
+  arrangement: "america-the-beautiful-kimi-k3",
+  // The research seat's values (rnd, 2026-10-08): a 3% build from the written 92, 4-bar lines arched
+  // +-2.5% with half-line arches of +-1.25%, beat 1 at +2 dB and beat 3 at +1, the coda easing to
+  // 0.66 of verse 4's tempo.
+  interpretation: { amount: 1, shape: { verseBpm: [92, 93, 94, 95], lineBars: 4, lineArch: 0.025, halfLineArch: 0.0125, beatDb: [2, 0, 1, 0], codaEndBpm: 63 } },
   verses: [
     "O beau-ti-ful for spa-cious skies for am-ber waves of grain for pur-ple moun-tain maj-es-ties a-bove the fruit-ed plain A-mer-i-ca A-mer-i-ca God shed his grace on thee and crown thy good with broth-er-hood from sea to shi-ning sea",
     "O beau-ti-ful for pil-grim feet whose stern im-pas-sioned stress a thor-ough-fare for free-dom beat a-cross the wil-der-ness A-mer-i-ca A-mer-i-ca God mend thine ev-'ry flaw con-firm thy soul in self-con-trol thy lib-er-ty in law",
@@ -168,6 +174,12 @@ export const AMAZING_GRACE: Hymn = {
     ].join(" | "),
   },
   ending: { melody: "R:3 | R:3", chords: "G:3 | G:3" },
+  // Sung over Kimi-K3's piano arrangement (src/vocal/arrangements/amazing-grace-kimi-k3.json).
+  arrangement: "amazing-grace-kimi-k3",
+  // The research seat's values for a slow devotional 3/4 (rnd, 2026-10-08): the smallest verse build,
+  // 4-bar lines arched +-2%, the downbeat alone stressed and softly, the coda easing to 48 (the
+  // Battle Hymn's approved 0.66 of the opening tempo).
+  interpretation: { amount: 1, shape: { verseBpm: [72, 72, 73, 74], lineBars: 4, lineArch: 0.02, beatDb: [1.5, 0, 0], codaEndBpm: 48 } },
   verses: [
     "A-ma-zing grace how sweet the sound that saved a wretch like me I once was lost but now am found was blind but now I see",
     "'Twas grace that taught my heart to fear and grace my fears re-lieved how pre-cious did that grace ap-pear the hour I first be-lieved",

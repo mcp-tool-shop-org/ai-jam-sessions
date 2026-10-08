@@ -5,12 +5,14 @@ sidebar:
   order: 4
 ---
 
-AI Jam Sessions can sing a whole song on top of its own piano, every verse,
+AI Jam Sessions can sing a whole song over a piano arrangement, every verse,
 with each vowel on its beat and each note checked against the score — and it
 **proves it** with receipts before anyone calls it a mix. Amazing Grace and
 America the Beautiful, on the [landing page](../../#listen), were made this way
-and passed by ear. This page is the route, the levers, and what was measured
-along the way.
+and passed by ear, each over a piano arrangement written for the hymn by Kimi-K3.
+This page is the route, the levers, and what was measured along the way; the
+order of work, from commissioning the arrangement to publishing, is in the
+repository's `docs/sung-exemplar-method.md`.
 
 ## The idea in one paragraph
 
@@ -190,10 +192,11 @@ On the two published performances:
 
 | | Amazing Grace | America the Beautiful |
 |---|---|---|
-| syllables within 40 ms | 109 of 112 | 218 of 224 |
-| notes within 50 cents | 136 of 140 | 221 of 224 |
-| words the listener heard, per take | 95–100% | 85–94% |
-| built from | 16 phrases from 10 takes | 20 phrases from 13 takes |
+| syllables within 40 ms | 107 of 112 | 217 of 224 |
+| notes within 50 cents (on either tracker) | 135 of 140 | 218 of 224 |
+| words the listener heard, per take | 97–99% | 87–95% |
+| built from | 16 phrases from 11 takes | 20 phrases from 12 takes |
+| piano | Kimi-K3's arrangement (CC0) | Kimi-K3's arrangement (CC0) |
 
 ## Things that were measured so you do not have to
 

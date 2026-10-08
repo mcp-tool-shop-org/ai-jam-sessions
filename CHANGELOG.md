@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — the sung hymns over Kimi-K3 piano arrangements
+- Amazing Grace and America the Beautiful are re-recorded over piano arrangements written for each
+  hymn by Kimi-K3 (`src/vocal/arrangements/`, CC0), in place of the block-chord beds. The voice is
+  SoulX-Singer's zh example voice. Each hymn has its own tempo and emphasis shape from the research
+  seat, and phrase endings are held into the rest and released. The Director passed both by ear
+  (2026-10-08). The landing page's recordings, 3D view and numbers, and the handbook's table, are
+  updated together.
+- Gates on the new performances: timing 107 of 112 and 217 of 224 syllables within 40 ms; pitch
+  135 of 140 and 218 of 224 notes within 50 cents on at least one tracker.
+
+### Added — the sung-exemplar method
+- `scripts/arrange-hymn.ts` commissions a hymn's piano arrangement in one command (brief from
+  `hymns.ts`, Kimi-K3 on OpenRouter with the cost recorded, LilyPond compile, import, melody
+  check). `docs/sung-exemplar-method.md` is the order of work from hymn to published recording.
+- Interpretation: per-rule amounts, a per-hymn shape, the opt-in Glory package, and
+  phrase-final holds in warp placement.
+
 ### Added — per-phrase evidence of audible defects
 - `scripts/phrase_evidence.py` writes `phrase-evidence.json` (`ai-jam-sessions/phrase-evidence/v1`)
   for a reviewed mix. Each phrase gets plan facts (joins, switches between takes, air, shift
