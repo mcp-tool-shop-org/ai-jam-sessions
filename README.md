@@ -46,8 +46,8 @@ How it was made: [handbook → Vocals](https://mcp-tool-shop-org.github.io/ai-ja
 
 | | Amazing Grace | America the Beautiful | Battle Hymn |
 |---|---|---|---|
-| syllables within 40 ms of the score | 107 of 112 | 217 of 224 | 283 of 414 |
-| notes within 50 cents | 135 of 140 | 218 of 224 | 360 of 424 |
+| syllables within 40 ms of the score | 107 of 112 | 217 of 224 | 285 of 414 |
+| notes within 50 cents | 135 of 140 | 218 of 224 | 368 of 424 |
 
 The Battle Hymn's quick dotted notes are left on the singer's own timing, which is where most of its timing misses come from.
 

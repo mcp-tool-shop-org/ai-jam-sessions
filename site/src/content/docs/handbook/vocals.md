@@ -193,16 +193,16 @@ On the three published performances:
 
 | | Amazing Grace | America the Beautiful | Battle Hymn of the Republic |
 |---|---|---|---|
-| syllables within 40 ms | 107 of 112 | 217 of 224 | 283 of 414 |
-| notes within 50 cents (on either tracker) | 135 of 140 | 218 of 224 | 360 of 424 |
+| syllables within 40 ms | 107 of 112 | 217 of 224 | 285 of 414 |
+| notes within 50 cents (on either tracker) | 135 of 140 | 218 of 224 | 368 of 424 |
 | words the listener heard, per take | 97–99% | 87–95% | 92–99% |
-| built from | 16 phrases from 11 takes | 20 phrases from 12 takes | 40 phrases from 16 takes |
+| built from | 16 phrases from 11 takes | 20 phrases from 11 takes | 40 phrases from 16 takes |
 | piano | Kimi-K3's arrangement (CC0) | Kimi-K3's arrangement (CC0) | Kimi-K3's arrangement (CC0) |
 
 The Battle Hymn's quick dotted notes (the "Glo-ry" and "Hal-le-lu-jah" figures) are
 left on the singer's own timing: SoulX-Singer sings them nearer even than the score
 (a measured median of 0.57 of the pair against 0.70), and forcing them onto the clock
-made the stutter the Director heard. 120 of its 131 timing misses are those notes.
+made the stutter the Director heard. Most of its timing misses are those notes.
 
 ## Things that were measured so you do not have to
 

@@ -46,8 +46,8 @@ Comment cela a été fait : [manuel → Voix](https://mcp-tool-shop-org.github.
 
 | | Amazing Grace | America the Beautiful | Battle Hymn |
 |---|---|---|---|
-| syllabes dans un rayon de 40 ms par rapport à la partition | 107 sur 112 | 217 sur 224 | 283 sur 414 |
-| notes dans un rayon de 50 cents | 135 sur 140 | 218 sur 224 | 360 sur 424 |
+| syllabes dans un rayon de 40 ms par rapport à la partition | 107 sur 112 | 217 sur 224 | 285 sur 414 |
+| notes dans un rayon de 50 cents | 135 sur 140 | 218 sur 224 | 368 sur 424 |
 
 Les notes pointées rapides du Battle Hymn sont laissées au rythme du chanteur, ce qui est la source de la plupart de ses erreurs de synchronisation.
 

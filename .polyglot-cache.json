@@ -14714,6 +14714,104 @@
       "timestamp": 1791444715849,
       "source": "Previously in v2.4.0 — the release where the model got ears. Four tools closed the gap between\r\nrendering audio and examining it: ⟦0⟧ for onsets, pitch contour and level;\r\n⟦1⟧ for a monophonic recording as notes; ⟦2⟧ to grade a performance\r\nby ear and hand the result to the existing scored piano roll unchanged; and ⟦3⟧ to\r\nsee the sound on a constant-Q, piano-keyboard axis. All of it is dependency-free signal processing\r\nwritten in this repo — its own FFT, windows, mel and constant-Q transforms, onset detection and\r\npitch tracking — because a model cannot reliably eyeball a picture and deterministic queries beat\r\ninference for questions with exact answers. That release also published\r\n**jam-actions-acoustic-v0**, 108 constructible-gold records of tool use over audio.\r",
       "targetLang": "pt"
+    },
+    "85e2645f8a0662fb": {
+      "translation": "414个中的第285个",
+      "model": "translategemma:27b",
+      "timestamp": 1791479569835,
+      "source": "285 of 414",
+      "targetLang": "zh"
+    },
+    "1fa12e46c0f8792c": {
+      "translation": "424个中的第368个",
+      "model": "translategemma:27b",
+      "timestamp": 1791479569835,
+      "source": "368 of 424",
+      "targetLang": "zh"
+    },
+    "a5b1760dfde04f72": {
+      "translation": "414件中285件",
+      "model": "translategemma:27b",
+      "timestamp": 1791479570333,
+      "source": "285 of 414",
+      "targetLang": "ja"
+    },
+    "4bfbe1eb2b37e831": {
+      "translation": "424件中368件",
+      "model": "translategemma:27b",
+      "timestamp": 1791479570333,
+      "source": "368 of 424",
+      "targetLang": "ja"
+    },
+    "70674c3a76b3f935": {
+      "translation": "285 de 414",
+      "model": "translategemma:27b",
+      "timestamp": 1791479571032,
+      "source": "285 of 414",
+      "targetLang": "es"
+    },
+    "e04c35e7c3b116fc": {
+      "translation": "368 de 424",
+      "model": "translategemma:27b",
+      "timestamp": 1791479571032,
+      "source": "368 of 424",
+      "targetLang": "es"
+    },
+    "b2b5efb5988e2482": {
+      "translation": "285 sur 414",
+      "model": "translategemma:27b",
+      "timestamp": 1791479571492,
+      "source": "285 of 414",
+      "targetLang": "fr"
+    },
+    "b0f62a4b8100588d": {
+      "translation": "368 sur 424",
+      "model": "translategemma:27b",
+      "timestamp": 1791479571492,
+      "source": "368 of 424",
+      "targetLang": "fr"
+    },
+    "9aecbdea6d2ee224": {
+      "translation": "414 में से 285",
+      "model": "translategemma:27b",
+      "timestamp": 1791479587519,
+      "source": "285 of 414",
+      "targetLang": "hi"
+    },
+    "c170cd08fb440020": {
+      "translation": "424 में से 368",
+      "model": "translategemma:27b",
+      "timestamp": 1791479587519,
+      "source": "368 of 424",
+      "targetLang": "hi"
+    },
+    "40258bf04e6e1e82": {
+      "translation": "285 su 414",
+      "model": "translategemma:27b",
+      "timestamp": 1791479588001,
+      "source": "285 of 414",
+      "targetLang": "it"
+    },
+    "7ee2ae3af6c7649c": {
+      "translation": "368 su 424",
+      "model": "translategemma:27b",
+      "timestamp": 1791479588001,
+      "source": "368 of 424",
+      "targetLang": "it"
+    },
+    "a5bba181506b0f23": {
+      "translation": "285 de 414",
+      "model": "translategemma:27b",
+      "timestamp": 1791479603925,
+      "source": "285 of 414",
+      "targetLang": "pt"
+    },
+    "c0f4f45d180256c3": {
+      "translation": "368 de 424",
+      "model": "translategemma:27b",
+      "timestamp": 1791479603925,
+      "source": "368 of 424",
+      "targetLang": "pt"
     }
   }
 }
