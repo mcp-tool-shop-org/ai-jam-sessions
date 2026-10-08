@@ -4,14 +4,14 @@
   "bpm": 92,
   "time_signature": "4/4",
   "sample_rate": 48000,
-  "total_seconds": 195.65216666666666,
-  "total_samples": 9391304,
-  "last_event_end_sec": 189.78260416666666,
+  "total_seconds": 201.119875,
+  "total_samples": 9653754,
+  "last_event_end_sec": 187.55429166666667,
   "clock": {
-    "source": "session-nominal",
+    "source": "arrangement",
     "bed_measures": [
       1,
-      75
+      77
     ],
     "measure_starts_sec": {
       "1": 0,
@@ -21,74 +21,76 @@
       "5": 10.434791666666667,
       "6": 13.043479166666666,
       "7": 15.652166666666666,
-      "8": 18.260875,
-      "9": 20.8695625,
-      "10": 23.478270833333333,
-      "11": 26.08695833333333,
-      "12": 28.695645833333334,
-      "13": 31.304354166666666,
-      "14": 33.913041666666665,
-      "15": 36.52172916666667,
-      "16": 39.1304375,
-      "17": 41.739125,
-      "18": 44.347833333333334,
-      "19": 46.956520833333336,
-      "20": 49.56520833333333,
-      "21": 52.17391666666666,
-      "22": 54.782604166666665,
-      "23": 57.3913125,
-      "24": 60,
-      "25": 62.6086875,
-      "26": 65.21739583333333,
-      "27": 67.82608333333333,
-      "28": 70.43479166666667,
-      "29": 73.04347916666667,
-      "30": 75.65216666666667,
-      "31": 78.260875,
-      "32": 80.8695625,
-      "33": 83.47827083333334,
-      "34": 86.08695833333333,
-      "35": 88.69564583333333,
-      "36": 91.30435416666667,
-      "37": 93.91304166666667,
-      "38": 96.52172916666666,
-      "39": 99.1304375,
-      "40": 101.739125,
-      "41": 104.34783333333333,
-      "42": 106.95652083333333,
-      "43": 109.56520833333333,
-      "44": 112.17391666666667,
-      "45": 114.78260416666667,
-      "46": 117.3913125,
-      "47": 120,
-      "48": 122.6086875,
-      "49": 125.21739583333333,
-      "50": 127.82608333333333,
-      "51": 130.43479166666665,
-      "52": 133.04347916666666,
-      "53": 135.65216666666666,
-      "54": 138.260875,
-      "55": 140.8695625,
-      "56": 143.47827083333334,
-      "57": 146.08695833333334,
-      "58": 148.69564583333334,
-      "59": 151.30435416666666,
-      "60": 153.91304166666666,
-      "61": 156.52172916666666,
-      "62": 159.1304375,
-      "63": 161.739125,
-      "64": 164.34783333333334,
-      "65": 166.95652083333334,
-      "66": 169.56520833333335,
-      "67": 172.17391666666666,
-      "68": 174.78260416666666,
-      "69": 177.3913125,
-      "70": 180,
-      "71": 182.6086875,
-      "72": 185.21739583333334,
-      "73": 187.82608333333334,
-      "74": 190.43479166666665,
-      "75": 193.04347916666666
+      "8": 18.28879166666667,
+      "9": 20.8791875,
+      "10": 23.472916666666666,
+      "11": 26.0895,
+      "12": 28.726125,
+      "13": 31.3165,
+      "14": 33.91025,
+      "15": 36.526833333333336,
+      "16": 39.1634375,
+      "17": 41.75383333333333,
+      "18": 44.34758333333333,
+      "19": 46.964166666666664,
+      "20": 49.600770833333335,
+      "21": 52.19116666666667,
+      "22": 54.78491666666667,
+      "23": 57.40147916666667,
+      "24": 60.03810416666666,
+      "25": 62.646375,
+      "26": 65.20891666666667,
+      "27": 67.77477083333333,
+      "28": 70.36322916666667,
+      "29": 72.97147916666667,
+      "30": 75.53402083333333,
+      "31": 78.09989583333333,
+      "32": 80.68833333333333,
+      "33": 83.29660416666667,
+      "34": 85.85914583333333,
+      "35": 88.425,
+      "36": 91.01345833333333,
+      "37": 93.62170833333333,
+      "38": 96.18427083333333,
+      "39": 98.750125,
+      "40": 101.3385625,
+      "41": 103.94683333333333,
+      "42": 106.52735416666667,
+      "43": 109.06264583333333,
+      "44": 111.60120833333333,
+      "45": 114.16210416666667,
+      "46": 116.742625,
+      "47": 119.27791666666667,
+      "48": 121.81647916666667,
+      "49": 124.37739583333334,
+      "50": 126.95791666666666,
+      "51": 129.4931875,
+      "52": 132.03177083333333,
+      "53": 134.59266666666667,
+      "54": 137.1731875,
+      "55": 139.70847916666668,
+      "56": 142.24704166666666,
+      "57": 144.80795833333335,
+      "58": 147.38845833333335,
+      "59": 149.9418125,
+      "60": 152.45041666666665,
+      "61": 154.96225,
+      "62": 157.4961875,
+      "63": 160.04954166666667,
+      "64": 162.55814583333333,
+      "65": 165.06997916666666,
+      "66": 167.60391666666666,
+      "67": 170.1620625,
+      "68": 172.68791666666667,
+      "69": 175.22975,
+      "70": 177.80739583333335,
+      "71": 180.41841666666667,
+      "72": 182.99579166666666,
+      "73": 185.58983333333333,
+      "74": 188.2211875,
+      "75": 190.91714583333334,
+      "76": 193.89822916666665,
+      "77": 197.31035416666666
     },
     "measure_durations_sec": {
       "1": 2.6086875,
@@ -97,84 +99,86 @@
       "4": 2.6086875,
       "5": 2.6086875,
       "6": 2.6086875,
-      "7": 2.6086875,
-      "8": 2.6086875,
-      "9": 2.6086875,
-      "10": 2.6086875,
-      "11": 2.6086875,
-      "12": 2.6086875,
-      "13": 2.6086875,
-      "14": 2.6086875,
-      "15": 2.6086875,
-      "16": 2.6086875,
-      "17": 2.6086875,
-      "18": 2.6086875,
-      "19": 2.6086875,
-      "20": 2.6086875,
-      "21": 2.6086875,
-      "22": 2.6086875,
-      "23": 2.6086875,
-      "24": 2.6086875,
-      "25": 2.6086875,
-      "26": 2.6086875,
-      "27": 2.6086875,
-      "28": 2.6086875,
-      "29": 2.6086875,
-      "30": 2.6086875,
-      "31": 2.6086875,
-      "32": 2.6086875,
-      "33": 2.6086875,
-      "34": 2.6086875,
-      "35": 2.6086875,
-      "36": 2.6086875,
-      "37": 2.6086875,
-      "38": 2.6086875,
-      "39": 2.6086875,
-      "40": 2.6086875,
-      "41": 2.6086875,
-      "42": 2.6086875,
-      "43": 2.6086875,
-      "44": 2.6086875,
-      "45": 2.6086875,
-      "46": 2.6086875,
-      "47": 2.6086875,
-      "48": 2.6086875,
-      "49": 2.6086875,
-      "50": 2.6086875,
-      "51": 2.6086875,
-      "52": 2.6086875,
-      "53": 2.6086875,
-      "54": 2.6086875,
-      "55": 2.6086875,
-      "56": 2.6086875,
-      "57": 2.6086875,
-      "58": 2.6086875,
-      "59": 2.6086875,
-      "60": 2.6086875,
-      "61": 2.6086875,
-      "62": 2.6086875,
-      "63": 2.6086875,
-      "64": 2.6086875,
-      "65": 2.6086875,
-      "66": 2.6086875,
-      "67": 2.6086875,
-      "68": 2.6086875,
-      "69": 2.6086875,
-      "70": 2.6086875,
-      "71": 2.6086875,
-      "72": 2.6086875,
-      "73": 2.6086875,
-      "74": 2.6086875,
-      "75": 2.6086875
+      "7": 2.636625,
+      "8": 2.5903958333333335,
+      "9": 2.59375,
+      "10": 2.6165833333333333,
+      "11": 2.636625,
+      "12": 2.5903958333333335,
+      "13": 2.59375,
+      "14": 2.6165833333333333,
+      "15": 2.636625,
+      "16": 2.5903958333333335,
+      "17": 2.59375,
+      "18": 2.6165833333333333,
+      "19": 2.636625,
+      "20": 2.5903958333333335,
+      "21": 2.59375,
+      "22": 2.6165833333333333,
+      "23": 2.636625,
+      "24": 2.6082708333333335,
+      "25": 2.5625416666666667,
+      "26": 2.5658541666666665,
+      "27": 2.5884375,
+      "28": 2.6082708333333335,
+      "29": 2.5625416666666667,
+      "30": 2.5658541666666665,
+      "31": 2.5884375,
+      "32": 2.6082708333333335,
+      "33": 2.5625416666666667,
+      "34": 2.5658541666666665,
+      "35": 2.5884375,
+      "36": 2.6082708333333335,
+      "37": 2.5625416666666667,
+      "38": 2.5658541666666665,
+      "39": 2.5884375,
+      "40": 2.6082708333333335,
+      "41": 2.5805208333333334,
+      "42": 2.5352916666666667,
+      "43": 2.5385625,
+      "44": 2.5608958333333334,
+      "45": 2.5805208333333334,
+      "46": 2.5352916666666667,
+      "47": 2.5385625,
+      "48": 2.5608958333333334,
+      "49": 2.5805208333333334,
+      "50": 2.5352916666666667,
+      "51": 2.5385625,
+      "52": 2.5608958333333334,
+      "53": 2.5805208333333334,
+      "54": 2.5352916666666667,
+      "55": 2.5385625,
+      "56": 2.5608958333333334,
+      "57": 2.5805208333333334,
+      "58": 2.553354166666667,
+      "59": 2.5086041666666667,
+      "60": 2.511833333333333,
+      "61": 2.5339375,
+      "62": 2.553354166666667,
+      "63": 2.5086041666666667,
+      "64": 2.511833333333333,
+      "65": 2.5339375,
+      "66": 2.558145833333333,
+      "67": 2.5258541666666665,
+      "68": 2.5418333333333334,
+      "69": 2.5776458333333334,
+      "70": 2.6110208333333333,
+      "71": 2.5773958333333336,
+      "72": 2.5940416666666666,
+      "73": 2.6313333333333335,
+      "74": 2.6959583333333335,
+      "75": 2.9810833333333333,
+      "76": 3.412125,
+      "77": 3.8095208333333335
     },
     "durations": "notated"
   },
   "midi": {
-    "file": "src/vocal/hymns.ts#america-the-beautiful-materna",
-    "ppq": 480,
-    "ticks_per_measure": 1920,
-    "melody_track": "MELODY",
-    "sec_per_tick": 0.001358696
+    "file": "src/vocal/arrangements/america-the-beautiful-kimi-k3.json",
+    "ppq": 384,
+    "ticks_per_measure": 1536,
+    "melody_track": "hymn",
+    "sec_per_tick": 0.0016983695652173913
   },
   "events": [
     {
@@ -187,14 +191,11 @@
       "t_sec": 15,
       "t_samples": 720000,
       "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m6:right:beat1",
-      "midi_tick": 11040,
-      "t_midi_sec": 15.000002,
-      "engine_note": {
-        "measure": 6,
-        "hand": "right",
-        "t_sec": 15
-      }
+      "anchor": "arrangement-onset:m6:beat3",
+      "midi_tick": 8832,
+      "t_midi_sec": 15,
+      "engine_note": null,
+      "gain_db": 2.41
     },
     {
       "id": "v01",
@@ -205,15 +206,12 @@
       "midi": 65,
       "t_sec": 15.652166666666666,
       "t_samples": 751304,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m7:right:beat0",
-      "midi_tick": 11520,
-      "t_midi_sec": 15.652176,
-      "engine_note": {
-        "measure": 7,
-        "hand": "right",
-        "t_sec": 15.652166666666666
-      }
+      "dur_sec": 0.9334583333333333,
+      "anchor": "arrangement-onset:m7:beat0",
+      "midi_tick": 9216,
+      "t_midi_sec": 15.652174,
+      "engine_note": null,
+      "gain_db": 1.41
     },
     {
       "id": "v02",
@@ -222,17 +220,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 16.6304375,
-      "t_samples": 798261,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m7:right:beat1",
-      "midi_tick": 12240,
-      "t_midi_sec": 16.630437,
-      "engine_note": {
-        "measure": 7,
-        "hand": "right",
-        "t_sec": 16.6304375
-      }
+      "t_sec": 16.585625,
+      "t_samples": 796110,
+      "dur_sec": 0.39625,
+      "anchor": "arrangement-onset:m7:beat1.4010416666666667",
+      "midi_tick": 9754,
+      "t_midi_sec": 16.585617,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v03",
@@ -241,17 +236,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 16.956520833333332,
-      "t_samples": 813913,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m7:right:beat2",
-      "midi_tick": 12480,
-      "t_midi_sec": 16.956524,
-      "engine_note": {
-        "measure": 7,
-        "hand": "right",
-        "t_sec": 16.956520833333332
-      }
+      "t_sec": 16.981875,
+      "t_samples": 815130,
+      "dur_sec": 0.65575,
+      "anchor": "arrangement-onset:m7:beat2",
+      "midi_tick": 9984,
+      "t_midi_sec": 16.981875,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v04",
@@ -260,17 +252,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 17.6086875,
-      "t_samples": 845217,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m7:right:beat3",
-      "midi_tick": 12960,
-      "t_midi_sec": 17.608698,
-      "engine_note": {
-        "measure": 7,
-        "hand": "right",
-        "t_sec": 17.6086875
-      }
+      "t_sec": 17.637625,
+      "t_samples": 846606,
+      "dur_sec": 0.6511666666666667,
+      "anchor": "arrangement-onset:m7:beat3",
+      "midi_tick": 10368,
+      "t_midi_sec": 17.637635,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v05",
@@ -279,17 +268,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 18.260875,
-      "t_samples": 876522,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m8:right:beat0",
-      "midi_tick": 13440,
-      "t_midi_sec": 18.260872,
-      "engine_note": {
-        "measure": 8,
-        "hand": "right",
-        "t_sec": 18.260875
-      }
+      "t_sec": 18.28879166666667,
+      "t_samples": 877862,
+      "dur_sec": 0.9074375,
+      "anchor": "arrangement-onset:m8:beat0",
+      "midi_tick": 10752,
+      "t_midi_sec": 18.288789,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v06",
@@ -298,17 +284,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 60,
-      "t_sec": 19.239125,
-      "t_samples": 923478,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m8:right:beat1",
-      "midi_tick": 14160,
-      "t_midi_sec": 19.239133,
-      "engine_note": {
-        "measure": 8,
-        "hand": "right",
-        "t_sec": 19.239125
-      }
+      "t_sec": 19.196229166666665,
+      "t_samples": 921419,
+      "dur_sec": 0.38735416666666667,
+      "anchor": "arrangement-onset:m8:beat1.4010416666666667",
+      "midi_tick": 11290,
+      "t_midi_sec": 19.19623,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v07",
@@ -317,17 +300,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 60,
-      "t_sec": 19.565208333333334,
-      "t_samples": 939130,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m8:right:beat2",
-      "midi_tick": 14400,
-      "t_midi_sec": 19.56522,
-      "engine_note": {
-        "measure": 8,
-        "hand": "right",
-        "t_sec": 19.565208333333334
-      }
+      "t_sec": 19.583583333333333,
+      "t_samples": 940012,
+      "dur_sec": 0.6469583333333333,
+      "anchor": "arrangement-onset:m8:beat2",
+      "midi_tick": 11520,
+      "t_midi_sec": 19.583576,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v08",
@@ -336,17 +316,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 62,
-      "t_sec": 20.217395833333335,
-      "t_samples": 970435,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m8:right:beat3",
-      "midi_tick": 14880,
-      "t_midi_sec": 20.217394,
-      "engine_note": {
-        "measure": 8,
-        "hand": "right",
-        "t_sec": 20.217395833333335
-      }
+      "t_sec": 20.230541666666667,
+      "t_samples": 971066,
+      "dur_sec": 0.6486458333333334,
+      "anchor": "arrangement-onset:m8:beat3",
+      "midi_tick": 11904,
+      "t_midi_sec": 20.230532,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v09",
@@ -355,17 +332,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 63,
-      "t_sec": 20.8695625,
-      "t_samples": 1001739,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m9:right:beat0",
-      "midi_tick": 15360,
-      "t_midi_sec": 20.869568,
-      "engine_note": {
-        "measure": 9,
-        "hand": "right",
-        "t_sec": 20.8695625
-      }
+      "t_sec": 20.8791875,
+      "t_samples": 1002201,
+      "dur_sec": 0.6514375,
+      "anchor": "arrangement-onset:m9:beat0",
+      "midi_tick": 12288,
+      "t_midi_sec": 20.87918,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v10",
@@ -374,17 +348,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 21.521729166666667,
-      "t_samples": 1033043,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m9:right:beat1",
-      "midi_tick": 15840,
-      "t_midi_sec": 21.521742,
-      "engine_note": {
-        "measure": 9,
-        "hand": "right",
-        "t_sec": 21.521729166666667
-      }
+      "t_sec": 21.530625,
+      "t_samples": 1033470,
+      "dur_sec": 0.6486458333333334,
+      "anchor": "arrangement-onset:m9:beat1",
+      "midi_tick": 12672,
+      "t_midi_sec": 21.530618,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v11",
@@ -393,17 +364,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 22.173916666666667,
-      "t_samples": 1064348,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m9:right:beat2",
-      "midi_tick": 16320,
-      "t_midi_sec": 22.173916,
-      "engine_note": {
-        "measure": 9,
-        "hand": "right",
-        "t_sec": 22.173916666666667
-      }
+      "t_sec": 22.179270833333334,
+      "t_samples": 1064605,
+      "dur_sec": 0.6469583333333333,
+      "anchor": "arrangement-onset:m9:beat2",
+      "midi_tick": 13056,
+      "t_midi_sec": 22.179266,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v12",
@@ -412,17 +380,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 69,
-      "t_sec": 22.826083333333333,
-      "t_samples": 1095652,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m9:right:beat3",
-      "midi_tick": 16800,
-      "t_midi_sec": 22.82609,
-      "engine_note": {
-        "measure": 9,
-        "hand": "right",
-        "t_sec": 22.826083333333333
-      }
+      "t_sec": 22.826229166666668,
+      "t_samples": 1095659,
+      "dur_sec": 0.6466875,
+      "anchor": "arrangement-onset:m9:beat3",
+      "midi_tick": 13440,
+      "t_midi_sec": 22.826223,
+      "engine_note": null,
+      "gain_db": 2.41
     },
     {
       "id": "v13",
@@ -431,17 +396,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 23.478270833333333,
-      "t_samples": 1126957,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m10:right:beat0",
-      "midi_tick": 17280,
-      "t_midi_sec": 23.478264,
-      "engine_note": {
-        "measure": 10,
-        "hand": "right",
-        "t_sec": 23.478270833333333
-      }
+      "t_sec": 23.472916666666666,
+      "t_samples": 1126700,
+      "dur_sec": 1.627125,
+      "anchor": "arrangement-onset:m10:beat0",
+      "midi_tick": 13824,
+      "t_midi_sec": 23.472921,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v14",
@@ -450,17 +412,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 25.434791666666666,
-      "t_samples": 1220870,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m10:right:beat1",
-      "midi_tick": 18720,
-      "t_midi_sec": 25.434786,
-      "engine_note": {
-        "measure": 10,
-        "hand": "right",
-        "t_sec": 25.434791666666666
-      }
+      "t_sec": 25.42791666666667,
+      "t_samples": 1220540,
+      "dur_sec": 0.6615833333333333,
+      "anchor": "arrangement-onset:m10:beat3",
+      "midi_tick": 14976,
+      "t_midi_sec": 25.427923,
+      "engine_note": null,
+      "gain_db": 0
     },
     {
       "id": "v15",
@@ -469,17 +428,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 26.08695833333333,
-      "t_samples": 1252174,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m11:right:beat0",
-      "midi_tick": 19200,
-      "t_midi_sec": 26.08696,
-      "engine_note": {
-        "measure": 11,
-        "hand": "right",
-        "t_sec": 26.08695833333333
-      }
+      "t_sec": 26.0895,
+      "t_samples": 1252296,
+      "dur_sec": 0.9334375,
+      "anchor": "arrangement-onset:m11:beat0",
+      "midi_tick": 15360,
+      "t_midi_sec": 26.089503,
+      "engine_note": null,
+      "gain_db": 1.41
     },
     {
       "id": "v16",
@@ -488,17 +444,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 62,
-      "t_sec": 27.065208333333334,
-      "t_samples": 1299130,
-      "dur_sec": 0.32610416666666664,
-      "anchor": "piano-onset:m11:right:beat1",
-      "midi_tick": 19920,
-      "t_midi_sec": 27.065221,
-      "engine_note": {
-        "measure": 11,
-        "hand": "right",
-        "t_sec": 27.065208333333334
-      }
+      "t_sec": 27.0229375,
+      "t_samples": 1297101,
+      "dur_sec": 0.39627083333333335,
+      "anchor": "arrangement-onset:m11:beat1.4010416666666667",
+      "midi_tick": 15898,
+      "t_midi_sec": 27.022945,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v17",
@@ -507,17 +460,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 62,
-      "t_sec": 27.3913125,
-      "t_samples": 1314783,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m11:right:beat2",
-      "midi_tick": 20160,
-      "t_midi_sec": 27.391308,
-      "engine_note": {
-        "measure": 11,
-        "hand": "right",
-        "t_sec": 27.3913125
-      }
+      "t_sec": 27.419208333333334,
+      "t_samples": 1316122,
+      "dur_sec": 0.65575,
+      "anchor": "arrangement-onset:m11:beat2",
+      "midi_tick": 16128,
+      "t_midi_sec": 27.419204,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v18",
@@ -526,17 +476,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 28.043479166666668,
-      "t_samples": 1346087,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m11:right:beat3",
-      "midi_tick": 20640,
-      "t_midi_sec": 28.043482,
-      "engine_note": {
-        "measure": 11,
-        "hand": "right",
-        "t_sec": 28.043479166666668
-      }
+      "t_sec": 28.074958333333335,
+      "t_samples": 1347598,
+      "dur_sec": 0.6511666666666667,
+      "anchor": "arrangement-onset:m11:beat3",
+      "midi_tick": 16512,
+      "t_midi_sec": 28.074963,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v19",
@@ -545,17 +492,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 28.695645833333334,
-      "t_samples": 1377391,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m12:right:beat0",
-      "midi_tick": 21120,
-      "t_midi_sec": 28.695656,
-      "engine_note": {
-        "measure": 12,
-        "hand": "right",
-        "t_sec": 28.695645833333334
-      }
+      "t_sec": 28.726125,
+      "t_samples": 1378854,
+      "dur_sec": 0.9074375,
+      "anchor": "arrangement-onset:m12:beat0",
+      "midi_tick": 16896,
+      "t_midi_sec": 28.726118,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v20",
@@ -564,17 +508,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 60,
-      "t_sec": 29.673916666666667,
-      "t_samples": 1424348,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m12:right:beat1",
-      "midi_tick": 21840,
-      "t_midi_sec": 29.673917,
-      "engine_note": {
-        "measure": 12,
-        "hand": "right",
-        "t_sec": 29.673916666666667
-      }
+      "t_sec": 29.6335625,
+      "t_samples": 1422411,
+      "dur_sec": 0.3873333333333333,
+      "anchor": "arrangement-onset:m12:beat1.4010416666666667",
+      "midi_tick": 17434,
+      "t_midi_sec": 29.633559,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v21",
@@ -583,17 +524,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 60,
-      "t_sec": 30,
-      "t_samples": 1440000,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m12:right:beat2",
-      "midi_tick": 22080,
-      "t_midi_sec": 30.000004,
-      "engine_note": {
-        "measure": 12,
-        "hand": "right",
-        "t_sec": 30
-      }
+      "t_sec": 30.020895833333334,
+      "t_samples": 1441003,
+      "dur_sec": 0.6469583333333333,
+      "anchor": "arrangement-onset:m12:beat2",
+      "midi_tick": 17664,
+      "t_midi_sec": 30.020904,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v22",
@@ -602,17 +540,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 72,
-      "t_sec": 30.652166666666666,
-      "t_samples": 1471304,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m12:right:beat3",
-      "midi_tick": 22560,
-      "t_midi_sec": 30.652178,
-      "engine_note": {
-        "measure": 12,
-        "hand": "right",
-        "t_sec": 30.652166666666666
-      }
+      "t_sec": 30.667854166666668,
+      "t_samples": 1472057,
+      "dur_sec": 0.6486458333333334,
+      "anchor": "arrangement-onset:m12:beat3",
+      "midi_tick": 18048,
+      "t_midi_sec": 30.66786,
+      "engine_note": null,
+      "gain_db": 3.61
     },
     {
       "id": "v23",
@@ -621,17 +556,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 71,
-      "t_sec": 31.304354166666666,
-      "t_samples": 1502609,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m13:right:beat0",
-      "midi_tick": 23040,
-      "t_midi_sec": 31.304352,
-      "engine_note": {
-        "measure": 13,
-        "hand": "right",
-        "t_sec": 31.304354166666666
-      }
+      "t_sec": 31.3165,
+      "t_samples": 1503192,
+      "dur_sec": 0.6514375,
+      "anchor": "arrangement-onset:m13:beat0",
+      "midi_tick": 18432,
+      "t_midi_sec": 31.316509,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v24",
@@ -640,17 +572,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 31.956520833333332,
-      "t_samples": 1533913,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m13:right:beat1",
-      "midi_tick": 23520,
-      "t_midi_sec": 31.956526,
-      "engine_note": {
-        "measure": 13,
-        "hand": "right",
-        "t_sec": 31.956520833333332
-      }
+      "t_sec": 31.9679375,
+      "t_samples": 1534461,
+      "dur_sec": 0.6486666666666666,
+      "anchor": "arrangement-onset:m13:beat1",
+      "midi_tick": 18816,
+      "t_midi_sec": 31.967946,
+      "engine_note": null,
+      "gain_db": 3.61
     },
     {
       "id": "v25",
@@ -659,17 +588,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 74,
-      "t_sec": 32.6086875,
-      "t_samples": 1565217,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m13:right:beat2",
-      "midi_tick": 24000,
-      "t_midi_sec": 32.6087,
-      "engine_note": {
-        "measure": 13,
-        "hand": "right",
-        "t_sec": 32.6086875
-      }
+      "t_sec": 32.61660416666667,
+      "t_samples": 1565597,
+      "dur_sec": 0.6469375,
+      "anchor": "arrangement-onset:m13:beat2",
+      "midi_tick": 19200,
+      "t_midi_sec": 32.616595,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v26",
@@ -678,17 +604,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 67,
-      "t_sec": 33.260875,
-      "t_samples": 1596522,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m13:right:beat3",
-      "midi_tick": 24480,
-      "t_midi_sec": 33.260874,
-      "engine_note": {
-        "measure": 13,
-        "hand": "right",
-        "t_sec": 33.260875
-      }
+      "t_sec": 33.26354166666667,
+      "t_samples": 1596650,
+      "dur_sec": 0.6467083333333333,
+      "anchor": "arrangement-onset:m13:beat3",
+      "midi_tick": 19584,
+      "t_midi_sec": 33.263551,
+      "engine_note": null,
+      "gain_db": 1.91
     },
     {
       "id": "v27",
@@ -697,17 +620,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 33.913041666666665,
-      "t_samples": 1627826,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m14:right:beat0",
-      "midi_tick": 24960,
-      "t_midi_sec": 33.913048,
-      "engine_note": {
-        "measure": 14,
-        "hand": "right",
-        "t_sec": 33.913041666666665
-      }
+      "t_sec": 33.91025,
+      "t_samples": 1627692,
+      "dur_sec": 1.627125,
+      "anchor": "arrangement-onset:m14:beat0",
+      "midi_tick": 19968,
+      "t_midi_sec": 33.910249,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v28",
@@ -716,17 +636,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 65,
-      "t_sec": 35.8695625,
-      "t_samples": 1721739,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m14:right:beat1",
-      "midi_tick": 26400,
-      "t_midi_sec": 35.86957,
-      "engine_note": {
-        "measure": 14,
-        "hand": "right",
-        "t_sec": 35.8695625
-      }
+      "t_sec": 35.86525,
+      "t_samples": 1721532,
+      "dur_sec": 0.6615833333333333,
+      "anchor": "arrangement-onset:m14:beat3",
+      "midi_tick": 21120,
+      "t_midi_sec": 35.865251,
+      "engine_note": null,
+      "gain_db": 0
     },
     {
       "id": "v29",
@@ -735,17 +652,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 74,
-      "t_sec": 36.52172916666667,
-      "t_samples": 1753043,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m15:right:beat0",
-      "midi_tick": 26880,
-      "t_midi_sec": 36.521744,
-      "engine_note": {
-        "measure": 15,
-        "hand": "right",
-        "t_sec": 36.52172916666667
-      }
+      "t_sec": 36.526833333333336,
+      "t_samples": 1753288,
+      "dur_sec": 0.9334375,
+      "anchor": "arrangement-onset:m15:beat0",
+      "midi_tick": 21504,
+      "t_midi_sec": 36.526831,
+      "engine_note": null,
+      "gain_db": 3.16
     },
     {
       "id": "v30",
@@ -754,17 +668,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 74,
-      "t_sec": 37.5,
-      "t_samples": 1800000,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m15:right:beat1",
-      "midi_tick": 27600,
-      "t_midi_sec": 37.500005,
-      "engine_note": {
-        "measure": 15,
-        "hand": "right",
-        "t_sec": 37.5
-      }
+      "t_sec": 37.46027083333333,
+      "t_samples": 1798093,
+      "dur_sec": 0.39627083333333335,
+      "anchor": "arrangement-onset:m15:beat1.4010416666666667",
+      "midi_tick": 22042,
+      "t_midi_sec": 37.460274,
+      "engine_note": null,
+      "gain_db": 1.98
     },
     {
       "id": "v31",
@@ -773,17 +684,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 72,
-      "t_sec": 37.82608333333334,
-      "t_samples": 1815652,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m15:right:beat2",
-      "midi_tick": 27840,
-      "t_midi_sec": 37.826092,
-      "engine_note": {
-        "measure": 15,
-        "hand": "right",
-        "t_sec": 37.82608333333334
-      }
+      "t_sec": 37.856541666666665,
+      "t_samples": 1817114,
+      "dur_sec": 0.327875,
+      "anchor": "arrangement-onset:m15:beat2",
+      "midi_tick": 22272,
+      "t_midi_sec": 37.856533,
+      "engine_note": null,
+      "gain_db": 2.81
     },
     {
       "id": "v32",
@@ -792,17 +700,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 70,
-      "t_sec": 38.47827083333333,
-      "t_samples": 1846957,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m15:right:beat3",
-      "midi_tick": 28320,
-      "t_midi_sec": 38.478266,
-      "engine_note": {
-        "measure": 15,
-        "hand": "right",
-        "t_sec": 38.47827083333333
-      }
+      "t_sec": 38.51229166666667,
+      "t_samples": 1848590,
+      "dur_sec": 0.6511458333333333,
+      "anchor": "arrangement-onset:m15:beat3",
+      "midi_tick": 22656,
+      "t_midi_sec": 38.512292,
+      "engine_note": null,
+      "gain_db": 1.83
     },
     {
       "id": "v33",
@@ -811,17 +716,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 70,
-      "t_sec": 39.1304375,
-      "t_samples": 1878261,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m16:right:beat0",
-      "midi_tick": 28800,
-      "t_midi_sec": 39.13044,
-      "engine_note": {
-        "measure": 16,
-        "hand": "right",
-        "t_sec": 39.1304375
-      }
+      "t_sec": 39.1634375,
+      "t_samples": 1879845,
+      "dur_sec": 0.9074583333333334,
+      "anchor": "arrangement-onset:m16:beat0",
+      "midi_tick": 23040,
+      "t_midi_sec": 39.163447,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v34",
@@ -830,17 +732,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 69,
-      "t_sec": 40.1086875,
-      "t_samples": 1925217,
-      "dur_sec": 0.32610416666666664,
-      "anchor": "piano-onset:m16:right:beat1",
-      "midi_tick": 29520,
-      "t_midi_sec": 40.108701,
-      "engine_note": {
-        "measure": 16,
-        "hand": "right",
-        "t_sec": 40.1086875
-      }
+      "t_sec": 40.07089583333333,
+      "t_samples": 1923403,
+      "dur_sec": 0.3873333333333333,
+      "anchor": "arrangement-onset:m16:beat1.4010416666666667",
+      "midi_tick": 23578,
+      "t_midi_sec": 40.070888,
+      "engine_note": null,
+      "gain_db": 2.53
     },
     {
       "id": "v35",
@@ -849,17 +748,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 69,
-      "t_sec": 40.43479166666667,
-      "t_samples": 1940870,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m16:right:beat2",
-      "midi_tick": 29760,
-      "t_midi_sec": 40.434788,
-      "engine_note": {
-        "measure": 16,
-        "hand": "right",
-        "t_sec": 40.43479166666667
-      }
+      "t_sec": 40.45822916666667,
+      "t_samples": 1941995,
+      "dur_sec": 0.6469583333333333,
+      "anchor": "arrangement-onset:m16:beat2",
+      "midi_tick": 23808,
+      "t_midi_sec": 40.458233,
+      "engine_note": null,
+      "gain_db": 3.69
     },
     {
       "id": "v36",
@@ -868,17 +764,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 41.086958333333335,
-      "t_samples": 1972174,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m16:right:beat3",
-      "midi_tick": 30240,
-      "t_midi_sec": 41.086962,
-      "engine_note": {
-        "measure": 16,
-        "hand": "right",
-        "t_sec": 41.086958333333335
-      }
+      "t_sec": 41.1051875,
+      "t_samples": 1973049,
+      "dur_sec": 0.6486458333333334,
+      "anchor": "arrangement-onset:m16:beat3",
+      "midi_tick": 24192,
+      "t_midi_sec": 41.105189,
+      "engine_note": null,
+      "gain_db": 3.11
     },
     {
       "id": "v37",
@@ -887,17 +780,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 41.739125,
-      "t_samples": 2003478,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m17:right:beat0",
-      "midi_tick": 30720,
-      "t_midi_sec": 41.739136,
-      "engine_note": {
-        "measure": 17,
-        "hand": "right",
-        "t_sec": 41.739125
-      }
+      "t_sec": 41.75383333333333,
+      "t_samples": 2004184,
+      "dur_sec": 0.6514375,
+      "anchor": "arrangement-onset:m17:beat0",
+      "midi_tick": 24576,
+      "t_midi_sec": 41.753837,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v38",
@@ -906,17 +796,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 69,
-      "t_sec": 42.3913125,
-      "t_samples": 2034783,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m17:right:beat1",
-      "midi_tick": 31200,
-      "t_midi_sec": 42.39131,
-      "engine_note": {
-        "measure": 17,
-        "hand": "right",
-        "t_sec": 42.3913125
-      }
+      "t_sec": 42.40527083333333,
+      "t_samples": 2035453,
+      "dur_sec": 0.6486458333333334,
+      "anchor": "arrangement-onset:m17:beat1",
+      "midi_tick": 24960,
+      "t_midi_sec": 42.405275,
+      "engine_note": null,
+      "gain_db": 2.86
     },
     {
       "id": "v39",
@@ -925,17 +812,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 43.043479166666664,
-      "t_samples": 2066087,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m17:right:beat2",
-      "midi_tick": 31680,
-      "t_midi_sec": 43.043484,
-      "engine_note": {
-        "measure": 17,
-        "hand": "right",
-        "t_sec": 43.043479166666664
-      }
+      "t_sec": 43.053916666666666,
+      "t_samples": 2066588,
+      "dur_sec": 0.6469583333333333,
+      "anchor": "arrangement-onset:m17:beat2",
+      "midi_tick": 25344,
+      "t_midi_sec": 43.053924,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v40",
@@ -944,17 +828,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 43.69564583333333,
-      "t_samples": 2097391,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m17:right:beat3",
-      "midi_tick": 32160,
-      "t_midi_sec": 43.695658,
-      "engine_note": {
-        "measure": 17,
-        "hand": "right",
-        "t_sec": 43.69564583333333
-      }
+      "t_sec": 43.700875,
+      "t_samples": 2097642,
+      "dur_sec": 0.6467083333333333,
+      "anchor": "arrangement-onset:m17:beat3",
+      "midi_tick": 25728,
+      "t_midi_sec": 43.70088,
+      "engine_note": null,
+      "gain_db": 1.91
     },
     {
       "id": "v41",
@@ -963,17 +844,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 44.347833333333334,
-      "t_samples": 2128696,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m18:right:beat0",
-      "midi_tick": 32640,
-      "t_midi_sec": 44.347832,
-      "engine_note": {
-        "measure": 18,
-        "hand": "right",
-        "t_sec": 44.347833333333334
-      }
+      "t_sec": 44.34758333333333,
+      "t_samples": 2128684,
+      "dur_sec": 1.627125,
+      "anchor": "arrangement-onset:m18:beat0",
+      "midi_tick": 26112,
+      "t_midi_sec": 44.347578,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v42",
@@ -982,17 +860,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 46.30435416666667,
-      "t_samples": 2222609,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m18:right:beat1",
-      "midi_tick": 34080,
-      "t_midi_sec": 46.304354,
-      "engine_note": {
-        "measure": 18,
-        "hand": "right",
-        "t_sec": 46.30435416666667
-      }
+      "t_sec": 46.30258333333333,
+      "t_samples": 2222524,
+      "dur_sec": 0.6615833333333333,
+      "anchor": "arrangement-onset:m18:beat3",
+      "midi_tick": 27264,
+      "t_midi_sec": 46.30258,
+      "engine_note": null,
+      "gain_db": 0.75
     },
     {
       "id": "v43",
@@ -1001,17 +876,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 46.956520833333336,
-      "t_samples": 2253913,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m19:right:beat0",
-      "midi_tick": 34560,
-      "t_midi_sec": 46.956528,
-      "engine_note": {
-        "measure": 19,
-        "hand": "right",
-        "t_sec": 46.956520833333336
-      }
+      "t_sec": 46.964166666666664,
+      "t_samples": 2254280,
+      "dur_sec": 0.9334375,
+      "anchor": "arrangement-onset:m19:beat0",
+      "midi_tick": 27648,
+      "t_midi_sec": 46.96416,
+      "engine_note": null,
+      "gain_db": 2.16
     },
     {
       "id": "v44",
@@ -1020,17 +892,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 47.93479166666667,
-      "t_samples": 2300870,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m19:right:beat1",
-      "midi_tick": 35280,
-      "t_midi_sec": 47.934789,
-      "engine_note": {
-        "measure": 19,
-        "hand": "right",
-        "t_sec": 47.93479166666667
-      }
+      "t_sec": 47.89760416666667,
+      "t_samples": 2299085,
+      "dur_sec": 0.39625,
+      "anchor": "arrangement-onset:m19:beat1.4010416666666667",
+      "midi_tick": 28186,
+      "t_midi_sec": 47.897602,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v45",
@@ -1039,17 +908,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 48.260875,
-      "t_samples": 2316522,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m19:right:beat2",
-      "midi_tick": 35520,
-      "t_midi_sec": 48.260876,
-      "engine_note": {
-        "measure": 19,
-        "hand": "right",
-        "t_sec": 48.260875
-      }
+      "t_sec": 48.29385416666667,
+      "t_samples": 2318105,
+      "dur_sec": 0.6557708333333333,
+      "anchor": "arrangement-onset:m19:beat2",
+      "midi_tick": 28416,
+      "t_midi_sec": 48.293861,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v46",
@@ -1058,17 +924,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 48.913041666666665,
-      "t_samples": 2347826,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m19:right:beat3",
-      "midi_tick": 36000,
-      "t_midi_sec": 48.91305,
-      "engine_note": {
-        "measure": 19,
-        "hand": "right",
-        "t_sec": 48.913041666666665
-      }
+      "t_sec": 48.949625,
+      "t_samples": 2349582,
+      "dur_sec": 0.6511458333333333,
+      "anchor": "arrangement-onset:m19:beat3",
+      "midi_tick": 28800,
+      "t_midi_sec": 48.94962,
+      "engine_note": null,
+      "gain_db": 1.83
     },
     {
       "id": "v47",
@@ -1077,17 +940,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 70,
-      "t_sec": 49.56520833333333,
-      "t_samples": 2379130,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m20:right:beat0",
-      "midi_tick": 36480,
-      "t_midi_sec": 49.565224,
-      "engine_note": {
-        "measure": 20,
-        "hand": "right",
-        "t_sec": 49.56520833333333
-      }
+      "t_sec": 49.600770833333335,
+      "t_samples": 2380837,
+      "dur_sec": 0.9074375,
+      "anchor": "arrangement-onset:m20:beat0",
+      "midi_tick": 29184,
+      "t_midi_sec": 49.600775,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v48",
@@ -1096,17 +956,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 50.543479166666664,
-      "t_samples": 2426087,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m20:right:beat1",
-      "midi_tick": 37200,
-      "t_midi_sec": 50.543485,
-      "engine_note": {
-        "measure": 20,
-        "hand": "right",
-        "t_sec": 50.543479166666664
-      }
+      "t_sec": 50.508208333333336,
+      "t_samples": 2424394,
+      "dur_sec": 0.38735416666666667,
+      "anchor": "arrangement-onset:m20:beat1.4010416666666667",
+      "midi_tick": 29722,
+      "t_midi_sec": 50.508216,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v49",
@@ -1115,17 +972,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 50.8695625,
-      "t_samples": 2441739,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m20:right:beat2",
-      "midi_tick": 37440,
-      "t_midi_sec": 50.869572,
-      "engine_note": {
-        "measure": 20,
-        "hand": "right",
-        "t_sec": 50.8695625
-      }
+      "t_sec": 50.8955625,
+      "t_samples": 2442987,
+      "dur_sec": 0.6469583333333333,
+      "anchor": "arrangement-onset:m20:beat2",
+      "midi_tick": 29952,
+      "t_midi_sec": 50.895561,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v50",
@@ -1134,17 +988,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 51.52172916666667,
-      "t_samples": 2473043,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m20:right:beat3",
-      "midi_tick": 37920,
-      "t_midi_sec": 51.521746,
-      "engine_note": {
-        "measure": 20,
-        "hand": "right",
-        "t_sec": 51.52172916666667
-      }
+      "t_sec": 51.542520833333334,
+      "t_samples": 2474041,
+      "dur_sec": 0.6486458333333334,
+      "anchor": "arrangement-onset:m20:beat3",
+      "midi_tick": 30336,
+      "t_midi_sec": 51.542517,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v51",
@@ -1153,17 +1004,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 52.17391666666666,
-      "t_samples": 2504348,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m21:right:beat0",
-      "midi_tick": 38400,
-      "t_midi_sec": 52.17392,
-      "engine_note": {
-        "measure": 21,
-        "hand": "right",
-        "t_sec": 52.17391666666666
-      }
+      "t_sec": 52.19116666666667,
+      "t_samples": 2505176,
+      "dur_sec": 0.6514375,
+      "anchor": "arrangement-onset:m21:beat0",
+      "midi_tick": 30720,
+      "t_midi_sec": 52.191166,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v52",
@@ -1172,17 +1020,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 52.82608333333334,
-      "t_samples": 2535652,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m21:right:beat1",
-      "midi_tick": 38880,
-      "t_midi_sec": 52.826094,
-      "engine_note": {
-        "measure": 21,
-        "hand": "right",
-        "t_sec": 52.82608333333334
-      }
+      "t_sec": 52.84260416666667,
+      "t_samples": 2536445,
+      "dur_sec": 0.6486458333333334,
+      "anchor": "arrangement-onset:m21:beat1",
+      "midi_tick": 31104,
+      "t_midi_sec": 52.842604,
+      "engine_note": null,
+      "gain_db": 3.11
     },
     {
       "id": "v53",
@@ -1191,17 +1036,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 53.47827083333333,
-      "t_samples": 2566957,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m21:right:beat2",
-      "midi_tick": 39360,
-      "t_midi_sec": 53.478268,
-      "engine_note": {
-        "measure": 21,
-        "hand": "right",
-        "t_sec": 53.47827083333333
-      }
+      "t_sec": 53.49125,
+      "t_samples": 2567580,
+      "dur_sec": 0.6469583333333333,
+      "anchor": "arrangement-onset:m21:beat2",
+      "midi_tick": 31488,
+      "t_midi_sec": 53.491252,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v54",
@@ -1210,17 +1052,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 72,
-      "t_sec": 54.1304375,
-      "t_samples": 2598261,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m21:right:beat3",
-      "midi_tick": 39840,
-      "t_midi_sec": 54.130442,
-      "engine_note": {
-        "measure": 21,
-        "hand": "right",
-        "t_sec": 54.1304375
-      }
+      "t_sec": 54.13820833333333,
+      "t_samples": 2598634,
+      "dur_sec": 0.6467083333333333,
+      "anchor": "arrangement-onset:m21:beat3",
+      "midi_tick": 31872,
+      "t_midi_sec": 54.138208,
+      "engine_note": null,
+      "gain_db": 3.16
     },
     {
       "id": "v55",
@@ -1229,17 +1068,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 54.782604166666665,
-      "t_samples": 2629565,
-      "dur_sec": 1.9565208333333333,
-      "anchor": "piano-onset:m22:right:beat0",
-      "midi_tick": 40320,
-      "t_midi_sec": 54.782616,
-      "engine_note": {
-        "measure": 22,
-        "hand": "right",
-        "t_sec": 54.782604166666665
-      }
+      "t_sec": 54.78491666666667,
+      "t_samples": 2629676,
+      "dur_sec": 1.955,
+      "anchor": "arrangement-onset:m22:beat0",
+      "midi_tick": 32256,
+      "t_midi_sec": 54.784906,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v56",
@@ -1248,17 +1084,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 59.347833333333334,
-      "t_samples": 2848696,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m23:right:beat1",
-      "midi_tick": 43680,
-      "t_midi_sec": 59.347834,
-      "engine_note": {
-        "measure": 23,
-        "hand": "right",
-        "t_sec": 59.347833333333334
-      }
+      "t_sec": 59.38695833333333,
+      "t_samples": 2850574,
+      "dur_sec": 0.6511458333333333,
+      "anchor": "arrangement-onset:m23:beat3",
+      "midi_tick": 34944,
+      "t_midi_sec": 59.386949,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v57",
@@ -1267,17 +1100,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 60,
-      "t_samples": 2880000,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m24:right:beat0",
-      "midi_tick": 44160,
-      "t_midi_sec": 60.000008,
-      "engine_note": {
-        "measure": 24,
-        "hand": "right",
-        "t_sec": 60
-      }
+      "t_sec": 60.03810416666666,
+      "t_samples": 2881829,
+      "dur_sec": 0.9233958333333333,
+      "anchor": "arrangement-onset:m24:beat0",
+      "midi_tick": 35328,
+      "t_midi_sec": 60.038104,
+      "engine_note": null,
+      "gain_db": 1.41
     },
     {
       "id": "v58",
@@ -1286,17 +1116,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 60.97827083333333,
-      "t_samples": 2926957,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m24:right:beat1",
-      "midi_tick": 44880,
-      "t_midi_sec": 60.978269,
-      "engine_note": {
-        "measure": 24,
-        "hand": "right",
-        "t_sec": 60.97827083333333
-      }
+      "t_sec": 60.9615,
+      "t_samples": 2926152,
+      "dur_sec": 0.392,
+      "anchor": "arrangement-onset:m24:beat1.4010416666666667",
+      "midi_tick": 35866,
+      "t_midi_sec": 60.96151,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v59",
@@ -1305,17 +1132,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 61.30435416666667,
-      "t_samples": 2942609,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m24:right:beat2",
-      "midi_tick": 45120,
-      "t_midi_sec": 61.304356,
-      "engine_note": {
-        "measure": 24,
-        "hand": "right",
-        "t_sec": 61.30435416666667
-      }
+      "t_sec": 61.3535,
+      "t_samples": 2944968,
+      "dur_sec": 0.6487083333333333,
+      "anchor": "arrangement-onset:m24:beat2",
+      "midi_tick": 36096,
+      "t_midi_sec": 61.353507,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v60",
@@ -1324,17 +1148,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 61.956520833333336,
-      "t_samples": 2973913,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m24:right:beat3",
-      "midi_tick": 45600,
-      "t_midi_sec": 61.95653,
-      "engine_note": {
-        "measure": 24,
-        "hand": "right",
-        "t_sec": 61.956520833333336
-      }
+      "t_sec": 62.002208333333336,
+      "t_samples": 2976106,
+      "dur_sec": 0.6441666666666667,
+      "anchor": "arrangement-onset:m24:beat3",
+      "midi_tick": 36480,
+      "t_midi_sec": 62.002212,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v61",
@@ -1343,17 +1164,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 62.6086875,
-      "t_samples": 3005217,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m25:right:beat0",
-      "midi_tick": 46080,
-      "t_midi_sec": 62.608704,
-      "engine_note": {
-        "measure": 25,
-        "hand": "right",
-        "t_sec": 62.6086875
-      }
+      "t_sec": 62.646375,
+      "t_samples": 3007026,
+      "dur_sec": 0.8976875,
+      "anchor": "arrangement-onset:m25:beat0",
+      "midi_tick": 36864,
+      "t_midi_sec": 62.646369,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v62",
@@ -1362,17 +1180,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 60,
-      "t_sec": 63.586958333333335,
-      "t_samples": 3052174,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m25:right:beat1",
-      "midi_tick": 46800,
-      "t_midi_sec": 63.586965,
-      "engine_note": {
-        "measure": 25,
-        "hand": "right",
-        "t_sec": 63.586958333333335
-      }
+      "t_sec": 63.5440625,
+      "t_samples": 3050115,
+      "dur_sec": 0.38316666666666666,
+      "anchor": "arrangement-onset:m25:beat1.4010416666666667",
+      "midi_tick": 37402,
+      "t_midi_sec": 63.544055,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v63",
@@ -1381,17 +1196,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 60,
-      "t_sec": 63.913041666666665,
-      "t_samples": 3067826,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m25:right:beat2",
-      "midi_tick": 47040,
-      "t_midi_sec": 63.913052,
-      "engine_note": {
-        "measure": 25,
-        "hand": "right",
-        "t_sec": 63.913041666666665
-      }
+      "t_sec": 63.92722916666666,
+      "t_samples": 3068507,
+      "dur_sec": 0.64,
+      "anchor": "arrangement-onset:m25:beat2",
+      "midi_tick": 37632,
+      "t_midi_sec": 63.927238,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v64",
@@ -1400,17 +1212,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 62,
-      "t_sec": 64.56520833333333,
-      "t_samples": 3099130,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m25:right:beat3",
-      "midi_tick": 47520,
-      "t_midi_sec": 64.565226,
-      "engine_note": {
-        "measure": 25,
-        "hand": "right",
-        "t_sec": 64.56520833333333
-      }
+      "t_sec": 64.56722916666666,
+      "t_samples": 3099227,
+      "dur_sec": 0.6416875,
+      "anchor": "arrangement-onset:m25:beat3",
+      "midi_tick": 38016,
+      "t_midi_sec": 64.567238,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v65",
@@ -1419,17 +1228,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 63,
-      "t_sec": 65.21739583333333,
-      "t_samples": 3130435,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m26:right:beat0",
-      "midi_tick": 48000,
-      "t_midi_sec": 65.2174,
-      "engine_note": {
-        "measure": 26,
-        "hand": "right",
-        "t_sec": 65.21739583333333
-      }
+      "t_sec": 65.20891666666667,
+      "t_samples": 3130028,
+      "dur_sec": 0.6444375,
+      "anchor": "arrangement-onset:m26:beat0",
+      "midi_tick": 38400,
+      "t_midi_sec": 65.208914,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v66",
@@ -1438,17 +1244,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 65.8695625,
-      "t_samples": 3161739,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m26:right:beat1",
-      "midi_tick": 48480,
-      "t_midi_sec": 65.869574,
-      "engine_note": {
-        "measure": 26,
-        "hand": "right",
-        "t_sec": 65.8695625
-      }
+      "t_sec": 65.85335416666666,
+      "t_samples": 3160961,
+      "dur_sec": 0.6416666666666667,
+      "anchor": "arrangement-onset:m26:beat1",
+      "midi_tick": 38784,
+      "t_midi_sec": 65.853348,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v67",
@@ -1457,17 +1260,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 67,
-      "t_sec": 66.52172916666666,
-      "t_samples": 3193043,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m26:right:beat2",
-      "midi_tick": 48960,
-      "t_midi_sec": 66.521748,
-      "engine_note": {
-        "measure": 26,
-        "hand": "right",
-        "t_sec": 66.52172916666666
-      }
+      "t_sec": 66.49502083333333,
+      "t_samples": 3191761,
+      "dur_sec": 0.64,
+      "anchor": "arrangement-onset:m26:beat2",
+      "midi_tick": 39168,
+      "t_midi_sec": 66.495025,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v68",
@@ -1476,17 +1276,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 69,
-      "t_sec": 67.17391666666667,
-      "t_samples": 3224348,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m26:right:beat3",
-      "midi_tick": 49440,
-      "t_midi_sec": 67.173922,
-      "engine_note": {
-        "measure": 26,
-        "hand": "right",
-        "t_sec": 67.17391666666667
-      }
+      "t_sec": 67.13502083333333,
+      "t_samples": 3222481,
+      "dur_sec": 0.63975,
+      "anchor": "arrangement-onset:m26:beat3",
+      "midi_tick": 39552,
+      "t_midi_sec": 67.135025,
+      "engine_note": null,
+      "gain_db": 2.41
     },
     {
       "id": "v69",
@@ -1495,17 +1292,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 67.82608333333333,
-      "t_samples": 3255652,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m27:right:beat0",
-      "midi_tick": 49920,
-      "t_midi_sec": 67.826096,
-      "engine_note": {
-        "measure": 27,
-        "hand": "right",
-        "t_sec": 67.82608333333333
-      }
+      "t_sec": 67.77477083333333,
+      "t_samples": 3253189,
+      "dur_sec": 1.609625,
+      "anchor": "arrangement-onset:m27:beat0",
+      "midi_tick": 39936,
+      "t_midi_sec": 67.774773,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v70",
@@ -1514,17 +1308,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 69.78260416666667,
-      "t_samples": 3349565,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m27:right:beat1",
-      "midi_tick": 51360,
-      "t_midi_sec": 69.782618,
-      "engine_note": {
-        "measure": 27,
-        "hand": "right",
-        "t_sec": 69.78260416666667
-      }
+      "t_sec": 69.70875,
+      "t_samples": 3346020,
+      "dur_sec": 0.6544791666666666,
+      "anchor": "arrangement-onset:m27:beat3",
+      "midi_tick": 41088,
+      "t_midi_sec": 69.708756,
+      "engine_note": null,
+      "gain_db": 0
     },
     {
       "id": "v71",
@@ -1533,17 +1324,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 70.43479166666667,
-      "t_samples": 3380870,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m28:right:beat0",
-      "midi_tick": 51840,
-      "t_midi_sec": 70.434792,
-      "engine_note": {
-        "measure": 28,
-        "hand": "right",
-        "t_sec": 70.43479166666667
-      }
+      "t_sec": 70.36322916666667,
+      "t_samples": 3377435,
+      "dur_sec": 0.9233958333333333,
+      "anchor": "arrangement-onset:m28:beat0",
+      "midi_tick": 41472,
+      "t_midi_sec": 70.36322,
+      "engine_note": null,
+      "gain_db": 1.41
     },
     {
       "id": "v72",
@@ -1552,17 +1340,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 71.41304166666667,
-      "t_samples": 3427826,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m28:right:beat1",
-      "midi_tick": 52560,
-      "t_midi_sec": 71.413053,
-      "engine_note": {
-        "measure": 28,
-        "hand": "right",
-        "t_sec": 71.41304166666667
-      }
+      "t_sec": 71.286625,
+      "t_samples": 3421758,
+      "dur_sec": 0.392,
+      "anchor": "arrangement-onset:m28:beat1.4010416666666667",
+      "midi_tick": 42010,
+      "t_midi_sec": 71.286626,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v73",
@@ -1571,17 +1356,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 71.739125,
-      "t_samples": 3443478,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m28:right:beat2",
-      "midi_tick": 52800,
-      "t_midi_sec": 71.73914,
-      "engine_note": {
-        "measure": 28,
-        "hand": "right",
-        "t_sec": 71.739125
-      }
+      "t_sec": 71.678625,
+      "t_samples": 3440574,
+      "dur_sec": 0.6487083333333333,
+      "anchor": "arrangement-onset:m28:beat2",
+      "midi_tick": 42240,
+      "t_midi_sec": 71.678623,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v74",
@@ -1590,17 +1372,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 72.3913125,
-      "t_samples": 3474783,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m28:right:beat3",
-      "midi_tick": 53280,
-      "t_midi_sec": 72.391314,
-      "engine_note": {
-        "measure": 28,
-        "hand": "right",
-        "t_sec": 72.3913125
-      }
+      "t_sec": 72.32733333333333,
+      "t_samples": 3471712,
+      "dur_sec": 0.6441458333333333,
+      "anchor": "arrangement-onset:m28:beat3",
+      "midi_tick": 42624,
+      "t_midi_sec": 72.327328,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v75",
@@ -1609,17 +1388,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 73.04347916666667,
-      "t_samples": 3506087,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m29:right:beat0",
-      "midi_tick": 53760,
-      "t_midi_sec": 73.043488,
-      "engine_note": {
-        "measure": 29,
-        "hand": "right",
-        "t_sec": 73.04347916666667
-      }
+      "t_sec": 72.97147916666667,
+      "t_samples": 3502631,
+      "dur_sec": 0.8976875,
+      "anchor": "arrangement-onset:m29:beat0",
+      "midi_tick": 43008,
+      "t_midi_sec": 72.971485,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v76",
@@ -1628,17 +1404,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 60,
-      "t_sec": 74.02172916666666,
-      "t_samples": 3553043,
-      "dur_sec": 0.32610416666666664,
-      "anchor": "piano-onset:m29:right:beat1",
-      "midi_tick": 54480,
-      "t_midi_sec": 74.021749,
-      "engine_note": {
-        "measure": 29,
-        "hand": "right",
-        "t_sec": 74.02172916666666
-      }
+      "t_sec": 73.86916666666667,
+      "t_samples": 3545720,
+      "dur_sec": 0.3831875,
+      "anchor": "arrangement-onset:m29:beat1.4010416666666667",
+      "midi_tick": 43546,
+      "t_midi_sec": 73.869172,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v77",
@@ -1647,17 +1420,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 60,
-      "t_sec": 74.34783333333333,
-      "t_samples": 3568696,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m29:right:beat2",
-      "midi_tick": 54720,
-      "t_midi_sec": 74.347836,
-      "engine_note": {
-        "measure": 29,
-        "hand": "right",
-        "t_sec": 74.34783333333333
-      }
+      "t_sec": 74.25235416666666,
+      "t_samples": 3564113,
+      "dur_sec": 0.64,
+      "anchor": "arrangement-onset:m29:beat2",
+      "midi_tick": 43776,
+      "t_midi_sec": 74.252354,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v78",
@@ -1666,17 +1436,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 72,
-      "t_sec": 75,
-      "t_samples": 3600000,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m29:right:beat3",
-      "midi_tick": 55200,
-      "t_midi_sec": 75.00001,
-      "engine_note": {
-        "measure": 29,
-        "hand": "right",
-        "t_sec": 75
-      }
+      "t_sec": 74.89235416666666,
+      "t_samples": 3594833,
+      "dur_sec": 0.6416666666666667,
+      "anchor": "arrangement-onset:m29:beat3",
+      "midi_tick": 44160,
+      "t_midi_sec": 74.892354,
+      "engine_note": null,
+      "gain_db": 3.61
     },
     {
       "id": "v79",
@@ -1685,17 +1452,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 71,
-      "t_sec": 75.65216666666667,
-      "t_samples": 3631304,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m30:right:beat0",
-      "midi_tick": 55680,
-      "t_midi_sec": 75.652184,
-      "engine_note": {
-        "measure": 30,
-        "hand": "right",
-        "t_sec": 75.65216666666667
-      }
+      "t_sec": 75.53402083333333,
+      "t_samples": 3625633,
+      "dur_sec": 0.6444375,
+      "anchor": "arrangement-onset:m30:beat0",
+      "midi_tick": 44544,
+      "t_midi_sec": 75.534031,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v80",
@@ -1704,17 +1468,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 76.30435416666667,
-      "t_samples": 3662609,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m30:right:beat1",
-      "midi_tick": 56160,
-      "t_midi_sec": 76.304358,
-      "engine_note": {
-        "measure": 30,
-        "hand": "right",
-        "t_sec": 76.30435416666667
-      }
+      "t_sec": 76.17845833333334,
+      "t_samples": 3656566,
+      "dur_sec": 0.6416875,
+      "anchor": "arrangement-onset:m30:beat1",
+      "midi_tick": 44928,
+      "t_midi_sec": 76.178465,
+      "engine_note": null,
+      "gain_db": 3.61
     },
     {
       "id": "v81",
@@ -1723,17 +1484,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 74,
-      "t_sec": 76.95652083333333,
-      "t_samples": 3693913,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m30:right:beat2",
-      "midi_tick": 56640,
-      "t_midi_sec": 76.956532,
-      "engine_note": {
-        "measure": 30,
-        "hand": "right",
-        "t_sec": 76.95652083333333
-      }
+      "t_sec": 76.82014583333333,
+      "t_samples": 3687367,
+      "dur_sec": 0.64,
+      "anchor": "arrangement-onset:m30:beat2",
+      "midi_tick": 45312,
+      "t_midi_sec": 76.820142,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v82",
@@ -1742,17 +1500,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 67,
-      "t_sec": 77.6086875,
-      "t_samples": 3725217,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m30:right:beat3",
-      "midi_tick": 57120,
-      "t_midi_sec": 77.608706,
-      "engine_note": {
-        "measure": 30,
-        "hand": "right",
-        "t_sec": 77.6086875
-      }
+      "t_sec": 77.46014583333333,
+      "t_samples": 3718087,
+      "dur_sec": 0.63975,
+      "anchor": "arrangement-onset:m30:beat3",
+      "midi_tick": 45696,
+      "t_midi_sec": 77.460142,
+      "engine_note": null,
+      "gain_db": 1.91
     },
     {
       "id": "v83",
@@ -1761,17 +1516,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 72,
-      "t_sec": 78.260875,
-      "t_samples": 3756522,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m31:right:beat0",
-      "midi_tick": 57600,
-      "t_midi_sec": 78.26088,
-      "engine_note": {
-        "measure": 31,
-        "hand": "right",
-        "t_sec": 78.260875
-      }
+      "t_sec": 78.09989583333333,
+      "t_samples": 3748795,
+      "dur_sec": 1.609625,
+      "anchor": "arrangement-onset:m31:beat0",
+      "midi_tick": 46080,
+      "t_midi_sec": 78.099889,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v84",
@@ -1780,17 +1532,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 65,
-      "t_sec": 80.21739583333333,
-      "t_samples": 3850435,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m31:right:beat1",
-      "midi_tick": 59040,
-      "t_midi_sec": 80.217402,
-      "engine_note": {
-        "measure": 31,
-        "hand": "right",
-        "t_sec": 80.21739583333333
-      }
+      "t_sec": 80.033875,
+      "t_samples": 3841626,
+      "dur_sec": 0.6544583333333334,
+      "anchor": "arrangement-onset:m31:beat3",
+      "midi_tick": 47232,
+      "t_midi_sec": 80.033873,
+      "engine_note": null,
+      "gain_db": 0
     },
     {
       "id": "v85",
@@ -1799,17 +1548,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 74,
-      "t_sec": 80.8695625,
-      "t_samples": 3881739,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m32:right:beat0",
-      "midi_tick": 59520,
-      "t_midi_sec": 80.869576,
-      "engine_note": {
-        "measure": 32,
-        "hand": "right",
-        "t_sec": 80.8695625
-      }
+      "t_sec": 80.68833333333333,
+      "t_samples": 3873040,
+      "dur_sec": 0.9234166666666667,
+      "anchor": "arrangement-onset:m32:beat0",
+      "midi_tick": 47616,
+      "t_midi_sec": 80.688337,
+      "engine_note": null,
+      "gain_db": 3.16
     },
     {
       "id": "v86",
@@ -1818,17 +1564,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 74,
-      "t_sec": 81.84783333333333,
-      "t_samples": 3928696,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m32:right:beat1",
-      "midi_tick": 60240,
-      "t_midi_sec": 81.847837,
-      "engine_note": {
-        "measure": 32,
-        "hand": "right",
-        "t_sec": 81.84783333333333
-      }
+      "t_sec": 81.61175,
+      "t_samples": 3917364,
+      "dur_sec": 0.392,
+      "anchor": "arrangement-onset:m32:beat1.4010416666666667",
+      "midi_tick": 48154,
+      "t_midi_sec": 81.611743,
+      "engine_note": null,
+      "gain_db": 1.98
     },
     {
       "id": "v87",
@@ -1837,17 +1580,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 72,
-      "t_sec": 82.17391666666667,
-      "t_samples": 3944348,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m32:right:beat2",
-      "midi_tick": 60480,
-      "t_midi_sec": 82.173924,
-      "engine_note": {
-        "measure": 32,
-        "hand": "right",
-        "t_sec": 82.17391666666667
-      }
+      "t_sec": 82.00375,
+      "t_samples": 3936180,
+      "dur_sec": 0.3243333333333333,
+      "anchor": "arrangement-onset:m32:beat2",
+      "midi_tick": 48384,
+      "t_midi_sec": 82.00374,
+      "engine_note": null,
+      "gain_db": 2.81
     },
     {
       "id": "v88",
@@ -1856,17 +1596,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 70,
-      "t_sec": 82.82608333333333,
-      "t_samples": 3975652,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m32:right:beat3",
-      "midi_tick": 60960,
-      "t_midi_sec": 82.826098,
-      "engine_note": {
-        "measure": 32,
-        "hand": "right",
-        "t_sec": 82.82608333333333
-      }
+      "t_sec": 82.6524375,
+      "t_samples": 3967317,
+      "dur_sec": 0.6441666666666667,
+      "anchor": "arrangement-onset:m32:beat3",
+      "midi_tick": 48768,
+      "t_midi_sec": 82.652445,
+      "engine_note": null,
+      "gain_db": 1.83
     },
     {
       "id": "v89",
@@ -1875,17 +1612,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 70,
-      "t_sec": 83.47827083333334,
-      "t_samples": 4006957,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m33:right:beat0",
-      "midi_tick": 61440,
-      "t_midi_sec": 83.478272,
-      "engine_note": {
-        "measure": 33,
-        "hand": "right",
-        "t_sec": 83.47827083333334
-      }
+      "t_sec": 83.29660416666667,
+      "t_samples": 3998237,
+      "dur_sec": 0.8976875,
+      "anchor": "arrangement-onset:m33:beat0",
+      "midi_tick": 49152,
+      "t_midi_sec": 83.296602,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v90",
@@ -1894,17 +1628,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 69,
-      "t_sec": 84.45652083333333,
-      "t_samples": 4053913,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m33:right:beat1",
-      "midi_tick": 62160,
-      "t_midi_sec": 84.456533,
-      "engine_note": {
-        "measure": 33,
-        "hand": "right",
-        "t_sec": 84.45652083333333
-      }
+      "t_sec": 84.19429166666667,
+      "t_samples": 4041326,
+      "dur_sec": 0.3831875,
+      "anchor": "arrangement-onset:m33:beat1.4010416666666667",
+      "midi_tick": 49690,
+      "t_midi_sec": 84.194289,
+      "engine_note": null,
+      "gain_db": 2.53
     },
     {
       "id": "v91",
@@ -1913,17 +1644,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 69,
-      "t_sec": 84.78260416666667,
-      "t_samples": 4069565,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m33:right:beat2",
-      "midi_tick": 62400,
-      "t_midi_sec": 84.78262,
-      "engine_note": {
-        "measure": 33,
-        "hand": "right",
-        "t_sec": 84.78260416666667
-      }
+      "t_sec": 84.57747916666666,
+      "t_samples": 4059719,
+      "dur_sec": 0.64,
+      "anchor": "arrangement-onset:m33:beat2",
+      "midi_tick": 49920,
+      "t_midi_sec": 84.577471,
+      "engine_note": null,
+      "gain_db": 3.69
     },
     {
       "id": "v92",
@@ -1932,17 +1660,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 85.43479166666667,
-      "t_samples": 4100870,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m33:right:beat3",
-      "midi_tick": 62880,
-      "t_midi_sec": 85.434794,
-      "engine_note": {
-        "measure": 33,
-        "hand": "right",
-        "t_sec": 85.43479166666667
-      }
+      "t_sec": 85.21747916666666,
+      "t_samples": 4090439,
+      "dur_sec": 0.6416666666666667,
+      "anchor": "arrangement-onset:m33:beat3",
+      "midi_tick": 50304,
+      "t_midi_sec": 85.217471,
+      "engine_note": null,
+      "gain_db": 3.11
     },
     {
       "id": "v93",
@@ -1951,17 +1676,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 86.08695833333333,
-      "t_samples": 4132174,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m34:right:beat0",
-      "midi_tick": 63360,
-      "t_midi_sec": 86.086968,
-      "engine_note": {
-        "measure": 34,
-        "hand": "right",
-        "t_sec": 86.08695833333333
-      }
+      "t_sec": 85.85914583333333,
+      "t_samples": 4121239,
+      "dur_sec": 0.6444375,
+      "anchor": "arrangement-onset:m34:beat0",
+      "midi_tick": 50688,
+      "t_midi_sec": 85.859148,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v94",
@@ -1970,17 +1692,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 69,
-      "t_sec": 86.739125,
-      "t_samples": 4163478,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m34:right:beat1",
-      "midi_tick": 63840,
-      "t_midi_sec": 86.739142,
-      "engine_note": {
-        "measure": 34,
-        "hand": "right",
-        "t_sec": 86.739125
-      }
+      "t_sec": 86.50358333333334,
+      "t_samples": 4152172,
+      "dur_sec": 0.6416666666666667,
+      "anchor": "arrangement-onset:m34:beat1",
+      "midi_tick": 51072,
+      "t_midi_sec": 86.503582,
+      "engine_note": null,
+      "gain_db": 2.86
     },
     {
       "id": "v95",
@@ -1989,17 +1708,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 67,
-      "t_sec": 87.3913125,
-      "t_samples": 4194783,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m34:right:beat2",
-      "midi_tick": 64320,
-      "t_midi_sec": 87.391316,
-      "engine_note": {
-        "measure": 34,
-        "hand": "right",
-        "t_sec": 87.3913125
-      }
+      "t_sec": 87.14525,
+      "t_samples": 4182972,
+      "dur_sec": 0.64,
+      "anchor": "arrangement-onset:m34:beat2",
+      "midi_tick": 51456,
+      "t_midi_sec": 87.145258,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v96",
@@ -2008,17 +1724,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 88.04347916666667,
-      "t_samples": 4226087,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m34:right:beat3",
-      "midi_tick": 64800,
-      "t_midi_sec": 88.04349,
-      "engine_note": {
-        "measure": 34,
-        "hand": "right",
-        "t_sec": 88.04347916666667
-      }
+      "t_sec": 87.78525,
+      "t_samples": 4213692,
+      "dur_sec": 0.63975,
+      "anchor": "arrangement-onset:m34:beat3",
+      "midi_tick": 51840,
+      "t_midi_sec": 87.785258,
+      "engine_note": null,
+      "gain_db": 1.91
     },
     {
       "id": "v97",
@@ -2027,17 +1740,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 88.69564583333333,
-      "t_samples": 4257391,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m35:right:beat0",
-      "midi_tick": 65280,
-      "t_midi_sec": 88.695664,
-      "engine_note": {
-        "measure": 35,
-        "hand": "right",
-        "t_sec": 88.69564583333333
-      }
+      "t_sec": 88.425,
+      "t_samples": 4244400,
+      "dur_sec": 1.6096458333333334,
+      "anchor": "arrangement-onset:m35:beat0",
+      "midi_tick": 52224,
+      "t_midi_sec": 88.425006,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v98",
@@ -2046,17 +1756,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 70,
-      "t_sec": 90.65216666666667,
-      "t_samples": 4351304,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m35:right:beat1",
-      "midi_tick": 66720,
-      "t_midi_sec": 90.652186,
-      "engine_note": {
-        "measure": 35,
-        "hand": "right",
-        "t_sec": 90.65216666666667
-      }
+      "t_sec": 90.35897916666667,
+      "t_samples": 4337231,
+      "dur_sec": 0.6544791666666666,
+      "anchor": "arrangement-onset:m35:beat3",
+      "midi_tick": 53376,
+      "t_midi_sec": 90.358989,
+      "engine_note": null,
+      "gain_db": 0.75
     },
     {
       "id": "v99",
@@ -2065,17 +1772,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 70,
-      "t_sec": 91.30435416666667,
-      "t_samples": 4382609,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m36:right:beat0",
-      "midi_tick": 67200,
-      "t_midi_sec": 91.30436,
-      "engine_note": {
-        "measure": 36,
-        "hand": "right",
-        "t_sec": 91.30435416666667
-      }
+      "t_sec": 91.01345833333333,
+      "t_samples": 4368646,
+      "dur_sec": 0.9233958333333333,
+      "anchor": "arrangement-onset:m36:beat0",
+      "midi_tick": 53760,
+      "t_midi_sec": 91.013454,
+      "engine_note": null,
+      "gain_db": 2.16
     },
     {
       "id": "v100",
@@ -2084,17 +1788,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 92.28260416666667,
-      "t_samples": 4429565,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m36:right:beat1",
-      "midi_tick": 67920,
-      "t_midi_sec": 92.282621,
-      "engine_note": {
-        "measure": 36,
-        "hand": "right",
-        "t_sec": 92.28260416666667
-      }
+      "t_sec": 91.93685416666666,
+      "t_samples": 4412969,
+      "dur_sec": 0.392,
+      "anchor": "arrangement-onset:m36:beat1.4010416666666667",
+      "midi_tick": 54298,
+      "t_midi_sec": 91.93686,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v101",
@@ -2103,17 +1804,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 92.6086875,
-      "t_samples": 4445217,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m36:right:beat2",
-      "midi_tick": 68160,
-      "t_midi_sec": 92.608708,
-      "engine_note": {
-        "measure": 36,
-        "hand": "right",
-        "t_sec": 92.6086875
-      }
+      "t_sec": 92.32885416666667,
+      "t_samples": 4431785,
+      "dur_sec": 0.6487083333333333,
+      "anchor": "arrangement-onset:m36:beat2",
+      "midi_tick": 54528,
+      "t_midi_sec": 92.328857,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v102",
@@ -2122,17 +1820,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 93.260875,
-      "t_samples": 4476522,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m36:right:beat3",
-      "midi_tick": 68640,
-      "t_midi_sec": 93.260882,
-      "engine_note": {
-        "measure": 36,
-        "hand": "right",
-        "t_sec": 93.260875
-      }
+      "t_sec": 92.9775625,
+      "t_samples": 4462923,
+      "dur_sec": 0.6441458333333333,
+      "anchor": "arrangement-onset:m36:beat3",
+      "midi_tick": 54912,
+      "t_midi_sec": 92.977562,
+      "engine_note": null,
+      "gain_db": 1.83
     },
     {
       "id": "v103",
@@ -2141,17 +1836,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 70,
-      "t_sec": 93.91304166666667,
-      "t_samples": 4507826,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m37:right:beat0",
-      "midi_tick": 69120,
-      "t_midi_sec": 93.913056,
-      "engine_note": {
-        "measure": 37,
-        "hand": "right",
-        "t_sec": 93.91304166666667
-      }
+      "t_sec": 93.62170833333333,
+      "t_samples": 4493842,
+      "dur_sec": 0.8976875,
+      "anchor": "arrangement-onset:m37:beat0",
+      "midi_tick": 55296,
+      "t_midi_sec": 93.621719,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v104",
@@ -2160,17 +1852,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 94.8913125,
-      "t_samples": 4554783,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m37:right:beat1",
-      "midi_tick": 69840,
-      "t_midi_sec": 94.891317,
-      "engine_note": {
-        "measure": 37,
-        "hand": "right",
-        "t_sec": 94.8913125
-      }
+      "t_sec": 94.51939583333333,
+      "t_samples": 4536931,
+      "dur_sec": 0.3831875,
+      "anchor": "arrangement-onset:m37:beat1.4010416666666667",
+      "midi_tick": 55834,
+      "t_midi_sec": 94.519405,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v105",
@@ -2179,17 +1868,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 95.21739583333333,
-      "t_samples": 4570435,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m37:right:beat2",
-      "midi_tick": 70080,
-      "t_midi_sec": 95.217404,
-      "engine_note": {
-        "measure": 37,
-        "hand": "right",
-        "t_sec": 95.21739583333333
-      }
+      "t_sec": 94.90258333333334,
+      "t_samples": 4555324,
+      "dur_sec": 0.64,
+      "anchor": "arrangement-onset:m37:beat2",
+      "midi_tick": 56064,
+      "t_midi_sec": 94.902588,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v106",
@@ -2198,17 +1884,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 95.8695625,
-      "t_samples": 4601739,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m37:right:beat3",
-      "midi_tick": 70560,
-      "t_midi_sec": 95.869578,
-      "engine_note": {
-        "measure": 37,
-        "hand": "right",
-        "t_sec": 95.8695625
-      }
+      "t_sec": 95.54258333333334,
+      "t_samples": 4586044,
+      "dur_sec": 0.6416875,
+      "anchor": "arrangement-onset:m37:beat3",
+      "midi_tick": 56448,
+      "t_midi_sec": 95.542588,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v107",
@@ -2217,17 +1900,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 67,
-      "t_sec": 96.52172916666666,
-      "t_samples": 4633043,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m38:right:beat0",
-      "midi_tick": 71040,
-      "t_midi_sec": 96.521752,
-      "engine_note": {
-        "measure": 38,
-        "hand": "right",
-        "t_sec": 96.52172916666666
-      }
+      "t_sec": 96.18427083333333,
+      "t_samples": 4616845,
+      "dur_sec": 0.6444375,
+      "anchor": "arrangement-onset:m38:beat0",
+      "midi_tick": 56832,
+      "t_midi_sec": 96.184264,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v108",
@@ -2236,17 +1916,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 70,
-      "t_sec": 97.17391666666667,
-      "t_samples": 4664348,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m38:right:beat1",
-      "midi_tick": 71520,
-      "t_midi_sec": 97.173926,
-      "engine_note": {
-        "measure": 38,
-        "hand": "right",
-        "t_sec": 97.17391666666667
-      }
+      "t_sec": 96.82870833333334,
+      "t_samples": 4647778,
+      "dur_sec": 0.6416666666666667,
+      "anchor": "arrangement-onset:m38:beat1",
+      "midi_tick": 57216,
+      "t_midi_sec": 96.828698,
+      "engine_note": null,
+      "gain_db": 3.11
     },
     {
       "id": "v109",
@@ -2255,17 +1932,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 97.82608333333333,
-      "t_samples": 4695652,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m38:right:beat2",
-      "midi_tick": 72000,
-      "t_midi_sec": 97.8261,
-      "engine_note": {
-        "measure": 38,
-        "hand": "right",
-        "t_sec": 97.82608333333333
-      }
+      "t_sec": 97.470375,
+      "t_samples": 4678578,
+      "dur_sec": 0.64,
+      "anchor": "arrangement-onset:m38:beat2",
+      "midi_tick": 57600,
+      "t_midi_sec": 97.470375,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v110",
@@ -2274,17 +1948,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 98.47827083333334,
-      "t_samples": 4726957,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m38:right:beat3",
-      "midi_tick": 72480,
-      "t_midi_sec": 98.478274,
-      "engine_note": {
-        "measure": 38,
-        "hand": "right",
-        "t_sec": 98.47827083333334
-      }
+      "t_sec": 98.110375,
+      "t_samples": 4709298,
+      "dur_sec": 0.63975,
+      "anchor": "arrangement-onset:m38:beat3",
+      "midi_tick": 57984,
+      "t_midi_sec": 98.110375,
+      "engine_note": null,
+      "gain_db": 3.16
     },
     {
       "id": "v111",
@@ -2293,17 +1964,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 99.1304375,
-      "t_samples": 4758261,
-      "dur_sec": 1.9565208333333333,
-      "anchor": "piano-onset:m39:right:beat0",
-      "midi_tick": 72960,
-      "t_midi_sec": 99.130448,
-      "engine_note": {
-        "measure": 39,
-        "hand": "right",
-        "t_sec": 99.1304375
-      }
+      "t_sec": 98.750125,
+      "t_samples": 4740006,
+      "dur_sec": 1.9339791666666666,
+      "anchor": "arrangement-onset:m39:beat0",
+      "midi_tick": 58368,
+      "t_midi_sec": 98.750123,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v112",
@@ -2312,17 +1980,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 103.69564583333333,
-      "t_samples": 4977391,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m40:right:beat1",
-      "midi_tick": 76320,
-      "t_midi_sec": 103.695666,
-      "engine_note": {
-        "measure": 40,
-        "hand": "right",
-        "t_sec": 103.69564583333333
-      }
+      "t_sec": 103.3026875,
+      "t_samples": 4958529,
+      "dur_sec": 0.6441458333333333,
+      "anchor": "arrangement-onset:m40:beat3",
+      "midi_tick": 61056,
+      "t_midi_sec": 103.302678,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v113",
@@ -2331,17 +1996,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 104.34783333333333,
-      "t_samples": 5008696,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m41:right:beat0",
-      "midi_tick": 76800,
-      "t_midi_sec": 104.34784,
-      "engine_note": {
-        "measure": 41,
-        "hand": "right",
-        "t_sec": 104.34783333333333
-      }
+      "t_sec": 103.94683333333333,
+      "t_samples": 4989448,
+      "dur_sec": 0.9135833333333333,
+      "anchor": "arrangement-onset:m41:beat0",
+      "midi_tick": 61440,
+      "t_midi_sec": 103.946835,
+      "engine_note": null,
+      "gain_db": 1.41
     },
     {
       "id": "v114",
@@ -2350,17 +2012,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 105.32608333333333,
-      "t_samples": 5055652,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m41:right:beat1",
-      "midi_tick": 77520,
-      "t_midi_sec": 105.326101,
-      "engine_note": {
-        "measure": 41,
-        "hand": "right",
-        "t_sec": 105.32608333333333
-      }
+      "t_sec": 104.86041666666667,
+      "t_samples": 5033300,
+      "dur_sec": 0.3878333333333333,
+      "anchor": "arrangement-onset:m41:beat1.4010416666666667",
+      "midi_tick": 61978,
+      "t_midi_sec": 104.860418,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v115",
@@ -2369,17 +2028,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 105.65216666666667,
-      "t_samples": 5071304,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m41:right:beat2",
-      "midi_tick": 77760,
-      "t_midi_sec": 105.652188,
-      "engine_note": {
-        "measure": 41,
-        "hand": "right",
-        "t_sec": 105.65216666666667
-      }
+      "t_sec": 105.24825,
+      "t_samples": 5051916,
+      "dur_sec": 0.6417916666666666,
+      "anchor": "arrangement-onset:m41:beat2",
+      "midi_tick": 62208,
+      "t_midi_sec": 105.248244,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v116",
@@ -2388,17 +2044,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 106.30435416666667,
-      "t_samples": 5102609,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m41:right:beat3",
-      "midi_tick": 78240,
-      "t_midi_sec": 106.304362,
-      "engine_note": {
-        "measure": 41,
-        "hand": "right",
-        "t_sec": 106.30435416666667
-      }
+      "t_sec": 105.89004166666666,
+      "t_samples": 5082722,
+      "dur_sec": 0.6373125,
+      "anchor": "arrangement-onset:m41:beat3",
+      "midi_tick": 62592,
+      "t_midi_sec": 105.890051,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v117",
@@ -2407,17 +2060,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 106.95652083333333,
-      "t_samples": 5133913,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m42:right:beat0",
-      "midi_tick": 78720,
-      "t_midi_sec": 106.956536,
-      "engine_note": {
-        "measure": 42,
-        "hand": "right",
-        "t_sec": 106.95652083333333
-      }
+      "t_sec": 106.52735416666667,
+      "t_samples": 5113313,
+      "dur_sec": 0.888125,
+      "anchor": "arrangement-onset:m42:beat0",
+      "midi_tick": 62976,
+      "t_midi_sec": 106.527353,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v118",
@@ -2426,17 +2076,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 60,
-      "t_sec": 107.93479166666667,
-      "t_samples": 5180870,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m42:right:beat1",
-      "midi_tick": 79440,
-      "t_midi_sec": 107.934797,
-      "engine_note": {
-        "measure": 42,
-        "hand": "right",
-        "t_sec": 107.93479166666667
-      }
+      "t_sec": 107.41547916666667,
+      "t_samples": 5155943,
+      "dur_sec": 0.379125,
+      "anchor": "arrangement-onset:m42:beat1.4010416666666667",
+      "midi_tick": 63514,
+      "t_midi_sec": 107.415486,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v119",
@@ -2445,17 +2092,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 60,
-      "t_sec": 108.260875,
-      "t_samples": 5196522,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m42:right:beat2",
-      "midi_tick": 79680,
-      "t_midi_sec": 108.260884,
-      "engine_note": {
-        "measure": 42,
-        "hand": "right",
-        "t_sec": 108.260875
-      }
+      "t_sec": 107.79460416666667,
+      "t_samples": 5174141,
+      "dur_sec": 0.6331875,
+      "anchor": "arrangement-onset:m42:beat2",
+      "midi_tick": 63744,
+      "t_midi_sec": 107.794594,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v120",
@@ -2464,17 +2108,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 62,
-      "t_sec": 108.91304166666667,
-      "t_samples": 5227826,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m42:right:beat3",
-      "midi_tick": 80160,
-      "t_midi_sec": 108.913058,
-      "engine_note": {
-        "measure": 42,
-        "hand": "right",
-        "t_sec": 108.91304166666667
-      }
+      "t_sec": 108.42779166666666,
+      "t_samples": 5204534,
+      "dur_sec": 0.6348541666666667,
+      "anchor": "arrangement-onset:m42:beat3",
+      "midi_tick": 64128,
+      "t_midi_sec": 108.427786,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v121",
@@ -2483,17 +2124,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 63,
-      "t_sec": 109.56520833333333,
-      "t_samples": 5259130,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m43:right:beat0",
-      "midi_tick": 80640,
-      "t_midi_sec": 109.565232,
-      "engine_note": {
-        "measure": 43,
-        "hand": "right",
-        "t_sec": 109.56520833333333
-      }
+      "t_sec": 109.06264583333333,
+      "t_samples": 5235007,
+      "dur_sec": 0.6375625,
+      "anchor": "arrangement-onset:m43:beat0",
+      "midi_tick": 64512,
+      "t_midi_sec": 109.062639,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v122",
@@ -2502,17 +2140,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 65,
-      "t_sec": 110.21739583333333,
-      "t_samples": 5290435,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m43:right:beat1",
-      "midi_tick": 81120,
-      "t_midi_sec": 110.217406,
-      "engine_note": {
-        "measure": 43,
-        "hand": "right",
-        "t_sec": 110.21739583333333
-      }
+      "t_sec": 109.70020833333334,
+      "t_samples": 5265610,
+      "dur_sec": 0.6348541666666667,
+      "anchor": "arrangement-onset:m43:beat1",
+      "midi_tick": 64896,
+      "t_midi_sec": 109.700218,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v123",
@@ -2521,17 +2156,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 67,
-      "t_sec": 110.8695625,
-      "t_samples": 5321739,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m43:right:beat2",
-      "midi_tick": 81600,
-      "t_midi_sec": 110.86958,
-      "engine_note": {
-        "measure": 43,
-        "hand": "right",
-        "t_sec": 110.8695625
-      }
+      "t_sec": 110.3350625,
+      "t_samples": 5296083,
+      "dur_sec": 0.6332083333333334,
+      "anchor": "arrangement-onset:m43:beat2",
+      "midi_tick": 65280,
+      "t_midi_sec": 110.335072,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v124",
@@ -2540,17 +2172,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 69,
-      "t_sec": 111.52172916666666,
-      "t_samples": 5353043,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m43:right:beat3",
-      "midi_tick": 82080,
-      "t_midi_sec": 111.521754,
-      "engine_note": {
-        "measure": 43,
-        "hand": "right",
-        "t_sec": 111.52172916666666
-      }
+      "t_sec": 110.96827083333334,
+      "t_samples": 5326477,
+      "dur_sec": 0.6329375,
+      "anchor": "arrangement-onset:m43:beat3",
+      "midi_tick": 65664,
+      "t_midi_sec": 110.968263,
+      "engine_note": null,
+      "gain_db": 2.41
     },
     {
       "id": "v125",
@@ -2559,17 +2188,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 112.17391666666667,
-      "t_samples": 5384348,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m44:right:beat0",
-      "midi_tick": 82560,
-      "t_midi_sec": 112.173928,
-      "engine_note": {
-        "measure": 44,
-        "hand": "right",
-        "t_sec": 112.17391666666667
-      }
+      "t_sec": 111.60120833333333,
+      "t_samples": 5356858,
+      "dur_sec": 1.5925,
+      "anchor": "arrangement-onset:m44:beat0",
+      "midi_tick": 66048,
+      "t_midi_sec": 111.601208,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v126",
@@ -2578,17 +2204,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 114.1304375,
-      "t_samples": 5478261,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m44:right:beat1",
-      "midi_tick": 84000,
-      "t_midi_sec": 114.13045,
-      "engine_note": {
-        "measure": 44,
-        "hand": "right",
-        "t_sec": 114.1304375
-      }
+      "t_sec": 113.51460416666667,
+      "t_samples": 5448701,
+      "dur_sec": 0.6475,
+      "anchor": "arrangement-onset:m44:beat3",
+      "midi_tick": 67200,
+      "t_midi_sec": 113.514613,
+      "engine_note": null,
+      "gain_db": 0
     },
     {
       "id": "v127",
@@ -2597,17 +2220,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 114.78260416666667,
-      "t_samples": 5509565,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m45:right:beat0",
-      "midi_tick": 84480,
-      "t_midi_sec": 114.782624,
-      "engine_note": {
-        "measure": 45,
-        "hand": "right",
-        "t_sec": 114.78260416666667
-      }
+      "t_sec": 114.16210416666667,
+      "t_samples": 5479781,
+      "dur_sec": 0.9135833333333333,
+      "anchor": "arrangement-onset:m45:beat0",
+      "midi_tick": 67584,
+      "t_midi_sec": 114.162114,
+      "engine_note": null,
+      "gain_db": 1.41
     },
     {
       "id": "v128",
@@ -2616,17 +2236,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 62,
-      "t_sec": 115.760875,
-      "t_samples": 5556522,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m45:right:beat1",
-      "midi_tick": 85200,
-      "t_midi_sec": 115.760885,
-      "engine_note": {
-        "measure": 45,
-        "hand": "right",
-        "t_sec": 115.760875
-      }
+      "t_sec": 115.0756875,
+      "t_samples": 5523633,
+      "dur_sec": 0.3878333333333333,
+      "anchor": "arrangement-onset:m45:beat1.4010416666666667",
+      "midi_tick": 68122,
+      "t_midi_sec": 115.075697,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v129",
@@ -2635,17 +2252,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 62,
-      "t_sec": 116.08695833333333,
-      "t_samples": 5572174,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m45:right:beat2",
-      "midi_tick": 85440,
-      "t_midi_sec": 116.086972,
-      "engine_note": {
-        "measure": 45,
-        "hand": "right",
-        "t_sec": 116.08695833333333
-      }
+      "t_sec": 115.46352083333333,
+      "t_samples": 5542249,
+      "dur_sec": 0.6418125,
+      "anchor": "arrangement-onset:m45:beat2",
+      "midi_tick": 68352,
+      "t_midi_sec": 115.463523,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v130",
@@ -2654,17 +2268,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 116.739125,
-      "t_samples": 5603478,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m45:right:beat3",
-      "midi_tick": 85920,
-      "t_midi_sec": 116.739146,
-      "engine_note": {
-        "measure": 45,
-        "hand": "right",
-        "t_sec": 116.739125
-      }
+      "t_sec": 116.10533333333333,
+      "t_samples": 5573056,
+      "dur_sec": 0.6372916666666667,
+      "anchor": "arrangement-onset:m45:beat3",
+      "midi_tick": 68736,
+      "t_midi_sec": 116.10533,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v131",
@@ -2673,17 +2284,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 117.3913125,
-      "t_samples": 5634783,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m46:right:beat0",
-      "midi_tick": 86400,
-      "t_midi_sec": 117.39132,
-      "engine_note": {
-        "measure": 46,
-        "hand": "right",
-        "t_sec": 117.3913125
-      }
+      "t_sec": 116.742625,
+      "t_samples": 5603646,
+      "dur_sec": 0.8881458333333333,
+      "anchor": "arrangement-onset:m46:beat0",
+      "midi_tick": 69120,
+      "t_midi_sec": 116.742631,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v132",
@@ -2692,17 +2300,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 60,
-      "t_sec": 118.3695625,
-      "t_samples": 5681739,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m46:right:beat1",
-      "midi_tick": 87120,
-      "t_midi_sec": 118.369581,
-      "engine_note": {
-        "measure": 46,
-        "hand": "right",
-        "t_sec": 118.3695625
-      }
+      "t_sec": 117.63077083333333,
+      "t_samples": 5646277,
+      "dur_sec": 0.3791041666666667,
+      "anchor": "arrangement-onset:m46:beat1.4010416666666667",
+      "midi_tick": 69658,
+      "t_midi_sec": 117.630765,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v133",
@@ -2711,17 +2316,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 60,
-      "t_sec": 118.69564583333333,
-      "t_samples": 5697391,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m46:right:beat2",
-      "midi_tick": 87360,
-      "t_midi_sec": 118.695668,
-      "engine_note": {
-        "measure": 46,
-        "hand": "right",
-        "t_sec": 118.69564583333333
-      }
+      "t_sec": 118.009875,
+      "t_samples": 5664474,
+      "dur_sec": 0.6331875,
+      "anchor": "arrangement-onset:m46:beat2",
+      "midi_tick": 69888,
+      "t_midi_sec": 118.009872,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v134",
@@ -2730,17 +2332,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 119.34783333333333,
-      "t_samples": 5728696,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m46:right:beat3",
-      "midi_tick": 87840,
-      "t_midi_sec": 119.347842,
-      "engine_note": {
-        "measure": 46,
-        "hand": "right",
-        "t_sec": 119.34783333333333
-      }
+      "t_sec": 118.6430625,
+      "t_samples": 5694867,
+      "dur_sec": 0.6348541666666667,
+      "anchor": "arrangement-onset:m46:beat3",
+      "midi_tick": 70272,
+      "t_midi_sec": 118.643064,
+      "engine_note": null,
+      "gain_db": 3.61
     },
     {
       "id": "v135",
@@ -2749,17 +2348,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 71,
-      "t_sec": 120,
-      "t_samples": 5760000,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m47:right:beat0",
-      "midi_tick": 88320,
-      "t_midi_sec": 120.000016,
-      "engine_note": {
-        "measure": 47,
-        "hand": "right",
-        "t_sec": 120
-      }
+      "t_sec": 119.27791666666667,
+      "t_samples": 5725340,
+      "dur_sec": 0.6375833333333333,
+      "anchor": "arrangement-onset:m47:beat0",
+      "midi_tick": 70656,
+      "t_midi_sec": 119.277918,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v136",
@@ -2768,17 +2364,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 72,
-      "t_sec": 120.65216666666667,
-      "t_samples": 5791304,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m47:right:beat1",
-      "midi_tick": 88800,
-      "t_midi_sec": 120.65219,
-      "engine_note": {
-        "measure": 47,
-        "hand": "right",
-        "t_sec": 120.65216666666667
-      }
+      "t_sec": 119.9155,
+      "t_samples": 5755944,
+      "dur_sec": 0.6348541666666667,
+      "anchor": "arrangement-onset:m47:beat1",
+      "midi_tick": 71040,
+      "t_midi_sec": 119.915497,
+      "engine_note": null,
+      "gain_db": 3.61
     },
     {
       "id": "v137",
@@ -2787,17 +2380,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 74,
-      "t_sec": 121.30435416666667,
-      "t_samples": 5822609,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m47:right:beat2",
-      "midi_tick": 89280,
-      "t_midi_sec": 121.304364,
-      "engine_note": {
-        "measure": 47,
-        "hand": "right",
-        "t_sec": 121.30435416666667
-      }
+      "t_sec": 120.55035416666666,
+      "t_samples": 5786417,
+      "dur_sec": 0.6331875,
+      "anchor": "arrangement-onset:m47:beat2",
+      "midi_tick": 71424,
+      "t_midi_sec": 120.55035,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v138",
@@ -2806,17 +2396,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 121.95652083333333,
-      "t_samples": 5853913,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m47:right:beat3",
-      "midi_tick": 89760,
-      "t_midi_sec": 121.956538,
-      "engine_note": {
-        "measure": 47,
-        "hand": "right",
-        "t_sec": 121.95652083333333
-      }
+      "t_sec": 121.18354166666667,
+      "t_samples": 5816810,
+      "dur_sec": 0.6329375,
+      "anchor": "arrangement-onset:m47:beat3",
+      "midi_tick": 71808,
+      "t_midi_sec": 121.183542,
+      "engine_note": null,
+      "gain_db": 1.91
     },
     {
       "id": "v139",
@@ -2825,17 +2412,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 122.6086875,
-      "t_samples": 5885217,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m48:right:beat0",
-      "midi_tick": 90240,
-      "t_midi_sec": 122.608712,
-      "engine_note": {
-        "measure": 48,
-        "hand": "right",
-        "t_sec": 122.6086875
-      }
+      "t_sec": 121.81647916666667,
+      "t_samples": 5847191,
+      "dur_sec": 1.5925,
+      "anchor": "arrangement-onset:m48:beat0",
+      "midi_tick": 72192,
+      "t_midi_sec": 121.816487,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v140",
@@ -2844,17 +2428,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 65,
-      "t_sec": 124.56520833333333,
-      "t_samples": 5979130,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m48:right:beat1",
-      "midi_tick": 91680,
-      "t_midi_sec": 124.565234,
-      "engine_note": {
-        "measure": 48,
-        "hand": "right",
-        "t_sec": 124.56520833333333
-      }
+      "t_sec": 123.72989583333333,
+      "t_samples": 5939035,
+      "dur_sec": 0.6475,
+      "anchor": "arrangement-onset:m48:beat3",
+      "midi_tick": 73344,
+      "t_midi_sec": 123.729892,
+      "engine_note": null,
+      "gain_db": 0
     },
     {
       "id": "v141",
@@ -2863,17 +2444,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 74,
-      "t_sec": 125.21739583333333,
-      "t_samples": 6010435,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m49:right:beat0",
-      "midi_tick": 92160,
-      "t_midi_sec": 125.217408,
-      "engine_note": {
-        "measure": 49,
-        "hand": "right",
-        "t_sec": 125.21739583333333
-      }
+      "t_sec": 124.37739583333334,
+      "t_samples": 5970115,
+      "dur_sec": 0.9135833333333333,
+      "anchor": "arrangement-onset:m49:beat0",
+      "midi_tick": 73728,
+      "t_midi_sec": 124.377392,
+      "engine_note": null,
+      "gain_db": 3.16
     },
     {
       "id": "v142",
@@ -2882,17 +2460,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 74,
-      "t_sec": 126.19564583333333,
-      "t_samples": 6057391,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m49:right:beat1",
-      "midi_tick": 92880,
-      "t_midi_sec": 126.195669,
-      "engine_note": {
-        "measure": 49,
-        "hand": "right",
-        "t_sec": 126.19564583333333
-      }
+      "t_sec": 125.29097916666667,
+      "t_samples": 6013967,
+      "dur_sec": 0.3878125,
+      "anchor": "arrangement-onset:m49:beat1.4010416666666667",
+      "midi_tick": 74266,
+      "t_midi_sec": 125.290975,
+      "engine_note": null,
+      "gain_db": 1.98
     },
     {
       "id": "v143",
@@ -2901,17 +2476,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 72,
-      "t_sec": 126.52172916666666,
-      "t_samples": 6073043,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m49:right:beat2",
-      "midi_tick": 93120,
-      "t_midi_sec": 126.521756,
-      "engine_note": {
-        "measure": 49,
-        "hand": "right",
-        "t_sec": 126.52172916666666
-      }
+      "t_sec": 125.67879166666667,
+      "t_samples": 6032582,
+      "dur_sec": 0.3209166666666667,
+      "anchor": "arrangement-onset:m49:beat2",
+      "midi_tick": 74496,
+      "t_midi_sec": 125.678801,
+      "engine_note": null,
+      "gain_db": 2.81
     },
     {
       "id": "v144",
@@ -2920,17 +2492,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 70,
-      "t_sec": 127.17391666666667,
-      "t_samples": 6104348,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m49:right:beat3",
-      "midi_tick": 93600,
-      "t_midi_sec": 127.17393,
-      "engine_note": {
-        "measure": 49,
-        "hand": "right",
-        "t_sec": 127.17391666666667
-      }
+      "t_sec": 126.32060416666667,
+      "t_samples": 6063389,
+      "dur_sec": 0.6373125,
+      "anchor": "arrangement-onset:m49:beat3",
+      "midi_tick": 74880,
+      "t_midi_sec": 126.320609,
+      "engine_note": null,
+      "gain_db": 1.83
     },
     {
       "id": "v145",
@@ -2939,17 +2508,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 70,
-      "t_sec": 127.82608333333333,
-      "t_samples": 6135652,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m50:right:beat0",
-      "midi_tick": 94080,
-      "t_midi_sec": 127.826104,
-      "engine_note": {
-        "measure": 50,
-        "hand": "right",
-        "t_sec": 127.82608333333333
-      }
+      "t_sec": 126.95791666666666,
+      "t_samples": 6093980,
+      "dur_sec": 0.888125,
+      "anchor": "arrangement-onset:m50:beat0",
+      "midi_tick": 75264,
+      "t_midi_sec": 126.95791,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v146",
@@ -2958,17 +2524,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 69,
-      "t_sec": 128.80435416666666,
-      "t_samples": 6182609,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m50:right:beat1",
-      "midi_tick": 94800,
-      "t_midi_sec": 128.804365,
-      "engine_note": {
-        "measure": 50,
-        "hand": "right",
-        "t_sec": 128.80435416666666
-      }
+      "t_sec": 127.84604166666666,
+      "t_samples": 6136610,
+      "dur_sec": 0.3791041666666667,
+      "anchor": "arrangement-onset:m50:beat1.4010416666666667",
+      "midi_tick": 75802,
+      "t_midi_sec": 127.846044,
+      "engine_note": null,
+      "gain_db": 2.53
     },
     {
       "id": "v147",
@@ -2977,17 +2540,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 69,
-      "t_sec": 129.1304375,
-      "t_samples": 6198261,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m50:right:beat2",
-      "midi_tick": 95040,
-      "t_midi_sec": 129.130452,
-      "engine_note": {
-        "measure": 50,
-        "hand": "right",
-        "t_sec": 129.1304375
-      }
+      "t_sec": 128.22514583333333,
+      "t_samples": 6154807,
+      "dur_sec": 0.6331875,
+      "anchor": "arrangement-onset:m50:beat2",
+      "midi_tick": 76032,
+      "t_midi_sec": 128.225151,
+      "engine_note": null,
+      "gain_db": 3.69
     },
     {
       "id": "v148",
@@ -2996,17 +2556,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 129.78260416666666,
-      "t_samples": 6229565,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m50:right:beat3",
-      "midi_tick": 95520,
-      "t_midi_sec": 129.782626,
-      "engine_note": {
-        "measure": 50,
-        "hand": "right",
-        "t_sec": 129.78260416666666
-      }
+      "t_sec": 128.85833333333332,
+      "t_samples": 6185200,
+      "dur_sec": 0.6348541666666667,
+      "anchor": "arrangement-onset:m50:beat3",
+      "midi_tick": 76416,
+      "t_midi_sec": 128.858343,
+      "engine_note": null,
+      "gain_db": 3.11
     },
     {
       "id": "v149",
@@ -3015,17 +2572,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 130.43479166666665,
-      "t_samples": 6260870,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m51:right:beat0",
-      "midi_tick": 96000,
-      "t_midi_sec": 130.4348,
-      "engine_note": {
-        "measure": 51,
-        "hand": "right",
-        "t_sec": 130.43479166666665
-      }
+      "t_sec": 129.4931875,
+      "t_samples": 6215673,
+      "dur_sec": 0.6375833333333333,
+      "anchor": "arrangement-onset:m51:beat0",
+      "midi_tick": 76800,
+      "t_midi_sec": 129.493196,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v150",
@@ -3034,17 +2588,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 69,
-      "t_sec": 131.08695833333334,
-      "t_samples": 6292174,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m51:right:beat1",
-      "midi_tick": 96480,
-      "t_midi_sec": 131.086974,
-      "engine_note": {
-        "measure": 51,
-        "hand": "right",
-        "t_sec": 131.08695833333334
-      }
+      "t_sec": 130.13077083333334,
+      "t_samples": 6246277,
+      "dur_sec": 0.6348541666666667,
+      "anchor": "arrangement-onset:m51:beat1",
+      "midi_tick": 77184,
+      "t_midi_sec": 130.130775,
+      "engine_note": null,
+      "gain_db": 2.86
     },
     {
       "id": "v151",
@@ -3053,17 +2604,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 131.739125,
-      "t_samples": 6323478,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m51:right:beat2",
-      "midi_tick": 96960,
-      "t_midi_sec": 131.739148,
-      "engine_note": {
-        "measure": 51,
-        "hand": "right",
-        "t_sec": 131.739125
-      }
+      "t_sec": 130.765625,
+      "t_samples": 6276750,
+      "dur_sec": 0.6331875,
+      "anchor": "arrangement-onset:m51:beat2",
+      "midi_tick": 77568,
+      "t_midi_sec": 130.765629,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v152",
@@ -3072,17 +2620,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 132.3913125,
-      "t_samples": 6354783,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m51:right:beat3",
-      "midi_tick": 97440,
-      "t_midi_sec": 132.391322,
-      "engine_note": {
-        "measure": 51,
-        "hand": "right",
-        "t_sec": 132.3913125
-      }
+      "t_sec": 131.3988125,
+      "t_samples": 6307143,
+      "dur_sec": 0.6329583333333333,
+      "anchor": "arrangement-onset:m51:beat3",
+      "midi_tick": 77952,
+      "t_midi_sec": 131.398821,
+      "engine_note": null,
+      "gain_db": 1.91
     },
     {
       "id": "v153",
@@ -3091,17 +2636,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 70,
-      "t_sec": 133.04347916666666,
-      "t_samples": 6386087,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m52:right:beat0",
-      "midi_tick": 97920,
-      "t_midi_sec": 133.043496,
-      "engine_note": {
-        "measure": 52,
-        "hand": "right",
-        "t_sec": 133.04347916666666
-      }
+      "t_sec": 132.03177083333333,
+      "t_samples": 6337525,
+      "dur_sec": 1.5925,
+      "anchor": "arrangement-onset:m52:beat0",
+      "midi_tick": 78336,
+      "t_midi_sec": 132.031766,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v154",
@@ -3110,17 +2652,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 135,
-      "t_samples": 6480000,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m52:right:beat1",
-      "midi_tick": 99360,
-      "t_midi_sec": 135.000018,
-      "engine_note": {
-        "measure": 52,
-        "hand": "right",
-        "t_sec": 135
-      }
+      "t_sec": 133.94516666666667,
+      "t_samples": 6429368,
+      "dur_sec": 0.6475,
+      "anchor": "arrangement-onset:m52:beat3",
+      "midi_tick": 79488,
+      "t_midi_sec": 133.94517,
+      "engine_note": null,
+      "gain_db": 0.75
     },
     {
       "id": "v155",
@@ -3129,17 +2668,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 135.65216666666666,
-      "t_samples": 6511304,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m53:right:beat0",
-      "midi_tick": 99840,
-      "t_midi_sec": 135.652192,
-      "engine_note": {
-        "measure": 53,
-        "hand": "right",
-        "t_sec": 135.65216666666666
-      }
+      "t_sec": 134.59266666666667,
+      "t_samples": 6460448,
+      "dur_sec": 0.9135833333333333,
+      "anchor": "arrangement-onset:m53:beat0",
+      "midi_tick": 79872,
+      "t_midi_sec": 134.592671,
+      "engine_note": null,
+      "gain_db": 2.16
     },
     {
       "id": "v156",
@@ -3148,17 +2684,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 67,
-      "t_sec": 136.6304375,
-      "t_samples": 6558261,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m53:right:beat1",
-      "midi_tick": 100560,
-      "t_midi_sec": 136.630453,
-      "engine_note": {
-        "measure": 53,
-        "hand": "right",
-        "t_sec": 136.6304375
-      }
+      "t_sec": 135.50625,
+      "t_samples": 6504300,
+      "dur_sec": 0.3878333333333333,
+      "anchor": "arrangement-onset:m53:beat1.4010416666666667",
+      "midi_tick": 80410,
+      "t_midi_sec": 135.506254,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v157",
@@ -3167,17 +2700,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 67,
-      "t_sec": 136.95652083333334,
-      "t_samples": 6573913,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m53:right:beat2",
-      "midi_tick": 100800,
-      "t_midi_sec": 136.95654,
-      "engine_note": {
-        "measure": 53,
-        "hand": "right",
-        "t_sec": 136.95652083333334
-      }
+      "t_sec": 135.89408333333333,
+      "t_samples": 6522916,
+      "dur_sec": 0.6418125,
+      "anchor": "arrangement-onset:m53:beat2",
+      "midi_tick": 80640,
+      "t_midi_sec": 135.89408,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v158",
@@ -3186,17 +2716,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 137.6086875,
-      "t_samples": 6605217,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m53:right:beat3",
-      "midi_tick": 101280,
-      "t_midi_sec": 137.608714,
-      "engine_note": {
-        "measure": 53,
-        "hand": "right",
-        "t_sec": 137.6086875
-      }
+      "t_sec": 136.53589583333334,
+      "t_samples": 6553723,
+      "dur_sec": 0.6372916666666667,
+      "anchor": "arrangement-onset:m53:beat3",
+      "midi_tick": 81024,
+      "t_midi_sec": 136.535887,
+      "engine_note": null,
+      "gain_db": 1.83
     },
     {
       "id": "v159",
@@ -3205,17 +2732,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 70,
-      "t_sec": 138.260875,
-      "t_samples": 6636522,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m54:right:beat0",
-      "midi_tick": 101760,
-      "t_midi_sec": 138.260888,
-      "engine_note": {
-        "measure": 54,
-        "hand": "right",
-        "t_sec": 138.260875
-      }
+      "t_sec": 137.1731875,
+      "t_samples": 6584313,
+      "dur_sec": 0.888125,
+      "anchor": "arrangement-onset:m54:beat0",
+      "midi_tick": 81408,
+      "t_midi_sec": 137.173189,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v160",
@@ -3224,17 +2748,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 139.239125,
-      "t_samples": 6683478,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m54:right:beat1",
-      "midi_tick": 102480,
-      "t_midi_sec": 139.239149,
-      "engine_note": {
-        "measure": 54,
-        "hand": "right",
-        "t_sec": 139.239125
-      }
+      "t_sec": 138.0613125,
+      "t_samples": 6626943,
+      "dur_sec": 0.379125,
+      "anchor": "arrangement-onset:m54:beat1.4010416666666667",
+      "midi_tick": 81946,
+      "t_midi_sec": 138.061322,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v161",
@@ -3243,17 +2764,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 139.56520833333335,
-      "t_samples": 6699130,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m54:right:beat2",
-      "midi_tick": 102720,
-      "t_midi_sec": 139.565236,
-      "engine_note": {
-        "measure": 54,
-        "hand": "right",
-        "t_sec": 139.56520833333335
-      }
+      "t_sec": 138.4404375,
+      "t_samples": 6645141,
+      "dur_sec": 0.6331875,
+      "anchor": "arrangement-onset:m54:beat2",
+      "midi_tick": 82176,
+      "t_midi_sec": 138.44043,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v162",
@@ -3262,17 +2780,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 140.21739583333334,
-      "t_samples": 6730435,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m54:right:beat3",
-      "midi_tick": 103200,
-      "t_midi_sec": 140.21741,
-      "engine_note": {
-        "measure": 54,
-        "hand": "right",
-        "t_sec": 140.21739583333334
-      }
+      "t_sec": 139.073625,
+      "t_samples": 6675534,
+      "dur_sec": 0.6348541666666667,
+      "anchor": "arrangement-onset:m54:beat3",
+      "midi_tick": 82560,
+      "t_midi_sec": 139.073622,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v163",
@@ -3281,17 +2796,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 67,
-      "t_sec": 140.8695625,
-      "t_samples": 6761739,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m55:right:beat0",
-      "midi_tick": 103680,
-      "t_midi_sec": 140.869584,
-      "engine_note": {
-        "measure": 55,
-        "hand": "right",
-        "t_sec": 140.8695625
-      }
+      "t_sec": 139.70847916666668,
+      "t_samples": 6706007,
+      "dur_sec": 0.6375833333333333,
+      "anchor": "arrangement-onset:m55:beat0",
+      "midi_tick": 82944,
+      "t_midi_sec": 139.708475,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v164",
@@ -3300,17 +2812,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 70,
-      "t_sec": 141.52172916666666,
-      "t_samples": 6793043,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m55:right:beat1",
-      "midi_tick": 104160,
-      "t_midi_sec": 141.521758,
-      "engine_note": {
-        "measure": 55,
-        "hand": "right",
-        "t_sec": 141.52172916666666
-      }
+      "t_sec": 140.3460625,
+      "t_samples": 6736611,
+      "dur_sec": 0.6348541666666667,
+      "anchor": "arrangement-onset:m55:beat1",
+      "midi_tick": 83328,
+      "t_midi_sec": 140.346054,
+      "engine_note": null,
+      "gain_db": 3.11
     },
     {
       "id": "v165",
@@ -3319,17 +2828,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 142.17391666666666,
-      "t_samples": 6824348,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m55:right:beat2",
-      "midi_tick": 104640,
-      "t_midi_sec": 142.173932,
-      "engine_note": {
-        "measure": 55,
-        "hand": "right",
-        "t_sec": 142.17391666666666
-      }
+      "t_sec": 140.98091666666667,
+      "t_samples": 6767084,
+      "dur_sec": 0.6331875,
+      "anchor": "arrangement-onset:m55:beat2",
+      "midi_tick": 83712,
+      "t_midi_sec": 140.980907,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v166",
@@ -3338,17 +2844,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 72,
-      "t_sec": 142.82608333333334,
-      "t_samples": 6855652,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m55:right:beat3",
-      "midi_tick": 105120,
-      "t_midi_sec": 142.826106,
-      "engine_note": {
-        "measure": 55,
-        "hand": "right",
-        "t_sec": 142.82608333333334
-      }
+      "t_sec": 141.61410416666666,
+      "t_samples": 6797477,
+      "dur_sec": 0.6329375,
+      "anchor": "arrangement-onset:m55:beat3",
+      "midi_tick": 84096,
+      "t_midi_sec": 141.614099,
+      "engine_note": null,
+      "gain_db": 3.16
     },
     {
       "id": "v167",
@@ -3357,17 +2860,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 70,
-      "t_sec": 143.47827083333334,
-      "t_samples": 6886957,
-      "dur_sec": 1.9565208333333333,
-      "anchor": "piano-onset:m56:right:beat0",
-      "midi_tick": 105600,
-      "t_midi_sec": 143.47828,
-      "engine_note": {
-        "measure": 56,
-        "hand": "right",
-        "t_sec": 143.47827083333334
-      }
+      "t_sec": 142.24704166666666,
+      "t_samples": 6827858,
+      "dur_sec": 1.9134166666666668,
+      "anchor": "arrangement-onset:m56:beat0",
+      "midi_tick": 84480,
+      "t_midi_sec": 142.247044,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v168",
@@ -3376,17 +2876,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 148.04347916666666,
-      "t_samples": 7106087,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m57:right:beat1",
-      "midi_tick": 108960,
-      "t_midi_sec": 148.043498,
-      "engine_note": {
-        "measure": 57,
-        "hand": "right",
-        "t_sec": 148.04347916666666
-      }
+      "t_sec": 146.75116666666668,
+      "t_samples": 7044056,
+      "dur_sec": 0.6372916666666667,
+      "anchor": "arrangement-onset:m57:beat3",
+      "midi_tick": 87168,
+      "t_midi_sec": 146.751166,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v169",
@@ -3395,17 +2892,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 148.69564583333334,
-      "t_samples": 7137391,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m58:right:beat0",
-      "midi_tick": 109440,
-      "t_midi_sec": 148.695672,
-      "engine_note": {
-        "measure": 58,
-        "hand": "right",
-        "t_sec": 148.69564583333334
-      }
+      "t_sec": 147.38845833333335,
+      "t_samples": 7074646,
+      "dur_sec": 0.9039791666666667,
+      "anchor": "arrangement-onset:m58:beat0",
+      "midi_tick": 87552,
+      "t_midi_sec": 147.388467,
+      "engine_note": null,
+      "gain_db": 1.41
     },
     {
       "id": "v170",
@@ -3414,17 +2908,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 149.67391666666666,
-      "t_samples": 7184348,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m58:right:beat1",
-      "midi_tick": 110160,
-      "t_midi_sec": 149.673933,
-      "engine_note": {
-        "measure": 58,
-        "hand": "right",
-        "t_sec": 149.67391666666666
-      }
+      "t_sec": 148.2924375,
+      "t_samples": 7118037,
+      "dur_sec": 0.3837291666666667,
+      "anchor": "arrangement-onset:m58:beat1.4010416666666667",
+      "midi_tick": 88090,
+      "t_midi_sec": 148.292434,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v171",
@@ -3433,17 +2924,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 62,
-      "t_sec": 150,
-      "t_samples": 7200000,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m58:right:beat2",
-      "midi_tick": 110400,
-      "t_midi_sec": 150.00002,
-      "engine_note": {
-        "measure": 58,
-        "hand": "right",
-        "t_sec": 150
-      }
+      "t_sec": 148.67616666666666,
+      "t_samples": 7136456,
+      "dur_sec": 0.6350625,
+      "anchor": "arrangement-onset:m58:beat2",
+      "midi_tick": 88320,
+      "t_midi_sec": 148.676176,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v172",
@@ -3452,17 +2940,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 150.65216666666666,
-      "t_samples": 7231304,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m58:right:beat3",
-      "midi_tick": 110880,
-      "t_midi_sec": 150.652194,
-      "engine_note": {
-        "measure": 58,
-        "hand": "right",
-        "t_sec": 150.65216666666666
-      }
+      "t_sec": 149.31122916666666,
+      "t_samples": 7166939,
+      "dur_sec": 0.6305833333333334,
+      "anchor": "arrangement-onset:m58:beat3",
+      "midi_tick": 88704,
+      "t_midi_sec": 149.311225,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v173",
@@ -3471,17 +2956,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 151.30435416666666,
-      "t_samples": 7262609,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m59:right:beat0",
-      "midi_tick": 111360,
-      "t_midi_sec": 151.304368,
-      "engine_note": {
-        "measure": 59,
-        "hand": "right",
-        "t_sec": 151.30435416666666
-      }
+      "t_sec": 149.9418125,
+      "t_samples": 7197207,
+      "dur_sec": 0.8787916666666666,
+      "anchor": "arrangement-onset:m59:beat0",
+      "midi_tick": 89088,
+      "t_midi_sec": 149.941815,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v174",
@@ -3490,17 +2972,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 60,
-      "t_sec": 152.28260416666666,
-      "t_samples": 7309565,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m59:right:beat1",
-      "midi_tick": 112080,
-      "t_midi_sec": 152.282629,
-      "engine_note": {
-        "measure": 59,
-        "hand": "right",
-        "t_sec": 152.28260416666666
-      }
+      "t_sec": 150.82060416666667,
+      "t_samples": 7239389,
+      "dur_sec": 0.3751041666666667,
+      "anchor": "arrangement-onset:m59:beat1.4010416666666667",
+      "midi_tick": 89626,
+      "t_midi_sec": 150.8206,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v175",
@@ -3509,17 +2988,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 60,
-      "t_sec": 152.6086875,
-      "t_samples": 7325217,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m59:right:beat2",
-      "midi_tick": 112320,
-      "t_midi_sec": 152.608716,
-      "engine_note": {
-        "measure": 59,
-        "hand": "right",
-        "t_sec": 152.6086875
-      }
+      "t_sec": 151.19570833333333,
+      "t_samples": 7257394,
+      "dur_sec": 0.6265416666666667,
+      "anchor": "arrangement-onset:m59:beat2",
+      "midi_tick": 89856,
+      "t_midi_sec": 151.195715,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v176",
@@ -3528,17 +3004,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 62,
-      "t_sec": 153.260875,
-      "t_samples": 7356522,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m59:right:beat3",
-      "midi_tick": 112800,
-      "t_midi_sec": 153.26089,
-      "engine_note": {
-        "measure": 59,
-        "hand": "right",
-        "t_sec": 153.260875
-      }
+      "t_sec": 151.82225,
+      "t_samples": 7287468,
+      "dur_sec": 0.6281666666666667,
+      "anchor": "arrangement-onset:m59:beat3",
+      "midi_tick": 90240,
+      "t_midi_sec": 151.822242,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v177",
@@ -3547,17 +3020,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 63,
-      "t_sec": 153.91304166666666,
-      "t_samples": 7387826,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m60:right:beat0",
-      "midi_tick": 113280,
-      "t_midi_sec": 153.913064,
-      "engine_note": {
-        "measure": 60,
-        "hand": "right",
-        "t_sec": 153.91304166666666
-      }
+      "t_sec": 152.45041666666665,
+      "t_samples": 7317620,
+      "dur_sec": 0.6308541666666667,
+      "anchor": "arrangement-onset:m60:beat0",
+      "midi_tick": 90624,
+      "t_midi_sec": 152.450409,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v178",
@@ -3566,17 +3036,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 154.56520833333335,
-      "t_samples": 7419130,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m60:right:beat1",
-      "midi_tick": 113760,
-      "t_midi_sec": 154.565238,
-      "engine_note": {
-        "measure": 60,
-        "hand": "right",
-        "t_sec": 154.56520833333335
-      }
+      "t_sec": 153.08127083333332,
+      "t_samples": 7347901,
+      "dur_sec": 0.6281666666666667,
+      "anchor": "arrangement-onset:m60:beat1",
+      "midi_tick": 91008,
+      "t_midi_sec": 153.081277,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v179",
@@ -3585,17 +3052,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 67,
-      "t_sec": 155.21739583333334,
-      "t_samples": 7450435,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m60:right:beat2",
-      "midi_tick": 114240,
-      "t_midi_sec": 155.217412,
-      "engine_note": {
-        "measure": 60,
-        "hand": "right",
-        "t_sec": 155.21739583333334
-      }
+      "t_sec": 153.7094375,
+      "t_samples": 7378053,
+      "dur_sec": 0.6265416666666667,
+      "anchor": "arrangement-onset:m60:beat2",
+      "midi_tick": 91392,
+      "t_midi_sec": 153.709444,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v180",
@@ -3604,17 +3068,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 69,
-      "t_sec": 155.8695625,
-      "t_samples": 7481739,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m60:right:beat3",
-      "midi_tick": 114720,
-      "t_midi_sec": 155.869586,
-      "engine_note": {
-        "measure": 60,
-        "hand": "right",
-        "t_sec": 155.8695625
-      }
+      "t_sec": 154.33597916666668,
+      "t_samples": 7408127,
+      "dur_sec": 0.6262708333333333,
+      "anchor": "arrangement-onset:m60:beat3",
+      "midi_tick": 91776,
+      "t_midi_sec": 154.335972,
+      "engine_note": null,
+      "gain_db": 2.41
     },
     {
       "id": "v181",
@@ -3623,17 +3084,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 156.52172916666666,
-      "t_samples": 7513043,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m61:right:beat0",
-      "midi_tick": 115200,
-      "t_midi_sec": 156.52176,
-      "engine_note": {
-        "measure": 61,
-        "hand": "right",
-        "t_sec": 156.52172916666666
-      }
+      "t_sec": 154.96225,
+      "t_samples": 7438188,
+      "dur_sec": 1.5757291666666666,
+      "anchor": "arrangement-onset:m61:beat0",
+      "midi_tick": 92160,
+      "t_midi_sec": 154.96225,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v182",
@@ -3642,17 +3100,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 158.47827083333334,
-      "t_samples": 7606957,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m61:right:beat1",
-      "midi_tick": 116640,
-      "t_midi_sec": 158.478282,
-      "engine_note": {
-        "measure": 61,
-        "hand": "right",
-        "t_sec": 158.47827083333334
-      }
+      "t_sec": 156.8555,
+      "t_samples": 7529064,
+      "dur_sec": 0.6406875,
+      "anchor": "arrangement-onset:m61:beat3",
+      "midi_tick": 93312,
+      "t_midi_sec": 156.85551,
+      "engine_note": null,
+      "gain_db": 0
     },
     {
       "id": "v183",
@@ -3661,17 +3116,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 65,
-      "t_sec": 159.1304375,
-      "t_samples": 7638261,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m62:right:beat0",
-      "midi_tick": 117120,
-      "t_midi_sec": 159.130456,
-      "engine_note": {
-        "measure": 62,
-        "hand": "right",
-        "t_sec": 159.1304375
-      }
+      "t_sec": 157.4961875,
+      "t_samples": 7559817,
+      "dur_sec": 0.9039791666666667,
+      "anchor": "arrangement-onset:m62:beat0",
+      "midi_tick": 93696,
+      "t_midi_sec": 157.496194,
+      "engine_note": null,
+      "gain_db": 1.41
     },
     {
       "id": "v184",
@@ -3680,17 +3132,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 62,
-      "t_sec": 160.1086875,
-      "t_samples": 7685217,
-      "dur_sec": 0.32610416666666664,
-      "anchor": "piano-onset:m62:right:beat1",
-      "midi_tick": 117840,
-      "t_midi_sec": 160.108717,
-      "engine_note": {
-        "measure": 62,
-        "hand": "right",
-        "t_sec": 160.1086875
-      }
+      "t_sec": 158.40016666666668,
+      "t_samples": 7603208,
+      "dur_sec": 0.3837291666666667,
+      "anchor": "arrangement-onset:m62:beat1.4010416666666667",
+      "midi_tick": 94234,
+      "t_midi_sec": 158.40016,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v185",
@@ -3699,17 +3148,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 62,
-      "t_sec": 160.43479166666665,
-      "t_samples": 7700870,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m62:right:beat2",
-      "midi_tick": 118080,
-      "t_midi_sec": 160.434804,
-      "engine_note": {
-        "measure": 62,
-        "hand": "right",
-        "t_sec": 160.43479166666665
-      }
+      "t_sec": 158.78389583333333,
+      "t_samples": 7621627,
+      "dur_sec": 0.6350625,
+      "anchor": "arrangement-onset:m62:beat2",
+      "midi_tick": 94464,
+      "t_midi_sec": 158.783903,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v186",
@@ -3718,17 +3164,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 65,
-      "t_sec": 161.08695833333334,
-      "t_samples": 7732174,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m62:right:beat3",
-      "midi_tick": 118560,
-      "t_midi_sec": 161.086978,
-      "engine_note": {
-        "measure": 62,
-        "hand": "right",
-        "t_sec": 161.08695833333334
-      }
+      "t_sec": 159.41895833333334,
+      "t_samples": 7652110,
+      "dur_sec": 0.6305833333333334,
+      "anchor": "arrangement-onset:m62:beat3",
+      "midi_tick": 94848,
+      "t_midi_sec": 159.418951,
+      "engine_note": null,
+      "gain_db": 1.08
     },
     {
       "id": "v187",
@@ -3737,17 +3180,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 161.739125,
-      "t_samples": 7763478,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m63:right:beat0",
-      "midi_tick": 119040,
-      "t_midi_sec": 161.739152,
-      "engine_note": {
-        "measure": 63,
-        "hand": "right",
-        "t_sec": 161.739125
-      }
+      "t_sec": 160.04954166666667,
+      "t_samples": 7682378,
+      "dur_sec": 0.8787916666666666,
+      "anchor": "arrangement-onset:m63:beat0",
+      "midi_tick": 95232,
+      "t_midi_sec": 160.049541,
+      "engine_note": null,
+      "gain_db": 3.54
     },
     {
       "id": "v188",
@@ -3756,17 +3196,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 60,
-      "t_sec": 162.71739583333334,
-      "t_samples": 7810435,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m63:right:beat1",
-      "midi_tick": 119760,
-      "t_midi_sec": 162.717413,
-      "engine_note": {
-        "measure": 63,
-        "hand": "right",
-        "t_sec": 162.71739583333334
-      }
+      "t_sec": 160.92833333333334,
+      "t_samples": 7724560,
+      "dur_sec": 0.3751041666666667,
+      "anchor": "arrangement-onset:m63:beat1.4010416666666667",
+      "midi_tick": 95770,
+      "t_midi_sec": 160.928326,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v189",
@@ -3775,17 +3212,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 60,
-      "t_sec": 163.04347916666666,
-      "t_samples": 7826087,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m63:right:beat2",
-      "midi_tick": 120000,
-      "t_midi_sec": 163.0435,
-      "engine_note": {
-        "measure": 63,
-        "hand": "right",
-        "t_sec": 163.04347916666666
-      }
+      "t_sec": 161.3034375,
+      "t_samples": 7742565,
+      "dur_sec": 0.6265208333333333,
+      "anchor": "arrangement-onset:m63:beat2",
+      "midi_tick": 96000,
+      "t_midi_sec": 161.303441,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v190",
@@ -3794,17 +3228,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 72,
-      "t_sec": 163.69564583333334,
-      "t_samples": 7857391,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m63:right:beat3",
-      "midi_tick": 120480,
-      "t_midi_sec": 163.695674,
-      "engine_note": {
-        "measure": 63,
-        "hand": "right",
-        "t_sec": 163.69564583333334
-      }
+      "t_sec": 161.92995833333333,
+      "t_samples": 7772638,
+      "dur_sec": 0.6281875,
+      "anchor": "arrangement-onset:m63:beat3",
+      "midi_tick": 96384,
+      "t_midi_sec": 161.929968,
+      "engine_note": null,
+      "gain_db": 3.61
     },
     {
       "id": "v191",
@@ -3813,17 +3244,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 71,
-      "t_sec": 164.34783333333334,
-      "t_samples": 7888696,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m64:right:beat0",
-      "midi_tick": 120960,
-      "t_midi_sec": 164.347848,
-      "engine_note": {
-        "measure": 64,
-        "hand": "right",
-        "t_sec": 164.34783333333334
-      }
+      "t_sec": 162.55814583333333,
+      "t_samples": 7802791,
+      "dur_sec": 0.6308541666666667,
+      "anchor": "arrangement-onset:m64:beat0",
+      "midi_tick": 96768,
+      "t_midi_sec": 162.558135,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v192",
@@ -3832,17 +3260,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 165,
-      "t_samples": 7920000,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m64:right:beat1",
-      "midi_tick": 121440,
-      "t_midi_sec": 165.000022,
-      "engine_note": {
-        "measure": 64,
-        "hand": "right",
-        "t_sec": 165
-      }
+      "t_sec": 163.189,
+      "t_samples": 7833072,
+      "dur_sec": 0.6281666666666667,
+      "anchor": "arrangement-onset:m64:beat1",
+      "midi_tick": 97152,
+      "t_midi_sec": 163.189004,
+      "engine_note": null,
+      "gain_db": 3.61
     },
     {
       "id": "v193",
@@ -3851,17 +3276,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 74,
-      "t_sec": 165.65216666666666,
-      "t_samples": 7951304,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m64:right:beat2",
-      "midi_tick": 121920,
-      "t_midi_sec": 165.652196,
-      "engine_note": {
-        "measure": 64,
-        "hand": "right",
-        "t_sec": 165.65216666666666
-      }
+      "t_sec": 163.81716666666668,
+      "t_samples": 7863224,
+      "dur_sec": 0.6265416666666667,
+      "anchor": "arrangement-onset:m64:beat2",
+      "midi_tick": 97536,
+      "t_midi_sec": 163.817171,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v194",
@@ -3870,17 +3292,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 67,
-      "t_sec": 166.30435416666666,
-      "t_samples": 7982609,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m64:right:beat3",
-      "midi_tick": 122400,
-      "t_midi_sec": 166.30437,
-      "engine_note": {
-        "measure": 64,
-        "hand": "right",
-        "t_sec": 166.30435416666666
-      }
+      "t_sec": 164.44370833333332,
+      "t_samples": 7893298,
+      "dur_sec": 0.6262708333333333,
+      "anchor": "arrangement-onset:m64:beat3",
+      "midi_tick": 97920,
+      "t_midi_sec": 164.443698,
+      "engine_note": null,
+      "gain_db": 1.91
     },
     {
       "id": "v195",
@@ -3889,17 +3308,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 166.95652083333334,
-      "t_samples": 8013913,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m65:right:beat0",
-      "midi_tick": 122880,
-      "t_midi_sec": 166.956544,
-      "engine_note": {
-        "measure": 65,
-        "hand": "right",
-        "t_sec": 166.95652083333334
-      }
+      "t_sec": 165.06997916666666,
+      "t_samples": 7923359,
+      "dur_sec": 1.5757291666666666,
+      "anchor": "arrangement-onset:m65:beat0",
+      "midi_tick": 98304,
+      "t_midi_sec": 165.069977,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v196",
@@ -3908,17 +3324,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 65,
-      "t_sec": 168.91304166666666,
-      "t_samples": 8107826,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m65:right:beat1",
-      "midi_tick": 124320,
-      "t_midi_sec": 168.913066,
-      "engine_note": {
-        "measure": 65,
-        "hand": "right",
-        "t_sec": 168.91304166666666
-      }
+      "t_sec": 166.96322916666668,
+      "t_samples": 8014235,
+      "dur_sec": 0.6406875,
+      "anchor": "arrangement-onset:m65:beat3",
+      "midi_tick": 99456,
+      "t_midi_sec": 166.963237,
+      "engine_note": null,
+      "gain_db": 0
     },
     {
       "id": "v197",
@@ -3927,17 +3340,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 74,
-      "t_sec": 169.56520833333335,
-      "t_samples": 8139130,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m66:right:beat0",
-      "midi_tick": 124800,
-      "t_midi_sec": 169.56524,
-      "engine_note": {
-        "measure": 66,
-        "hand": "right",
-        "t_sec": 169.56520833333335
-      }
+      "t_sec": 167.60391666666666,
+      "t_samples": 8044988,
+      "dur_sec": 0.9042916666666667,
+      "anchor": "arrangement-onset:m66:beat0",
+      "midi_tick": 99840,
+      "t_midi_sec": 167.60392,
+      "engine_note": null,
+      "gain_db": 3.16
     },
     {
       "id": "v198",
@@ -3946,17 +3356,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 74,
-      "t_sec": 170.54347916666666,
-      "t_samples": 8186087,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m66:right:beat1",
-      "midi_tick": 125520,
-      "t_midi_sec": 170.543501,
-      "engine_note": {
-        "measure": 66,
-        "hand": "right",
-        "t_sec": 170.54347916666666
-      }
+      "t_sec": 168.50820833333333,
+      "t_samples": 8088394,
+      "dur_sec": 0.3842291666666667,
+      "anchor": "arrangement-onset:m66:beat1.4010416666666667",
+      "midi_tick": 100378,
+      "t_midi_sec": 168.508213,
+      "engine_note": null,
+      "gain_db": 1.98
     },
     {
       "id": "v199",
@@ -3965,17 +3372,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 72,
-      "t_sec": 170.8695625,
-      "t_samples": 8201739,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m66:right:beat2",
-      "midi_tick": 125760,
-      "t_midi_sec": 170.869588,
-      "engine_note": {
-        "measure": 66,
-        "hand": "right",
-        "t_sec": 170.8695625
-      }
+      "t_sec": 168.8924375,
+      "t_samples": 8106837,
+      "dur_sec": 0.31833333333333336,
+      "anchor": "arrangement-onset:m66:beat2",
+      "midi_tick": 100608,
+      "t_midi_sec": 168.892444,
+      "engine_note": null,
+      "gain_db": 2.81
     },
     {
       "id": "v200",
@@ -3984,17 +3388,14 @@
       "syllable": 0,
       "syllables": 4,
       "midi": 70,
-      "t_sec": 171.52172916666666,
-      "t_samples": 8233043,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m66:right:beat3",
-      "midi_tick": 126240,
-      "t_midi_sec": 171.521762,
-      "engine_note": {
-        "measure": 66,
-        "hand": "right",
-        "t_sec": 171.52172916666666
-      }
+      "t_sec": 169.52910416666666,
+      "t_samples": 8137397,
+      "dur_sec": 0.6329583333333333,
+      "anchor": "arrangement-onset:m66:beat3",
+      "midi_tick": 100992,
+      "t_midi_sec": 169.529096,
+      "engine_note": null,
+      "gain_db": 1.83
     },
     {
       "id": "v201",
@@ -4003,17 +3404,14 @@
       "syllable": 1,
       "syllables": 4,
       "midi": 70,
-      "t_sec": 172.17391666666666,
-      "t_samples": 8264348,
-      "dur_sec": 0.97825,
-      "anchor": "piano-onset:m67:right:beat0",
-      "midi_tick": 126720,
-      "t_midi_sec": 172.173936,
-      "engine_note": {
-        "measure": 67,
-        "hand": "right",
-        "t_sec": 172.17391666666666
-      }
+      "t_sec": 170.1620625,
+      "t_samples": 8167779,
+      "dur_sec": 0.8834791666666667,
+      "anchor": "arrangement-onset:m67:beat0",
+      "midi_tick": 101376,
+      "t_midi_sec": 170.162061,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v202",
@@ -4022,17 +3420,14 @@
       "syllable": 2,
       "syllables": 4,
       "midi": 69,
-      "t_sec": 173.15216666666666,
-      "t_samples": 8311304,
-      "dur_sec": 0.32610416666666664,
-      "anchor": "piano-onset:m67:right:beat1",
-      "midi_tick": 127440,
-      "t_midi_sec": 173.152197,
-      "engine_note": {
-        "measure": 67,
-        "hand": "right",
-        "t_sec": 173.15216666666666
-      }
+      "t_sec": 171.04554166666668,
+      "t_samples": 8210186,
+      "dur_sec": 0.37745833333333334,
+      "anchor": "arrangement-onset:m67:beat1.4010416666666667",
+      "midi_tick": 101914,
+      "t_midi_sec": 171.045548,
+      "engine_note": null,
+      "gain_db": 2.53
     },
     {
       "id": "v203",
@@ -4041,17 +3436,14 @@
       "syllable": 3,
       "syllables": 4,
       "midi": 69,
-      "t_sec": 173.47827083333334,
-      "t_samples": 8326957,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m67:right:beat2",
-      "midi_tick": 127680,
-      "t_midi_sec": 173.478284,
-      "engine_note": {
-        "measure": 67,
-        "hand": "right",
-        "t_sec": 173.47827083333334
-      }
+      "t_sec": 171.423,
+      "t_samples": 8228304,
+      "dur_sec": 0.6312291666666666,
+      "anchor": "arrangement-onset:m67:beat2",
+      "midi_tick": 102144,
+      "t_midi_sec": 171.423003,
+      "engine_note": null,
+      "gain_db": 3.69
     },
     {
       "id": "v204",
@@ -4060,17 +3452,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 174.1304375,
-      "t_samples": 8358261,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m67:right:beat3",
-      "midi_tick": 128160,
-      "t_midi_sec": 174.130458,
-      "engine_note": {
-        "measure": 67,
-        "hand": "right",
-        "t_sec": 174.1304375
-      }
+      "t_sec": 172.05422916666666,
+      "t_samples": 8258603,
+      "dur_sec": 0.6336875,
+      "anchor": "arrangement-onset:m67:beat3",
+      "midi_tick": 102528,
+      "t_midi_sec": 172.05423,
+      "engine_note": null,
+      "gain_db": 3.11
     },
     {
       "id": "v205",
@@ -4079,17 +3468,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 72,
-      "t_sec": 174.78260416666666,
-      "t_samples": 8389565,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m68:right:beat0",
-      "midi_tick": 128640,
-      "t_midi_sec": 174.782632,
-      "engine_note": {
-        "measure": 68,
-        "hand": "right",
-        "t_sec": 174.78260416666666
-      }
+      "t_sec": 172.68791666666667,
+      "t_samples": 8289020,
+      "dur_sec": 0.6372291666666666,
+      "anchor": "arrangement-onset:m68:beat0",
+      "midi_tick": 102912,
+      "t_midi_sec": 172.68791,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v206",
@@ -4098,17 +3484,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 69,
-      "t_sec": 175.43479166666665,
-      "t_samples": 8420870,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m68:right:beat1",
-      "midi_tick": 129120,
-      "t_midi_sec": 175.434806,
-      "engine_note": {
-        "measure": 68,
-        "hand": "right",
-        "t_sec": 175.43479166666665
-      }
+      "t_sec": 173.32514583333332,
+      "t_samples": 8319607,
+      "dur_sec": 0.6352708333333333,
+      "anchor": "arrangement-onset:m68:beat1",
+      "midi_tick": 103296,
+      "t_midi_sec": 173.325143,
+      "engine_note": null,
+      "gain_db": 2.86
     },
     {
       "id": "v207",
@@ -4117,17 +3500,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 176.08695833333334,
-      "t_samples": 8452174,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m68:right:beat2",
-      "midi_tick": 129600,
-      "t_midi_sec": 176.08698,
-      "engine_note": {
-        "measure": 68,
-        "hand": "right",
-        "t_sec": 176.08695833333334
-      }
+      "t_sec": 173.96041666666667,
+      "t_samples": 8350100,
+      "dur_sec": 0.6343958333333334,
+      "anchor": "arrangement-onset:m68:beat2",
+      "midi_tick": 103680,
+      "t_midi_sec": 173.96042,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v208",
@@ -4136,17 +3516,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 176.739125,
-      "t_samples": 8483478,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m68:right:beat3",
-      "midi_tick": 130080,
-      "t_midi_sec": 176.739154,
-      "engine_note": {
-        "measure": 68,
-        "hand": "right",
-        "t_sec": 176.739125
-      }
+      "t_sec": 174.5948125,
+      "t_samples": 8380551,
+      "dur_sec": 0.6349375,
+      "anchor": "arrangement-onset:m68:beat3",
+      "midi_tick": 104064,
+      "t_midi_sec": 174.594817,
+      "engine_note": null,
+      "gain_db": 1.91
     },
     {
       "id": "v209",
@@ -4155,17 +3532,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 177.3913125,
-      "t_samples": 8514783,
-      "dur_sec": 1.6304375,
-      "anchor": "piano-onset:m69:right:beat0",
-      "midi_tick": 130560,
-      "t_midi_sec": 177.391328,
-      "engine_note": {
-        "measure": 69,
-        "hand": "right",
-        "t_sec": 177.3913125
-      }
+      "t_sec": 175.22975,
+      "t_samples": 8411028,
+      "dur_sec": 1.6013333333333333,
+      "anchor": "arrangement-onset:m69:beat0",
+      "midi_tick": 104448,
+      "t_midi_sec": 175.229751,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v210",
@@ -4174,17 +3548,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 179.34783333333334,
-      "t_samples": 8608696,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m69:right:beat1",
-      "midi_tick": 132000,
-      "t_midi_sec": 179.34785,
-      "engine_note": {
-        "measure": 69,
-        "hand": "right",
-        "t_sec": 179.34783333333334
-      }
+      "t_sec": 177.15429166666667,
+      "t_samples": 8503406,
+      "dur_sec": 0.6531041666666667,
+      "anchor": "arrangement-onset:m69:beat3",
+      "midi_tick": 105600,
+      "t_midi_sec": 177.154287,
+      "engine_note": null,
+      "gain_db": 0.75
     },
     {
       "id": "v211",
@@ -4193,17 +3564,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 180,
-      "t_samples": 8640000,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m70:right:beat0",
-      "midi_tick": 132480,
-      "t_midi_sec": 180.000024,
-      "engine_note": {
-        "measure": 70,
-        "hand": "right",
-        "t_sec": 180
-      }
+      "t_sec": 177.80739583333335,
+      "t_samples": 8534755,
+      "dur_sec": 0.9231666666666667,
+      "anchor": "arrangement-onset:m70:beat0",
+      "midi_tick": 105984,
+      "t_midi_sec": 177.807391,
+      "engine_note": null,
+      "gain_db": 2.16
     },
     {
       "id": "v212",
@@ -4212,17 +3580,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 180.97827083333334,
-      "t_samples": 8686957,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m70:right:beat1",
-      "midi_tick": 133200,
-      "t_midi_sec": 180.978285,
-      "engine_note": {
-        "measure": 70,
-        "hand": "right",
-        "t_sec": 180.97827083333334
-      }
+      "t_sec": 178.7305625,
+      "t_samples": 8579067,
+      "dur_sec": 0.3921875,
+      "anchor": "arrangement-onset:m70:beat1.4010416666666667",
+      "midi_tick": 106522,
+      "t_midi_sec": 178.730554,
+      "engine_note": null,
+      "gain_db": 0.23
     },
     {
       "id": "v213",
@@ -4231,17 +3596,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 181.30435416666666,
-      "t_samples": 8702609,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m70:right:beat2",
-      "midi_tick": 133440,
-      "t_midi_sec": 181.304372,
-      "engine_note": {
-        "measure": 70,
-        "hand": "right",
-        "t_sec": 181.30435416666666
-      }
+      "t_sec": 179.12275,
+      "t_samples": 8597892,
+      "dur_sec": 0.64975,
+      "anchor": "arrangement-onset:m70:beat2",
+      "midi_tick": 106752,
+      "t_midi_sec": 179.122752,
+      "engine_note": null,
+      "gain_db": 1.56
     },
     {
       "id": "v214",
@@ -4250,17 +3612,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 181.95652083333334,
-      "t_samples": 8733913,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m70:right:beat3",
-      "midi_tick": 133920,
-      "t_midi_sec": 181.956546,
-      "engine_note": {
-        "measure": 70,
-        "hand": "right",
-        "t_sec": 181.95652083333334
-      }
+      "t_sec": 179.7725,
+      "t_samples": 8629080,
+      "dur_sec": 0.6459166666666667,
+      "anchor": "arrangement-onset:m70:beat3",
+      "midi_tick": 107136,
+      "t_midi_sec": 179.772503,
+      "engine_note": null,
+      "gain_db": 1.83
     },
     {
       "id": "v215",
@@ -4269,17 +3628,14 @@
       "syllable": 0,
       "syllables": 3,
       "midi": 70,
-      "t_sec": 182.6086875,
-      "t_samples": 8765217,
-      "dur_sec": 0.9782708333333333,
-      "anchor": "piano-onset:m71:right:beat0",
-      "midi_tick": 134400,
-      "t_midi_sec": 182.60872,
-      "engine_note": {
-        "measure": 71,
-        "hand": "right",
-        "t_sec": 182.6086875
-      }
+      "t_sec": 180.41841666666667,
+      "t_samples": 8660084,
+      "dur_sec": 0.9014791666666667,
+      "anchor": "arrangement-onset:m71:beat0",
+      "midi_tick": 107520,
+      "t_midi_sec": 180.418415,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v216",
@@ -4288,17 +3644,14 @@
       "syllable": 1,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 183.58695833333334,
-      "t_samples": 8812174,
-      "dur_sec": 0.32608333333333334,
-      "anchor": "piano-onset:m71:right:beat1",
-      "midi_tick": 135120,
-      "t_midi_sec": 183.586981,
-      "engine_note": {
-        "measure": 71,
-        "hand": "right",
-        "t_sec": 183.58695833333334
-      }
+      "t_sec": 181.31989583333333,
+      "t_samples": 8703355,
+      "dur_sec": 0.38514583333333335,
+      "anchor": "arrangement-onset:m71:beat1.4010416666666667",
+      "midi_tick": 108058,
+      "t_midi_sec": 181.319903,
+      "engine_note": null,
+      "gain_db": 2.03
     },
     {
       "id": "v217",
@@ -4307,17 +3660,14 @@
       "syllable": 2,
       "syllables": 3,
       "midi": 65,
-      "t_sec": 183.91304166666666,
-      "t_samples": 8827826,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m71:right:beat2",
-      "midi_tick": 135360,
-      "t_midi_sec": 183.913068,
-      "engine_note": {
-        "measure": 71,
-        "hand": "right",
-        "t_sec": 183.91304166666666
-      }
+      "t_sec": 181.70504166666666,
+      "t_samples": 8721842,
+      "dur_sec": 0.6441041666666667,
+      "anchor": "arrangement-onset:m71:beat2",
+      "midi_tick": 108288,
+      "t_midi_sec": 181.705044,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v218",
@@ -4326,17 +3676,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 65,
-      "t_sec": 184.56520833333335,
-      "t_samples": 8859130,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m71:right:beat3",
-      "midi_tick": 135840,
-      "t_midi_sec": 184.565242,
-      "engine_note": {
-        "measure": 71,
-        "hand": "right",
-        "t_sec": 184.56520833333335
-      }
+      "t_sec": 182.34914583333332,
+      "t_samples": 8752759,
+      "dur_sec": 0.6466458333333334,
+      "anchor": "arrangement-onset:m71:beat3",
+      "midi_tick": 108672,
+      "t_midi_sec": 182.349145,
+      "engine_note": null,
+      "gain_db": 2.36
     },
     {
       "id": "v219",
@@ -4345,17 +3692,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 67,
-      "t_sec": 185.21739583333334,
-      "t_samples": 8890435,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m72:right:beat0",
-      "midi_tick": 136320,
-      "t_midi_sec": 185.217416,
-      "engine_note": {
-        "measure": 72,
-        "hand": "right",
-        "t_sec": 185.21739583333334
-      }
+      "t_sec": 182.99579166666666,
+      "t_samples": 8783798,
+      "dur_sec": 0.650375,
+      "anchor": "arrangement-onset:m72:beat0",
+      "midi_tick": 109056,
+      "t_midi_sec": 182.995801,
+      "engine_note": null,
+      "gain_db": 4
     },
     {
       "id": "v220",
@@ -4364,17 +3708,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 185.8695625,
-      "t_samples": 8921739,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m72:right:beat1",
-      "midi_tick": 136800,
-      "t_midi_sec": 185.86959,
-      "engine_note": {
-        "measure": 72,
-        "hand": "right",
-        "t_sec": 185.8695625
-      }
+      "t_sec": 183.64616666666666,
+      "t_samples": 8815016,
+      "dur_sec": 0.6483125,
+      "anchor": "arrangement-onset:m72:beat1",
+      "midi_tick": 109440,
+      "t_midi_sec": 183.646159,
+      "engine_note": null,
+      "gain_db": 3.11
     },
     {
       "id": "v221",
@@ -4383,17 +3724,14 @@
       "syllable": 0,
       "syllables": 2,
       "midi": 65,
-      "t_sec": 186.52172916666666,
-      "t_samples": 8953043,
-      "dur_sec": 0.6521875,
-      "anchor": "piano-onset:m72:right:beat2",
-      "midi_tick": 137280,
-      "t_midi_sec": 186.521764,
-      "engine_note": {
-        "measure": 72,
-        "hand": "right",
-        "t_sec": 186.52172916666666
-      }
+      "t_sec": 184.29447916666666,
+      "t_samples": 8846135,
+      "dur_sec": 0.6473958333333333,
+      "anchor": "arrangement-onset:m72:beat2",
+      "midi_tick": 109824,
+      "t_midi_sec": 184.294478,
+      "engine_note": null,
+      "gain_db": 3.19
     },
     {
       "id": "v222",
@@ -4402,17 +3740,14 @@
       "syllable": 1,
       "syllables": 2,
       "midi": 72,
-      "t_sec": 187.17391666666666,
-      "t_samples": 8984348,
-      "dur_sec": 0.6521666666666667,
-      "anchor": "piano-onset:m72:right:beat3",
-      "midi_tick": 137760,
-      "t_midi_sec": 187.173938,
-      "engine_note": {
-        "measure": 72,
-        "hand": "right",
-        "t_sec": 187.17391666666666
-      }
+      "t_sec": 184.941875,
+      "t_samples": 8877210,
+      "dur_sec": 0.6479583333333333,
+      "anchor": "arrangement-onset:m72:beat3",
+      "midi_tick": 110208,
+      "t_midi_sec": 184.941881,
+      "engine_note": null,
+      "gain_db": 3.16
     },
     {
       "id": "v223",
@@ -4421,17 +3756,14 @@
       "syllable": 0,
       "syllables": 1,
       "midi": 70,
-      "t_sec": 187.82608333333334,
-      "t_samples": 9015652,
-      "dur_sec": 1.9565208333333333,
-      "anchor": "piano-onset:m73:right:beat0",
-      "midi_tick": 138240,
-      "t_midi_sec": 187.826112,
-      "engine_note": {
-        "measure": 73,
-        "hand": "right",
-        "t_sec": 187.82608333333334
-      }
+      "t_sec": 185.58983333333333,
+      "t_samples": 8908312,
+      "dur_sec": 1.9644583333333334,
+      "anchor": "arrangement-onset:m73:beat0",
+      "midi_tick": 110592,
+      "t_midi_sec": 185.589843,
+      "engine_note": null,
+      "gain_db": 4
     }
   ]
 }

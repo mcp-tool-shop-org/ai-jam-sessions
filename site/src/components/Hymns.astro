@@ -10,8 +10,8 @@ const songs = (data as { songs: Array<{ id: string; title: string; tune: string;
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`; // as an audio player shows it
 // Measured on the published performances (receipts in tmp/vocal-clock/sing-pad/<id>/, 2026-10-07).
 const measured: Record<string, { timing: string; pitch: string; heard: string; phrases: string; tone: string }> = {
-  'amazing-grace-new-britain': { timing: '109 of 112', pitch: '136 of 140', heard: '95–100%', phrases: '16 phrases from 10 takes', tone: 'ag' },
-  'america-the-beautiful-materna': { timing: '218 of 224', pitch: '221 of 224', heard: '85–94%', phrases: '20 phrases from 13 takes', tone: 'atb' },
+  'amazing-grace-new-britain': { timing: '107 of 112', pitch: '135 of 140', heard: '97–99%', phrases: '16 phrases from 11 takes', tone: 'ag' },
+  'america-the-beautiful-materna': { timing: '217 of 224', pitch: '218 of 224', heard: '87–95%', phrases: '20 phrases from 12 takes', tone: 'atb' },
 };
 ---
 
@@ -83,15 +83,16 @@ const measured: Record<string, { timing: string; pitch: string; heard: string; p
     <p class="hy-note">
       Timing is checked by two instruments: an energy detector for the vowel's onset, cross-checked by a
       singing forced aligner, and a syllable fails only when both say it is off. Pitch is tracked per note
-      with pYIN. These are honest numbers, not a pass/fail stamp: the misses are listed in the receipts.
+      with two trackers, and a note counts as off only when both say so. These are honest numbers, not a
+      pass/fail stamp: the misses are listed in the receipts.
     </p>
   </div>
 
   <p class="hy-credit">
     The voice is synthetic: <a href="https://github.com/Soul-AILab/SoulX-Singer">SoulX-Singer</a> (Apache-2.0),
     sung from the score, with the timbre of SoulX-Singer's own example voice. It imitates no real singer. The
-    piano bed is this project's own oscillator grand, rendered from the same arrangement. Both hymns are in the
-    public domain.
+    piano arrangements were written for this project by Kimi-K3 (Moonshot AI) and are dedicated to the public
+    domain (CC0), played on this project's own oscillator grand. Both hymns are in the public domain.
   </p>
 </div>
 
