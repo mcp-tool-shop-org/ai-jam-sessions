@@ -147,3 +147,13 @@ def test_a_last_note_before_a_rest_is_held_into_it_and_only_then():
     assert vc.hold_end(run, frozenset(), note_end=1.8, next_onset=1.9) is None   # no rest, nothing held
     src, dst = vc.warp_map(run, frozenset(), (s_end, end))
     assert src[-1] == s_end and dst[-1] == end
+
+
+def test_an_onset_dated_far_from_its_neighbours_is_undated():
+    rows = [{"id": f"v{i}", "t_score": float(i), "t_vowel": float(i) + 0.05} for i in range(9)]
+    rows[4]["t_vowel"] = 4.0 + 0.75                       # dated on its own tail, 0.7 s late
+    rows[6]["t_vowel"] = 6.0 + 0.2                        # a floating short note: within the limit
+    assert vc.undate_outliers(rows) == ["v4"]
+    assert rows[4]["t_vowel"] is None and rows[4]["outlier_t_vowel"] == 4.75 and rows[4]["method"] == "outlier"
+    drift = [{"id": f"w{i}", "t_score": float(i), "t_vowel": float(i) + 0.9} for i in range(6)]
+    assert vc.undate_outliers(drift) == []                 # a whole take late is the take, not an outlier
