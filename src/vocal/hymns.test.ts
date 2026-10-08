@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { deriveScoreClock, sessionSchedule, syllabify } from "./score-clock.js";
 import {
   HYMNS, AMAZING_GRACE, AMERICA_THE_BEAUTIFUL, BREATH_BEATS, PPQ,
-  hymnLyrics, hymnMidi, loadExemplarSong, parseChords, parseMelody, pitch, realizeHymn, verseLyrics, assertGapless, type Hymn,
+  hymnLyrics, hymnMidi, loadExemplarSong, parseChords, parseMelody, pitch, realizeHymn, verseLyrics, verseSection, assertGapless, type Hymn,
 } from "./hymns.js";
 
 /** Scale degree (1-7) of a pitch in a major key, or 0 if it is chromatic. */
@@ -19,13 +19,13 @@ function songOf(hymn: Hymn) {
 
 describe.each(HYMNS.map((h) => [h.id, h] as const))("%s", (_id, hymn) => {
   it("sings the hymn's own tune: its first 15 notes are Hymnary.org's incipit", () => {
-    const notes = parseMelody(hymn.verse.melody, hymn.beatsPerBar).filter((e) => e.midi !== null);
+    const notes = parseMelody(verseSection(hymn, 0).melody, hymn.beatsPerBar).filter((e) => e.midi !== null);
     const degrees = notes.slice(0, 15).map((n) => degree(n.midi!, hymn.sourceTonic)).join("");
     expect(degrees).toBe(hymn.incipit);
   });
 
   it("has a syllable for every note of every verse, the tune's held notes aside", () => {
-    for (const v of hymn.verses) expect(() => verseLyrics(hymn, v)).not.toThrow();
+    hymn.verses.forEach((v, i) => expect(() => verseLyrics(hymn, v, i)).not.toThrow());
     const lyrics = hymnLyrics(hymn.id)!;
     expect(syllabify(lyrics)).toHaveLength(realizeHymn(hymn).tracks.MELODY.length);
   });
@@ -52,17 +52,26 @@ describe.each(HYMNS.map((h) => [h.id, h] as const))("%s", (_id, hymn) => {
       midiFile: `src/vocal/hymns.ts#${hymn.id}`, midiBytes: bytes, melodyTrack: "MELODY",
       lyrics: hymnLyrics(hymn.id)!, startMeasure: 1, endMeasure: r.bars, rests: true,
     });
-    const verse = parseMelody(hymn.verse.melody, hymn.beatsPerBar).filter((e) => e.midi !== null);
-    const held = verse.filter((n) => n.held).length;
-    const breaths = verse.filter((n) => n.breath).length;
-    expect(clock.events).toHaveLength((verse.length - held) * hymn.verses.length);
-    expect(clock.events.reduce((k, e) => k + (e.melisma?.length ?? 0), 0)).toBe(held * hymn.verses.length);
+    const verses = hymn.verses.map((_, i) => parseMelody(verseSection(hymn, i).melody, hymn.beatsPerBar));
+    const sung = verses.map((v) => v.filter((e) => e.midi !== null));
+    const count = (pick: (n: (typeof sung)[0][0]) => boolean) => sung.reduce((k, v) => k + v.filter(pick).length, 0);
+    const held = count((n) => n.held);
+    expect(clock.events).toHaveLength(count(() => true) - held);
+    expect(clock.events.reduce((k, e) => k + (e.melisma?.length ?? 0), 0)).toBe(held);
     expect(clock.events.every((e) => e.anchor.startsWith("piano-onset:"))).toBe(true);
     const gaps = clock.events.slice(1).map((e, i) => e.t_sec - (clock.events[i].t_sec + clock.events[i].dur_sec)).filter((g) => g > 0.01);
     const breath = BREATH_BEATS * (60 / hymn.bpm);
-    expect(gaps.filter((g) => Math.abs(g - breath) < 1e-3)).toHaveLength(breaths * hymn.verses.length);
-    expect(gaps.filter((g) => g > breath + 0.5)).toHaveLength(hymn.verses.length - 1);
-    expect(clock.events[0].t_sec).toBeCloseTo(((r.verseBars[0] - 1) * hymn.beatsPerBar + parseMelody(hymn.verse.melody, hymn.beatsPerBar)[0].beats) * (60 / hymn.bpm), 6);
+    // Rests the score itself prints between two sung notes, by length in seconds.
+    const sec = 60 / hymn.bpm;
+    const rests = verses.flatMap((v) => v.slice(1).filter((e, i) => e.midi === null && v[i].midi !== null
+      && v.slice(i + 2).some((x) => x.midi !== null)).map((e) => e.beats * sec));
+    expect(gaps.filter((g) => Math.abs(g - breath) < 1e-3)).toHaveLength(count((n) => n.breath) + rests.filter((x) => Math.abs(x - breath) < 1e-3).length);
+    // A long rest inside a verse is the score's own; one more silence lies between verses.
+    const longRests = rests.filter((x) => x > breath + 0.5).length;
+    expect(gaps.filter((g) => g > breath + 0.5)).toHaveLength(longRests + hymn.verses.length - 1);
+    const lead = verses[0].slice(0, verses[0].findIndex((e) => e.midi !== null)).reduce((b, e) => b + e.beats, 0);
+    // The clock rounds to 48 kHz samples: within half a sample.
+    expect(Math.abs(clock.events[0].t_sec - ((r.verseBars[0] - 1) * hymn.beatsPerBar + lead) * sec)).toBeLessThan(0.5 / 48000);
   });
 
   it("has a committed clock that is current: derived again, it is the same", () => {

@@ -1,13 +1,15 @@
 /**
- * Whole-song arrangements of two public-domain hymns for the sung exemplars:
+ * Whole-song arrangements of three public-domain hymns for the sung exemplars:
  * the tune, its harmony, an introduction and an ending, and every verse.
  *
  * The melodies are the hymns' own, checked against published sources (see
  * each tune's `sources`): Materna (Samuel A. Ward, 1882) from The One Hundred
  * and One Best Songs (1919), New Britain from the Amazing Grace article's
- * engraving, both against Hymnary.org's incipits. The harmonizations are this
- * project's own block-chord settings (America's follows the 1919 book's
- * chords), dedicated to the public domain like the rest of the arrangement.
+ * engraving, the Battle Hymn from Oliver Ditson's 1862 edition (si-jam-sessions'
+ * pinned transcription), all against Hymnary.org's incipits. The harmonizations
+ * are this project's own block-chord settings (America's follows the 1919 book's
+ * chords, the Battle Hymn's the 1862 edition's), dedicated to the public domain
+ * like the rest of the arrangement.
  *
  * Notation, one verse per string, bars separated by `|`:
  *   `G4:1.5`  a note and its length in beats
@@ -65,10 +67,12 @@ export interface Hymn {
   splitPoint: number;
   intro: HymnSection;
   verse: HymnSection;
+  /** The music printed for the first verse, where it differs from the rest (another upbeat). */
+  firstVerse?: HymnSection;
   ending: HymnSection;
   /** Each verse's syllables, `-` inside a word; no `_` (the tune's held notes add them). */
   verses: string[];
-  /** Hymnary.org's incipit: the tune's first 15 notes as scale degrees. */
+  /** The first verse's first 15 notes as scale degrees, checked against Hymnary.org's incipit (see `sources`). */
   incipit: string;
   sources: HymnSource[];
 }
@@ -169,7 +173,80 @@ export const AMAZING_GRACE: Hymn = {
   ],
 };
 
-export const HYMNS: Hymn[] = [AMERICA_THE_BEAUTIFUL, AMAZING_GRACE];
+const BATTLE_CHORUS = "Glo-ry Glo-ry Hal-le-lu-jah Glo-ry Glo-ry Glo-ry Hal-le-lu-jah Glo-ry Glo-ry Hal-le-lu-jah His truth is march-ing on";
+
+/** The verse from its first full bar, and the chorus: the same for every verse but the second bar. */
+const battleBars = (bar6: string) => [
+  "F4:0.5 F4:0.5 F4:0.75 Eb4:0.25 D4:0.75 F4:0.25 Bb4:0.75 C5:0.25",
+  bar6,
+  "G4:0.75 G4:0.25 G4:0.75 A4:0.25 Bb4:0.75 Bb4:0.25 A4:0.75 G4:0.25",
+  "F4:0.75 G4:0.25 F4:0.75 D4:0.25 F4:1 R:0.5 F4:0.25 F4:0.25",
+  "F4:0.75 F4:0.25 F4:0.75 Eb4:0.25 D4:0.75 F4:0.25 Bb4:0.75 C5:0.25",
+  "D5:0.75 D5:0.25 D5:0.75 C5:0.25 Bb4:1 R:0.5 Bb4:0.5",
+  "C5:1 ~C5:0.75 C5:0.25 Bb4:1 A4:1",   // "truth" tied over the beat
+  "Bb4:2 R:2",
+  // chorus
+  "F4:1.5 Eb4:0.5 D4:0.75 F4:0.25 Bb4:0.75 C5:0.25",
+  "D5:2 Bb4:1 R:1",
+  "G4:0.75 G4:0.25 G4:0.75 A4:0.25 Bb4:0.75 Bb4:0.25 A4:0.75 G4:0.25",
+  "F4:1 ~D4:1 F4:2,",
+  "F4:1.5 Eb4:0.5 D4:0.75 F4:0.25 Bb4:0.75 C5:0.25",
+  "D5:2 Bb4:1 R:0.5 Bb4:0.5",
+  "C5:1 C5:1 Bb4:1 A4:1",
+  "Bb4:2 R:2",
+];
+const BATTLE_HALF = "Bb:4 | Bb:4 | Eb:4 | Bb:4 | Bb:4 | Bb:4 | Cm/Eb:2 Bb/F:1 F7:1 | Bb:4";
+const BATTLE_CHORDS = ["Bb:4", BATTLE_HALF, BATTLE_HALF].join(" | ");
+
+export const BATTLE_HYMN: Hymn = {
+  id: "battle-hymn-of-the-republic",
+  title: "The Battle Hymn of the Republic",
+  tune: "Battle Hymn",
+  composer: "Anonymous (the tune \"Glory, Hallelujah\", in print by 1859; often credited to William Steffe)",
+  textAuthor: "Julia Ward Howe (The Atlantic Monthly, February 1862)",
+  bpm: 84,
+  beatsPerBar: 4,
+  transpose: 0,
+  sourceKey: "Bb major",
+  key: "Bb major",
+  sourceTonic: 10,
+  splitPoint: 53,
+  intro: {
+    melody: "F4:1.5 Eb4:0.5 D4:0.5 F4:0.5 Bb4:0.75 C5:0.25 | D5:2 Bb4:1 R:0.5 B4:0.5 | C5:1 C5:1 Bb4:1 A4:1",
+    chords: "Bb:4 | Bb:4 | Cm/Eb:2 Bb/F:1 F7:1",
+  },
+  // Verses 2-5: the music of the edition's page 5, the upbeat "I have" on two sixteenths.
+  verse: {
+    melody: ["R:2 R:1 R:0.5 F4:0.25 F4:0.25", ...battleBars("D5:0.75 C5:0.25 D5:0.75 C5:0.25 Bb4:1 R:0.5 Bb4:0.25 Bb4:0.25")].join(" | "),
+    chords: BATTLE_CHORDS,
+  },
+  // Verse 1: pages 3-4, the upbeat "Mine" on one eighth.
+  firstVerse: {
+    melody: ["R:2 R:1 R:0.5 F4:0.5", ...battleBars("D5:0.75 D5:0.25 D5:0.75 C5:0.25 Bb4:1 R:0.5 Bb4:0.25 Bb4:0.25")].join(" | "),
+    chords: BATTLE_CHORDS,
+  },
+  ending: { melody: "R:4 | R:4", chords: "Bb:4 | Bb:4" },
+  verses: [
+    `Mine eyes have seen the glo-ry of the com-ing of the Lord He is tramp-ling out the vin-tage where the grapes of wrath are stored He hath loosed the fate-ful light-ning of His ter-ri-ble swift sword His truth is march-ing on ${BATTLE_CHORUS}`,
+    `I have seen Him in the watch-fires of a hun-dred cir-cling camps They have build-ed Him an al-tar in the eve-ning dews and damps I can read His right-eous sen-tence by the dim and flar-ing lamps His day is march-ing on ${BATTLE_CHORUS}`,
+    `I have read a fie-ry gos-pel writ in bur-nished rows of steel As ye deal with my con-tem-ners so with you my grace shall deal Let the He-ro born of wo-man crush the ser-pent with his heel Since God is march-ing on ${BATTLE_CHORUS}`,
+    `He has sound-ed forth the trum-pet that shall nev-er call re-treat He is sift-ing out the hearts of men be-fore His judg-ment-seat Oh be swift my soul to an-swer Him be ju-bi-lant my feet Our God is march-ing on ${BATTLE_CHORUS}`,
+    `In the beau-ty of the lil-ies Christ was born a-cross the sea With a glo-ry in his bo-som that trans-fig-ures you and me As he died to make men ho-ly let us die to make men free While God is march-ing on ${BATTLE_CHORUS}`,
+  ],
+  incipit: "555543512333211",
+  sources: [
+    { what: "melody, harmony and chorus words: Battle Hymn of the Republic (Boston: Oliver Ditson & Co., 1862, plate 21454), anonymous; transcribed in si-jam-sessions research/battle-hymn/battle-hymn-ditson-1862.abc", url: "https://www.loc.gov/item/2023782802/" },
+    { what: "the five verses: The Atlantic Monthly, vol. IX, February 1862, p. 145", url: "https://archive.org/details/sim_atlantic_1862-02_9_52" },
+    { what: "incipit 55543 51233 321; the 1862 edition's first verse opens with one more F, its eighth-note upbeat \"Mine\"", url: "https://hymnary.org/tune/battle_hymn_of_the_republic_american" },
+  ],
+};
+
+export const HYMNS: Hymn[] = [AMERICA_THE_BEAUTIFUL, AMAZING_GRACE, BATTLE_HYMN];
+
+/** The music a verse is sung to: the first verse's own where the hymn prints one. */
+export function verseSection(hymn: Hymn, index: number): HymnSection {
+  return index === 0 && hymn.firstVerse ? hymn.firstVerse : hymn.verse;
+}
 
 export function getHymn(id: string): Hymn | undefined {
   return HYMNS.find((h) => h.id === id);
@@ -282,8 +359,8 @@ export function parseChords(text: string, beatsPerBar: number): ChordEvent[] {
 }
 
 /** The verse's syllables with `_` where the tune holds a syllable, ready for the clock. */
-export function verseLyrics(hymn: Hymn, verse: string): string {
-  const notes = parseMelody(hymn.verse.melody, hymn.beatsPerBar).filter((e) => e.midi !== null);
+export function verseLyrics(hymn: Hymn, verse: string, index = 0): string {
+  const notes = parseMelody(verseSection(hymn, index).melody, hymn.beatsPerBar).filter((e) => e.midi !== null);
   const syllables = verse.trim().split(/\s+/).flatMap((w) => w.split("-").map((s, i, a) => (i < a.length - 1 ? `${s}-` : `${s} `)));
   const holds = notes.filter((n) => n.held).length;
   if (syllables.length !== notes.length - holds) {
@@ -305,7 +382,7 @@ export function verseLyrics(hymn: Hymn, verse: string): string {
 /** Every verse, in order, as the clock's `--lyrics`. */
 export function hymnLyrics(id: string): string | undefined {
   const hymn = getHymn(id);
-  return hymn?.verses.map((v) => verseLyrics(hymn, v)).join(" ");
+  return hymn?.verses.map((v, i) => verseLyrics(hymn, v, i)).join(" ");
 }
 
 // ─── Realization ────────────────────────────────────────────────────────────
@@ -359,7 +436,7 @@ export function realizeHymn(hymn: Hymn, opts: RealizeOptions = {}): Realized {
   if (verses < 1 || verses > hymn.verses.length) throw new Error(`${hymn.id}: ${verses} verses (it has ${hymn.verses.length})`);
   const sections: Array<{ part: HymnSection; sung: boolean }> = [
     { part: opts.intro ?? hymn.intro, sung: false },
-    ...Array.from({ length: verses }, () => ({ part: hymn.verse, sung: true })),
+    ...Array.from({ length: verses }, (_, i) => ({ part: verseSection(hymn, i), sung: true })),
     { part: opts.ending ?? hymn.ending, sung: false },
   ];
   const verseBars: number[] = [];
