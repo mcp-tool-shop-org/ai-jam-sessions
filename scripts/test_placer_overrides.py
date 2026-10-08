@@ -94,3 +94,16 @@ def test_an_explicit_zero_crossfade_is_a_hard_seam_in_warp_too():
     dip, _ = vc.place_warp(plan([cut("a", 0.2, 0.6, 0.2), cut("b", 0.6127, 1.0, 0.6, break_before=True)]), src, SR)
     hard, _ = vc.place_warp(plan([cut("a", 0.2, 0.6, 0.2), cut("b", 0.6127, 1.0, 0.6, break_before=True, xfade_s=0.0)]), src, SR)
     assert jump_at(hard, 0.6, 240) > 3 * jump_at(dip, 0.6, 240)
+
+
+def test_an_anchor_that_would_stretch_beyond_the_limit_is_dropped():
+    # two vowel onsets dated 1 ms apart in the source but 0.5 s apart on the timeline:
+    # keeping both would smear 1 ms of audio across half a second
+    run = [cut("a", 0.2, 0.6, 0.2), cut("b", 0.6, 1.0, 0.6)]
+    run[0]["src_vowel_onset"] = 0.300
+    run[1]["src_vowel_onset"] = 0.301
+    run[1]["placed_start"] = 1.1      # b's vowel lands 0.5 s after a's
+    src, dst = vc.warp_map(run)
+    ratios = [(d1 - d0) / (s1 - s0) for s0, s1, d0, d1 in zip(src, src[1:], dst, dst[1:])]
+    assert all(1 / vc.WARP_MAX_RATIO <= r <= vc.WARP_MAX_RATIO for r in ratios)
+    assert 0.301 not in src

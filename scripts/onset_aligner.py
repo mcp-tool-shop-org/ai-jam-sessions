@@ -46,6 +46,16 @@ EXTRA_WORDS = {
     "nobleness": "n ow b ax l n ax s",
     "selfcontrol": "s eh l f k ax n ch _r ow l",
     "undimmed": "ah n d ih m d",
+    # The Battle Hymn of the Republic
+    "builded": "b ih l d ih d",
+    "contemners": "k ax n t eh m n er z",
+    "judgmentseat": "jh ah jh m ax n t s iy t",
+    "transfigures": "ch _r ae n s f ih g y er z",
+    "watchfires": "w aa ch f ay r z",
+    # Sung with fewer vowels than the bundled dictionary writes: one vowel per sung syllable.
+    "fiery": "f ay r iy",
+    "circling": "s er k l ih ng",
+    "our": "aw r",
 }
 DICTIONARY = os.path.join("dictionaries", "ds_cmudict-07b.txt")
 NON_LEXICAL = {"", "SP", "AP", "EP", "sil", "sp"}

@@ -642,6 +642,21 @@ def repin_words(clock: dict, candidates: list[dict], total_seconds_of: dict[str,
             "cuts": out_cuts}
 
 
+def fill_undated(rows: list[dict], aligned: dict[str, float | None]) -> list[str]:
+    """Date the syllables the onset detector left undated with the singing aligner's
+    reading of the same take (method "aligner"). Rows the detector dated are never
+    touched: the detector is the timing gate's instrument, and the aligner only fills
+    where it is silent. Returns the ids filled."""
+    filled = []
+    for r in rows:
+        if r.get("t_vowel") is None and aligned.get(r["id"]) is not None:
+            r["t_vowel"] = float(aligned[r["id"]])
+            r["method"] = "aligner"
+            r["dip_db"] = None
+            filled.append(r["id"])
+    return filled
+
+
 def cmd_repin(a):
     clock = load_clock(a.clock)
     if a.candidate:
@@ -653,7 +668,17 @@ def cmd_repin(a):
             mono, sr, frames = read_audio(take)
             key = take.replace("\\", "/")
             totals[key] = frames / sr
-            cands.append({"key": key, "rows": rec["table"], "receipt": receipt.replace("\\", "/"), "sha256": sha256(take)})
+            rows = rec["table"]
+            if a.aligner_fill and any(r.get("t_vowel") is None for r in rows):
+                import onset_aligner
+                work = os.path.join(os.path.dirname(os.path.abspath(take)), "aligner-fill")
+                try:
+                    filled = fill_undated(rows, onset_aligner.align_phrases(take, clock, work))
+                except ValueError as exc:          # the aligner could not read a phrase of this take
+                    print(f"{take_name(key)}: aligner fill skipped ({exc})")
+                    filled = []
+                print(f"{take_name(key)}: the aligner dated {len(filled)} of {len(filled) + sum(1 for r in rows if r.get('t_vowel') is None)} undated syllables")
+            cands.append({"key": key, "rows": rows, "receipt": receipt.replace("\\", "/"), "sha256": sha256(take)})
         phrases = None
         if a.by_phrase:
             scores = json.load(open(a.phrase_scores, encoding="utf-8")) if a.phrase_scores else None
@@ -853,6 +878,9 @@ def place_local(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np
 WARP_FRAME_S = 0.04          # WSOLA frame (a few periods of the lowest sung note)
 WARP_TOL_S = 0.01            # how far a frame may slide to stay in phase with the last
 WARP_RUN_GAP_S = 1.5         # a source gap this long between same-take syllables starts a new run
+WARP_MAX_RATIO = 5.0         # an anchor that would stretch time more than this (or squeeze it below 1/this) is dropped:
+                             # two onsets dated almost on top of each other (fast syllables) would smear a sliver of
+                             # audio across a beat (the Battle Hymn's pickups reached 2857x); the shipped hymns peak at 4.2x
 WARP_REST_S = 0.25           # a rest this long in the score ends a run, even inside one take
 WARP_RELEASE_S = 0.15        # a run sounds this long past its last note's end, then fades
 WARP_RELEASE_FADE_S = 0.06
@@ -887,7 +915,9 @@ def warp_map(run: list[dict]) -> tuple[list[float], list[float]]:
     """Source times -> timeline times for a run: each vowel onset goes where the
     plan puts it (src_vowel_onset + the clip's shift), the run's edges keep the
     first and last clip's own shift, and time between anchors is stretched
-    linearly. An anchor that would run backwards is dropped."""
+    linearly. An anchor that would run backwards, or stretch or squeeze the time
+    since the last one beyond WARP_MAX_RATIO, is dropped: its syllable is placed by
+    the anchors around it, and the gates measure where it lands."""
     def shift(c):
         return c["placed_start"] - c["cut_start"]
     pts = [(run[0]["cut_start"], run[0]["cut_start"] + shift(run[0]))]
@@ -899,7 +929,7 @@ def warp_map(run: list[dict]) -> tuple[list[float], list[float]]:
     pts.append((last["cut_end"], last["cut_end"] + shift(last)))
     src, dst = [pts[0][0]], [pts[0][1]]
     for s, d in pts[1:]:
-        if s > src[-1] + 1e-4 and d > dst[-1] + 1e-4:
+        if s > src[-1] + 1e-4 and d > dst[-1] + 1e-4 and 1 / WARP_MAX_RATIO <= (d - dst[-1]) / (s - src[-1]) <= WARP_MAX_RATIO:
             src.append(s)
             dst.append(d)
     return src, dst
@@ -1277,7 +1307,9 @@ def _track_fcpe(mono: np.ndarray, sr: int) -> dict:
         from torchfcpe import spawn_bundled_infer_model
     except ImportError:
         raise SystemExit("torchfcpe is not installed in this interpreter")
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    # With the GPU hidden (CUDA_VISIBLE_DEVICES=""), is_available() can still say yes while
+    # there is no device to load onto, so both must hold.
+    device = "cuda" if torch.cuda.is_available() and torch.cuda.device_count() > 0 else "cpu"
     if _FCPE is None:
         _FCPE = spawn_bundled_infer_model(device=device)
     x = mono.astype(np.float32)
@@ -1753,7 +1785,9 @@ def main(argv=None) -> int:
     s.add_argument("--split-words", action="store_true", help="treat every syllable as its own word (use with a --syllable-words target)"); s.add_argument("--out", required=True)
     s.add_argument("--by-phrase", action="store_true", help="one take per phrase (rank_phrases), never a join between takes inside a phrase")
     s.add_argument("--phrase-scores", help="phrase_scores.py output: per take and phrase, intelligibility and pitch")
-    s.add_argument("--phrase-gap", type=float, default=0.3, help="a rest this long ends a phrase (default 0.3 s)"); s.set_defaults(fn=cmd_repin)
+    s.add_argument("--phrase-gap", type=float, default=0.3, help="a rest this long ends a phrase (default 0.3 s)")
+    s.add_argument("--aligner-fill", action="store_true", help="date syllables the onset detector left undated with the singing aligner's reading of the same take")
+    s.set_defaults(fn=cmd_repin)
     s = sub.add_parser("place"); s.add_argument("--plan", required=True); s.add_argument("--key", default=""); s.add_argument("--out-dir", required=True)
     s.add_argument("--out-info", required=True); s.add_argument("--out-graph", required=True); s.add_argument("--prefix", default="jam/vocal-clock/placed"); s.add_argument("--dry-run", action="store_true")
     s.add_argument("--local", action="store_true", help="place with numpy (fades + crossfaded joins) instead of the cloud"); s.add_argument("--take", action="append", help="--local: <source_key>=<wav path>")
