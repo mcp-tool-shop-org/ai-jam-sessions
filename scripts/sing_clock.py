@@ -76,6 +76,7 @@ def main() -> int:
     ap.add_argument("--lead-pad", type=float, default=0.0, help="the target's lead pad (export_soulx_target.py --lead-pad); must match how the takes were rendered")
     ap.add_argument("--warp", action="store_true", help="place by time-warping each run of one take instead of cutting every syllable (vocal_clock.py place --warp)")
     ap.add_argument("--transcribe", action="store_true", help="also upload + transcribe the placed stem on Comfy Cloud (order / one-voice gates)")
+    ap.add_argument("--voice-gate", action="store_true", help="also run the one-voice gate (voice_gate.py: voice in rests, two voices, silent notes) in the pyannote environment ($PYANNOTE_PYTHON)")
     ap.add_argument("--vocal-over-bed-db", type=float, default=4.0)
     ap.add_argument("--bed-gain-db", type=float, default=-9.0)
     a = ap.parse_args()
@@ -155,8 +156,14 @@ def main() -> int:
         cmd.append("--aligner")
     timing = run(cmd).returncode
     pitch = run([PY, vc, "pitch", "--clock", clock, "--vocal", placed, "--verify-receipt", receipt, "--receipt", os.path.join(out, "pitch.json")]).returncode
-    if timing or pitch:
-        print(f"NOT A MIX: timing {'PASS' if not timing else 'FAIL'}, pitch {'PASS' if not pitch else 'FAIL'}" + ("" if words else " (order/one-voice not checked: run with --transcribe)"))
+    voice = None
+    if a.voice_gate:
+        voice = run([os.environ.get("PYANNOTE_PYTHON", "E:/AI/envs/pyannote/Scripts/python.exe"), os.path.join(HERE, "voice_gate.py"),
+                     "--clock", clock, "--vocal", placed, "--receipt", os.path.join(out, "voice-gate.json")]).returncode
+    if timing or pitch or voice:
+        print(f"NOT A MIX: timing {'PASS' if not timing else 'FAIL'}, pitch {'PASS' if not pitch else 'FAIL'}"
+              + ("" if voice is None else f", one voice {'PASS' if not voice else 'FLAGGED'}")
+              + ("" if words else " (order not checked: run with --transcribe)"))
         return 1
     if run([PY, vc, "mix", "--local", "--bed", bed, "--vocal", placed, "--plan", plan, "--out-dir", out, "--out-info", os.path.join(out, "mix.json"),
             "--vocal-over-bed-db", str(a.vocal_over_bed_db), "--bed-gain-db", str(a.bed_gain_db)]).returncode:
