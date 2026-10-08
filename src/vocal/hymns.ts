@@ -76,6 +76,8 @@ export interface Hymn {
    * unused by the bed, but the tune and the words are still this hymn's.
    */
   arrangement?: string;
+  /** How an arrangement exemplar is performed (src/vocal/interpretation.ts); absent: as written. */
+  interpretation?: { amount: number };
   ending: HymnSection;
   /** Each verse's syllables, `-` inside a word; no `_` (the tune's held notes add them). */
   verses: string[];
@@ -222,6 +224,8 @@ export const BATTLE_HYMN: Hymn = {
   // si-jam-sessions' Kimi-K3 piano arrangement (CC0), the Director's pick: verses that
   // build from p to ff and a coda that broadens to a fermata.
   arrangement: "battle-hymn-kimi-k3",
+  // The research seat's expressive rules at their preferred amount (rnd v1.1.1.2.3).
+  interpretation: { amount: 1 },
   intro: {
     melody: "F4:1.5 Eb4:0.5 D4:0.5 F4:0.5 Bb4:0.75 C5:0.25 | D5:2 Bb4:1 R:0.5 B4:0.5 | C5:1 C5:1 Bb4:1 A4:1",
     chords: "Bb:4 | Bb:4 | Cm/Eb:2 Bb/F:1 F7:1",

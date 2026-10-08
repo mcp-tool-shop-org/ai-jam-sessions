@@ -115,3 +115,12 @@ def test_a_note_shorter_than_the_anchor_minimum_rides_between_its_neighbours():
     loose, _ = vc.warp_map(run, frozenset({"b"}))
     assert run[1]["src_vowel_onset"] in pinned and run[1]["src_vowel_onset"] not in loose
     assert run[0]["src_vowel_onset"] in loose and run[2]["src_vowel_onset"] in loose
+
+
+def test_the_emphasis_gain_holds_across_each_syllable_and_ramps_between():
+    clock = {"events": [{"t_sec": 0.0, "dur_sec": 0.5, "gain_db": 0.0}, {"t_sec": 0.5, "dur_sec": 0.5, "gain_db": 4.0}]}
+    g = vc.emphasis_gain(clock, SR, SR)
+    db = 20 * np.log10(g)
+    assert abs(db[int(0.2 * SR)]) < 1e-9 and abs(db[int(0.75 * SR)] - 4.0) < 1e-9
+    assert 0 < db[int(0.5 * SR)] < 4                      # a ramp across the join, not a step
+    assert vc.emphasis_gain({"events": [{"t_sec": 0, "dur_sec": 1}]}, SR, SR) is None

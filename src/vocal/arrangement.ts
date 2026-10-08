@@ -27,6 +27,7 @@ import {
   type ScoreClockEvent,
 } from "./score-clock.js";
 import { readFileSync } from "node:fs";
+import { applyMoves, dottedMoves, shapedTempos, syllableGains, type Shape } from "./interpretation.js";
 
 export interface ArrangementNote {
   tick: number;
@@ -154,10 +155,29 @@ export function unmatched(sung: SungNote[], p: Placed): SungNote[] {
  * exemplars' clocks have, timed by the arrangement's tempo map. Each syllable is one
  * event; a held note becomes its melisma. Anchors name the arrangement onset.
  */
-export function arrangementClock(hymn: Hymn): ScoreClock {
+/**
+ * The arrangement and the sung line as performed: placed on the grid, then shaped by
+ * the hymn's interpretation (src/vocal/interpretation.ts) at `amount` (default: the
+ * hymn's own; 0 = as written). Piano and voice are shaped together.
+ */
+export function performed(hymn: Hymn, amount = hymn.interpretation?.amount ?? 0): { p: Placed; sung: SungNote[]; shape: Shape } {
   if (!hymn.arrangement) throw new Error(`${hymn.id} has no arrangement`);
   const p = place(getArrangement(hymn.arrangement), hymn.transpose);
-  const sung = sungNotes(hymn, p);
+  let sung = sungNotes(hymn, p);
+  const bar = p.ppq * p.beatsPerBar;
+  const shape: Shape = { verseStarts: p.verseUpbeats.map((u) => Math.ceil(u / bar) * bar), barTicks: bar, totalTicks: p.totalTicks, tempos: p.tempos };
+  if (amount > 0) {
+    const moves = dottedMoves(sung, p.ppq, amount);
+    sung = applyMoves(sung, moves);
+    p.notes = applyMoves(p.notes, moves);
+    p.tempos = shapedTempos(shape, p.ppq, amount);
+  }
+  return { p, sung, shape };
+}
+
+export function arrangementClock(hymn: Hymn, amount?: number): ScoreClock {
+  const { p, sung, shape } = performed(hymn, amount);
+  const gainAmount = amount ?? hymn.interpretation?.amount ?? 0;
   const bad = unmatched(sung, p);
   if (bad.length) throw new Error(`${hymn.id}: ${bad.length} sung notes have no arrangement note under them (first at tick ${bad[0].tick})`);
   const syl = syllabify(hymnLyrics(hymn.id)!);
@@ -185,6 +205,10 @@ export function arrangementClock(hymn: Hymn): ScoreClock {
       anchor: anchor(n.tick), midi_tick: n.tick, t_midi_sec: Math.round(tickToSec(p, n.tick) * 1e6) / 1e6, engine_note: null,
     });
   });
+  if (gainAmount > 0) {
+    const gains = syllableGains(events.map((e) => ({ tick: e.midi_tick, midi: e.midi })), shape, p.ppq, gainAmount);
+    events.forEach((e, i) => { e.gain_db = gains[i]; });
+  }
   const bars = p.totalTicks / bar;
   const starts: Record<string, number> = {};
   const durs: Record<string, number> = {};
@@ -210,9 +234,8 @@ export function arrangementClock(hymn: Hymn): ScoreClock {
 }
 
 /** The bed's notes in seconds, for the offline renderer. */
-export function bedNotes(hymn: Hymn): { t: number; dur: number; midi: number; vel: number }[] {
-  if (!hymn.arrangement) throw new Error(`${hymn.id} has no arrangement`);
-  const p = place(getArrangement(hymn.arrangement), hymn.transpose);
+export function bedNotes(hymn: Hymn, amount?: number): { t: number; dur: number; midi: number; vel: number }[] {
+  const { p } = performed(hymn, amount);
   return p.notes.map((n) => {
     const t = tickToSec(p, n.tick);
     return { t, dur: tickToSec(p, n.tick + n.dur) - t, midi: n.midi, vel: n.vel };

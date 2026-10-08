@@ -283,6 +283,12 @@ export interface ScoreClockEvent {
    * event is one vowel onset: the timing gate and the picker never see these.
    */
   melisma?: ScoreClockNote[];
+  /**
+   * The interpretation's gain for this syllable, in dB above the quietest
+   * (src/vocal/interpretation.ts), applied to the placed vocal before the mix.
+   * Absent: sung as placed.
+   */
+  gain_db?: number;
 }
 
 /** A note a held syllable continues onto. */
