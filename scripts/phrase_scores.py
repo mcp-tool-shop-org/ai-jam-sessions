@@ -116,8 +116,12 @@ def _listen_once(server: str, wav: bytes, seed: int = 1) -> str:
 
 def start_server(port: int, log_path: str) -> subprocess.Popen:
     log = open(log_path, "w", encoding="utf-8")
+    # --load-mode none: the default mmap load held about 30 GB of host RAM while the
+    # weights went to the card, and pushed system RAM to the VRAM watchdog's 90% line
+    # (2026-10-07). One slot and a fixed context keep the card's share fixed too.
     proc = subprocess.Popen([LLAMA_SERVER, "-m", os.path.join(OMNI_DIR, MODEL), "--mmproj", os.path.join(OMNI_DIR, MMPROJ),
-                             "-ngl", "99", "-c", "16384", "--host", "127.0.0.1", "--port", str(port), "--no-webui"],
+                             "-ngl", "99", "-c", "16384", "-np", "1", "--load-mode", "none",
+                             "--host", "127.0.0.1", "--port", str(port), "--no-webui"],
                             stdout=log, stderr=subprocess.STDOUT)
     for _ in range(300):
         if proc.poll() is not None:
