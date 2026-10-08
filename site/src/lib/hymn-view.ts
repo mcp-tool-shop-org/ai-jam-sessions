@@ -1,4 +1,4 @@
-// The three.js view of the two sung hymns, loaded when the section comes near the viewport.
+// The three.js view of the sung hymns, loaded when the section comes near the viewport.
 // One timeline per hymn: the sung line from its score clock (the clock the voice was placed on)
 // above the piano bed's notes from the same arrangement. Notes light as the recording reaches
 // them, and the line being sung shows underneath with its current syllable marked.

@@ -1,5 +1,5 @@
 /**
- * The landing page's data for the two sung exemplars: the sung line from each
+ * The landing page's data for the sung exemplars: the sung line from each
  * hymn's score clock (the clock the vocal was placed on), the piano bed's notes
  * from the same arrangement the bed was rendered from (realizeHymn, or for a hymn
  * sung over a piano arrangement, that arrangement as performed: bedNotes), and the
@@ -8,10 +8,10 @@
  *   npx tsx scripts/site-hymn-visual.ts           # write site/src/data/hymns.visual.json
  *   npx tsx scripts/site-hymn-visual.ts --check   # exit 1 if the committed file is stale
  *
- * Both hymns are public domain (sources in src/vocal/hymns.ts).
+ * All the hymns are public domain (sources in src/vocal/hymns.ts).
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { AMAZING_GRACE, AMERICA_THE_BEAUTIFUL, PPQ, realizeHymn, type Hymn } from "../src/vocal/hymns.js";
+import { AMAZING_GRACE, AMERICA_THE_BEAUTIFUL, BATTLE_HYMN, PPQ, realizeHymn, type Hymn } from "../src/vocal/hymns.js";
 import { bedNotes } from "../src/vocal/arrangement.js";
 
 const OUT = "site/src/data/hymns.visual.json";
@@ -103,6 +103,7 @@ export function build(): string {
   const songs = [
     songData(AMAZING_GRACE, "scores/amazing-grace-new-britain.score-clock.v1.json"),
     songData(AMERICA_THE_BEAUTIFUL, "scores/america-the-beautiful-materna.score-clock.v1.json"),
+    songData(BATTLE_HYMN, "scores/battle-hymn-of-the-republic.score-clock.v1.json"),
   ];
   return JSON.stringify({ schema: "ai-jam-sessions/site-hymns/v1", songs }) + "\n";
 }

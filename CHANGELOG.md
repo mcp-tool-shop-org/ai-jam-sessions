@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   updated together.
 - Gates on the new performances: timing 107 of 112 and 217 of 224 syllables within 40 ms; pitch
   135 of 140 and 218 of 224 notes within 50 cents on at least one tracker.
+- The Battle Hymn of the Republic joins them on the landing page (third player, 3D view and
+  numbers: timing 283 of 414, pitch 360 of 424; its quick dotted notes ride on the singer's own
+  timing by design). The README's listening section and its seven translations say three hymns.
 
 ### Added — the sung-exemplar method
 - `scripts/arrange-hymn.ts` commissions a hymn's piano arrangement in one command (brief from
