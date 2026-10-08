@@ -954,6 +954,7 @@ def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int, clock: dict 
     nf = int(FADE_S * sr)
     nr = int(WARP_RELEASE_FADE_S * sr)
     xf = [_xfade(run[0], sr) for run in runs]                 # the join into each run
+    forced = ["xfade_s" in run[0] for run in runs]            # an explicit crossfade holds even without overlap
     spans = []
     for run in runs:
         src_t, dst_t = warp_map(run)
@@ -981,8 +982,8 @@ def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int, clock: dict 
             n = max(1, nxt + nx - start)                              # never under the next run past a crossfade
         seg = seg[:n].copy()
         prev_end = spans[k - 1][0] + len(spans[k - 1][1]) if k > 0 else None
-        head = min(nx_in if prev_end is not None and prev_end > start else nf, n // 2)
-        tail = min(nx if nxt is not None and start + n > nxt else nf, n // 2)
+        head = min(nx_in if prev_end is not None and (prev_end > start or forced[k]) else nf, n // 2)
+        tail = min(nx if nxt is not None and (start + n > nxt or forced[k + 1]) else nf, n // 2)
         seg[:head] *= _fade(head)[:, None]
         seg[n - tail:] *= _fade(tail)[::-1][:, None]
         lo, hi = max(0, start), min(total, start + n)

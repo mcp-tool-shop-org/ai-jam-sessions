@@ -85,3 +85,12 @@ def test_production_cuts_carry_neither_field_by_default():
     c = cut("a", 0.2, 0.6, 0.2)
     assert vc._xfade(c, SR) == int(vc.XFADE_S * SR)
     assert vc._xfade({**c, "xfade_s": 0.002}, SR) == 96
+
+
+def test_an_explicit_zero_crossfade_is_a_hard_seam_in_warp_too():
+    # a forced break that skips 13 ms of source: without an explicit crossfade the
+    # two runs fade out and in (a dip); with xfade_s = 0 the seam is a hard edge
+    src = {"s": tone()}
+    dip, _ = vc.place_warp(plan([cut("a", 0.2, 0.6, 0.2), cut("b", 0.6127, 1.0, 0.6, break_before=True)]), src, SR)
+    hard, _ = vc.place_warp(plan([cut("a", 0.2, 0.6, 0.2), cut("b", 0.6127, 1.0, 0.6, break_before=True, xfade_s=0.0)]), src, SR)
+    assert jump_at(hard, 0.6, 240) > 3 * jump_at(dip, 0.6, 240)
