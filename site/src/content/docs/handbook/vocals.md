@@ -35,7 +35,7 @@ git clone https://github.com/Soul-AILab/SoulX-Singer E:/AI/SoulX-Singer
 cd E:/AI/SoulX-Singer
 uv venv .venv --python 3.10
 uv pip install --python .venv/Scripts/python.exe torch torchaudio --index-url https://download.pytorch.org/whl/cu128
-uv pip install --python .venv/Scripts/python.exe "numpy<2" soundfile omegaconf tqdm scipy accelerate "transformers==4.41.2" librosa einops g2p_en nltk huggingface_hub torchfcpe pyworld
+uv pip install --python .venv/Scripts/python.exe "numpy<2" soundfile omegaconf tqdm scipy accelerate "transformers==4.41.2" librosa einops g2p_en nltk huggingface_hub torchfcpe pyworld==0.3.5
 hf download Soul-AILab/SoulX-Singer --local-dir pretrained_models/SoulX-Singer
 git apply E:/AI/ai-jam-sessions/scripts/patches/soulx-singer-load_wav-soundfile.patch   # Windows: no torchcodec
 ```

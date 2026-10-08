@@ -22,7 +22,11 @@ Kinds, by mutation of one cut at a join:
   pitch   one note of the rendered vocal is shifted `severity` semitones with a
           formant-preserving vocoder (WORLD), ramped in and out (needs pyworld);
   vocoded the same note resynthesised by the same vocoder unshifted: the pitch
-          plant's sham, so the vocoder's own trace is no clue;
+          plant's sham, so the vocoder's own trace is no clue. Both are WORLD
+          resyntheses of ONLY the note plus 50 ms either side, crossfaded back over
+          those 50 ms; the rest of the clip is the original render. A detector can
+          therefore see "WORLD trace near a note" in both, which is exactly why the
+          vocoded sham exists;
   <kind>+pause, <kind>+late-vowel, <kind>+early-vowel
           compound plants: a replay, skip or click that also leaves a pause before
           the seam, or moves its vowel beyond its own shift. These are the shapes
