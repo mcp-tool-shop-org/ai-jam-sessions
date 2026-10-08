@@ -1,12 +1,12 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-10-07 from commit 4261526 by Atlas 1.24.0.
+Mapped at 2026-10-08 from commit 45f1f1a by Atlas 1.24.0.
 
 ## What this is
 
 14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (611), Python (66), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-10-07 (6f1a151)
+## What changed since 2026-10-07 (4261526)
 
 Nothing structural changed since 2026-10-07; 2 files changed content.
 
@@ -69,7 +69,7 @@ Nothing structural changed since 2026-10-07; 2 files changed content.
 
 No two source files, other than a file and its own test, changed together often enough to name.
 
-4 files changed together with their own tests, as expected.
+5 files changed together with their own tests, as expected.
 
 Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do.
 

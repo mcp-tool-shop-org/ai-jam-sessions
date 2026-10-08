@@ -231,6 +231,31 @@ def test_a_replay_that_would_also_move_its_vowel_is_refused_unless_allowed():
     assert w["vowel_moved_s"] == pytest.approx(0.11)
 
 
+def test_pools_hold_only_joins_that_can_take_the_plant_and_report_empty_ones():
+    p = plan_of()
+    joins = pl.candidate_joins(p, None, "local")
+    pools = pl.eligible_pools(p, joins, ["replay", "skip"], "local", None)
+    assert len(pools[("replay", 0.1)]) == len(joins)         # every clip before is the same take
+    assert pools[("skip", 0.2)] and all(
+        pl._plantable(p, pl.make_spec("skip", j, 0.2, "local", 0), None) for j in pools[("skip", 0.2)])
+    p2 = plan_of()
+    for c in p2["cuts"]:
+        c["source_key"] = f"take-{c['id']}"                 # every join switches take: nothing can replay
+    pools2 = pl.eligible_pools(p2, pl.candidate_joins(p2, None, "local"), ["replay"], "local", None)
+    assert all(not v for v in pools2.values())
+
+
+def test_a_replay_after_a_pause_is_refused_unless_allowed():
+    # the clip before ends 60 ms before this cut starts on the timeline: a pause
+    p = plan_of()
+    prev = next(c for c in p["cuts"] if c["id"] == "v03")
+    prev["placed_start"] -= 0.06 + vc.JOIN_EXTEND_MAX_S        # reaches its end well before the seam
+    with pytest.raises(ValueError, match="pause before the seam"):
+        pl.mutate(p, spec("replay", sev=0.05), max_vowel_move=None)
+    _, w = pl.mutate(p, spec("replay", sev=0.05), max_vowel_move=None, max_gap=None)
+    assert w["gap_s"] > 0.05
+
+
 def test_a_named_clock_that_is_missing_is_refused_in_warp_mode():
     p = plan_of()
     p["clock"] = "nowhere/score-clock.json"
@@ -349,7 +374,8 @@ def test_build_writes_labels_and_drops_unplantable_specs(tmp_path):
     (pick / "plan.json").write_text(json.dumps(p), encoding="utf-8")
     s = pl.build(str(pick), str(tmp_path / "out"), 10, ["replay", "skip", "sham", "none"], "local", seed=1)
     rows = [json.loads(l) for l in (tmp_path / "out" / "labels.jsonl").read_text(encoding="utf-8").splitlines()]
-    assert s["kept"] == len(rows) and s["kept"] + s["dropped"] == 10
+    assert s["kept"] == len(rows) and s["kept"] + s["dropped"] + s["skipped_empty_pool"] == 10
+    assert s["eligible"]["sham"]["0.0"] == 7 and s["eligible"]["replay"]["0.1"] > 0
     assert {r["kind"] for r in rows} <= {"replay", "skip", "sham", "none"}
     assert all((tmp_path / "out" / r["clip"]).is_file() for r in rows)
     assert all(r["defect"] == (r["kind"] in ("replay", "skip", "click")) for r in rows)

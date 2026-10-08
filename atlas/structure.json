@@ -14191,6 +14191,7 @@
             "candidate_joins",
             "chain",
             "clip_window",
+            "eligible_pools",
             "load_plan_clock",
             "load_sources",
             "main",
@@ -14207,57 +14208,57 @@
             {
               "in": "make_spec",
               "kind": "raise",
-              "line": 112
+              "line": 113
             },
             {
               "in": "_run_of",
               "kind": "raise",
-              "line": 124
+              "line": 125
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 137
+              "line": 138
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 140
+              "line": 141
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 147
+              "line": 148
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 150
+              "line": 151
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 169
+              "line": 172
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 182
+              "line": 185
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 190
+              "line": 189
+            },
+            {
+              "in": "mutate",
+              "kind": "raise",
+              "line": 197
             },
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 218
-            },
-            {
-              "in": "_seamless",
-              "kind": "raise",
-              "line": 221
+              "line": 222
             },
             {
               "in": "_seamless",
@@ -14267,35 +14268,40 @@
             {
               "in": "_seamless",
               "kind": "raise",
-              "line": 228
+              "line": 229
+            },
+            {
+              "in": "_seamless",
+              "kind": "raise",
+              "line": 232
             },
             {
               "in": "load_sources",
               "kind": "raise",
-              "line": 262
+              "line": 266
             },
             {
               "in": "load_plan_clock",
               "kind": "raise",
-              "line": 385
+              "line": 392
             },
             {
               "in": "_plantable",
               "kind": "except",
-              "line": 393
+              "line": 401
             },
             {
               "in": "build",
               "kind": "raise",
-              "line": 407
+              "line": 425
             },
             {
               "in": "build",
               "kind": "except",
-              "line": 426
+              "line": 444
             }
           ],
-          "hash": "55947303856bb0ffcf4c782fbf9035c0ae6b76fb202a066dcea2a9dbbae77fe2",
+          "hash": "98b30378d4ae145b8882476e3217c52829d5c2bdb992ba59a7f74e542c180def",
           "importsFiles": [
             "scripts/phrase_evidence.py",
             "scripts/vocal_clock.py"
@@ -15071,6 +15077,7 @@
             "test_a_local_replay_renders_measurably_and_a_sham_does_not",
             "test_a_local_skip_changes_the_audio",
             "test_a_named_clock_that_is_missing_is_refused_in_warp_mode",
+            "test_a_replay_after_a_pause_is_refused_unless_allowed",
             "test_a_replay_that_would_also_move_its_vowel_is_refused_unless_allowed",
             "test_a_warp_click_inside_a_run_also_breaks_the_run",
             "test_a_warp_click_refuses_a_cut_that_does_not_start_a_run",
@@ -15082,6 +15089,7 @@
             "test_joins_skip_score_rests_and_type_warp_joins",
             "test_local_sham_splits_the_cut_into_continuous_halves",
             "test_mutate_never_changes_the_given_plan",
+            "test_pools_hold_only_joins_that_can_take_the_plant_and_report_empty_ones",
             "test_replay_and_skip_need_the_same_take_before_the_join",
             "test_replay_and_skip_record_any_gap_before_the_seam",
             "test_replay_and_skip_record_how_far_the_vowel_moved",
@@ -15095,7 +15103,7 @@
             "test_warp_forced_break_makes_a_seam_and_a_replay_there_is_measurable",
             "test_warp_replay_refuses_when_the_placer_ignores_break_before"
           ],
-          "hash": "319892ee66987bddb524e8ba92f6ae79e9481f7c2ac733d7b13fe3e0bb140edb",
+          "hash": "ff52cec800acc865eab24ed0761a1ae11e5b21315c696b27bf2a5610d53525df",
           "importsFiles": [
             "scripts/planter.py",
             "scripts/vocal_clock.py"
@@ -37176,7 +37184,7 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "42615267988c88f8bb8423a9b636d1a0a2588eb0",
+    "commit": "45f1f1ab08be4d863214409fa1c8ee41d930b0d8",
     "tracked": 3030
   },
   "landings": [

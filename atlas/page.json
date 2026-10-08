@@ -113,18 +113,18 @@
       }
     ],
     "since": {
-      "commit": "6f1a151d19282b15564c6c2511772c9dc27ea8b1",
-      "generatedAt": "2026-10-07T23:47:27.911Z"
+      "commit": "42615267988c88f8bb8423a9b636d1a0a2588eb0",
+      "generatedAt": "2026-10-07T23:52:56.388Z"
     },
     "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
-    "4 files changed together with their own tests, as expected.",
+    "5 files changed together with their own tests, as expected.",
     "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 4,
-  "commit": "42615267988c88f8bb8423a9b636d1a0a2588eb0",
+  "changesTogetherWithTests": 5,
+  "commit": "45f1f1ab08be4d863214409fa1c8ee41d930b0d8",
   "defaultBranch": "main",
   "derived": "14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (611), Python (66), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
@@ -1641,7 +1641,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-07T23:52:56.388Z",
+  "generatedAt": "2026-10-08T00:06:11.243Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",

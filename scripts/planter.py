@@ -67,6 +67,7 @@ UNITS = {
 MIN_CUT_S = 0.05             # a skip never leaves less of the cut than this
 SHAM_TIMING_S = 0.03         # a warp sham may move the cut's vowel by at most this
 MAX_VOWEL_MOVE_S = 0.03      # a replay/skip may move its vowel at most this far beyond its own shift
+MAX_GAP_S = 0.03             # ... and leave at most this much pause on the timeline before its seam
 CLIP_S = 10.0
 CLIP_EDGE_S = 2.0            # the join sits at least this far inside a clip
 REPEAT_DELTA = 0.1           # replay present: repeat similarity rises at least this much
@@ -154,7 +155,7 @@ def _prev_play(plan: dict, cut: dict, mode: str, clock: dict | None) -> tuple[fl
 
 
 def mutate(plan: dict, spec: dict, clock: dict | None = None,
-           max_vowel_move: float | None = MAX_VOWEL_MOVE_S) -> tuple[dict, dict]:
+           max_vowel_move: float | None = MAX_VOWEL_MOVE_S, max_gap: float | None = MAX_GAP_S) -> tuple[dict, dict]:
     """A new plan with the spec's defect, and where it is: {"t": the join's time on
     the timeline, "lag_s": for a replay, how far back the repeated audio was first
     heard, ...}. The given plan is never changed. Raises ValueError when the defect
@@ -162,7 +163,9 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None,
 
     A replay of d moves its vowel +d and a skip -d: that shift IS the defect. Where
     the source gap before the cut moves it further, the plant is a compound defect
-    (a replay plus a late vowel), refused unless `max_vowel_move` is None."""
+    (a replay plus a late vowel), refused unless `max_vowel_move` is None. Where the
+    previous run ended before the seam, a forced break leaves a pause there: a
+    replay plus a pause, refused beyond `max_gap` unless it is None."""
     out = copy.deepcopy(plan)
     byid = {c["id"]: c for c in out["cuts"]}
     if spec["cut_id"] not in byid:
@@ -177,6 +180,10 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None,
     end = c["cut_start"] + c.get("clip_seconds", c["cut_end"] - c["cut_start"])
     if kind in ("replay", "skip"):
         s_end, to_timeline = _prev_play(out, c, spec["mode"], clock)
+        gap = max(0.0, where["t"] - to_timeline(s_end))
+        if max_gap is not None and gap > max_gap:
+            raise ValueError(f"a {gap * 1000:.0f} ms pause before the seam")
+        where["gap_s"] = round(gap, 4)
         start = s_end - s if kind == "replay" else s_end + s
         if start < 0 or start > c["cut_end"] - MIN_CUT_S:
             raise ValueError(f"{c['id']}: no room for a {s} s {kind}")
@@ -202,9 +209,6 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None,
             where["t"] = _split(out, c)
         else:
             where.update(_seamless(out, c, clock))
-    if kind in ("replay", "skip"):
-        s_end, to_timeline = _prev_play(out, c, spec["mode"], clock)
-        where["gap_s"] = round(max(0.0, where["t"] - to_timeline(s_end)), 4)
     return out, where
 
 
@@ -289,7 +293,7 @@ def _db(x: np.ndarray) -> float:
     return 10 * np.log10(float(np.mean(x ** 2)) + 1e-20)
 
 
-def repeat_at_lag(f: "pe.Features", t: float, lag_s: float) -> float | None:
+def repeat_at_lag(f: "pe.Features", t: float, lag_s: float, span_s: float | None = None) -> float | None:
     """phrase_evidence's repeat measurement, at one known lag and over exactly the
     repeated span: how well the spectral changes in [t, t + lag] match those in
     [t - lag, t] (capped at REPEAT_WIN_S), so the earlier window never crosses the
@@ -297,6 +301,8 @@ def repeat_at_lag(f: "pe.Features", t: float, lag_s: float) -> float | None:
     i = f._frame(t)
     lag = max(2, int(round(lag_s * f.fps)))
     w = min(lag, max(2, int(pe.REPEAT_WIN_S * f.fps)))
+    if span_s is not None:
+        w = min(w, max(2, int(round(span_s * f.fps))))       # only the audio actually heard twice
     if i - lag < 0 or i + w >= len(f.dmel):
         return None
     a, b = f.dmel[i:i + w].ravel(), f.dmel[i - lag:i - lag + w].ravel()
@@ -304,7 +310,8 @@ def repeat_at_lag(f: "pe.Features", t: float, lag_s: float) -> float | None:
     return float(np.mean(a * b))
 
 
-def verify(kind: str, clean: np.ndarray, planted: np.ndarray, sr: int, t: float, lag_s: float | None = None) -> dict:
+def verify(kind: str, clean: np.ndarray, planted: np.ndarray, sr: int, t: float, lag_s: float | None = None,
+           span_s: float | None = None) -> dict:
     """Is the planted defect measurably there (or, for sham and none, measurably
     absent)? Compares the planted render with the clean one around the join, with
     phrase_evidence's own join measurements. A replay is measured at its known lag,
@@ -321,7 +328,7 @@ def verify(kind: str, clean: np.ndarray, planted: np.ndarray, sr: int, t: float,
         m[f"{name}_clean"] = None if va is None else round(va, 3)
         m[f"{name}_planted"] = None if vb is None else round(vb, 3)
     if lag_s is not None:
-        va, vb = repeat_at_lag(fa, t, lag_s), repeat_at_lag(fb, t, lag_s)
+        va, vb = repeat_at_lag(fa, t, lag_s, span_s), repeat_at_lag(fb, t, lag_s, span_s)
         m["repeat_clean"] = None if va is None else round(va, 3)
         m["repeat_planted"] = None if vb is None else round(vb, 3)
         m["lag_s"] = lag_s
@@ -386,16 +393,27 @@ def load_plan_clock(plan: dict, mode: str) -> dict | None:
     return None
 
 
-def _plantable(plan: dict, spec: dict, clock: dict | None) -> bool:
+def _plantable(plan: dict, spec: dict, clock: dict | None, max_vowel_move: float | None = MAX_VOWEL_MOVE_S,
+               max_gap: float | None = MAX_GAP_S) -> bool:
     try:
-        mutate(plan, spec, clock)
+        mutate(plan, spec, clock, max_vowel_move, max_gap)
         return True
     except ValueError:
         return False
 
 
+def eligible_pools(plan: dict, joins: list[dict], kinds: list[str], mode: str, clock: dict | None,
+                   max_vowel_move: float | None = MAX_VOWEL_MOVE_S,
+                   max_gap: float | None = MAX_GAP_S) -> dict[tuple[str, float], list[dict]]:
+    """For every (kind, severity), the joins that can take that plant cleanly. The
+    counts are themselves a finding about the mix: how many joins can take a clean
+    replay of each size. mutate() still guards each draw."""
+    return {(k, sev): [j for j in joins if _plantable(plan, make_spec(k, j, sev, mode, 0), clock, max_vowel_move, max_gap)]
+            for k in kinds for sev in LEVELS[k]}
+
+
 def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp", seed: int = 7,
-          max_vowel_move: float | None = MAX_VOWEL_MOVE_S) -> dict:
+          max_vowel_move: float | None = MAX_VOWEL_MOVE_S, max_gap: float | None = MAX_GAP_S) -> dict:
     import soundfile as sf
     plan = json.load(open(os.path.join(vdir, "plan.json"), encoding="utf-8"))
     clock = load_plan_clock(plan, mode)
@@ -406,23 +424,23 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
     if not joins:
         raise SystemExit(f"{vdir}: no joins to plant at")
     rng = np.random.default_rng(seed)
-    pools = {k: joins for k in kinds}
-    if "sham" in kinds:
-        # In warp mode most joins sit inside a stretched run, where no seam can be
-        # seamless; draw shams only from the joins that can take one.
-        pools["sham"] = [j for j in joins if _plantable(plan, make_spec("sham", j, 0.0, mode, 0), clock)]
+    # Draw from the joins that can take each (kind, severity) cleanly, severities in
+    # turn. An empty pool is reported and skipped, never filled from another size.
+    pools = eligible_pools(plan, joins, kinds, mode, clock, max_vowel_move, max_gap)
     os.makedirs(os.path.join(out_dir, "clips"), exist_ok=True)
-    kept, dropped = [], []
+    kept, dropped, skipped = [], [], 0
     for i in range(n):
         kind = kinds[i % len(kinds)]
-        pool = pools[kind]
+        levels = LEVELS[kind]
+        severity = levels[(i // len(kinds)) % len(levels)]
+        pool = pools[(kind, severity)]
         if not pool:
-            dropped.append({"spec": {"kind": kind}, "reason": "no join here can take this kind"})
+            skipped += 1
             continue
         join = pool[int(rng.integers(len(pool)))]
-        spec = make_spec(kind, join, float(rng.choice(LEVELS[kind])), mode, int(rng.integers(1 << 31)))
+        spec = make_spec(kind, join, severity, mode, int(rng.integers(1 << 31)))
         try:
-            planted_plan, where = mutate(plan, spec, clock, max_vowel_move)
+            planted_plan, where = mutate(plan, spec, clock, max_vowel_move, max_gap)
         except ValueError as exc:
             dropped.append({"spec": spec, "reason": str(exc)})
             continue
@@ -431,7 +449,7 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
             planted, placed_joins = clean, clean_joins
         else:
             planted, placed_joins = render(planted_plan, sources, clock, mode, joins=True)
-        check = verify(kind, clean, planted, sr, t, where.get("lag_s"))
+        check = verify(kind, clean, planted, sr, t, where.get("lag_s"), spec["severity"] if kind == "replay" else None)
         timing = {k: where[k] for k in ("vowel_moved_s", "gap_s", "lag_s") if k in where}
         if mode == "warp" and kind != "none":
             timing.update(run_stretch(placed_joins, spec["cut_id"]))
@@ -450,9 +468,11 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
         for row in kept:
             fh.write(json.dumps(row) + "\n")
     summary = {"schema": LABELS_SCHEMA, "pick": os.path.basename(os.path.normpath(vdir)), "mode": mode, "seed": seed,
-               "max_vowel_move_s": max_vowel_move,
-               "requested": n, "kept": len(kept), "dropped": len(dropped), "joins": len(joins),
-               "sham_joins": len(pools.get("sham", [])),
+               "max_vowel_move_s": max_vowel_move, "max_gap_s": max_gap,
+               "requested": n, "kept": len(kept), "dropped": len(dropped), "skipped_empty_pool": skipped,
+               "joins": len(joins),
+               "eligible": {k: {str(sev): len(pools[(k, sev)]) for sev in LEVELS[k]} for k in kinds},
+               "empty_pools": [f"{k}@{sev}" for (k, sev), pool in pools.items() if not pool],
                "by_kind": {k: sum(r["kind"] == k for r in kept) for k in kinds}, "dropped_rows": dropped}
     with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=1)
@@ -466,6 +486,8 @@ def main() -> int:
     ap.add_argument("--kinds", default="replay,skip,click,sham,none")
     ap.add_argument("--mode", choices=("warp", "local"), default="warp")
     ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--max-gap", default=str(MAX_GAP_S),
+                    help="seconds of pause a replay/skip may leave before its seam (default 0.03); 'off' keeps them")
     ap.add_argument("--max-vowel-move", default=str(MAX_VOWEL_MOVE_S),
                     help="seconds a replay/skip may move its vowel beyond its own shift (default 0.03); "
                          "'off' keeps compound plants")
@@ -477,8 +499,11 @@ def main() -> int:
         ap.error(f"unknown kinds {bad}; choose from {', '.join(KINDS)}")
     out = a.out or os.path.join("tmp", "planter", f"{os.path.basename(os.path.normpath(a.dir))}-{a.mode}-{a.seed}")
     mvm = None if a.max_vowel_move.lower() == "off" else float(a.max_vowel_move)
-    s = build(a.dir, out, a.n, kinds, a.mode, a.seed, mvm)
-    print(f"{out}: kept {s['kept']} of {s['requested']} ({s['by_kind']}), dropped {s['dropped']}, {s['joins']} candidate joins")
+    mg = None if a.max_gap.lower() == "off" else float(a.max_gap)
+    s = build(a.dir, out, a.n, kinds, a.mode, a.seed, mvm, mg)
+    print(f"{out}: kept {s['kept']} of {s['requested']} ({s['by_kind']}), dropped {s['dropped']}, "
+          f"skipped {s['skipped_empty_pool']} (empty pools: {', '.join(s['empty_pools']) or 'none'}), {s['joins']} candidate joins")
+    print("eligible joins per kind and severity: " + json.dumps(s["eligible"]))
     return 0
 
 
