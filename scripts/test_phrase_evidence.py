@@ -84,3 +84,23 @@ def test_percentiles_rank_against_the_controls():
 def test_edges_return_nothing_rather_than_a_number():
     feats = pe.Features(sung(1.0), SR, flat_f0(1.0))
     assert feats.repeat(0.05) is None and feats.click(0.05) is None and feats.spectral_jump(0.0) is None
+
+
+def test_a_clip_with_a_click_at_its_join_ranks_high_against_its_own_controls(tmp_path):
+    import json
+    import soundfile as sf
+    x = sung(10.0)
+    y = x.copy()
+    y[5 * SR] += 0.8
+    folder = tmp_path / "mix"
+    (folder / "clips").mkdir(parents=True)
+    sf.write(folder / "clips" / "00000.wav", y, SR)
+    sf.write(folder / "clips" / "00001.wav", x, SR)
+    rows = [{"clip": "clips/00000.wav", "t_in_clip": 5.0}, {"clip": "clips/00001.wav", "t_in_clip": 5.0}]
+    (folder / "labels.jsonl").write_text("\n".join(json.dumps(r) for r in rows))
+    assert pe.build_clips(str(folder)) == 2
+    hit = json.loads((folder / "evidence" / "00000.json").read_text())
+    clean = json.loads((folder / "evidence" / "00001.json").read_text())
+    assert hit["schema"] == pe.CLIP_SCHEMA and hit["controls"]["click_z"]["n"] == pe.CONTROLS
+    assert hit["at_join"]["click_z_pct"] == 1.0
+    assert clean["at_join"]["click_z_pct"] < 1.0
