@@ -2,7 +2,7 @@
 """Plant known defects into a pick's vocal by mutating its plan, not its audio.
 
     python scripts/planter.py --dir tmp/vocal-clock/sing/<song>/<pick> [--n 500]
-        [--kinds replay,skip,click,sham,none] [--mode warp|local] [--seed 7] [--out tmp/planter/<name>]
+        [--kinds replay,skip,click,stretch,pitch,sham,vocoded,none[,replay+pause,...]] [--mode warp|local] [--seed 7] [--out tmp/planter/<name>]
 
 Every plant is a change to plan.json, rendered through the production splicer
 (vocal_clock.place_warp / place_local), so a planted join carries exactly the
@@ -16,6 +16,18 @@ Kinds, by mutation of one cut at a join:
   skip    the cut starts `severity` s after that point, so exactly that much of the
           take is never heard;
   click   the seam's crossfade is shortened to `severity` s (shorter is harsher);
+  stretch (warp only) the cut's vowel anchor moves in the take while its time on
+          the timeline stays put, so the WSOLA stretch from the previous vowel to it
+          becomes `severity`, outside review_marks.STRETCH (0.67-1.5);
+  pitch   one note of the rendered vocal is shifted `severity` semitones with a
+          formant-preserving vocoder (WORLD), ramped in and out (needs pyworld);
+  vocoded the same note resynthesised by the same vocoder unshifted: the pitch
+          plant's sham, so the vocoder's own trace is no clue;
+  <kind>+pause, <kind>+late-vowel, <kind>+early-vowel
+          compound plants: a replay, skip or click that also leaves a pause before
+          the seam, or moves its vowel beyond its own shift. These are the shapes
+          the cut-and-shift defects had; they are labelled as their own kinds, with
+          the measured gap_s / vowel_moved_s, and kept out of the clean pools;
   sham    a real seam with continuous source and no defect: what a detector that
           only finds splices must fail on (in warp mode the new run starts exactly
           where the run before ended, in the take and on the timeline);
@@ -49,25 +61,45 @@ import vocal_clock as vc  # noqa: E402
 
 SCHEMA = "ai-jam-sessions/plant-spec/v1"
 LABELS_SCHEMA = "ai-jam-sessions/planter-labels/v1"
-KINDS = ("replay", "skip", "click", "sham", "none")
+BASE_KINDS = ("replay", "skip", "click", "stretch", "pitch", "sham", "vocoded", "none")
+COMPOUNDS = ("replay+pause", "replay+late-vowel", "replay+early-vowel",
+             "skip+pause", "skip+late-vowel", "skip+early-vowel", "click+pause")
+KINDS = BASE_KINDS + COMPOUNDS
+DEFECTS = ("replay", "skip", "click", "stretch", "pitch") + COMPOUNDS
+DEFAULT_KINDS = ("replay", "skip", "click", "stretch", "pitch", "sham", "vocoded", "none")
 LEVELS = {
     "replay": (0.02, 0.05, 0.1, 0.2),
     "skip": (0.02, 0.05, 0.1, 0.2),
     "click": (0.005, 0.002, 0.001, 0.0),
+    "stretch": (0.5, 0.6, 1.6, 2.0),
+    "pitch": (-12.0, -1.0, 1.0, 12.0),
     "sham": (0.0,),
+    "vocoded": (0.0,),
     "none": (0.0,),
 }
+for _k in COMPOUNDS:
+    LEVELS[_k] = LEVELS[_k.split("+")[0]]
 UNITS = {
     "replay": "seconds of source played twice",
     "skip": "seconds of source skipped",
     "click": "crossfade seconds at the seam (shorter is harsher)",
+    "stretch": "warp ratio from the previous vowel to this cut's vowel (1 = natural)",
+    "pitch": "semitones the note is shifted (formant-preserving)",
     "sham": "none",
+    "vocoded": "none (the note resynthesised unshifted: the pitch plant's sham)",
     "none": "none",
 }
+for _k in COMPOUNDS:
+    UNITS[_k] = UNITS[_k.split("+")[0]] + "; plus the measured " + ("pause (gap_s)" if _k.endswith("pause") else "vowel move (vowel_moved_s)")
 MIN_CUT_S = 0.05             # a skip never leaves less of the cut than this
 SHAM_TIMING_S = 0.03         # a warp sham may move the cut's vowel by at most this
 MAX_VOWEL_MOVE_S = 0.03      # a replay/skip may move its vowel at most this far beyond its own shift
 MAX_GAP_S = 0.03             # ... and leave at most this much pause on the timeline before its seam
+ANCHOR_MARGIN_S = 0.02       # a moved vowel anchor stays this far from its neighbours in the take
+STRETCH_TOL = 0.1            # stretch present: the placed ratio is within 10% of the target
+PITCH_MIN_NOTE_S = 0.25      # notes shorter than this are not pitch-planted
+PITCH_RAMP_S = 0.02          # the shift ramps in and out over this
+PITCH_PRESENT_CENTS = 50.0   # pitch present: the note's median f0 moved at least this much
 CLIP_S = 10.0
 CLIP_EDGE_S = 2.0            # the join sits at least this far inside a clip
 REPEAT_DELTA = 0.1           # replay present: repeat similarity rises at least this much
@@ -175,16 +207,24 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None,
     where = {"t": float(c["placed_start"])}
     if kind == "none":
         return out, where
-    if spec["mode"] == "warp" and spec["join_type"] == "inside":
-        c["break_before"] = True
+    base, _, extra = kind.partition("+")
+    if kind in ("pitch", "vocoded"):
+        # an audio-level plant on one note: the plan is unchanged; build() applies it
+        note = next((e for e in (clock or {}).get("events", []) if e["id"] == spec["cut_id"]), None)
+        if note is None or note["dur_sec"] < PITCH_MIN_NOTE_S:
+            raise ValueError(f"{spec['cut_id']}: no note of {PITCH_MIN_NOTE_S}+ s to shift")
+        where.update({"t": float(note["t_sec"]), "note_end": float(note["t_sec"] + note["dur_sec"])})
+        return out, where
+    if spec["mode"] == "warp" and spec["join_type"] == "inside" and base != "stretch":
+        c["break_before"] = True                 # a stretch lives inside a run: never break it
     end = c["cut_start"] + c.get("clip_seconds", c["cut_end"] - c["cut_start"])
-    if kind in ("replay", "skip"):
+    if base in ("replay", "skip"):
         s_end, to_timeline = _prev_play(out, c, spec["mode"], clock)
         gap = max(0.0, where["t"] - to_timeline(s_end))
-        if max_gap is not None and gap > max_gap:
-            raise ValueError(f"a {gap * 1000:.0f} ms pause before the seam")
+        excess = c["cut_start"] - s_end          # the vowel's move beyond its own shift, whatever d is
+        _compound_gate(extra, gap, excess, max_gap, max_vowel_move)
         where["gap_s"] = round(gap, 4)
-        start = s_end - s if kind == "replay" else s_end + s
+        start = s_end - s if base == "replay" else s_end + s
         if start < 0 or start > c["cut_end"] - MIN_CUT_S:
             raise ValueError(f"{c['id']}: no room for a {s} s {kind}")
         # placed_start stays, so the cut's shift (placed_start - cut_start) changes by
@@ -192,15 +232,14 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None,
         # (skip): a replay IS a relative shift between neighbours. Recorded so a heard
         # replay can be told from a heard late vowel.
         where["vowel_moved_s"] = round(float(c["cut_start"] - start), 4)
-        beyond = where["vowel_moved_s"] - (s if kind == "replay" else -s)
-        if max_vowel_move is not None and abs(beyond) > max_vowel_move:
-            raise ValueError(f"vowel moves {beyond * 1000:.0f} ms beyond the plant")
         c["cut_start"] = start
         if "clip_seconds" in c:
             c["clip_seconds"] = end - start
-        if kind == "replay":
+        if base == "replay":
             where["lag_s"] = round(where["t"] - to_timeline(start), 4)
-    elif kind == "click":
+    elif base == "stretch":
+        where.update(_stretch(out, c, s, spec, clock))
+    elif base == "click":
         c["xfade_s"] = s
         if spec["mode"] == "warp":
             _run_of(out, c, clock)          # place_warp reads xfade_s only from a run's first cut
@@ -212,8 +251,7 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None,
             gap = max(0.0, where["t"] - to_timeline(s_end))
         except ValueError:                  # another take before: no source gap to measure
             gap = 0.0
-        if max_gap is not None and gap > max_gap:
-            raise ValueError(f"a {gap * 1000:.0f} ms pause before the seam")
+        _compound_gate(extra, gap, 0.0, max_gap, None)
         where["gap_s"] = round(gap, 4)
     elif kind == "sham":
         if spec["mode"] == "local":
@@ -221,6 +259,130 @@ def mutate(plan: dict, spec: dict, clock: dict | None = None,
         else:
             where.update(_seamless(out, c, clock))
     return out, where
+
+
+def _compound_gate(extra: str, gap: float, excess: float, max_gap: float | None,
+                   max_vowel_move: float | None) -> None:
+    """A clean plant (no suffix) refuses a pause or vowel move beyond tolerance. A
+    compound plant requires its own excess and refuses the other, so each label
+    names one shape. Tolerances of None switch the clean filters off."""
+    pause = max_gap is not None and gap > max_gap
+    vowel = max_vowel_move is not None and abs(excess) > max_vowel_move
+    if not extra:
+        if pause:
+            raise ValueError(f"a {gap * 1000:.0f} ms pause before the seam")
+        if vowel:
+            raise ValueError(f"vowel moves {excess * 1000:.0f} ms beyond the plant")
+        return
+    tol_gap = MAX_GAP_S if max_gap is None else max_gap
+    tol_vowel = MAX_VOWEL_MOVE_S if max_vowel_move is None else max_vowel_move
+    if extra == "pause":
+        if gap <= tol_gap:
+            raise ValueError("no pause here for a +pause plant")
+        if abs(excess) > tol_vowel:
+            raise ValueError("the vowel also moves: not a pure +pause plant")
+    elif extra in ("late-vowel", "early-vowel"):
+        if gap > tol_gap:
+            raise ValueError("a pause here too: not a pure vowel-move plant")
+        if (extra == "late-vowel" and excess <= tol_vowel) or (extra == "early-vowel" and excess >= -tol_vowel):
+            raise ValueError(f"the vowel does not move {extra.split('-')[0]} enough here")
+    else:
+        raise ValueError(f"unknown compound +{extra}")
+
+
+def _stretch(plan: dict, c: dict, ratio: float, spec: dict, clock: dict | None) -> dict:
+    """Make the warp stretch from the previous vowel to cut c's vowel equal `ratio`.
+    Both vowels keep their places on the timeline: c's anchor moves in the take
+    (src_vowel_onset + d, placed_start - d keeps their sum), so the stretch between
+    them changes and the next segment absorbs the difference. Refused outside warp
+    mode, at a run's first cut, or where the anchor would cross a neighbour."""
+    if spec["mode"] != "warp":
+        raise ValueError("stretch is a warp-placement defect")
+    runs = vc.warp_runs(word_cuts(plan), score_ends(clock))
+    run = next(r for r in runs if any(x["id"] == c["id"] for x in r))
+    i = next(j for j, x in enumerate(run) if x["id"] == c["id"])
+    if i == 0:
+        raise ValueError(f"{c['id']}: starts a run, so no previous vowel shares its stretch")
+    prev = run[i - 1]
+    if prev.get("src_vowel_onset") is None or c.get("src_vowel_onset") is None:
+        raise ValueError(f"{c['id']}: no vowel anchors to stretch between")
+
+    def shift(x):
+        return x["placed_start"] - x["cut_start"]
+
+    s0, d0 = prev["src_vowel_onset"], prev["src_vowel_onset"] + shift(prev)
+    v, d1 = c["src_vowel_onset"], c["src_vowel_onset"] + shift(c)
+    if d1 - d0 <= 0:
+        raise ValueError(f"{c['id']}: the vowels are not in order on the timeline")
+    v_new = s0 + (d1 - d0) / ratio
+    after = run[i + 1].get("src_vowel_onset") if i + 1 < len(run) else None
+    limit = after if after is not None else run[-1]["cut_end"]
+    if not (s0 + ANCHOR_MARGIN_S < v_new < limit - ANCHOR_MARGIN_S):
+        raise ValueError(f"{c['id']}: a {ratio} stretch would move the anchor past a neighbour")
+    delta = v_new - v
+    c["src_vowel_onset"] = v_new
+    c["placed_start"] -= delta                  # keeps v + shift, the vowel's time, unchanged
+    return {"t": float(d0), "span_s": round(float(d1 - d0), 4), "anchor_moved_s": round(float(delta), 4),
+            "stretch_of": prev["id"]}
+
+
+def shift_note(audio: np.ndarray, sr: int, t0: float, t1: float, semitones: float) -> np.ndarray:
+    """The audio with [t0, t1] shifted `semitones` by WORLD (formant-preserving:
+    the spectral envelope is kept, only f0 moves), ramped in and out over
+    PITCH_RAMP_S and crossfaded back into the original at both ends. semitones=0
+    is the vocoder sham: the same resynthesis, no shift."""
+    import pyworld as pw
+    out = audio.copy()
+    mono = _mono(audio).astype(np.float64)
+    pad = int(0.05 * sr)
+    a, b = max(0, int(t0 * sr) - pad), min(len(mono), int(t1 * sr) + pad)
+    x = np.ascontiguousarray(mono[a:b])
+    f0, tt = pw.harvest(x, sr, frame_period=5.0)
+    f0 = pw.stonemask(x, f0, tt, sr)
+    sp = pw.cheaptrick(x, f0, tt, sr)
+    ap = pw.d4c(x, f0, tt, sr)
+    ramp = np.clip(np.minimum(tt - (t0 - a / sr), (t1 - a / sr) - tt) / PITCH_RAMP_S, 0.0, 1.0)
+    f0s = f0 * 2.0 ** (semitones * ramp / 12.0)
+    y = pw.synthesize(f0s, sp, ap, sr, frame_period=5.0)[: b - a]
+    y = np.pad(y, (0, (b - a) - len(y)))
+    fade = np.clip(np.minimum(np.arange(b - a), (b - a - 1) - np.arange(b - a)) / pad, 0.0, 1.0)
+    seg = x * (1 - fade) + y * fade
+    if out.ndim == 2:
+        out[a:b] = seg[:, None] * np.ones((1, out.shape[1]))
+    else:
+        out[a:b] = seg
+    return out
+
+
+def verify_pitch(clean: np.ndarray, planted: np.ndarray, sr: int, t0: float, t1: float, semitones: float) -> dict:
+    """The note's median f0 moved by at least PITCH_PRESENT_CENTS in the planted
+    direction (pyin on both, the gate's primary tracker); a vocoded sham must not
+    move it."""
+    m = 0.03
+    lo, hi = int((t0 + m) * sr), int((t1 - m) * sr)
+    fa = vc.track_f0(_mono(clean)[lo:hi], sr)["f0"]
+    fb = vc.track_f0(_mono(planted)[lo:hi], sr)["f0"]
+    both = (fa > 0) & (fb > 0) & np.isfinite(fa) & np.isfinite(fb)
+    if both.sum() < 5:
+        return {"present": False, "measured": {"cents": None, "voiced_frames": int(both.sum())}}
+    cents = float(np.median(1200 * np.log2(fb[both] / fa[both])))
+    want = 100.0 * semitones
+    if semitones == 0:
+        present = abs(cents) < PITCH_PRESENT_CENTS
+    else:
+        present = np.sign(cents) == np.sign(want) and abs(cents) >= min(PITCH_PRESENT_CENTS, abs(want) / 2)
+    return {"present": bool(present), "measured": {"cents": round(cents, 1), "voiced_frames": int(both.sum())}}
+
+
+def verify_stretch(target: float, placed_joins: list[dict], cut_id: str) -> dict:
+    """A stretch plant is present when the placer reports the planted ratio for the
+    segment starting at `cut_id`'s vowel, outside the band a listener tolerates
+    (review_marks.STRETCH)."""
+    import review_marks as rm
+    got = next((j.get("stretch") for j in placed_joins if j["id"] == cut_id), None)
+    present = (got is not None and abs(got - target) <= STRETCH_TOL * target
+               and not rm.STRETCH[0] <= got <= rm.STRETCH[1])
+    return {"present": bool(present), "measured": {"stretch": got, "band": list(rm.STRETCH)}}
 
 
 def _seamless(plan: dict, c: dict, clock: dict | None) -> dict:
@@ -345,6 +507,7 @@ def verify(kind: str, clean: np.ndarray, planted: np.ndarray, sr: int, t: float,
         m["lag_s"] = lag_s
     rep = None if None in (m["repeat_clean"], m["repeat_planted"]) else m["repeat_planted"] - m["repeat_clean"]
     clk = None if None in (m["click_clean"], m["click_planted"]) else m["click_planted"] - m["click_clean"]
+    kind = kind.partition("+")[0]
     if kind == "replay":
         present = rep is not None and rep >= REPEAT_DELTA
     elif kind == "skip":
@@ -425,7 +588,10 @@ def eligible_pools(plan: dict, joins: list[dict], kinds: list[str], mode: str, c
     """For every (kind, severity), the joins that can take that plant cleanly. The
     counts are themselves a finding about the mix: how many joins can take a clean
     replay of each size. mutate() still guards each draw."""
-    return {(k, sev): [j for j in joins if _plantable(plan, make_spec(k, j, sev, mode, 0), clock, max_vowel_move, max_gap)]
+    notes = [{"cut_id": e["id"], "join_type": "note", "t": float(e["t_sec"])}
+             for e in (clock or {}).get("events", []) if e["dur_sec"] >= PITCH_MIN_NOTE_S]
+    return {(k, sev): [j for j in (notes if k in ("pitch", "vocoded") else joins)
+                       if _plantable(plan, make_spec(k, j, sev, mode, 0), clock, max_vowel_move, max_gap)]
             for k in kinds for sev in LEVELS[k]}
 
 
@@ -464,10 +630,18 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
         t = where["t"]
         if kind == "none":
             planted, placed_joins = clean, clean_joins
+        elif kind in ("pitch", "vocoded"):
+            planted, placed_joins = shift_note(clean, sr, t, where["note_end"], spec["severity"]), clean_joins
         else:
             planted, placed_joins = render(planted_plan, sources, clock, mode, joins=True)
-        check = verify(kind, clean, planted, sr, t, where.get("lag_s"), spec["severity"] if kind == "replay" else None,
-                       where.get("gap_s"))
+        if kind == "stretch":
+            check = verify_stretch(spec["severity"], placed_joins, where["stretch_of"])
+            check["measured"].update({k: where[k] for k in ("span_s", "anchor_moved_s")})
+        elif kind in ("pitch", "vocoded"):
+            check = verify_pitch(clean, planted, sr, t, where["note_end"], spec["severity"])
+        else:
+            check = verify(kind, clean, planted, sr, t, where.get("lag_s"),
+                           spec["severity"] if kind.startswith("replay") else None, where.get("gap_s"))
         timing = {k: where[k] for k in ("vowel_moved_s", "gap_s", "lag_s") if k in where}
         if mode == "warp" and kind != "none":
             timing.update(run_stretch(placed_joins, spec["cut_id"]))
@@ -478,7 +652,8 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
         clip, proc = chain(planted[int(lo * sr):int(hi * sr)], sr, rng)
         name = f"clips/{i:05d}.wav"
         sf.write(os.path.join(out_dir, name), clip, sr, subtype="PCM_16")
-        kept.append({"clip": name, "kind": kind, "defect": kind in ("replay", "skip", "click"),
+        kept.append({"clip": name, "kind": kind, "defect": kind in DEFECTS,
+                     "pick": plan.get("pick_of") or os.path.basename(os.path.normpath(vdir)), "alt": plan.get("alt"),
                      "t_in_clip": round(t - lo, 4), "severity": spec["severity"], "units": spec["units"],
                      "join_type": spec["join_type"], "cut_id": spec["cut_id"], "chain": proc,
                      "timing": timing, "measured": check["measured"], "spec": spec})
@@ -501,7 +676,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dir", required=True, help="a pick folder (plan.json; the plan's takes on disk)")
     ap.add_argument("--n", type=int, default=500)
-    ap.add_argument("--kinds", default="replay,skip,click,sham,none")
+    ap.add_argument("--kinds", default=",".join(DEFAULT_KINDS),
+                    help=f"comma list from {', '.join(KINDS)}")
     ap.add_argument("--mode", choices=("warp", "local"), default="warp")
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--max-gap", default=str(MAX_GAP_S),
