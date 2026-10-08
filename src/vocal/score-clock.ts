@@ -306,7 +306,8 @@ export interface ScoreClock {
   total_samples: number;
   last_event_end_sec: number;
   clock: {
-    source: "session-nominal";
+    /** "arrangement": timed by an arrangement's own tempo map (src/vocal/arrangement.ts). */
+    source: "session-nominal" | "arrangement";
     bed_measures: [number, number];
     measure_starts_sec: Record<string, number>;
     measure_durations_sec: Record<string, number>;

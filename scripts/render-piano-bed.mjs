@@ -23,7 +23,8 @@ import { createHash } from "node:crypto";
 import { join, dirname } from "node:path";
 import { OfflineAudioContext } from "node-web-audio-api";
 import { initializeFromLibrary, getSong } from "../src/songs/index.ts";
-import { loadExemplarSong } from "../src/vocal/hymns.ts";
+import { getHymn, loadExemplarSong } from "../src/vocal/hymns.ts";
+import { bedNotes } from "../src/vocal/arrangement.ts";
 import { createSampleEngine } from "../src/sample-engine.ts";
 import { createAudioEngine } from "../src/audio-engine.ts";
 import { preferredPianoEngineId, resolvePianoSamplesDir } from "../src/sample-paths.ts";
@@ -51,7 +52,16 @@ initializeFromLibrary(
 const song = loadExemplarSong(clock.song_id)?.song ?? getSong(clock.song_id);
 if (!song) throw new Error(`song ${clock.song_id} not in the library or src/vocal/hymns.ts`);
 
-const schedule = sessionSchedule(song, startMeasure, endMeasure, clock.bpm);
+// An exemplar sung over an arrangement (src/vocal/arrangement.ts) is not played by the
+// session engine: its bed is the arrangement's own notes, timed by its own tempo map,
+// the same map its clock was built from.
+const arranged = clock.clock.source === "arrangement";
+const schedule = arranged
+  ? (() => {
+      const notes = bedNotes(getHymn(clock.song_id)).map((n) => ({ t: n.t, dur: n.dur, midi: n.midi, velocity: n.vel, measure: null, hand: null }));
+      return { notes, endSec: clock.total_seconds };
+    })()
+  : sessionSchedule(song, startMeasure, endMeasure, clock.bpm);
 if (Math.round(schedule.endSec * sr) !== totalSamples) {
   throw new Error(`schedule length ${schedule.endSec}s does not match clock total ${clock.total_seconds}s`);
 }
@@ -73,9 +83,18 @@ const add = (t, fn) => {
   if (!groups.has(q)) groups.set(q, []);
   groups.get(q).push(fn);
 };
-for (const n of schedule.notes) {
-  add(n.t, () => piano.noteOn(n.midi, n.velocity, 0));
-  add(n.t + n.dur, () => piano.noteOff(n.midi, 0));
+if (arranged) {
+  // Note-offs run before note-ons in the same quantum, so a key struck again as it is
+  // released (an arrangement repeats pitches across voices) keeps its new note. The
+  // session path keeps its own order, so its beds are unchanged.
+  for (const n of schedule.notes) add(n.t + n.dur, Object.assign(() => piano.noteOff(n.midi, 0), { off: true }));
+  for (const n of schedule.notes) add(n.t, () => piano.noteOn(n.midi, n.velocity, 0));
+  for (const fns of groups.values()) fns.sort((a, b) => Number(!!b.off) - Number(!!a.off));
+} else {
+  for (const n of schedule.notes) {
+    add(n.t, () => piano.noteOn(n.midi, n.velocity, 0));
+    add(n.t + n.dur, () => piano.noteOff(n.midi, 0));
+  }
 }
 const quanta = [...groups.keys()].sort((a, b) => a - b);
 // Receipt of when the engine was actually told to start each note: the
