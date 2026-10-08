@@ -887,6 +887,10 @@ WARP_MAX_RATIO = 5.0         # an anchor that would stretch time more than this 
 WARP_REST_S = 0.25           # a rest this long in the score ends a run, even inside one take
 WARP_RELEASE_S = 0.15        # a run sounds this long past its last note's end, then fades
 WARP_RELEASE_FADE_S = 0.06
+HOLD_BREATH_S = 0.2          # a phrase's last note is held into the rest after it, up to this long before the next onset,
+HOLD_MAX_RATIO = 1.6         # by stretching its own sung audio at most this much (WSOLA), never the noise in the rest,
+HOLD_FADE_S = 0.18           # and released over this long: the Director heard the old 60 ms cut to silence after
+                             # "hallelujah" as a stutter (2026-10-08); a singer holds the vowel and lets it go
 # Why runs end at the score: a whole song is rendered in phrase segments, split at
 # rests, and the singer makes noise in the rest where two segments meet (the
 # Director heard every remaining honk there, 2026-10-07: a raw take, the placed
@@ -914,13 +918,14 @@ def warp_runs(cuts: list[dict], ends: dict[str, float] | None = None) -> list[li
     return runs
 
 
-def warp_map(run: list[dict], loose: frozenset[str] = frozenset()) -> tuple[list[float], list[float]]:
+def warp_map(run: list[dict], loose: frozenset[str] = frozenset(), hold: tuple[float, float] | None = None) -> tuple[list[float], list[float]]:
     """Source times -> timeline times for a run: each vowel onset goes where the
     plan puts it (src_vowel_onset + the clip's shift), the run's edges keep the
     first and last clip's own shift, and time between anchors is stretched
     linearly. An anchor that would run backwards, or stretch or squeeze the time
     since the last one beyond WARP_MAX_RATIO, is dropped: its syllable is placed by
-    the anchors around it, and the gates measure where it lands."""
+    the anchors around it, and the gates measure where it lands. `hold` = (source end,
+    timeline end) ends the run there instead (a held last note: see hold_end)."""
     def shift(c):
         return c["placed_start"] - c["cut_start"]
     pts = [(run[0]["cut_start"], run[0]["cut_start"] + shift(run[0]))]
@@ -929,7 +934,7 @@ def warp_map(run: list[dict], loose: frozenset[str] = frozenset()) -> tuple[list
         if v is not None and c["id"] not in loose:
             pts.append((v, v + shift(c)))
     last = run[-1]
-    pts.append((last["cut_end"], last["cut_end"] + shift(last)))
+    pts.append(hold if hold is not None else (last["cut_end"], last["cut_end"] + shift(last)))
     src, dst = [pts[0][0]], [pts[0][1]]
     for s, d in pts[1:]:
         if s > src[-1] + 1e-4 and d > dst[-1] + 1e-4 and 1 / WARP_MAX_RATIO <= (d - dst[-1]) / (s - src[-1]) <= WARP_MAX_RATIO:
@@ -973,13 +978,39 @@ def wsola(x: np.ndarray, sr: int, src: list[float], dst: list[float]) -> np.ndar
     return out[:length]
 
 
+def hold_end(run: list[dict], loose: frozenset[str], note_end: float, next_onset: float | None) -> tuple[float, float] | None:
+    """A held last note, when a rest of WARP_REST_S or more follows it in the score:
+    (source end, timeline end). The source stops where an unheld run would
+    (WARP_RELEASE_S past the note), so only sung audio is stretched and never the
+    noise in the rest; the timeline end is HOLD_BREATH_S before the next onset (or the
+    song's end), stretching from the last anchor at most HOLD_MAX_RATIO. None: nothing
+    held (no rest, or no room past where the run would end anyway)."""
+    if next_onset is None or next_onset - note_end < WARP_REST_S:
+        return None
+    src, dst = warp_map(run, loose)
+    if len(src) < 2:
+        return None
+    last = run[-1]
+    shift = last["placed_start"] - last["cut_start"]
+    natural = note_end + WARP_RELEASE_S
+    s_end = min(src[-1], natural - shift)
+    s0, d0 = src[-2], dst[-2]
+    if s_end <= s0 + 1e-3:
+        return None
+    end = min(next_onset - HOLD_BREATH_S, d0 + (s_end - s0) * HOLD_MAX_RATIO)
+    return (s_end, end) if end > natural + 1e-3 else None
+
+
 def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int, clock: dict | None = None) -> tuple[np.ndarray, list[dict]]:
     """Warp placement (see above). Runs meet the way phrases do: the earlier run
     ends at its own last syllable and fades; if the next run starts before that,
     they crossfade for at most XFADE_S, so two takes never sing over each other
     for longer than a crossfade. With the clock, a run ends at its last note plus
-    WARP_RELEASE_S, so the rest after a phrase is silence, not the take."""
-    ends = {e["id"]: e["t_sec"] + e["dur_sec"] for e in (clock or {}).get("events", [])}
+    WARP_RELEASE_S, so the rest after a phrase is silence, not the take; a last note
+    before a rest is held into it and released (hold_end)."""
+    evs = sorted((clock or {}).get("events", []), key=lambda e: e["t_sec"])
+    ends = {e["id"]: e["t_sec"] + e["dur_sec"] for e in evs}
+    next_onset = {e["id"]: (evs[i + 1]["t_sec"] if i + 1 < len(evs) else (clock or {}).get("total_seconds")) for i, e in enumerate(evs)}
     loose = frozenset(e["id"] for e in (clock or {}).get("events", []) if e["dur_sec"] < WARP_MIN_ANCHOR_S)
     total = int(plan["total_samples"])
     out = np.zeros((total, 2))
@@ -991,15 +1022,20 @@ def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int, clock: dict 
     forced = ["xfade_s" in run[0] for run in runs]            # an explicit crossfade holds even without overlap
     spans = []
     for run in runs:
-        src_t, dst_t = warp_map(run, loose)
+        last = run[-1]["id"]
+        held = hold_end(run, loose, ends[last], next_onset.get(last)) if last in ends else None
+        src_t, dst_t = warp_map(run, loose, held)
         x = sources[run[0]["source_key"]]
         if x.ndim == 1:
             x = np.repeat(x[:, None], 2, axis=1)
         a0 = int(round(src_t[0] * sr))
         seg = wsola(x[a0:int(round(src_t[-1] * sr)) + 1], sr, [s - a0 / sr for s in src_t], dst_t)
         start = int(round(dst_t[0] * sr))
-        last = run[-1]["id"]
-        if last in ends:
+        if held is not None:
+            k = min(int(HOLD_FADE_S * sr), len(seg) // 2)              # the held vowel is let go, not cut
+            seg = seg.copy()
+            seg[len(seg) - k:] *= _fade(k)[::-1][:, None]
+        elif last in ends:
             stop = int(round((ends[last] + WARP_RELEASE_S) * sr)) - start
             if 0 < stop < len(seg):
                 seg = seg[:stop].copy()
