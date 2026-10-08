@@ -133,3 +133,17 @@ def test_a_breath_gates_the_voice_down_before_its_syllable_and_only_there():
     assert abs(db[int(0.2 * SR)]) < 1e-9 and abs(db[int(0.75 * SR)] - 2.0) < 1e-9
     plain = 20 * np.log10(vc.emphasis_gain({"events": [dict(ev[0]), {k: v for k, v in ev[1].items() if k != "breath_before_s"}]}, SR, SR))
     assert plain.min() > -1e-9                                  # no breath, no dip
+
+
+def test_a_last_note_before_a_rest_is_held_into_it_and_only_then():
+    # the last note ends at 1.8 on the timeline; its cut runs on into the rest (to 2.0), where the noise is
+    run = [{"id": "a", "cut_start": 0.0, "cut_end": 0.5, "placed_start": 1.0, "src_vowel_onset": 0.05},
+           {"id": "b", "cut_start": 0.5, "cut_end": 1.0, "placed_start": 1.5, "src_vowel_onset": 0.55}]
+    s_end, end = vc.hold_end(run, frozenset(), note_end=1.8, next_onset=3.0)
+    assert abs(s_end - (1.8 + vc.WARP_RELEASE_S - 1.0)) < 1e-9            # the source stops where an unheld run would
+    assert abs(end - (1.55 + (s_end - 0.55) * vc.HOLD_MAX_RATIO)) < 1e-9    # capped stretch of the sung part
+    _, short = vc.hold_end(run, frozenset(), note_end=1.8, next_onset=2.3)
+    assert abs(short - (2.3 - vc.HOLD_BREATH_S)) < 1e-9                     # a short rest: a short hold
+    assert vc.hold_end(run, frozenset(), note_end=1.8, next_onset=1.9) is None   # no rest, nothing held
+    src, dst = vc.warp_map(run, frozenset(), (s_end, end))
+    assert src[-1] == s_end and dst[-1] == end
