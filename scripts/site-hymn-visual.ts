@@ -1,7 +1,8 @@
 /**
  * The landing page's data for the two sung exemplars: the sung line from each
  * hymn's score clock (the clock the vocal was placed on), the piano bed's notes
- * from the same arrangement the bed was rendered from (realizeHymn), and the
+ * from the same arrangement the bed was rendered from (realizeHymn, or for a hymn
+ * sung over a piano arrangement, that arrangement as performed: bedNotes), and the
  * lyric lines, so the three.js view and the sing-along line read one timeline.
  *
  *   npx tsx scripts/site-hymn-visual.ts           # write site/src/data/hymns.visual.json
@@ -11,6 +12,7 @@
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { AMAZING_GRACE, AMERICA_THE_BEAUTIFUL, PPQ, realizeHymn, type Hymn } from "../src/vocal/hymns.js";
+import { bedNotes } from "../src/vocal/arrangement.js";
 
 const OUT = "site/src/data/hymns.visual.json";
 const LINE_GAP_S = 0.3; // a rest this long ends a sung line (the phrase pick's gap)
@@ -32,14 +34,17 @@ const r3 = (x: number) => Math.round(x * 1000) / 1000;
 export function songData(hymn: Hymn, clockPath: string) {
   const clock = JSON.parse(readFileSync(clockPath, "utf8")) as { total_seconds: number; events: ClockEvent[] };
   const sec = 60 / hymn.bpm / PPQ;
-  const real = realizeHymn(hymn);
+  const real = hymn.arrangement ? null : realizeHymn(hymn);
 
   // The clock was derived from this arrangement: its first sung note must be the
-  // MELODY track's first note, or the piano lane would drift from the voice.
-  const firstMelody = Math.min(...real.tracks.MELODY.map((n) => n.tick)) * sec;
-  const firstSung = clock.events[0].t_sec;
-  if (Math.abs(firstMelody - firstSung) > ALIGN_TOL_S) {
-    throw new Error(`${hymn.id}: melody starts at ${firstMelody.toFixed(3)} s, the clock at ${firstSung.toFixed(3)} s`);
+  // MELODY track's first note, or the piano lane would drift from the voice. (An
+  // arrangement's clock is checked note by note against it when it is built.)
+  if (real) {
+    const firstMelody = Math.min(...real.tracks.MELODY.map((n) => n.tick)) * sec;
+    const firstSung = clock.events[0].t_sec;
+    if (Math.abs(firstMelody - firstSung) > ALIGN_TOL_S) {
+      throw new Error(`${hymn.id}: melody starts at ${firstMelody.toFixed(3)} s, the clock at ${firstSung.toFixed(3)} s`);
+    }
   }
 
   const melody: number[][] = []; // [t, dur, midi, syllable index]
@@ -66,9 +71,13 @@ export function songData(hymn: Hymn, clockPath: string) {
   });
 
   const piano: number[][] = []; // [t, dur, midi, velocity]
-  for (const [name, notes] of Object.entries(real.tracks)) {
-    if (name === "MELODY") continue;
-    for (const n of notes) piano.push([r3(n.tick * sec), r3(n.dur * sec), n.midi, n.velocity]);
+  if (real) {
+    for (const [name, notes] of Object.entries(real.tracks)) {
+      if (name === "MELODY") continue;
+      for (const n of notes) piano.push([r3(n.tick * sec), r3(n.dur * sec), n.midi, n.velocity]);
+    }
+  } else {
+    for (const n of bedNotes(hymn)) piano.push([r3(n.t), r3(n.dur), n.midi, n.vel]);
   }
   piano.sort((a, b) => a[0] - b[0] || a[2] - b[2]);
 

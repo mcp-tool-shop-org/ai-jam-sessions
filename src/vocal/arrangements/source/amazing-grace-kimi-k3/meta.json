@@ -1,0 +1,56 @@
+{
+  "schema": "ai-jam-sessions/arrangement-request/v1",
+  "arrangement_id": "amazing-grace-kimi-k3",
+  "hymn": "amazing-grace-new-britain",
+  "model_requested": "moonshotai/kimi-k3",
+  "provider": "Modal",
+  "generation_id": "gen-1791437310-PstgOfz3W8S3rq3pREl6",
+  "temperature": 0,
+  "reasoning_effort": "high",
+  "max_tokens": 200000,
+  "system_sha256": "d24adb367fc11cae8e93e4a7e782122c61b4f686df5a9eac826102889f1071be",
+  "brief_sha256": "606261798b525cf79401a46cface78affd483dbc96835c8accae7c426fc58695",
+  "answer_sha256": "7208ff8f59069943338f75f8ade4b7df6c3329b92bd96378422fe8f862da2b7e",
+  "usage": {
+    "prompt_tokens": 1728,
+    "completion_tokens": 19510,
+    "total_tokens": 21238,
+    "cost": 0.297834,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.297834,
+      "upstream_inference_prompt_cost": 0.005184,
+      "upstream_inference_completions_cost": 0.29265
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 13023,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "finish_reason": "stop",
+  "reasoning_chars": 51804,
+  "wall_s": 196.0,
+  "started": "2026-10-08T01:28:30",
+  "fixes": [
+    "`\\key g major` -> `\\key g \\major` (twice): the answer left out the backslash before the mode, which LilyPond 2.24 rejects"
+  ],
+  "brief_note": "written by hand before scripts/arrange-hymn.ts existed; it asks for one \\partial 4 at the start, so the import adds --offset-ticks 768",
+  "ly_sha256": "d9a3640fd201286fb40d78d9c4f2ec121039a8e241a459e15c66dfeac625de9d",
+  "import": {
+    "offset_ticks": 768,
+    "beats_per_bar": 3
+  },
+  "verse_upbeats": [
+    5376,
+    22656,
+    39936,
+    57216
+  ]
+}

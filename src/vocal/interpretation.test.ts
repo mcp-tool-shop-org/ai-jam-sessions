@@ -86,6 +86,35 @@ describe("tempo", () => {
   });
 });
 
+describe("a hymn's own shape", () => {
+  const waltz: Shape = { verseStarts: [4 * 1152, 20 * 1152], barTicks: 1152, totalTicks: 40 * 1152, tempos: [{ tick: 0, bpm: 72 }],
+    verseBpm: [72, 74], lineBars: 4, lineArch: 0.02, beatDb: [1.5], codaEndBpm: 48, codaBar: 36 };
+  const at = (t: { tick: number; bpm: number }[], tick: number) => t.filter((x) => x.tick <= tick).at(-1)!.bpm;
+
+  it("takes its verse tempos, line length and coda from the hymn", () => {
+    const t = shapedTempos(waltz, PPQ, 1);
+    const mean = (from: number, to: number) => { const v = t.filter((x) => x.tick >= from && x.tick < to).map((x) => x.bpm); return v.reduce((a, b) => a + b, 0) / v.length; };
+    expect(mean(4 * 1152, 8 * 1152)).toBeCloseTo(72, 0);                     // one 4-bar line, mean on the verse tempo
+    expect(mean(20 * 1152, 24 * 1152)).toBeCloseTo(74, 0);
+    expect(at(t, 4 * 1152)).toBeLessThan(at(t, 6 * 1152));                   // the arch peaks mid-line, 2 bars in
+    expect(at(t, 39 * 1152)).toBe(48);                                       // the fermata at the hymn's coda end
+    expect(at(t, 37 * 1152)).toBeLessThan(at(t, 35 * 1152));                 // the coda starts at codaBar without a tempo event
+    expect(at(shapedTempos(waltz, PPQ, { amount: 1, rules: { coda: 0 } }), 39 * 1152)).toBe(72);   // written, at amount 0
+  });
+
+  it("adds a half-line arch inside the line", () => {
+    const half = shapedTempos({ ...waltz, halfLineArch: 0.01 }, PPQ, 1);
+    const plain = shapedTempos(waltz, PPQ, 1);
+    expect(at(half, 5 * 1152)).toBeGreaterThan(at(plain, 5 * 1152));          // a quarter into the line: the half's peak
+  });
+
+  it("stresses the beats the hymn names, by its own amounts", () => {
+    const ev = [{ tick: 0, midi: 60 }, { tick: 384, midi: 60 }, { tick: 768, midi: 60 }, { tick: 1152, midi: 60 }];
+    const g = syllableGains(ev, { ...waltz, verseStarts: [0], lineArch: 0 }, PPQ, { amount: 1, rules: { phraseArch: 0, highLoud: 0 } });
+    expect(g).toEqual([1.5, 0, 0, 1.5]);
+  });
+});
+
 describe("gain", () => {
   const shape: Shape = { verseStarts: [0], barTicks: 1536, totalTicks: 8 * 1536, tempos: [{ tick: 0, bpm: 76 }] };
   const events = [{ tick: 0, midi: 60 }, { tick: 384, midi: 60 }, { tick: 768, midi: 72 }, { tick: 1536, midi: 79 }];
