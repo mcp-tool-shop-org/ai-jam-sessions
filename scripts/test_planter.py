@@ -532,3 +532,38 @@ def test_labels_carry_the_pick_and_alternate(tmp_path):
     pl.build(str(pick), str(tmp_path / "out"), 4, ["skip", "none"], "local", seed=2)
     rows = [json.loads(l) for l in (tmp_path / "out" / "labels.jsonl").read_text(encoding="utf-8").splitlines()]
     assert rows and all(r["pick"] == "song/pad16" and r["alt"] == 3 for r in rows)
+
+
+# ─── PR 3: event spans for frame-level targets ───────────────────────────────
+
+def test_event_spans_cover_each_kind():
+    w = {"t": 10.0}
+    assert pl.event_span("replay", 0.1, w) == pytest.approx((10.0, 10.1))
+    assert pl.event_span("skip", 0.1, w) == pytest.approx((9.98, 10.02))
+    assert pl.event_span("none", 0.0, w) == pytest.approx((9.98, 10.02))
+    assert pl.event_span("sham", 0.0, w) == pytest.approx((9.98, 10.02))
+    assert pl.event_span("click", 0.0, {"t": 10.0, "gap_s": 0.015}) == pytest.approx((9.98, 10.005))
+    assert pl.event_span("stretch", 1.6, {"t": 10.0, "span_s": 0.4}) == pytest.approx((10.0, 10.4))
+    assert pl.event_span("pitch", 1.0, {"t": 10.0, "note_end": 10.6}) == pytest.approx((10.0, 10.6))
+    assert pl.event_span("replay+pause", 0.05, {"t": 10.0, "gap_s": 0.1}) == pytest.approx((9.9, 10.05))
+    assert pl.event_span("replay+late-vowel", 0.05, {"t": 10.0, "vowel_moved_s": 0.2}) == pytest.approx((10.0, 10.2))
+
+
+def test_labels_carry_the_event_inside_the_clip(tmp_path):
+    import json
+
+    import soundfile as sf
+    src = tmp_path / "take.wav"
+    sf.write(src, SOURCES["take-a"], SR)
+    p = plan_of(key=str(src))
+    pick = tmp_path / "pick"
+    pick.mkdir()
+    (pick / "plan.json").write_text(json.dumps(p), encoding="utf-8")
+    pl.build(str(pick), str(tmp_path / "out"), 8, ["replay", "skip", "sham", "none"], "local", seed=3)
+    rows = [json.loads(l) for l in (tmp_path / "out" / "labels.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert rows
+    for r in rows:
+        a, b = r["event_in_clip"]
+        assert 0.0 <= a <= r["t_in_clip"] + 1e-6 <= b + 0.03
+        if r["kind"] == "replay":
+            assert b - a == pytest.approx(r["severity"], abs=1e-3)

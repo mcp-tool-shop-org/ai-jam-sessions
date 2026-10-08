@@ -1,15 +1,14 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-10-08 from commit 5db3c85 by Atlas 1.24.0.
+Mapped at 2026-10-08 from commit 2a9072c by Atlas 1.24.0.
 
 ## What this is
 
 14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (614), Python (68), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-10-08 (d7c64b4)
+## What changed since 2026-10-08 (5db3c85)
 
-- scripts/vocal_clock.py is now also read by scripts/alt_picks.py.
-- 2 files added and 3 changed content, across 2 parts.
+Nothing structural changed since 2026-10-08; 2 files changed content.
 
 ## What comes in
 

@@ -561,6 +561,34 @@ def clip_window(t: float, total_s: float, rng: np.random.Generator, clip_s: floa
 
 # ─── the batch ───────────────────────────────────────────────────────────────
 
+SEAM_HALF_S = 0.02           # a point event (a seam, a clean join) spans this either side
+CLICK_HALF_S = 0.005
+
+
+def event_span(kind: str, severity: float, where: dict) -> tuple[float, float]:
+    """Where the plant lives on the timeline, for frame-level detector targets:
+    replay [t, t+d]; skip, sham and none the join +-SEAM_HALF_S; click from the
+    earlier hard edge to the cut; stretch the stretched span; pitch and vocoded the
+    note. A pause before the seam widens the start; a compound's vowel move widens
+    the end. Clean kinds get a span too, so "no defect at a real join" has a place."""
+    base, _, extra = kind.partition("+")
+    t = float(where["t"])
+    gap = float(where.get("gap_s") or 0.0)
+    if base == "replay":
+        lo, hi = t, t + severity
+    elif base == "click":
+        lo, hi = t - gap - CLICK_HALF_S, t + CLICK_HALF_S
+    elif base == "stretch":
+        lo, hi = t, t + float(where.get("span_s") or 0.0)
+    elif base in ("pitch", "vocoded"):
+        lo, hi = t, float(where["note_end"])
+    else:                                     # skip, sham, none
+        lo, hi = t - SEAM_HALF_S, t + SEAM_HALF_S
+    lo = min(lo, t - gap)
+    if extra in ("late-vowel", "early-vowel"):
+        hi = max(hi, t + abs(float(where.get("vowel_moved_s") or 0.0)))
+    return lo, hi
+
 def load_plan_clock(plan: dict, mode: str) -> dict | None:
     """The plan's score clock. In warp mode it decides where runs end (score rests)
     and the release trim, so a clock the plan names but that is not on disk would
@@ -653,12 +681,15 @@ def build(vdir: str, out_dir: str, n: int, kinds: list[str], mode: str = "warp",
             dropped.append({"spec": spec, "reason": "not measurably as intended", "measured": check["measured"]})
             continue
         lo, hi = clip_window(t, len(planted) / sr, rng)
+        a, b = event_span(kind, spec["severity"], where)
         clip, proc = chain(planted[int(lo * sr):int(hi * sr)], sr, rng)
         name = f"clips/{i:05d}.wav"
         sf.write(os.path.join(out_dir, name), clip, sr, subtype="PCM_16")
         kept.append({"clip": name, "kind": kind, "defect": kind in DEFECTS,
                      "pick": plan.get("pick_of") or os.path.basename(os.path.normpath(vdir)), "alt": plan.get("alt"),
-                     "t_in_clip": round(t - lo, 4), "severity": spec["severity"], "units": spec["units"],
+                     "t_in_clip": round(t - lo, 4),
+                     "event_in_clip": [round(max(0.0, a - lo), 4), round(min(hi - lo, b - lo), 4)],
+                     "severity": spec["severity"], "units": spec["units"],
                      "join_type": spec["join_type"], "cut_id": spec["cut_id"], "chain": proc,
                      "timing": timing, "measured": check["measured"], "spec": spec})
     with open(os.path.join(out_dir, "labels.jsonl"), "w", encoding="utf-8") as fh:
