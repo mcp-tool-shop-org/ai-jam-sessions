@@ -12649,13 +12649,48 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 27,
+      "dynamicReads": 28,
       "dynamicSpawns": 3,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 30,
       "entryPoints": [],
       "externals": 0,
       "files": [
+        {
+          "exports": [
+            "alternatives",
+            "build",
+            "gate_counts",
+            "gates",
+            "load_candidates",
+            "main",
+            "reorder",
+            "same_cuts",
+            "signature"
+          ],
+          "failurePaths": [
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 127
+            },
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 129
+            },
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 140
+            }
+          ],
+          "hash": "f525dd4d13a2d8832e3bc0100521a0d9faa67b8423b656b2e563dfdf6426054f",
+          "importsFiles": [
+            "scripts/vocal_clock.py"
+          ],
+          "path": "scripts/alt_picks.py"
+        },
         {
           "hash": "ecbf9fe3983a33c160346721e6671880b3ce3ac04c423978d4183866ae3e8624",
           "importOrder": [
@@ -14254,119 +14289,178 @@
             "repeat_at_lag",
             "run_stretch",
             "score_ends",
+            "shift_note",
             "verify",
+            "verify_pitch",
+            "verify_stretch",
             "word_cuts"
           ],
           "failurePaths": [
             {
               "in": "make_spec",
               "kind": "raise",
-              "line": 113
+              "line": 149
             },
             {
               "in": "_run_of",
               "kind": "raise",
-              "line": 125
+              "line": 161
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 138
+              "line": 174
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 141
+              "line": 177
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 148
+              "line": 184
             },
             {
               "in": "_prev_play",
               "kind": "raise",
-              "line": 151
+              "line": 187
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 172
+              "line": 208
             },
             {
               "in": "mutate",
               "kind": "raise",
-              "line": 185
+              "line": 219
             },
             {
               "in": "mutate",
-              "kind": "raise",
-              "line": 189
-            },
-            {
-              "in": "mutate",
-              "kind": "raise",
-              "line": 197
-            },
-            {
-              "in": "mutate",
-              "kind": "except",
-              "line": 213
-            },
-            {
-              "in": "mutate",
-              "kind": "raise",
-              "line": 216
-            },
-            {
-              "in": "_seamless",
               "kind": "raise",
               "line": 233
             },
             {
-              "in": "_seamless",
-              "kind": "raise",
-              "line": 236
+              "in": "mutate",
+              "kind": "except",
+              "line": 256
             },
             {
-              "in": "_seamless",
-              "kind": "raise",
-              "line": 240
-            },
-            {
-              "in": "_seamless",
-              "kind": "raise",
-              "line": 243
-            },
-            {
-              "in": "load_sources",
+              "in": "_compound_gate",
               "kind": "raise",
               "line": 277
             },
             {
-              "in": "load_plan_clock",
+              "in": "_compound_gate",
+              "kind": "raise",
+              "line": 279
+            },
+            {
+              "in": "_compound_gate",
+              "kind": "raise",
+              "line": 285
+            },
+            {
+              "in": "_compound_gate",
+              "kind": "raise",
+              "line": 287
+            },
+            {
+              "in": "_compound_gate",
+              "kind": "raise",
+              "line": 290
+            },
+            {
+              "in": "_compound_gate",
+              "kind": "raise",
+              "line": 292
+            },
+            {
+              "in": "_compound_gate",
+              "kind": "raise",
+              "line": 294
+            },
+            {
+              "in": "_stretch",
+              "kind": "raise",
+              "line": 304
+            },
+            {
+              "in": "_stretch",
+              "kind": "raise",
+              "line": 309
+            },
+            {
+              "in": "_stretch",
+              "kind": "raise",
+              "line": 312
+            },
+            {
+              "in": "_stretch",
+              "kind": "raise",
+              "line": 320
+            },
+            {
+              "in": "_stretch",
+              "kind": "raise",
+              "line": 325
+            },
+            {
+              "in": "_seamless",
+              "kind": "raise",
+              "line": 399
+            },
+            {
+              "in": "_seamless",
+              "kind": "raise",
+              "line": 402
+            },
+            {
+              "in": "_seamless",
+              "kind": "raise",
+              "line": 406
+            },
+            {
+              "in": "_seamless",
               "kind": "raise",
               "line": 409
             },
             {
+              "in": "load_sources",
+              "kind": "raise",
+              "line": 443
+            },
+            {
+              "in": "load_plan_clock",
+              "kind": "raise",
+              "line": 576
+            },
+            {
               "in": "_plantable",
               "kind": "except",
-              "line": 418
+              "line": 585
             },
             {
               "in": "build",
               "kind": "raise",
-              "line": 442
+              "line": 612
             },
             {
               "in": "build",
               "kind": "except",
-              "line": 461
+              "line": 631
             }
           ],
-          "hash": "e421f80ffdb9ede386660b709fdf3f87bdfc559a52bd6ca848eafd4ad65a613c",
+          "hash": "f181cfa1f83568bcd75d3d5256584470de771f52f39c7a1d430248903cc54821",
+          "importOrder": [
+            "scripts/phrase_evidence.py",
+            "scripts/vocal_clock.py",
+            "scripts/review_marks.py"
+          ],
           "importsFiles": [
             "scripts/phrase_evidence.py",
+            "scripts/review_marks.py",
             "scripts/vocal_clock.py"
           ],
           "path": "scripts/planter.py"
@@ -15019,6 +15113,20 @@
         },
         {
           "exports": [
+            "phrase",
+            "test_a_phrase_without_scores_keeps_its_top_take",
+            "test_alternatives_are_the_takes_about_as_good_as_the_best",
+            "test_reorder_shuffles_only_the_alternatives_and_keeps_the_rest_in_order",
+            "test_signature_and_same_cuts"
+          ],
+          "hash": "1bd2a42e0b543778d95047f9cbb55a0f69a6399a8bf35e465c981df24d0f92af",
+          "importsFiles": [
+            "scripts/alt_picks.py"
+          ],
+          "path": "scripts/test_alt_picks.py"
+        },
+        {
+          "exports": [
             "clock",
             "ev",
             "g2p",
@@ -15143,8 +15251,11 @@
             "test_a_local_replay_renders_measurably_and_a_sham_does_not",
             "test_a_local_skip_changes_the_audio",
             "test_a_named_clock_that_is_missing_is_refused_in_warp_mode",
+            "test_a_pitch_plant_shifts_one_note_and_a_vocoded_sham_does_not",
             "test_a_replay_after_a_pause_is_refused_unless_allowed",
             "test_a_replay_that_would_also_move_its_vowel_is_refused_unless_allowed",
+            "test_a_stretch_is_refused_in_local_mode_and_past_a_neighbour",
+            "test_a_stretch_keeps_both_vowels_on_time_sets_the_ratio_and_never_breaks_the_run",
             "test_a_warp_click_inside_a_run_also_breaks_the_run",
             "test_a_warp_click_refuses_a_cut_that_does_not_start_a_run",
             "test_a_warp_hard_seam_clicks_with_an_explicit_crossfade",
@@ -15152,10 +15263,14 @@
             "test_a_warp_sham_continues_the_take_exactly_or_refuses",
             "test_build_writes_labels_and_drops_unplantable_specs",
             "test_click_sets_the_seam_crossfade",
+            "test_compound_kinds_require_their_own_excess_and_refuse_the_other",
+            "test_compounds_stay_out_of_the_clean_pools",
             "test_inside_joins_get_a_forced_break_in_warp_mode_only",
             "test_joins_skip_score_rests_and_type_warp_joins",
+            "test_labels_carry_the_pick_and_alternate",
             "test_local_sham_splits_the_cut_into_continuous_halves",
             "test_mutate_never_changes_the_given_plan",
+            "test_pitch_needs_a_long_enough_note",
             "test_pools_hold_only_joins_that_can_take_the_plant_and_report_empty_ones",
             "test_replay_and_skip_need_the_same_take_before_the_join",
             "test_replay_and_skip_record_any_gap_before_the_seam",
@@ -15166,11 +15281,12 @@
             "test_the_chain_is_seeded_bounded_and_kind_blind",
             "test_the_clean_render_verifies_as_none",
             "test_the_clip_window_keeps_the_join_inside",
+            "test_the_placer_reports_the_planted_stretch",
             "test_unknown_kind_and_cut_are_refused",
             "test_warp_forced_break_makes_a_seam_and_a_replay_there_is_measurable",
             "test_warp_replay_refuses_when_the_placer_ignores_break_before"
           ],
-          "hash": "4a7a184d08ea462f965f39e2d0448cbc7dc4d195beee30cf144ab655ec647ba9",
+          "hash": "ce37d97fa8bf206edaf0bad36de932c3752a9f864ee6e09134b6f1e0993538fe",
           "importsFiles": [
             "scripts/planter.py",
             "scripts/vocal_clock.py"
@@ -15666,11 +15782,11 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 68,
+          "reads": 71,
           "where": [
             "caller"
           ],
-          "writes": 40
+          "writes": 44
         },
         {
           "reads": 0,
@@ -15680,13 +15796,13 @@
           "writes": 1
         }
       ],
-      "outsideReads": 68,
-      "outsideWrites": 41,
+      "outsideReads": 71,
+      "outsideWrites": 45,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 24,
+      "testedBy": 25,
       "unresolvedNamed": [
         {
           "path": "scripts/cast-kokoro-lock.mjs",
@@ -15826,7 +15942,7 @@
           "path": "site/src/content/docs/handbook/troubleshooting.md"
         },
         {
-          "hash": "4d5454885cfaa45522cd17b713f0856c7d1530d4d9803cb2003a61ecab85d8fb",
+          "hash": "319ec250acec29bf0e157edc18185a49e09cedf0a4571fd0dd17030916b9bfc8",
           "path": "site/src/content/docs/handbook/vocals.md"
         },
         {
@@ -37288,8 +37404,8 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "d7c64b4f101d0525632fc8595f00e63514e71e01",
-    "tracked": 3033
+    "commit": "5db3c85e3f83ed21084c444f2ae34181dbefc77e",
+    "tracked": 3035
   },
   "landings": [
     {
@@ -47363,6 +47479,11 @@
     {
       "readers": [
         {
+          "by": "scripts/alt_picks.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
           "by": "scripts/sing_clock.py",
           "call": "literal",
           "confidence": "ast"
@@ -49806,9 +49927,10 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 246,
+  "testFiles": 247,
   "testsNotRun": [
     "scripts/test_aligner_gate.py",
+    "scripts/test_alt_picks.py",
     "scripts/test_export_soulx_target.py",
     "scripts/test_phrase_evidence.py",
     "scripts/test_phrase_picker.py",
