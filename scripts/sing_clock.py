@@ -125,6 +125,8 @@ def main() -> int:
         cmd += ["--by-phrase", "--phrase-scores", scores]
     if not a.whole_words:
         cmd.append("--split-words")
+    if a.aligner:
+        cmd.append("--aligner-fill")      # the aligner also dates what the onset detector missed
     for c in candidates:
         cmd += ["--candidate", c]
     if run(cmd).returncode:
