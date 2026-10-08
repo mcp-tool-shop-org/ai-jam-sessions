@@ -289,6 +289,8 @@ export interface ScoreClockEvent {
    * Absent: sung as placed.
    */
   gain_db?: number;
+  /** A breath before this syllable (src/vocal/interpretation.ts, glory): the mix gates the voice across it. */
+  breath_before_s?: number;
 }
 
 /** A note a held syllable continues onto. */
@@ -314,6 +316,8 @@ export interface ScoreClock {
   clock: {
     /** "arrangement": timed by an arrangement's own tempo map (src/vocal/arrangement.ts). */
     source: "session-nominal" | "arrangement";
+    /** An arrangement clock built with an interpretation other than its hymn's own (a variant for an A/B). */
+    interpretation?: import("./interpretation.js").Interpretation;
     bed_measures: [number, number];
     measure_starts_sec: Record<string, number>;
     measure_durations_sec: Record<string, number>;
