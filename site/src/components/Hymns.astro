@@ -1,5 +1,5 @@
 ---
-// The two sung hymns: a player for each, a three.js view of the sung line over the piano bed with
+// The sung hymns: a player for each, a three.js view of the sung line over the piano bed with
 // the words being sung underneath, and what the gates measured on each performance. The notes come
 // from site/src/data/hymns.visual.json (scripts/site-hymn-visual.ts: each hymn's score clock and the
 // arrangement its piano bed was rendered from).
@@ -12,6 +12,7 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).
 const measured: Record<string, { timing: string; pitch: string; heard: string; phrases: string; tone: string }> = {
   'amazing-grace-new-britain': { timing: '107 of 112', pitch: '135 of 140', heard: '97–99%', phrases: '16 phrases from 11 takes', tone: 'ag' },
   'america-the-beautiful-materna': { timing: '217 of 224', pitch: '218 of 224', heard: '87–95%', phrases: '20 phrases from 12 takes', tone: 'atb' },
+  'battle-hymn-of-the-republic': { timing: '283 of 414', pitch: '360 of 424', heard: '92–99%', phrases: '40 phrases from 16 takes', tone: 'bh' },
 };
 ---
 
@@ -62,7 +63,7 @@ const measured: Record<string, { timing: string; pitch: string; heard: string; p
   </div>
 
   <div class="hy-numbers">
-    <h3>What the gates measured on these two performances</h3>
+    <h3>What the gates measured on these performances</h3>
     <div class="hy-scroll">
       <table>
         <thead>
@@ -83,8 +84,9 @@ const measured: Record<string, { timing: string; pitch: string; heard: string; p
     <p class="hy-note">
       Timing is checked by two instruments: an energy detector for the vowel's onset, cross-checked by a
       singing forced aligner, and a syllable fails only when both say it is off. Pitch is tracked per note
-      with two trackers, and a note counts as off only when both say so. These are honest numbers, not a
-      pass/fail stamp: the misses are listed in the receipts.
+      with two trackers, and a note counts as off only when both say so. The Battle Hymn's quick dotted notes
+      are left on the singer's own timing, the way a singer smooths them, so most of its timing misses are by
+      design. These are honest numbers, not a pass/fail stamp: the misses are listed in the receipts.
     </p>
   </div>
 
@@ -92,7 +94,7 @@ const measured: Record<string, { timing: string; pitch: string; heard: string; p
     The voice is synthetic: <a href="https://github.com/Soul-AILab/SoulX-Singer">SoulX-Singer</a> (Apache-2.0),
     sung from the score, with the timbre of SoulX-Singer's own example voice. It imitates no real singer. The
     piano arrangements were written for this project by Kimi-K3 (Moonshot AI) and are dedicated to the public
-    domain (CC0), played on this project's own oscillator grand. Both hymns are in the public domain.
+    domain (CC0), played on this project's own oscillator grand. All three hymns are in the public domain.
   </p>
 </div>
 
@@ -108,6 +110,7 @@ const measured: Record<string, { timing: string; pitch: string; heard: string; p
   .hy-swatch { display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 3px; vertical-align: -1px; }
   .hy-ag .hy-swatch { background: #ffc857; }
   .hy-atb .hy-swatch { background: #7cc4ff; }
+  .hy-bh .hy-swatch { background: #ff7a7a; }
   .hy-voice { background: linear-gradient(90deg, #ffc857 50%, #7cc4ff 50%); }
   .hy-piano { background: #9b8cff; }
   .hy-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.6rem; }

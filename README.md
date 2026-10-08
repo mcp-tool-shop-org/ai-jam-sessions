@@ -28,11 +28,11 @@
 
 ---
 
-## Listen first: two hymns, sung on the beat
+## Listen first: three hymns, sung on the beat
 
-**[Amazing Grace and America the Beautiful](https://mcp-tool-shop-org.github.io/ai-jam-sessions/#listen)**, every verse,
-sung by a synthetic voice over this project's own piano. The landing page plays them with a 3D score that follows the voice
-and the words lighting up as they are sung.
+**[Amazing Grace, America the Beautiful and the Battle Hymn of the Republic](https://mcp-tool-shop-org.github.io/ai-jam-sessions/#listen)**,
+every verse, sung by a synthetic voice over a piano arrangement written for each hymn. The landing page plays them with a 3D
+score that follows the voice and the words lighting up as they are sung.
 
 Each performance was assembled from sixteen takes of a score-conditioned singer:
 - one take per phrase, chosen by a local listener and a pitch tracker;
@@ -44,13 +44,16 @@ A sound check before each song measures the voice's timing footprint, and says h
 
 How it was made: [handbook → Vocals](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/).
 
-| | Amazing Grace | America the Beautiful |
-|---|---|---|
-| syllables within 40 ms of the score | 109 of 112 | 218 of 224 |
-| notes within 50 cents | 136 of 140 | 221 of 224 |
+| | Amazing Grace | America the Beautiful | Battle Hymn |
+|---|---|---|---|
+| syllables within 40 ms of the score | 107 of 112 | 217 of 224 | 283 of 414 |
+| notes within 50 cents | 135 of 140 | 218 of 224 | 360 of 424 |
+
+The Battle Hymn's quick dotted notes are left on the singer's own timing, which is where most of its timing misses come from.
 
 The voice is synthetic: [SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer) (Apache-2.0), with its own example timbre,
-imitating no real singer. Both hymns are in the public domain.
+imitating no real singer. The piano arrangements were written for this project by Kimi-K3 and are dedicated to the public
+domain (CC0). All three hymns are in the public domain.
 
 ## What is this?
 

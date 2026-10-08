@@ -11,9 +11,9 @@ export const config: SiteConfig = {
 
   hero: {
     badge: 'Listen first',
-    headline: 'Two hymns, sung on the beat.',
+    headline: 'Three hymns, sung on the beat.',
     headlineAccent: 'Assembled from sixteen takes, measured, then heard.',
-    description: "Amazing Grace and America the Beautiful, every verse, sung by a synthetic voice over this project's own piano: each phrase chosen by a listener, placed on the score by warping, checked by two timing instruments and a pitch tracker, and passed by ear. Part of AI Jam Sessions, an MCP server that teaches AI to read, play and sing music.",
+    description: "Amazing Grace, America the Beautiful and the Battle Hymn of the Republic, every verse, sung by a synthetic voice over piano arrangements written for each hymn: each phrase chosen by a listener, placed on the score by warping, checked by two timing instruments and a pitch tracker, and passed by ear. Part of AI Jam Sessions, an MCP server that teaches AI to read, play and sing music.",
     primaryCta: { href: '#listen', label: 'Listen' },
     secondaryCta: { href: '#how', label: 'How it was made' },
     previews: [

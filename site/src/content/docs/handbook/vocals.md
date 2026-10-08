@@ -1,14 +1,15 @@
 ---
 title: Vocals — sing a whole song on the clock
-description: How Amazing Grace and America the Beautiful were sung — a score clock, sixteen takes from a score-conditioned singer, one take per phrase, warp placement, two-instrument timing and pitch gates, and a person listening last.
+description: How Amazing Grace, America the Beautiful and the Battle Hymn of the Republic were sung — a score clock, sixteen takes from a score-conditioned singer, one take per phrase, warp placement, two-instrument timing and pitch gates, and a person listening last.
 sidebar:
   order: 4
 ---
 
 AI Jam Sessions can sing a whole song over a piano arrangement, every verse,
 with each vowel on its beat and each note checked against the score — and it
-**proves it** with receipts before anyone calls it a mix. Amazing Grace and
-America the Beautiful, on the [landing page](../../#listen), were made this way
+**proves it** with receipts before anyone calls it a mix. Amazing Grace,
+America the Beautiful and the Battle Hymn of the Republic, on the
+[landing page](../../#listen), were made this way
 and passed by ear, each over a piano arrangement written for the hymn by Kimi-K3.
 This page is the route, the levers, and what was measured along the way; the
 order of work, from commissioning the arrangement to publishing, is in the
@@ -188,15 +189,20 @@ makes at the start of each rendered segment — and both were fixed at the root
 Every run leaves receipts (JSON) with the per-syllable timing table, the
 aligner's cross-check, the per-note pitch rows with both trackers' readings,
 and the sha256 of every artifact, so a claim can be re-checked from the files.
-On the two published performances:
+On the three published performances:
 
-| | Amazing Grace | America the Beautiful |
-|---|---|---|
-| syllables within 40 ms | 107 of 112 | 217 of 224 |
-| notes within 50 cents (on either tracker) | 135 of 140 | 218 of 224 |
-| words the listener heard, per take | 97–99% | 87–95% |
-| built from | 16 phrases from 11 takes | 20 phrases from 12 takes |
-| piano | Kimi-K3's arrangement (CC0) | Kimi-K3's arrangement (CC0) |
+| | Amazing Grace | America the Beautiful | Battle Hymn of the Republic |
+|---|---|---|---|
+| syllables within 40 ms | 107 of 112 | 217 of 224 | 283 of 414 |
+| notes within 50 cents (on either tracker) | 135 of 140 | 218 of 224 | 360 of 424 |
+| words the listener heard, per take | 97–99% | 87–95% | 92–99% |
+| built from | 16 phrases from 11 takes | 20 phrases from 12 takes | 40 phrases from 16 takes |
+| piano | Kimi-K3's arrangement (CC0) | Kimi-K3's arrangement (CC0) | Kimi-K3's arrangement (CC0) |
+
+The Battle Hymn's quick dotted notes (the "Glo-ry" and "Hal-le-lu-jah" figures) are
+left on the singer's own timing: SoulX-Singer sings them nearer even than the score
+(a measured median of 0.57 of the pair against 0.70), and forcing them onto the clock
+made the stutter the Director heard. 120 of its 131 timing misses are those notes.
 
 ## Things that were measured so you do not have to
 
