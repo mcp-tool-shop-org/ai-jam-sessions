@@ -1,14 +1,14 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-10-08 from commit 2a9072c by Atlas 1.24.0.
+Mapped at 2026-10-08 from commit 1b928ed by Atlas 1.24.0.
 
 ## What this is
 
-14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (614), Python (68), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
+14 parts, mostly JSON data (1525 files) and Markdown (351); code in TypeScript (614), Python (72), JavaScript (32), shell (29), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-10-08 (5db3c85)
+## What changed since 2026-10-08 (2a9072c)
 
-Nothing structural changed since 2026-10-08; 2 files changed content.
+Nothing structural changed since 2026-10-08; 4 files added.
 
 ## What comes in
 
@@ -71,7 +71,7 @@ No two source files, other than a file and its own test, changed together often 
 
 5 files changed together with their own tests, as expected.
 
-Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 10 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -215,7 +215,7 @@ And 2 more pairs.
 
 ## Hand-authored
 
-People write .github/, plugin/ and the repository root; 56 writes with paths built at run time may land here.
+People write .github/, plugin/ and the repository root; 57 writes with paths built at run time may land here.
 
 - **spaces/jam-actions-live/demo_data.json** is written by spaces/jam-actions-live/extract-demo-data.mjs from inputs this repository does not keep, and by people.
 
@@ -229,9 +229,9 @@ Read those in order to follow one pull request end to end.
 
 - 5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.
 - 2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.
-- 56 writes and 117 reads use paths built at run time and are not named here.
+- 57 writes and 120 reads use paths built at run time and are not named here.
 - 27 writes go to places this repository does not track, so they are not listed as generated.
-- 114 writes and 397 reads go to a path their caller passes, not to this repository.
+- 115 writes and 401 reads go to a path their caller passes, not to this repository.
 - 1 write and 18 reads go to the directory the command is run in, not to this repository.
 - 3 writes and 11 reads go to the home directory (.ssh/), not to this repository.
 - 8 writes and 4 reads go to a temporary directory, not to this repository.
