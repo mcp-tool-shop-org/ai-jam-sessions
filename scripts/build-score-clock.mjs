@@ -15,7 +15,8 @@ import { join, dirname } from "node:path";
 import { initializeFromLibrary, getSong } from "../src/songs/index.ts";
 import { deriveScoreClock, parseMidiTracks } from "../src/vocal/score-clock.ts";
 import { getVocalTune } from "../src/vocal/tunes.ts";
-import { hymnLyrics, loadExemplarSong } from "../src/vocal/hymns.ts";
+import { getHymn, hymnLyrics, loadExemplarSong } from "../src/vocal/hymns.ts";
+import { arrangementClock } from "../src/vocal/arrangement.ts";
 
 const args = process.argv.slice(2);
 const opt = (name, dflt) => {
@@ -72,7 +73,8 @@ if (!lyrics) {
   process.exit(2);
 }
 
-const clock = deriveScoreClock(song, {
+// A hymn sung over an arrangement is timed by the arrangement, not the session engine.
+const clock = getHymn(songId)?.arrangement ? arrangementClock(getHymn(songId)) : deriveScoreClock(song, {
   midiFile: midiFile.replace(/\\/g, "/"),
   midiBytes: midiBytesOf(),
   melodyTrack: track,

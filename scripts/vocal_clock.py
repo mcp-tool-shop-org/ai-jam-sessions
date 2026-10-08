@@ -878,6 +878,9 @@ def place_local(plan: dict, sources: dict[str, np.ndarray], sr: int) -> tuple[np
 WARP_FRAME_S = 0.04          # WSOLA frame (a few periods of the lowest sung note)
 WARP_TOL_S = 0.01            # how far a frame may slide to stay in phase with the last
 WARP_RUN_GAP_S = 1.5         # a source gap this long between same-take syllables starts a new run
+WARP_MIN_ANCHOR_S = 0.25     # a note shorter than this is not pinned: it rides between the anchors around it. The
+                             # singer sings dotted pairs nearer even (0.63 of the pair, not 0.75: 16 Battle Hymn takes),
+                             # and pinning the sixteenth squeezed it into a stutter on every "hal-le-lu-jah"
 WARP_MAX_RATIO = 5.0         # an anchor that would stretch time more than this (or squeeze it below 1/this) is dropped:
                              # two onsets dated almost on top of each other (fast syllables) would smear a sliver of
                              # audio across a beat (the Battle Hymn's pickups reached 2857x); the shipped hymns peak at 4.2x
@@ -911,7 +914,7 @@ def warp_runs(cuts: list[dict], ends: dict[str, float] | None = None) -> list[li
     return runs
 
 
-def warp_map(run: list[dict]) -> tuple[list[float], list[float]]:
+def warp_map(run: list[dict], loose: frozenset[str] = frozenset()) -> tuple[list[float], list[float]]:
     """Source times -> timeline times for a run: each vowel onset goes where the
     plan puts it (src_vowel_onset + the clip's shift), the run's edges keep the
     first and last clip's own shift, and time between anchors is stretched
@@ -923,7 +926,7 @@ def warp_map(run: list[dict]) -> tuple[list[float], list[float]]:
     pts = [(run[0]["cut_start"], run[0]["cut_start"] + shift(run[0]))]
     for c in run:
         v = c.get("src_vowel_onset")
-        if v is not None:
+        if v is not None and c["id"] not in loose:
             pts.append((v, v + shift(c)))
     last = run[-1]
     pts.append((last["cut_end"], last["cut_end"] + shift(last)))
@@ -977,6 +980,7 @@ def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int, clock: dict 
     for longer than a crossfade. With the clock, a run ends at its last note plus
     WARP_RELEASE_S, so the rest after a phrase is silence, not the take."""
     ends = {e["id"]: e["t_sec"] + e["dur_sec"] for e in (clock or {}).get("events", [])}
+    loose = frozenset(e["id"] for e in (clock or {}).get("events", []) if e["dur_sec"] < WARP_MIN_ANCHOR_S)
     total = int(plan["total_samples"])
     out = np.zeros((total, 2))
     cuts = [c for c in plan["cuts"] if c.get("word_clip_id", c["id"]) == c["id"]]
@@ -987,7 +991,7 @@ def place_warp(plan: dict, sources: dict[str, np.ndarray], sr: int, clock: dict 
     forced = ["xfade_s" in run[0] for run in runs]            # an explicit crossfade holds even without overlap
     spans = []
     for run in runs:
-        src_t, dst_t = warp_map(run)
+        src_t, dst_t = warp_map(run, loose)
         x = sources[run[0]["source_key"]]
         if x.ndim == 1:
             x = np.repeat(x[:, None], 2, axis=1)

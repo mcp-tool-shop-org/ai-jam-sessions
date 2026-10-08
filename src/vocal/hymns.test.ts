@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { deriveScoreClock, sessionSchedule, syllabify } from "./score-clock.js";
+import { arrangementClock } from "./arrangement.js";
 import {
   HYMNS, AMAZING_GRACE, AMERICA_THE_BEAUTIFUL, BREATH_BEATS, PPQ,
   hymnLyrics, hymnMidi, loadExemplarSong, parseChords, parseMelody, pitch, realizeHymn, verseLyrics, verseSection, assertGapless, type Hymn,
@@ -30,9 +31,10 @@ describe.each(HYMNS.map((h) => [h.id, h] as const))("%s", (_id, hymn) => {
     expect(syllabify(lyrics)).toHaveLength(realizeHymn(hymn).tracks.MELODY.length);
   });
 
-  it("keeps the sung line between C4 and D5", () => {
+  it("keeps the sung line between B3 and D5", () => {
+    // B3: the Battle Hymn is sung in G, a minor third down, for its voice (2026-10-07).
     const sung = realizeHymn(hymn).tracks.MELODY.map((n) => n.midi);
-    expect(Math.min(...sung)).toBeGreaterThanOrEqual(60);
+    expect(Math.min(...sung)).toBeGreaterThanOrEqual(59);
     expect(Math.max(...sung)).toBeLessThanOrEqual(74);
   });
 
@@ -77,6 +79,11 @@ describe.each(HYMNS.map((h) => [h.id, h] as const))("%s", (_id, hymn) => {
   it("has a committed clock that is current: derived again, it is the same", () => {
     const { bytes, song } = songOf(hymn);
     const committed = JSON.parse(readFileSync(join(process.cwd(), "scores", `${hymn.id}.score-clock.v1.json`), "utf8"));
+    if (hymn.arrangement) {
+      // Sung over an arrangement: the clock is the arrangement's (src/vocal/arrangement.ts).
+      expect(JSON.parse(JSON.stringify(arrangementClock(hymn)))).toEqual(committed);
+      return;
+    }
     expect(committed.midi.file).toBe(`src/vocal/hymns.ts#${hymn.id}`);
     const derived = deriveScoreClock(song, {
       midiFile: committed.midi.file, midiBytes: bytes, melodyTrack: "MELODY",

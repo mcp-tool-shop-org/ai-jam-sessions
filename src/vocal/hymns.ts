@@ -69,6 +69,13 @@ export interface Hymn {
   verse: HymnSection;
   /** The music printed for the first verse, where it differs from the rest (another upbeat). */
   firstVerse?: HymnSection;
+  /**
+   * A piano arrangement to sing over instead of this module's block chords
+   * (src/vocal/arrangements/<id>.json; src/vocal/arrangement.ts). Its tempo map times
+   * the song; `bpm` is its opening tempo. `intro`, `verse` chords and `ending` are then
+   * unused by the bed, but the tune and the words are still this hymn's.
+   */
+  arrangement?: string;
   ending: HymnSection;
   /** Each verse's syllables, `-` inside a word; no `_` (the tune's held notes add them). */
   verses: string[];
@@ -204,13 +211,17 @@ export const BATTLE_HYMN: Hymn = {
   tune: "Battle Hymn",
   composer: "Anonymous (the tune \"Glory, Hallelujah\", in print by 1859; often credited to William Steffe)",
   textAuthor: "Julia Ward Howe (The Atlantic Monthly, February 1862)",
-  bpm: 84,
+  bpm: 76,
   beatsPerBar: 4,
-  transpose: 0,
+  // Sung a minor third down, in G: the Director's pick of voice and key (2026-10-07 sound check).
+  transpose: -3,
   sourceKey: "Bb major",
-  key: "Bb major",
+  key: "G major",
   sourceTonic: 10,
   splitPoint: 53,
+  // si-jam-sessions' Kimi-K3 piano arrangement (CC0), the Director's pick: verses that
+  // build from p to ff and a coda that broadens to a fermata.
+  arrangement: "battle-hymn-kimi-k3",
   intro: {
     melody: "F4:1.5 Eb4:0.5 D4:0.5 F4:0.5 Bb4:0.75 C5:0.25 | D5:2 Bb4:1 R:0.5 B4:0.5 | C5:1 C5:1 Bb4:1 A4:1",
     chords: "Bb:4 | Bb:4 | Cm/Eb:2 Bb/F:1 F7:1",
@@ -237,6 +248,7 @@ export const BATTLE_HYMN: Hymn = {
   sources: [
     { what: "melody, harmony and chorus words: Battle Hymn of the Republic (Boston: Oliver Ditson & Co., 1862, plate 21454), anonymous; transcribed in si-jam-sessions research/battle-hymn/battle-hymn-ditson-1862.abc", url: "https://www.loc.gov/item/2023782802/" },
     { what: "the five verses: The Atlantic Monthly, vol. IX, February 1862, p. 145", url: "https://archive.org/details/sim_atlantic_1862-02_9_52" },
+    { what: "piano: si-jam-sessions' arrangement by the model kimi-k3 (2026-09-26) from the 1862 edition, dedicated CC0 1.0", url: "https://github.com/mcp-tool-shop-org/si-jam-sessions/tree/main/scores/battle-hymn-kimi-k3" },
     { what: "incipit 55543 51233 321; the 1862 edition's first verse opens with one more F, its eighth-note upbeat \"Mine\"", url: "https://hymnary.org/tune/battle_hymn_of_the_republic_american" },
   ],
 };

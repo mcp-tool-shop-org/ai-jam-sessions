@@ -107,3 +107,11 @@ def test_an_anchor_that_would_stretch_beyond_the_limit_is_dropped():
     ratios = [(d1 - d0) / (s1 - s0) for s0, s1, d0, d1 in zip(src, src[1:], dst, dst[1:])]
     assert all(1 / vc.WARP_MAX_RATIO <= r <= vc.WARP_MAX_RATIO for r in ratios)
     assert 0.301 not in src
+
+
+def test_a_note_shorter_than_the_anchor_minimum_rides_between_its_neighbours():
+    run = [cut("a", 0.2, 0.6, 0.2), cut("b", 0.6, 0.8, 0.62), cut("c", 0.8, 1.2, 0.8)]
+    pinned, _ = vc.warp_map(run)
+    loose, _ = vc.warp_map(run, frozenset({"b"}))
+    assert run[1]["src_vowel_onset"] in pinned and run[1]["src_vowel_onset"] not in loose
+    assert run[0]["src_vowel_onset"] in loose and run[2]["src_vowel_onset"] in loose
