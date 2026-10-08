@@ -2,6 +2,7 @@
 """Per-phrase evidence of audible defects, for a reviewed mix.
 
     python scripts/phrase_evidence.py --dir tmp/vocal-clock/sing/<song>/<pick> [--out <dir>/phrase-evidence.json]
+    python scripts/phrase_evidence.py --clips tmp/stepb/<song>/<mix>      # per planted clip
 
 The timing and pitch gates measure syllables and notes; the defects the Director
 marked were mostly at joins (audio replayed or skipped where clips meet) and at the
@@ -29,6 +30,13 @@ Per phrase:
   - whole-phrase pitch-track flags: octave jumps and the largest step inside the phrase.
 
 The receipt never reads review marks: they are the labels it is evaluated against.
+
+`--clips` measures the planter's clips instead (scripts/planter.py: clips/*.wav plus
+labels.jsonl). For every clip, the same four measurements at its join (`t_in_clip`),
+each as a percentile against CONTROLS positions in the same clip clear of the join,
+written to evidence/<clip>.json beside it. Only the audio is read: the plan facts a
+mix row carries (switches, air, stretch) would tell a model where the planter worked,
+which is the label, so a clip row has none of them.
 """
 from __future__ import annotations
 
@@ -236,11 +244,54 @@ def build(vdir: str, gap: float = 0.3, seed: int = 7) -> dict:
             "segment_bounds": bounds, "phrases": rows}
 
 
+CLIP_SCHEMA = "ai-jam-sessions/clip-evidence/v1"
+CLIP_EDGE_S = 0.3              # a control sits at least this far inside the clip
+
+
+def clip_evidence(wav: str, t: float, seed: int = 7) -> dict:
+    """The four join measurements at time t of one clip, and their percentiles against
+    positions in the same clip clear of t (CONTROL_CLEAR_S)."""
+    mono, sr, frames = vc.read_audio(wav)
+    dur = frames / sr
+    feats = Features(mono, sr, vc.track_f0(mono, sr, "fcpe"))
+    pool = [x for x in np.arange(CLIP_EDGE_S, dur - CLIP_EDGE_S, 0.05) if abs(x - t) > CONTROL_CLEAR_S]
+    rng = np.random.default_rng(seed)
+    picks = rng.choice(pool, size=min(CONTROLS, len(pool)), replace=False) if pool else []
+    ctrl = [feats.at(float(x)) for x in picks]
+    keys = ("spectral_jump", "repeat_similarity", "click_z", "step_cents")
+    cvals = {k: [c[k] for c in ctrl if c[k] is not None] for k in keys}
+    m = feats.at(t)
+    for k in keys:
+        m[f"{k}_pct"] = percentile(m[k], cvals[k])
+    return {"schema": CLIP_SCHEMA, "revision": REVISION, "t": round(t, 4), "seconds": round(dur, 3), "at_join": m,
+            "controls": {k: {"n": len(v), "median": round(float(np.median(v)), 3) if v else None} for k, v in cvals.items()}}
+
+
+def build_clips(folder: str, seed: int = 7) -> int:
+    """evidence/<clip>.json for every row of a planter folder's labels.jsonl."""
+    rows = [json.loads(line) for line in open(os.path.join(folder, "labels.jsonl"), encoding="utf-8") if line.strip()]
+    out_dir = os.path.join(folder, "evidence")
+    os.makedirs(out_dir, exist_ok=True)
+    for r in rows:
+        ev = clip_evidence(os.path.join(folder, r["clip"]), float(r["t_in_clip"]), seed)
+        ev["clip"] = r["clip"]
+        name = os.path.splitext(os.path.basename(r["clip"]))[0] + ".json"
+        with open(os.path.join(out_dir, name), "w", encoding="utf-8") as f:
+            json.dump(ev, f, indent=1)
+    return len(rows)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--dir", required=True, action="append", help="a pick folder (plan.json, placed.json, placed-local.wav); repeatable")
+    ap.add_argument("--dir", action="append", default=[], help="a pick folder (plan.json, placed.json, placed-local.wav); repeatable")
+    ap.add_argument("--clips", action="append", default=[], help="a planter output folder (clips/, labels.jsonl); repeatable")
     ap.add_argument("--gap", type=float, default=0.3)
     a = ap.parse_args()
+    if not a.dir and not a.clips:
+        ap.error("give --dir (a mix) or --clips (a planter folder)")
+    for c in a.clips:
+        n = build_clips(c)
+        print(f"{os.path.join(c, 'evidence')}: {n} clips measured")
     for d in a.dir:
         out = build(d, a.gap)
         path = os.path.join(d, "phrase-evidence.json")

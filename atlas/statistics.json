@@ -168,7 +168,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "scripts",
-      "qualifyingSourceCommits": 114,
+      "qualifyingSourceCommits": 117,
       "rebaseline": null
     },
     {
@@ -1200,8 +1200,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 20,
-        "lines": 1070,
+        "commits": 24,
+        "lines": 1114,
         "path": "atlas/README.md"
       },
       {
@@ -1210,18 +1210,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 20,
-        "lines": 5876,
+        "commits": 24,
+        "lines": 6008,
         "path": "atlas/page.json"
       },
       {
-        "commits": 20,
-        "lines": 61155,
+        "commits": 24,
+        "lines": 61587,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 20,
-        "lines": 147296,
+        "commits": 24,
+        "lines": 147718,
         "path": "atlas/structure.json"
       },
       {
@@ -13535,6 +13535,26 @@
         "path": "scripts/derived-content-scan.ts"
       },
       {
+        "commits": 2,
+        "lines": 189,
+        "path": "scripts/detector/evaluate.py"
+      },
+      {
+        "commits": 1,
+        "lines": 132,
+        "path": "scripts/detector/features.py"
+      },
+      {
+        "commits": 2,
+        "lines": 181,
+        "path": "scripts/detector/heads.py"
+      },
+      {
+        "commits": 2,
+        "lines": 137,
+        "path": "scripts/detector/test_detector.py"
+      },
+      {
         "commits": 8,
         "lines": 257,
         "path": "scripts/download-library.ts"
@@ -13665,8 +13685,8 @@
         "path": "scripts/phrase_scores.py"
       },
       {
-        "commits": 11,
-        "lines": 1937,
+        "commits": 14,
+        "lines": 2223,
         "path": "scripts/planter.py"
       },
       {
@@ -13835,8 +13855,8 @@
         "path": "scripts/test_placer_overrides.py"
       },
       {
-        "commits": 10,
-        "lines": 1378,
+        "commits": 13,
+        "lines": 1567,
         "path": "scripts/test_planter.py"
       },
       {
@@ -14065,8 +14085,8 @@
         "path": "site/src/content/docs/handbook/troubleshooting.md"
       },
       {
-        "commits": 12,
-        "lines": 1049,
+        "commits": 13,
+        "lines": 1054,
         "path": "site/src/content/docs/handbook/vocals.md"
       },
       {
@@ -16935,9 +16955,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-08T00:48:42.019Z",
+  "generatedAt": "2026-10-08T01:23:02.656Z",
   "generatedFrom": {
-    "commit": "5db3c85e3f83ed21084c444f2ae34181dbefc77e"
+    "commit": "1b928ed0c537912a4f1e2f6587b21a9cb90660a1"
   },
   "pairs": [
     {
@@ -17153,71 +17173,71 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 13,
-      "shared": 13,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 13,
-      "shared": 13,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 13,
-      "shared": 13,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "scripts/test_planter.py",
-      "either": 14,
-      "shared": 7,
+      "either": 16,
+      "shared": 8,
       "strength": 0.5
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 13,
-      "shared": 13,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 13,
-      "shared": 13,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "scripts/test_planter.py",
-      "either": 14,
-      "shared": 7,
+      "either": 16,
+      "shared": 8,
       "strength": 0.5
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 13,
-      "shared": 13,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "scripts/test_planter.py",
-      "either": 14,
-      "shared": 7,
+      "either": 16,
+      "shared": 8,
       "strength": 0.5
     },
     {
       "a": "atlas/structure.json",
       "b": "scripts/test_planter.py",
-      "either": 14,
-      "shared": 7,
+      "either": 16,
+      "shared": 8,
       "strength": 0.5
     },
     {
@@ -17328,9 +17348,9 @@
     {
       "a": "scripts/planter.py",
       "b": "scripts/test_planter.py",
-      "either": 9,
-      "shared": 8,
-      "strength": 0.888889
+      "either": 10,
+      "shared": 9,
+      "strength": 0.9
     },
     {
       "a": "src/dataset/eval/llm-runner.test.ts",
@@ -17364,16 +17384,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-10-07T20:48:01-04:00",
-    "inScopeFiles": 3040,
+    "headDate": "2026-10-07T21:22:31-04:00",
+    "inScopeFiles": 3044,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 662,
+    "qualifyingCommits": 666,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-11T00:48:01.000Z",
+    "since": "2026-04-11T01:22:31.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
@@ -17389,7 +17409,7 @@
     ],
     "sourceFileReach": 20,
     "sourceFileRise": 25,
-    "sourceFilesReachingStrongFloor": 9,
+    "sourceFilesReachingStrongFloor": 10,
     "strength": 0.5,
     "windowDays": 180
   },
