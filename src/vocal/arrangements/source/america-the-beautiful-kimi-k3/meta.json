@@ -1,0 +1,49 @@
+{
+  "schema": "ai-jam-sessions/arrangement-request/v1",
+  "arrangement_id": "america-the-beautiful-kimi-k3",
+  "hymn": "america-the-beautiful-materna",
+  "model_requested": "moonshotai/kimi-k3",
+  "provider": "Modal",
+  "generation_id": "gen-1791438118-42zGPtY4pdG5VzSZEAzd",
+  "temperature": 0,
+  "reasoning_effort": "high",
+  "max_tokens": 200000,
+  "system_sha256": "1b3c2e22e05fad04b6c5f9ec4222efd9f8750c6eaa19952434e7e0ad679a3a26",
+  "brief_sha256": "5c89fce2bc67d9a21d4d8046cf7f2b107a1ad0758f72cbce5258380631b5d6bd",
+  "answer_sha256": "34e5e75403742b9459e9d82c438c275d16b508d8db0d7ba073e280defd32b288",
+  "usage": {
+    "prompt_tokens": 1956,
+    "completion_tokens": 67147,
+    "total_tokens": 69103,
+    "cost": 1.013073,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 1.013073,
+      "upstream_inference_prompt_cost": 0.005868,
+      "upstream_inference_completions_cost": 1.007205
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 36692,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "finish_reason": "stop",
+  "reasoning_chars": 141182,
+  "wall_s": 528.3,
+  "started": "2026-10-08T05:41:57.805Z",
+  "fixes": [],
+  "ly_sha256": "34e5e75403742b9459e9d82c438c275d16b508d8db0d7ba073e280defd32b288",
+  "verse_upbeats": [
+    8832,
+    34944,
+    61056,
+    87168
+  ]
+}
