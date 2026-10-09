@@ -149,7 +149,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "scores",
-      "qualifyingSourceCommits": 0,
+      "qualifyingSourceCommits": 1,
       "rebaseline": null
     },
     {
@@ -160,6 +160,7 @@
         "importsAndCoChanges": [],
         "importsOnly": [
           "experiments",
+          "scores",
           "src"
         ]
       },
@@ -168,7 +169,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "scripts",
-      "qualifyingSourceCommits": 117,
+      "qualifyingSourceCommits": 131,
       "rebaseline": null
     },
     {
@@ -184,7 +185,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "site",
-      "qualifyingSourceCommits": 14,
+      "qualifyingSourceCommits": 15,
       "rebaseline": null
     },
     {
@@ -237,7 +238,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 184,
+      "qualifyingSourceCommits": 190,
       "rebaseline": null
     }
   ],
@@ -255,13 +256,13 @@
         "path": ".gitattributes"
       },
       {
-        "commits": 40,
-        "lines": 1004,
+        "commits": 37,
+        "lines": 992,
         "path": ".github/workflows/ci.yml"
       },
       {
-        "commits": 12,
-        "lines": 46,
+        "commits": 10,
+        "lines": 42,
         "path": ".github/workflows/pages.yml"
       },
       {
@@ -280,8 +281,8 @@
         "path": ".github/workflows/push-jam-actions-v0-hf.yml"
       },
       {
-        "commits": 21,
-        "lines": 178,
+        "commits": 17,
+        "lines": 166,
         "path": ".github/workflows/release.yml"
       },
       {
@@ -300,13 +301,13 @@
         "path": ".npmignore"
       },
       {
-        "commits": 21,
-        "lines": 108940,
+        "commits": 25,
+        "lines": 150556,
         "path": ".polyglot-cache.json"
       },
       {
-        "commits": 82,
-        "lines": 1814,
+        "commits": 88,
+        "lines": 1870,
         "path": "CHANGELOG.md"
       },
       {
@@ -325,43 +326,43 @@
         "path": "Dockerfile"
       },
       {
-        "commits": 24,
-        "lines": 2680,
+        "commits": 28,
+        "lines": 2906,
         "path": "README.es.md"
       },
       {
-        "commits": 24,
-        "lines": 3250,
+        "commits": 28,
+        "lines": 3510,
         "path": "README.fr.md"
       },
       {
-        "commits": 24,
-        "lines": 3146,
+        "commits": 28,
+        "lines": 3314,
         "path": "README.hi.md"
       },
       {
-        "commits": 24,
-        "lines": 3370,
+        "commits": 28,
+        "lines": 3666,
         "path": "README.it.md"
       },
       {
-        "commits": 24,
-        "lines": 3096,
+        "commits": 28,
+        "lines": 3268,
         "path": "README.ja.md"
       },
       {
-        "commits": 44,
-        "lines": 1629,
+        "commits": 48,
+        "lines": 1679,
         "path": "README.md"
       },
       {
-        "commits": 24,
-        "lines": 2372,
+        "commits": 28,
+        "lines": 2648,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 24,
-        "lines": 3318,
+        "commits": 28,
+        "lines": 3500,
         "path": "README.zh.md"
       },
       {
@@ -1200,8 +1201,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 24,
-        "lines": 1114,
+        "commits": 28,
+        "lines": 1170,
         "path": "atlas/README.md"
       },
       {
@@ -1210,18 +1211,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 24,
-        "lines": 6008,
+        "commits": 28,
+        "lines": 6130,
         "path": "atlas/page.json"
       },
       {
-        "commits": 24,
-        "lines": 61587,
+        "commits": 28,
+        "lines": 62023,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 24,
-        "lines": 147718,
+        "commits": 28,
+        "lines": 148092,
         "path": "atlas/structure.json"
       },
       {
@@ -7795,6 +7796,11 @@
         "path": "docs/spectrogram-surface-study-2026-09.md"
       },
       {
+        "commits": 6,
+        "lines": 298,
+        "path": "docs/sung-exemplar-method.md"
+      },
+      {
         "commits": 29,
         "lines": 1752,
         "path": "docs/vocal-clock.md"
@@ -12940,8 +12946,8 @@
         "path": "logo.svg"
       },
       {
-        "commits": 41,
-        "lines": 236,
+        "commits": 40,
+        "lines": 228,
         "path": "package.json"
       },
       {
@@ -12975,8 +12981,8 @@
         "path": "plugin/agents/piano-teacher.md"
       },
       {
-        "commits": 17,
-        "lines": 6716,
+        "commits": 16,
+        "lines": 5477,
         "path": "pnpm-lock.yaml"
       },
       {
@@ -13045,8 +13051,8 @@
         "path": "quarantine}/rnb/ordinary-people.json"
       },
       {
-        "commits": 2,
-        "lines": 5422,
+        "commits": 4,
+        "lines": 11194,
         "path": "scores/amazing-grace-new-britain.score-clock.v1.json"
       },
       {
@@ -13055,14 +13061,59 @@
         "path": "scores/amazing-grace.score-clock.v1.json"
       },
       {
-        "commits": 3,
-        "lines": 8894,
+        "commits": 5,
+        "lines": 17982,
         "path": "scores/america-the-beautiful-materna.score-clock.v1.json"
       },
       {
         "commits": 2,
         "lines": 616,
         "path": "scores/america-the-beautiful.score-clock.v1.json"
+      },
+      {
+        "commits": 6,
+        "lines": 45170,
+        "path": "scores/battle-hymn-of-the-republic.score-clock.v1.json"
+      },
+      {
+        "commits": 1,
+        "lines": 44,
+        "path": "scores/receipts/README-sung-2026-10-08.md"
+      },
+      {
+        "commits": 1,
+        "lines": 14,
+        "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/mix.json"
+      },
+      {
+        "commits": 1,
+        "lines": 2398,
+        "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/phrase-scores.json"
+      },
+      {
+        "commits": 1,
+        "lines": 5487,
+        "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/piano-bed.receipt.json"
+      },
+      {
+        "commits": 1,
+        "lines": 2449,
+        "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/pitch.json"
+      },
+      {
+        "commits": 1,
+        "lines": 2414,
+        "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/plan.json"
+      },
+      {
+        "commits": 1,
+        "lines": 1601,
+        "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/receipt.json"
+      },
+      {
+        "commits": 1,
+        "lines": 28,
+        "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/voice-gate.json"
       },
       {
         "commits": 5,
@@ -13345,6 +13396,41 @@
         "path": "scores/receipts/amazing-grace/vocal-clock.receipt.json"
       },
       {
+        "commits": 1,
+        "lines": 14,
+        "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/mix.json"
+      },
+      {
+        "commits": 1,
+        "lines": 2974,
+        "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/phrase-scores.json"
+      },
+      {
+        "commits": 1,
+        "lines": 10759,
+        "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/piano-bed.receipt.json"
+      },
+      {
+        "commits": 1,
+        "lines": 3887,
+        "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/pitch.json"
+      },
+      {
+        "commits": 1,
+        "lines": 4590,
+        "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/plan.json"
+      },
+      {
+        "commits": 1,
+        "lines": 3163,
+        "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/receipt.json"
+      },
+      {
+        "commits": 1,
+        "lines": 28,
+        "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/voice-gate.json"
+      },
+      {
         "commits": 3,
         "lines": 711,
         "path": "scores/receipts/america-the-beautiful/soundcheck.clock.json"
@@ -13353,6 +13439,76 @@
         "commits": 4,
         "lines": 4205,
         "path": "scores/receipts/america-the-beautiful/soundcheck.receipt.json"
+      },
+      {
+        "commits": 1,
+        "lines": 14,
+        "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/mix.json"
+      },
+      {
+        "commits": 1,
+        "lines": 5854,
+        "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/phrase-scores.json"
+      },
+      {
+        "commits": 1,
+        "lines": 15415,
+        "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/piano-bed.receipt.json"
+      },
+      {
+        "commits": 1,
+        "lines": 7623,
+        "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/pitch.json"
+      },
+      {
+        "commits": 1,
+        "lines": 8440,
+        "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/plan.json"
+      },
+      {
+        "commits": 1,
+        "lines": 5923,
+        "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/receipt.json"
+      },
+      {
+        "commits": 1,
+        "lines": 39,
+        "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/voice-gate.json"
+      },
+      {
+        "commits": 1,
+        "lines": 42,
+        "path": "scores/receipts/voice-gate-eval-2026-10-08/batch.py"
+      },
+      {
+        "commits": 1,
+        "lines": 348,
+        "path": "scores/receipts/voice-gate-eval-2026-10-08/director-marks-2026-10-07.json"
+      },
+      {
+        "commits": 1,
+        "lines": 19,
+        "path": "scores/receipts/voice-gate-eval-2026-10-08/eval.log"
+      },
+      {
+        "commits": 1,
+        "lines": 13,
+        "path": "scores/receipts/voice-gate-eval-2026-10-08/eval.sh"
+      },
+      {
+        "commits": 1,
+        "lines": 27,
+        "path": "scores/receipts/voice-gate-eval-2026-10-08/score.py"
+      },
+      {
+        "commits": 1,
+        "lines": 18,
+        "path": "scores/receipts/voice-gate-eval-2026-10-08/score.txt"
+      },
+      {
+        "commits": 1,
+        "lines": 811,
+        "path": "scores/receipts/voice-gate-eval-2026-10-08/takes-summary.json"
       },
       {
         "commits": 2,
@@ -13415,6 +13571,11 @@
         "path": "scripts/apply-jam-actions-enrichment.ts"
       },
       {
+        "commits": 2,
+        "lines": 672,
+        "path": "scripts/arrange-hymn.ts"
+      },
+      {
         "commits": 1,
         "lines": 115,
         "path": "scripts/auto-reharmonize-demo.ts"
@@ -13445,8 +13606,8 @@
         "path": "scripts/build-record-fur-elise-m001-008.ts"
       },
       {
-        "commits": 10,
-        "lines": 517,
+        "commits": 14,
+        "lines": 549,
         "path": "scripts/build-score-clock.mjs"
       },
       {
@@ -13535,23 +13696,23 @@
         "path": "scripts/derived-content-scan.ts"
       },
       {
-        "commits": 2,
-        "lines": 189,
+        "commits": 4,
+        "lines": 535,
         "path": "scripts/detector/evaluate.py"
       },
       {
-        "commits": 1,
-        "lines": 132,
+        "commits": 3,
+        "lines": 396,
         "path": "scripts/detector/features.py"
       },
       {
-        "commits": 2,
-        "lines": 181,
+        "commits": 4,
+        "lines": 527,
         "path": "scripts/detector/heads.py"
       },
       {
-        "commits": 2,
-        "lines": 137,
+        "commits": 4,
+        "lines": 411,
         "path": "scripts/detector/test_detector.py"
       },
       {
@@ -13636,6 +13797,11 @@
       },
       {
         "commits": 4,
+        "lines": 160,
+        "path": "scripts/import-arrangement.ts"
+      },
+      {
+        "commits": 4,
         "lines": 54,
         "path": "scripts/import-classical.ts"
       },
@@ -13660,8 +13826,8 @@
         "path": "scripts/npm-ship-list.ts"
       },
       {
-        "commits": 5,
-        "lines": 510,
+        "commits": 7,
+        "lines": 530,
         "path": "scripts/onset_aligner.py"
       },
       {
@@ -13675,18 +13841,18 @@
         "path": "scripts/patches/soulx-singer-load_wav-soundfile.patch"
       },
       {
-        "commits": 2,
-        "lines": 510,
+        "commits": 6,
+        "lines": 722,
         "path": "scripts/phrase_evidence.py"
       },
       {
-        "commits": 6,
-        "lines": 578,
+        "commits": 8,
+        "lines": 590,
         "path": "scripts/phrase_scores.py"
       },
       {
-        "commits": 14,
-        "lines": 2223,
+        "commits": 16,
+        "lines": 2289,
         "path": "scripts/planter.py"
       },
       {
@@ -13735,8 +13901,8 @@
         "path": "scripts/render-landing-pianoroll.ts"
       },
       {
-        "commits": 7,
-        "lines": 822,
+        "commits": 13,
+        "lines": 918,
         "path": "scripts/render-piano-bed.mjs"
       },
       {
@@ -13790,13 +13956,13 @@
         "path": "scripts/scan-dataset-provenance.ts"
       },
       {
-        "commits": 17,
-        "lines": 698,
+        "commits": 23,
+        "lines": 738,
         "path": "scripts/sing_clock.py"
       },
       {
-        "commits": 2,
-        "lines": 230,
+        "commits": 8,
+        "lines": 342,
         "path": "scripts/site-hymn-visual.ts"
       },
       {
@@ -13821,6 +13987,11 @@
       },
       {
         "commits": 2,
+        "lines": 44,
+        "path": "scripts/test_aligner_fill.py"
+      },
+      {
+        "commits": 2,
         "lines": 260,
         "path": "scripts/test_aligner_gate.py"
       },
@@ -13835,8 +14006,8 @@
         "path": "scripts/test_export_soulx_target.py"
       },
       {
-        "commits": 2,
-        "lines": 172,
+        "commits": 6,
+        "lines": 252,
         "path": "scripts/test_phrase_evidence.py"
       },
       {
@@ -13850,13 +14021,13 @@
         "path": "scripts/test_pitch_recheck.py"
       },
       {
-        "commits": 4,
-        "lines": 192,
+        "commits": 17,
+        "lines": 332,
         "path": "scripts/test_placer_overrides.py"
       },
       {
-        "commits": 13,
-        "lines": 1567,
+        "commits": 15,
+        "lines": 1637,
         "path": "scripts/test_planter.py"
       },
       {
@@ -13878,6 +14049,11 @@
         "commits": 11,
         "lines": 1395,
         "path": "scripts/test_vocal_clock.py"
+      },
+      {
+        "commits": 2,
+        "lines": 118,
+        "path": "scripts/test_voice_gate.py"
       },
       {
         "commits": 4,
@@ -13920,9 +14096,14 @@
         "path": "scripts/verify-public-package-execution.ts"
       },
       {
-        "commits": 32,
-        "lines": 7820,
+        "commits": 45,
+        "lines": 8240,
         "path": "scripts/vocal_clock.py"
+      },
+      {
+        "commits": 2,
+        "lines": 380,
+        "path": "scripts/voice_gate.py"
       },
       {
         "commits": 4,
@@ -13955,12 +14136,12 @@
         "path": "site/public/america-the-beautiful-m2-6.svg"
       },
       {
-        "commits": 2,
+        "commits": 4,
         "lines": 0,
         "path": "site/public/audio/amazing-grace-new-britain.mp3"
       },
       {
-        "commits": 2,
+        "commits": 4,
         "lines": 0,
         "path": "site/public/audio/amazing-grace-new-britain.opus"
       },
@@ -13975,12 +14156,12 @@
         "path": "site/public/audio/amazing-grace-vocal-route-2026-09-05.mp3"
       },
       {
-        "commits": 2,
+        "commits": 6,
         "lines": 0,
         "path": "site/public/audio/america-the-beautiful-materna.mp3"
       },
       {
-        "commits": 2,
+        "commits": 6,
         "lines": 0,
         "path": "site/public/audio/america-the-beautiful-materna.opus"
       },
@@ -13993,6 +14174,16 @@
         "commits": 4,
         "lines": 0,
         "path": "site/public/audio/america-the-beautiful-vocal-route.mp3"
+      },
+      {
+        "commits": 4,
+        "lines": 0,
+        "path": "site/public/audio/battle-hymn-of-the-republic.mp3"
+      },
+      {
+        "commits": 4,
+        "lines": 0,
+        "path": "site/public/audio/battle-hymn-of-the-republic.opus"
       },
       {
         "commits": 1,
@@ -14015,8 +14206,8 @@
         "path": "site/public/og-card.png"
       },
       {
-        "commits": 2,
-        "lines": 342,
+        "commits": 8,
+        "lines": 398,
         "path": "site/src/components/Hymns.astro"
       },
       {
@@ -14085,8 +14276,8 @@
         "path": "site/src/content/docs/handbook/troubleshooting.md"
       },
       {
-        "commits": 13,
-        "lines": 1054,
+        "commits": 19,
+        "lines": 1164,
         "path": "site/src/content/docs/handbook/vocals.md"
       },
       {
@@ -14095,23 +14286,23 @@
         "path": "site/src/content/docs/handbook/your-own-dataset.md"
       },
       {
-        "commits": 2,
-        "lines": 2,
+        "commits": 8,
+        "lines": 14,
         "path": "site/src/data/hymns.visual.json"
       },
       {
-        "commits": 2,
-        "lines": 546,
+        "commits": 4,
+        "lines": 550,
         "path": "site/src/lib/hymn-view.ts"
       },
       {
-        "commits": 14,
-        "lines": 558,
+        "commits": 16,
+        "lines": 566,
         "path": "site/src/pages/index.astro"
       },
       {
-        "commits": 23,
-        "lines": 253,
+        "commits": 25,
+        "lines": 261,
         "path": "site/src/site-config.ts"
       },
       {
@@ -16600,6 +16791,81 @@
         "path": "src/vocal/align-lyrics.ts"
       },
       {
+        "commits": 2,
+        "lines": 98,
+        "path": "src/vocal/arrangement.test.ts"
+      },
+      {
+        "commits": 8,
+        "lines": 682,
+        "path": "src/vocal/arrangement.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 2,
+        "path": "src/vocal/arrangements/amazing-grace-kimi-k3.json"
+      },
+      {
+        "commits": 2,
+        "lines": 2,
+        "path": "src/vocal/arrangements/america-the-beautiful-kimi-k3.json"
+      },
+      {
+        "commits": 2,
+        "lines": 2,
+        "path": "src/vocal/arrangements/battle-hymn-kimi-k3.json"
+      },
+      {
+        "commits": 2,
+        "lines": 168,
+        "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/BRIEF.md"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/SYSTEM.md"
+      },
+      {
+        "commits": 2,
+        "lines": 412,
+        "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/amazing-grace-kimi-k3.ly"
+      },
+      {
+        "commits": 2,
+        "lines": 412,
+        "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/answer.ly"
+      },
+      {
+        "commits": 2,
+        "lines": 112,
+        "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/meta.json"
+      },
+      {
+        "commits": 2,
+        "lines": 188,
+        "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/BRIEF.md"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/SYSTEM.md"
+      },
+      {
+        "commits": 2,
+        "lines": 428,
+        "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/america-the-beautiful-kimi-k3.ly"
+      },
+      {
+        "commits": 2,
+        "lines": 428,
+        "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/answer.ly"
+      },
+      {
+        "commits": 2,
+        "lines": 98,
+        "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/meta.json"
+      },
+      {
         "commits": 5,
         "lines": 285,
         "path": "src/vocal/breath.test.ts"
@@ -16630,19 +16896,29 @@
         "path": "src/vocal/g2p.ts"
       },
       {
-        "commits": 3,
-        "lines": 270,
+        "commits": 7,
+        "lines": 354,
         "path": "src/vocal/hymns.test.ts"
       },
       {
-        "commits": 3,
-        "lines": 992,
+        "commits": 13,
+        "lines": 1258,
         "path": "src/vocal/hymns.ts"
       },
       {
         "commits": 11,
         "lines": 81,
         "path": "src/vocal/index.ts"
+      },
+      {
+        "commits": 6,
+        "lines": 348,
+        "path": "src/vocal/interpretation.test.ts"
+      },
+      {
+        "commits": 6,
+        "lines": 578,
+        "path": "src/vocal/interpretation.ts"
       },
       {
         "commits": 2,
@@ -16700,8 +16976,8 @@
         "path": "src/vocal/score-clock.test.ts"
       },
       {
-        "commits": 11,
-        "lines": 2417,
+        "commits": 17,
+        "lines": 2443,
         "path": "src/vocal/score-clock.ts"
       },
       {
@@ -16955,205 +17231,205 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-08T01:23:02.656Z",
+  "generatedAt": "2026-10-09T23:59:09.274Z",
   "generatedFrom": {
-    "commit": "1b928ed0c537912a4f1e2f6587b21a9cb90660a1"
+    "commit": "836641ef9b04e05ac08ead16a54bc36735f0d0d6"
   },
   "pairs": [
     {
       "a": ".polyglot-cache.json",
       "b": "README.es.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 20,
+      "shared": 13,
+      "strength": 0.65
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.fr.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 20,
+      "shared": 13,
+      "strength": 0.65
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.hi.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 20,
+      "shared": 13,
+      "strength": 0.65
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.it.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 20,
+      "shared": 13,
+      "strength": 0.65
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.ja.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 20,
+      "shared": 13,
+      "strength": 0.65
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.pt-BR.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 20,
+      "shared": 13,
+      "strength": 0.65
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.zh.md",
-      "either": 18,
-      "shared": 11,
-      "strength": 0.611111
+      "either": 20,
+      "shared": 13,
+      "strength": 0.65
     },
     {
       "a": "README.es.md",
       "b": "README.fr.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.hi.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.it.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.ja.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.hi.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.it.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.ja.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.it.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.ja.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.ja.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
       "a": "README.pt-BR.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 18,
+      "shared": 18,
       "strength": 1
     },
     {
@@ -17173,72 +17449,44 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 15,
-      "shared": 15,
-      "strength": 1
-    },
-    {
-      "a": "atlas/README.md",
-      "b": "scripts/test_planter.py",
       "either": 16,
-      "shared": 8,
-      "strength": 0.5
+      "shared": 16,
+      "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 15,
-      "shared": 15,
-      "strength": 1
-    },
-    {
-      "a": "atlas/page.json",
-      "b": "scripts/test_planter.py",
       "either": 16,
-      "shared": 8,
-      "strength": 0.5
+      "shared": 16,
+      "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 15,
-      "shared": 15,
+      "either": 16,
+      "shared": 16,
       "strength": 1
-    },
-    {
-      "a": "atlas/statistics.json",
-      "b": "scripts/test_planter.py",
-      "either": 16,
-      "shared": 8,
-      "strength": 0.5
-    },
-    {
-      "a": "atlas/structure.json",
-      "b": "scripts/test_planter.py",
-      "either": 16,
-      "shared": 8,
-      "strength": 0.5
     },
     {
       "a": "datasets/jam-actions-v0-public/CITATION.cff",
@@ -17346,6 +17594,13 @@
       "strength": 1
     },
     {
+      "a": "scripts/build-score-clock.mjs",
+      "b": "scripts/render-piano-bed.mjs",
+      "either": 6,
+      "shared": 4,
+      "strength": 0.666667
+    },
+    {
       "a": "scripts/planter.py",
       "b": "scripts/test_planter.py",
       "either": 10,
@@ -17369,9 +17624,9 @@
     {
       "a": "src/vocal/score-clock.test.ts",
       "b": "src/vocal/score-clock.ts",
-      "either": 7,
+      "either": 10,
       "shared": 5,
-      "strength": 0.714286
+      "strength": 0.5
     }
   ],
   "parameters": {
@@ -17384,16 +17639,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-10-07T21:22:31-04:00",
-    "inScopeFiles": 3044,
+    "headDate": "2026-10-09T19:54:32-04:00",
+    "inScopeFiles": 3099,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 666,
+    "qualifyingCommits": 684,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-11T01:22:31.000Z",
+    "since": "2026-04-12T23:54:32.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
