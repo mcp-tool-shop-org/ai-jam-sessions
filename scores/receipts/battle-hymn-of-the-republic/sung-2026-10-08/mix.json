@@ -1,0 +1,14 @@
+{
+  "mode": "local",
+  "path": "tmp/vocal-clock/sing-pad/battle-hymn-kimi/mix-local.wav",
+  "frames": 12843106,
+  "sample_rate": 48000,
+  "vo_gain_db": -1,
+  "bed_gain_db": -9.0,
+  "bed_rms_db": -15.71,
+  "vocal_clip_rms_db": -20.16,
+  "mix_peak": 0.6153650863829048,
+  "mix_rms_db": -19.97,
+  "sha256": "0d842ece569d964688ac05462066282b0cd27f2c9ab12c47f7e257162ad16d32",
+  "length_match": true
+}

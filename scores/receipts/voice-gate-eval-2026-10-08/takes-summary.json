@@ -1,0 +1,811 @@
+[
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-01",
+  "rest": 2,
+  "long_release": 0,
+  "two": 1,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-02",
+  "rest": 4,
+  "long_release": 0,
+  "two": 1,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-03",
+  "rest": 0,
+  "long_release": 0,
+  "two": 3,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-04",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-05",
+  "rest": 0,
+  "long_release": 0,
+  "two": 2,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-06",
+  "rest": 0,
+  "long_release": 0,
+  "two": 1,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-07",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-08",
+  "rest": 2,
+  "long_release": 0,
+  "two": 1,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-09",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-10",
+  "rest": 2,
+  "long_release": 0,
+  "two": 4,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-11",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-12",
+  "rest": 3,
+  "long_release": 0,
+  "two": 1,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-13",
+  "rest": 2,
+  "long_release": 0,
+  "two": 2,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-14",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-15",
+  "rest": 0,
+  "long_release": 0,
+  "two": 1,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-kimi",
+  "take": "battle-hymn-kimi-take-16",
+  "rest": 4,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-01",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-02",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-03",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-04",
+  "rest": 4,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-05",
+  "rest": 4,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-06",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-07",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-08",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-09",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-10",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-11",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-12",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-13",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-14",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-15",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-kimi",
+  "take": "amazing-grace-kimi-take-16",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-01",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-02",
+  "rest": 6,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-03",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-04",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-05",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-06",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-07",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-08",
+  "rest": 5,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-09",
+  "rest": 5,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-10",
+  "rest": 5,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-11",
+  "rest": 4,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-12",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-13",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-14",
+  "rest": 5,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-15",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-kimi",
+  "take": "america-kimi-take-16",
+  "rest": 4,
+  "long_release": 1,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-01",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "lu@48.571",
+   "on@200.0"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-02",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-03",
+  "rest": 4,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "on@31.429"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-04",
+  "rest": 4,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "on@248.571"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-05",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "on@31.429"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-06",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-07",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "on@54.286",
+   "lu@85.714"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-08",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-09",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-10",
+  "rest": 4,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "on@31.429",
+   "on@128.571",
+   "on@225.714"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-11",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "lu@85.714"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-12",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "lu@182.857"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-13",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "on@54.286",
+   "on@128.571"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-14",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "on@31.429",
+   "lu@231.429"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-15",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "lu@182.857",
+   "on@225.714"
+  ]
+ },
+ {
+  "run": "battle-hymn-of-the-republic",
+  "take": "battle-hymn-of-the-republic-take-16",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-01",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-02",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-03",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-04",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-05",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-06",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "home@120.0"
+  ]
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-07",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-08",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-09",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-10",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-11",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-12",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-13",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-14",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-15",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "amazing-grace-new-britain",
+  "take": "amazing-grace-new-britain-take-16",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-01",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "sea@54.783"
+  ]
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-02",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-03",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "and@179.348"
+  ]
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-04",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-05",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-06",
+  "rest": 1,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "sea@54.783"
+  ]
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-07",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-08",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-09",
+  "rest": 5,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "and@179.348"
+  ]
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-10",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-11",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-12",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-13",
+  "rest": 3,
+  "long_release": 0,
+  "two": 0,
+  "silent": [
+   "and@179.348"
+  ]
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-14",
+  "rest": 2,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-15",
+  "rest": 0,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ },
+ {
+  "run": "america-the-beautiful-materna",
+  "take": "america-the-beautiful-materna-take-16",
+  "rest": 4,
+  "long_release": 0,
+  "two": 0,
+  "silent": []
+ }
+]

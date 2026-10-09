@@ -1,0 +1,5854 @@
+{
+ "version": 1,
+ "clock": "E:/AI/ajs-fullsong/scores/battle-hymn-of-the-republic.score-clock.v1.json",
+ "gap": 0.3,
+ "listener": {
+  "model": "Qwen3-Omni-30B-A3B-Instruct-Q4_K_M.gguf",
+  "mmproj": "mmproj-Qwen3-Omni-30B-A3B-Instruct-Q8_0.gguf",
+  "prompt": "This is an isolated sung vocal from a hymn. Transcribe exactly the words that are sung, in order, as plain lowercase words with no punctuation. Write only the words. If a word is unclear, write your best guess of what was sung; do not add words that were not sung.",
+  "temperature": 0,
+  "seed": 1
+ },
+ "takes": {
+  "take-01": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-01/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 18.2,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "glory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory\nglory",
+     "matched": 1,
+     "intelligibility": 0.083
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 20.6,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 25.1,
+     "notes": 12,
+     "pitch_fails": 5,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 8.7,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 10.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 18.6,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 11.2,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 8.1,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 19.0,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 39.0,
+     "notes": 11,
+     "pitch_fails": 9,
+     "heard": "they are building him an altar in the evening dews and damps",
+     "matched": 9,
+     "intelligibility": 0.75
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 12.5,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 4.9,
+     "notes": 5,
+     "pitch_fails": 2,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 6.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 16.7,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 10.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 9.4,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 18.2,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i heard a fiery gush pour in burnish rows of steel",
+     "matched": 8,
+     "intelligibility": 0.667
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 45.8,
+     "notes": 12,
+     "pitch_fails": 8,
+     "heard": "as ye deal with my contempt or so with you my grace shall deal",
+     "matched": 12,
+     "intelligibility": 0.923
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 16.4,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 17.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 15.8,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 17.3,
+     "notes": 9,
+     "pitch_fails": 3,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 10.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 5.4,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 25.2,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 21.7,
+     "notes": 14,
+     "pitch_fails": 4,
+     "heard": "he is sifting out the hearts of men before his judgment throne",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 20.3,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 9.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "our god god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 14.1,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 16.3,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 10.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 5.1,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 24.7,
+     "notes": 12,
+     "pitch_fails": 5,
+     "heard": "in the beauty of the lilies christ was born across the sea hallelujah",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 19.2,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 26.0,
+     "notes": 14,
+     "pitch_fails": 4,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 13.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "while god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 14.8,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 18.7,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 11.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 7.4,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-02": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-02/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 14.2,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 19.7,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 19.6,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 13.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 9.9,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 16.2,
+     "notes": 8,
+     "pitch_fails": 3,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 12.3,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 15.5,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 51.6,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "i've seen him in the watchful love of a hundred sowing camps",
+     "matched": 8,
+     "intelligibility": 0.667
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 15.2,
+     "notes": 11,
+     "pitch_fails": 4,
+     "heard": "they have builded him altar in the evening dews and damps",
+     "matched": 10,
+     "intelligibility": 0.833
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 12.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 20.8,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 25.6,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 18.8,
+     "notes": 11,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 10.0,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 38.8,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 26.1,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "i've read a fiery gospel writ in burnished rows of steel",
+     "matched": 10,
+     "intelligibility": 0.833
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 17.3,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "as ye deal with my contempt so with you my grace shall deal",
+     "matched": 12,
+     "intelligibility": 0.923
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 21.8,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 21.6,
+     "notes": 7,
+     "pitch_fails": 2,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 7.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 12.5,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 11.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 8.3,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 16.3,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 42.4,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he is sifting out the hearts of men before his judgments",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 21.3,
+     "notes": 11,
+     "pitch_fails": 5,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 11.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "how god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 9.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 23.5,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 10.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 9.8,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 16.1,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 14.7,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 30.9,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 13.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "while god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 13.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 9.9,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 13.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 8.1,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-03": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-03/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 16.6,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 19.1,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 27.7,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 14.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 12.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 9.2,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 22.3,
+     "notes": 7,
+     "pitch_fails": 2,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 10.6,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 14.0,
+     "notes": 11,
+     "pitch_fails": 4,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 20.8,
+     "notes": 11,
+     "pitch_fails": 5,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 22.2,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 14.5,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 14.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 13.8,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 13.3,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 6.2,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 16.8,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "i have read a fiery gospel written in burnished rows of steel",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 18.6,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "as ye deal with my contemners so with you my grace shall deal",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 32.1,
+     "notes": 15,
+     "pitch_fails": 4,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 7.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "sing god god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 15.3,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 12.9,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 10.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 9.4,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 31.1,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 26.5,
+     "notes": 13,
+     "pitch_fails": 5,
+     "heard": "he is sifting out the hearts of men before his judgments he is",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 23.1,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 12.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "our god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 8.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 20.5,
+     "notes": 11,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 12.0,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 18.9,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 12.5,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "in beauty of the lilies christ was born across the sea",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 17.9,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 19.7,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 19.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "while god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 11.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 12.9,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 12.0,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 10.4,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-04": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-04/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 14.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 21.2,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 32.5,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword oh",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 28.0,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 8.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 13.2,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 13.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 7.7,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 18.0,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 29.2,
+     "notes": 11,
+     "pitch_fails": 6,
+     "heard": "they have builded him an altar in the evening dews and dawns",
+     "matched": 10,
+     "intelligibility": 0.833
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 21.7,
+     "notes": 12,
+     "pitch_fails": 5,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 25.5,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 10.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 20.9,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 17.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 6.1,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 13.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i read a fiery gospel writ in burnished rows of steel",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 26.7,
+     "notes": 11,
+     "pitch_fails": 6,
+     "heard": "as ye deal with my contemners so with you my grace shall deal",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 31.3,
+     "notes": 14,
+     "pitch_fails": 4,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 11.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 15.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 21.2,
+     "notes": 11,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 11.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 10.4,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 22.2,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "here sounded forth the trumpet that shall never call retreat",
+     "matched": 9,
+     "intelligibility": 0.818
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 21.4,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "he is sifting out the hearts of men before his judgments",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 22.8,
+     "notes": 11,
+     "pitch_fails": 5,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 8.1,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "our god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 15.6,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 12.5,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 12.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 6.5,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 23.9,
+     "notes": 15,
+     "pitch_fails": 1,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 31.7,
+     "notes": 12,
+     "pitch_fails": 5,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 17.4,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 9.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "while god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 32.0,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 26.6,
+     "notes": 9,
+     "pitch_fails": 4,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 10.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 7.2,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on\nooh\nooh\nooh",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-05": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-05/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 13.2,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 22.3,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 33.0,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he hath loosed the faithful lightning of his terrible swift sword let us run",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 20.0,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 9.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 14.4,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 20.9,
+     "notes": 7,
+     "pitch_fails": 2,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 10.7,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 22.8,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "i've seen him in the watchfires of a hundred circling camps",
+     "matched": 10,
+     "intelligibility": 0.833
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 40.9,
+     "notes": 10,
+     "pitch_fails": 9,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 15.7,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 9.4,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 12.6,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 12.9,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 12.5,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 11.6,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 13.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "have read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 22.3,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "as ye deal with my contemners so with you my grace shall deal",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 16.7,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "let the hero born a woman crush the serpent with his heel",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 11.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 10.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 20.6,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 15.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 15.4,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 12.5,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 13.7,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he is sifting out the hearts of men before his judgment throne",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 16.8,
+     "notes": 11,
+     "pitch_fails": 6,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 9.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "how glorious is marching on",
+     "matched": 3,
+     "intelligibility": 0.6
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 17.1,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 14.9,
+     "notes": 9,
+     "pitch_fails": 4,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 12.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 8.3,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 10.7,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "in the beauty of the lilies christ was born across the sea what",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 23.5,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 20.2,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 17.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "well god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 8.7,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 18.4,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 13.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 10.7,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-06": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-06/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 12.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 14.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 24.5,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 19.2,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 16.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 13.0,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 11.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 14.4,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 26.5,
+     "notes": 13,
+     "pitch_fails": 5,
+     "heard": "i've seen him in the watchers of a hundred sugglin camps",
+     "matched": 8,
+     "intelligibility": 0.667
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 30.9,
+     "notes": 12,
+     "pitch_fails": 6,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 16.1,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 9.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 9.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 19.1,
+     "notes": 11,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 7.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 11.5,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 22.6,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "i've read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 10,
+     "intelligibility": 0.833
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 31.6,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "as ye deal with my contempt my soul with you my grace shall deal",
+     "matched": 11,
+     "intelligibility": 0.846
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 28.9,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 8.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 9.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 14.0,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 10.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 16.5,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 31.2,
+     "notes": 14,
+     "pitch_fails": 4,
+     "heard": "he has sounded for the trumpet that shall never call retreat",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 13.4,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he is sifting out the hearts of men before his judgment throne",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 18.8,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "o be swift my soul to answer him be jubilant my feet",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 9.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his marching on",
+     "matched": 2,
+     "intelligibility": 0.4
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 11.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 19.4,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 10.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 22.9,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 14.7,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 28.9,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 14.4,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 12.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "while god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 12.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 14.3,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 13.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 10.3,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-07": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-07/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 14.7,
+     "notes": 13,
+     "pitch_fails": 1,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 14.5,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 14.7,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "he had loosed the fateful lightning of his terrible swift sword",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 19.0,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 8.1,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 10.2,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 9.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 5.5,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 17.6,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 28.1,
+     "notes": 11,
+     "pitch_fails": 6,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 40.9,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps while i",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 11.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 9.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 19.3,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 21.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 13.3,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 19.4,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "i have read of a fiery gospel writ in burnish'd rows of steel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 36.3,
+     "notes": 12,
+     "pitch_fails": 6,
+     "heard": "as ye deal with my contempt so with you my grace shall deal",
+     "matched": 12,
+     "intelligibility": 0.923
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 31.1,
+     "notes": 14,
+     "pitch_fails": 5,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 9.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 10.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 13.5,
+     "notes": 9,
+     "pitch_fails": 3,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 11.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 19.0,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 19.0,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 25.7,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he is sifting out the hearts of men before his judgment seat oh",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 14.2,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 10.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "our god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 10.1,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 11.7,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 12.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 13.7,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 23.8,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 21.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 26.2,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 16.1,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "well god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 16.6,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 13.2,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 8.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 8.2,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-08": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-08/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 19.5,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 16.1,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 14.8,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 16.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 8.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 24.3,
+     "notes": 9,
+     "pitch_fails": 3,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 13.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 11.1,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 30.2,
+     "notes": 14,
+     "pitch_fails": 4,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 25.7,
+     "notes": 14,
+     "pitch_fails": 5,
+     "heard": "they had builded him an altar in the evening dews and damps",
+     "matched": 10,
+     "intelligibility": 0.833
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 14.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 8.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his days marching on",
+     "matched": 3,
+     "intelligibility": 0.6
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 5.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 13.8,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 14.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 45.0,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 20.3,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "i have read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 39.5,
+     "notes": 12,
+     "pitch_fails": 7,
+     "heard": "as ye deal with my contemners so with you my grace shall deal",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 35.4,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 9.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 12.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 15.7,
+     "notes": 11,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 11.5,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 16.8,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 23.9,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 14.7,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "he is sifting out the hearts of men before his judgments",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 26.8,
+     "notes": 11,
+     "pitch_fails": 6,
+     "heard": "o be swift my soul to answer him be jubilant my feet",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 11.6,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "how glorious is marching on",
+     "matched": 3,
+     "intelligibility": 0.6
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 13.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 15.7,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 12.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 20.6,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 13.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 14.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 25.3,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 6.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "while god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 13.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 11.1,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 12.1,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 10.6,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on\nglory\nhallelujah",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-09": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-09/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 19.5,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 38.2,
+     "notes": 12,
+     "pitch_fails": 7,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 20.0,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword whose blood was",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 17.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 11.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 16.0,
+     "notes": 11,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 8.6,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 12.9,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 46.4,
+     "notes": 13,
+     "pitch_fails": 5,
+     "heard": "i've seen him in the watchful eyes of a hundred sojourning camps",
+     "matched": 8,
+     "intelligibility": 0.667
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 22.4,
+     "notes": 11,
+     "pitch_fails": 6,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 18.6,
+     "notes": 15,
+     "pitch_fails": 2,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 14.9,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 9.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 19.8,
+     "notes": 10,
+     "pitch_fails": 3,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 11.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 14.7,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 12.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i read a fiery gospel written in burnished rows of steel",
+     "matched": 10,
+     "intelligibility": 0.833
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 41.4,
+     "notes": 11,
+     "pitch_fails": 7,
+     "heard": "as ye deal with mine in tempest so with you my grace shall deal",
+     "matched": 11,
+     "intelligibility": 0.846
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 9.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 10.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on\nglory",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 8.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 12.0,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 7.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 6.7,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 25.6,
+     "notes": 14,
+     "pitch_fails": 4,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 18.2,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "he is sifting out the hearts of men before his judgment throne",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 14.9,
+     "notes": 11,
+     "pitch_fails": 4,
+     "heard": "o be swift my soul to answer him be jubilant my feet",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 19.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "how god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 15.8,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 11.6,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 11.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 8.4,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 12.4,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 16.3,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 22.5,
+     "notes": 15,
+     "pitch_fails": 3,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 12.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "while god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 8.7,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 12.4,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 14.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 12.7,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-10": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-10/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 18.1,
+     "notes": 12,
+     "pitch_fails": 3,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 27.5,
+     "notes": 11,
+     "pitch_fails": 5,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 19.1,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword whose blood was shed",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 9.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 9.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 17.8,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 19.6,
+     "notes": 7,
+     "pitch_fails": 2,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 7.8,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 11.5,
+     "notes": 12,
+     "pitch_fails": 3,
+     "heard": "i have seen him in the watchfires of a hundred circling camps because",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 20.1,
+     "notes": 11,
+     "pitch_fails": 5,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 13.0,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "i can read his righteous sentence by the dim and flaring lamp",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 9.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 18.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 12.3,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 6.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 12.3,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 24.3,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "i have read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 38.0,
+     "notes": 13,
+     "pitch_fails": 6,
+     "heard": "as ye deal with my contempt my soul with you my grace shall deal",
+     "matched": 11,
+     "intelligibility": 0.846
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 22.5,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "let the hero born a woman crush the serpent with his heel",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 5.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 16.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 31.2,
+     "notes": 11,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 11.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 11.8,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 16.4,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "he sounded forth the trumpet that shall never call retreat",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 20.0,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he is sifting out the hearts of men before his judgment seat oh",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 20.1,
+     "notes": 11,
+     "pitch_fails": 5,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 4.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "our god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 10.7,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 20.2,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 7.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 14.8,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 34.7,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 24.4,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 16.1,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 10.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "while god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 8.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 15.0,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 8.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 10.2,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-11": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-11/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 13.6,
+     "notes": 11,
+     "pitch_fails": 3,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 15.1,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 19.0,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword whose blood was shed",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 15.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 10.7,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 8.7,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 10.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 16.8,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 19.9,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "i have seen him in the watch-fires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 21.7,
+     "notes": 11,
+     "pitch_fails": 6,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 15.1,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 10.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 8.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 13.5,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 8.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 17.9,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 30.6,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "i have read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 32.3,
+     "notes": 14,
+     "pitch_fails": 4,
+     "heard": "as ye deal with my contempt my soul with you my grace shall deal",
+     "matched": 11,
+     "intelligibility": 0.846
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 22.6,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 9.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 14.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 9.5,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 11.7,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 9.8,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 21.6,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 25.2,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "he is sifting out the hearts of men before his judgments",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 17.8,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 15.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "how god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 6.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 24.9,
+     "notes": 9,
+     "pitch_fails": 3,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 21.4,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 9.5,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 17.2,
+     "notes": 12,
+     "pitch_fails": 3,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 20.0,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 32.9,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 15.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "well god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 15.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 22.4,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 15.9,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 8.8,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-12": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-12/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 8.0,
+     "notes": 13,
+     "pitch_fails": 1,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 18.3,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 19.7,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 80.6,
+     "notes": 7,
+     "pitch_fails": 2,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 6.7,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 19.2,
+     "notes": 9,
+     "pitch_fails": 3,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 13.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 10.6,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 38.9,
+     "notes": 13,
+     "pitch_fails": 5,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 24.4,
+     "notes": 11,
+     "pitch_fails": 6,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 12.4,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps my heart",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 13.1,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 8.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 7.3,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 10.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 15.4,
+     "notes": 5,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 17.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i have read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 26.5,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "as ye deal with my contemners so with you my grace shall deal",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 17.8,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 9.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 6.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 20.9,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 14.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 23.7,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 10.8,
+     "notes": 12,
+     "pitch_fails": 3,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 13.2,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "he is sifting out the hearts of men before his judgments he is",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 33.1,
+     "notes": 12,
+     "pitch_fails": 5,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 11.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "how glorious is marching on",
+     "matched": 3,
+     "intelligibility": 0.6
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 7.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 18.6,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 12.6,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 9.3,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 21.4,
+     "notes": 11,
+     "pitch_fails": 5,
+     "heard": "in the beauty of the lilies christ was born across the sea from the east",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 17.6,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 17.0,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 16.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "well god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 13.8,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 11.6,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 12.1,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 15.5,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-13": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-13/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 12.8,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 11.6,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 19.9,
+     "notes": 11,
+     "pitch_fails": 4,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword whose blood was",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 22.5,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 9.7,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 8.9,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 13.0,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 16.2,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 22.4,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 25.6,
+     "notes": 12,
+     "pitch_fails": 5,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 22.5,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 6.9,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 11.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 8.1,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 9.1,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 10.0,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 14.8,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "i have read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 24.1,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "as ye deal with my contempt my soul with you my grace shall deal",
+     "matched": 11,
+     "intelligibility": 0.846
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 16.8,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 11.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 12.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 17.4,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 9.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 14.6,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 19.7,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 31.2,
+     "notes": 13,
+     "pitch_fails": 5,
+     "heard": "he is sifting out the hearts of men before his judgment\nhe is",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 19.1,
+     "notes": 11,
+     "pitch_fails": 4,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 11.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "a god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 14.6,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 15.2,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 17.1,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 13.8,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 19.1,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 25.4,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 18.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "says he died to make men holy let us die to make men free",
+     "matched": 12,
+     "intelligibility": 0.857
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 16.6,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "well god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 9.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 15.7,
+     "notes": 10,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 14.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 13.0,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-14": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-14/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 22.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 17.1,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 15.7,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword his truth is marching on",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 10.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 11.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 15.8,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 12.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 17.0,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 20.1,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 27.8,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 13.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i read his righteous sentence by the dim and flaring lamps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 12.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 9.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 14.8,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 10.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 8.2,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 13.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i have read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 27.8,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "as ye deal with my contemners so with you my grace shall deal",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 15.9,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 9.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 7.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 17.1,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 11.1,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 15.0,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 24.9,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 18.2,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he is sifting out the hearts of men before his judgments\nwhat a day",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 18.0,
+     "notes": 11,
+     "pitch_fails": 4,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 13.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "our god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 9.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 13.3,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 12.3,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 8.8,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 25.5,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 17.5,
+     "notes": 15,
+     "pitch_fails": 1,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 16.9,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 11.0,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "well god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 12.9,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 23.1,
+     "notes": 9,
+     "pitch_fails": 3,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 11.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 31.1,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-15": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-15/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 12.5,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "my eyes have seen the glory of the coming of the lord",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 15.9,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 12.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "he hath loos'd the fateful lightning of his terrible swift sword",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 9.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 11.0,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 15.8,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 13.1,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 6.9,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 23.1,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 43.7,
+     "notes": 10,
+     "pitch_fails": 9,
+     "heard": "they have builded him an altar in the evening dews and damps",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 12.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 6.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his day is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 12.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 18.1,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 4.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 22.6,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 14.3,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "have read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 35.2,
+     "notes": 11,
+     "pitch_fails": 8,
+     "heard": "as you deal with my contemners so with you my grace shall deal",
+     "matched": 12,
+     "intelligibility": 0.923
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 23.7,
+     "notes": 15,
+     "pitch_fails": 2,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 11.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 12.9,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 12.5,
+     "notes": 8,
+     "pitch_fails": 3,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 8.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 10.8,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 33.6,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 29.2,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he is sifting out the hearts of men before his judgment seat oh",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 18.9,
+     "notes": 12,
+     "pitch_fails": 4,
+     "heard": "oh be swift my soul to answer him be jubilant my feet",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 10.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "how glorious is marching on",
+     "matched": 3,
+     "intelligibility": 0.6
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 7.7,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 13.8,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 24.3,
+     "notes": 8,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 4.9,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 11.3,
+     "notes": 12,
+     "pitch_fails": 3,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 17.7,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 18.4,
+     "notes": 15,
+     "pitch_fails": 1,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 9.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "well god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 10.9,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 14.9,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 9.4,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 6.7,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-16": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/battle-hymn-kimi/take-16/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 12,
+     "mean_abs_cents": 24.6,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "mine eyes have seen the glory of the coming of the lord",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 13,
+     "mean_abs_cents": 23.6,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he is trampling out the vintage where the grapes of wrath are stored",
+     "matched": 13,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 11,
+     "mean_abs_cents": 19.9,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "he hath loosed the fateful lightning of his terrible swift sword whose blood was shed",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 5,
+     "mean_abs_cents": 7.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 3,
+     "mean_abs_cents": 7.7,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 4,
+     "mean_abs_cents": 8.5,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 3,
+     "mean_abs_cents": 11.8,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 18.0,
+     "notes": 6,
+     "pitch_fails": 1,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 12,
+     "mean_abs_cents": 21.8,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "i have seen him in the watchfires of a hundred circling camps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 12,
+     "mean_abs_cents": 61.7,
+     "notes": 10,
+     "pitch_fails": 7,
+     "heard": "they had builded him an altar in the evening dews and damps",
+     "matched": 10,
+     "intelligibility": 0.833
+    },
+    "10": {
+     "words": 12,
+     "mean_abs_cents": 11.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "i can read his righteous sentence by the dim and flaring lamps",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 5,
+     "mean_abs_cents": 18.2,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "his days marching on",
+     "matched": 3,
+     "intelligibility": 0.6
+    },
+    "12": {
+     "words": 3,
+     "mean_abs_cents": 9.7,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 4,
+     "mean_abs_cents": 11.6,
+     "notes": 9,
+     "pitch_fails": 2,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 3,
+     "mean_abs_cents": 10.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 17.2,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 12,
+     "mean_abs_cents": 20.8,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "i have read a fiery gospel writ in burnish'd rows of steel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "17": {
+     "words": 13,
+     "mean_abs_cents": 24.6,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "as ye deal with my contempt so with you my grace shall deal",
+     "matched": 12,
+     "intelligibility": 0.923
+    },
+    "18": {
+     "words": 12,
+     "mean_abs_cents": 18.1,
+     "notes": 13,
+     "pitch_fails": 3,
+     "heard": "let the hero born of woman crush the serpent with his heel",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 5,
+     "mean_abs_cents": 8.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "since god is marching on\nglory",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "20": {
+     "words": 3,
+     "mean_abs_cents": 8.8,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "21": {
+     "words": 4,
+     "mean_abs_cents": 12.0,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "22": {
+     "words": 3,
+     "mean_abs_cents": 13.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "23": {
+     "words": 5,
+     "mean_abs_cents": 14.3,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "24": {
+     "words": 11,
+     "mean_abs_cents": 23.1,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "he has sounded forth the trumpet that shall never call retreat",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "25": {
+     "words": 11,
+     "mean_abs_cents": 22.4,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "he is sifting now the hearts of men before his judgments",
+     "matched": 10,
+     "intelligibility": 0.909
+    },
+    "26": {
+     "words": 12,
+     "mean_abs_cents": 18.7,
+     "notes": 11,
+     "pitch_fails": 5,
+     "heard": "o be swift my soul to answer him be jubilant my feet",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "27": {
+     "words": 5,
+     "mean_abs_cents": 11.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "how god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "28": {
+     "words": 3,
+     "mean_abs_cents": 8.5,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "29": {
+     "words": 4,
+     "mean_abs_cents": 11.2,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "30": {
+     "words": 3,
+     "mean_abs_cents": 13.8,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "31": {
+     "words": 5,
+     "mean_abs_cents": 8.9,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "32": {
+     "words": 12,
+     "mean_abs_cents": 18.3,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "in the beauty of the lilies christ was born across the sea",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "33": {
+     "words": 11,
+     "mean_abs_cents": 23.0,
+     "notes": 13,
+     "pitch_fails": 4,
+     "heard": "with a glory in his bosom that transfigures you and me",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "34": {
+     "words": 14,
+     "mean_abs_cents": 13.6,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "as he died to make men holy let us die to make men free",
+     "matched": 13,
+     "intelligibility": 0.929
+    },
+    "35": {
+     "words": 5,
+     "mean_abs_cents": 12.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "well god is marching on",
+     "matched": 4,
+     "intelligibility": 0.8
+    },
+    "36": {
+     "words": 3,
+     "mean_abs_cents": 14.2,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "37": {
+     "words": 4,
+     "mean_abs_cents": 13.1,
+     "notes": 11,
+     "pitch_fails": 0,
+     "heard": "glory glory glory hallelujah",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "38": {
+     "words": 3,
+     "mean_abs_cents": 14.3,
+     "notes": 8,
+     "pitch_fails": 0,
+     "heard": "glory glory hallelujah",
+     "matched": 3,
+     "intelligibility": 1.0
+    },
+    "39": {
+     "words": 5,
+     "mean_abs_cents": 9.6,
+     "notes": 6,
+     "pitch_fails": 0,
+     "heard": "his truth is marching on",
+     "matched": 5,
+     "intelligibility": 1.0
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,14 @@
+{
+  "mode": "local",
+  "path": "tmp/vocal-clock/sing-pad/amazing-grace-kimi/mix-local.wav",
+  "frames": 8085016,
+  "sample_rate": 48000,
+  "vo_gain_db": -2,
+  "bed_gain_db": -9.0,
+  "bed_rms_db": -14.63,
+  "vocal_clip_rms_db": -18.68,
+  "mix_peak": 0.6522831268570316,
+  "mix_rms_db": -19.4,
+  "sha256": "aecea45011c90e272b02e1268ddddeccb964648c23e82fad33a5cbb6f94a5f64",
+  "length_match": true
+}

@@ -1,0 +1,2398 @@
+{
+ "version": 1,
+ "clock": "E:/AI/ajs-fullsong/scores/amazing-grace-new-britain.score-clock.v1.json",
+ "gap": 0.3,
+ "listener": {
+  "model": "Qwen3-Omni-30B-A3B-Instruct-Q4_K_M.gguf",
+  "mmproj": "mmproj-Qwen3-Omni-30B-A3B-Instruct-Q8_0.gguf",
+  "prompt": "This is an isolated sung vocal from a hymn. Transcribe exactly the words that are sung, in order, as plain lowercase words with no punctuation. Write only the words. If a word is unclear, write your best guess of what was sung; do not add words that were not sung.",
+  "temperature": 0,
+  "seed": 1
+ },
+ "takes": {
+  "take-01": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-01/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 6.7,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 10.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 7.6,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 6.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 5.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 11.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 9.8,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 10.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 12.9,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 6.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 24.2,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 11.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 6.2,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 9.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 10.1,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 15.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-02": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-02/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 10.2,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 6.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 11.7,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 10.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 9.7,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 7.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 7.4,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 8.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 6.2,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 7.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 13.6,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 9.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 9.1,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 10.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 10.5,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 6.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-03": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-03/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 9.2,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 12.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 13.4,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 10.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 9.4,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 12.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 12.1,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 6.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 9.9,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 12.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 7.0,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 6.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 4.8,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 6.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 10.7,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 5.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we've first begun",
+     "matched": 3,
+     "intelligibility": 0.6
+    }
+   }
+  },
+  "take-04": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-04/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 13.0,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 12.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 14.5,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 13.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 6.3,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 8.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 6.4,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 10.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 8.3,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 5.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 7.8,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 9.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 6.4,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 10.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 13.6,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 12.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-05": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-05/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 8.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 12.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 15.1,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 6.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 8.5,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "'twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 16.7,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 11.2,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 8.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 9.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 14.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 8.9,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 15.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 8.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 6.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 5.8,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 14.5,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "then when we've first begun",
+     "matched": 3,
+     "intelligibility": 0.6
+    }
+   }
+  },
+  "take-06": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-06/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 8.4,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 13.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 10.9,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 8.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 12.9,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 8.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 9.0,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 11.2,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 6.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 11.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 12.6,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 4.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 9.3,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 8.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 9.3,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 13.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-07": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-07/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 11.7,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 8.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 7.7,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 14.4,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 5.5,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 11.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 18.4,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 11.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 7.9,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 14.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 12.5,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 5.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 10.1,
+     "notes": 9,
+     "pitch_fails": 1,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 13.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 11.5,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 13.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we've first begun",
+     "matched": 3,
+     "intelligibility": 0.6
+    }
+   }
+  },
+  "take-08": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-08/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 11.3,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 11.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 18.9,
+     "notes": 12,
+     "pitch_fails": 2,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 14.4,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 7.0,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 10.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 13.1,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 5.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 16.0,
+     "notes": 9,
+     "pitch_fails": 1,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 13.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 8.7,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 8.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 4.7,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 12.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 9.9,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 5.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "them when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-09": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-09/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 11.5,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 13.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 10.7,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 17.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 17.2,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "'twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 7.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 11.7,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 6.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 7.8,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 12.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 10.3,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 7.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 6.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 10.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 11.4,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "we know less days to sing god's praise",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 7.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-10": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-10/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 6.3,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 10.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 13.0,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 9.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 7.5,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 7.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 7.2,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 11.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 7.7,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 14.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 6.2,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 16.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 10.2,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 10.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 6.9,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 3.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-11": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-11/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 7.8,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 13.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 8.8,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 14.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 9.4,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "'twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 8.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 8.5,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 6.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 8.2,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 13.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already taken",
+     "matched": 3,
+     "intelligibility": 0.75
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 12.3,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 10.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 4.2,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 14.9,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 9.3,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 11.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we've first begun",
+     "matched": 3,
+     "intelligibility": 0.6
+    }
+   }
+  },
+  "take-12": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-12/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 8.8,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 8.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 11.9,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 7.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 7.4,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "'twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 12.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 11.4,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 7.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 7.9,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 11.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 6.6,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 8.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 9.7,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 4.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 8.6,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 5.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-13": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-13/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 10.3,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 10.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 6.3,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 12.7,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 4.3,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 14.6,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 11.8,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 6.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 7.2,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 8.4,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 9.1,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 12.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 10.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 8.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 11.7,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "weep no less days to sing god's praise",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 8.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun\nwho\nshall\nascend",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-14": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-14/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 8.8,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 5.2,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 14.3,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 10.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 4.8,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 15.3,
+     "notes": 7,
+     "pitch_fails": 1,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 10.5,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 5.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 9.8,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 13.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 8.9,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 9.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 13.6,
+     "notes": 9,
+     "pitch_fails": 1,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 12.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 10.0,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 10.3,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-15": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-15/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 10.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 10.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 9.1,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 10.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 7.0,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "'twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 8.1,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 14.2,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 8.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 8.7,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 6.0,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 15.1,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 7.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 6.5,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 13.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 7.6,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 6.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  },
+  "take-16": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/amazing-grace-kimi/take-16/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 6,
+     "mean_abs_cents": 11.8,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "amazing grace how sweet the sound",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 6,
+     "mean_abs_cents": 5.7,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "that saved a wretch like me",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 8,
+     "mean_abs_cents": 17.3,
+     "notes": 12,
+     "pitch_fails": 1,
+     "heard": "i once was lost but now am found",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 6,
+     "mean_abs_cents": 5.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "was blind but now i see",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 8,
+     "mean_abs_cents": 5.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "twas grace that taught my heart to fear",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 5,
+     "mean_abs_cents": 6.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace my fears relieved",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 6,
+     "mean_abs_cents": 7.0,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "how precious did that grace appear",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 5,
+     "mean_abs_cents": 11.5,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "the hour i first believed",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 10.6,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "through many dangers toils and snares",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 4,
+     "mean_abs_cents": 5.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "i have already come",
+     "matched": 4,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 11.8,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "'tis grace hath brought me safe thus far",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 6,
+     "mean_abs_cents": 9.9,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "and grace will lead me home",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 7,
+     "mean_abs_cents": 6.7,
+     "notes": 9,
+     "pitch_fails": 0,
+     "heard": "when we've been there ten thousand years",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 5,
+     "mean_abs_cents": 6.6,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "bright shining as the sun",
+     "matched": 5,
+     "intelligibility": 1.0
+    },
+    "14": {
+     "words": 8,
+     "mean_abs_cents": 7.0,
+     "notes": 12,
+     "pitch_fails": 0,
+     "heard": "we've no less days to sing god's praise",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 5,
+     "mean_abs_cents": 7.8,
+     "notes": 7,
+     "pitch_fails": 0,
+     "heard": "then when we first begun",
+     "matched": 4,
+     "intelligibility": 0.8
+    }
+   }
+  }
+ }
+}

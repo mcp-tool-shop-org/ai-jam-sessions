@@ -1,0 +1,18 @@
+ag-phrase16w   noise marks 5 caught 1 | flags 1 (rest 1, long-release 0, two 0, silent 0) near a mark 1 | other marks 1
+    noise at [86, 96, 123, 133, 142] 
+    flags at [123.1]
+am-phrase16w   noise marks 7 caught 2 | flags 2 (rest 2, long-release 0, two 0, silent 0) near a mark 2 | other marks 3
+    noise at [46, 58, 90, 102.5, 127, 147, 169] 
+    flags at [102.0, 146.8]
+ag-phrase16w2  noise marks 3 caught 0 | flags 0 (rest 0, long-release 0, two 0, silent 0) near a mark 0 | other marks 2
+    noise at [96, 134, 141.5] 
+    flags at []
+am-phrase16w2  noise marks 5 caught 0 | flags 0 (rest 0, long-release 0, two 0, silent 0) near a mark 0 | other marks 2
+    noise at [46, 57, 90, 127, 169] 
+    flags at []
+ag-pad16       noise marks 0 caught 0 | flags 0 (rest 0, long-release 0, two 0, silent 0) near a mark 0 | other marks 0
+am-pad16       noise marks 0 caught 0 | flags 0 (rest 0, long-release 0, two 0, silent 0) near a mark 0 | other marks 0
+bh-kimi        noise marks 0 caught 0 | flags 3 (rest 0, long-release 0, two 2, silent 1) near a mark 0 | other marks 0
+ag-kimi        noise marks 0 caught 0 | flags 0 (rest 0, long-release 0, two 0, silent 0) near a mark 0 | other marks 0
+am-kimi        noise marks 0 caught 0 | flags 0 (rest 0, long-release 0, two 0, silent 0) near a mark 0 | other marks 0
+{'noise': 20, 'hit': 3, 'flags': 6, 'flags_near_any_mark': 3}

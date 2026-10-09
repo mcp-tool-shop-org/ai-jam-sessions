@@ -1,0 +1,14 @@
+{
+  "mode": "local",
+  "path": "tmp/vocal-clock/sing-pad/america-kimi/mix-local.wav",
+  "frames": 9653754,
+  "sample_rate": 48000,
+  "vo_gain_db": -3,
+  "bed_gain_db": -9.0,
+  "bed_rms_db": -14.81,
+  "vocal_clip_rms_db": -19.03,
+  "mix_peak": 0.6011406595346108,
+  "mix_rms_db": -20.3,
+  "sha256": "d50ae988aaec6011037116e38e2ef6538b931a358602bbb378ebd6e232b50265",
+  "length_match": true
+}
