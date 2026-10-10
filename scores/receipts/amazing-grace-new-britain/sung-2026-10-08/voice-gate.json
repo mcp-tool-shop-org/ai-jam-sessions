@@ -1,0 +1,28 @@
+{
+  "verdict": "PASS",
+  "voice_in_rest": [],
+  "overlong_release": [],
+  "two_voices": [],
+  "silent_notes": [],
+  "stats": {
+    "frames": 9921,
+    "frame_s": 0.01698,
+    "voice_mean_sung": 0.963,
+    "voice_mean_rest": 0.008,
+    "overlap_frames_sung_pct": 0.0
+  },
+  "params": {
+    "model": "pyannote/segmentation-3.0",
+    "voice_on": 0.5,
+    "overlap_on": 0.5,
+    "lead_s": 0.15,
+    "release_s": 0.45,
+    "min_rest_voice_s": 0.12,
+    "max_held_s": 1.6,
+    "min_overlap_s": 0.1,
+    "silent_note_voice": 0.2
+  },
+  "vocal": "tmp/vocal-clock/sing-pad/amazing-grace-kimi/placed-local.wav",
+  "clock": "scores/amazing-grace-new-britain.score-clock.v1.json",
+  "schema": "ai-jam-sessions/voice-gate/v1"
+}

@@ -1,0 +1,7623 @@
+{
+  "verdict": "FAIL",
+  "per_note": {
+    "pass": false,
+    "fail_cents": 50.0,
+    "warn_cents": 25.0,
+    "warn": [
+      "v12",
+      "v19",
+      "v22",
+      "v23",
+      "v52",
+      "v61",
+      "v71",
+      "v82",
+      "v92",
+      "v100",
+      "v105",
+      "v107",
+      "v108",
+      "v113",
+      "v115",
+      "v131",
+      "v144",
+      "v166",
+      "v188",
+      "v192",
+      "v193",
+      "v205",
+      "v208",
+      "v229",
+      "v235",
+      "v237",
+      "v254",
+      "v265",
+      "v271",
+      "v280",
+      "v283",
+      "v313",
+      "v320",
+      "v340",
+      "v352",
+      "v355",
+      "v359",
+      "v362",
+      "v363",
+      "v386",
+      "v393",
+      "v395"
+    ],
+    "fail": [
+      "v08",
+      "v15",
+      "v27",
+      "v29",
+      "v30",
+      "v32",
+      "v38",
+      "v40",
+      "v42",
+      "v46",
+      "v53",
+      "v59",
+      "v83",
+      "v87",
+      "v89",
+      "v93",
+      "v102",
+      "v106",
+      "v112",
+      "v123",
+      "v125",
+      "v142",
+      "v165",
+      "v176",
+      "v178",
+      "v181",
+      "v185",
+      "v187",
+      "v189",
+      "v195",
+      "v204",
+      "v210",
+      "v222",
+      "v225",
+      "v248",
+      "v253",
+      "v259",
+      "v274",
+      "v276",
+      "v278",
+      "v281",
+      "v290",
+      "v295",
+      "v304",
+      "v308",
+      "v310",
+      "v332",
+      "v336",
+      "v342",
+      "v344",
+      "v346",
+      "v361",
+      "v370",
+      "v374",
+      "v378",
+      "v387"
+    ]
+  },
+  "global_offset_cents": -2.7,
+  "global_pass": true,
+  "global_fail_cents": 20.0,
+  "scatter_sd_cents": 42.1,
+  "scatter_warn": true,
+  "rows": [
+    {
+      "id": "v00",
+      "lyric": "Mine",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        9.15,
+        9.261
+      ],
+      "frames": 22,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.5,
+      "cents_median": -2.8,
+      "cents_sd": 11.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v01",
+      "lyric": "eyes",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        9.541,
+        9.689
+      ],
+      "frames": 30,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.1,
+      "cents_median": 3.7,
+      "cents_sd": 6.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v02",
+      "lyric": "have",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        9.969,
+        10.08
+      ],
+      "frames": 22,
+      "voiced_fraction": 0.7272727272727273,
+      "cents_mean": -14.9,
+      "cents_median": -15.0,
+      "cents_sd": 16.0,
+      "status": "PASS",
+      "reason": "",
+      "pyin_cents_mean": -14.9,
+      "pyin_status": "PASS",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v03",
+      "lyric": "seen",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        10.36,
+        10.574
+      ],
+      "frames": 43,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.9,
+      "cents_median": 12.3,
+      "cents_sd": 16.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v04",
+      "lyric": "the",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        10.821,
+        10.894
+      ],
+      "frames": 15,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.7,
+      "cents_median": -6.9,
+      "cents_sd": 4.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v05",
+      "lyric": "glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        11.144,
+        11.423
+      ],
+      "frames": 56,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.5,
+      "cents_median": -0.4,
+      "cents_sd": 8.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v06",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        11.653,
+        11.695
+      ],
+      "frames": 8,
+      "voiced_fraction": 1.0,
+      "cents_mean": 18.4,
+      "cents_median": 19.4,
+      "cents_sd": 2.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v07",
+      "lyric": "of",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        11.945,
+        12.208
+      ],
+      "frames": 53,
+      "voiced_fraction": 0.9622641509433962,
+      "cents_mean": -18.9,
+      "cents_median": -17.8,
+      "cents_sd": 18.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v08",
+      "lyric": "the",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        12.433,
+        12.463
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v09",
+      "lyric": "com",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        12.713,
+        12.99
+      ],
+      "frames": 55,
+      "voiced_fraction": 1.0,
+      "cents_mean": 15.1,
+      "cents_median": 20.0,
+      "cents_sd": 30.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v10",
+      "lyric": "ing",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        13.215,
+        13.245
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 12.2,
+      "cents_median": 11.5,
+      "cents_sd": 7.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v11",
+      "lyric": "of",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        13.495,
+        13.774
+      ],
+      "frames": 56,
+      "voiced_fraction": 0.8035714285714286,
+      "cents_mean": 3.4,
+      "cents_median": 7.4,
+      "cents_sd": 10.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v12",
+      "lyric": "the",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        14.0,
+        14.032
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 33.2,
+      "cents_median": 33.7,
+      "cents_sd": 6.7,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v13",
+      "lyric": "Lord",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        14.321,
+        14.947
+      ],
+      "frames": 125,
+      "voiced_fraction": 0.8,
+      "cents_mean": -9.4,
+      "cents_median": -6.0,
+      "cents_sd": 38.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v14",
+      "lyric": "He",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        15.4,
+        15.423
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": 9.5,
+      "cents_median": 4.3,
+      "cents_sd": 16.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v15",
+      "lyric": "is",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        15.612,
+        15.631
+      ],
+      "frames": 4,
+      "voiced_fraction": 0.5,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v16",
+      "lyric": "tramp",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        15.88,
+        16.153
+      ],
+      "frames": 55,
+      "voiced_fraction": 0.8727272727272727,
+      "cents_mean": -18.9,
+      "cents_median": -19.4,
+      "cents_sd": 47.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v17",
+      "lyric": "ling",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        16.38,
+        16.414
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 7.2,
+      "cents_median": 4.8,
+      "cents_sd": 8.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v18",
+      "lyric": "out",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        16.664,
+        16.925
+      ],
+      "frames": 52,
+      "voiced_fraction": 1.0,
+      "cents_mean": -14.4,
+      "cents_median": -11.9,
+      "cents_sd": 10.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v19",
+      "lyric": "the",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        17.159,
+        17.209
+      ],
+      "frames": 10,
+      "voiced_fraction": 1.0,
+      "cents_mean": 26.4,
+      "cents_median": 27.7,
+      "cents_sd": 3.9,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v20",
+      "lyric": "vin",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        17.459,
+        17.698
+      ],
+      "frames": 48,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.6,
+      "cents_median": -14.8,
+      "cents_sd": 31.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v21",
+      "lyric": "tage",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        17.943,
+        18.012
+      ],
+      "frames": 13,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.1,
+      "cents_median": -9.9,
+      "cents_sd": 3.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v22",
+      "lyric": "where",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        18.262,
+        18.525
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": 32.7,
+      "cents_median": 37.8,
+      "cents_sd": 60.7,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v23",
+      "lyric": "the",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        18.751,
+        18.782
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -39.4,
+      "cents_median": -46.9,
+      "cents_sd": 13.7,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v24",
+      "lyric": "grapes",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        19.032,
+        19.308
+      ],
+      "frames": 56,
+      "voiced_fraction": 0.5,
+      "cents_mean": 12.9,
+      "cents_median": 11.8,
+      "cents_sd": 9.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v25",
+      "lyric": "of",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        19.532,
+        19.56
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -16.4,
+      "cents_median": -20.0,
+      "cents_sd": 4.7,
+      "status": "PASS",
+      "reason": "",
+      "pyin_cents_mean": -16.4,
+      "pyin_status": "PASS",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v26",
+      "lyric": "wrath",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        19.81,
+        20.091
+      ],
+      "frames": 56,
+      "voiced_fraction": 0.6428571428571429,
+      "cents_mean": -20.7,
+      "cents_median": -22.0,
+      "cents_sd": 20.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v27",
+      "lyric": "are",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        20.318,
+        20.351
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v28",
+      "lyric": "stored",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        20.64,
+        21.264
+      ],
+      "frames": 125,
+      "voiced_fraction": 0.704,
+      "cents_mean": -12.8,
+      "cents_median": -24.0,
+      "cents_sd": 37.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v29",
+      "lyric": "He",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        21.758,
+        21.759
+      ],
+      "frames": 0,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v30",
+      "lyric": "hath",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        21.921,
+        21.932
+      ],
+      "frames": 2,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v31",
+      "lyric": "loosed",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        22.173,
+        22.471
+      ],
+      "frames": 59,
+      "voiced_fraction": 0.9661016949152542,
+      "cents_mean": -18.6,
+      "cents_median": -14.3,
+      "cents_sd": 20.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v32",
+      "lyric": "the",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        22.703,
+        22.748
+      ],
+      "frames": 9,
+      "voiced_fraction": 0.3333333333333333,
+      "cents_mean": -112.8,
+      "cents_median": -116.8,
+      "cents_sd": 5.6,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v33",
+      "lyric": "fate",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        22.998,
+        23.223
+      ],
+      "frames": 45,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.8,
+      "cents_median": -5.0,
+      "cents_sd": 9.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v34",
+      "lyric": "ful",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        23.462,
+        23.52
+      ],
+      "frames": 12,
+      "voiced_fraction": 1.0,
+      "cents_mean": -13.3,
+      "cents_median": -13.0,
+      "cents_sd": 2.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v35",
+      "lyric": "light",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        23.77,
+        24.058
+      ],
+      "frames": 58,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.5,
+      "cents_median": 7.1,
+      "cents_sd": 18.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v36",
+      "lyric": "ning",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        24.285,
+        24.319
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": -16.5,
+      "cents_median": -21.8,
+      "cents_sd": 24.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v37",
+      "lyric": "of",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        24.569,
+        24.843
+      ],
+      "frames": 55,
+      "voiced_fraction": 1.0,
+      "cents_mean": -18.5,
+      "cents_median": -16.0,
+      "cents_sd": 30.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v38",
+      "lyric": "His",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        25.067,
+        25.096
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.16666666666666666,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 17% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v39",
+      "lyric": "ter",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        25.346,
+        25.625
+      ],
+      "frames": 56,
+      "voiced_fraction": 1.0,
+      "cents_mean": -15.1,
+      "cents_median": -3.5,
+      "cents_sd": 37.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v40",
+      "lyric": "ri",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        25.853,
+        25.888
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 63.3,
+      "cents_median": 66.6,
+      "cents_sd": 6.0,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": 64.3,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v41",
+      "lyric": "ble",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        26.138,
+        26.409
+      ],
+      "frames": 54,
+      "voiced_fraction": 1.0,
+      "cents_mean": 7.9,
+      "cents_median": 4.3,
+      "cents_sd": 18.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v42",
+      "lyric": "swift",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        26.689,
+        26.794
+      ],
+      "frames": 21,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v43",
+      "lyric": "sword",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        27.207,
+        27.582
+      ],
+      "frames": 75,
+      "voiced_fraction": 0.68,
+      "cents_mean": 6.7,
+      "cents_median": 7.5,
+      "cents_sd": 39.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v44",
+      "lyric": "His",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        28.021,
+        28.236
+      ],
+      "frames": 43,
+      "voiced_fraction": 0.6976744186046512,
+      "cents_mean": -6.8,
+      "cents_median": 4.1,
+      "cents_sd": 43.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v45",
+      "lyric": "truth",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        28.555,
+        29.178
+      ],
+      "frames": 125,
+      "voiced_fraction": 1.0,
+      "cents_mean": 9.4,
+      "cents_median": 16.1,
+      "cents_sd": 38.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v45.1",
+      "lyric": "truth",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        29.308,
+        29.585
+      ],
+      "frames": 55,
+      "voiced_fraction": 0.6,
+      "cents_mean": 15.1,
+      "cents_median": 15.4,
+      "cents_sd": 24.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v46",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        29.822,
+        29.876
+      ],
+      "frames": 11,
+      "voiced_fraction": 0.2727272727272727,
+      "cents_mean": -172.1,
+      "cents_median": -171.4,
+      "cents_sd": 1.0,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v47",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        30.136,
+        30.602
+      ],
+      "frames": 93,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.5,
+      "cents_median": -11.5,
+      "cents_sd": 11.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v48",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        30.895,
+        31.374
+      ],
+      "frames": 96,
+      "voiced_fraction": 1.0,
+      "cents_mean": -2.9,
+      "cents_median": -9.8,
+      "cents_sd": 32.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v49",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        31.812,
+        33.111
+      ],
+      "frames": 260,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.0,
+      "cents_median": -8.7,
+      "cents_sd": 6.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v50",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        34.888,
+        35.648
+      ],
+      "frames": 152,
+      "voiced_fraction": 1.0,
+      "cents_mean": -13.8,
+      "cents_median": -20.3,
+      "cents_sd": 21.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v51",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        35.928,
+        36.138
+      ],
+      "frames": 42,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.2,
+      "cents_median": -9.6,
+      "cents_sd": 31.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v52",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        36.418,
+        36.742
+      ],
+      "frames": 64,
+      "voiced_fraction": 1.0,
+      "cents_mean": 27.6,
+      "cents_median": -4.5,
+      "cents_sd": 103.5,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v53",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        36.95,
+        36.958
+      ],
+      "frames": 2,
+      "voiced_fraction": 1.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v54",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        37.196,
+        37.478
+      ],
+      "frames": 57,
+      "voiced_fraction": 1.0,
+      "cents_mean": -9.3,
+      "cents_median": -0.4,
+      "cents_sd": 46.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v55",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        37.708,
+        37.75
+      ],
+      "frames": 8,
+      "voiced_fraction": 1.0,
+      "cents_mean": 24.5,
+      "cents_median": 25.6,
+      "cents_sd": 3.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v56",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        38.132,
+        39.279
+      ],
+      "frames": 230,
+      "voiced_fraction": 1.0,
+      "cents_mean": 2.8,
+      "cents_median": 14.8,
+      "cents_sd": 42.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v57",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        39.597,
+        40.217
+      ],
+      "frames": 124,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.5,
+      "cents_median": -6.6,
+      "cents_sd": 7.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v58",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        41.132,
+        41.423
+      ],
+      "frames": 59,
+      "voiced_fraction": 1.0,
+      "cents_mean": -14.9,
+      "cents_median": -11.1,
+      "cents_sd": 12.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v59",
+      "lyric": "ry",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        41.649,
+        41.682
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v60",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        41.932,
+        42.22
+      ],
+      "frames": 58,
+      "voiced_fraction": 1.0,
+      "cents_mean": 15.6,
+      "cents_median": 2.4,
+      "cents_sd": 36.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v61",
+      "lyric": "ry",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        42.447,
+        42.481
+      ],
+      "frames": 7,
+      "voiced_fraction": 0.7142857142857143,
+      "cents_mean": -35.2,
+      "cents_median": -40.0,
+      "cents_sd": 12.5,
+      "status": "WARN",
+      "reason": "",
+      "pyin_cents_mean": -35.2,
+      "pyin_status": "WARN",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v62",
+      "lyric": "Glo",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        42.731,
+        43.01
+      ],
+      "frames": 56,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.1,
+      "cents_median": -5.1,
+      "cents_sd": 7.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v63",
+      "lyric": "ry",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        43.235,
+        43.265
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.6,
+      "cents_median": -10.4,
+      "cents_sd": 1.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v64",
+      "lyric": "Hal",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        43.515,
+        43.746
+      ],
+      "frames": 46,
+      "voiced_fraction": 1.0,
+      "cents_mean": -2.9,
+      "cents_median": -3.0,
+      "cents_sd": 13.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v65",
+      "lyric": "le",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        43.987,
+        44.051
+      ],
+      "frames": 13,
+      "voiced_fraction": 1.0,
+      "cents_mean": -5.2,
+      "cents_median": -4.4,
+      "cents_sd": 4.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v66",
+      "lyric": "lu",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        44.339,
+        44.962
+      ],
+      "frames": 124,
+      "voiced_fraction": 1.0,
+      "cents_mean": -13.6,
+      "cents_median": 1.8,
+      "cents_sd": 55.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v66.1",
+      "lyric": "lu",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        45.107,
+        45.597
+      ],
+      "frames": 98,
+      "voiced_fraction": 1.0,
+      "cents_mean": 22.9,
+      "cents_median": 18.4,
+      "cents_sd": 18.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v67",
+      "lyric": "jah",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        45.975,
+        46.931
+      ],
+      "frames": 191,
+      "voiced_fraction": 0.8010471204188482,
+      "cents_mean": -1.2,
+      "cents_median": -2.4,
+      "cents_sd": 30.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v68",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        47.52,
+        48.289
+      ],
+      "frames": 154,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.7,
+      "cents_median": -0.3,
+      "cents_sd": 12.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v69",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        48.569,
+        48.773
+      ],
+      "frames": 41,
+      "voiced_fraction": 1.0,
+      "cents_mean": -18.1,
+      "cents_median": -15.9,
+      "cents_sd": 11.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v70",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        49.053,
+        49.327
+      ],
+      "frames": 54,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.0,
+      "cents_median": -12.2,
+      "cents_sd": 9.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v71",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        49.555,
+        49.59
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 42.0,
+      "cents_median": 43.4,
+      "cents_sd": 19.1,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v72",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        49.84,
+        50.137
+      ],
+      "frames": 59,
+      "voiced_fraction": 1.0,
+      "cents_mean": 21.2,
+      "cents_median": -2.1,
+      "cents_sd": 93.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v73",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        50.359,
+        50.382
+      ],
+      "frames": 4,
+      "voiced_fraction": 1.0,
+      "cents_mean": 16.3,
+      "cents_median": 16.3,
+      "cents_sd": 0.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v74",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        50.763,
+        51.911
+      ],
+      "frames": 229,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.8,
+      "cents_median": 3.9,
+      "cents_sd": 45.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v75",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        52.23,
+        52.852
+      ],
+      "frames": 124,
+      "voiced_fraction": 0.6935483870967742,
+      "cents_mean": -18.8,
+      "cents_median": -13.6,
+      "cents_sd": 51.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v76",
+      "lyric": "His",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        53.291,
+        53.514
+      ],
+      "frames": 45,
+      "voiced_fraction": 0.5333333333333333,
+      "cents_mean": -2.6,
+      "cents_median": -8.5,
+      "cents_sd": 28.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v77",
+      "lyric": "truth",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        53.806,
+        54.282
+      ],
+      "frames": 95,
+      "voiced_fraction": 0.8947368421052632,
+      "cents_mean": 12.2,
+      "cents_median": 25.7,
+      "cents_sd": 46.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v78",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        54.58,
+        55.088
+      ],
+      "frames": 102,
+      "voiced_fraction": 0.8823529411764706,
+      "cents_mean": 2.5,
+      "cents_median": 8.0,
+      "cents_sd": 38.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v79",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        55.386,
+        55.889
+      ],
+      "frames": 101,
+      "voiced_fraction": 1.0,
+      "cents_mean": 4.1,
+      "cents_median": 2.6,
+      "cents_sd": 22.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v80",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        56.181,
+        56.65
+      ],
+      "frames": 94,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.4,
+      "cents_median": -4.2,
+      "cents_sd": 15.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v81",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        57.087,
+        58.381
+      ],
+      "frames": 259,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.0,
+      "cents_median": -8.8,
+      "cents_sd": 22.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v82",
+      "lyric": "I",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        59.632,
+        59.649
+      ],
+      "frames": 4,
+      "voiced_fraction": 1.0,
+      "cents_mean": 43.4,
+      "cents_median": 43.4,
+      "cents_sd": 5.5,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v83",
+      "lyric": "have",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        59.832,
+        59.849
+      ],
+      "frames": 4,
+      "voiced_fraction": 0.5,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v84",
+      "lyric": "seen",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        60.096,
+        60.201
+      ],
+      "frames": 21,
+      "voiced_fraction": 1.0,
+      "cents_mean": -20.8,
+      "cents_median": -20.2,
+      "cents_sd": 6.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v85",
+      "lyric": "Him",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        60.481,
+        60.592
+      ],
+      "frames": 22,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.4,
+      "cents_median": -21.6,
+      "cents_sd": 30.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v86",
+      "lyric": "in",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        60.872,
+        61.207
+      ],
+      "frames": 67,
+      "voiced_fraction": 1.0,
+      "cents_mean": -18.3,
+      "cents_median": -21.8,
+      "cents_sd": 19.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v87",
+      "lyric": "the",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        61.416,
+        61.425
+      ],
+      "frames": 2,
+      "voiced_fraction": 1.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v88",
+      "lyric": "watch",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        61.664,
+        61.935
+      ],
+      "frames": 54,
+      "voiced_fraction": 0.6481481481481481,
+      "cents_mean": -6.9,
+      "cents_median": 0.5,
+      "cents_sd": 38.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v89",
+      "lyric": "fires",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        62.16,
+        62.192
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -548.7,
+      "cents_median": -564.9,
+      "cents_sd": 27.6,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v90",
+      "lyric": "of",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        62.442,
+        62.709
+      ],
+      "frames": 54,
+      "voiced_fraction": 1.0,
+      "cents_mean": -11.3,
+      "cents_median": -6.4,
+      "cents_sd": 46.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v91",
+      "lyric": "a",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        62.937,
+        62.972
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.4,
+      "cents_median": -9.3,
+      "cents_sd": 2.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v92",
+      "lyric": "hun",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        63.222,
+        63.482
+      ],
+      "frames": 52,
+      "voiced_fraction": 1.0,
+      "cents_mean": 38.9,
+      "cents_median": 24.1,
+      "cents_sd": 76.4,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v93",
+      "lyric": "dred",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        63.705,
+        63.732
+      ],
+      "frames": 5,
+      "voiced_fraction": 0.6,
+      "cents_mean": -103.2,
+      "cents_median": -122.8,
+      "cents_sd": 27.8,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v94",
+      "lyric": "cir",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        63.982,
+        64.255
+      ],
+      "frames": 55,
+      "voiced_fraction": 1.0,
+      "cents_mean": 21.5,
+      "cents_median": 19.6,
+      "cents_sd": 33.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v95",
+      "lyric": "cling",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        64.481,
+        64.512
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 9.1,
+      "cents_median": 10.0,
+      "cents_sd": 3.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v96",
+      "lyric": "camps",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        64.8,
+        65.415
+      ],
+      "frames": 123,
+      "voiced_fraction": 0.7479674796747967,
+      "cents_mean": -13.6,
+      "cents_median": -16.4,
+      "cents_sd": 49.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v97",
+      "lyric": "They",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        65.862,
+        65.883
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": 13.2,
+      "cents_median": 10.6,
+      "cents_sd": 6.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v98",
+      "lyric": "have",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        66.079,
+        66.11
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -20.9,
+      "cents_median": -19.2,
+      "cents_sd": 12.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v99",
+      "lyric": "build",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        66.36,
+        66.604
+      ],
+      "frames": 49,
+      "voiced_fraction": 1.0,
+      "cents_mean": -24.8,
+      "cents_median": -10.0,
+      "cents_sd": 44.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v100",
+      "lyric": "ed",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        66.842,
+        66.899
+      ],
+      "frames": 12,
+      "voiced_fraction": 0.6666666666666666,
+      "cents_mean": -34.6,
+      "cents_median": -34.4,
+      "cents_sd": 32.2,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v101",
+      "lyric": "Him",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        67.149,
+        67.39
+      ],
+      "frames": 48,
+      "voiced_fraction": 1.0,
+      "cents_mean": -9.8,
+      "cents_median": -10.2,
+      "cents_sd": 10.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v102",
+      "lyric": "an",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        67.614,
+        67.641
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -202.4,
+      "cents_median": -197.3,
+      "cents_sd": 8.9,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": -202.4,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v103",
+      "lyric": "al",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        67.891,
+        68.17
+      ],
+      "frames": 56,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.4,
+      "cents_median": -1.3,
+      "cents_sd": 38.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v104",
+      "lyric": "tar",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        68.398,
+        68.433
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.2,
+      "cents_median": -8.2,
+      "cents_sd": 6.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v105",
+      "lyric": "in",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        68.683,
+        68.956
+      ],
+      "frames": 54,
+      "voiced_fraction": 1.0,
+      "cents_mean": 27.8,
+      "cents_median": 3.1,
+      "cents_sd": 72.5,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v106",
+      "lyric": "the",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        69.197,
+        69.261
+      ],
+      "frames": 13,
+      "voiced_fraction": 1.0,
+      "cents_mean": 139.2,
+      "cents_median": 163.9,
+      "cents_sd": 55.6,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": 128.8,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v107",
+      "lyric": "eve",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        69.511,
+        69.718
+      ],
+      "frames": 42,
+      "voiced_fraction": 1.0,
+      "cents_mean": -30.8,
+      "cents_median": -34.7,
+      "cents_sd": 41.0,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v108",
+      "lyric": "ning",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        69.944,
+        69.978
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 47.4,
+      "cents_median": 54.2,
+      "cents_sd": 18.5,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v109",
+      "lyric": "dews",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        70.228,
+        70.491
+      ],
+      "frames": 52,
+      "voiced_fraction": 0.8846153846153846,
+      "cents_mean": -0.2,
+      "cents_median": -0.0,
+      "cents_sd": 23.8,
+      "status": "PASS",
+      "reason": "",
+      "pyin_cents_mean": -0.2,
+      "pyin_status": "PASS",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v110",
+      "lyric": "and",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        70.722,
+        70.766
+      ],
+      "frames": 9,
+      "voiced_fraction": 1.0,
+      "cents_mean": 24.5,
+      "cents_median": 26.5,
+      "cents_sd": 10.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v111",
+      "lyric": "damps",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        71.05,
+        71.65
+      ],
+      "frames": 120,
+      "voiced_fraction": 0.7666666666666667,
+      "cents_mean": 7.5,
+      "cents_median": 10.7,
+      "cents_sd": 18.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v112",
+      "lyric": "I",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        72.103,
+        72.121
+      ],
+      "frames": 3,
+      "voiced_fraction": 1.0,
+      "cents_mean": -200.5,
+      "cents_median": -174.0,
+      "cents_sd": 37.5,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v113",
+      "lyric": "can",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        72.305,
+        72.322
+      ],
+      "frames": 3,
+      "voiced_fraction": 1.0,
+      "cents_mean": 35.8,
+      "cents_median": 30.3,
+      "cents_sd": 7.7,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v114",
+      "lyric": "read",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        72.569,
+        72.803
+      ],
+      "frames": 47,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.4,
+      "cents_median": 0.9,
+      "cents_sd": 7.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v115",
+      "lyric": "His",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        73.041,
+        73.098
+      ],
+      "frames": 12,
+      "voiced_fraction": 1.0,
+      "cents_mean": 29.9,
+      "cents_median": 31.2,
+      "cents_sd": 4.0,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v116",
+      "lyric": "right",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        73.348,
+        73.581
+      ],
+      "frames": 46,
+      "voiced_fraction": 1.0,
+      "cents_mean": -20.7,
+      "cents_median": -21.2,
+      "cents_sd": 24.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v117",
+      "lyric": "eous",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        73.825,
+        73.893
+      ],
+      "frames": 14,
+      "voiced_fraction": 0.6428571428571429,
+      "cents_mean": -10.9,
+      "cents_median": -10.0,
+      "cents_sd": 8.2,
+      "status": "PASS",
+      "reason": "",
+      "pyin_cents_mean": -10.9,
+      "pyin_status": "PASS",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v118",
+      "lyric": "sen",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        74.143,
+        74.405
+      ],
+      "frames": 52,
+      "voiced_fraction": 0.9038461538461539,
+      "cents_mean": -3.9,
+      "cents_median": 13.1,
+      "cents_sd": 64.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v119",
+      "lyric": "tence",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        74.629,
+        74.657
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.0,
+      "cents_median": -1.6,
+      "cents_sd": 16.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v120",
+      "lyric": "by",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        74.907,
+        75.133
+      ],
+      "frames": 46,
+      "voiced_fraction": 1.0,
+      "cents_mean": -16.3,
+      "cents_median": -13.6,
+      "cents_sd": 20.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v121",
+      "lyric": "the",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        75.378,
+        75.447
+      ],
+      "frames": 13,
+      "voiced_fraction": 1.0,
+      "cents_mean": 4.3,
+      "cents_median": 2.0,
+      "cents_sd": 6.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v122",
+      "lyric": "dim",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        75.697,
+        75.953
+      ],
+      "frames": 52,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.1,
+      "cents_median": -0.8,
+      "cents_sd": 6.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v123",
+      "lyric": "and",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        76.179,
+        76.211
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.6666666666666666,
+      "cents_mean": 69.8,
+      "cents_median": 69.8,
+      "cents_sd": 0.1,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v124",
+      "lyric": "flar",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        76.461,
+        76.726
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.8,
+      "cents_median": 4.0,
+      "cents_sd": 56.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v125",
+      "lyric": "ing",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        76.951,
+        76.982
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -182.6,
+      "cents_median": -182.6,
+      "cents_sd": 1.4,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": -180.0,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v126",
+      "lyric": "lamps",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        77.269,
+        77.886
+      ],
+      "frames": 123,
+      "voiced_fraction": 0.6341463414634146,
+      "cents_mean": -1.0,
+      "cents_median": -3.3,
+      "cents_sd": 29.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v127",
+      "lyric": "His",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        78.322,
+        78.509
+      ],
+      "frames": 38,
+      "voiced_fraction": 0.7894736842105263,
+      "cents_mean": -8.9,
+      "cents_median": 3.4,
+      "cents_sd": 36.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v128",
+      "lyric": "day",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        78.829,
+        79.462
+      ],
+      "frames": 126,
+      "voiced_fraction": 1.0,
+      "cents_mean": -7.0,
+      "cents_median": -4.0,
+      "cents_sd": 11.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v128.1",
+      "lyric": "day",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        79.592,
+        79.801
+      ],
+      "frames": 42,
+      "voiced_fraction": 1.0,
+      "cents_mean": -2.7,
+      "cents_median": -0.6,
+      "cents_sd": 12.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v129",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        80.049,
+        80.124
+      ],
+      "frames": 15,
+      "voiced_fraction": 1.0,
+      "cents_mean": 5.8,
+      "cents_median": 18.5,
+      "cents_sd": 21.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v130",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        80.387,
+        80.864
+      ],
+      "frames": 96,
+      "voiced_fraction": 1.0,
+      "cents_mean": 10.8,
+      "cents_median": 12.3,
+      "cents_sd": 11.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v131",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        81.159,
+        81.647
+      ],
+      "frames": 98,
+      "voiced_fraction": 1.0,
+      "cents_mean": -34.9,
+      "cents_median": -39.6,
+      "cents_sd": 24.0,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v132",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        82.079,
+        83.343
+      ],
+      "frames": 253,
+      "voiced_fraction": 1.0,
+      "cents_mean": -15.7,
+      "cents_median": -14.3,
+      "cents_sd": 25.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v133",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        85.109,
+        85.852
+      ],
+      "frames": 148,
+      "voiced_fraction": 1.0,
+      "cents_mean": -5.5,
+      "cents_median": -7.4,
+      "cents_sd": 21.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v134",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        86.132,
+        86.319
+      ],
+      "frames": 38,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.3,
+      "cents_median": -15.8,
+      "cents_sd": 36.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v135",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        86.599,
+        86.876
+      ],
+      "frames": 55,
+      "voiced_fraction": 1.0,
+      "cents_mean": -4.8,
+      "cents_median": -3.1,
+      "cents_sd": 13.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v136",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        87.103,
+        87.137
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -4.8,
+      "cents_median": -4.5,
+      "cents_sd": 1.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v137",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        87.387,
+        87.651
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.1,
+      "cents_median": -8.5,
+      "cents_sd": 44.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v138",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        87.881,
+        87.921
+      ],
+      "frames": 8,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.1,
+      "cents_median": 0.0,
+      "cents_sd": 3.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v139",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        88.301,
+        89.441
+      ],
+      "frames": 228,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.2,
+      "cents_median": 11.7,
+      "cents_sd": 60.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v140",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        89.756,
+        90.357
+      ],
+      "frames": 120,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.5,
+      "cents_median": -6.9,
+      "cents_sd": 27.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v141",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        91.262,
+        91.546
+      ],
+      "frames": 57,
+      "voiced_fraction": 1.0,
+      "cents_mean": -5.5,
+      "cents_median": -6.2,
+      "cents_sd": 6.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v142",
+      "lyric": "ry",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        91.772,
+        91.804
+      ],
+      "frames": 7,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v143",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        92.054,
+        92.332
+      ],
+      "frames": 55,
+      "voiced_fraction": 1.0,
+      "cents_mean": 4.7,
+      "cents_median": -2.3,
+      "cents_sd": 29.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v144",
+      "lyric": "ry",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        92.55,
+        92.569
+      ],
+      "frames": 4,
+      "voiced_fraction": 1.0,
+      "cents_mean": -46.4,
+      "cents_median": -46.4,
+      "cents_sd": 23.2,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v145",
+      "lyric": "Glo",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        92.817,
+        93.112
+      ],
+      "frames": 59,
+      "voiced_fraction": 1.0,
+      "cents_mean": -19.0,
+      "cents_median": -9.4,
+      "cents_sd": 38.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v146",
+      "lyric": "ry",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        93.342,
+        93.382
+      ],
+      "frames": 8,
+      "voiced_fraction": 1.0,
+      "cents_mean": 23.6,
+      "cents_median": 27.3,
+      "cents_sd": 10.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v147",
+      "lyric": "Hal",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        93.632,
+        93.887
+      ],
+      "frames": 51,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.8,
+      "cents_median": -14.3,
+      "cents_sd": 41.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v148",
+      "lyric": "le",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        94.11,
+        94.136
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -9.4,
+      "cents_median": -9.8,
+      "cents_sd": 0.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v149",
+      "lyric": "lu",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        94.424,
+        95.041
+      ],
+      "frames": 123,
+      "voiced_fraction": 1.0,
+      "cents_mean": 12.0,
+      "cents_median": 12.6,
+      "cents_sd": 28.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v149.1",
+      "lyric": "lu",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        95.184,
+        95.665
+      ],
+      "frames": 96,
+      "voiced_fraction": 1.0,
+      "cents_mean": 14.7,
+      "cents_median": 18.2,
+      "cents_sd": 9.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v150",
+      "lyric": "jah",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        96.04,
+        96.984
+      ],
+      "frames": 189,
+      "voiced_fraction": 1.0,
+      "cents_mean": 5.5,
+      "cents_median": 1.2,
+      "cents_sd": 28.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v151",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        97.58,
+        98.325
+      ],
+      "frames": 149,
+      "voiced_fraction": 1.0,
+      "cents_mean": -11.8,
+      "cents_median": -8.4,
+      "cents_sd": 33.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v152",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        98.605,
+        98.793
+      ],
+      "frames": 38,
+      "voiced_fraction": 1.0,
+      "cents_mean": -2.5,
+      "cents_median": -9.5,
+      "cents_sd": 30.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v153",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        99.073,
+        99.287
+      ],
+      "frames": 43,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.3,
+      "cents_median": 7.9,
+      "cents_sd": 4.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v154",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        99.534,
+        99.608
+      ],
+      "frames": 15,
+      "voiced_fraction": 1.0,
+      "cents_mean": 4.0,
+      "cents_median": 5.8,
+      "cents_sd": 8.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v155",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        99.858,
+        100.075
+      ],
+      "frames": 43,
+      "voiced_fraction": 1.0,
+      "cents_mean": 2.2,
+      "cents_median": 4.5,
+      "cents_sd": 24.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v156",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        100.32,
+        100.389
+      ],
+      "frames": 14,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.5,
+      "cents_median": -4.0,
+      "cents_sd": 9.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v157",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        100.772,
+        101.93
+      ],
+      "frames": 232,
+      "voiced_fraction": 1.0,
+      "cents_mean": -23.1,
+      "cents_median": 5.9,
+      "cents_sd": 101.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v158",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        102.242,
+        102.828
+      ],
+      "frames": 118,
+      "voiced_fraction": 0.6271186440677966,
+      "cents_mean": -3.0,
+      "cents_median": -3.4,
+      "cents_sd": 41.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v159",
+      "lyric": "His",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        103.263,
+        103.477
+      ],
+      "frames": 42,
+      "voiced_fraction": 0.4523809523809524,
+      "cents_mean": -18.4,
+      "cents_median": 3.0,
+      "cents_sd": 51.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v160",
+      "lyric": "truth",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        103.767,
+        104.232
+      ],
+      "frames": 93,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.1,
+      "cents_median": -5.8,
+      "cents_sd": 15.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v161",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        104.531,
+        105.043
+      ],
+      "frames": 103,
+      "voiced_fraction": 0.8058252427184466,
+      "cents_mean": 0.0,
+      "cents_median": 7.1,
+      "cents_sd": 37.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v162",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        105.337,
+        105.815
+      ],
+      "frames": 96,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.5,
+      "cents_median": 1.5,
+      "cents_sd": 13.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v163",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        106.106,
+        106.572
+      ],
+      "frames": 93,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.4,
+      "cents_median": 3.1,
+      "cents_sd": 12.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v164",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        107.007,
+        108.285
+      ],
+      "frames": 256,
+      "voiced_fraction": 1.0,
+      "cents_mean": 8.1,
+      "cents_median": 2.7,
+      "cents_sd": 19.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v165",
+      "lyric": "I",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        109.494,
+        109.507
+      ],
+      "frames": 2,
+      "voiced_fraction": 1.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v166",
+      "lyric": "have",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        109.694,
+        109.725
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 32.7,
+      "cents_median": 33.3,
+      "cents_sd": 3.9,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v167",
+      "lyric": "read",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        109.975,
+        110.1
+      ],
+      "frames": 25,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.8,
+      "cents_median": 4.3,
+      "cents_sd": 3.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v168",
+      "lyric": "a",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        110.35,
+        110.509
+      ],
+      "frames": 32,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.7,
+      "cents_median": -3.5,
+      "cents_sd": 2.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v169",
+      "lyric": "fie",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        110.759,
+        110.963
+      ],
+      "frames": 41,
+      "voiced_fraction": 1.0,
+      "cents_mean": 10.3,
+      "cents_median": 10.9,
+      "cents_sd": 5.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v170",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        111.208,
+        111.277
+      ],
+      "frames": 13,
+      "voiced_fraction": 1.0,
+      "cents_mean": 10.2,
+      "cents_median": 23.8,
+      "cents_sd": 22.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v171",
+      "lyric": "gos",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        111.527,
+        111.791
+      ],
+      "frames": 53,
+      "voiced_fraction": 0.7358490566037735,
+      "cents_mean": 0.2,
+      "cents_median": 2.3,
+      "cents_sd": 27.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v172",
+      "lyric": "pel",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        112.014,
+        112.04
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.5,
+      "cents_median": -1.8,
+      "cents_sd": 0.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v173",
+      "lyric": "writ",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        112.29,
+        112.556
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.7,
+      "cents_median": 5.5,
+      "cents_sd": 6.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v174",
+      "lyric": "in",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        112.78,
+        112.808
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 23.4,
+      "cents_median": 25.6,
+      "cents_sd": 4.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v175",
+      "lyric": "bur",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        113.058,
+        113.319
+      ],
+      "frames": 52,
+      "voiced_fraction": 1.0,
+      "cents_mean": -18.8,
+      "cents_median": -13.1,
+      "cents_sd": 20.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v176",
+      "lyric": "nished",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        113.543,
+        113.571
+      ],
+      "frames": 5,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v177",
+      "lyric": "rows",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        113.821,
+        114.082
+      ],
+      "frames": 52,
+      "voiced_fraction": 0.8846153846153846,
+      "cents_mean": 4.4,
+      "cents_median": 8.9,
+      "cents_sd": 73.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v178",
+      "lyric": "of",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        114.305,
+        114.331
+      ],
+      "frames": 5,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v179",
+      "lyric": "steel",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        114.617,
+        115.229
+      ],
+      "frames": 123,
+      "voiced_fraction": 1.0,
+      "cents_mean": -14.5,
+      "cents_median": -20.9,
+      "cents_sd": 34.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v180",
+      "lyric": "As",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        115.678,
+        115.694
+      ],
+      "frames": 3,
+      "voiced_fraction": 1.0,
+      "cents_mean": -19.0,
+      "cents_median": -24.4,
+      "cents_sd": 7.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v181",
+      "lyric": "ye",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        115.895,
+        115.946
+      ],
+      "frames": 10,
+      "voiced_fraction": 0.5,
+      "cents_mean": -74.0,
+      "cents_median": -71.2,
+      "cents_sd": 13.9,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v182",
+      "lyric": "deal",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        116.196,
+        116.4
+      ],
+      "frames": 41,
+      "voiced_fraction": 1.0,
+      "cents_mean": 10.6,
+      "cents_median": -1.6,
+      "cents_sd": 23.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v183",
+      "lyric": "with",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        116.626,
+        116.657
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.9,
+      "cents_median": 3.1,
+      "cents_sd": 27.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v184",
+      "lyric": "my",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        116.907,
+        117.177
+      ],
+      "frames": 54,
+      "voiced_fraction": 0.9074074074074074,
+      "cents_mean": -4.7,
+      "cents_median": -2.6,
+      "cents_sd": 9.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v185",
+      "lyric": "con",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        117.401,
+        117.429
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 53.2,
+      "cents_median": 54.0,
+      "cents_sd": 3.4,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": 56.7,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v186",
+      "lyric": "tem",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        117.679,
+        117.946
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": -11.2,
+      "cents_median": -3.8,
+      "cents_sd": 40.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v187",
+      "lyric": "ners",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        118.174,
+        118.209
+      ],
+      "frames": 7,
+      "voiced_fraction": 0.42857142857142855,
+      "cents_mean": 59.5,
+      "cents_median": 59.9,
+      "cents_sd": 0.5,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v188",
+      "lyric": "so",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        118.459,
+        118.711
+      ],
+      "frames": 50,
+      "voiced_fraction": 1.0,
+      "cents_mean": 35.2,
+      "cents_median": 32.4,
+      "cents_sd": 16.5,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v189",
+      "lyric": "with",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        118.934,
+        118.958
+      ],
+      "frames": 5,
+      "voiced_fraction": 0.6,
+      "cents_mean": -57.5,
+      "cents_median": -55.6,
+      "cents_sd": 2.7,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v190",
+      "lyric": "you",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        119.208,
+        119.474
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.2,
+      "cents_median": -2.8,
+      "cents_sd": 16.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v191",
+      "lyric": "my",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        119.698,
+        119.727
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": 2.4,
+      "cents_median": 2.3,
+      "cents_sd": 1.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v192",
+      "lyric": "grace",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        119.977,
+        120.237
+      ],
+      "frames": 52,
+      "voiced_fraction": 0.5192307692307693,
+      "cents_mean": -30.0,
+      "cents_median": -20.7,
+      "cents_sd": 38.7,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v193",
+      "lyric": "shall",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        120.46,
+        120.485
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -43.9,
+      "cents_median": -45.0,
+      "cents_sd": 21.7,
+      "status": "WARN",
+      "reason": "",
+      "pyin_cents_mean": -43.9,
+      "pyin_status": "WARN",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v194",
+      "lyric": "deal",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        120.772,
+        121.384
+      ],
+      "frames": 123,
+      "voiced_fraction": 0.8780487804878049,
+      "cents_mean": 11.9,
+      "cents_median": 6.8,
+      "cents_sd": 39.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v195",
+      "lyric": "Let",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        121.797,
+        121.801
+      ],
+      "frames": 1,
+      "voiced_fraction": 1.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v196",
+      "lyric": "the",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        121.997,
+        122.061
+      ],
+      "frames": 13,
+      "voiced_fraction": 0.6923076923076923,
+      "cents_mean": -16.8,
+      "cents_median": -9.3,
+      "cents_sd": 31.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v197",
+      "lyric": "He",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        122.311,
+        122.556
+      ],
+      "frames": 49,
+      "voiced_fraction": 1.0,
+      "cents_mean": -7.7,
+      "cents_median": -27.2,
+      "cents_sd": 44.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v198",
+      "lyric": "ro",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        122.783,
+        122.818
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 17.2,
+      "cents_median": 29.7,
+      "cents_sd": 26.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v199",
+      "lyric": "born",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        123.068,
+        123.297
+      ],
+      "frames": 45,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.5,
+      "cents_median": -3.2,
+      "cents_sd": 15.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v200",
+      "lyric": "of",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        123.533,
+        123.585
+      ],
+      "frames": 10,
+      "voiced_fraction": 1.0,
+      "cents_mean": -14.7,
+      "cents_median": -13.4,
+      "cents_sd": 4.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v201",
+      "lyric": "wo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        123.835,
+        124.102
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": 14.2,
+      "cents_median": 15.7,
+      "cents_sd": 7.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v202",
+      "lyric": "man",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        124.328,
+        124.36
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 19.1,
+      "cents_median": 19.9,
+      "cents_sd": 6.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v203",
+      "lyric": "crush",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        124.61,
+        124.867
+      ],
+      "frames": 51,
+      "voiced_fraction": 0.5882352941176471,
+      "cents_mean": -2.0,
+      "cents_median": 2.6,
+      "cents_sd": 27.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v204",
+      "lyric": "the",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        125.09,
+        125.115
+      ],
+      "frames": 5,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v205",
+      "lyric": "ser",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        125.365,
+        125.63
+      ],
+      "frames": 53,
+      "voiced_fraction": 0.8867924528301887,
+      "cents_mean": -35.9,
+      "cents_median": -31.8,
+      "cents_sd": 33.7,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v206",
+      "lyric": "pent",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        125.854,
+        125.882
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": 2.1,
+      "cents_median": 1.6,
+      "cents_sd": 2.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v207",
+      "lyric": "with",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        126.132,
+        126.393
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.9,
+      "cents_median": 3.1,
+      "cents_sd": 18.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v208",
+      "lyric": "his",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        126.617,
+        126.644
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 35.0,
+      "cents_median": 36.8,
+      "cents_sd": 7.8,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v209",
+      "lyric": "heel",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        126.93,
+        127.54
+      ],
+      "frames": 122,
+      "voiced_fraction": 0.9016393442622951,
+      "cents_mean": -5.8,
+      "cents_median": -22.4,
+      "cents_sd": 62.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v210",
+      "lyric": "Since",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        128.212,
+        128.218
+      ],
+      "frames": 2,
+      "voiced_fraction": 1.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v211",
+      "lyric": "God",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        128.489,
+        129.095
+      ],
+      "frames": 121,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.1,
+      "cents_median": 0.5,
+      "cents_sd": 25.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v211.1",
+      "lyric": "God",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        129.225,
+        129.504
+      ],
+      "frames": 56,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.8,
+      "cents_median": -10.3,
+      "cents_sd": 10.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v212",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        129.723,
+        129.742
+      ],
+      "frames": 3,
+      "voiced_fraction": 1.0,
+      "cents_mean": -24.7,
+      "cents_median": -26.0,
+      "cents_sd": 1.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v213",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        130.005,
+        130.485
+      ],
+      "frames": 96,
+      "voiced_fraction": 1.0,
+      "cents_mean": 9.8,
+      "cents_median": 8.0,
+      "cents_sd": 13.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v214",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        130.775,
+        131.239
+      ],
+      "frames": 93,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.0,
+      "cents_median": 8.2,
+      "cents_sd": 22.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v215",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        131.67,
+        132.927
+      ],
+      "frames": 251,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.1,
+      "cents_median": -7.5,
+      "cents_sd": 26.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v216",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        134.658,
+        135.411
+      ],
+      "frames": 150,
+      "voiced_fraction": 1.0,
+      "cents_mean": -5.0,
+      "cents_median": -5.2,
+      "cents_sd": 8.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v217",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        135.691,
+        135.874
+      ],
+      "frames": 37,
+      "voiced_fraction": 1.0,
+      "cents_mean": -13.0,
+      "cents_median": -16.3,
+      "cents_sd": 46.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v218",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        136.154,
+        136.413
+      ],
+      "frames": 52,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.4,
+      "cents_median": 2.0,
+      "cents_sd": 5.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v219",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        136.636,
+        136.662
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.7,
+      "cents_median": -3.5,
+      "cents_sd": 20.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v220",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        136.912,
+        137.178
+      ],
+      "frames": 54,
+      "voiced_fraction": 1.0,
+      "cents_mean": -13.5,
+      "cents_median": -13.3,
+      "cents_sd": 17.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v221",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        137.414,
+        137.468
+      ],
+      "frames": 11,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.8,
+      "cents_median": 2.9,
+      "cents_sd": 3.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v222",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        137.856,
+        139.045
+      ],
+      "frames": 238,
+      "voiced_fraction": 1.0,
+      "cents_mean": -52.3,
+      "cents_median": 8.3,
+      "cents_sd": 147.1,
+      "status": "untrackable",
+      "reason": "mean/median split 61 c",
+      "pyin_cents_mean": -38.6,
+      "pyin_status": "untrackable",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v223",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        139.343,
+        139.851
+      ],
+      "frames": 101,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.9,
+      "cents_median": 3.7,
+      "cents_sd": 15.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v224",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        140.752,
+        141.022
+      ],
+      "frames": 54,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.3,
+      "cents_median": 4.1,
+      "cents_sd": 25.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v225",
+      "lyric": "ry",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        141.247,
+        141.277
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v226",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        141.527,
+        141.799
+      ],
+      "frames": 55,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.4,
+      "cents_median": 6.8,
+      "cents_sd": 6.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v227",
+      "lyric": "ry",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        142.028,
+        142.066
+      ],
+      "frames": 7,
+      "voiced_fraction": 0.42857142857142855,
+      "cents_mean": -7.5,
+      "cents_median": 6.2,
+      "cents_sd": 19.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v228",
+      "lyric": "Glo",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        142.316,
+        142.568
+      ],
+      "frames": 51,
+      "voiced_fraction": 1.0,
+      "cents_mean": -9.7,
+      "cents_median": -13.5,
+      "cents_sd": 11.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v229",
+      "lyric": "ry",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        142.792,
+        142.82
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -42.8,
+      "cents_median": -40.7,
+      "cents_sd": 30.4,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v230",
+      "lyric": "Hal",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        143.07,
+        143.275
+      ],
+      "frames": 41,
+      "voiced_fraction": 1.0,
+      "cents_mean": 17.6,
+      "cents_median": 21.6,
+      "cents_sd": 28.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v231",
+      "lyric": "le",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        143.519,
+        143.587
+      ],
+      "frames": 13,
+      "voiced_fraction": 1.0,
+      "cents_mean": 5.4,
+      "cents_median": 12.1,
+      "cents_sd": 9.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v232",
+      "lyric": "lu",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        143.872,
+        144.474
+      ],
+      "frames": 121,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.9,
+      "cents_median": 4.0,
+      "cents_sd": 19.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v232.1",
+      "lyric": "lu",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        144.618,
+        145.095
+      ],
+      "frames": 95,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.8,
+      "cents_median": 5.7,
+      "cents_sd": 7.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v233",
+      "lyric": "jah",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        145.467,
+        146.393
+      ],
+      "frames": 186,
+      "voiced_fraction": 0.9032258064516129,
+      "cents_mean": -1.7,
+      "cents_median": 0.5,
+      "cents_sd": 24.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v234",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        146.978,
+        147.725
+      ],
+      "frames": 149,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.0,
+      "cents_median": -7.9,
+      "cents_sd": 21.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v235",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        148.005,
+        148.175
+      ],
+      "frames": 34,
+      "voiced_fraction": 1.0,
+      "cents_mean": -26.3,
+      "cents_median": -12.8,
+      "cents_sd": 39.4,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v236",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        148.455,
+        148.724
+      ],
+      "frames": 54,
+      "voiced_fraction": 1.0,
+      "cents_mean": 23.9,
+      "cents_median": 16.9,
+      "cents_sd": 26.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v237",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        148.948,
+        148.975
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": 26.6,
+      "cents_median": 35.0,
+      "cents_sd": 13.5,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v238",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        149.225,
+        149.457
+      ],
+      "frames": 46,
+      "voiced_fraction": 1.0,
+      "cents_mean": -18.6,
+      "cents_median": -13.4,
+      "cents_sd": 17.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v239",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        149.695,
+        149.753
+      ],
+      "frames": 12,
+      "voiced_fraction": 1.0,
+      "cents_mean": 14.0,
+      "cents_median": 15.9,
+      "cents_sd": 9.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v240",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        150.131,
+        151.263
+      ],
+      "frames": 227,
+      "voiced_fraction": 1.0,
+      "cents_mean": -21.7,
+      "cents_median": 7.0,
+      "cents_sd": 96.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v241",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        151.575,
+        152.162
+      ],
+      "frames": 117,
+      "voiced_fraction": 0.7008547008547008,
+      "cents_mean": 6.6,
+      "cents_median": -4.0,
+      "cents_sd": 56.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v242",
+      "lyric": "His",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        152.593,
+        152.791
+      ],
+      "frames": 39,
+      "voiced_fraction": 0.717948717948718,
+      "cents_mean": -10.8,
+      "cents_median": -15.7,
+      "cents_sd": 11.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v243",
+      "lyric": "truth",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        153.083,
+        153.552
+      ],
+      "frames": 93,
+      "voiced_fraction": 1.0,
+      "cents_mean": 4.0,
+      "cents_median": 4.8,
+      "cents_sd": 19.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v244",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        153.871,
+        154.492
+      ],
+      "frames": 124,
+      "voiced_fraction": 0.8548387096774194,
+      "cents_mean": -9.6,
+      "cents_median": -3.3,
+      "cents_sd": 53.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v245",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        154.84,
+        155.124
+      ],
+      "frames": 57,
+      "voiced_fraction": 1.0,
+      "cents_mean": 7.1,
+      "cents_median": 8.2,
+      "cents_sd": 12.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v246",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        155.411,
+        155.853
+      ],
+      "frames": 89,
+      "voiced_fraction": 1.0,
+      "cents_mean": -14.5,
+      "cents_median": -11.7,
+      "cents_sd": 19.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v247",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        156.285,
+        157.549
+      ],
+      "frames": 253,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.4,
+      "cents_median": -2.9,
+      "cents_sd": 4.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v248",
+      "lyric": "He",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        158.759,
+        158.767
+      ],
+      "frames": 1,
+      "voiced_fraction": 1.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v249",
+      "lyric": "has",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        158.946,
+        158.967
+      ],
+      "frames": 4,
+      "voiced_fraction": 1.0,
+      "cents_mean": 22.3,
+      "cents_median": 22.3,
+      "cents_sd": 2.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v250",
+      "lyric": "sound",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        159.217,
+        159.326
+      ],
+      "frames": 22,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.9,
+      "cents_median": 3.1,
+      "cents_sd": 13.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v251",
+      "lyric": "ed",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        159.576,
+        159.726
+      ],
+      "frames": 30,
+      "voiced_fraction": 1.0,
+      "cents_mean": -23.9,
+      "cents_median": -22.0,
+      "cents_sd": 51.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v252",
+      "lyric": "forth",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        159.976,
+        160.232
+      ],
+      "frames": 51,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.6,
+      "cents_median": -18.4,
+      "cents_sd": 26.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v253",
+      "lyric": "the",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        160.458,
+        160.488
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v254",
+      "lyric": "trum",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        160.738,
+        161.003
+      ],
+      "frames": 53,
+      "voiced_fraction": 0.660377358490566,
+      "cents_mean": 31.0,
+      "cents_median": 28.9,
+      "cents_sd": 47.8,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v255",
+      "lyric": "pet",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        161.225,
+        161.248
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -13.7,
+      "cents_median": -15.7,
+      "cents_sd": 4.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v256",
+      "lyric": "that",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        161.498,
+        161.674
+      ],
+      "frames": 35,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.4,
+      "cents_median": 7.3,
+      "cents_sd": 32.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v257",
+      "lyric": "shall",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        161.915,
+        161.977
+      ],
+      "frames": 12,
+      "voiced_fraction": 1.0,
+      "cents_mean": 24.8,
+      "cents_median": 25.4,
+      "cents_sd": 3.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v258",
+      "lyric": "nev",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        162.227,
+        162.472
+      ],
+      "frames": 49,
+      "voiced_fraction": 1.0,
+      "cents_mean": 2.7,
+      "cents_median": 17.0,
+      "cents_sd": 38.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v259",
+      "lyric": "er",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        162.695,
+        162.722
+      ],
+      "frames": 5,
+      "voiced_fraction": 0.4,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 40% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v260",
+      "lyric": "call",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        162.972,
+        163.216
+      ],
+      "frames": 49,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.5,
+      "cents_median": 4.6,
+      "cents_sd": 35.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v261",
+      "lyric": "re",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        163.436,
+        163.455
+      ],
+      "frames": 4,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.9,
+      "cents_median": -1.9,
+      "cents_sd": 8.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v262",
+      "lyric": "treat",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        163.739,
+        164.338
+      ],
+      "frames": 120,
+      "voiced_fraction": 0.925,
+      "cents_mean": -7.0,
+      "cents_median": -4.8,
+      "cents_sd": 25.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v263",
+      "lyric": "He",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        164.755,
+        164.784
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.5,
+      "cents_median": -10.7,
+      "cents_sd": 0.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v264",
+      "lyric": "is",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        164.975,
+        164.997
+      ],
+      "frames": 4,
+      "voiced_fraction": 1.0,
+      "cents_mean": -22.1,
+      "cents_median": -22.1,
+      "cents_sd": 8.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v265",
+      "lyric": "sift",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        165.247,
+        165.417
+      ],
+      "frames": 34,
+      "voiced_fraction": 0.8235294117647058,
+      "cents_mean": -43.2,
+      "cents_median": -43.2,
+      "cents_sd": 6.4,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v266",
+      "lyric": "ing",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        165.663,
+        165.735
+      ],
+      "frames": 14,
+      "voiced_fraction": 1.0,
+      "cents_mean": -17.4,
+      "cents_median": -17.0,
+      "cents_sd": 17.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v267",
+      "lyric": "out",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        165.985,
+        166.186
+      ],
+      "frames": 40,
+      "voiced_fraction": 1.0,
+      "cents_mean": 11.8,
+      "cents_median": 15.7,
+      "cents_sd": 23.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v268",
+      "lyric": "the",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        166.427,
+        166.491
+      ],
+      "frames": 13,
+      "voiced_fraction": 1.0,
+      "cents_mean": 10.7,
+      "cents_median": 12.4,
+      "cents_sd": 15.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v269",
+      "lyric": "hearts",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        166.741,
+        166.984
+      ],
+      "frames": 49,
+      "voiced_fraction": 0.8367346938775511,
+      "cents_mean": -13.3,
+      "cents_median": 3.1,
+      "cents_sd": 39.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v270",
+      "lyric": "of",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        167.206,
+        167.228
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": 7.4,
+      "cents_median": 4.1,
+      "cents_sd": 6.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v271",
+      "lyric": "men",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        167.478,
+        167.73
+      ],
+      "frames": 50,
+      "voiced_fraction": 1.0,
+      "cents_mean": 28.8,
+      "cents_median": 19.4,
+      "cents_sd": 44.7,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v272",
+      "lyric": "be",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        167.955,
+        167.985
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -2.1,
+      "cents_median": -0.1,
+      "cents_sd": 6.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v273",
+      "lyric": "fore",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        168.235,
+        168.474
+      ],
+      "frames": 48,
+      "voiced_fraction": 1.0,
+      "cents_mean": -23.8,
+      "cents_median": -10.0,
+      "cents_sd": 69.4,
+      "status": "PASS",
+      "reason": "",
+      "pyin_cents_mean": -23.8,
+      "pyin_status": "PASS",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v274",
+      "lyric": "His",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        168.701,
+        168.736
+      ],
+      "frames": 7,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v275",
+      "lyric": "judg",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        168.986,
+        169.218
+      ],
+      "frames": 47,
+      "voiced_fraction": 1.0,
+      "cents_mean": -5.7,
+      "cents_median": -11.6,
+      "cents_sd": 9.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v276",
+      "lyric": "ment",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        169.442,
+        169.471
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 60.6,
+      "cents_median": 60.8,
+      "cents_sd": 0.8,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": 60.0,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v277",
+      "lyric": "seat",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        169.753,
+        170.34
+      ],
+      "frames": 117,
+      "voiced_fraction": 0.7863247863247863,
+      "cents_mean": 3.8,
+      "cents_median": 7.3,
+      "cents_sd": 44.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v278",
+      "lyric": "Oh",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        170.739,
+        170.744
+      ],
+      "frames": 1,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v279",
+      "lyric": "be",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        170.93,
+        170.974
+      ],
+      "frames": 9,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.7,
+      "cents_median": 8.7,
+      "cents_sd": 14.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v280",
+      "lyric": "swift",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        171.224,
+        171.478
+      ],
+      "frames": 51,
+      "voiced_fraction": 0.6470588235294118,
+      "cents_mean": -42.2,
+      "cents_median": -34.3,
+      "cents_sd": 32.0,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v281",
+      "lyric": "my",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        171.702,
+        171.73
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.8333333333333334,
+      "cents_mean": -69.6,
+      "cents_median": -80.7,
+      "cents_sd": 36.3,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v282",
+      "lyric": "soul",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        171.98,
+        172.175
+      ],
+      "frames": 39,
+      "voiced_fraction": 1.0,
+      "cents_mean": 1.1,
+      "cents_median": -5.0,
+      "cents_sd": 55.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v283",
+      "lyric": "to",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        172.414,
+        172.471
+      ],
+      "frames": 11,
+      "voiced_fraction": 1.0,
+      "cents_mean": -48.3,
+      "cents_median": -50.0,
+      "cents_sd": 3.7,
+      "status": "WARN",
+      "reason": "",
+      "pyin_cents_mean": -48.3,
+      "pyin_status": "WARN",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v284",
+      "lyric": "an",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        172.721,
+        172.986
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": 23.2,
+      "cents_median": 18.4,
+      "cents_sd": 24.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v285",
+      "lyric": "swer",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        173.214,
+        173.25
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": -23.6,
+      "cents_median": -22.9,
+      "cents_sd": 11.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v286",
+      "lyric": "Him",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        173.5,
+        173.732
+      ],
+      "frames": 46,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.9,
+      "cents_median": 1.6,
+      "cents_sd": 31.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v287",
+      "lyric": "be",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        173.953,
+        173.977
+      ],
+      "frames": 4,
+      "voiced_fraction": 1.0,
+      "cents_mean": 2.9,
+      "cents_median": 2.9,
+      "cents_sd": 0.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v288",
+      "lyric": "ju",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        174.227,
+        174.475
+      ],
+      "frames": 50,
+      "voiced_fraction": 1.0,
+      "cents_mean": -9.3,
+      "cents_median": 0.2,
+      "cents_sd": 36.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v289",
+      "lyric": "bi",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        174.725,
+        174.878
+      ],
+      "frames": 31,
+      "voiced_fraction": 0.8064516129032258,
+      "cents_mean": -9.1,
+      "cents_median": -16.0,
+      "cents_sd": 38.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v290",
+      "lyric": "lant",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        175.152,
+        175.226
+      ],
+      "frames": 15,
+      "voiced_fraction": 1.0,
+      "cents_mean": 67.3,
+      "cents_median": 77.0,
+      "cents_sd": 23.3,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": 70.2,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v291",
+      "lyric": "my",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        175.43,
+        175.478
+      ],
+      "frames": 10,
+      "voiced_fraction": 1.0,
+      "cents_mean": -12.2,
+      "cents_median": -16.3,
+      "cents_sd": 12.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v292",
+      "lyric": "feet",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        175.76,
+        176.341
+      ],
+      "frames": 116,
+      "voiced_fraction": 0.75,
+      "cents_mean": -1.8,
+      "cents_median": -6.1,
+      "cents_sd": 23.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v293",
+      "lyric": "Our",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        176.783,
+        176.959
+      ],
+      "frames": 35,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.6,
+      "cents_median": -5.4,
+      "cents_sd": 9.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v294",
+      "lyric": "God",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        177.271,
+        177.858
+      ],
+      "frames": 118,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.1,
+      "cents_median": 4.5,
+      "cents_sd": 28.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v294.1",
+      "lyric": "God",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        177.988,
+        178.237
+      ],
+      "frames": 49,
+      "voiced_fraction": 1.0,
+      "cents_mean": -20.5,
+      "cents_median": -19.2,
+      "cents_sd": 14.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v295",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        178.462,
+        178.493
+      ],
+      "frames": 7,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v296",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        178.755,
+        179.227
+      ],
+      "frames": 94,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.7,
+      "cents_median": 3.9,
+      "cents_sd": 15.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v297",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        179.514,
+        179.956
+      ],
+      "frames": 88,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.2,
+      "cents_median": 1.3,
+      "cents_sd": 21.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v298",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        180.379,
+        181.594
+      ],
+      "frames": 243,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.6,
+      "cents_median": -11.5,
+      "cents_sd": 11.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v299",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        183.283,
+        184.002
+      ],
+      "frames": 143,
+      "voiced_fraction": 1.0,
+      "cents_mean": -19.1,
+      "cents_median": -17.7,
+      "cents_sd": 43.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v300",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        184.282,
+        184.459
+      ],
+      "frames": 36,
+      "voiced_fraction": 1.0,
+      "cents_mean": -4.9,
+      "cents_median": -15.0,
+      "cents_sd": 22.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v301",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        184.739,
+        185.034
+      ],
+      "frames": 59,
+      "voiced_fraction": 1.0,
+      "cents_mean": 4.0,
+      "cents_median": 0.6,
+      "cents_sd": 15.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v302",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        185.248,
+        185.261
+      ],
+      "frames": 2,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.3,
+      "cents_median": -0.0,
+      "cents_sd": 4.7,
+      "status": "PASS",
+      "reason": "",
+      "pyin_cents_mean": -3.3,
+      "pyin_status": "PASS",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v303",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        185.505,
+        185.735
+      ],
+      "frames": 46,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.3,
+      "cents_median": -18.7,
+      "cents_sd": 65.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v304",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        185.964,
+        186.001
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 204.5,
+      "cents_median": 203.8,
+      "cents_sd": 5.3,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": 206.2,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v305",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        186.37,
+        187.448
+      ],
+      "frames": 216,
+      "voiced_fraction": 1.0,
+      "cents_mean": -21.1,
+      "cents_median": 13.9,
+      "cents_sd": 96.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v306",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        187.76,
+        188.345
+      ],
+      "frames": 117,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.4,
+      "cents_median": -10.7,
+      "cents_sd": 9.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v307",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        189.223,
+        189.564
+      ],
+      "frames": 68,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.1,
+      "cents_median": 5.3,
+      "cents_sd": 7.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v308",
+      "lyric": "ry",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        189.764,
+        189.752
+      ],
+      "frames": 0,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v309",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        189.982,
+        190.24
+      ],
+      "frames": 52,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.1,
+      "cents_median": -7.6,
+      "cents_sd": 15.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v310",
+      "lyric": "ry",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        190.465,
+        190.493
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v311",
+      "lyric": "Glo",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        190.743,
+        190.991
+      ],
+      "frames": 49,
+      "voiced_fraction": 1.0,
+      "cents_mean": -16.4,
+      "cents_median": -9.2,
+      "cents_sd": 23.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v312",
+      "lyric": "ry",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        191.217,
+        191.249
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 24.9,
+      "cents_median": 27.0,
+      "cents_sd": 5.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v313",
+      "lyric": "Hal",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        191.499,
+        191.701
+      ],
+      "frames": 40,
+      "voiced_fraction": 1.0,
+      "cents_mean": -32.7,
+      "cents_median": -28.7,
+      "cents_sd": 27.6,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v314",
+      "lyric": "le",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        191.936,
+        191.988
+      ],
+      "frames": 11,
+      "voiced_fraction": 1.0,
+      "cents_mean": 1.7,
+      "cents_median": 1.6,
+      "cents_sd": 0.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v315",
+      "lyric": "lu",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        192.27,
+        192.853
+      ],
+      "frames": 117,
+      "voiced_fraction": 1.0,
+      "cents_mean": 8.3,
+      "cents_median": 6.0,
+      "cents_sd": 14.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v315.1",
+      "lyric": "lu",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        192.993,
+        193.454
+      ],
+      "frames": 92,
+      "voiced_fraction": 1.0,
+      "cents_mean": 16.7,
+      "cents_median": 11.1,
+      "cents_sd": 12.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v316",
+      "lyric": "jah",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        193.822,
+        194.724
+      ],
+      "frames": 181,
+      "voiced_fraction": 0.9558011049723757,
+      "cents_mean": 2.5,
+      "cents_median": -0.1,
+      "cents_sd": 36.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v317",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        195.38,
+        195.999
+      ],
+      "frames": 124,
+      "voiced_fraction": 1.0,
+      "cents_mean": -21.7,
+      "cents_median": -21.7,
+      "cents_sd": 44.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v318",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        196.279,
+        196.461
+      ],
+      "frames": 36,
+      "voiced_fraction": 1.0,
+      "cents_mean": -21.0,
+      "cents_median": -18.2,
+      "cents_sd": 14.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v319",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        196.741,
+        196.997
+      ],
+      "frames": 51,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.3,
+      "cents_median": -0.9,
+      "cents_sd": 8.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v320",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        197.223,
+        197.254
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 38.5,
+      "cents_median": 40.5,
+      "cents_sd": 8.4,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v321",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        197.504,
+        197.738
+      ],
+      "frames": 47,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.7,
+      "cents_median": -3.4,
+      "cents_sd": 27.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v322",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        197.962,
+        197.988
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.4,
+      "cents_median": -2.2,
+      "cents_sd": 2.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v323",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        198.364,
+        199.481
+      ],
+      "frames": 223,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.8,
+      "cents_median": 15.4,
+      "cents_sd": 42.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v324",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        199.789,
+        200.348
+      ],
+      "frames": 112,
+      "voiced_fraction": 0.6339285714285714,
+      "cents_mean": -2.1,
+      "cents_median": -7.8,
+      "cents_sd": 43.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v325",
+      "lyric": "His",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        200.772,
+        200.953
+      ],
+      "frames": 37,
+      "voiced_fraction": 0.9459459459459459,
+      "cents_mean": -9.7,
+      "cents_median": -3.5,
+      "cents_sd": 26.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v326",
+      "lyric": "truth",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        201.24,
+        201.682
+      ],
+      "frames": 88,
+      "voiced_fraction": 0.9204545454545454,
+      "cents_mean": -8.3,
+      "cents_median": 3.0,
+      "cents_sd": 34.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v327",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        201.98,
+        202.483
+      ],
+      "frames": 101,
+      "voiced_fraction": 0.8217821782178217,
+      "cents_mean": -3.5,
+      "cents_median": 1.7,
+      "cents_sd": 45.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v328",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        202.776,
+        203.258
+      ],
+      "frames": 97,
+      "voiced_fraction": 1.0,
+      "cents_mean": 2.4,
+      "cents_median": -0.7,
+      "cents_sd": 16.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v329",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        203.538,
+        203.947
+      ],
+      "frames": 81,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.9,
+      "cents_median": -14.2,
+      "cents_sd": 15.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v330",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        204.372,
+        205.601
+      ],
+      "frames": 246,
+      "voiced_fraction": 1.0,
+      "cents_mean": -5.9,
+      "cents_median": -10.0,
+      "cents_sd": 16.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v331",
+      "lyric": "In",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        206.774,
+        206.789
+      ],
+      "frames": 3,
+      "voiced_fraction": 1.0,
+      "cents_mean": -16.7,
+      "cents_median": -20.2,
+      "cents_sd": 4.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v332",
+      "lyric": "the",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        206.968,
+        206.982
+      ],
+      "frames": 2,
+      "voiced_fraction": 1.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v333",
+      "lyric": "beau",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        207.197,
+        207.352
+      ],
+      "frames": 31,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.9,
+      "cents_median": -17.6,
+      "cents_sd": 28.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v334",
+      "lyric": "ty",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        207.572,
+        207.73
+      ],
+      "frames": 32,
+      "voiced_fraction": 1.0,
+      "cents_mean": -20.2,
+      "cents_median": -22.9,
+      "cents_sd": 7.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v335",
+      "lyric": "of",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        207.98,
+        208.29
+      ],
+      "frames": 62,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.4,
+      "cents_median": 8.1,
+      "cents_sd": 26.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v336",
+      "lyric": "the",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        208.498,
+        208.506
+      ],
+      "frames": 1,
+      "voiced_fraction": 1.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v337",
+      "lyric": "lil",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        208.744,
+        208.996
+      ],
+      "frames": 50,
+      "voiced_fraction": 1.0,
+      "cents_mean": 4.7,
+      "cents_median": 3.4,
+      "cents_sd": 8.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v338",
+      "lyric": "ies",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        209.22,
+        209.247
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -9.3,
+      "cents_median": -13.2,
+      "cents_sd": 11.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v339",
+      "lyric": "Christ",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        209.497,
+        209.741
+      ],
+      "frames": 49,
+      "voiced_fraction": 0.6938775510204082,
+      "cents_mean": -13.0,
+      "cents_median": -4.2,
+      "cents_sd": 38.1,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v340",
+      "lyric": "was",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        209.962,
+        209.983
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -31.1,
+      "cents_median": -23.7,
+      "cents_sd": 14.7,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v341",
+      "lyric": "born",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        210.233,
+        210.485
+      ],
+      "frames": 50,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.1,
+      "cents_median": -5.9,
+      "cents_sd": 6.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v342",
+      "lyric": "a",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        210.708,
+        210.735
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -83.2,
+      "cents_median": -85.2,
+      "cents_sd": 20.9,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": -51.8,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v343",
+      "lyric": "cross",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        210.985,
+        211.229
+      ],
+      "frames": 49,
+      "voiced_fraction": 0.7346938775510204,
+      "cents_mean": -3.5,
+      "cents_median": -5.2,
+      "cents_sd": 12.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v344",
+      "lyric": "the",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        211.452,
+        211.478
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.16666666666666666,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 17% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v345",
+      "lyric": "sea",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        211.761,
+        212.351
+      ],
+      "frames": 118,
+      "voiced_fraction": 0.8220338983050848,
+      "cents_mean": -5.4,
+      "cents_median": -6.6,
+      "cents_sd": 40.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v346",
+      "lyric": "With",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        212.763,
+        212.765
+      ],
+      "frames": 0,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v347",
+      "lyric": "a",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        212.946,
+        212.984
+      ],
+      "frames": 8,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.6,
+      "cents_median": -0.3,
+      "cents_sd": 10.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v348",
+      "lyric": "glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        213.234,
+        213.49
+      ],
+      "frames": 51,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.6,
+      "cents_median": -9.8,
+      "cents_sd": 7.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v349",
+      "lyric": "ry",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        213.715,
+        213.745
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.9,
+      "cents_median": 1.1,
+      "cents_sd": 0.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v350",
+      "lyric": "in",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        213.995,
+        214.197
+      ],
+      "frames": 40,
+      "voiced_fraction": 1.0,
+      "cents_mean": -12.4,
+      "cents_median": -14.1,
+      "cents_sd": 9.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v351",
+      "lyric": "his",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        214.436,
+        214.495
+      ],
+      "frames": 12,
+      "voiced_fraction": 1.0,
+      "cents_mean": 3.7,
+      "cents_median": 9.1,
+      "cents_sd": 10.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v352",
+      "lyric": "bo",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        214.745,
+        214.946
+      ],
+      "frames": 40,
+      "voiced_fraction": 1.0,
+      "cents_mean": -29.6,
+      "cents_median": -29.4,
+      "cents_sd": 5.6,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v353",
+      "lyric": "som",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        215.191,
+        215.261
+      ],
+      "frames": 14,
+      "voiced_fraction": 1.0,
+      "cents_mean": -17.0,
+      "cents_median": -29.5,
+      "cents_sd": 27.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v354",
+      "lyric": "that",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        215.511,
+        215.743
+      ],
+      "frames": 47,
+      "voiced_fraction": 0.6595744680851063,
+      "cents_mean": 11.4,
+      "cents_median": 20.4,
+      "cents_sd": 56.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v355",
+      "lyric": "trans",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        215.968,
+        215.998
+      ],
+      "frames": 6,
+      "voiced_fraction": 0.8333333333333334,
+      "cents_mean": -45.9,
+      "cents_median": -50.6,
+      "cents_sd": 9.3,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v356",
+      "lyric": "fig",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        216.248,
+        216.487
+      ],
+      "frames": 47,
+      "voiced_fraction": 1.0,
+      "cents_mean": -8.3,
+      "cents_median": -4.2,
+      "cents_sd": 17.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v357",
+      "lyric": "ures",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        216.707,
+        216.727
+      ],
+      "frames": 4,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.7,
+      "cents_median": -3.7,
+      "cents_sd": 10.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v358",
+      "lyric": "you",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        216.976,
+        217.202
+      ],
+      "frames": 45,
+      "voiced_fraction": 1.0,
+      "cents_mean": 2.6,
+      "cents_median": 5.4,
+      "cents_sd": 11.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v359",
+      "lyric": "and",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        217.434,
+        217.479
+      ],
+      "frames": 9,
+      "voiced_fraction": 1.0,
+      "cents_mean": 31.7,
+      "cents_median": 32.7,
+      "cents_sd": 1.7,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v360",
+      "lyric": "me",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        217.762,
+        218.353
+      ],
+      "frames": 119,
+      "voiced_fraction": 0.8991596638655462,
+      "cents_mean": 4.1,
+      "cents_median": 8.3,
+      "cents_sd": 43.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v361",
+      "lyric": "As",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        218.785,
+        218.802
+      ],
+      "frames": 3,
+      "voiced_fraction": 0.3333333333333333,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 33% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v362",
+      "lyric": "he",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        218.981,
+        218.992
+      ],
+      "frames": 2,
+      "voiced_fraction": 1.0,
+      "cents_mean": 26.8,
+      "cents_median": 30.0,
+      "cents_sd": 4.7,
+      "status": "WARN",
+      "reason": "",
+      "pyin_cents_mean": 26.8,
+      "pyin_status": "WARN",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v363",
+      "lyric": "died",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        219.234,
+        219.491
+      ],
+      "frames": 51,
+      "voiced_fraction": 1.0,
+      "cents_mean": -33.2,
+      "cents_median": -24.8,
+      "cents_sd": 47.2,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v364",
+      "lyric": "to",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        219.719,
+        219.755
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": -7.8,
+      "cents_median": -4.4,
+      "cents_sd": 10.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v365",
+      "lyric": "make",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        220.005,
+        220.248
+      ],
+      "frames": 49,
+      "voiced_fraction": 0.673469387755102,
+      "cents_mean": -15.6,
+      "cents_median": -0.0,
+      "cents_sd": 82.7,
+      "status": "PASS",
+      "reason": "",
+      "pyin_cents_mean": -15.6,
+      "pyin_status": "PASS",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v366",
+      "lyric": "men",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        220.473,
+        220.503
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": -0.9,
+      "cents_median": -2.8,
+      "cents_sd": 5.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v367",
+      "lyric": "ho",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        220.753,
+        220.999
+      ],
+      "frames": 49,
+      "voiced_fraction": 1.0,
+      "cents_mean": 11.1,
+      "cents_median": 11.5,
+      "cents_sd": 8.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v368",
+      "lyric": "ly",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        221.227,
+        221.262
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 24.5,
+      "cents_median": 24.6,
+      "cents_sd": 0.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v369",
+      "lyric": "let",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        221.512,
+        221.745
+      ],
+      "frames": 47,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.2,
+      "cents_median": -0.5,
+      "cents_sd": 20.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v370",
+      "lyric": "us",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        221.965,
+        221.987
+      ],
+      "frames": 4,
+      "voiced_fraction": 1.0,
+      "cents_mean": -93.8,
+      "cents_median": -93.8,
+      "cents_sd": 7.1,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v371",
+      "lyric": "die",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        222.237,
+        222.488
+      ],
+      "frames": 51,
+      "voiced_fraction": 1.0,
+      "cents_mean": -2.0,
+      "cents_median": 0.1,
+      "cents_sd": 10.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v372",
+      "lyric": "to",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        222.713,
+        222.741
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": 23.2,
+      "cents_median": 21.6,
+      "cents_sd": 5.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v373",
+      "lyric": "make",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        222.991,
+        223.233
+      ],
+      "frames": 49,
+      "voiced_fraction": 0.7959183673469388,
+      "cents_mean": -18.2,
+      "cents_median": 4.6,
+      "cents_sd": 66.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v374",
+      "lyric": "men",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        223.461,
+        223.498
+      ],
+      "frames": 8,
+      "voiced_fraction": 0.0,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 0% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v375",
+      "lyric": "free",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        223.778,
+        224.354
+      ],
+      "frames": 115,
+      "voiced_fraction": 0.6,
+      "cents_mean": 20.6,
+      "cents_median": -8.3,
+      "cents_sd": 78.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v376",
+      "lyric": "While",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        224.779,
+        224.951
+      ],
+      "frames": 34,
+      "voiced_fraction": 1.0,
+      "cents_mean": -10.4,
+      "cents_median": -0.9,
+      "cents_sd": 24.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v377",
+      "lyric": "God",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        225.267,
+        225.871
+      ],
+      "frames": 121,
+      "voiced_fraction": 1.0,
+      "cents_mean": -4.2,
+      "cents_median": -2.9,
+      "cents_sd": 15.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v377.1",
+      "lyric": "God",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        226.001,
+        226.25
+      ],
+      "frames": 50,
+      "voiced_fraction": 1.0,
+      "cents_mean": 8.6,
+      "cents_median": 7.6,
+      "cents_sd": 23.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v378",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        226.474,
+        226.501
+      ],
+      "frames": 5,
+      "voiced_fraction": 0.4,
+      "cents_mean": null,
+      "cents_median": null,
+      "cents_sd": null,
+      "status": "unvoiced",
+      "reason": "voiced 40% of the nucleus",
+      "pyin_cents_mean": null,
+      "pyin_status": "unvoiced",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v379",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        226.76,
+        227.214
+      ],
+      "frames": 91,
+      "voiced_fraction": 1.0,
+      "cents_mean": -6.6,
+      "cents_median": -11.7,
+      "cents_sd": 17.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v380",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        227.506,
+        227.98
+      ],
+      "frames": 95,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.3,
+      "cents_median": -11.0,
+      "cents_sd": 44.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v381",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        228.402,
+        229.607
+      ],
+      "frames": 241,
+      "voiced_fraction": 1.0,
+      "cents_mean": 7.9,
+      "cents_median": 7.2,
+      "cents_sd": 18.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v382",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        231.311,
+        231.999
+      ],
+      "frames": 138,
+      "voiced_fraction": 1.0,
+      "cents_mean": 0.9,
+      "cents_median": -1.2,
+      "cents_sd": 9.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v383",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        232.279,
+        232.544
+      ],
+      "frames": 53,
+      "voiced_fraction": 1.0,
+      "cents_mean": -20.3,
+      "cents_median": -22.8,
+      "cents_sd": 14.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v384",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        232.824,
+        232.943
+      ],
+      "frames": 24,
+      "voiced_fraction": 1.0,
+      "cents_mean": 10.2,
+      "cents_median": 11.8,
+      "cents_sd": 9.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v385",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        233.19,
+        233.262
+      ],
+      "frames": 14,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.4,
+      "cents_median": 12.4,
+      "cents_sd": 14.5,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v386",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        233.512,
+        233.748
+      ],
+      "frames": 48,
+      "voiced_fraction": 1.0,
+      "cents_mean": 38.8,
+      "cents_median": 4.7,
+      "cents_sd": 77.4,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v387",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        233.976,
+        234.012
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 125.8,
+      "cents_median": 121.3,
+      "cents_sd": 12.1,
+      "status": "FAIL",
+      "reason": "",
+      "pyin_cents_mean": 132.8,
+      "pyin_status": "FAIL",
+      "cross_check": "both_off"
+    },
+    {
+      "id": "v388",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        234.38,
+        235.453
+      ],
+      "frames": 215,
+      "voiced_fraction": 1.0,
+      "cents_mean": -16.7,
+      "cents_median": -1.7,
+      "cents_sd": 81.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v389",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        235.766,
+        236.358
+      ],
+      "frames": 119,
+      "voiced_fraction": 1.0,
+      "cents_mean": -14.5,
+      "cents_median": -15.1,
+      "cents_sd": 11.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v390",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        237.236,
+        237.496
+      ],
+      "frames": 52,
+      "voiced_fraction": 1.0,
+      "cents_mean": -7.4,
+      "cents_median": -6.8,
+      "cents_sd": 16.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v391",
+      "lyric": "ry",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        237.72,
+        237.747
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -19.6,
+      "cents_median": -10.0,
+      "cents_sd": 51.6,
+      "status": "PASS",
+      "reason": "",
+      "pyin_cents_mean": -19.6,
+      "pyin_status": "PASS",
+      "tracker": "pyin",
+      "cross_check": "rescued"
+    },
+    {
+      "id": "v392",
+      "lyric": "Glo",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        237.997,
+        238.253
+      ],
+      "frames": 52,
+      "voiced_fraction": 1.0,
+      "cents_mean": 17.1,
+      "cents_median": 3.7,
+      "cents_sd": 48.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v393",
+      "lyric": "ry",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        238.475,
+        238.5
+      ],
+      "frames": 5,
+      "voiced_fraction": 1.0,
+      "cents_mean": -36.9,
+      "cents_median": -40.9,
+      "cents_sd": 11.5,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v394",
+      "lyric": "Glo",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        238.75,
+        239.004
+      ],
+      "frames": 51,
+      "voiced_fraction": 1.0,
+      "cents_mean": -13.3,
+      "cents_median": -7.1,
+      "cents_sd": 32.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v395",
+      "lyric": "ry",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        239.227,
+        239.255
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 38.6,
+      "cents_median": 41.2,
+      "cents_sd": 9.6,
+      "status": "WARN",
+      "reason": ""
+    },
+    {
+      "id": "v396",
+      "lyric": "Hal",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        239.505,
+        239.716
+      ],
+      "frames": 42,
+      "voiced_fraction": 1.0,
+      "cents_mean": -11.6,
+      "cents_median": -5.5,
+      "cents_sd": 15.4,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v397",
+      "lyric": "le",
+      "midi": 64,
+      "ref_hz": 329.63,
+      "window": [
+        239.947,
+        239.99
+      ],
+      "frames": 9,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.4,
+      "cents_median": -3.2,
+      "cents_sd": 0.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v398",
+      "lyric": "lu",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        240.273,
+        240.866
+      ],
+      "frames": 118,
+      "voiced_fraction": 1.0,
+      "cents_mean": 6.6,
+      "cents_median": 7.0,
+      "cents_sd": 10.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v398.1",
+      "lyric": "lu",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        241.006,
+        241.468
+      ],
+      "frames": 93,
+      "voiced_fraction": 1.0,
+      "cents_mean": 19.9,
+      "cents_median": 17.6,
+      "cents_sd": 14.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v399",
+      "lyric": "jah",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        241.836,
+        242.737
+      ],
+      "frames": 180,
+      "voiced_fraction": 0.8666666666666667,
+      "cents_mean": -7.4,
+      "cents_median": -3.4,
+      "cents_sd": 33.7,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v400",
+      "lyric": "Glo",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        243.292,
+        244.008
+      ],
+      "frames": 144,
+      "voiced_fraction": 1.0,
+      "cents_mean": -2.2,
+      "cents_median": -2.9,
+      "cents_sd": 16.2,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v401",
+      "lyric": "ry",
+      "midi": 60,
+      "ref_hz": 261.63,
+      "window": [
+        244.288,
+        244.472
+      ],
+      "frames": 36,
+      "voiced_fraction": 1.0,
+      "cents_mean": -9.5,
+      "cents_median": -10.5,
+      "cents_sd": 8.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v402",
+      "lyric": "Glo",
+      "midi": 59,
+      "ref_hz": 246.94,
+      "window": [
+        244.752,
+        245.01
+      ],
+      "frames": 52,
+      "voiced_fraction": 1.0,
+      "cents_mean": -1.7,
+      "cents_median": -3.0,
+      "cents_sd": 7.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v403",
+      "lyric": "ry",
+      "midi": 62,
+      "ref_hz": 293.66,
+      "window": [
+        245.236,
+        245.267
+      ],
+      "frames": 6,
+      "voiced_fraction": 1.0,
+      "cents_mean": 12.4,
+      "cents_median": 12.9,
+      "cents_sd": 4.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v404",
+      "lyric": "Hal",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        245.517,
+        245.761
+      ],
+      "frames": 49,
+      "voiced_fraction": 1.0,
+      "cents_mean": 2.8,
+      "cents_median": 5.7,
+      "cents_sd": 37.6,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v405",
+      "lyric": "le",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        245.989,
+        246.024
+      ],
+      "frames": 7,
+      "voiced_fraction": 1.0,
+      "cents_mean": 16.5,
+      "cents_median": 16.1,
+      "cents_sd": 4.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v406",
+      "lyric": "lu",
+      "midi": 71,
+      "ref_hz": 493.88,
+      "window": [
+        246.396,
+        247.492
+      ],
+      "frames": 219,
+      "voiced_fraction": 0.9634703196347032,
+      "cents_mean": 11.7,
+      "cents_median": 12.4,
+      "cents_sd": 24.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v407",
+      "lyric": "jah",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        247.806,
+        248.4
+      ],
+      "frames": 119,
+      "voiced_fraction": 0.7226890756302521,
+      "cents_mean": -4.2,
+      "cents_median": -13.2,
+      "cents_sd": 48.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v408",
+      "lyric": "His",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        248.839,
+        249.035
+      ],
+      "frames": 39,
+      "voiced_fraction": 0.3333333333333333,
+      "cents_mean": 4.1,
+      "cents_median": 9.5,
+      "cents_sd": 16.8,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v409",
+      "lyric": "truth",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        249.322,
+        249.766
+      ],
+      "frames": 89,
+      "voiced_fraction": 1.0,
+      "cents_mean": -3.0,
+      "cents_median": 5.0,
+      "cents_sd": 36.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v410",
+      "lyric": "is",
+      "midi": 69,
+      "ref_hz": 440.0,
+      "window": [
+        250.063,
+        250.564
+      ],
+      "frames": 100,
+      "voiced_fraction": 1.0,
+      "cents_mean": -13.1,
+      "cents_median": -7.2,
+      "cents_sd": 33.9,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v411",
+      "lyric": "march",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        250.858,
+        251.343
+      ],
+      "frames": 97,
+      "voiced_fraction": 1.0,
+      "cents_mean": -16.5,
+      "cents_median": -19.0,
+      "cents_sd": 24.0,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v412",
+      "lyric": "ing",
+      "midi": 66,
+      "ref_hz": 369.99,
+      "window": [
+        251.633,
+        252.091
+      ],
+      "frames": 91,
+      "voiced_fraction": 1.0,
+      "cents_mean": -7.5,
+      "cents_median": -6.0,
+      "cents_sd": 19.3,
+      "status": "PASS",
+      "reason": ""
+    },
+    {
+      "id": "v413",
+      "lyric": "on",
+      "midi": 67,
+      "ref_hz": 392.0,
+      "window": [
+        252.523,
+        253.788
+      ],
+      "frames": 253,
+      "voiced_fraction": 1.0,
+      "cents_mean": -18.5,
+      "cents_median": -24.3,
+      "cents_sd": 27.6,
+      "status": "PASS",
+      "reason": ""
+    }
+  ],
+  "tracker": "fcpe",
+  "recheck": {
+    "tracker": "pyin",
+    "rechecked": 68,
+    "rescued": 12,
+    "both_off": 56,
+    "rescued_ids": [
+      "v02",
+      "v25",
+      "v61",
+      "v109",
+      "v117",
+      "v193",
+      "v273",
+      "v283",
+      "v302",
+      "v362",
+      "v365",
+      "v391"
+    ],
+    "both_off_ids": [
+      "v08",
+      "v15",
+      "v27",
+      "v29",
+      "v30",
+      "v32",
+      "v38",
+      "v40",
+      "v42",
+      "v46",
+      "v53",
+      "v59",
+      "v83",
+      "v87",
+      "v89",
+      "v93",
+      "v102",
+      "v106",
+      "v112",
+      "v123",
+      "v125",
+      "v142",
+      "v165",
+      "v176",
+      "v178",
+      "v181",
+      "v185",
+      "v187",
+      "v189",
+      "v195",
+      "v204",
+      "v210",
+      "v222",
+      "v225",
+      "v248",
+      "v253",
+      "v259",
+      "v274",
+      "v276",
+      "v278",
+      "v281",
+      "v290",
+      "v295",
+      "v304",
+      "v308",
+      "v310",
+      "v332",
+      "v336",
+      "v342",
+      "v344",
+      "v346",
+      "v361",
+      "v370",
+      "v374",
+      "v378",
+      "v387"
+    ]
+  },
+  "vocal": "tmp/vocal-clock/sing-pad/battle-hymn-kimi/placed-local.wav",
+  "vocal_sha256": "d4a6068aab79aed9c77470cbc322b964dedb90a9c590dde22cb74d0a5d4a628c",
+  "onsets_from": "tmp/vocal-clock/sing-pad/battle-hymn-kimi/receipt.json"
+}

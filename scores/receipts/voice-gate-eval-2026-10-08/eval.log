@@ -1,0 +1,19 @@
+voice gate FLAGGED: 3 voice-in-rest, 0 two-voice, 1 silent notes (voice sung 0.98, rest 0.086)
+  voice_in_rest: {"t": 48.854, "dur_s": 0.17, "peak": 1.0}
+  voice_in_rest: {"t": 85.458, "dur_s": 1.07, "peak": 1.0}
+voice gate FLAGGED: 2 voice-in-rest, 0 two-voice, 0 silent notes (voice sung 0.973, rest 0.053)
+  voice_in_rest: {"t": 102.012, "dur_s": 0.543, "peak": 1.0}
+  voice_in_rest: {"t": 146.783, "dur_s": 0.441, "peak": 1.0}
+voice gate FLAGGED: 0 voice-in-rest, 0 two-voice, 1 silent notes (voice sung 0.97, rest 0.0)
+  silent_notes: {"id": "v27", "lyric": "see", "t": 45.0, "median_voice": 0.25}
+voice gate PASS: 0 voice-in-rest, 0 two-voice, 0 silent notes (voice sung 0.975, rest 0.004)
+voice gate PASS: 0 voice-in-rest, 0 two-voice, 0 silent notes (voice sung 0.975, rest 0.002)
+voice gate FLAGGED: 0 voice-in-rest, 0 two-voice, 1 silent notes (voice sung 0.962, rest 0.001)
+  silent_notes: {"id": "v145", "lyric": "mer", "t": 127.826, "median_voice": 0.25}
+voice gate FLAGGED: 7 voice-in-rest, 2 two-voice, 1 silent notes (voice sung 0.981, rest 0.078)
+  voice_in_rest: {"t": 33.625, "dur_s": 0.187, "peak": 1.0}
+  voice_in_rest: {"t": 40.722, "dur_s": 0.204, "peak": 1.0}
+voice gate FLAGGED: 0 voice-in-rest, 0 two-voice, 1 silent notes (voice sung 0.963, rest 0.008)
+  silent_notes: {"id": "v69", "lyric": "come", "t": 102.299, "median_voice": 0.25}
+voice gate PASS: 0 voice-in-rest, 0 two-voice, 0 silent notes (voice sung 0.986, rest 0.012)
+EVAL-DONE

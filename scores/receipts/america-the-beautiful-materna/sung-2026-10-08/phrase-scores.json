@@ -1,0 +1,2974 @@
+{
+ "version": 1,
+ "clock": "E:/AI/ajs-fullsong/scores/america-the-beautiful-materna.score-clock.v1.json",
+ "gap": 0.3,
+ "listener": {
+  "model": "Qwen3-Omni-30B-A3B-Instruct-Q4_K_M.gguf",
+  "mmproj": "mmproj-Qwen3-Omni-30B-A3B-Instruct-Q8_0.gguf",
+  "prompt": "This is an isolated sung vocal from a hymn. Transcribe exactly the words that are sung, in order, as plain lowercase words with no punctuation. Write only the words. If a word is unclear, write your best guess of what was sung; do not add words that were not sung.",
+  "temperature": 0,
+  "seed": 1
+ },
+ "takes": {
+  "take-01": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-01/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 15.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "oh beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 14.0,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 4.4,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 5.4,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 9.5,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 22.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 11.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "a thuroughfare for freedom be across the wilderness",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 17.9,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 8.0,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thine every flaw",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 9.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self control thy liberty in law",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 7.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 11.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 12.3,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 6.2,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 9.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 8.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 16.2,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming met by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 10.4,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 10.7,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 9.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-02": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-02/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 12.2,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "oh beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 11.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 10.6,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "amazing",
+     "matched": 0,
+     "intelligibility": 0.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 8.1,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 8.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 12.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 8.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "a thoroughfare for freedom be laid across the wilderness",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 9.6,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 6.2,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thine every flaw",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 11.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self control thy liberty in law",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 14.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 9.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 38.2,
+     "notes": 3,
+     "pitch_fails": 2,
+     "heard": "am i a child of god",
+     "matched": 0,
+     "intelligibility": 0.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 5.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 6.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 11.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 9.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming\nred by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 13.1,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 10.3,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 10.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-03": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-03/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 11.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for spacious skies for amber waves of grain",
+     "matched": 10,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 14.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 15.8,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 7.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 10.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 9.6,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 27.1,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "a thirst of fearful freedom be can cross the wilderness",
+     "matched": 5,
+     "intelligibility": 0.625
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 11.6,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 12.3,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 11.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self control thy liberty in law",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 17.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 14.8,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "who more than self their country love and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 10.8,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 4.0,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 15.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "till all success be numbness and every gain divine",
+     "matched": 8,
+     "intelligibility": 0.889
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 16.8,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 15.6,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming met by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 13.2,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 16.0,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 6.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-04": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-04/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 12.2,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "all beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 10.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 23.9,
+     "notes": 4,
+     "pitch_fails": 1,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 9.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 10.3,
+     "notes": 13,
+     "pitch_fails": 1,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 20.9,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 12.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "hath her health and for freedom becaigross the wilderness",
+     "matched": 4,
+     "intelligibility": 0.5
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 15.5,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 12.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thine every flaw",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 13.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self control thy liberty in love",
+     "matched": 8,
+     "intelligibility": 0.889
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 15.5,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 11.1,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 12.1,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "a miracle",
+     "matched": 0,
+     "intelligibility": 0.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 9.6,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 11.4,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "till all success be null and every gain divine",
+     "matched": 8,
+     "intelligibility": 0.889
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 12.6,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 10.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming met by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 5.4,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 10.1,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 10.5,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-05": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-05/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 14.4,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "lay oh beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 12.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 27.6,
+     "notes": 3,
+     "pitch_fails": 2,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 10.6,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 11.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 8.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 13.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "a third o fair for freedom be hey cross the wilderness",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 4.0,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 12.5,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thy every flaw",
+     "matched": 5,
+     "intelligibility": 0.833
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 12.5,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "confirm thy soul in self and crown thy liberty in love",
+     "matched": 7,
+     "intelligibility": 0.778
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 13.2,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 18.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 9.4,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 11.0,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 9.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 15.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for patriot dream that sees beyond the years",
+     "matched": 10,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 17.3,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "thy alabaster cities gleaming dead by human tears",
+     "matched": 5,
+     "intelligibility": 0.625
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 14.2,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 7.7,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 9.6,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea\nsing",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-06": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-06/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 8.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "hymn\no beautiful for spacious skies for amber waves of grain",
+     "matched": 10,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 11.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 16.2,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 6.5,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 10.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 19.1,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 9.2,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "a thoroughfare for freedom be i'll cross the wilderness",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 13.3,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 5.7,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america america in every flaw",
+     "matched": 3,
+     "intelligibility": 0.5
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 15.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirmed thy soul in self control thy liberty in law",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 9.6,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 19.2,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 14.8,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 9.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 15.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "till all success be null and every gain divide",
+     "matched": 7,
+     "intelligibility": 0.778
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 16.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for patriot dream that sees beyond the years",
+     "matched": 10,
+     "intelligibility": 1.0
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 12.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming dimmed by human tears",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 33.0,
+     "notes": 3,
+     "pitch_fails": 2,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 9.1,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 10.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-07": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-07/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 9.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for spacious skies for amber waves of grain for purple",
+     "matched": 10,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 16.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 7.5,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 9.1,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 11.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 18.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 21.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "a thoroughfare for freedom beat across the wilderness",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 8.9,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 7.7,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thine every flaw",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 9.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self control thy liberty in law",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 10.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 11.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "who more than self their country love and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 31.6,
+     "notes": 4,
+     "pitch_fails": 2,
+     "heard": "americana",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 8.1,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 6.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be nobleness and every gain divide",
+     "matched": 8,
+     "intelligibility": 0.889
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 12.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 11.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming met by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 16.9,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 6.1,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 12.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-08": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-08/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 22.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "oh beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 13.4,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 6.1,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 6.5,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 8.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 9.5,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 14.4,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "a thoroughfare for freedom be i cross the wilderness",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 21.8,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 11.5,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thy every flaw",
+     "matched": 5,
+     "intelligibility": 0.833
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 8.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self control thy liberty in love",
+     "matched": 8,
+     "intelligibility": 0.889
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 13.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 15.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 7.2,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 7.1,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 10.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 14.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 9.8,
+     "notes": 13,
+     "pitch_fails": 1,
+     "heard": "thine alabaster cities gleaming met by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 15.7,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 6.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 14.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea\nhey\nhey\nhey",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-09": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-09/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 10.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 8.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 16.1,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 18.4,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 8.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 15.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 10.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "a thoroughfare for freedom be\ni cross the wilderness",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 5.3,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 5.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thine every flaw",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 14.4,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "confirm thy soul in self control thy liberty in law",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 12.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 17.4,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "whom more than self their country loved and mercy more than life",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 13.0,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 10.1,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america may god thy gold refine",
+     "matched": 5,
+     "intelligibility": 0.833
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 8.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 25.2,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "how beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 17.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "thine alabaster cities gleaming led by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 20.2,
+     "notes": 4,
+     "pitch_fails": 1,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 9.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 9.8,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-10": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-10/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 6.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for spacious skies for amber waves of grain",
+     "matched": 10,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 12.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 6.2,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 9.7,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 5.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 13.1,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 16.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "a third who for freedom began to cross the wilderness",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 11.5,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 9.6,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thine every flaw",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 10.6,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self control thy liberty in love",
+     "matched": 8,
+     "intelligibility": 0.889
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 16.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 29.4,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 18.5,
+     "notes": 4,
+     "pitch_fails": 1,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 7.4,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 11.0,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be null and every gain divide",
+     "matched": 7,
+     "intelligibility": 0.778
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 20.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 11.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleam anet by human tears",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 18.2,
+     "notes": 3,
+     "pitch_fails": 1,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 9.9,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 13.0,
+     "notes": 13,
+     "pitch_fails": 1,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-11": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-11/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 14.1,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "oh beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 14.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 11.6,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 7.3,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 8.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 13.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 22.5,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "a thoroughfare for freedom be cut across the wilderness",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 8.1,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 10.2,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thine every flaw",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 14.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self control thy liberty in law",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 18.6,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 15.5,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "whom more than self their country love and mercy more than life",
+     "matched": 11,
+     "intelligibility": 0.917
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 11.0,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 11.2,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 21.4,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "till all success be known\nluminous and every gain divine",
+     "matched": 8,
+     "intelligibility": 0.889
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 13.4,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 15.6,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming red by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 20.2,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 7.7,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 5.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-12": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-12/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 6.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "hope beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 13.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 13.9,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 10.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 12.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 17.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 29.2,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "a thorn o fair for freedom be gay grass the wilderness",
+     "matched": 5,
+     "intelligibility": 0.625
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 9.5,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 7.5,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thine every flaw",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 10.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self and grow thy liberty in love",
+     "matched": 7,
+     "intelligibility": 0.778
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 14.6,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 13.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 2.3,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 9.1,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the pure",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 16.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 13.5,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 12.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming met by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 10.6,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "a miracle",
+     "matched": 0,
+     "intelligibility": 0.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 7.5,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 11.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-13": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-13/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 16.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for spacious skies for amber waves of grain",
+     "matched": 10,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 14.6,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 5.8,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "a miracle",
+     "matched": 0,
+     "intelligibility": 0.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 6.3,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 9.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 9.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 10.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "heather o fair for freedom be gay across the wilderness",
+     "matched": 5,
+     "intelligibility": 0.625
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 32.2,
+     "notes": 4,
+     "pitch_fails": 1,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 9.3,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thy every flaw",
+     "matched": 5,
+     "intelligibility": 0.833
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 8.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "confirm thy soul in self control thy liberty in law",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 29.7,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 12.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 19.1,
+     "notes": 4,
+     "pitch_fails": 1,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 13.0,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 6.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 15.1,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 13.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming led by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 6.3,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 9.9,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 11.6,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\nooh\no",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-14": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-14/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 11.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "oh beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 39.6,
+     "notes": 14,
+     "pitch_fails": 3,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 7.2,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 12.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 13.2,
+     "notes": 13,
+     "pitch_fails": 2,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 10.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 13.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "hath her fair for freedom be the guide across the wilderness",
+     "matched": 5,
+     "intelligibility": 0.625
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 15.6,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 8.5,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thine every flaw",
+     "matched": 6,
+     "intelligibility": 1.0
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 13.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "confirm thy soul in self and crown thy liberty in love",
+     "matched": 7,
+     "intelligibility": 0.778
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 11.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 14.0,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "who more than self their country love and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 19.4,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 7.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america may god thy gold refine",
+     "matched": 5,
+     "intelligibility": 0.833
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 9.2,
+     "notes": 13,
+     "pitch_fails": 1,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 15.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 12.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming met by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 7.4,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 9.5,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 11.6,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-15": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-15/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 13.0,
+     "notes": 13,
+     "pitch_fails": 1,
+     "heard": "hope beautiful for spacious skies for amber waves of grain",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 15.9,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 12.5,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 9.0,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 8.6,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 14.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 12.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "hath their fearful freedom begun across the wilderness",
+     "matched": 4,
+     "intelligibility": 0.5
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 15.8,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 14.0,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god mend thy every flaw",
+     "matched": 5,
+     "intelligibility": 0.833
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 14.4,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "confirm thy soul in self and crown thy liberty in love",
+     "matched": 7,
+     "intelligibility": 0.778
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 15.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 15.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 13.5,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 8.4,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 15.1,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 16.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 10.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "that are the bastard cities gleaming lit by human tears",
+     "matched": 4,
+     "intelligibility": 0.5
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 12.6,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 8.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 11.4,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  },
+  "take-16": {
+   "path": "E:/AI/ajs-fullsong/tmp/vocal-clock/sing-pad/america-kimi/take-16/take-48k.wav",
+   "phrases": {
+    "0": {
+     "words": 10,
+     "mean_abs_cents": 16.1,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "o beautiful for spacious skies for amber waves of grain",
+     "matched": 10,
+     "intelligibility": 1.0
+    },
+    "1": {
+     "words": 8,
+     "mean_abs_cents": 13.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "for purple mountain majesties above the fruited plain",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "2": {
+     "words": 1,
+     "mean_abs_cents": 10.1,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "3": {
+     "words": 7,
+     "mean_abs_cents": 9.2,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "4": {
+     "words": 11,
+     "mean_abs_cents": 9.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    },
+    "5": {
+     "words": 9,
+     "mean_abs_cents": 12.6,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for pilgrim feet whose stern impassioned stress",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "6": {
+     "words": 8,
+     "mean_abs_cents": 14.8,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "a thoroughfare for freedom be god across the wilderness",
+     "matched": 7,
+     "intelligibility": 0.875
+    },
+    "7": {
+     "words": 1,
+     "mean_abs_cents": 17.5,
+     "notes": 4,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "8": {
+     "words": 6,
+     "mean_abs_cents": 14.4,
+     "notes": 10,
+     "pitch_fails": 1,
+     "heard": "america god mend thy every flaw",
+     "matched": 5,
+     "intelligibility": 0.833
+    },
+    "9": {
+     "words": 9,
+     "mean_abs_cents": 9.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "confirm thy soul in self control thy liberty in law",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "10": {
+     "words": 8,
+     "mean_abs_cents": 9.9,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "o beautiful for heroes proved in liberating strife",
+     "matched": 8,
+     "intelligibility": 1.0
+    },
+    "11": {
+     "words": 12,
+     "mean_abs_cents": 21.3,
+     "notes": 14,
+     "pitch_fails": 1,
+     "heard": "who more than self their country loved and mercy more than life",
+     "matched": 12,
+     "intelligibility": 1.0
+    },
+    "12": {
+     "words": 1,
+     "mean_abs_cents": 34.3,
+     "notes": 3,
+     "pitch_fails": 2,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "13": {
+     "words": 6,
+     "mean_abs_cents": 7.8,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america the beautiful",
+     "matched": 1,
+     "intelligibility": 0.167
+    },
+    "14": {
+     "words": 9,
+     "mean_abs_cents": 7.3,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "till all success be nobleness and every gain divine",
+     "matched": 9,
+     "intelligibility": 1.0
+    },
+    "15": {
+     "words": 10,
+     "mean_abs_cents": 18.2,
+     "notes": 14,
+     "pitch_fails": 2,
+     "heard": "oh beautiful for patriot dream that sees beyond the years",
+     "matched": 9,
+     "intelligibility": 0.9
+    },
+    "16": {
+     "words": 8,
+     "mean_abs_cents": 16.5,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "thine alabaster cities gleaming met by human tears",
+     "matched": 6,
+     "intelligibility": 0.75
+    },
+    "17": {
+     "words": 1,
+     "mean_abs_cents": 17.5,
+     "notes": 4,
+     "pitch_fails": 1,
+     "heard": "america",
+     "matched": 1,
+     "intelligibility": 1.0
+    },
+    "18": {
+     "words": 7,
+     "mean_abs_cents": 10.2,
+     "notes": 10,
+     "pitch_fails": 0,
+     "heard": "america god shed his grace on thee",
+     "matched": 7,
+     "intelligibility": 1.0
+    },
+    "19": {
+     "words": 11,
+     "mean_abs_cents": 11.7,
+     "notes": 14,
+     "pitch_fails": 0,
+     "heard": "and crown thy good with brotherhood from sea to shining sea",
+     "matched": 11,
+     "intelligibility": 1.0
+    }
+   }
+  }
+ }
+}

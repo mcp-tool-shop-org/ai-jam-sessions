@@ -5675,6 +5675,10 @@
           "path": "docs/spectrogram-surface-study-2026-09.md"
         },
         {
+          "hash": "618ec237cea3c4c3680b3bec55a579e0d72f3502bd9121a5dae72d4c5c551c5a",
+          "path": "docs/sung-exemplar-method.md"
+        },
+        {
           "hash": "32083d9efad90873d191484197521e5c9238ae8b3f54480ba5d644d5a48c9f24",
           "path": "docs/vocal-clock.md"
         },
@@ -12191,11 +12195,11 @@
           "path": ".npmignore"
         },
         {
-          "hash": "7dcbb88b3f2de0f8062e896df74ec5ce5f1ce63f0f429403f9e281881736b4cc",
+          "hash": "d97600f26a98405f6dc7c7b9231de84670bbbb58807e0463b77d3e625fd522f6",
           "path": ".polyglot-cache.json"
         },
         {
-          "hash": "de5f865079bd0630d146639d1c944d46bfb7392c28f26236135e42cf644c8eef",
+          "hash": "b2eb0cd91fa45f1cea54541cb61776fe6b01aba329c62a0f31ab9e151c70cfc2",
           "path": "CHANGELOG.md"
         },
         {
@@ -12215,35 +12219,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "a2cf6dde865fbaea91d13c6252760b63492eda86c1e0747cd7dc785c327ef1d7",
+          "hash": "1cc9e9ff4b47079b8763e555d90eaf9a132e30e6890384ea1551f7236c222b51",
           "path": "README.es.md"
         },
         {
-          "hash": "a61ef71eabc124a8805ddec365b98b30e9645475d282ff73db0f10b5731fd5b7",
+          "hash": "fcf9acb40b28fb9cde6cbd88e33c85b2ddfe1bbaea21f6a0267ff6565846c1a5",
           "path": "README.fr.md"
         },
         {
-          "hash": "400e3c3b2c98c905b14d7cae0aab609fd5b097869c449f62061ffa6c81de88c0",
+          "hash": "ac2396dd749125ff30106eae42c17e5f59e13f505a5071f4f90da3a2250821de",
           "path": "README.hi.md"
         },
         {
-          "hash": "3d791936803bf6bf7541638104981d08bd79f94cc11df22db8548fcc40205b6b",
+          "hash": "482c734e19ba275679949be711f4dc578d490f02a812847adb72ecab5d1bc57a",
           "path": "README.it.md"
         },
         {
-          "hash": "f5b026eebcb17f971605be3beba37539b8bc723f49995159d71ef6eda5c59557",
+          "hash": "406c204408786ec64ea44a4a3bc71e4b42a3a7843c622d1ef8a29c526aaa3982",
           "path": "README.ja.md"
         },
         {
-          "hash": "e8f4f2c95ce3253a743527c9e64be7ab00954273287a33527fb5742ac553b15e",
+          "hash": "bbf05da396ab99f1764516f82f5d325487066813286a58fee36876698e9e5398",
           "path": "README.md"
         },
         {
-          "hash": "cde524acca7bce7c12ed40d8ffc9caff8ca8a5fcef10d24a6ce55127eecee508",
+          "hash": "26b42d5ed7f283a8265222162ca19e5eaed0211ae2c97e4cb37d5d0ab0ca13a7",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "674949dcdadeca05b8bba5d0b2fb6aaba88dbea2143780d7464f55885ac021a5",
+          "hash": "60c0523811100949409d00e19d2e1db0a7b9e9d6ac389e9f8a05a1abffc5bb5f",
           "path": "README.zh.md"
         },
         {
@@ -12382,7 +12386,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 0,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -12390,7 +12394,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "0acd58a2c089c5e3a8beab76c259eed07206c9f883689d9d23eea938d0c2d35b",
+          "hash": "66cdd82565ab795532ff0ebe26d93091f565de389e1f8cf22705d645caafa2e3",
           "path": "scores/amazing-grace-new-britain.score-clock.v1.json"
         },
         {
@@ -12398,12 +12402,48 @@
           "path": "scores/amazing-grace.score-clock.v1.json"
         },
         {
-          "hash": "25120e0a126435b9a5204426d235a82e3c796f951694313c7a1ad170af33ab2e",
+          "hash": "81030d9675470b2d8b08b182c348c99bcb860d24807511fd6d39931481dd029a",
           "path": "scores/america-the-beautiful-materna.score-clock.v1.json"
         },
         {
           "hash": "6fdfe226ce4668168ed8eda62cbab608a17cd1c6a9c6329d73c582bd96c4447b",
           "path": "scores/america-the-beautiful.score-clock.v1.json"
+        },
+        {
+          "hash": "98afd41bf7c758985adcaf54560b110f5f9c795d115ef06946ca8f6f6d10a050",
+          "path": "scores/battle-hymn-of-the-republic.score-clock.v1.json"
+        },
+        {
+          "hash": "c92c428012a2ec73d9eda74eb1c1693304cb6b6a281f4d31317c7d142eb249b1",
+          "path": "scores/receipts/README-sung-2026-10-08.md"
+        },
+        {
+          "hash": "95432cf5341b67e555a9ed427d32aba2afbe1538f3a976d4de380ba1ccbb6cc7",
+          "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/mix.json"
+        },
+        {
+          "hash": "85b49c5d0bfe4d18fcf31c8cc328b54c748e0a8acf6ca8da309b597ae664d28e",
+          "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/phrase-scores.json"
+        },
+        {
+          "hash": "35c699dfb85de3249bae53db21388d5d118ef772e6ce112f8e86942ee9c425cb",
+          "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/piano-bed.receipt.json"
+        },
+        {
+          "hash": "7ee0eefa878103f970869effd1b4342471efa5ee389c910c0020197933290a83",
+          "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/pitch.json"
+        },
+        {
+          "hash": "6b2979881b0402123a0b811ce202cd5e4ed331b1d35324effbb3a78250952bf3",
+          "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/plan.json"
+        },
+        {
+          "hash": "3cee3777c95c769099f047bc75da7014a25d8c218361a8a6684ba4f0db51218c",
+          "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/receipt.json"
+        },
+        {
+          "hash": "54e72053498bd6baf09d8346a560a6a94cbf90146f4ecdbcdc63d1480a75df46",
+          "path": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/voice-gate.json"
         },
         {
           "hash": "1b9dfd3658256de333b5310b51d21f214e2615facd33015b0f05daced4600235",
@@ -12630,12 +12670,102 @@
           "path": "scores/receipts/amazing-grace/vocal-clock.receipt.json"
         },
         {
+          "hash": "e033eee40900da10a185efa5fa497e2e6820911b11f2d7e3b01290e9626a6c27",
+          "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/mix.json"
+        },
+        {
+          "hash": "009c977d6e45094a14fd5189d79a05e01ed7ede60529455b1ef11ec3120f57e0",
+          "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/phrase-scores.json"
+        },
+        {
+          "hash": "16d5ec22532380e060fafafaf35106df9fea4419ae5e86ab1532aac3514409eb",
+          "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/piano-bed.receipt.json"
+        },
+        {
+          "hash": "47a973a0e8973fee99c8e95fe1f885291e15d79805dd41a81b24e3c1255698ff",
+          "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/pitch.json"
+        },
+        {
+          "hash": "1ac8d1ef9781d697415b35c93747235d9ed6868eec6867429ec4896c3d6debb5",
+          "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/plan.json"
+        },
+        {
+          "hash": "337c3291eb5ef9de01f670ae5a06875a32725c59b1323c665e36b4e836bfc077",
+          "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/receipt.json"
+        },
+        {
+          "hash": "561b817df984b645208a79bdb09f2efad8ef78db3a915b7d7497db94d0f52720",
+          "path": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/voice-gate.json"
+        },
+        {
           "hash": "2e4a6b6d2bf459dbddae76b47cc9947b24c9a18e741fc55fe1d396d7ba66839b",
           "path": "scores/receipts/america-the-beautiful/soundcheck.clock.json"
         },
         {
           "hash": "1b0fc9b16c19bdd50c2fc27af938dffdfab449d510693194f075a5a1d48b82c7",
           "path": "scores/receipts/america-the-beautiful/soundcheck.receipt.json"
+        },
+        {
+          "hash": "04ae84beb8c18d66557fe6f9777d4a5ab627620cd0c170ebdf61b67ba1719844",
+          "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/mix.json"
+        },
+        {
+          "hash": "964fd0317b0f0228b51c118e62028fa72f4449a9745874919e16573de1832c9c",
+          "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/phrase-scores.json"
+        },
+        {
+          "hash": "25b3be2cfe9881fa4a303a51204a8ca0fe2580b94064b61c7b4b9902862f145b",
+          "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/piano-bed.receipt.json"
+        },
+        {
+          "hash": "46c753dfa762d2f2d7936410d28778462a80a7a0c4cb632b875d4c03b57d4c33",
+          "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/pitch.json"
+        },
+        {
+          "hash": "b8c2eb12ee03221304e06953f5caf4cfb2bad5650c7baeb5f01faf0cd7d76aa1",
+          "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/plan.json"
+        },
+        {
+          "hash": "8e4df46bafdceaf839de91e376f85f72e7be0636c2ee60dbc9458f510e026532",
+          "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/receipt.json"
+        },
+        {
+          "hash": "9135cbfd41ded6e1879bc6fc13de6bf9b31c084b27fbc257f064bc3cac1c91e4",
+          "path": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/voice-gate.json"
+        },
+        {
+          "hash": "8042c55c7f2a2add417821a40e8c8aac9183c5cd66a2d1318d6cb4e95c7b23ee",
+          "importsFiles": [
+            "scripts/voice_gate.py"
+          ],
+          "path": "scores/receipts/voice-gate-eval-2026-10-08/batch.py"
+        },
+        {
+          "hash": "556170588f0342b8348c1b397d562539ef65a8b962047dfad09d6f802cb43d4c",
+          "path": "scores/receipts/voice-gate-eval-2026-10-08/director-marks-2026-10-07.json"
+        },
+        {
+          "hash": "5dee6cce3ecdcf8bec1ebee3734182ccea31598e8ea9201c76d929edf8c74196",
+          "path": "scores/receipts/voice-gate-eval-2026-10-08/eval.log"
+        },
+        {
+          "hash": "e41919c90b807e1991de965b126d0d6e142b4afbd5aae0895dc18e2133458b1c",
+          "path": "scores/receipts/voice-gate-eval-2026-10-08/eval.sh"
+        },
+        {
+          "hash": "ecef2f45381035ef80ca3fd4e777f56bcf5b45a6e648eedbbaa4d36f22030bb9",
+          "importsFiles": [
+            "scripts/voice_gate.py"
+          ],
+          "path": "scores/receipts/voice-gate-eval-2026-10-08/score.py"
+        },
+        {
+          "hash": "d1e3ca1178b349e98077f637bbfa8da6ae7204620593e85bc21c6c8f3066ecf1",
+          "path": "scores/receipts/voice-gate-eval-2026-10-08/score.txt"
+        },
+        {
+          "hash": "9fdce6d051ce6d81d5c1fb97bedf8becccbf01d7346a972041114f06dba478b4",
+          "path": "scores/receipts/voice-gate-eval-2026-10-08/takes-summary.json"
         }
       ],
       "globs": [
@@ -12649,10 +12779,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 31,
-      "dynamicSpawns": 3,
+      "dynamicReads": 32,
+      "dynamicSpawns": 4,
       "dynamicSpawnsInTests": 1,
-      "dynamicWrites": 31,
+      "dynamicWrites": 32,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -13078,6 +13208,57 @@
           "path": "scripts/apply-jam-actions-enrichment.ts"
         },
         {
+          "exports": [
+            "findUpbeats",
+            "lyBars",
+            "lyDuration",
+            "lyPitch",
+            "texturePlan"
+          ],
+          "failurePaths": [
+            {
+              "in": "lyDuration",
+              "kind": "throw",
+              "line": 75
+            },
+            {
+              "in": "ask",
+              "kind": "throw",
+              "line": 219
+            },
+            {
+              "in": "ask",
+              "kind": "throw",
+              "line": 230
+            },
+            {
+              "in": "ask",
+              "kind": "throw",
+              "line": 238
+            },
+            {
+              "in": "ask",
+              "kind": "throw",
+              "line": 251
+            },
+            {
+              "in": "findUpbeats",
+              "kind": "throw",
+              "line": 300
+            },
+            {
+              "in": "compileAndImport",
+              "kind": "throw",
+              "line": 308
+            }
+          ],
+          "hash": "d7d01651d93afdc8b6b82cf14763ee62976fc5d652a38c958528981e9be7233d",
+          "importsFiles": [
+            "src/vocal/hymns.ts"
+          ],
+          "path": "scripts/arrange-hymn.ts"
+        },
+        {
           "failurePaths": [
             {
               "in": "main",
@@ -13243,15 +13424,17 @@
           "path": "scripts/build-record-fur-elise-m001-008.ts"
         },
         {
-          "hash": "9f74736d22346e8662901fd48250c783d43dbbc27dd32c6f37ffe7807d2fbd58",
+          "hash": "60e9cf838b96596760c10424b90d7ed1329e3883696027eae4e3ae920521cca3",
           "importOrder": [
             "src/songs/index.ts",
             "src/vocal/score-clock.ts",
             "src/vocal/tunes.ts",
-            "src/vocal/hymns.ts"
+            "src/vocal/hymns.ts",
+            "src/vocal/arrangement.ts"
           ],
           "importsFiles": [
             "src/songs/index.ts",
+            "src/vocal/arrangement.ts",
             "src/vocal/hymns.ts",
             "src/vocal/score-clock.ts",
             "src/vocal/tunes.ts"
@@ -14085,6 +14268,10 @@
           "path": "scripts/implied-chord-snapshot.ts"
         },
         {
+          "hash": "22c493f4944194f2e7cd4888e398f4edaa02e62405f28063e6b7250cf0155102",
+          "path": "scripts/import-arrangement.ts"
+        },
+        {
           "failurePaths": [
             {
               "in": "downloadMidi",
@@ -14155,30 +14342,30 @@
             {
               "in": "vowel_onsets",
               "kind": "raise",
-              "line": 73
+              "line": 83
             },
             {
               "in": "align",
               "kind": "raise",
-              "line": 101
+              "line": 111
             },
             {
               "in": "align",
               "kind": "raise",
-              "line": 106
+              "line": 116
             },
             {
               "in": "syllable_onsets",
               "kind": "raise",
-              "line": 151
+              "line": 161
             },
             {
               "in": "align_phrases",
               "kind": "raise",
-              "line": 196
+              "line": 206
             }
           ],
-          "hash": "d9036e993590dd7cb4c5a288209a42c8488ad82ce3a3250a84e0a69d07b86ddb",
+          "hash": "e8eeb62004d7b4e4d704a2deda895041465df4cb961716876c66d3070d2e9883",
           "path": "scripts/onset_aligner.py"
         },
         {
@@ -14281,6 +14468,8 @@
         {
           "exports": [
             "build",
+            "build_clips",
+            "clip_evidence",
             "load",
             "logmel",
             "main",
@@ -14288,7 +14477,7 @@
             "phrases_of",
             "segment_bounds"
           ],
-          "hash": "b3d0336a4059b0825dfde690c805b52264d146c24b30058bd737567f842e0ad4",
+          "hash": "227c7ca0370bd84b9b8191a97da0385d1a6ef3299399d5a43fedddadabbae3e9",
           "importOrder": [
             "scripts/review_marks.py",
             "scripts/vocal_clock.py",
@@ -14331,35 +14520,35 @@
             {
               "in": "start_server",
               "kind": "raise",
-              "line": 124
+              "line": 128
             },
             {
               "in": "start_server",
               "kind": "except",
-              "line": 129
+              "line": 133
             },
             {
               "in": "start_server",
               "kind": "raise",
-              "line": 133
+              "line": 137
             },
             {
               "in": "take_pitch",
               "kind": "except",
-              "line": 161
+              "line": 165
             },
             {
               "in": "main",
               "kind": "raise",
-              "line": 199
+              "line": 203
             },
             {
               "in": "main",
               "kind": "except",
-              "line": 231
+              "line": 235
             }
           ],
-          "hash": "bb111c95e23f98e8fb2bed218c22bf7325e851a9249d02fde6a8e27931976cf4",
+          "hash": "ff54330d5b215834241aa27e3dfdb49e390df390246ef01e36ed18a5d28a860d",
           "importsFiles": [
             "scripts/onset_aligner.py",
             "scripts/vocal_clock.py"
@@ -14736,29 +14925,30 @@
           "failurePaths": [
             {
               "kind": "throw",
-              "line": 41
+              "line": 42
             },
             {
               "kind": "throw",
-              "line": 52
+              "line": 53
             },
             {
               "kind": "throw",
-              "line": 56
+              "line": 66
             },
             {
               "kind": "throw",
-              "line": 111
+              "line": 130
             },
             {
               "kind": "catch",
-              "line": 163
+              "line": 197
             }
           ],
-          "hash": "f8e13f4319fbe40edae1ef8190edb8b90d594586119fc00934af25747d67a551",
+          "hash": "a77a7441a10e9499ba182c76249314d7018e183592c9923877d6d87740ab823f",
           "importOrder": [
             "src/songs/index.ts",
             "src/vocal/hymns.ts",
+            "src/vocal/arrangement.ts",
             "src/sample-engine.ts",
             "src/audio-engine.ts",
             "src/sample-paths.ts",
@@ -14769,6 +14959,7 @@
             "src/sample-engine.ts",
             "src/sample-paths.ts",
             "src/songs/index.ts",
+            "src/vocal/arrangement.ts",
             "src/vocal/hymns.ts",
             "src/vocal/score-clock.ts"
           ],
@@ -15052,7 +15243,7 @@
               "line": 55
             }
           ],
-          "hash": "c846c53fade38705c766e1ef19376abc58d9476a33880528ad90caa48a869d78",
+          "hash": "9b3ac29d7bf28dbccf50b1b6553042adb78abbdf86a13feb4d7b22d4d787f2b0",
           "importsFiles": [
             "scripts/soulx_take.py"
           ],
@@ -15067,11 +15258,21 @@
             {
               "in": "songData",
               "kind": "throw",
-              "line": 42
+              "line": 56
+            },
+            {
+              "in": "songData",
+              "kind": "throw",
+              "line": 66
             }
           ],
-          "hash": "861cb28cce6aa53111a5790bb399e850a85df333934a60fbfac0678a406e1c8f",
+          "hash": "d66a4406a2cb02cee121990b9073cd1f35230aa1652bc1186a2a27400d4fc04f",
+          "importOrder": [
+            "src/vocal/hymns.ts",
+            "src/vocal/arrangement.ts"
+          ],
           "importsFiles": [
+            "src/vocal/arrangement.ts",
             "src/vocal/hymns.ts"
           ],
           "path": "scripts/site-hymn-visual.ts"
@@ -15184,6 +15385,16 @@
         },
         {
           "exports": [
+            "test_the_aligner_fills_only_what_the_detector_left_undated"
+          ],
+          "hash": "5f28787e96fb147ed64d28dd2ce649d56262561051e180df3327bb5c97a76f41",
+          "importsFiles": [
+            "scripts/vocal_clock.py"
+          ],
+          "path": "scripts/test_aligner_fill.py"
+        },
+        {
+          "exports": [
             "ev",
             "row",
             "test_a_whole_song_is_aligned_phrase_by_phrase_split_mid_rest",
@@ -15247,13 +15458,14 @@
             "sung",
             "test_a_change_of_sound_across_the_join_is_a_spectral_jump",
             "test_a_click_at_the_join_stands_out",
+            "test_a_clip_with_a_click_at_its_join_ranks_high_against_its_own_controls",
             "test_a_spliced_in_repeat_scores_higher_than_continuous_singing",
             "test_a_voicing_flip_is_flagged",
             "test_an_octave_slip_at_the_join_is_flagged",
             "test_edges_return_nothing_rather_than_a_number",
             "test_percentiles_rank_against_the_controls"
           ],
-          "hash": "fe426853a76b5e95c9a0d58e4063f179cab25a85b6c9bc50da6a674a903c662a",
+          "hash": "f0f215f765ed0817694821c817e26d0928b6c41d0ccdb6fba34847008187d077",
           "importsFiles": [
             "scripts/phrase_evidence.py"
           ],
@@ -15316,16 +15528,22 @@
             "cut",
             "jump_at",
             "plan",
+            "test_a_breath_gates_the_voice_down_before_its_syllable_and_only_there",
             "test_a_forced_break_with_continuous_source_is_a_seam_and_nothing_else",
+            "test_a_last_note_before_a_rest_is_held_into_it_and_only_then",
+            "test_a_note_shorter_than_the_anchor_minimum_rides_between_its_neighbours",
             "test_a_zero_crossfade_leaves_a_hard_edge_at_the_join",
+            "test_an_anchor_that_would_stretch_beyond_the_limit_is_dropped",
             "test_an_explicit_default_crossfade_changes_nothing",
             "test_an_explicit_zero_crossfade_is_a_hard_seam_in_warp_too",
+            "test_an_onset_dated_far_from_its_neighbours_is_undated",
             "test_break_before_starts_a_new_warp_run",
             "test_production_cuts_carry_neither_field_by_default",
+            "test_the_emphasis_gain_holds_across_each_syllable_and_ramps_between",
             "tone",
             "two_cuts"
           ],
-          "hash": "94c7570cd2adc6a97fa7bab3f2d7064161c095b0a84d320e85851cd96f5ab613",
+          "hash": "4c846f780ce13330c7071b84e7bda513a3a0d2d4a7caac9649aa6dd812a6c077",
           "importsFiles": [
             "scripts/vocal_clock.py"
           ],
@@ -15510,6 +15728,22 @@
         },
         {
           "exports": [
+            "clock",
+            "test_a_clean_vocal_passes",
+            "test_a_note_held_into_the_rest_is_its_release_until_it_runs_too_long",
+            "test_a_note_with_no_voice_is_silent_and_a_soft_ending_is_not",
+            "test_a_separate_patch_of_voice_in_a_rest_is_flagged_and_a_blip_is_not",
+            "test_two_voices_longer_than_a_crossfade_are_flagged",
+            "timeline"
+          ],
+          "hash": "7bbdecf78926b4c84093e9744b117f32790e6beecc32c2cfb875e03cdbf901be",
+          "importsFiles": [
+            "scripts/voice_gate.py"
+          ],
+          "path": "scripts/test_voice_gate.py"
+        },
+        {
+          "exports": [
             "cut",
             "test_a_rest_in_the_score_ends_a_run_even_inside_one_take",
             "test_a_run_falls_silent_after_its_last_note_and_release",
@@ -15673,7 +15907,10 @@
             "cmd_verify",
             "cross_check",
             "detector_info",
+            "emphasis_gain",
+            "fill_undated",
             "gate",
+            "hold_end",
             "load_clock",
             "load_words",
             "main",
@@ -15703,6 +15940,7 @@
             "syllable_nuclei",
             "take_name",
             "track_f0",
+            "undate_outliers",
             "valley_between",
             "warp_map",
             "warp_runs",
@@ -15770,92 +16008,97 @@
               "line": 623
             },
             {
+              "in": "cmd_repin",
+              "kind": "except",
+              "line": 710
+            },
+            {
               "in": "placed_vocal_graph",
               "kind": "raise",
-              "line": 718
+              "line": 779
             },
             {
               "in": "merge_plans",
               "kind": "raise",
-              "line": 741
+              "line": 802
             },
             {
               "in": "merge_plans",
               "kind": "raise",
-              "line": 751
+              "line": 812
             },
             {
               "in": "track_f0",
               "kind": "except",
-              "line": 1251
+              "line": 1357
             },
             {
               "in": "track_f0",
               "kind": "raise",
-              "line": 1252
+              "line": 1358
             },
             {
               "in": "_track_fcpe",
               "kind": "except",
-              "line": 1278
+              "line": 1384
             },
             {
               "in": "_track_fcpe",
               "kind": "raise",
-              "line": 1279
+              "line": 1385
             },
             {
               "in": "cmd_pitch",
               "kind": "except",
-              "line": 1458
+              "line": 1566
             },
             {
               "in": "load_clock",
               "kind": "raise",
-              "line": 1484
+              "line": 1592
             },
             {
               "in": "cmd_bed_check",
               "kind": "raise",
-              "line": 1503
+              "line": 1611
             },
             {
               "in": "cmd_transcribe",
               "kind": "except",
-              "line": 1536
+              "line": 1644
             },
             {
               "in": "cmd_transcribe",
               "kind": "raise",
-              "line": 1537
+              "line": 1645
             },
             {
               "in": "cmd_plan",
               "kind": "raise",
-              "line": 1549
+              "line": 1657
             },
             {
               "in": "cmd_place",
               "kind": "raise",
-              "line": 1611
+              "line": 1719
             },
             {
               "in": "cmd_place",
               "kind": "raise",
-              "line": 1614
+              "line": 1722
             },
             {
               "in": "cmd_verify",
               "kind": "raise",
-              "line": 1660
+              "line": 1768
             },
             {
               "in": "cmd_mix",
               "kind": "raise",
-              "line": 1690
+              "line": 1823
             }
           ],
-          "hash": "bc111c57078228a81c5984daa37004a0a97ae86740ef9908851a06d5da15c344",
+          "hash": "09445545a637247dbd09b48fdfa25a547909b10b891db516ffb13a3576fea03f",
           "importOrder": [
             "scripts/onset_aligner.py",
             "scripts/comfy_rest.py"
@@ -15865,6 +16108,24 @@
             "scripts/onset_aligner.py"
           ],
           "path": "scripts/vocal_clock.py"
+        },
+        {
+          "exports": [
+            "frames",
+            "judge",
+            "main",
+            "note_spans",
+            "runs"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 170
+            }
+          ],
+          "hash": "5b4b2c30120b54e4d0e6e50613c5b8d60a91db82cbe3d8cb57eb7fbc49b76d93",
+          "path": "scripts/voice_gate.py"
         }
       ],
       "frameworks": [
@@ -15878,11 +16139,11 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 75,
+          "reads": 78,
           "where": [
             "caller"
           ],
-          "writes": 45
+          "writes": 48
         },
         {
           "reads": 0,
@@ -15892,13 +16153,13 @@
           "writes": 1
         }
       ],
-      "outsideReads": 75,
-      "outsideWrites": 46,
+      "outsideReads": 78,
+      "outsideWrites": 49,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 26,
+      "testedBy": 28,
       "unresolvedNamed": [
         {
           "path": "scripts/cast-kokoro-lock.mjs",
@@ -15942,20 +16203,28 @@
           "path": "site/public/america-the-beautiful-m2-6.svg"
         },
         {
-          "hash": "96bd4a8322251ac25344378ba523d5d8751a758a1fe6ca5df8c7b8a1e6be7428",
+          "hash": "41fba29ca201ab2512ccbcec6bb52ee023544dcb3aca0fad0861fcaf841af746",
           "path": "site/public/audio/amazing-grace-new-britain.mp3"
         },
         {
-          "hash": "e21472903834de40344184be677a48d54078607d7fff72f254aed0cf2e689c44",
+          "hash": "c2598c257a9cbcd18f840982fc163de707f5bbaad6775618202096f7a856c1b4",
           "path": "site/public/audio/amazing-grace-new-britain.opus"
         },
         {
-          "hash": "81272fcc4f7dfa411db05b595373773d316e27875acb8953618109796cda2933",
+          "hash": "d89d3685255c8ba699dfe1b8579d502024f9809c73b65f4e4de22d2a7a0f1875",
           "path": "site/public/audio/america-the-beautiful-materna.mp3"
         },
         {
-          "hash": "440a6343e922462a70acf9ff06441fdcf9ae94b04485dd35550242b9dba21539",
+          "hash": "557bd5a56895aa6857be8edd99d9071a1f866b215020ff85005529edb33000ff",
           "path": "site/public/audio/america-the-beautiful-materna.opus"
+        },
+        {
+          "hash": "bf8a19e07be30e2f36ff1b80a14559ada6bda94c84fcf02315469ca4ea0553c7",
+          "path": "site/public/audio/battle-hymn-of-the-republic.mp3"
+        },
+        {
+          "hash": "2d357cddf906839b5a3aa052b44d9724e4716f9fdc3159ff635cb4ee7a3d43a3",
+          "path": "site/public/audio/battle-hymn-of-the-republic.opus"
         },
         {
           "hash": "a8ea1263a420ca1804e02d7cb6889074494e71f7aa8ab3e6c1245c74202b9dc5",
@@ -15974,7 +16243,7 @@
           "path": "site/public/og-card.png"
         },
         {
-          "hash": "23db5f1fc1899969cfd2ca4be290f0f0c2defd9c6848d62c584abc31e1cf36fc",
+          "hash": "80f28cd4424a04c65b12edac353c15ae291daaa52c93fb8cb2b5e3c323c425cb",
           "importsFiles": [
             "site/src/data/hymns.visual.json"
           ],
@@ -16038,7 +16307,7 @@
           "path": "site/src/content/docs/handbook/troubleshooting.md"
         },
         {
-          "hash": "319ec250acec29bf0e157edc18185a49e09cedf0a4571fd0dd17030916b9bfc8",
+          "hash": "7f5b0ea04a9009ec12a65d6a19c88167e5bea6d5467a83ba9db5bfcc5c3879ea",
           "path": "site/src/content/docs/handbook/vocals.md"
         },
         {
@@ -16046,7 +16315,7 @@
           "path": "site/src/content/docs/handbook/your-own-dataset.md"
         },
         {
-          "hash": "4c142a1c74a2ede9a7d91d4b9586cf26ead535b8421f9fdc9da1262d74f852dd",
+          "hash": "b0e10a3693ba35777ca4e29ede2ae949439e3a9b607cf2e472236c77e23b20ce",
           "path": "site/src/data/hymns.visual.json"
         },
         {
@@ -16060,14 +16329,14 @@
               "line": 100
             }
           ],
-          "hash": "f4bd34c7d2a6305fff60278abfc6a8c88190d47727e0f06542864c793a563fbf",
+          "hash": "361c8167a861edc91ee3e2e47817eade83baba35c9084251f52eacbd28455305",
           "importsFiles": [
             "site/src/data/hymns.visual.json"
           ],
           "path": "site/src/lib/hymn-view.ts"
         },
         {
-          "hash": "4b324049f029d295a559dd7789a21f7b80dab7c6e4ddc76bbdfa00b96beb1a66",
+          "hash": "25080ab64ccc2786ca27f395e670fc9bcd88fb001b95787e6fc0c14835458c8e",
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/components/Hymns.astro",
@@ -16082,7 +16351,7 @@
         },
         {
           "constantOnly": true,
-          "hash": "65c84779b943be0097067cb19b4ee6bcd2476f3033e987cf1e99f07a982cae87",
+          "hash": "09ff921928f09216c3b26053724e2830d0504a1422703ed7affa857f0ec2097f",
           "path": "site/src/site-config.ts"
         },
         {
@@ -28142,6 +28411,127 @@
           "path": "src/vocal/align-lyrics.ts"
         },
         {
+          "hash": "ab6797bd419b0b3788e7f2b9d93114bf156124cb8ce33a9aefdd2498b58fc539",
+          "importOrder": [
+            "src/vocal/hymns.ts",
+            "src/vocal/arrangement.ts"
+          ],
+          "importsFiles": [
+            "src/vocal/arrangement.ts",
+            "src/vocal/hymns.ts"
+          ],
+          "path": "src/vocal/arrangement.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "arrangementClock",
+            "bedNotes",
+            "getArrangement",
+            "performed",
+            "place",
+            "sungNotes",
+            "tickToSec",
+            "unmatched"
+          ],
+          "failurePaths": [
+            {
+              "in": "getArrangement",
+              "kind": "throw",
+              "line": 72
+            },
+            {
+              "in": "place",
+              "kind": "throw",
+              "line": 106
+            },
+            {
+              "in": "sungNotes",
+              "kind": "throw",
+              "line": 135
+            },
+            {
+              "in": "performed",
+              "kind": "throw",
+              "line": 172
+            },
+            {
+              "in": "arrangementClock",
+              "kind": "throw",
+              "line": 220
+            },
+            {
+              "in": "arrangementClock",
+              "kind": "throw",
+              "line": 222
+            }
+          ],
+          "hash": "16b34be921e70840fc0515045b88a4a66b40fb45da14f9f624f565d9eadf56db",
+          "importOrder": [
+            "src/vocal/hymns.ts",
+            "src/vocal/score-clock.ts",
+            "src/vocal/interpretation.ts"
+          ],
+          "importsFiles": [
+            "src/vocal/hymns.ts",
+            "src/vocal/interpretation.ts",
+            "src/vocal/score-clock.ts"
+          ],
+          "path": "src/vocal/arrangement.ts"
+        },
+        {
+          "hash": "ecf555d2a0698b8cd7ba85c09a28cf382e8348c887da7447e3d81ef01694da49",
+          "path": "src/vocal/arrangements/amazing-grace-kimi-k3.json"
+        },
+        {
+          "hash": "45252bbb0113c374eeeeaf5c0ffbab0e2c31b28ce2a3847e4f7dc29dda4b89a8",
+          "path": "src/vocal/arrangements/america-the-beautiful-kimi-k3.json"
+        },
+        {
+          "hash": "57f17511dc3e514849e1384e395a43bf576bb0d2d2fa794efd6241650b115884",
+          "path": "src/vocal/arrangements/battle-hymn-kimi-k3.json"
+        },
+        {
+          "hash": "606261798b525cf79401a46cface78affd483dbc96835c8accae7c426fc58695",
+          "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/BRIEF.md"
+        },
+        {
+          "hash": "d24adb367fc11cae8e93e4a7e782122c61b4f686df5a9eac826102889f1071be",
+          "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/SYSTEM.md"
+        },
+        {
+          "hash": "d9a3640fd201286fb40d78d9c4f2ec121039a8e241a459e15c66dfeac625de9d",
+          "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/amazing-grace-kimi-k3.ly"
+        },
+        {
+          "hash": "7208ff8f59069943338f75f8ade4b7df6c3329b92bd96378422fe8f862da2b7e",
+          "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/answer.ly"
+        },
+        {
+          "hash": "3afe1c3bbf2f9186ae361f4604ca5dd86484691b6ad16b1c6578d8e2dc3c4e63",
+          "path": "src/vocal/arrangements/source/amazing-grace-kimi-k3/meta.json"
+        },
+        {
+          "hash": "5c89fce2bc67d9a21d4d8046cf7f2b107a1ad0758f72cbce5258380631b5d6bd",
+          "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/BRIEF.md"
+        },
+        {
+          "hash": "d24adb367fc11cae8e93e4a7e782122c61b4f686df5a9eac826102889f1071be",
+          "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/SYSTEM.md"
+        },
+        {
+          "hash": "34e5e75403742b9459e9d82c438c275d16b508d8db0d7ba073e280defd32b288",
+          "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/america-the-beautiful-kimi-k3.ly"
+        },
+        {
+          "hash": "34e5e75403742b9459e9d82c438c275d16b508d8db0d7ba073e280defd32b288",
+          "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/answer.ly"
+        },
+        {
+          "hash": "75bdae89063cb5bad1411fe18a7234e9ffe74648d817b193242bf20db14cb817",
+          "path": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/meta.json"
+        },
+        {
           "hash": "328560fe90ed3d35587862e239efff8c19cd69dffe1e41b8a160bab030bcdf80",
           "importsFiles": [
             "src/vocal/breath.ts"
@@ -28195,12 +28585,14 @@
           "path": "src/vocal/g2p.ts"
         },
         {
-          "hash": "01ae286421bc2f134a5f07e5aa58fb08ebf6938d433ce90bdeb8400144d0e3cf",
+          "hash": "7a1ad75d63fa0367c09634f402cbea41d7748adffd05abf6bc9cab6f568c4cfa",
           "importOrder": [
             "src/vocal/score-clock.ts",
+            "src/vocal/arrangement.ts",
             "src/vocal/hymns.ts"
           ],
           "importsFiles": [
+            "src/vocal/arrangement.ts",
             "src/vocal/hymns.ts",
             "src/vocal/score-clock.ts"
           ],
@@ -28219,95 +28611,98 @@
             "parseMelody",
             "pitch",
             "realizeHymn",
-            "verseLyrics"
+            "verseLyrics",
+            "verseSection"
           ],
           "failurePaths": [
             {
               "in": "pitch",
               "kind": "throw",
-              "line": 226
+              "line": 331
             },
             {
               "in": "bars",
               "kind": "throw",
-              "line": 257
+              "line": 362
             },
             {
               "in": "parseMelody",
               "kind": "throw",
-              "line": 265
+              "line": 370
             },
             {
               "in": "parseMelody",
               "kind": "throw",
-              "line": 267
+              "line": 372
             },
             {
               "in": "parseChords",
               "kind": "throw",
-              "line": 275
+              "line": 380
             },
             {
               "in": "parseChords",
-              "kind": "throw",
-              "line": 279
-            },
-            {
-              "in": "verseLyrics",
-              "kind": "throw",
-              "line": 290
-            },
-            {
-              "in": "realizeHymn",
-              "kind": "throw",
-              "line": 359
-            },
-            {
-              "in": "chordAt",
               "kind": "throw",
               "line": 384
             },
             {
-              "in": "realizeHymn",
+              "in": "verseLyrics",
               "kind": "throw",
-              "line": 394
+              "line": 395
             },
             {
               "in": "realizeHymn",
               "kind": "throw",
-              "line": 411
+              "line": 464
+            },
+            {
+              "in": "chordAt",
+              "kind": "throw",
+              "line": 489
             },
             {
               "in": "realizeHymn",
               "kind": "throw",
-              "line": 419
+              "line": 499
             },
             {
               "in": "realizeHymn",
               "kind": "throw",
-              "line": 430
+              "line": 516
+            },
+            {
+              "in": "realizeHymn",
+              "kind": "throw",
+              "line": 524
+            },
+            {
+              "in": "realizeHymn",
+              "kind": "throw",
+              "line": 535
             },
             {
               "in": "assertGapless",
               "kind": "throw",
-              "line": 449
+              "line": 554
             },
             {
               "in": "assertGapless",
               "kind": "throw",
-              "line": 453
+              "line": 558
             }
           ],
-          "hash": "7b645b140a4761291f1466d0867c979545c1b99a2d1aad2341eafebca05ef743",
+          "hash": "89541e53189dcbd1b495caf42b3e0b649ab23587e4891bd28f26df078edab3f4",
           "importOrder": [
             "src/songs/midi/ingest.ts",
             "src/songs/config/schema.ts",
-            "src/songs/types.ts"
+            "src/songs/types.ts",
+            "src/vocal/interpretation.ts"
           ],
           "importsFiles": [
             "src/songs/config/schema.ts",
             "src/songs/midi/ingest.ts",
-            "src/songs/types.ts"
+            "src/songs/types.ts",
+            "src/vocal/interpretation.ts"
           ],
           "path": "src/vocal/hymns.ts"
         },
@@ -28349,6 +28744,35 @@
           ],
           "path": "src/vocal/index.ts",
           "reexportsOnly": true
+        },
+        {
+          "hash": "7fda2c080f875838c968860fb98493e3e687439420f00683fa7d318eef5a4a0f",
+          "importOrder": [
+            "src/vocal/hymns.ts",
+            "src/vocal/arrangement.ts",
+            "src/vocal/interpretation.ts"
+          ],
+          "importsFiles": [
+            "src/vocal/arrangement.ts",
+            "src/vocal/hymns.ts",
+            "src/vocal/interpretation.ts"
+          ],
+          "path": "src/vocal/interpretation.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "applyMoves",
+            "dottedMoves",
+            "finalRitard",
+            "ruleAmount",
+            "shapedTempos",
+            "shapes",
+            "stretchSpans",
+            "syllableGains"
+          ],
+          "hash": "4668a54e729cc1db8a22e159c57b0ae6a85010c314e915a0d9e2f708d3b9bed7",
+          "path": "src/vocal/interpretation.ts"
         },
         {
           "hash": "bdcce8858cdc616ccba474f82a49d5ffb9dcd9b4ff2f2dd3b96d069079473c96",
@@ -28667,42 +29091,32 @@
             {
               "in": "syllabify",
               "kind": "throw",
-              "line": 353
+              "line": 364
             },
             {
               "in": "syllabify",
               "kind": "throw",
-              "line": 360
+              "line": 371
             },
             {
               "in": "syllabify",
               "kind": "throw",
-              "line": 361
+              "line": 372
             },
             {
               "in": "deriveScoreClock",
               "kind": "throw",
-              "line": 412
+              "line": 423
             },
             {
               "in": "deriveScoreClock",
               "kind": "throw",
-              "line": 414
+              "line": 425
             },
             {
               "in": "deriveScoreClock",
               "kind": "throw",
-              "line": 427
-            },
-            {
-              "in": "onsetFor",
-              "kind": "throw",
-              "line": 437
-            },
-            {
-              "in": "onsetFor",
-              "kind": "throw",
-              "line": 443
+              "line": 438
             },
             {
               "in": "onsetFor",
@@ -28712,29 +29126,40 @@
             {
               "in": "onsetFor",
               "kind": "throw",
-              "line": 457
+              "line": 454
+            },
+            {
+              "in": "onsetFor",
+              "kind": "throw",
+              "line": 459
+            },
+            {
+              "in": "onsetFor",
+              "kind": "throw",
+              "line": 468
             },
             {
               "in": "spanOf",
               "kind": "throw",
-              "line": 470
+              "line": 481
             },
             {
               "in": "spanOf",
               "kind": "throw",
-              "line": 477
+              "line": 488
             },
             {
               "in": "deriveScoreClock",
               "kind": "throw",
-              "line": 487
+              "line": 498
             }
           ],
-          "hash": "06a083f1df3154d37ece968b914d1f4ef7b17aabd12f89a4407f81dd19168f97",
+          "hash": "6fc0fe0c2891a769db60bab5e599072b17885a9c99b2ce65cbb3187fee136b9d",
           "importsFiles": [
             "src/note-parser.ts",
             "src/songs/types.ts",
-            "src/types.ts"
+            "src/types.ts",
+            "src/vocal/interpretation.ts"
           ],
           "path": "src/vocal/score-clock.ts"
         },
@@ -29155,7 +29580,7 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 126,
+          "reads": 130,
           "where": [
             "caller"
           ],
@@ -29245,19 +29670,19 @@
           "writes": 8
         }
       ],
-      "outsideReads": 144,
+      "outsideReads": 148,
       "outsideWrites": 36,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 212,
+      "testedBy": 214,
       "unresolvedSites": 0
     }
   ],
   "doors": [
     {
-      "checksCount": 71,
+      "checksCount": 73,
       "commands": [
         {
           "dir": "",
@@ -29656,7 +30081,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 419
+          "files": 423
         }
       ],
       "readers": [
@@ -33415,6 +33840,44 @@
         {
           "job": "ci",
           "matched": true,
+          "path": "src/vocal/arrangement.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "pnpm10-install",
+          "matched": true,
+          "path": "src/vocal/arrangement.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "ci",
+          "matched": true,
+          "path": "src/vocal/arrangement.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "docker-image",
+          "matched": true,
+          "path": "src/vocal/arrangement.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "pnpm10-install",
+          "matched": true,
+          "path": "src/vocal/arrangement.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "ci",
+          "matched": true,
           "path": "src/vocal/breath.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -33489,44 +33952,6 @@
           "job": "pnpm10-install",
           "matched": true,
           "path": "src/vocal/g2p.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "built": true,
-          "job": "ci",
-          "matched": true,
-          "path": "src/vocal/g2p.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "docker-image",
-          "matched": true,
-          "path": "src/vocal/g2p.ts",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "pnpm10-install",
-          "matched": true,
-          "path": "src/vocal/g2p.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "job": "ci",
-          "matched": true,
-          "path": "src/vocal/hymns.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "pnpm10-install",
-          "matched": true,
-          "path": "src/vocal/hymns.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -33538,7 +33963,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 519,
+      "runsCount": 525,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -33554,7 +33979,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 233,
+          "files": 235,
           "job": "ci",
           "runner": "vitest",
           "step": "Test",
@@ -33565,7 +33990,7 @@
         {
           "config": "vitest.config.ts",
           "coverage": true,
-          "files": 233,
+          "files": 235,
           "job": "ci",
           "runner": "vitest",
           "step": "Test with coverage",
@@ -33575,7 +34000,7 @@
         },
         {
           "config": "vitest.config.ts",
-          "files": 233,
+          "files": 235,
           "job": "pnpm10-install",
           "runner": "vitest",
           "step": "Test",
@@ -34614,7 +35039,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 419
+          "files": 423
         }
       ],
       "readers": [
@@ -37044,6 +37469,29 @@
         {
           "job": "publish-npm",
           "matched": true,
+          "path": "src/vocal/arrangement.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "publish-docker",
+          "matched": true,
+          "path": "src/vocal/arrangement.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "publish-npm",
+          "matched": true,
+          "path": "src/vocal/arrangement.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "publish-npm",
+          "matched": true,
           "path": "src/vocal/breath.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -37086,29 +37534,6 @@
           "via": "vitest vitest.config.ts"
         },
         {
-          "built": true,
-          "job": "publish-docker",
-          "matched": true,
-          "path": "src/vocal/g2p.ts",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "publish-npm",
-          "matched": true,
-          "path": "src/vocal/g2p.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "job": "publish-npm",
-          "matched": true,
-          "path": "src/vocal/hymns.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
           "job": "publish-docker",
           "packed": true,
           "path": "tsconfig.json",
@@ -37116,7 +37541,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 456,
+      "runsCount": 460,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -37144,7 +37569,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 233,
+          "files": 235,
           "job": "publish-npm",
           "runner": "vitest",
           "step": "5",
@@ -37331,7 +37756,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 84
+          "files": 85
         }
       ],
       "readers": [],
@@ -37373,7 +37798,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 85
+          "files": 86
         }
       ],
       "readers": [],
@@ -37415,7 +37840,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 144
+          "files": 145
         }
       ],
       "readers": [],
@@ -37470,6 +37895,11 @@
       "to": "src"
     },
     {
+      "from": "scores",
+      "kind": "file",
+      "to": "scripts"
+    },
+    {
       "from": "scripts",
       "kind": "file",
       "to": "src"
@@ -37500,8 +37930,8 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "1b928ed0c537912a4f1e2f6587b21a9cb90660a1",
-    "tracked": 3039
+    "commit": "836641ef9b04e05ac08ead16a54bc36735f0d0d6",
+    "tracked": 3094
   },
   "landings": [
     {
@@ -46170,6 +46600,11 @@
           "confidence": "text"
         },
         {
+          "by": "docs/sung-exemplar-method.md",
+          "call": "--clock",
+          "confidence": "text"
+        },
+        {
           "by": "site/src/content/docs/handbook/vocals.md",
           "call": "--clock",
           "confidence": "text"
@@ -46189,6 +46624,36 @@
           "by": "docs/vocal-clock.md",
           "call": "--clock",
           "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/piano-bed.receipt.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/plan.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/amazing-grace-new-britain/sung-2026-10-08/voice-gate.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/batch.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/eval.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/score.py",
+          "call": "open",
+          "confidence": "ast"
         },
         {
           "by": "scripts/site-hymn-visual.ts",
@@ -46359,6 +46824,41 @@
     {
       "readers": [
         {
+          "by": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/piano-bed.receipt.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/plan.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/receipt.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/america-the-beautiful-materna/sung-2026-10-08/voice-gate.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/batch.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/eval.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/score.py",
+          "call": "open",
+          "confidence": "ast"
+        },
+        {
           "by": "scripts/site-hymn-visual.ts",
           "call": "literal",
           "confidence": "ast"
@@ -46392,6 +46892,57 @@
         }
       ],
       "target": "scores/america-the-beautiful.score-clock.v1.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/piano-bed.receipt.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/plan.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/receipt.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/battle-hymn-of-the-republic/sung-2026-10-08/voice-gate.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/batch.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/eval.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/score.py",
+          "call": "open",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/site-hymn-visual.ts",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/site-hymn-visual.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "scores/battle-hymn-of-the-republic.score-clock.v1.json",
       "writers": []
     },
     {
@@ -47036,6 +47587,17 @@
       "writers": []
     },
     {
+      "readers": [
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/score.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "scores/receipts/voice-gate-eval-2026-10-08/director-marks-2026-10-07.json",
+      "writers": []
+    },
+    {
       "readers": [],
       "target": "scripts/.maker-demo.svg",
       "tracked": false,
@@ -47277,6 +47839,17 @@
         }
       ],
       "target": "scripts/export_soulx_target.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/arrange-hymn.ts",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "scripts/import-arrangement.ts",
       "writers": []
     },
     {
@@ -47586,6 +48159,22 @@
         }
       ],
       "target": "scripts/vocal_clock.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/eval.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "scripts/sing_clock.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "scripts/voice_gate.py",
       "writers": []
     },
     {
@@ -49930,6 +50519,98 @@
     {
       "readers": [
         {
+          "by": "scripts/arrange-hymn.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/vocal/arrangement.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "src/vocal/arrangements",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scores/amazing-grace-new-britain.score-clock.v1.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "src/vocal/arrangements/amazing-grace-kimi-k3.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scores/america-the-beautiful-materna.score-clock.v1.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "src/vocal/arrangements/america-the-beautiful-kimi-k3.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scores/battle-hymn-of-the-republic.score-clock.v1.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "src/vocal/arrangements/battle-hymn-kimi-k3.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/arrange-hymn.ts",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/arrange-hymn.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "src/vocal/arrangements/source",
+      "writers": [
+        {
+          "by": "scripts/arrange-hymn.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "src/vocal/arrangements/amazing-grace-kimi-k3.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "src/vocal/arrangements/source/amazing-grace-kimi-k3/amazing-grace-kimi-k3.ly",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/vocal/arrangements/america-the-beautiful-kimi-k3.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "src/vocal/arrangements/source/america-the-beautiful-kimi-k3/america-the-beautiful-kimi-k3.ly",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "src/vocal/hymns.ts",
           "call": "literal",
           "confidence": "ast"
@@ -49959,6 +50640,17 @@
       ],
       "target": "src/vocal/tunes.ts",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "tmp/arrangements",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scripts/arrange-hymn.ts",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [],
@@ -50018,14 +50710,26 @@
           "confidence": "ast"
         }
       ]
+    },
+    {
+      "readers": [],
+      "target": "tmp/voice-gate/takes",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "scores/receipts/voice-gate-eval-2026-10-08/batch.py",
+          "confidence": "ast"
+        }
+      ]
     }
   ],
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 248,
+  "testFiles": 252,
   "testsNotRun": [
     "scripts/detector/test_detector.py",
+    "scripts/test_aligner_fill.py",
     "scripts/test_aligner_gate.py",
     "scripts/test_alt_picks.py",
     "scripts/test_export_soulx_target.py",
@@ -50038,6 +50742,7 @@
     "scripts/test_soulx_offrig.py",
     "scripts/test_soundcheck.py",
     "scripts/test_vocal_clock.py",
+    "scripts/test_voice_gate.py",
     "scripts/test_warp_place.py",
     "spaces/jam-actions-live/test_tools_local.py"
   ],

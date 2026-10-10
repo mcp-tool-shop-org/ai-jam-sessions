@@ -1,0 +1,348 @@
+{
+ "schema": "ai-jam-sessions/review-marks/v1",
+ "note": "The Director's listening marks of 2026-10-07: times and categories only (note text and names withheld by rule). Times are as the reviewer gave them, some to the whole second, so match with a 1 s look-back. Each mix was reviewed end to end, so 'unmarked' is meaningful within these mixes.",
+ "entries": {
+  "amazing-grace-new-britain:phrase16": {
+   "marks": [
+    {
+     "t": 14.6,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 22.2,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 29.6,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 32.4,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 50.7,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 58.2,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 59.0,
+     "cats": [
+      "click"
+     ]
+    },
+    {
+     "t": 65.4,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 69.3,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 86.6,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 96.6,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 105.7,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 114.0,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 123.7,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 124.0,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 130.5,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 134.2,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 141.5,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 149.0,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 151.6,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 158.2,
+     "cats": [
+      "stutter"
+     ]
+    }
+   ]
+  },
+  "amazing-grace-new-britain:phrase16w": {
+   "marks": [
+    {
+     "t": 30,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 86,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 96,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 123,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 133,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 142,
+     "cats": [
+      "noise"
+     ]
+    }
+   ]
+  },
+  "america-the-beautiful-materna:phrase16w": {
+   "marks": [
+    {
+     "t": 39,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 46,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 58,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 83,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 90,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 102.5,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 127,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 147,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 169,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 171,
+     "cats": [
+      "stutter"
+     ]
+    }
+   ]
+  },
+  "amazing-grace-new-britain:phrase16w2": {
+   "marks": [
+    {
+     "t": 14,
+     "cats": [
+      "word"
+     ]
+    },
+    {
+     "t": 29,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 96,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 134,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 141.5,
+     "cats": [
+      "noise"
+     ]
+    }
+   ]
+  },
+  "america-the-beautiful-materna:phrase16w2": {
+   "marks": [
+    {
+     "t": 38,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 46,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 57,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 90,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 127,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 169,
+     "cats": [
+      "noise"
+     ]
+    },
+    {
+     "t": 171,
+     "cats": [
+      "stutter"
+     ]
+    }
+   ]
+  },
+  "amazing-grace-new-britain:pad16": {
+   "marks": []
+  },
+  "america-the-beautiful-materna:pad16": {
+   "marks": []
+  },
+  "battle-hymn-of-the-republic:pad16": {
+   "marks": [
+    {
+     "t": 33.0,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 206.0,
+     "cats": [
+      "stutter"
+     ]
+    },
+    {
+     "t": 222.0,
+     "cats": [
+      "noise"
+     ]
+    }
+   ]
+  }
+ }
+}
