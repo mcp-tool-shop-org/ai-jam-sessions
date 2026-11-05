@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.9.0] - 2026-11-05
+
+### Added — a listening review in the cockpit
+- The cockpit has a Review mode (`apps/cockpit/src/review.ts`, `src/vocal/listening-review.ts`): a
+  listening review of a mix with saved sessions and one loudness for every clip, so a person can mark
+  the phrases they hear as wrong.
+
+### Added — research tooling for a defect detector (not shipped as a feature)
+- `scripts/planter.py` plants known defects (a phrase heard twice, a skipped span, a click at a
+  seam, and a "sham" seam that changes nothing) by editing a pick's plan and rendering it through
+  the production splicer, so every planted defect has a real join's signature and an exact label.
+  Each plant is checked against the clean render and dropped if the defect is not measurably there.
+- `scripts/detector/` trains small defect heads on frozen audio-encoder features (MERT-v1-330M,
+  CC-BY-NC-4.0, research only; Dasheng-0.6B, Apache-2.0) and evaluates them per defect kind against
+  clean clips, with splits by song or mix, never by clip, and a check that the detector is not just
+  finding seams. The operating point is fitted on held-out validation mixes. No detector ships in
+  this release.
+
 ### Changed — the sung hymns over Kimi-K3 piano arrangements
 - Amazing Grace and America the Beautiful are re-recorded over piano arrangements written for each
   hymn by Kimi-K3 (`src/vocal/arrangements/`, CC0), in place of the block-chord beds. The voice is

@@ -470,7 +470,7 @@ in Ollama, with the measured cost of a 4-bit base: [docs/ollama-adapters.md](doc
 - **The singer.** A score-conditioned singer ([SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer), Apache-2.0) renders sixteen takes from that clock, locally or on a rented GPU through offrig.
 - **The pick.** `scripts/sing_clock.py --by-phrase --warp` picks one take per phrase. A local listener's transcript and FCPE pitch decide, and the phrase is time-warped onto the score.
 - **The gates.** **Timing:** an energy detector, cross-checked by a singing forced aligner, puts every vowel within 40 ms. **Pitch:** FCPE, with pYIN re-reading what it flags, puts every note within 50 cents.
-- **The ear.** The listening review (`scripts/review_marks.py`) lets a person press **M** wherever something sounds wrong, with a category and a note. The report traces each mark to its take, its join and the gates, and weighs it by the reviewer's level: a listener's ear settles *where* it sounds off, while naming *what* it is weighs more from training. Today it is a local listening page; it is moving into the cockpit next. Route, levers and receipts: [handbook → Vocals](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/), [`docs/vocal-clock.md`](docs/vocal-clock.md); the research behind the choices: [`docs/vocal-singing-study-2026-09.md`](docs/vocal-singing-study-2026-09.md).
+- **The ear.** The listening review (`scripts/review_marks.py`) lets a person press **M** wherever something sounds wrong, with a category and a note. The report traces each mark to its take, its join and the gates, and weighs it by the reviewer's level: a listener's ear settles *where* it sounds off, while naming *what* it is weighs more from training. It runs as a local listening page, and as Review mode in the cockpit, with saved sessions and one loudness for every clip. Route, levers and receipts: [handbook → Vocals](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/), [`docs/vocal-clock.md`](docs/vocal-clock.md); the research behind the choices: [`docs/vocal-singing-study-2026-09.md`](docs/vocal-singing-study-2026-09.md).
 
 ### Guitar
 
@@ -559,6 +559,8 @@ ai-jam-sessions --version
 
 ## Status
 
+**v2.9.0: three hymns, over real piano arrangements.** Amazing Grace, America the Beautiful and the Battle Hymn of the Republic are sung over piano arrangements written for each hymn, each with its own tempo and shape, and phrase endings held into the rest. A voice gate now runs by default and caught a near-silent syllable in the Battle Hymn, which is re-published with it. The cockpit gains a listening Review mode. See [CHANGELOG](CHANGELOG.md).
+
 **v2.8.0: two hymns, sung.** Amazing Grace and America the Beautiful are sung whole, every verse, on the piano's clock: sixteen takes, one take per phrase, warp placement, two-instrument timing and pitch gates, and a person listening last. Both passed by ear, and the [landing page](https://mcp-tool-shop-org.github.io/ai-jam-sessions/) leads with them. The library's America the Beautiful is now Ward's own Materna melody. See [CHANGELOG](CHANGELOG.md).
 
 **v2.7.0 — America the Beautiful.** The library is 109 annotated songs. Fifteen MIDI files ship; 94 are still fetched from their sources. The new one is a public-domain arrangement made in this repository (melody by Samuel A. Ward, 1882), in F major, and it is the folk exemplar. A SoulX-Singer route sings it: timing and pitch gates pass, and the landing page keeps the three pitch warnings. See [CHANGELOG](CHANGELOG.md).
@@ -623,7 +625,7 @@ Also publishes **[jam-actions-v0](#training-dataset)** — a 57-record training 
 
 **Data touched:** song library (JSON + MIDI), user songs directory (`~/.ai-jam-sessions/songs/`), guitar tuning configs, practice journal entries, local audio output device.
 
-**Data NOT touched (default paths):** the MCP server and CLI make no network calls, read no credentials, and touch no system files outside the user song directory. No telemetry is collected or sent. The **opt-in dataset/eval tooling** shipped in the same package (`scripts/run-llm-eval.ts`, provenance verifier) is the one exception: when you explicitly invoke it, it can call LLM APIs (reads `ANTHROPIC_API_KEY` from your environment, never stores it) and fetch provenance URLs. It never runs as part of the server, CLI, or install.
+**Data NOT touched (default paths):** the MCP server and CLI make no network calls, read no credentials, and touch no system files outside the user song directory. No telemetry is collected or sent. The **opt-in dataset/eval tooling** shipped in the same package (`scripts/run-llm-eval.ts`, provenance verifier) is the one exception: when you explicitly invoke it, it can call LLM APIs (reads `ANTHROPIC_API_KEY` from your environment, never stores it) and fetch provenance URLs. `scripts/arrange-hymn.ts`, which commissions a hymn's piano arrangement, calls OpenRouter with `OPENROUTER_API_KEY` when you run it and records the cost. It never runs as part of the server, CLI, or install.
 
 **Permissions:** MCP server uses stdio transport only (no HTTP). CLI accesses local filesystem and audio devices. See [SECURITY.md](SECURITY.md) for the full policy.
 
