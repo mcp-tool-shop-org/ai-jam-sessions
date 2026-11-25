@@ -30,6 +30,8 @@ import {
   RefiningProposer,
   OllamaSpecRealizer,
   OllamaBwsJudge,
+  makeUnreachablePanelJudge,
+  MIN_PANEL_JUDGES,
   runVoiceLeadingPanel,
   type PanelSystemSpec,
   type PanelJudge,
@@ -91,8 +93,9 @@ async function main(): Promise<void> {
     { id: "engine", note: "the composition engine: model-spec best-of-n + part-at-a-time refine", realize: async (p) => (await realizeProgression(p, engineProposer, { maxSamples: n, voices, style })).realization },
   ];
 
-  // Judges (exclude any unreachable); each satisfies PanelJudge.
+  // Judges (keep unreachable entries so drops are reported cleanly); each satisfies PanelJudge.
   const judges: PanelJudge[] = [];
+  let reachableCount = 0;
   for (const spec of judgeSpecs) {
     const li = spec.lastIndexOf(":");
     const [model, family] = spec.split(":").length === 3 ? [spec.slice(0, li), spec.slice(li + 1)] : [spec, spec];
@@ -100,12 +103,14 @@ async function main(): Promise<void> {
     try {
       await j.probe();
       judges.push(j);
-    } catch {
-      console.log(`(judge "${model}" unreachable — skipped)`);
+      reachableCount++;
+    } catch (err) {
+      console.log(`(judge "${model}" unreachable — recorded as dropped)`);
+      judges.push(makeUnreachablePanelJudge(model, family, err instanceof Error ? err.message : String(err)));
     }
   }
-  if (judges.length < 3) {
-    console.error(`Need ≥3 reachable judge families for an honest cross-family panel; got ${judges.length}. Aborting.`);
+  if (reachableCount < MIN_PANEL_JUDGES) {
+    console.error(`Need ≥${MIN_PANEL_JUDGES} reachable judge families for an honest cross-family panel; got ${reachableCount}. Aborting.`);
     process.exit(1);
   }
 

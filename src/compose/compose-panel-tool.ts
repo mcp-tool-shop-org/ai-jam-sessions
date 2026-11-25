@@ -11,9 +11,16 @@
 // core is dependency-injected and deterministic given deterministic inputs.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { runVoiceLeadingPanel, type PanelSystemSpec, type PanelJudge } from "./panel-run.js";
+import {
+  runVoiceLeadingPanel,
+  type PanelDropsReport,
+  type PanelJudge,
+  type PanelJudgeSummary,
+  type PanelSystemSpec,
+  type VoidedSong,
+} from "./panel-run.js";
 import type { ChordProgression } from "./realize.js";
-import type { PanelScore } from "./bws.js";
+import { MIN_PANEL_JUDGES, type PanelScore } from "./bws.js";
 
 export interface ComposePanelToolInput {
   progressions: Array<{ id: string; progression: ChordProgression }>;
@@ -24,6 +31,7 @@ export interface ComposePanelToolInput {
   /** A label carried into the payload/report (e.g. the style the engine used). */
   style?: string;
   floorMargin?: number;
+  minJudges?: number;
   bootstrap?: number;
   seed?: number;
   signal?: AbortSignal;
@@ -46,10 +54,15 @@ export interface ComposePanelPayload {
   ranking: string[];
   familyAgreement: number;
   scores: PanelScore[];
+  minJudgesPerSong: number;
+  validSongs: string[];
+  voidedSongs: VoidedSong[];
   votesCollected: number;
+  votesCounted: number;
   votesPossible: number;
+  drops: PanelDropsReport;
   songs: string[];
-  judges: Array<{ family: string; model?: string }>;
+  judges: PanelJudgeSummary[];
 }
 
 export type ComposePanelToolResult =
@@ -63,6 +76,7 @@ export type ComposePanelToolResult =
  */
 export async function runComposePanelTool(input: ComposePanelToolInput): Promise<ComposePanelToolResult> {
   const anchors = input.anchors ?? { floor: "floor", valid: "refined", engine: "engine" };
+  const minJudges = input.minJudges ?? MIN_PANEL_JUDGES;
 
   if (input.progressions.length === 0) {
     return { ok: false, code: "no_songs", message: "No songs to run the panel over.", hint: "Pass at least one library song id (browse with list_songs)." };
@@ -70,11 +84,11 @@ export async function runComposePanelTool(input: ComposePanelToolInput): Promise
   if (input.systems.length < 2) {
     return { ok: false, code: "too_few_systems", message: `A panel needs ≥2 systems to compare; got ${input.systems.length}.`, hint: "Include at least the floor + engine systems." };
   }
-  if (input.judges.length < 3) {
+  if (input.judges.length < minJudges) {
     return {
       ok: false,
       code: "too_few_judges",
-      message: `An honest cross-family panel needs ≥3 reachable judge families; got ${input.judges.length}.`,
+      message: `An honest cross-family panel needs ≥${minJudges} reachable judge families; got ${input.judges.length}.`,
       hint: "Start more local Ollama models (e.g. mistral-small:24b, granite4.1:30b, gemma4:31b) — none should be the generator family.",
     };
   }
@@ -91,6 +105,7 @@ export async function runComposePanelTool(input: ComposePanelToolInput): Promise
     judges: input.judges,
     anchors,
     floorMargin: input.floorMargin,
+    minJudges,
     bootstrap: input.bootstrap,
     seed: input.seed,
     signal: input.signal,
@@ -105,8 +120,13 @@ export async function runComposePanelTool(input: ComposePanelToolInput): Promise
     ranking: report.result.ranking,
     familyAgreement: report.result.familyAgreement,
     scores: report.result.scores,
+    minJudgesPerSong: report.minJudges,
+    validSongs: report.validSongs,
+    voidedSongs: report.voidedSongs,
     votesCollected: report.votesCollected,
+    votesCounted: report.votesCounted,
     votesPossible: report.votesPossible,
+    drops: report.drops,
     songs: report.songIds,
     judges: report.judges,
   };

@@ -9,6 +9,7 @@
 import { describe, it, expect } from "vitest";
 import { runVoiceLeadingPanel, type PanelSystemSpec, type PanelJudge } from "./panel-run.js";
 import { runComposePanelTool } from "./compose-panel-tool.js";
+import { MIN_PANEL_JUDGES, BANNED_PANEL_VOCAB, INSUFFICIENT_JUDGES_CODE } from "./index.js";
 import { rootPositionRealization, nearestToneRealization, type ChordProgression } from "./realize.js";
 import { refineRealization } from "./refine.js";
 import { RequestCancelledError } from "../cancel.js";
@@ -192,5 +193,54 @@ describe("runComposePanelTool — validation gates", () => {
       expect(res.payload.scores).toHaveLength(4);
       expect(res.text).toMatch(/```json/);
     }
+  });
+
+  it("voids only the song that falls below MIN_PANEL_JUDGES, excludes its partial votes, and renders drops + void in report", async () => {
+    let f3Calls = 0;
+    const flakyJudge: PanelJudge = {
+      family: "f3",
+      model: "stub-f3",
+      async judge(_key, options) {
+        f3Calls++;
+        if (f3Calls === 2) return null;
+        return { best: 0, worst: options.length - 1 };
+      },
+      async judgeDetailed(_key, options) {
+        f3Calls++;
+        if (f3Calls === 2) {
+          return { ok: false, reason: "empty_reply", detail: "blank content" };
+        }
+        return { ok: true, vote: { best: 0, worst: options.length - 1 } };
+      },
+    };
+    const judges = [stubJudge("f1", "engine"), stubJudge("f2", "engine"), flakyJudge];
+    const report = await runVoiceLeadingPanel({
+      progressions: PROGS,
+      systems: SYSTEMS,
+      judges,
+      anchors: { floor: "floor", valid: "refined", engine: "engine" },
+      bootstrap: 50,
+      seed: 1,
+    });
+
+    expect(MIN_PANEL_JUDGES).toBe(3);
+    expect(report.validSongs).toEqual(["song-a"]);
+    expect(report.votesCollected).toBe(5);
+    expect(report.votesCounted).toBe(3);
+    expect(report.drops.total).toBe(1);
+    expect(report.drops.byReason.empty_reply).toBe(1);
+    expect(report.voidedSongs).toEqual([
+      {
+        songId: "song-b",
+        votesCast: 2,
+        minJudges: 3,
+        reason: `${INSUFFICIENT_JUDGES_CODE}: 2 of 3 judges voted`,
+        droppedJudges: [{ family: "f3", model: "stub-f3", reason: "empty_reply" }],
+      },
+    ]);
+    expect(report.text).toContain("song-b");
+    expect(report.text).toContain("INSUFFICIENT_JUDGES: 2 of 3 judges voted");
+    expect(report.text).toContain("empty_reply: 1");
+    expect(report.text).not.toMatch(BANNED_PANEL_VOCAB);
   });
 });

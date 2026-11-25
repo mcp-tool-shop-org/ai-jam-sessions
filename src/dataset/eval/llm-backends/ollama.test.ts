@@ -5,6 +5,7 @@ import {
   OLLAMA_TIMEOUT_ENV,
   OllamaBackend,
   OllamaTimeoutError,
+  formatStructuredSystemPrompt,
   resolveOllamaTimeoutMs,
 } from "./ollama.js";
 import { RequestCancelledError } from "../../../cancel.js";
@@ -285,5 +286,79 @@ describe("OllamaBackend", () => {
       if (prev === undefined) delete process.env[OLLAMA_TIMEOUT_ENV];
       else process.env[OLLAMA_TIMEOUT_ENV] = prev;
     }
+  });
+
+  it("keeps OLLAMA_CALL_TIMEOUT_MS at 120_000 ms (2x measured gemma4 cold call rounded up to 30 s)", () => {
+    expect(OLLAMA_CALL_TIMEOUT_MS).toBe(120_000);
+    expect(OLLAMA_TIMEOUT_ENV).toBe("OLLAMA_TIMEOUT_MS");
+  });
+
+  it("supportsThinking inspects /api/show capabilities and never guesses from model name", async () => {
+    const fetchMock = installFetch(async (url, init) => {
+      expect(url).toBe(`${BASE}/api/show`);
+      const body = JSON.parse(String(init?.body)) as { model?: string };
+      if (body.model === "alpha-model") {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({ capabilities: ["completion", "thinking"] }),
+        };
+      }
+      if (body.model === "gemma4:31b") {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({ capabilities: ["completion", "tools"] }),
+        };
+      }
+      return { ok: false, status: 404, text: async () => "not found" };
+    });
+
+    await expect(new OllamaBackend("alpha-model", BASE).supportsThinking()).resolves.toBe(true);
+    await expect(new OllamaBackend("gemma4:31b", BASE).supportsThinking()).resolves.toBe(false);
+    await expect(new OllamaBackend("missing-model", BASE).supportsThinking()).resolves.toBe(false);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it("forwards think only when passed and clears lastRawText on failed subsequent callStructured", async () => {
+    let call = 0;
+    const seenBodies: Array<Record<string, unknown>> = [];
+    installFetch(async (_url, init) => {
+      call++;
+      seenBodies.push(JSON.parse(String(init?.body)) as Record<string, unknown>);
+      if (call === 1) return okChat({ role: "assistant", content: '{"ok":true}' });
+      if (call === 2) return okChat({ role: "assistant", content: '{"ok":true}' });
+      return { ok: false, status: 500, text: async () => "server down" };
+    });
+
+    const backend = new OllamaBackend(MODEL, BASE, { seed: 7, num_predict: 128 });
+    await backend.callStructured({
+      systemPrompt: "sys",
+      userMessage: "user",
+      outputSchema: {},
+      think: false,
+    });
+    expect(seenBodies[0].think).toBe(false);
+    expect(backend.lastRawText()).toBe('{"ok":true}');
+
+    await backend.callStructured({
+      systemPrompt: "sys",
+      userMessage: "user",
+      outputSchema: {},
+    });
+    expect("think" in seenBodies[1]).toBe(false);
+    expect(seenBodies[0].messages).toEqual([
+      { role: "system", content: formatStructuredSystemPrompt("sys", {}) },
+      { role: "user", content: "user" },
+    ]);
+
+    await expect(
+      backend.callStructured({
+        systemPrompt: "sys",
+        userMessage: "user",
+        outputSchema: {},
+      }),
+    ).rejects.toThrow("Ollama returned HTTP 500");
+    expect(backend.lastRawText()).toBeNull();
   });
 });

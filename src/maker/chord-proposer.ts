@@ -110,11 +110,13 @@ export interface ChordProposerBackend {
     systemPrompt: string;
     userMessage: string;
     outputSchema: Record<string, unknown>;
+    think?: boolean;
     signal?: AbortSignal;
     timeoutMs?: number;
   }): Promise<unknown>;
   lastRawText(): string | null;
   probe(opts?: { signal?: AbortSignal; timeoutMs?: number }): Promise<void>;
+  supportsThinking?(opts?: { signal?: AbortSignal; timeoutMs?: number }): Promise<boolean>;
 }
 
 export interface OllamaChordProposerOptions {

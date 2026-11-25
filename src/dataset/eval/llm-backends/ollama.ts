@@ -19,11 +19,33 @@
 import type { LlmBackend, ToolSchema, ToolUseResult, CallMeta } from "../llm-runner.js";
 import { isCancelledError, throwIfAborted, toCancelledError } from "../../../cancel.js";
 
-/** Default per-HTTP-call timeout for Ollama requests (120 s). */
+/**
+ * Default per-HTTP-call timeout for Ollama requests (120 s).
+ *
+ * Basis (measured 2026-11-24 on RTX 5090, Ollama 0.40.18, local NVMe, server-default
+ * context 32768; judge `/api/chat` with `format: "json"`, `stream: false`, `num_predict: 128`):
+ * - `mistral-small:24b`: 34.8 s cold call (27.1 s `load_duration`), 0.19 s warm
+ * - `granite4.1:30b`:    27.1 s cold call (26.6 s `load_duration`), 0.27 s warm
+ * - `gemma4:31b`:        59.2 s cold call (45.9 s `load_duration`), 2.34 s warm
+ * - `aya-expanse:32b`:   not measured (not installed)
+ *
+ * Budget = slowest measured cold call (`gemma4:31b`, 59.2 s, load included) x 2 = 118.4 s,
+ * rounded up to the next 30 s = 120_000 ms. Slower disks or smaller GPUs load slower; use
+ * `OLLAMA_TIMEOUT_MS` to raise or tune this limit per host.
+ */
 export const OLLAMA_CALL_TIMEOUT_MS = 120_000;
 
 /** Optional env override for the per-call Ollama HTTP timeout in milliseconds. */
 export const OLLAMA_TIMEOUT_ENV = "OLLAMA_TIMEOUT_MS";
+
+/** Format the system prompt suffix sent by `OllamaBackend.callStructured`. */
+export function formatStructuredSystemPrompt(
+  systemPrompt: string,
+  outputSchema: Record<string, unknown>,
+): string {
+  const schemaDescription = JSON.stringify(outputSchema, null, 2);
+  return `${systemPrompt}\n\nIMPORTANT: Respond with valid JSON matching this schema:\n${schemaDescription}`;
+}
 
 export class OllamaTimeoutError extends Error {
   readonly timeoutMs: number;
@@ -281,6 +303,43 @@ export class OllamaBackend implements LlmBackend {
     );
   }
 
+  /**
+   * Inspect `/api/show` capabilities for `this.model` to determine whether the
+   * server advertises thinking support (returns `false` when unsupported or on
+   * non-OK HTTP responses; never guesses from model names).
+   */
+  async supportsThinking(callOpts?: OllamaCallOptions): Promise<boolean> {
+    const url = `${this.baseUrl}/api/show`;
+    return this.runBounded(
+      url,
+      async (signal) => {
+        let resp: Response;
+        try {
+          resp = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ model: this.model }),
+            signal,
+          });
+        } catch (err) {
+          if (signal.aborted || isCancelledError(err)) throw err;
+          throw new Error(
+            `Ollama not reachable at ${this.baseUrl}. ` +
+              "Run `ollama serve` or set OLLAMA_HOST environment variable.\n" +
+              `Underlying error: ${String(err)}`,
+          );
+        }
+        if (!resp.ok) return false;
+        const data = (await resp.json().catch(() => ({}))) as { capabilities?: unknown };
+        return (
+          Array.isArray(data.capabilities) &&
+          data.capabilities.some((c) => typeof c === "string" && c.toLowerCase() === "thinking")
+        );
+      },
+      callOpts,
+    );
+  }
+
   async callWithTools(args: {
     systemPrompt: string;
     userMessage: string;
@@ -334,14 +393,14 @@ export class OllamaBackend implements LlmBackend {
     systemPrompt: string;
     userMessage: string;
     outputSchema: Record<string, unknown>;
+    think?: boolean;
     signal?: AbortSignal;
     timeoutMs?: number;
   }): Promise<T> {
+    // Clear prior raw text before issuing the request so HTTP/timeout errors never look like a stale reply.
+    this._lastRawText = null;
     // Use format:"json" mode — system prompt describes the expected schema
-    const schemaDescription = JSON.stringify(args.outputSchema, null, 2);
-    const systemWithSchema =
-      `${args.systemPrompt}\n\n` +
-      `IMPORTANT: Respond with valid JSON matching this schema:\n${schemaDescription}`;
+    const systemWithSchema = formatStructuredSystemPrompt(args.systemPrompt, args.outputSchema);
 
     const messages: OllamaMessage[] = [
       { role: "system", content: systemWithSchema },
@@ -355,6 +414,7 @@ export class OllamaBackend implements LlmBackend {
         messages,
         format: "json",
         stream: false,
+        ...(args.think !== undefined ? { think: args.think } : {}),
         ...(this.genOptions ? { options: this.genOptions } : {}),
       },
       { signal: args.signal, timeoutMs: args.timeoutMs },
@@ -389,6 +449,7 @@ export class OllamaBackend implements LlmBackend {
     signal?: AbortSignal;
     timeoutMs?: number;
   }): Promise<string> {
+    this._lastRawText = null;
     const messages: OllamaMessage[] = [
       { role: "system", content: args.systemPrompt },
       { role: "user", content: args.userMessage },

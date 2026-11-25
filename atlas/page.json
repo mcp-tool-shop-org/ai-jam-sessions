@@ -6,13 +6,6 @@
   ],
   "authoredWritten": [
     {
-      "place": "experiments/acoustic-sft/runs/",
-      "untrackedInputs": true,
-      "writers": [
-        "experiments/acoustic-sft/runpod.mjs"
-      ]
-    },
-    {
       "place": "spaces/jam-actions-live/demo_data.json",
       "untrackedInputs": true,
       "writers": [
@@ -32,11 +25,7 @@
       "importedByTests": [],
       "kind": "part",
       "name": "src",
-      "partLabel": "src",
-      "spawnedBy": [
-        "experiments",
-        "scripts"
-      ]
+      "partLabel": "src"
     },
     {
       "doors": 3,
@@ -84,26 +73,23 @@
     {
       "kind": "place",
       "readers": [
-        "experiments",
-        "scripts",
-        "src"
+        "experiments"
       ],
-      "target": "songs/library/",
-      "tests": 6,
+      "target": "experiments/rollout-arc/p4/runs/",
+      "tests": 2,
       "writers": [
-        "scripts"
+        "experiments"
       ]
     },
     {
-      "into": true,
       "kind": "place",
       "readers": [
         "experiments",
         "scripts",
         "src"
       ],
-      "target": "datasets/jam-actions-v0/",
-      "tests": 5,
+      "target": "songs/library/",
+      "tests": 7,
       "writers": [
         "scripts"
       ]
@@ -111,44 +97,38 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
-      "changed": 4,
+      "added": 0,
+      "changed": 15,
       "moved": 0,
-      "parts": 2,
+      "parts": 4,
       "removed": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI runs 1 more file than before.",
+        "kind": "landing",
+        "sentence": "experiments/rollout-arc/p4/runs/ is now written by experiments/rollout-arc/p4/scripts/score-curriculum.mts.",
         "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release runs 1 more file than before.",
-        "subjects": [
-          ".github/workflows/release.yml"
+          "experiments/rollout-arc/p4/runs/",
+          "experiments/rollout-arc/p4/scripts/score-curriculum.mts"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "src/vocal/posix-parent-guard.js is now read by src/vocal/soulx-singer.ts.",
+        "sentence": "songs/library/ is now also read by src/compose/ollama-bws-judge.test.ts.",
         "subjects": [
-          "src/vocal/posix-parent-guard.js",
-          "src/vocal/soulx-singer.ts"
+          "songs/library/",
+          "src/compose/ollama-bws-judge.test.ts"
         ]
       },
       {
         "kind": "counts",
-        "sentence": "1 file added and 4 changed content, across 2 parts.",
+        "sentence": "15 files changed content, across 4 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "2d501c9145037fcc172850c3d6ab8dcb027655f6",
-      "generatedAt": "2026-11-25T02:50:42.695Z"
+      "commit": "77b5ec1340100bff0e30af392447784ee9c9fc92",
+      "generatedAt": "2026-11-25T03:16:48.512Z"
     },
     "unchanged": false
   },
@@ -175,7 +155,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 5,
-  "commit": "77b5ec1340100bff0e30af392447784ee9c9fc92",
+  "commit": "0339ba3ab190c10120b234e952dc511791624763",
   "defaultBranch": "main",
   "derived": "14 parts, mostly JSON data (1554 files) and Markdown (357); code in TypeScript (627), Python (77), JavaScript (32), shell (30), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
@@ -317,7 +297,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 72
+          "files": 13
         },
         {
           "boundary": "src",
@@ -552,7 +532,7 @@
         {
           "boundary": "cockpit",
           "depth": 0,
-          "files": 28
+          "files": 24
         },
         {
           "boundary": "experiments",
@@ -1031,17 +1011,15 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.26.0",
+  "engine": "1.23.0",
   "generated": [
     {
-      "into": true,
       "place": "datasets/jam-actions-acoustic-v0/",
       "writers": [
         "src/dataset/acoustic/generate-corpus.ts"
       ]
     },
     {
-      "into": true,
       "place": "datasets/jam-actions-v0-public/",
       "writers": [
         "scripts/package-jam-actions-public.ts",
@@ -1050,7 +1028,6 @@
       ]
     },
     {
-      "into": true,
       "place": "datasets/jam-actions-v0/",
       "writers": [
         "scripts (6 files)"
@@ -1286,6 +1263,12 @@
       "place": "experiments/acoustic-sft/data/sft-train.jsonl",
       "writers": [
         "experiments/acoustic-sft/format-sft.ts"
+      ]
+    },
+    {
+      "place": "experiments/acoustic-sft/runs/",
+      "writers": [
+        "experiments/acoustic-sft/runpod.mjs"
       ]
     },
     {
@@ -1566,7 +1549,7 @@
       ]
     },
     {
-      "place": "experiments/rollout-arc/p4/runs/curriculum-summary.json",
+      "place": "experiments/rollout-arc/p4/runs/",
       "writers": [
         "experiments/rollout-arc/p4/scripts/score-curriculum.mts"
       ]
@@ -1605,12 +1588,6 @@
       "place": "experiments/rollout-arc/p4/runs/spec-probe-summary.json",
       "writers": [
         "experiments/rollout-arc/p4/scripts/score-spec-probe.mts"
-      ]
-    },
-    {
-      "place": "experiments/rollout-arc/p4/runs/summary-*.json",
-      "writers": [
-        "experiments/rollout-arc/p4/scripts/score-curriculum.mts"
       ]
     },
     {
@@ -1695,31 +1672,30 @@
       ]
     },
     {
-      "into": true,
       "place": "src/vocal/arrangements/source/",
       "writers": [
         "scripts/arrange-hymn.ts"
       ]
     }
   ],
-  "generatedAt": "2026-11-25T03:16:48.512Z",
+  "generatedAt": "2026-11-25T09:15:26.297Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
-    "59 writes and 127 reads use paths built at run time and are not named here.",
+    "58 writes and 123 reads use paths built at run time and are not named here.",
     "29 writes go to places this repository does not track, so they are not listed as generated.",
-    "117 writes and 407 reads go to a path their caller passes, not to this repository.",
-    "1 write and 19 reads go to the directory the command is run in, not to this repository.",
+    "118 writes and 410 reads go to a path their caller passes, not to this repository.",
+    "1 write and 18 reads go to the directory the command is run in, not to this repository.",
     "3 writes and 11 reads go to the home directory (.ssh/), not to this repository.",
     "8 writes and 4 reads go to a temporary directory, not to this repository.",
     "1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.",
     "1 read goes to the directory the command is run in (tmp/) or a path its caller passes, not to this repository.",
     "1 write goes to a temporary directory or a path its caller passes, not to this repository.",
-    "17 commands are built at run time and not followed, 2 of them in tests.",
+    "12 commands are built at run time and not followed, 1 of them in tests.",
     "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.",
-    "CI runs or checks 532 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 532.",
-    "Release runs or checks 467 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 467.",
+    "CI runs or checks 532 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "Release runs or checks 467 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -1807,22 +1783,13 @@
       ]
     }
   ],
-  "startBeside": [
-    {
-      "files": [
-        "src/stdio-supervisor.ts",
-        "src/state-home.ts"
-      ],
-      "from": "src/mcp-server.ts"
-    }
-  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "src/mcp-server.ts",
-    "src/songs/config/loader.ts",
-    "src/songs/config/schema.ts",
-    "src/songs/types.ts"
+    "src/stdio-supervisor.ts",
+    "src/state-home.ts",
+    "src/songs/config/loader.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -1834,8 +1801,7 @@
     "spaces": 0,
     "src": 218
   },
-  "testedCodeParts": 5,
-  "unnamedWrites": 59,
+  "unnamedWrites": 58,
   "unread": [
     {
       "place": "datasets/jam-actions-v0/evals/e1-tool-use-results.json",
@@ -1888,7 +1854,7 @@
   ],
   "unreadFiles": 0,
   "unreadNote": [
-    "And 66 more places."
+    "And 64 more places."
   ],
   "untested": [
     {
@@ -1898,5 +1864,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 111
+  "written": 110
 }

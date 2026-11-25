@@ -93,6 +93,8 @@ export {
   shuffledOrder,
   aggregatePanel,
   interpretPanel,
+  MIN_PANEL_JUDGES,
+  INSUFFICIENT_JUDGES_CODE,
   type PanelSystem,
   type BwsVote,
   type PanelScore,
@@ -102,7 +104,15 @@ export {
   OllamaBwsJudge,
   buildJudgePrompt,
   parseJudgeResponse,
+  estimateJudgeContextTokens,
+  makeUnreachablePanelJudge,
+  JUDGE_DEFAULT_MAX_TOKENS,
+  JUDGE_CHARS_PER_TOKEN,
+  JUDGE_CTX_MARGIN_TOKENS,
+  JUDGE_NUM_CTX,
   type OllamaBwsJudgeOptions,
+  type JudgeDropReason,
+  type JudgeCallOutcome,
 } from "./ollama-bws-judge.js";
 export {
   GENERATOR_FAMILY_PREFIX,
@@ -138,6 +148,11 @@ export {
   type PanelJudge,
   type PanelRunOptions,
   type PanelReport,
+  type DroppedTupleRecord,
+  type JudgeDropSummary,
+  type PanelDropsReport,
+  type VoidedSong,
+  type PanelJudgeSummary,
 } from "./panel-run.js";
 export {
   runComposePanelTool,

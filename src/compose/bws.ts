@@ -28,6 +28,17 @@ import type { Realization } from "./types.js";
 
 const PC_NAMES = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
 
+/**
+ * Minimum number of distinct cross-family judges that must cast a valid vote on
+ * a song before that song's judgments enter aggregation (matches the ≥3
+ * cross-family quorum rule). Songs below this minimum are voided with
+ * `INSUFFICIENT_JUDGES`.
+ */
+export const MIN_PANEL_JUDGES = 3;
+
+/** Machine-readable reason prefix used when judge drops void a song. */
+export const INSUFFICIENT_JUDGES_CODE = "INSUFFICIENT_JUDGES";
+
 /** A named realization system under test (e.g. "floor", "engine"). */
 export interface PanelSystem {
   /** Stable id used in reports + the discrimination-floor anchors. */

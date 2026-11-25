@@ -469,6 +469,87 @@ describe("MCP real stops: cancellation, deadlines, child kills, progress, and in
     }
   });
 
+  it("compose_panel MCP tool reports unreachable probe-failed judge, sets think: false by capability, and pins num_ctx", async () => {
+    const seenShow: string[] = [];
+    const seenJudgeBodies: Array<Record<string, unknown>> = [];
+    const srv = createServer((req, res) => {
+      if (req.method === "GET" && req.url === "/api/tags") {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ models: [] }));
+        return;
+      }
+      let raw = "";
+      req.setEncoding("utf8");
+      req.on("data", (c) => { raw += c; });
+      req.on("end", () => {
+        const body = JSON.parse(raw || "{}") as Record<string, unknown>;
+        if (req.method === "POST" && req.url === "/api/show") {
+          const model = String(body.model ?? "");
+          seenShow.push(model);
+          if (model === "m4:latest") {
+            req.socket.destroy();
+            return;
+          }
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ capabilities: model === "m1:latest" ? ["completion", "thinking"] : ["completion"] }));
+          return;
+        }
+        if (req.method === "POST" && req.url === "/api/chat") {
+          const model = String(body.model ?? "");
+          if (model === "qwen2.5:7b") {
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({
+              model,
+              message: { role: "assistant", content: '[{"measure":1,"degrees":[0,1,2,0]}]' },
+              done: true,
+            }));
+            return;
+          }
+          seenJudgeBodies.push(body);
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({
+            model,
+            message: { role: "assistant", content: '{"best":1,"worst":4}' },
+            done: true,
+          }));
+          return;
+        }
+        res.writeHead(404);
+        res.end();
+      });
+    });
+    servers.push(srv);
+    await new Promise<void>((resolve) => srv.listen(0, "127.0.0.1", resolve));
+    const addr = srv.address();
+    if (!addr || typeof addr === "string") throw new Error("bad addr");
+    process.env.OLLAMA_HOST = `http://127.0.0.1:${addr.port}`;
+
+    const { client, close } = await connectInMemory();
+    try {
+      const res = (await client.callTool({
+        name: "compose_panel",
+        arguments: {
+          songs: "america-the-beautiful",
+          measures: "1-2",
+          n: 1,
+          judges: "m1:latest:fam1,m2:latest:fam2,m3:latest:fam3,m4:latest:fam4",
+        },
+      })) as { isError?: boolean; content: Array<{ type: string; text?: string }> };
+      expect(res.isError).not.toBe(true);
+      const text = extractText(res);
+      expect(text).toContain("Dropped votes: 1 (timeout: 0, empty_reply: 0, parse_failure: 0, unreachable: 1)");
+      expect(text).toContain("Minimum-judges gate: PASSED (1/1 songs met >=3 judges)");
+      const m1Body = seenJudgeBodies.find((b) => b.model === "m1:latest")!;
+      const m2Body = seenJudgeBodies.find((b) => b.model === "m2:latest")!;
+      expect(m1Body.think).toBe(false);
+      expect("think" in m2Body).toBe(false);
+      expect((m1Body.options as Record<string, unknown>).num_ctx).toBe(16_384);
+      expect(seenShow).toEqual(expect.arrayContaining(["m1:latest", "m2:latest", "m3:latest", "m4:latest"]));
+    } finally {
+      await close();
+    }
+  });
+
   it("kills fake SoulX child process tree on abort, deadline, stop_playback, and reports progress", async () => {
     const prompt = writePromptPair(tmpDir);
     const scriptsDir = join(tmpDir, "scripts");

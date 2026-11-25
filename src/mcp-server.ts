@@ -87,6 +87,8 @@ import {
   RefiningProposer,
   OllamaSpecRealizer,
   OllamaBwsJudge,
+  makeUnreachablePanelJudge,
+  MIN_PANEL_JUDGES,
   runComposePanelTool,
   type PanelSystemSpec,
   type PanelJudge,
@@ -2649,6 +2651,7 @@ registerTool(
 
     const DEFAULT_JUDGES = "mistral-small:24b:mistral,granite4.1:30b:granite,gemma4:31b:gemma,aya-expanse:32b:aya";
     const judgeSpecs = (judges ?? DEFAULT_JUDGES).split(",").map((s: string) => s.trim()).filter(Boolean);
+    const panelJudges: PanelJudge[] = [];
     const reachableJudges: PanelJudge[] = [];
     const unreachableJudges: string[] = [];
     for (const spec of judgeSpecs) {
@@ -2662,15 +2665,19 @@ registerTool(
       try {
         await j.probe(signal);
         reachableJudges.push(j);
+        panelJudges.push(j);
       } catch (err) {
         if (isCancelledError(err) || signal?.aborted) {
           return structuredError("cancelled", "compose_panel was cancelled.", "Request was aborted while probing judge models.");
         }
         unreachableJudges.push(model);
+        panelJudges.push(
+          makeUnreachablePanelJudge(model, family, err instanceof Error ? err.message : String(err)),
+        );
       }
     }
-    if (reachableJudges.length < 3) {
-      return structuredError("too_few_judges", `An honest cross-family panel needs ≥3 reachable judge families; only ${reachableJudges.length} of ${judgeSpecs.length} responded${unreachableJudges.length ? ` (down: ${unreachableJudges.join(", ")})` : ""}.`, "Pull more local models (e.g. 'ollama pull mistral-small:24b'), or pass --judges with models you have.");
+    if (reachableJudges.length < MIN_PANEL_JUDGES) {
+      return structuredError("too_few_judges", `An honest cross-family panel needs ≥${MIN_PANEL_JUDGES} reachable judge families; only ${reachableJudges.length} of ${judgeSpecs.length} responded${unreachableJudges.length ? ` (down: ${unreachableJudges.join(", ")})` : ""}.`, "Pull more local models (e.g. 'ollama pull mistral-small:24b'), or pass --judges with models you have.");
     }
 
     const systems: PanelSystemSpec[] = [
@@ -2685,7 +2692,7 @@ registerTool(
       result = await runComposePanelTool({
         progressions,
         systems,
-        judges: reachableJudges,
+        judges: panelJudges,
         style: styleName,
         anchors: { floor: "floor", valid: "refined", engine: "engine" },
         signal,

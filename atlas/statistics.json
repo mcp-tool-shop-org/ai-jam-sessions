@@ -238,7 +238,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 169,
+      "qualifyingSourceCommits": 170,
       "rebaseline": null
     }
   ],
@@ -306,8 +306,8 @@
         "path": ".polyglot-cache.json"
       },
       {
-        "commits": 88,
-        "lines": 1841,
+        "commits": 89,
+        "lines": 1843,
         "path": "CHANGELOG.md"
       },
       {
@@ -1201,8 +1201,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 33,
-        "lines": 1361,
+        "commits": 34,
+        "lines": 1385,
         "path": "atlas/README.md"
       },
       {
@@ -1211,18 +1211,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 33,
-        "lines": 6757,
+        "commits": 34,
+        "lines": 6811,
         "path": "atlas/page.json"
       },
       {
-        "commits": 33,
-        "lines": 66283,
+        "commits": 34,
+        "lines": 66373,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 33,
-        "lines": 151783,
+        "commits": 34,
+        "lines": 151941,
         "path": "atlas/structure.json"
       },
       {
@@ -15586,6 +15586,11 @@
         "path": "src/vocal/melody-notes.ts"
       },
       {
+        "commits": 1,
+        "lines": 92,
+        "path": "src/vocal/posix-parent-guard.ts"
+      },
+      {
         "commits": 2,
         "lines": 192,
         "path": "src/vocal/prepare.stage4.test.ts"
@@ -15641,18 +15646,18 @@
         "path": "src/vocal/song-generate.ts"
       },
       {
-        "commits": 3,
-        "lines": 1526,
+        "commits": 4,
+        "lines": 1533,
         "path": "src/vocal/soulx-singer-cache.test.ts"
       },
       {
-        "commits": 4,
-        "lines": 828,
+        "commits": 5,
+        "lines": 898,
         "path": "src/vocal/soulx-singer.test.ts"
       },
       {
-        "commits": 4,
-        "lines": 1806,
+        "commits": 5,
+        "lines": 1842,
         "path": "src/vocal/soulx-singer.ts"
       },
       {
@@ -15861,9 +15866,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-11-25T03:16:48.512Z",
+  "generatedAt": "2026-11-25T09:15:26.297Z",
   "generatedFrom": {
-    "commit": "77b5ec1340100bff0e30af392447784ee9c9fc92"
+    "commit": "0339ba3ab190c10120b234e952dc511791624763"
   },
   "pairs": [
     {
@@ -16128,43 +16133,43 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 20,
-      "shared": 20,
+      "either": 21,
+      "shared": 21,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 20,
-      "shared": 20,
+      "either": 21,
+      "shared": 21,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 20,
-      "shared": 20,
+      "either": 21,
+      "shared": 21,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 20,
-      "shared": 20,
+      "either": 21,
+      "shared": 21,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 20,
-      "shared": 20,
+      "either": 21,
+      "shared": 21,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 20,
-      "shared": 20,
+      "either": 21,
+      "shared": 21,
       "strength": 1
     },
     {
@@ -16269,16 +16274,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-11-24T22:01:13-05:00",
+    "headDate": "2026-11-24T22:17:13-05:00",
     "inScopeFiles": 3106,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 650,
+    "qualifyingCommits": 651,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-05-29T03:01:13.000Z",
+    "since": "2026-05-29T03:17:13.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
