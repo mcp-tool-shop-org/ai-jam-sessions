@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, rmSync, truncateSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
@@ -18,15 +19,16 @@ function makeWavHeader(params: {
   channels: number;
   bitDepth: number;
   dataBytes: number;
+  formatCode?: number;
   withTrailingPayloadBytes?: number;
 }): Buffer {
   const header = Buffer.alloc(44 + (params.withTrailingPayloadBytes ?? 0));
   header.write("RIFF", 0);
-  header.writeUInt32LE(36 + params.dataBytes, 4);
+  header.writeUInt32LE(Math.min(0xffffffff, 36 + params.dataBytes), 4);
   header.write("WAVE", 8);
   header.write("fmt ", 12);
   header.writeUInt32LE(16, 16);
-  header.writeUInt16LE(1, 20);
+  header.writeUInt16LE(params.formatCode ?? 1, 20);
   header.writeUInt16LE(params.channels, 22);
   header.writeUInt32LE(params.sampleRate, 24);
   const blockAlign = params.channels * (params.bitDepth / 8);
@@ -36,6 +38,17 @@ function makeWavHeader(params: {
   header.write("data", 36);
   header.writeUInt32LE(params.dataBytes, 40);
   return header;
+}
+
+function writeSparseFile(filePath: string, header: Buffer, totalBytes: number): void {
+  writeFileSync(filePath, header);
+  if (process.platform === "win32") {
+    spawnSync("fsutil", ["sparse", "setflag", filePath], {
+      stdio: "ignore",
+      windowsHide: true,
+    });
+  }
+  truncateSync(filePath, totalBytes);
 }
 
 describe("audio-limits", () => {
@@ -124,6 +137,99 @@ describe("audio-limits", () => {
       expect(over.result.content[0].text).toContain("5.50 s");
       expect(over.result.content[0].text).toContain("5 s duration limit");
       expect(over.result.content[0].text).toContain("1144 bytes");
+    }
+  });
+
+  it("uses 600 s duration as the primary gate so 300 s 24-bit and 32-bit float takes pass, while 601 s and >1 GiB unreadable headers fail", () => {
+    const dir = mkDir();
+    const prevBytes = process.env[AUDIO_MAX_FILE_BYTES_ENV];
+    const prevDur = process.env[AUDIO_MAX_DURATION_SEC_ENV];
+    delete process.env[AUDIO_MAX_FILE_BYTES_ENV];
+    delete process.env[AUDIO_MAX_DURATION_SEC_ENV];
+
+    try {
+      // 24-bit PCM stereo @ 48 kHz, 300 s = 86,400,000 data bytes (> old 64 MiB cap)
+      const pcm24Bytes = 48_000 * 2 * 3 * 300;
+      const pcm24Path = join(dir, "24bit-48k-300s.wav");
+      writeSparseFile(
+        pcm24Path,
+        makeWavHeader({ sampleRate: 48_000, channels: 2, bitDepth: 24, formatCode: 1, dataBytes: pcm24Bytes }),
+        44 + pcm24Bytes,
+      );
+      expect(checkAudioInputCaps(pcm24Path)).toEqual({ ok: true });
+
+      // 32-bit IEEE float stereo @ 48 kHz, 300 s = 115,200,000 data bytes (> old 64 MiB cap)
+      const float32Bytes = 48_000 * 2 * 4 * 300;
+      const float32Path = join(dir, "f32-48k-300s.wav");
+      writeSparseFile(
+        float32Path,
+        makeWavHeader({ sampleRate: 48_000, channels: 2, bitDepth: 32, formatCode: 3, dataBytes: float32Bytes }),
+        44 + float32Bytes,
+      );
+      expect(checkAudioInputCaps(float32Path)).toEqual({ ok: true });
+
+      // 24-bit PCM stereo @ 96 kHz, 300 s = 172,800,000 data bytes
+      const pcm24_96kBytes = 96_000 * 2 * 3 * 300;
+      const pcm24_96kPath = join(dir, "24bit-96k-300s.wav");
+      writeSparseFile(
+        pcm24_96kPath,
+        makeWavHeader({ sampleRate: 96_000, channels: 2, bitDepth: 24, formatCode: 1, dataBytes: pcm24_96kBytes }),
+        44 + pcm24_96kBytes,
+      );
+      expect(checkAudioInputCaps(pcm24_96kPath)).toEqual({ ok: true });
+
+      // 601 s 24-bit stereo @ 48 kHz -> refused by duration (not byte size)
+      const over601Bytes = 48_000 * 2 * 3 * 601;
+      const over601Path = join(dir, "24bit-48k-601s.wav");
+      writeSparseFile(
+        over601Path,
+        makeWavHeader({ sampleRate: 48_000, channels: 2, bitDepth: 24, formatCode: 1, dataBytes: over601Bytes }),
+        44 + over601Bytes,
+      );
+      const durRes = checkAudioInputCaps(over601Path);
+      expect(durRes.ok).toBe(false);
+      if (!durRes.ok && !durRes.missing) {
+        expect(durRes.result.isError).toBe(true);
+        expect(durRes.result.content[0].text).toContain("601.00 s");
+        expect(durRes.result.content[0].text).toContain("600 s duration limit");
+      }
+
+      // Unreadable header over the 1 GiB ceiling -> refused
+      expect(AUDIO_MAX_FILE_BYTES).toBeGreaterThanOrEqual(1024 * 1024 * 1024);
+      const hugeBadPath = join(dir, "unreadable-over-1gib.bin");
+      writeSparseFile(hugeBadPath, Buffer.from("NOT_A_WAV_FILE_HEADER"), AUDIO_MAX_FILE_BYTES + 1);
+      const hugeBadRes = checkAudioInputCaps(hugeBadPath);
+      expect(hugeBadRes.ok).toBe(false);
+      if (!hugeBadRes.ok && !hugeBadRes.missing) {
+        expect(hugeBadRes.result.isError).toBe(true);
+        expect(hugeBadRes.result.content[0].text).toContain(`${AUDIO_MAX_FILE_BYTES + 1} bytes`);
+        expect(hugeBadRes.result.content[0].text).toContain(`${AUDIO_MAX_FILE_BYTES}-byte limit`);
+      }
+
+      // Unreadable header <= 1 GiB -> allowed past cap check (decodeWav gives format error)
+      const smallBadPath = join(dir, "unreadable-under-1gib.bin");
+      writeFileSync(smallBadPath, Buffer.from("NOT_A_WAV_FILE_HEADER"));
+      expect(checkAudioInputCaps(smallBadPath)).toEqual({ ok: true });
+
+      // Valid duration (5 s) whose file size exceeds header-derived byte limit + 1 MiB slack -> refused
+      const padded5sPath = join(dir, "padded-5s.wav");
+      const paddedTotal = 44 + 1000 + 2 * 1024 * 1024;
+      writeSparseFile(
+        padded5sPath,
+        makeWavHeader({ sampleRate: 100, channels: 1, bitDepth: 16, dataBytes: 1000 }),
+        paddedTotal,
+      );
+      const paddedRes = checkAudioInputCaps(padded5sPath, { maxDurationSec: 5 });
+      expect(paddedRes.ok).toBe(false);
+      if (!paddedRes.ok && !paddedRes.missing) {
+        expect(paddedRes.result.isError).toBe(true);
+        expect(paddedRes.result.content[0].text).toContain(`${paddedTotal} bytes`);
+      }
+    } finally {
+      if (prevBytes === undefined) delete process.env[AUDIO_MAX_FILE_BYTES_ENV];
+      else process.env[AUDIO_MAX_FILE_BYTES_ENV] = prevBytes;
+      if (prevDur === undefined) delete process.env[AUDIO_MAX_DURATION_SEC_ENV];
+      else process.env[AUDIO_MAX_DURATION_SEC_ENV] = prevDur;
     }
   });
 });

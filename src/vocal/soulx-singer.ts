@@ -343,6 +343,46 @@ export function killProcessTreeSync(
   }
 }
 
+export const POSIX_PARENT_GUARD_SH = [
+  "exec 3<&0",
+  '( IFS= read -r _ <&3 || true; kill -s KILL -- "-$$" 2>/dev/null || kill -9 "-$$" 2>/dev/null ) >/dev/null 2>&1 &',
+  "watcher=$!",
+  "exec 3<&-",
+  '"$@" </dev/null &',
+  "child=$!",
+  'wait "$child"',
+  "rc=$?",
+  'kill -s KILL "$watcher" 2>/dev/null || true',
+  'exit "$rc"',
+].join("\n");
+
+/** Build OS-specific spawn arguments (adds POSIX stdin-EOF process-group parent-death guard). */
+export function buildSoulxSpawnSpec(
+  cmd: string,
+  args: string[],
+  platform: NodeJS.Platform = process.platform,
+): {
+  file: string;
+  args: string[];
+  stdio: ["ignore" | "pipe", "pipe", "pipe"];
+  detached: boolean;
+} {
+  if (platform === "win32") {
+    return {
+      file: cmd,
+      args,
+      stdio: ["ignore", "pipe", "pipe"],
+      detached: false,
+    };
+  }
+  return {
+    file: "/bin/sh",
+    args: ["-c", POSIX_PARENT_GUARD_SH, "ajs-soulx-guard", cmd, ...args],
+    stdio: ["pipe", "pipe", "pipe"],
+    detached: true,
+  };
+}
+
 /** Kill a child process and all of its descendants, awaiting exit (bounded). */
 export async function killChildProcessTree(
   proc: ChildProcess,
@@ -352,38 +392,41 @@ export async function killChildProcessTree(
   const pid = proc.pid;
   if (!pid) return;
 
-  const waitClosed =
-    proc.exitCode !== null || proc.signalCode !== null
-      ? Promise.resolve()
-      : new Promise<void>((resolveClose) => {
-          const timer = setTimeout(done, 2000);
-          function done(): void {
-            clearTimeout(timer);
-            proc.removeListener("close", done);
-            proc.removeListener("exit", done);
-            resolveClose();
-          }
-          proc.once("close", done);
-          proc.once("exit", done);
-        });
+  const hasExited = proc.exitCode !== null || proc.signalCode !== null;
+
+  const waitClosed = hasExited
+    ? Promise.resolve()
+    : new Promise<void>((resolveClose) => {
+        const timer = setTimeout(done, 2000);
+        function done(): void {
+          clearTimeout(timer);
+          proc.removeListener("close", done);
+          proc.removeListener("exit", done);
+          resolveClose();
+        }
+        proc.once("close", done);
+        proc.once("exit", done);
+      });
 
   if (platform === "win32") {
-    await new Promise<void>((resolveTaskkill) => {
+    if (!hasExited) {
+      await new Promise<void>((resolveTaskkill) => {
+        try {
+          const killer = spawner("taskkill", ["/PID", String(pid), "/T", "/F"], {
+            stdio: "ignore",
+            windowsHide: true,
+          });
+          killer.once("close", () => resolveTaskkill());
+          killer.once("error", () => resolveTaskkill());
+        } catch {
+          resolveTaskkill();
+        }
+      });
       try {
-        const killer = spawner("taskkill", ["/PID", String(pid), "/T", "/F"], {
-          stdio: "ignore",
-          windowsHide: true,
-        });
-        killer.once("close", () => resolveTaskkill());
-        killer.once("error", () => resolveTaskkill());
+        proc.kill("SIGKILL");
       } catch {
-        resolveTaskkill();
+        /* already terminated */
       }
-    });
-    try {
-      proc.kill("SIGKILL");
-    } catch {
-      /* already terminated */
     }
   } else {
     try {
@@ -391,10 +434,12 @@ export async function killChildProcessTree(
     } catch {
       /* process group already gone */
     }
-    try {
-      proc.kill("SIGKILL");
-    } catch {
-      /* process already gone */
+    if (!hasExited) {
+      try {
+        proc.kill("SIGKILL");
+      } catch {
+        /* process already gone */
+      }
     }
   }
 
@@ -409,6 +454,18 @@ export function killAllSoulxChildrenSync(): void {
     }
   }
   for (const proc of [...activeChildren]) {
+    const hasExited = proc.exitCode !== null || proc.signalCode !== null;
+    if (hasExited) {
+      activeChildren.delete(proc);
+      if (proc.pid && process.platform !== "win32") {
+        try {
+          process.kill(-proc.pid, "SIGKILL");
+        } catch {
+          /* process group already gone */
+        }
+      }
+      continue;
+    }
     if (proc.pid) {
       killProcessTreeSync(proc.pid);
     }
@@ -455,14 +512,20 @@ function runPy(
 
   return new Promise((resolveRun, rejectRun) => {
     let settled = false;
-    const proc = spawn(cmd, args, {
+    const spec = buildSoulxSpawnSpec(cmd, args);
+    const proc = spawn(spec.file, spec.args, {
       cwd,
       env: { ...process.env, ...extraEnv },
-      stdio: ["ignore", "pipe", "pipe"],
+      stdio: spec.stdio,
       windowsHide: true,
-      detached: process.platform !== "win32",
+      detached: spec.detached,
     });
     activeChildren.add(proc);
+    proc.stdin?.on("error", () => {});
+    const onExit = () => {
+      activeChildren.delete(proc);
+    };
+    proc.once("exit", onExit);
 
     let stdout = "";
     let stderr = "";
@@ -477,6 +540,8 @@ function runPy(
 
     const cleanup = () => {
       activeChildren.delete(proc);
+      proc.removeListener("exit", onExit);
+      proc.stdin?.destroy();
       signal?.removeEventListener("abort", onAbort);
     };
 

@@ -238,7 +238,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 165,
+      "qualifyingSourceCommits": 167,
       "rebaseline": null
     }
   ],
@@ -306,8 +306,8 @@
         "path": ".polyglot-cache.json"
       },
       {
-        "commits": 86,
-        "lines": 1829,
+        "commits": 87,
+        "lines": 1837,
         "path": "CHANGELOG.md"
       },
       {
@@ -326,43 +326,43 @@
         "path": "Dockerfile"
       },
       {
-        "commits": 29,
-        "lines": 2979,
+        "commits": 30,
+        "lines": 2985,
         "path": "README.es.md"
       },
       {
-        "commits": 29,
-        "lines": 3691,
+        "commits": 30,
+        "lines": 3697,
         "path": "README.fr.md"
       },
       {
-        "commits": 29,
-        "lines": 3179,
+        "commits": 30,
+        "lines": 3185,
         "path": "README.hi.md"
       },
       {
-        "commits": 29,
-        "lines": 3838,
+        "commits": 30,
+        "lines": 3844,
         "path": "README.it.md"
       },
       {
-        "commits": 29,
-        "lines": 3191,
+        "commits": 30,
+        "lines": 3197,
         "path": "README.ja.md"
       },
       {
-        "commits": 47,
-        "lines": 1693,
+        "commits": 49,
+        "lines": 1737,
         "path": "README.md"
       },
       {
-        "commits": 29,
-        "lines": 2738,
+        "commits": 30,
+        "lines": 2744,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 29,
-        "lines": 3658,
+        "commits": 30,
+        "lines": 3664,
         "path": "README.zh.md"
       },
       {
@@ -1201,8 +1201,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 31,
-        "lines": 1307,
+        "commits": 32,
+        "lines": 1342,
         "path": "atlas/README.md"
       },
       {
@@ -1211,18 +1211,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 31,
-        "lines": 6593,
+        "commits": 32,
+        "lines": 6701,
         "path": "atlas/page.json"
       },
       {
-        "commits": 31,
-        "lines": 63737,
+        "commits": 32,
+        "lines": 65908,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 31,
-        "lines": 150384,
+        "commits": 32,
+        "lines": 151468,
         "path": "atlas/structure.json"
       },
       {
@@ -12966,8 +12966,8 @@
         "path": "site/src/content/docs/handbook/live-ensemble.md"
       },
       {
-        "commits": 14,
-        "lines": 180,
+        "commits": 15,
+        "lines": 200,
         "path": "site/src/content/docs/handbook/mcp-tools.md"
       },
       {
@@ -13841,6 +13841,16 @@
         "path": "src/audio-engine.ts"
       },
       {
+        "commits": 1,
+        "lines": 129,
+        "path": "src/audio-limits.test.ts"
+      },
+      {
+        "commits": 1,
+        "lines": 212,
+        "path": "src/audio-limits.ts"
+      },
+      {
         "commits": 5,
         "lines": 65,
         "path": "src/audio-shared.ts"
@@ -14077,6 +14087,16 @@
       },
       {
         "commits": 1,
+        "lines": 39,
+        "path": "src/cancel.test.ts"
+      },
+      {
+        "commits": 1,
+        "lines": 53,
+        "path": "src/cancel.ts"
+      },
+      {
+        "commits": 1,
         "lines": 14,
         "path": "src/chord-detect.ts"
       },
@@ -14111,8 +14131,8 @@
         "path": "src/compose/bws.ts"
       },
       {
-        "commits": 6,
-        "lines": 150,
+        "commits": 7,
+        "lines": 152,
         "path": "src/compose/compose-panel-tool.ts"
       },
       {
@@ -14151,13 +14171,13 @@
         "path": "src/compose/llm-panel.ts"
       },
       {
-        "commits": 2,
-        "lines": 94,
+        "commits": 3,
+        "lines": 109,
         "path": "src/compose/ollama-bws-judge.test.ts"
       },
       {
-        "commits": 6,
-        "lines": 382,
+        "commits": 7,
+        "lines": 420,
         "path": "src/compose/ollama-bws-judge.ts"
       },
       {
@@ -14171,13 +14191,13 @@
         "path": "src/compose/ollama-realizer.ts"
       },
       {
-        "commits": 1,
-        "lines": 130,
+        "commits": 2,
+        "lines": 145,
         "path": "src/compose/ollama-spec-realizer.test.ts"
       },
       {
-        "commits": 1,
-        "lines": 213,
+        "commits": 2,
+        "lines": 246,
         "path": "src/compose/ollama-spec-realizer.ts"
       },
       {
@@ -14191,13 +14211,13 @@
         "path": "src/compose/panel-progress.ts"
       },
       {
-        "commits": 9,
-        "lines": 320,
+        "commits": 10,
+        "lines": 348,
         "path": "src/compose/panel-run.test.ts"
       },
       {
-        "commits": 9,
-        "lines": 411,
+        "commits": 10,
+        "lines": 433,
         "path": "src/compose/panel-run.ts"
       },
       {
@@ -14206,8 +14226,8 @@
         "path": "src/compose/realize.test.ts"
       },
       {
-        "commits": 4,
-        "lines": 303,
+        "commits": 5,
+        "lines": 316,
         "path": "src/compose/realize.ts"
       },
       {
@@ -14216,8 +14236,8 @@
         "path": "src/compose/refine.test.ts"
       },
       {
-        "commits": 1,
-        "lines": 201,
+        "commits": 2,
+        "lines": 209,
         "path": "src/compose/refine.ts"
       },
       {
@@ -14531,13 +14551,13 @@
         "path": "src/dataset/eval/llm-backends/ollama-intern.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 412,
+        "commits": 3,
+        "lines": 497,
         "path": "src/dataset/eval/llm-backends/ollama.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 37,
+        "commits": 3,
+        "lines": 337,
         "path": "src/dataset/eval/llm-backends/ollama.ts"
       },
       {
@@ -14871,13 +14891,13 @@
         "path": "src/layered-engine.ts"
       },
       {
-        "commits": 1,
-        "lines": 158,
+        "commits": 2,
+        "lines": 183,
         "path": "src/maker/abc-chord-proposer.test.ts"
       },
       {
-        "commits": 1,
-        "lines": 155,
+        "commits": 2,
+        "lines": 197,
         "path": "src/maker/abc-chord-proposer.ts"
       },
       {
@@ -14891,23 +14911,23 @@
         "path": "src/maker/abc-syntax.ts"
       },
       {
-        "commits": 1,
-        "lines": 117,
+        "commits": 2,
+        "lines": 148,
         "path": "src/maker/auto-reharmonize-tool.test.ts"
       },
       {
-        "commits": 1,
-        "lines": 152,
+        "commits": 2,
+        "lines": 189,
         "path": "src/maker/auto-reharmonize-tool.ts"
       },
       {
-        "commits": 1,
-        "lines": 186,
+        "commits": 2,
+        "lines": 211,
         "path": "src/maker/chord-proposer.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 186,
+        "commits": 3,
+        "lines": 218,
         "path": "src/maker/chord-proposer.ts"
       },
       {
@@ -14921,13 +14941,13 @@
         "path": "src/maker/er-gate.ts"
       },
       {
-        "commits": 3,
-        "lines": 98,
+        "commits": 4,
+        "lines": 133,
         "path": "src/maker/reharmonize.test.ts"
       },
       {
-        "commits": 1,
-        "lines": 131,
+        "commits": 2,
+        "lines": 153,
         "path": "src/maker/reharmonize.ts"
       },
       {
@@ -14961,6 +14981,11 @@
         "path": "src/mcp-error.ts"
       },
       {
+        "commits": 1,
+        "lines": 759,
+        "path": "src/mcp-real-stops.test.ts"
+      },
+      {
         "commits": 5,
         "lines": 185,
         "path": "src/mcp-schema.test.ts"
@@ -14981,9 +15006,14 @@
         "path": "src/mcp-server.tools.test.ts"
       },
       {
-        "commits": 48,
-        "lines": 7102,
+        "commits": 50,
+        "lines": 7441,
         "path": "src/mcp-server.ts"
+      },
+      {
+        "commits": 1,
+        "lines": 134,
+        "path": "src/mcp-tool-count.test.ts"
       },
       {
         "commits": 1,
@@ -15566,8 +15596,8 @@
         "path": "src/vocal/prepare.test.ts"
       },
       {
-        "commits": 9,
-        "lines": 431,
+        "commits": 10,
+        "lines": 454,
         "path": "src/vocal/prepare.ts"
       },
       {
@@ -15616,13 +15646,13 @@
         "path": "src/vocal/soulx-singer-cache.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 338,
+        "commits": 3,
+        "lines": 756,
         "path": "src/vocal/soulx-singer.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 1032,
+        "commits": 3,
+        "lines": 1673,
         "path": "src/vocal/soulx-singer.ts"
       },
       {
@@ -15831,254 +15861,254 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-11-25T01:52:19.108Z",
+  "generatedAt": "2026-11-25T02:50:42.695Z",
   "generatedFrom": {
-    "commit": "fe392a4b39e66d29e062a0caa2d777445661192e"
+    "commit": "2d501c9145037fcc172850c3d6ab8dcb027655f6"
   },
   "pairs": [
     {
       "a": ".polyglot-cache.json",
       "b": "README.es.md",
-      "either": 21,
+      "either": 22,
       "shared": 13,
-      "strength": 0.619048
+      "strength": 0.590909
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.fr.md",
-      "either": 21,
+      "either": 22,
       "shared": 13,
-      "strength": 0.619048
+      "strength": 0.590909
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.hi.md",
-      "either": 21,
+      "either": 22,
       "shared": 13,
-      "strength": 0.619048
+      "strength": 0.590909
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.it.md",
-      "either": 21,
+      "either": 22,
       "shared": 13,
-      "strength": 0.619048
+      "strength": 0.590909
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.ja.md",
-      "either": 21,
+      "either": 22,
       "shared": 13,
-      "strength": 0.619048
+      "strength": 0.590909
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.pt-BR.md",
-      "either": 21,
+      "either": 22,
       "shared": 13,
-      "strength": 0.619048
+      "strength": 0.590909
     },
     {
       "a": ".polyglot-cache.json",
       "b": "README.zh.md",
-      "either": 21,
+      "either": 22,
       "shared": 13,
-      "strength": 0.619048
+      "strength": 0.590909
     },
     {
       "a": "README.es.md",
       "b": "README.fr.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.hi.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.it.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.ja.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.md",
-      "either": 31,
-      "shared": 16,
-      "strength": 0.516129
+      "either": 33,
+      "shared": 17,
+      "strength": 0.515152
     },
     {
       "a": "README.es.md",
       "b": "README.pt-BR.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.zh.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.hi.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.it.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.ja.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.md",
-      "either": 31,
-      "shared": 16,
-      "strength": 0.516129
+      "either": 33,
+      "shared": 17,
+      "strength": 0.515152
     },
     {
       "a": "README.fr.md",
       "b": "README.pt-BR.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.zh.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.it.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.ja.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.md",
-      "either": 31,
-      "shared": 16,
-      "strength": 0.516129
+      "either": 33,
+      "shared": 17,
+      "strength": 0.515152
     },
     {
       "a": "README.hi.md",
       "b": "README.pt-BR.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.zh.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.ja.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.md",
-      "either": 31,
-      "shared": 16,
-      "strength": 0.516129
+      "either": 33,
+      "shared": 17,
+      "strength": 0.515152
     },
     {
       "a": "README.it.md",
       "b": "README.pt-BR.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.zh.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.md",
-      "either": 31,
-      "shared": 16,
-      "strength": 0.516129
+      "either": 33,
+      "shared": 17,
+      "strength": 0.515152
     },
     {
       "a": "README.ja.md",
       "b": "README.pt-BR.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.zh.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "README.md",
       "b": "README.pt-BR.md",
-      "either": 31,
-      "shared": 16,
-      "strength": 0.516129
+      "either": 33,
+      "shared": 17,
+      "strength": 0.515152
     },
     {
       "a": "README.md",
       "b": "README.zh.md",
-      "either": 31,
-      "shared": 16,
-      "strength": 0.516129
+      "either": 33,
+      "shared": 17,
+      "strength": 0.515152
     },
     {
       "a": "README.pt-BR.md",
       "b": "README.zh.md",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
@@ -16098,43 +16128,43 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 18,
-      "shared": 18,
+      "either": 19,
+      "shared": 19,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 18,
-      "shared": 18,
+      "either": 19,
+      "shared": 19,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 18,
-      "shared": 18,
+      "either": 19,
+      "shared": 19,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 18,
-      "shared": 18,
+      "either": 19,
+      "shared": 19,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 18,
-      "shared": 18,
+      "either": 19,
+      "shared": 19,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 18,
-      "shared": 18,
+      "either": 19,
+      "shared": 19,
       "strength": 1
     },
     {
@@ -16208,6 +16238,13 @@
       "strength": 0.9
     },
     {
+      "a": "src/compose/panel-run.test.ts",
+      "b": "src/compose/panel-run.ts",
+      "either": 6,
+      "shared": 4,
+      "strength": 0.666667
+    },
+    {
       "a": "src/dataset/synth-v0/generate.test.ts",
       "b": "src/dataset/synth-v0/generate.ts",
       "either": 5,
@@ -16232,16 +16269,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-11-24T20:25:46-05:00",
+    "headDate": "2026-11-24T21:24:57-05:00",
     "inScopeFiles": 3105,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 645,
+    "qualifyingCommits": 648,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-05-29T01:25:46.000Z",
+    "since": "2026-05-29T02:24:57.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

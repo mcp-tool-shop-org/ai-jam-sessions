@@ -2,17 +2,31 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createServer, type Server as HttpServer } from "node:http";
 import { EventEmitter } from "node:events";
 import { spawn } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, truncateSync, writeFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 
-const audioDouble = vi.hoisted(() => ({
-  disconnects: 0,
-  singerStops: 0,
-}));
+const audioDouble = vi.hoisted(() => {
+  const disconnectWaiters: Array<() => void> = [];
+  return {
+    disconnects: 0,
+    singerStops: 0,
+    hangDisconnect: false,
+    releaseDisconnects() {
+      this.hangDisconnect = false;
+      for (const resolve of disconnectWaiters.splice(0)) resolve();
+    },
+    waitDisconnect(): Promise<void> {
+      return new Promise<void>((resolve) => {
+        disconnectWaiters.push(resolve);
+      });
+    },
+  };
+});
 
 function fakeConnector(kind: string) {
   return {
@@ -20,6 +34,9 @@ function fakeConnector(kind: string) {
     async connect() {},
     async disconnect() {
       audioDouble.disconnects++;
+      if (audioDouble.hangDisconnect) {
+        await audioDouble.waitDisconnect();
+      }
     },
     status() {
       return "connected" as const;
@@ -133,7 +150,11 @@ function writeMinimalWav(filePath) {
     ? `
 const fs = require("node:fs");
 const { spawn } = require("node:child_process");
-const child = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)"], { stdio: "ignore" });
+const childOpts = process.platform === "win32"
+  ? { stdio: "ignore", detached: true, windowsHide: true }
+  : { stdio: "ignore" };
+const child = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)"], childOpts);
+if (typeof child.unref === "function") child.unref();
 fs.writeFileSync(${JSON.stringify(opts.pidMarkerFile)}, JSON.stringify({ parentPid: process.pid, childPid: child.pid }));
 setInterval(() => {}, 1000);
 `
@@ -631,7 +652,7 @@ describe("MCP real stops: cancellation, deadlines, child kills, progress, and in
       expect(isPidAlive(pids.parentPid)).toBe(true);
       expect(isPidAlive(pids.childPid)).toBe(true);
 
-      // Simulate forwarded SIGTERM reaching the server process.
+      // Simulate forwarded SIGTERM reaching the server process (POSIX convention: 128 + 15 = 143).
       fakeProc.emit("SIGTERM");
       const res = (await playPromise) as { isError?: boolean; content: Array<{ type: string; text?: string }> };
       expect(res.isError).toBe(true);
@@ -642,13 +663,13 @@ describe("MCP real stops: cancellation, deadlines, child kills, progress, and in
       while (exitCodes.length === 0 && Date.now() < exitWait) {
         await new Promise((r) => setTimeout(r, 20));
       }
-      expect(exitCodes).toEqual([0]);
+      expect(exitCodes).toEqual([143]);
     } finally {
       await close();
     }
 
-    // 2) Real child process stdio close (and POSIX SIGTERM) killing a live fake SoulX render
-    const spawnCase = async (mode: "stdin-close" | "sigterm") => {
+    // 2) Real child process stdio close (and POSIX SIGTERM / SIGKILL) killing a live fake SoulX render
+    const spawnCase = async (mode: "stdin-close" | "sigterm" | "sigkill") => {
       const subMarker = join(tmpDir, `stdio-${mode}.json`);
       writeFakeSoulxScripts(scriptsDir, { sleepOn: "export", pidMarkerFile: subMarker });
       const harnessCode = `
@@ -691,7 +712,8 @@ describe("MCP real stops: cancellation, deadlines, child kills, progress, and in
         expect(isPidAlive(pids.parentPid)).toBe(true);
         expect(isPidAlive(pids.childPid)).toBe(true);
         if (mode === "stdin-close") child.stdin.end();
-        else child.kill("SIGTERM");
+        else if (mode === "sigterm") child.kill("SIGTERM");
+        else child.kill("SIGKILL");
         await new Promise<void>((resolveExit) => {
           if (child.exitCode !== null) resolveExit();
           else child.once("exit", () => resolveExit());
@@ -706,6 +728,197 @@ describe("MCP real stops: cancellation, deadlines, child kills, progress, and in
     await spawnCase("stdin-close");
     if (process.platform !== "win32") {
       await spawnCase("sigterm");
+      await spawnCase("sigkill");
+    }
+  });
+
+  it("enforces shutdown hard-exit timer on stalled teardown and exits at once on a second signal", async () => {
+    const { client, mod, close } = await connectInMemory();
+    try {
+      expect(mod.SHUTDOWN_HARD_EXIT_MS).toBe(5_000);
+      expect(mod.signalExitCode("SIGTERM")).toBe(143);
+      expect(mod.signalExitCode("SIGINT")).toBe(130);
+      expect(mod.signalExitCode("SIGHUP")).toBe(129);
+
+      // 1) Stalled stopActive() still exits when the hard-exit timer fires.
+      await client.callTool({
+        name: "play_song",
+        arguments: { id: "america-the-beautiful", startMeasure: 1, endMeasure: 1, engine: "piano" },
+      });
+      audioDouble.hangDisconnect = true;
+      const fakeStdin = new EventEmitter();
+      const fakeProc = new EventEmitter();
+      const exitCodes1: number[] = [];
+      mod.attachShutdownHandlers(
+        {},
+        {
+          stdin: fakeStdin as never,
+          proc: fakeProc as never,
+          onExit: (c) => exitCodes1.push(c),
+          hardExitMs: 120,
+        },
+      );
+      fakeProc.emit("SIGTERM");
+      const deadline1 = Date.now() + 1500;
+      while (exitCodes1.length === 0 && Date.now() < deadline1) {
+        await new Promise((r) => setTimeout(r, 15));
+      }
+      expect(exitCodes1).toEqual([143]);
+    } finally {
+      audioDouble.releaseDisconnects();
+      await close();
+    }
+
+    // 2) Second SIGTERM exits immediately without waiting for the 5 s hard-exit timer.
+    const second = await connectInMemory();
+    try {
+      await second.client.callTool({
+        name: "play_song",
+        arguments: { id: "america-the-beautiful", startMeasure: 1, endMeasure: 1, engine: "piano" },
+      });
+      audioDouble.hangDisconnect = true;
+      const fakeStdin2 = new EventEmitter();
+      const fakeProc2 = new EventEmitter();
+      const exitCodes2: number[] = [];
+      second.mod.attachShutdownHandlers(
+        {},
+        {
+          stdin: fakeStdin2 as never,
+          proc: fakeProc2 as never,
+          onExit: (c) => exitCodes2.push(c),
+          hardExitMs: 5_000,
+        },
+      );
+      fakeProc2.emit("SIGTERM");
+      await new Promise((r) => setTimeout(r, 30));
+      expect(exitCodes2).toEqual([]);
+      fakeProc2.emit("SIGTERM");
+      expect(exitCodes2).toEqual([143]);
+    } finally {
+      audioDouble.releaseDisconnects();
+      await second.close();
+    }
+
+    // 3) Transport onclose, request/cancel tracking, send drain, and outputStream flush.
+    const third = await connectInMemory();
+    try {
+      const exitCodes3: number[] = [];
+      let flushed = false;
+      const seenMessages: unknown[] = [];
+      const fakeTransport3 = {
+        onmessage: (m: unknown) => seenMessages.push(m),
+        send: async (_m: unknown) => {},
+        onclose: undefined as (() => void) | undefined,
+      };
+      const fakeOut = {
+        writableLength: 4,
+        destroyed: false,
+        write: (_chunk: string, cb: () => void) => {
+          flushed = true;
+          cb();
+          return true;
+        },
+      };
+      const fakeStdin3 = new EventEmitter();
+      const fakeProc3 = new EventEmitter();
+      third.mod.attachShutdownHandlers(fakeTransport3, {
+        stdin: fakeStdin3 as never,
+        proc: fakeProc3 as never,
+        outputStream: fakeOut as never,
+        onExit: (c) => exitCodes3.push(c),
+      });
+      fakeTransport3.onmessage({ jsonrpc: "2.0", id: 10, method: "tools/call" });
+      fakeTransport3.onmessage({ jsonrpc: "2.0", method: "notifications/cancelled", params: { requestId: 10 } });
+      await fakeTransport3.send({ jsonrpc: "2.0", id: 11, result: {} });
+      expect(seenMessages).toHaveLength(2);
+      fakeTransport3.onclose?.();
+      const deadline3 = Date.now() + 1500;
+      while (exitCodes3.length === 0 && Date.now() < deadline3) {
+        await new Promise((r) => setTimeout(r, 15));
+      }
+      expect(flushed).toBe(true);
+      expect(exitCodes3).toEqual([0]);
+    } finally {
+      await third.close();
+    }
+  });
+
+  it("drains in-flight piped stdin requests before exiting on stdin end", async () => {
+    // Fake local Ollama server takes 150 ms to answer /api/chat — longer than
+    // the 25 ms shutdown flush window, so closing on stdin EOF without draining
+    // drops the response.
+    const ollama = await startFakeOllama((_idx, _body, respond) => {
+      setTimeout(() => respond('K:Amin\n"Fmaj7"A2 |'), 150);
+    });
+    const child = spawn(
+      process.execPath,
+      ["--import", "tsx", join(REPO_ROOT, "src", "mcp-server.ts")],
+      {
+        cwd: REPO_ROOT,
+        stdio: ["pipe", "pipe", "pipe"],
+        env: {
+          ...process.env,
+          AI_JAM_HOME: join(tmpDir, ".ai-jam-sessions"),
+          OLLAMA_HOST: ollama.url,
+        },
+      },
+    );
+    try {
+      let stdout = "";
+      child.stdout.setEncoding("utf8");
+      child.stdout.on("data", (chunk: string) => {
+        stdout += chunk;
+      });
+
+      const payload = [
+        JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "initialize",
+          params: {
+            protocolVersion: "2024-11-05",
+            capabilities: {},
+            clientInfo: { name: "piped-test", version: "1.0.0" },
+          },
+        }),
+        JSON.stringify({ jsonrpc: "2.0", method: "notifications/initialized" }),
+        JSON.stringify({
+          jsonrpc: "2.0",
+          id: 2,
+          method: "tools/call",
+          params: {
+            name: "auto_reharmonize",
+            arguments: { songId: "america-the-beautiful", measures: "1-4", maxSamples: 1 },
+          },
+        }),
+      ].join("\n") + "\n";
+
+      child.stdin.end(payload);
+
+      const exitCode = await new Promise<number | null>((resolve, reject) => {
+        const timer = setTimeout(
+          () => reject(new Error(`Timed out waiting for piped server exit; stdout=${stdout}`)),
+          10_000,
+        );
+        child.once("exit", (code) => {
+          clearTimeout(timer);
+          resolve(code);
+        });
+      });
+
+      expect(exitCode).toBe(0);
+      const responses = stdout
+        .trim()
+        .split(/\r?\n/)
+        .filter(Boolean)
+        .map((line) => JSON.parse(line) as { id?: number; result?: unknown });
+      const initResp = responses.find((r) => r.id === 1);
+      const toolResp = responses.find((r) => r.id === 2);
+      expect(initResp?.result).toBeTruthy();
+      expect(toolResp?.result).toBeTruthy();
+      expect(JSON.stringify(toolResp?.result)).toContain("America the Beautiful");
+    } finally {
+      if (child.exitCode === null) child.kill("SIGKILL");
     }
   });
 
@@ -752,6 +965,38 @@ describe("MCP real stops: cancellation, deadlines, child kills, progress, and in
         arguments: { path: atLimitPath, reference_path: refPath },
       })) as { isError?: boolean; content: Array<{ type: string; text?: string }> };
       expect(okAtLimit.isError).not.toBe(true);
+
+      // Without an explicit byte override, 601 s 24-bit 48kHz stereo is refused by duration via MCP tool.
+      delete process.env.AJS_AUDIO_MAX_FILE_BYTES;
+      delete process.env.AJS_AUDIO_MAX_DURATION_SEC;
+      const sparse601Path = join(tmpDir, "sparse-24bit-601s.wav");
+      const data601 = 48_000 * 2 * 3 * 601;
+      const h = Buffer.alloc(44);
+      h.write("RIFF", 0);
+      h.writeUInt32LE(Math.min(0xffffffff, 36 + data601), 4);
+      h.write("WAVE", 8);
+      h.write("fmt ", 12);
+      h.writeUInt32LE(16, 16);
+      h.writeUInt16LE(1, 20);
+      h.writeUInt16LE(2, 22);
+      h.writeUInt32LE(48_000, 24);
+      h.writeUInt32LE(48_000 * 6, 28);
+      h.writeUInt16LE(6, 32);
+      h.writeUInt16LE(24, 34);
+      h.write("data", 36);
+      h.writeUInt32LE(data601, 40);
+      writeFileSync(sparse601Path, h);
+      if (process.platform === "win32") {
+        spawnSync("fsutil", ["sparse", "setflag", sparse601Path], { stdio: "ignore", windowsHide: true });
+      }
+      truncateSync(sparse601Path, 44 + data601);
+      const sparseRes = (await client.callTool({
+        name: "analyze_audio",
+        arguments: { path: sparse601Path },
+      })) as { isError?: boolean; content: Array<{ type: string; text?: string }> };
+      expect(sparseRes.isError).toBe(true);
+      expect(extractText(sparseRes)).toContain("601.00 s");
+      expect(extractText(sparseRes)).toContain("600 s duration limit");
     } finally {
       await close();
     }

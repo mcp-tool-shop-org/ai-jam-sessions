@@ -111,66 +111,44 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 6,
-      "changed": 33,
+      "added": 0,
+      "changed": 16,
       "moved": 0,
       "parts": 3,
       "removed": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI runs 6 more files than before.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release runs 6 more files than before.",
-        "subjects": [
-          ".github/workflows/release.yml"
-        ]
-      },
-      {
         "kind": "landing",
-        "sentence": "README.md is now also read by src/mcp-tool-count.test.ts.",
+        "sentence": "src/mcp-server.ts is now also read by src/mcp-real-stops.test.ts.",
         "subjects": [
-          "README.md",
-          "src/mcp-tool-count.test.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "site/src/content/docs/handbook/mcp-tools.md is now read by src/mcp-tool-count.test.ts.",
-        "subjects": [
-          "site/src/content/docs/handbook/mcp-tools.md",
-          "src/mcp-tool-count.test.ts"
+          "src/mcp-server.ts",
+          "src/mcp-real-stops.test.ts"
         ]
       },
       {
         "kind": "sequence",
-        "sentence": "In src/mcp-server.ts, `main` gained a step, `once`, before `on`.",
+        "sentence": "In src/audio-limits.ts, `checkAudioInputCaps` gained a step, `mcpStructuredError`, before `mcpStructuredError`.",
         "subjects": [
-          "src/mcp-server.ts"
+          "src/audio-limits.ts"
         ]
       },
       {
         "kind": "sequence",
-        "sentence": "In src/mcp-server.ts, `main` gained a step, `on`, after `once`.",
+        "sentence": "In src/audio-limits.ts, `checkAudioInputCaps` gained a step, `mcpStructuredError`, after `mcpStructuredError`.",
         "subjects": [
-          "src/mcp-server.ts"
+          "src/audio-limits.ts"
         ]
       },
       {
         "kind": "counts",
-        "sentence": "6 files added and 33 changed content, across 3 parts.",
+        "sentence": "16 files changed content, across 3 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "2aa1ca729dd336ed6308c1679a61995ce195a51b",
-      "generatedAt": "2026-11-11T22:02:53.303Z"
+      "commit": "fe392a4b39e66d29e062a0caa2d777445661192e",
+      "generatedAt": "2026-11-25T01:52:19.108Z"
     },
     "unchanged": false
   },
@@ -192,12 +170,12 @@
     }
   ],
   "changesTogetherNote": [
-    "4 files changed together with their own tests, as expected.",
+    "5 files changed together with their own tests, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
     "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 4,
-  "commit": "fe392a4b39e66d29e062a0caa2d777445661192e",
+  "changesTogetherWithTests": 5,
+  "commit": "2d501c9145037fcc172850c3d6ab8dcb027655f6",
   "defaultBranch": "main",
   "derived": "14 parts, mostly JSON data (1554 files) and Markdown (357); code in TypeScript (626), Python (77), JavaScript (32), shell (30), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
@@ -1724,7 +1702,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-11-25T01:52:19.108Z",
+  "generatedAt": "2026-11-25T02:50:42.695Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
@@ -1737,7 +1715,7 @@
     "1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.",
     "1 read goes to the directory the command is run in (tmp/) or a path its caller passes, not to this repository.",
     "1 write goes to a temporary directory or a path its caller passes, not to this repository.",
-    "21 commands are built at run time and not followed, 2 of them in tests.",
+    "17 commands are built at run time and not followed, 2 of them in tests.",
     "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.",
     "CI runs or checks 531 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 531.",

@@ -18,6 +18,8 @@
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { constants as osConstants } from "node:os";
+import type { Writable } from "node:stream";
 import { VERSION } from "./version.js";
 import { shouldSuperviseStdio, runStdioSupervisor, openRpcOutputStream } from "./stdio-supervisor.js";
 import { z } from "zod";
@@ -5145,48 +5147,190 @@ export async function shutdownMcpServer(reason = "Server shutting down"): Promis
   return shutdownPromise;
 }
 
+/** Maximum grace period before a stalled shutdown forces process exit (5 s). */
+export const SHUTDOWN_HARD_EXIT_MS = 5_000;
+
+const SIGNAL_NUMBER_FALLBACK: Record<string, number> = {
+  SIGHUP: 1,
+  SIGINT: 2,
+  SIGTERM: 15,
+};
+
+/** Compute conventional exit code (`128 + signal number`) for signal shutdowns. */
+export function signalExitCode(sig: NodeJS.Signals): number {
+  const num =
+    (osConstants.signals as Record<string, number | undefined>)[sig] ??
+    SIGNAL_NUMBER_FALLBACK[sig] ??
+    15;
+  return 128 + num;
+}
+
 /**
- * Attach stdio-close and POSIX-signal shutdown hooks that kill any tracked
- * SoulX child process trees and tear down active playback before exiting.
+ * Attach stdio-close, stdin-EOF drain, and POSIX-signal shutdown hooks that kill
+ * any tracked SoulX child trees, bound shutdown by `SHUTDOWN_HARD_EXIT_MS`, exit
+ * immediately on a second signal, and exit with `128 + signal number`.
  */
 export function attachShutdownHandlers(
-  transport: { onclose?: (() => void) | undefined },
+  transport: {
+    onclose?: (() => void) | undefined;
+    onmessage?: ((...args: any[]) => void) | undefined;
+    send?: ((...args: any[]) => Promise<void>) | undefined;
+  },
   options: {
     stdin?: Pick<NodeJS.ReadStream, "once">;
     proc?: Pick<NodeJS.Process, "on">;
     onExit?: (code: number) => void;
+    outputStream?: Writable;
+    hardExitMs?: number;
   } = {},
 ): (reason: string) => void {
   const stdin = options.stdin ?? process.stdin;
   const proc = options.proc ?? process;
   const onExit = options.onExit ?? ((code: number) => process.exit(code));
+  const hardExitMs = options.hardExitMs ?? SHUTDOWN_HARD_EXIT_MS;
 
-  let exiting = false;
-  const shutdownAndExit = (reason: string) => {
-    if (exiting) return;
-    exiting = true;
+  const inFlightRequests = new Set<string>();
+  const drainWaiters = new Set<() => void>();
+  const notifyDrainIfEmpty = () => {
+    if (inFlightRequests.size === 0) {
+      for (const resolve of [...drainWaiters]) resolve();
+      drainWaiters.clear();
+    }
+  };
+
+  const prevOnMessage = transport.onmessage;
+  transport.onmessage = (...args: any[]) => {
+    const msg = args[0] as Record<string, unknown> | undefined;
+    if (msg && typeof msg === "object") {
+      if ("method" in msg && "id" in msg && msg.id !== undefined && msg.id !== null) {
+        inFlightRequests.add(String(msg.id));
+      } else if (msg.method === "notifications/cancelled") {
+        const params = msg.params as Record<string, unknown> | undefined;
+        if (params && params.requestId !== undefined && params.requestId !== null) {
+          inFlightRequests.delete(String(params.requestId));
+          notifyDrainIfEmpty();
+        }
+      }
+    }
+    prevOnMessage?.(...args);
+  };
+
+  if (typeof transport.send === "function") {
+    const origSend = transport.send;
+    transport.send = (...args: any[]) => {
+      const msg = args[0] as Record<string, unknown> | undefined;
+      const isResponse =
+        Boolean(msg && typeof msg === "object" && !("method" in msg) && "id" in msg && msg.id !== undefined && msg.id !== null);
+      const idKey = isResponse ? String(msg!.id) : null;
+      return origSend.apply(transport, args).finally(() => {
+        if (idKey !== null) {
+          inFlightRequests.delete(idKey);
+          notifyDrainIfEmpty();
+        }
+      });
+    };
+  }
+
+  let shuttingDown = false;
+  let signalCount = 0;
+  let exited = false;
+  let currentExitCode = 0;
+  let hardTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const finishExit = (code: number) => {
+    if (exited) return;
+    exited = true;
+    if (hardTimer) {
+      clearTimeout(hardTimer);
+      hardTimer = null;
+    }
+    notifyDrainIfEmpty();
+    onExit(code);
+  };
+
+  const armHardExit = () => {
+    if (hardTimer) return;
+    hardTimer = setTimeout(() => {
+      killAllSoulxChildrenSync();
+      finishExit(currentExitCode);
+    }, hardExitMs);
+    hardTimer.unref?.();
+  };
+
+  const flushOutput = async () => {
+    const out = options.outputStream;
+    if (out && out.writableLength > 0 && !out.destroyed) {
+      await new Promise<void>((resolve) => {
+        out.write("", () => resolve());
+      });
+    }
+  };
+
+  const runGracefulTeardown = (reason: string) => {
+    armHardExit();
     killAllSoulxChildrenSync();
     void shutdownMcpServer(reason)
       .then(() => new Promise<void>((resolve) => setTimeout(resolve, 25)))
       .then(() => server.close().catch(() => {}))
-      .finally(() => onExit(0));
+      .then(() => flushOutput())
+      .finally(() => finishExit(currentExitCode));
   };
 
+  const onStdinEof = async (reason: string) => {
+    if (shuttingDown || exited) return;
+    shuttingDown = true;
+    currentExitCode = 0;
+    armHardExit();
+
+    await new Promise<void>((resolve) => setImmediate(resolve));
+    if (inFlightRequests.size > 0 && !exited && signalCount === 0) {
+      await new Promise<void>((resolve) => {
+        if (inFlightRequests.size === 0 || exited || signalCount > 0) {
+          resolve();
+          return;
+        }
+        drainWaiters.add(resolve);
+      });
+    }
+    if (exited || signalCount > 0) return;
+    runGracefulTeardown(reason);
+  };
+
+  const prevOnClose = transport.onclose;
   transport.onclose = () => {
-    shutdownAndExit("stdio transport closed");
+    prevOnClose?.();
+    if (shuttingDown || exited) return;
+    shuttingDown = true;
+    currentExitCode = 0;
+    runGracefulTeardown("stdio transport closed");
   };
   stdin.once("end", () => {
-    shutdownAndExit("stdin ended");
+    void onStdinEof("stdin ended");
   });
   stdin.once("close", () => {
-    shutdownAndExit("stdin closed");
+    void onStdinEof("stdin closed");
   });
   for (const sig of ["SIGINT", "SIGTERM", "SIGHUP"] as NodeJS.Signals[]) {
     proc.on(sig, () => {
-      shutdownAndExit(`received ${sig}`);
+      signalCount++;
+      const sigCode = signalExitCode(sig);
+      currentExitCode = sigCode;
+      if (signalCount >= 2) {
+        killAllSoulxChildrenSync();
+        finishExit(sigCode);
+        return;
+      }
+      shuttingDown = true;
+      notifyDrainIfEmpty();
+      runGracefulTeardown(`received ${sig}`);
     });
   }
-  return shutdownAndExit;
+
+  return (reason: string) => {
+    if (shuttingDown || exited) return;
+    shuttingDown = true;
+    runGracefulTeardown(reason);
+  };
 }
 
 async function main(): Promise<void> {
@@ -5206,8 +5350,9 @@ async function main(): Promise<void> {
   // JSON-RPC output target: fd 3 when running as the supervised inner server
   // (the supervisor wired fd 3 to the host's stdout), otherwise stdout. This
   // is what keeps fd 1 free for the native audio layer's stray prints.
-  const transport = new StdioServerTransport(process.stdin, openRpcOutputStream());
-  attachShutdownHandlers(transport);
+  const rpcOut = openRpcOutputStream();
+  const transport = new StdioServerTransport(process.stdin, rpcOut);
+  attachShutdownHandlers(transport, { outputStream: rpcOut });
 
   await server.connect(transport);
   console.error("ai-jam-sessions MCP server running on stdio");

@@ -3,10 +3,12 @@ import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
+  POSIX_PARENT_GUARD_SH,
   SOULX_DEADLINE_ENV,
   SOULX_RENDER_DEADLINE_MS,
   SoulxRenderDeadlineError,
   abortAllSoulxRenders,
+  buildSoulxSpawnSpec,
   createSoulxScoreSinger,
   killChildProcessTree,
   killProcessTreeSync,
@@ -237,7 +239,11 @@ function writeMinimalWav(filePath) {
     ? `
 const fs = require("node:fs");
 const { spawn } = require("node:child_process");
-const child = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)"], { stdio: "ignore" });
+const childOpts = process.platform === "win32"
+  ? { stdio: "ignore", detached: true, windowsHide: true }
+  : { stdio: "ignore" };
+const child = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)"], childOpts);
+if (typeof child.unref === "function") child.unref();
 fs.writeFileSync(${JSON.stringify(opts.pidMarkerFile)}, JSON.stringify({ parentPid: process.pid, childPid: child.pid }));
 setInterval(() => {}, 1000);
 `
@@ -313,6 +319,8 @@ describe("soulx-singer cancellation, deadlines, tree kill, and progress", () => 
   const tempDirs: string[] = [];
   const prevHome = process.env.AI_JAM_HOME;
 
+  const trackedPids = new Set<number>();
+
   function mkIsolatedTmp(): string {
     const d = mkdtempSync(join(tmpdir(), "soulx-fake-"));
     tempDirs.push(d);
@@ -322,6 +330,14 @@ describe("soulx-singer cancellation, deadlines, tree kill, and progress", () => 
 
   afterEach(async () => {
     await abortAllSoulxRenders("test cleanup");
+    for (const pid of trackedPids) {
+      try {
+        process.kill(pid, "SIGKILL");
+      } catch {
+        /* already exited */
+      }
+    }
+    trackedPids.clear();
     if (prevHome === undefined) delete process.env.AI_JAM_HOME;
     else process.env.AI_JAM_HOME = prevHome;
     for (const d of tempDirs.splice(0)) {
@@ -393,6 +409,8 @@ describe("soulx-singer cancellation, deadlines, tree kill, and progress", () => 
     });
 
     const pids = await waitForPidMarker(markerFile);
+    trackedPids.add(pids.parentPid);
+    trackedPids.add(pids.childPid);
     expect(isPidAlive(pids.parentPid)).toBe(true);
     expect(isPidAlive(pids.childPid)).toBe(true);
 
@@ -468,6 +486,8 @@ describe("soulx-singer cancellation, deadlines, tree kill, and progress", () => 
     });
     const renderRejection2 = expect(renderPromise2).rejects.toThrow(RequestCancelledError);
     const pids2 = await waitForPidMarker(markerFile);
+    trackedPids.add(pids2.parentPid);
+    trackedPids.add(pids2.childPid);
     await abortAllSoulxRenders("server shutdown");
     await renderRejection2;
 
@@ -556,9 +576,12 @@ describe("soulx-singer cancellation, deadlines, tree kill, and progress", () => 
 
     const fakeProc = {
       pid: 34567,
-      exitCode: 0,
+      exitCode: null,
       signalCode: null,
-      once: () => fakeProc,
+      once: (ev: string, fn: () => void) => {
+        if (ev === "close") queueMicrotask(fn);
+        return fakeProc;
+      },
       removeListener: () => fakeProc,
       kill: () => true,
     } as never;
@@ -577,5 +600,48 @@ describe("soulx-singer cancellation, deadlines, tree kill, and progress", () => 
       ["/PID", "34567", "/T", "/F"],
       expect.objectContaining({ stdio: "ignore", windowsHide: true }),
     );
+  });
+
+  it("skips pid-based kills after a child has already exited", async () => {
+    const exitedProcKill = vi.fn(() => true);
+    const exitedProc = {
+      pid: 45678,
+      exitCode: 0,
+      signalCode: null,
+      once: () => exitedProc,
+      removeListener: () => exitedProc,
+      kill: exitedProcKill,
+    } as never;
+
+    const winSpawn = vi.fn();
+    await killChildProcessTree(exitedProc, "win32", winSpawn as never);
+    expect(winSpawn).not.toHaveBeenCalled();
+    expect(exitedProcKill).not.toHaveBeenCalled();
+
+    const posixKillSpy = vi.spyOn(process, "kill").mockImplementation((() => true) as never);
+    try {
+      await killChildProcessTree(exitedProc, "linux");
+      // Group kill (-pid) is safe because POSIX PGIDs stay pinned while members live,
+      // but direct PID kill (+pid) must never run once exitCode !== null.
+      expect(posixKillSpy).toHaveBeenCalledWith(-45678, "SIGKILL");
+      expect(posixKillSpy).not.toHaveBeenCalledWith(45678, "SIGKILL");
+      expect(exitedProcKill).not.toHaveBeenCalled();
+    } finally {
+      posixKillSpy.mockRestore();
+    }
+
+    const posixSpec = buildSoulxSpawnSpec("python3", ["script.py", "--flag"], "linux");
+    expect(posixSpec.file).toBe("/bin/sh");
+    expect(posixSpec.detached).toBe(true);
+    expect(posixSpec.stdio).toEqual(["pipe", "pipe", "pipe"]);
+    expect(posixSpec.args).toEqual(["-c", POSIX_PARENT_GUARD_SH, "ajs-soulx-guard", "python3", "script.py", "--flag"]);
+
+    const winSpec = buildSoulxSpawnSpec("python.exe", ["script.py"], "win32");
+    expect(winSpec).toEqual({
+      file: "python.exe",
+      args: ["script.py"],
+      stdio: ["ignore", "pipe", "pipe"],
+      detached: false,
+    });
   });
 });

@@ -1,20 +1,17 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-11-25 from commit fe392a4 by Atlas 1.26.0.
+Mapped at 2026-11-25 from commit 2d501c9 by Atlas 1.26.0.
 
 ## What this is
 
 14 parts, mostly JSON data (1554 files) and Markdown (357); code in TypeScript (626), Python (77), JavaScript (32), shell (30), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-11-11 (2aa1ca7)
+## What changed since 2026-11-25 (fe392a4)
 
-- CI runs 6 more files than before.
-- Release runs 6 more files than before.
-- README.md is now also read by src/mcp-tool-count.test.ts.
-- site/src/content/docs/handbook/mcp-tools.md is now read by src/mcp-tool-count.test.ts.
-- In src/mcp-server.ts, `main` gained a step, `once`, before `on`.
-- In src/mcp-server.ts, `main` gained a step, `on`, after `once`.
-- 6 files added and 33 changed content, across 3 parts.
+- src/mcp-server.ts is now also read by src/mcp-real-stops.test.ts.
+- In src/audio-limits.ts, `checkAudioInputCaps` gained a step, `mcpStructuredError`, before `mcpStructuredError`.
+- In src/audio-limits.ts, `checkAudioInputCaps` gained a step, `mcpStructuredError`, after `mcpStructuredError`.
+- 16 files changed content, across 3 parts.
 
 ## What comes in
 
@@ -75,7 +72,7 @@ Mapped at 2026-11-25 from commit fe392a4 by Atlas 1.26.0.
 
 - **scripts/build-score-clock.mjs** and **scripts/render-piano-bed.mjs** changed together in 4 of 6 commits, inside the scripts part.
 
-4 files changed together with their own tests, as expected.
+5 files changed together with their own tests, as expected.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
@@ -250,7 +247,7 @@ Beside the path, src/mcp-server.ts also calls src/stdio-supervisor.ts and src/st
 - 1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.
 - 1 read goes to the directory the command is run in (tmp/) or a path its caller passes, not to this repository.
 - 1 write goes to a temporary directory or a path its caller passes, not to this repository.
-- 21 commands are built at run time and not followed, 2 of them in tests.
+- 17 commands are built at run time and not followed, 2 of them in tests.
 - There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.
 - CI runs or checks 531 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 531.

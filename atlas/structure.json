@@ -12199,7 +12199,7 @@
           "path": ".polyglot-cache.json"
         },
         {
-          "hash": "ce29a554bf0092fdb7c43c31d369d41c5f04197911ca6bbf77629d6502fec0cc",
+          "hash": "15f50aa11f7078f2990f9c9b6b0e4f5e40603d103bcad0074c8489b3300c0353",
           "path": "CHANGELOG.md"
         },
         {
@@ -12219,35 +12219,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "42228824dffb3f4ca6e3dc56637ec3f8bd6f292f1f583fa58035a5450b1cfcbf",
+          "hash": "399ece34f9cf3acbde079b6c84d5b4ae0037df6b6866b7e4308deca578f4ded2",
           "path": "README.es.md"
         },
         {
-          "hash": "93b56dcb4ad9638e82911a962ef3a249b4f1b9fac4a5f7c3c60af980ffeef1cb",
+          "hash": "f6f20f30ec5830da311aa134a658d48fec386e60c68a88e8ca8cecc82626a23f",
           "path": "README.fr.md"
         },
         {
-          "hash": "27b1e05fbacb107fb94b9582fb84003fa5b0ad4639a1cdbab5eb89bf1690cbc0",
+          "hash": "ceb607c2b557c4ee55e4256c83e5cd1e725617f99d796809b68f6344bd08adec",
           "path": "README.hi.md"
         },
         {
-          "hash": "065d309da045ad33385bf1b30cbc7647dad8a36fc991c166c978359cc71ff929",
+          "hash": "9a3d039ee0ff8085aec028b7f7e781b1bc10e080f61eb1346be31071f7e8a55a",
           "path": "README.it.md"
         },
         {
-          "hash": "0b4723abcb4bec5eeafc6b595aba72a40be28e3041fe6443f1498b503be5a331",
+          "hash": "4ac7cbb7b18d660cc65c510c13ab06d47d0200d5531719d81da0fe4ff70f565a",
           "path": "README.ja.md"
         },
         {
-          "hash": "8753af25dfa57010d6c01bd4214bb93b8b303ea50c580f2f86af2731f88f8672",
+          "hash": "5bc36b5d6ea90f5c3cf3d24d763831459fa100bc890287d3f28060c4fe50b890",
           "path": "README.md"
         },
         {
-          "hash": "84e5572ca46054b410da0df7ddaf9c9f01ad58f45a6056a5194016058701d08a",
+          "hash": "2a13cbbd1025d90af08679e765daf89fccea5bb7d94c705be2d73bd977e66673",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "daaea3f4f1846b7f56b10fcc42fcf51888fa3c1f02c702b34714e523b4e9bb36",
+          "hash": "77539f5e4cb61412fd3a9e09b2c07cff4822c5bbf03c6b35db9f63746e7362a6",
           "path": "README.zh.md"
         },
         {
@@ -16283,7 +16283,7 @@
           "path": "site/src/content/docs/handbook/live-ensemble.md"
         },
         {
-          "hash": "59aff92c1c977f945eff0a397e3ec53e8fa4647dbc69520b4f07c63bdd1f6c70",
+          "hash": "7fdcacc741a03e285de8d191ecf3e8920942b5d125afc7cdb1d8f3bd95877da3",
           "path": "site/src/content/docs/handbook/mcp-tools.md"
         },
         {
@@ -17057,7 +17057,7 @@
     },
     {
       "dynamicReads": 45,
-      "dynamicSpawns": 12,
+      "dynamicSpawns": 8,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 17,
       "entryPoints": [
@@ -17506,7 +17506,7 @@
           ]
         },
         {
-          "hash": "831565c2cc953e5cd483e9239ac822a35e565f755da7598453e5109728fbadc0",
+          "hash": "186a56b91a88a1c62e7668b5ce99d105998871ea75e6e3eabed50076628a6ac2",
           "importsFiles": [
             "src/audio-limits.ts"
           ],
@@ -17519,27 +17519,28 @@
           "exports": [
             "checkAudioInputCaps",
             "peekWavDurationSec",
+            "peekWavHeader",
             "resolveAudioMaxDurationSec",
             "resolveAudioMaxFileBytes"
           ],
           "failurePaths": [
             {
-              "in": "peekWavDurationSec",
+              "in": "peekWavHeader",
               "kind": "catch",
-              "line": 86
+              "line": 111
             },
             {
-              "in": "peekWavDurationSec",
+              "in": "peekWavHeader",
               "kind": "catch",
-              "line": 154
+              "line": 187
             },
             {
               "in": "checkAudioInputCaps",
               "kind": "catch",
-              "line": 180
+              "line": 222
             }
           ],
-          "hash": "c784ec5bf66f742fdb1e522d8570269804326b3b401fef0918e97fe7e02c055b",
+          "hash": "a0d90efc859945e0e819a0772da30d637a17f73f25e4c90a618dba358ed50285",
           "importsFiles": [
             "src/mcp-error.ts"
           ],
@@ -17548,16 +17549,32 @@
             {
               "calls": [
                 {
-                  "branch": "fileSize > maxBytes",
-                  "line": 189,
+                  "branch": "explicitMaxBytes !== null && fileSize > explicitMaxBytes",
+                  "line": 235,
                   "name": "mcpStructuredError",
                   "target": {
                     "file": "src/mcp-error.ts"
                   }
                 },
                 {
-                  "branch": "durationSec !== null && durationSec > maxDurationSec",
-                  "line": 203,
+                  "branch": "header.durationSec > maxDurationSec",
+                  "line": 250,
+                  "name": "mcpStructuredError",
+                  "target": {
+                    "file": "src/mcp-error.ts"
+                  }
+                },
+                {
+                  "branch": "fileSize > derivedMaxBytes",
+                  "line": 267,
+                  "name": "mcpStructuredError",
+                  "target": {
+                    "file": "src/mcp-error.ts"
+                  }
+                },
+                {
+                  "branch": "fileSize > fallbackCeiling",
+                  "line": 284,
                   "name": "mcpStructuredError",
                   "target": {
                     "file": "src/mcp-error.ts"
@@ -25125,7 +25142,7 @@
           "path": "src/mcp-error.ts"
         },
         {
-          "hash": "aa36e297759d2d44bf2b8afd69131682310a72f7b3ade4c7b87d250658706d5f",
+          "hash": "080c19fb5a56269ffb8b3f5d3f6f4e7e430caa76517e05df354c237c6bd0d5ee",
           "importOrder": [
             "src/audio-engine.ts",
             "src/sample-engine.ts",
@@ -25152,6 +25169,9 @@
             "scripts/vocal_clock.py"
           ],
           "path": "src/mcp-real-stops.test.ts",
+          "spawns": [
+            "src/mcp-server.ts"
+          ],
           "testFramework": "vitest"
         },
         {
@@ -25236,215 +25256,216 @@
             "attachShutdownHandlers",
             "prepareMcpServer",
             "setLiveEnsemble",
-            "shutdownMcpServer"
+            "shutdownMcpServer",
+            "signalExitCode"
           ],
           "failurePaths": [
             {
               "in": "getCanonicalHomeDir",
               "kind": "catch",
-              "line": 232
+              "line": 234
             },
             {
               "in": "resolveContainedExistingPath",
               "kind": "catch",
-              "line": 265
+              "line": 267
             },
             {
               "in": "stopActive",
               "kind": "catch",
-              "line": 1254
+              "line": 1256
             },
             {
               "in": "stopActive",
               "kind": "catch",
-              "line": 1262
+              "line": 1264
             },
             {
               "kind": "catch",
-              "line": 1392
+              "line": 1394
             },
             {
               "kind": "catch",
-              "line": 1406
+              "line": 1408
             },
             {
               "kind": "catch",
-              "line": 1499
+              "line": 1501
             },
             {
               "in": "unsubscribeEnsemble",
               "kind": "catch",
-              "line": 1517
+              "line": 1519
             },
             {
               "kind": "catch",
-              "line": 1759
+              "line": 1761
             },
             {
               "kind": "catch",
-              "line": 1770
+              "line": 1772
             },
             {
               "kind": "catch",
-              "line": 1970
+              "line": 1972
             },
             {
               "kind": "catch",
-              "line": 1984
+              "line": 1986
             },
             {
               "kind": "throw",
-              "line": 2373
+              "line": 2375
             },
             {
               "kind": "throw",
-              "line": 2381
+              "line": 2383
             },
             {
               "kind": "catch",
-              "line": 2387
+              "line": 2389
             },
             {
               "kind": "catch",
-              "line": 2413
+              "line": 2415
             },
             {
               "kind": "throw",
-              "line": 2426
+              "line": 2428
             },
             {
               "kind": "throw",
-              "line": 2430
+              "line": 2432
             },
             {
               "kind": "catch",
-              "line": 2434
+              "line": 2436
             },
             {
               "kind": "catch",
-              "line": 2513
+              "line": 2515
             },
             {
               "kind": "catch",
-              "line": 2541
+              "line": 2543
             },
             {
               "kind": "catch",
-              "line": 2546
+              "line": 2548
             },
             {
               "kind": "catch",
-              "line": 2640
+              "line": 2642
             },
             {
               "kind": "catch",
-              "line": 2663
+              "line": 2665
             },
             {
               "kind": "catch",
-              "line": 2695
+              "line": 2697
             },
             {
               "kind": "catch",
-              "line": 2700
+              "line": 2702
             },
             {
               "kind": "catch",
-              "line": 2768
+              "line": 2770
             },
             {
               "kind": "catch",
-              "line": 2789
+              "line": 2791
             },
             {
               "kind": "catch",
-              "line": 2894
+              "line": 2896
             },
             {
               "kind": "catch",
-              "line": 2991
+              "line": 2993
             },
             {
               "in": "loadAudioFile",
               "kind": "catch",
-              "line": 3061
+              "line": 3063
             },
             {
               "kind": "catch",
-              "line": 3504
+              "line": 3506
             },
             {
               "kind": "catch",
-              "line": 3554
+              "line": 3556
             },
             {
               "kind": "catch",
-              "line": 3634
+              "line": 3636
             },
             {
               "kind": "catch",
-              "line": 3799
+              "line": 3801
             },
             {
               "kind": "catch",
-              "line": 3893
+              "line": 3895
             },
             {
               "kind": "catch",
-              "line": 3978
+              "line": 3980
             },
             {
               "kind": "catch",
-              "line": 4097
+              "line": 4099
             },
             {
               "kind": "catch",
-              "line": 4182
+              "line": 4184
             },
             {
               "kind": "catch",
-              "line": 4323
+              "line": 4325
             },
             {
               "kind": "catch",
-              "line": 4423
+              "line": 4425
             },
             {
               "kind": "catch",
-              "line": 4445
+              "line": 4447
             },
             {
               "kind": "catch",
-              "line": 4518
+              "line": 4520
             },
             {
               "kind": "catch",
-              "line": 4823
+              "line": 4825
             },
             {
               "kind": "catch",
-              "line": 4895
+              "line": 4897
             },
             {
               "kind": "catch",
-              "line": 4924
+              "line": 4926
             },
             {
               "kind": "catch",
-              "line": 4979
+              "line": 4981
             },
             {
               "in": "persistSessionState",
               "kind": "catch",
-              "line": 5058
+              "line": 5060
             },
             {
               "in": "loadSessionState",
               "kind": "catch",
-              "line": 5088
+              "line": 5090
             }
           ],
-          "hash": "251a4f82d0817b0025aa9a2528aecf74b499e69169c883b89ad1bdcb6f74cf5b",
+          "hash": "73683995056e0721f6f28e4106e2000d1518dc0c7c47cea1cb9abf0ee7c7b720",
           "importsFiles": [
             "src/analysis/index.ts",
             "src/annotation-scorer.ts",
@@ -25507,7 +25528,7 @@
             {
               "calls": [
                 {
-                  "line": 293,
+                  "line": 295,
                   "name": "toUserString",
                   "target": null
                 }
@@ -25520,7 +25541,7 @@
             {
               "calls": [
                 {
-                  "line": 1099,
+                  "line": 1101,
                   "name": "getRecording",
                   "target": null
                 }
@@ -25533,13 +25554,13 @@
             {
               "calls": [
                 {
-                  "line": 1099,
+                  "line": 1101,
                   "name": "getRecording",
                   "target": null,
                   "via": "captureLastRecording"
                 },
                 {
-                  "line": 1249,
+                  "line": 1251,
                   "name": "abortAllSoulxRenders",
                   "target": {
                     "file": "src/vocal/soulx-singer.ts"
@@ -25554,14 +25575,14 @@
             {
               "calls": [
                 {
-                  "line": 3046,
+                  "line": 3048,
                   "name": "checkAudioInputCaps",
                   "target": {
                     "file": "src/audio-limits.ts"
                   }
                 },
                 {
-                  "line": 3060,
+                  "line": 3062,
                   "name": "decodeWav",
                   "target": {
                     "file": "src/audio/index.ts"
@@ -25576,7 +25597,7 @@
             {
               "calls": [
                 {
-                  "line": 3081,
+                  "line": 3083,
                   "name": "toFixed",
                   "target": null,
                   "via": "signed"
@@ -25590,7 +25611,7 @@
             {
               "calls": [
                 {
-                  "line": 3680,
+                  "line": 3682,
                   "name": "getSharedAudioContext",
                   "target": {
                     "file": "src/audio-shared.ts"
@@ -25605,7 +25626,7 @@
             {
               "calls": [
                 {
-                  "line": 5019,
+                  "line": 5021,
                   "name": "userSongsDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25620,7 +25641,7 @@
             {
               "calls": [
                 {
-                  "line": 5023,
+                  "line": 5025,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25635,7 +25656,7 @@
             {
               "calls": [
                 {
-                  "line": 5023,
+                  "line": 5025,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25643,7 +25664,7 @@
                   "via": "getServerStateFile"
                 },
                 {
-                  "line": 5056,
+                  "line": 5058,
                   "name": "stateHome",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25658,7 +25679,7 @@
             {
               "calls": [
                 {
-                  "line": 5023,
+                  "line": 5025,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25674,7 +25695,7 @@
             {
               "calls": [
                 {
-                  "line": 5019,
+                  "line": 5021,
                   "name": "userSongsDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25682,14 +25703,14 @@
                   "via": "getUserSongsDir"
                 },
                 {
-                  "line": 5113,
+                  "line": 5115,
                   "name": "initializeFromLibrary",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 5023,
+                  "line": 5025,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25705,12 +25726,12 @@
             {
               "calls": [
                 {
-                  "line": 5173,
+                  "line": 5307,
                   "name": "once",
                   "target": null
                 },
                 {
-                  "line": 5180,
+                  "line": 5314,
                   "name": "on",
                   "target": null
                 }
@@ -25723,7 +25744,7 @@
             {
               "calls": [
                 {
-                  "line": 5194,
+                  "line": 5343,
                   "name": "shouldSuperviseStdio",
                   "target": {
                     "file": "src/stdio-supervisor.ts"
@@ -25731,14 +25752,14 @@
                 },
                 {
                   "branch": "shouldSuperviseStdio()",
-                  "line": 5195,
+                  "line": 5344,
                   "name": "runStdioSupervisor",
                   "target": {
                     "file": "src/stdio-supervisor.ts"
                   }
                 },
                 {
-                  "line": 5019,
+                  "line": 5021,
                   "name": "userSongsDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25746,7 +25767,7 @@
                   "via": "getUserSongsDir"
                 },
                 {
-                  "line": 5113,
+                  "line": 5115,
                   "name": "initializeFromLibrary",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -25754,7 +25775,7 @@
                   "via": "prepareMcpServer"
                 },
                 {
-                  "line": 5023,
+                  "line": 5025,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25762,20 +25783,20 @@
                   "via": "getServerStateFile"
                 },
                 {
-                  "line": 5204,
+                  "line": 5353,
                   "name": "openRpcOutputStream",
                   "target": {
                     "file": "src/stdio-supervisor.ts"
                   }
                 },
                 {
-                  "line": 5173,
+                  "line": 5307,
                   "name": "once",
                   "target": null,
                   "via": "attachShutdownHandlers"
                 },
                 {
-                  "line": 5180,
+                  "line": 5314,
                   "name": "on",
                   "target": null,
                   "via": "attachShutdownHandlers"
@@ -29593,7 +29614,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "71aaabb797af3cf3f4f2d452a2db2f02c3fd67502cb8f4537ed51a16fde3f072",
+          "hash": "6a3242b264dda438096bf1ae848afb3c8874248df5ea97af08b6bf7ca9176c17",
           "importOrder": [
             "src/vocal/soulx-singer.ts",
             "src/cancel.ts",
@@ -29617,6 +29638,7 @@
           "entryRule": 4,
           "exports": [
             "abortAllSoulxRenders",
+            "buildSoulxSpawnSpec",
             "createSoulxScoreSinger",
             "killAllSoulxChildrenSync",
             "killChildProcessTree",
@@ -29674,42 +29696,32 @@
             {
               "in": "killChildProcessTree",
               "kind": "catch",
-              "line": 379
+              "line": 421
             },
             {
               "in": "killChildProcessTree",
               "kind": "catch",
-              "line": 385
+              "line": 427
             },
             {
               "in": "killChildProcessTree",
               "kind": "catch",
-              "line": 391
+              "line": 434
             },
             {
               "in": "killChildProcessTree",
               "kind": "catch",
-              "line": 396
+              "line": 440
+            },
+            {
+              "in": "killAllSoulxChildrenSync",
+              "kind": "catch",
+              "line": 463
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 593
-            },
-            {
-              "in": "renderSoulxLead",
-              "kind": "throw",
-              "line": 601
-            },
-            {
-              "in": "renderSoulxLead",
-              "kind": "throw",
-              "line": 626
-            },
-            {
-              "in": "renderSoulxLead",
-              "kind": "throw",
-              "line": 633
+              "line": 658
             },
             {
               "in": "renderSoulxLead",
@@ -29719,42 +29731,22 @@
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 685
+              "line": 691
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 692
+              "line": 698
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 714
+              "line": 731
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 723
-            },
-            {
-              "in": "renderSoulxLead",
-              "kind": "catch",
-              "line": 732
-            },
-            {
-              "in": "renderSoulxLead",
-              "kind": "catch",
-              "line": 744
-            },
-            {
-              "in": "renderSoulxLead",
-              "kind": "catch",
-              "line": 749
-            },
-            {
-              "in": "renderSoulxLead",
-              "kind": "catch",
-              "line": 753
+              "line": 750
             },
             {
               "in": "renderSoulxLead",
@@ -29764,35 +29756,70 @@
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 758
+              "line": 779
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 759
+              "line": 788
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "catch",
+              "line": 797
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "catch",
+              "line": 809
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "catch",
+              "line": 814
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "catch",
+              "line": 818
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 822
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 823
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 824
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 857
+              "line": 922
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 862
+              "line": 927
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 870
+              "line": 935
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 879
+              "line": 944
             }
           ],
-          "hash": "2bb7d9edfafdddde5b42c8b4d99f84cd674b98e5e3be0f1e6529587e031d87bc",
+          "hash": "9b7fd62be3b57c9e654f377a1404795129dfed6fe469cde48e5226010accdc0e",
           "importsFiles": [
             "src/audio-shared.ts",
             "src/cancel.ts",
@@ -29843,12 +29870,12 @@
             {
               "calls": [
                 {
-                  "line": 366,
+                  "line": 407,
                   "name": "once",
                   "target": null
                 },
                 {
-                  "line": 384,
+                  "line": 426,
                   "name": "kill",
                   "target": null
                 }
@@ -29861,13 +29888,13 @@
             {
               "calls": [
                 {
-                  "line": 366,
+                  "line": 407,
                   "name": "once",
                   "target": null,
                   "via": "killChildProcessTree"
                 },
                 {
-                  "line": 384,
+                  "line": 426,
                   "name": "kill",
                   "target": null,
                   "via": "killChildProcessTree"
@@ -29881,7 +29908,7 @@
             {
               "calls": [
                 {
-                  "line": 441,
+                  "line": 498,
                   "name": "toCancelledError",
                   "target": {
                     "file": "src/cancel.ts"
@@ -29897,7 +29924,7 @@
               "calls": [
                 {
                   "branch": "signal?.aborted",
-                  "line": 441,
+                  "line": 498,
                   "name": "toCancelledError",
                   "target": {
                     "file": "src/cancel.ts"
@@ -29905,7 +29932,7 @@
                   "via": "abortReasonToError"
                 },
                 {
-                  "line": 493,
+                  "line": 558,
                   "name": "addEventListener",
                   "target": null
                 }
@@ -29918,7 +29945,7 @@
             {
               "calls": [
                 {
-                  "line": 522,
+                  "line": 587,
                   "name": "throwIfAborted",
                   "target": {
                     "file": "src/cancel.ts"
@@ -29942,7 +29969,7 @@
                 },
                 {
                   "branch": "cached",
-                  "line": 534,
+                  "line": 599,
                   "name": "peakNormalize",
                   "target": {
                     "file": "src/vocal/score-singer.ts"
@@ -29950,7 +29977,7 @@
                 },
                 {
                   "branch": "signal?.aborted",
-                  "line": 441,
+                  "line": 498,
                   "name": "toCancelledError",
                   "target": {
                     "file": "src/cancel.ts"
@@ -29958,25 +29985,25 @@
                   "via": "abortReasonToError"
                 },
                 {
-                  "line": 493,
+                  "line": 558,
                   "name": "addEventListener",
                   "target": null,
                   "via": "runPy"
                 },
                 {
-                  "line": 597,
+                  "line": 662,
                   "name": "onProgress",
                   "target": null
                 },
                 {
-                  "line": 726,
+                  "line": 791,
                   "name": "readMonoWav",
                   "target": {
                     "file": "src/vocal/kokoro-lead.ts"
                   }
                 },
                 {
-                  "line": 727,
+                  "line": 792,
                   "name": "peakNormalize",
                   "target": {
                     "file": "src/vocal/score-singer.ts"
@@ -38522,7 +38549,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "fe392a4b39e66d29e062a0caa2d777445661192e",
+    "commit": "2d501c9145037fcc172850c3d6ab8dcb027655f6",
     "tracked": 3100
   },
   "landings": [
@@ -51109,6 +51136,12 @@
           "by": "docs/findings/derived-content-inventory.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "src/mcp-real-stops.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "src/mcp-server.ts",

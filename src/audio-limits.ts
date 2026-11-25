@@ -1,28 +1,40 @@
-// ─── Input size & duration caps for the six audio inspection tools ─────────────
+// ─── Input duration & safety caps for the six audio inspection tools ───────────
 //
 // Prevents unbounded synchronous readFileSync + decodeWav Float64Array
-// allocations on huge recordings.
+// allocations while never refusing legitimate multi-channel or high-rate takes.
 //
-// Defaults derived from the repository's largest legitimate audio inputs:
-//   - Shipped WAV fixtures (samples/vocal/carrier-*.wav): 192,044 bytes (2 s,
-//     48 kHz 16-bit mono).
-//   - Sung hymn exemplars (src/vocal/arrangements/*.json): up to ~274 s
-//     (Battle Hymn, ~26.3 MB mono / ~52.6 MB stereo as 48 kHz 16-bit WAV).
-//   - Longest shipped library MIDI (songs/library/ragtime/the-easy-winners.mid):
-//     304 s (~58.4 MB as 48 kHz 16-bit stereo WAV).
+// Duration (`AUDIO_MAX_DURATION_SEC = 600` s) is the primary gate. Exact byte
+// sizes scale cleanly with format for stereo audio:
+//   - 48 kHz 16-bit PCM stereo (192 KB/s):     57.6 MB @ 300 s, 115.2 MB @ 600 s
+//   - 48 kHz 24-bit PCM stereo (288 KB/s):     86.4 MB @ 300 s, 172.8 MB @ 600 s
+//   - 48 kHz 32-bit float stereo (384 KB/s):  115.2 MB @ 300 s, 230.4 MB @ 600 s
+//   - 96 kHz 24-bit PCM stereo (576 KB/s):    172.8 MB @ 300 s, 345.6 MB @ 600 s
+//   - 96 kHz 32-bit float stereo (768 KB/s):  230.4 MB @ 300 s, 460.8 MB @ 600 s
 //
-// 64 MiB (67,108,864 bytes) and 600 s (10 minutes, ~2x the 304 s song for
-// slow practice takes) accept every legitimate repo input while bounding memory.
+// Shipped fixtures and songs comfortably clear 600 s:
+//   - Shipped WAV fixtures (samples/vocal/carrier-*.wav): 192,044 B (2 s, 48 kHz mono).
+//   - Sung hymn exemplars (src/vocal/arrangements/*.json): up to ~274 s.
+//   - Longest shipped library MIDI (songs/library/ragtime/the-easy-winners.mid): 304 s
+//     (600 s gives ~2x headroom for 0.5x beginner practice recordings).
+//
+// Byte size is derived from the WAV header
+// (`channels * sampleRate * bytesPerSample * maxDurationSec + 1 MiB` header slack,
+// capped at `buffer.constants.MAX_LENGTH`), with a 1 GiB fixed fallback ceiling
+// (`AUDIO_MAX_FILE_BYTES = 1_073_741_824`) when the header cannot be read.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { constants as bufferConstants } from "node:buffer";
 import { closeSync, openSync, readSync, statSync } from "node:fs";
 import { mcpStructuredError } from "./mcp-error.js";
 
-/** Default max audio file size in bytes (64 MiB). */
-export const AUDIO_MAX_FILE_BYTES = 64 * 1024 * 1024;
+/** Fixed fallback byte ceiling (1 GiB) when a WAV header cannot be read. */
+export const AUDIO_MAX_FILE_BYTES = 1024 * 1024 * 1024;
 
-/** Env override for the audio inspection file-size cap in bytes. */
+/** Env override for an explicit max audio file size cap in bytes. */
 export const AUDIO_MAX_FILE_BYTES_ENV = "AJS_AUDIO_MAX_FILE_BYTES";
+
+/** Metadata/chunk slack (1 MiB) added to the header-derived byte backstop. */
+export const AUDIO_HEADER_SLACK_BYTES = 1024 * 1024;
 
 /** Default max decoded audio duration in seconds (10 minutes). */
 export const AUDIO_MAX_DURATION_SEC = 600;
@@ -35,14 +47,7 @@ const FORMAT_IEEE_FLOAT = 0x0003;
 const FORMAT_EXTENSIBLE = 0xfffe;
 const MAX_CHUNKS_WALKED = 256;
 
-function resolvePositiveEnvNumber(
-  envName: string,
-  defaultValue: number,
-  explicit?: number,
-): number {
-  if (explicit !== undefined && Number.isFinite(explicit) && explicit > 0) {
-    return explicit;
-  }
+function readPositiveEnvOverride(envName: string, defaultValue: number): number | null {
   const raw = process.env[envName];
   if (raw !== undefined && raw.trim().length > 0) {
     const parsed = Number(raw);
@@ -56,10 +61,21 @@ function resolvePositiveEnvNumber(
       `[audio-limits] Ignoring invalid ${envName}="${raw}"; using default ${defaultValue}`,
     );
   }
-  return defaultValue;
+  return null;
 }
 
-/** Resolve the max WAV file size in bytes (explicit -> env -> 64 MiB). */
+function resolvePositiveEnvNumber(
+  envName: string,
+  defaultValue: number,
+  explicit?: number,
+): number {
+  if (explicit !== undefined && Number.isFinite(explicit) && explicit > 0) {
+    return explicit;
+  }
+  return readPositiveEnvOverride(envName, defaultValue) ?? defaultValue;
+}
+
+/** Resolve the max fallback WAV file size in bytes (explicit -> env -> 1 GiB). */
 export function resolveAudioMaxFileBytes(explicit?: number): number {
   return resolvePositiveEnvNumber(AUDIO_MAX_FILE_BYTES_ENV, AUDIO_MAX_FILE_BYTES, explicit);
 }
@@ -69,16 +85,25 @@ export function resolveAudioMaxDurationSec(explicit?: number): number {
   return resolvePositiveEnvNumber(AUDIO_MAX_DURATION_SEC_ENV, AUDIO_MAX_DURATION_SEC, explicit);
 }
 
+export interface WavHeaderInfo {
+  channels: number;
+  sampleRate: number;
+  bitDepth: number;
+  bytesPerSample: number;
+  dataLength: number;
+  durationSec: number;
+}
+
 /**
  * Cheaply inspect only the RIFF/WAVE chunk headers of `path` (never reading the
- * audio sample payload) and return the decoded duration in seconds, or `null`
+ * audio sample payload) and return parsed format + duration metadata, or `null`
  * if the header is not uncompressed PCM/IEEE-float WAV.
  */
-export function peekWavDurationSec(
+export function peekWavHeader(
   path: string,
   fileSize: number,
   openFn: typeof openSync = openSync,
-): number | null {
+): WavHeaderInfo | null {
   if (fileSize < 12) return null;
   let fd: number;
   try {
@@ -128,26 +153,34 @@ export function peekWavDurationSec(
         }
       } else if (id === "data") {
         dataLength =
-          size === 0 || body + size > fileSize ? fileSize - body : size;
+          size === 0 || size === 0xffffffff || body + size > fileSize
+            ? fileSize - body
+            : size;
       }
 
       if (formatCode >= 0 && dataLength >= 0) break;
       cursor = body + size + (size % 2);
     }
 
-    if (
-      (formatCode !== FORMAT_PCM && formatCode !== FORMAT_IEEE_FLOAT) ||
-      !(channels > 0) ||
-      !(sampleRate > 0) ||
-      dataLength < 0
-    ) {
+    const validDepth =
+      (formatCode === FORMAT_PCM &&
+        (bitDepth === 8 || bitDepth === 16 || bitDepth === 24 || bitDepth === 32)) ||
+      (formatCode === FORMAT_IEEE_FLOAT && (bitDepth === 32 || bitDepth === 64));
+
+    if (!validDepth || !(channels > 0) || !(sampleRate > 0) || dataLength < 0) {
       return null;
     }
 
     const bytesPerSample = bitDepth / 8;
-    if (!Number.isInteger(bytesPerSample) || bytesPerSample < 1) return null;
     const frameCount = Math.floor(dataLength / (bytesPerSample * channels));
-    return frameCount / sampleRate;
+    return {
+      channels,
+      sampleRate,
+      bitDepth,
+      bytesPerSample,
+      dataLength,
+      durationSec: frameCount / sampleRate,
+    };
   } finally {
     try {
       closeSync(fd);
@@ -157,14 +190,23 @@ export function peekWavDurationSec(
   }
 }
 
+/** Convenience wrapper returning only decoded WAV duration in seconds, or `null`. */
+export function peekWavDurationSec(
+  path: string,
+  fileSize: number,
+  openFn: typeof openSync = openSync,
+): number | null {
+  return peekWavHeader(path, fileSize, openFn)?.durationSec ?? null;
+}
+
 export type AudioInputCapCheck =
   | { ok: true }
   | { ok: false; missing: true }
   | { ok: false; missing: false; result: ReturnType<typeof mcpStructuredError> };
 
 /**
- * Enforce byte-size and decoded-duration limits before reading a WAV file into memory.
- * Accepts files exactly at the limit (`<=`); rejects files strictly over it (`>`).
+ * Enforce decoded-duration and byte-backstop limits before reading a WAV file
+ * into memory. Accepts files exactly at the limit (`<=`); rejects strictly over (`>`).
  */
 export function checkAudioInputCaps(
   path: string,
@@ -181,29 +223,68 @@ export function checkAudioInputCaps(
     return { ok: false, missing: true };
   }
 
-  const maxBytes = resolveAudioMaxFileBytes(opts.maxBytes);
-  if (fileSize > maxBytes) {
+  const explicitMaxBytes =
+    opts.maxBytes !== undefined && Number.isFinite(opts.maxBytes) && opts.maxBytes > 0
+      ? opts.maxBytes
+      : readPositiveEnvOverride(AUDIO_MAX_FILE_BYTES_ENV, AUDIO_MAX_FILE_BYTES);
+
+  if (explicitMaxBytes !== null && fileSize > explicitMaxBytes) {
     return {
       ok: false,
       missing: false,
       result: mcpStructuredError(
         "audio_file_too_large",
-        `Audio file "${path}" is ${fileSize} bytes, exceeding the ${maxBytes}-byte limit.`,
-        `Trim or downsample the WAV, or raise ${AUDIO_MAX_FILE_BYTES_ENV} (default ${AUDIO_MAX_FILE_BYTES} bytes).`,
+        `Audio file "${path}" is ${fileSize} bytes, exceeding the ${explicitMaxBytes}-byte limit.`,
+        `Trim the WAV, or raise ${AUDIO_MAX_FILE_BYTES_ENV} (default fallback ceiling ${AUDIO_MAX_FILE_BYTES} bytes).`,
       ),
     };
   }
 
   const maxDurationSec = resolveAudioMaxDurationSec(opts.maxDurationSec);
-  const durationSec = peekWavDurationSec(path, fileSize, opts.openFn);
-  if (durationSec !== null && durationSec > maxDurationSec) {
+  const header = peekWavHeader(path, fileSize, opts.openFn);
+  if (header !== null) {
+    if (header.durationSec > maxDurationSec) {
+      return {
+        ok: false,
+        missing: false,
+        result: mcpStructuredError(
+          "audio_duration_too_long",
+          `Audio file "${path}" (${fileSize} bytes) decodes to ${header.durationSec.toFixed(2)} s, exceeding the ${maxDurationSec} s duration limit.`,
+          `Pass a shorter recording or raise ${AUDIO_MAX_DURATION_SEC_ENV} (default ${AUDIO_MAX_DURATION_SEC} s).`,
+        ),
+      };
+    }
+
+    const derivedMaxBytes = Math.min(
+      bufferConstants.MAX_LENGTH,
+      Math.ceil(header.channels * header.sampleRate * header.bytesPerSample * maxDurationSec) +
+        AUDIO_HEADER_SLACK_BYTES,
+    );
+    if (fileSize > derivedMaxBytes) {
+      return {
+        ok: false,
+        missing: false,
+        result: mcpStructuredError(
+          "audio_file_too_large",
+          `Audio file "${path}" is ${fileSize} bytes, exceeding the ${derivedMaxBytes}-byte limit derived for ${maxDurationSec} s of ${header.channels}ch ${header.sampleRate} Hz ${header.bitDepth}-bit audio.`,
+          `Trim excess trailing metadata or raise ${AUDIO_MAX_DURATION_SEC_ENV} (default ${AUDIO_MAX_DURATION_SEC} s).`,
+        ),
+      };
+    }
+
+    return { ok: true };
+  }
+
+  // Fallback fixed ceiling when the header cannot be parsed as PCM/float WAV.
+  const fallbackCeiling = AUDIO_MAX_FILE_BYTES;
+  if (fileSize > fallbackCeiling) {
     return {
       ok: false,
       missing: false,
       result: mcpStructuredError(
-        "audio_duration_too_long",
-        `Audio file "${path}" (${fileSize} bytes) decodes to ${durationSec.toFixed(2)} s, exceeding the ${maxDurationSec} s duration limit.`,
-        `Pass a shorter recording or raise ${AUDIO_MAX_DURATION_SEC_ENV} (default ${AUDIO_MAX_DURATION_SEC} s).`,
+        "audio_file_too_large",
+        `Audio file "${path}" is ${fileSize} bytes, exceeding the ${fallbackCeiling}-byte limit.`,
+        `Ensure the file is a valid WAV within ${maxDurationSec} s / ${fallbackCeiling} bytes, or raise ${AUDIO_MAX_FILE_BYTES_ENV}.`,
       ),
     };
   }
