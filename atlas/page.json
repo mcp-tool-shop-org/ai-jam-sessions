@@ -111,44 +111,44 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 16,
+      "added": 1,
+      "changed": 4,
       "moved": 0,
-      "parts": 3,
+      "parts": 2,
       "removed": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI runs 1 more file than before.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release runs 1 more file than before.",
+        "subjects": [
+          ".github/workflows/release.yml"
+        ]
+      },
+      {
         "kind": "landing",
-        "sentence": "src/mcp-server.ts is now also read by src/mcp-real-stops.test.ts.",
+        "sentence": "src/vocal/posix-parent-guard.js is now read by src/vocal/soulx-singer.ts.",
         "subjects": [
-          "src/mcp-server.ts",
-          "src/mcp-real-stops.test.ts"
-        ]
-      },
-      {
-        "kind": "sequence",
-        "sentence": "In src/audio-limits.ts, `checkAudioInputCaps` gained a step, `mcpStructuredError`, before `mcpStructuredError`.",
-        "subjects": [
-          "src/audio-limits.ts"
-        ]
-      },
-      {
-        "kind": "sequence",
-        "sentence": "In src/audio-limits.ts, `checkAudioInputCaps` gained a step, `mcpStructuredError`, after `mcpStructuredError`.",
-        "subjects": [
-          "src/audio-limits.ts"
+          "src/vocal/posix-parent-guard.js",
+          "src/vocal/soulx-singer.ts"
         ]
       },
       {
         "kind": "counts",
-        "sentence": "16 files changed content, across 3 parts.",
+        "sentence": "1 file added and 4 changed content, across 2 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "fe392a4b39e66d29e062a0caa2d777445661192e",
-      "generatedAt": "2026-11-25T01:52:19.108Z"
+      "commit": "2d501c9145037fcc172850c3d6ab8dcb027655f6",
+      "generatedAt": "2026-11-25T02:50:42.695Z"
     },
     "unchanged": false
   },
@@ -175,9 +175,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 5,
-  "commit": "2d501c9145037fcc172850c3d6ab8dcb027655f6",
+  "commit": "77b5ec1340100bff0e30af392447784ee9c9fc92",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly JSON data (1554 files) and Markdown (357); code in TypeScript (626), Python (77), JavaScript (32), shell (30), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
+  "derived": "14 parts, mostly JSON data (1554 files) and Markdown (357); code in TypeScript (627), Python (77), JavaScript (32), shell (30), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
     {
       "builds": [
@@ -322,7 +322,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 429
+          "files": 430
         }
       ],
       "runs": [
@@ -421,8 +421,8 @@
         "src/vocal/g2p.stage4.test.ts",
         "src/vocal/g2p.test.ts"
       ],
-      "runsCount": 367,
-      "runsMore": 364,
+      "runsCount": 368,
+      "runsMore": 365,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -572,7 +572,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 429
+          "files": 430
         }
       ],
       "runs": [
@@ -684,8 +684,8 @@
         "src/vocal/g2p.stage4.test.ts",
         "src/vocal/g2p.test.ts"
       ],
-      "runsCount": 373,
-      "runsMore": 370,
+      "runsCount": 374,
+      "runsMore": 371,
       "sends": [
         "publishes to npm and a container image"
       ],
@@ -1702,7 +1702,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-11-25T02:50:42.695Z",
+  "generatedAt": "2026-11-25T03:16:48.512Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
@@ -1718,8 +1718,8 @@
     "17 commands are built at run time and not followed, 2 of them in tests.",
     "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.",
-    "CI runs or checks 531 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 531.",
-    "Release runs or checks 466 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 466.",
+    "CI runs or checks 532 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 532.",
+    "Release runs or checks 467 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 467.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",

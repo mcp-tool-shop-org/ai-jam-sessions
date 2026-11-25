@@ -238,7 +238,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 167,
+      "qualifyingSourceCommits": 169,
       "rebaseline": null
     }
   ],
@@ -306,8 +306,8 @@
         "path": ".polyglot-cache.json"
       },
       {
-        "commits": 87,
-        "lines": 1837,
+        "commits": 88,
+        "lines": 1841,
         "path": "CHANGELOG.md"
       },
       {
@@ -1201,8 +1201,8 @@
         "path": "apps/cockpit/vite.config.ts"
       },
       {
-        "commits": 32,
-        "lines": 1342,
+        "commits": 33,
+        "lines": 1361,
         "path": "atlas/README.md"
       },
       {
@@ -1211,18 +1211,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 32,
-        "lines": 6701,
+        "commits": 33,
+        "lines": 6757,
         "path": "atlas/page.json"
       },
       {
-        "commits": 32,
-        "lines": 65908,
+        "commits": 33,
+        "lines": 66283,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 32,
-        "lines": 151468,
+        "commits": 33,
+        "lines": 151783,
         "path": "atlas/structure.json"
       },
       {
@@ -12966,8 +12966,8 @@
         "path": "site/src/content/docs/handbook/live-ensemble.md"
       },
       {
-        "commits": 15,
-        "lines": 200,
+        "commits": 16,
+        "lines": 212,
         "path": "site/src/content/docs/handbook/mcp-tools.md"
       },
       {
@@ -13841,13 +13841,13 @@
         "path": "src/audio-engine.ts"
       },
       {
-        "commits": 1,
-        "lines": 129,
+        "commits": 2,
+        "lines": 241,
         "path": "src/audio-limits.test.ts"
       },
       {
-        "commits": 1,
-        "lines": 212,
+        "commits": 2,
+        "lines": 387,
         "path": "src/audio-limits.ts"
       },
       {
@@ -14981,8 +14981,8 @@
         "path": "src/mcp-error.ts"
       },
       {
-        "commits": 1,
-        "lines": 759,
+        "commits": 2,
+        "lines": 1026,
         "path": "src/mcp-real-stops.test.ts"
       },
       {
@@ -15006,8 +15006,8 @@
         "path": "src/mcp-server.tools.test.ts"
       },
       {
-        "commits": 50,
-        "lines": 7441,
+        "commits": 51,
+        "lines": 7616,
         "path": "src/mcp-server.ts"
       },
       {
@@ -15641,18 +15641,18 @@
         "path": "src/vocal/song-generate.ts"
       },
       {
-        "commits": 2,
-        "lines": 1520,
+        "commits": 3,
+        "lines": 1526,
         "path": "src/vocal/soulx-singer-cache.test.ts"
       },
       {
-        "commits": 3,
-        "lines": 756,
+        "commits": 4,
+        "lines": 828,
         "path": "src/vocal/soulx-singer.test.ts"
       },
       {
-        "commits": 3,
-        "lines": 1673,
+        "commits": 4,
+        "lines": 1806,
         "path": "src/vocal/soulx-singer.ts"
       },
       {
@@ -15861,9 +15861,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-11-25T02:50:42.695Z",
+  "generatedAt": "2026-11-25T03:16:48.512Z",
   "generatedFrom": {
-    "commit": "2d501c9145037fcc172850c3d6ab8dcb027655f6"
+    "commit": "77b5ec1340100bff0e30af392447784ee9c9fc92"
   },
   "pairs": [
     {
@@ -16128,43 +16128,43 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 19,
-      "shared": 19,
+      "either": 20,
+      "shared": 20,
       "strength": 1
     },
     {
@@ -16269,16 +16269,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-11-24T21:24:57-05:00",
-    "inScopeFiles": 3105,
+    "headDate": "2026-11-24T22:01:13-05:00",
+    "inScopeFiles": 3106,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 648,
+    "qualifyingCommits": 650,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-05-29T02:24:57.000Z",
+    "since": "2026-05-29T03:01:13.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

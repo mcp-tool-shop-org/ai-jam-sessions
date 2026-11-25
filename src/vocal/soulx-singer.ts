@@ -26,6 +26,7 @@ import {
 import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join, resolve, extname, basename } from "node:path";
+import { fileURLToPath } from "node:url";
 import { soulxCacheDir } from "../state-home.js";
 import { getSharedAudioContext, setSharedAudioContext } from "../audio-shared.js";
 import { RequestCancelledError, throwIfAborted, toCancelledError } from "../cancel.js";
@@ -343,20 +344,23 @@ export function killProcessTreeSync(
   }
 }
 
-export const POSIX_PARENT_GUARD_SH = [
-  "exec 3<&0",
-  '( IFS= read -r _ <&3 || true; kill -s KILL -- "-$$" 2>/dev/null || kill -9 "-$$" 2>/dev/null ) >/dev/null 2>&1 &',
-  "watcher=$!",
-  "exec 3<&-",
-  '"$@" </dev/null &',
-  "child=$!",
-  'wait "$child"',
-  "rc=$?",
-  'kill -s KILL "$watcher" 2>/dev/null || true',
-  'exit "$rc"',
-].join("\n");
+export const POSIX_PARENT_GUARD_FLAG = "--ajs-parent-guard";
 
-/** Build OS-specific spawn arguments (adds POSIX stdin-EOF process-group parent-death guard). */
+function resolvePosixGuardArgs(): string[] {
+  const sameDirJs = fileURLToPath(new URL("./posix-parent-guard.js", import.meta.url));
+  if (existsSync(sameDirJs)) {
+    return [sameDirJs];
+  }
+  const distJs = fileURLToPath(new URL("../../dist/vocal/posix-parent-guard.js", import.meta.url));
+  if (existsSync(distJs)) {
+    return [distJs];
+  }
+  const tsEntry = fileURLToPath(new URL("./posix-parent-guard.ts", import.meta.url));
+  const execFlags = process.execArgv.filter((a) => !a.startsWith("--inspect"));
+  return [...execFlags, tsEntry];
+}
+
+/** Build OS-specific spawn arguments (adds shell-free POSIX stdin-EOF process-group parent-death guard). */
 export function buildSoulxSpawnSpec(
   cmd: string,
   args: string[],
@@ -376,8 +380,8 @@ export function buildSoulxSpawnSpec(
     };
   }
   return {
-    file: "/bin/sh",
-    args: ["-c", POSIX_PARENT_GUARD_SH, "ajs-soulx-guard", cmd, ...args],
+    file: process.execPath,
+    args: [...resolvePosixGuardArgs(), POSIX_PARENT_GUARD_FLAG, cmd, ...args],
     stdio: ["pipe", "pipe", "pipe"],
     detached: true,
   };

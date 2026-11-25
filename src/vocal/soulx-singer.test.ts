@@ -1,9 +1,11 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
+import { EventEmitter } from "node:events";
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { startPosixParentGuard } from "./posix-parent-guard.js";
 import {
-  POSIX_PARENT_GUARD_SH,
+  POSIX_PARENT_GUARD_FLAG,
   SOULX_DEADLINE_ENV,
   SOULX_RENDER_DEADLINE_MS,
   SoulxRenderDeadlineError,
@@ -631,10 +633,17 @@ describe("soulx-singer cancellation, deadlines, tree kill, and progress", () => 
     }
 
     const posixSpec = buildSoulxSpawnSpec("python3", ["script.py", "--flag"], "linux");
-    expect(posixSpec.file).toBe("/bin/sh");
+    expect(posixSpec.file).toBe(process.execPath);
     expect(posixSpec.detached).toBe(true);
     expect(posixSpec.stdio).toEqual(["pipe", "pipe", "pipe"]);
-    expect(posixSpec.args).toEqual(["-c", POSIX_PARENT_GUARD_SH, "ajs-soulx-guard", "python3", "script.py", "--flag"]);
+    const flagIdx = posixSpec.args.indexOf(POSIX_PARENT_GUARD_FLAG);
+    expect(flagIdx).toBeGreaterThanOrEqual(1);
+    expect(posixSpec.args.slice(flagIdx)).toEqual([
+      POSIX_PARENT_GUARD_FLAG,
+      "python3",
+      "script.py",
+      "--flag",
+    ]);
 
     const winSpec = buildSoulxSpawnSpec("python.exe", ["script.py"], "win32");
     expect(winSpec).toEqual({
@@ -643,5 +652,60 @@ describe("soulx-singer cancellation, deadlines, tree kill, and progress", () => 
       stdio: ["ignore", "pipe", "pipe"],
       detached: false,
     });
+  });
+
+  it("startPosixParentGuard kills the detached process group on parent EOF and mirrors normal child exit", () => {
+    const mkStdin = () => Object.assign(new EventEmitter(), { resume: vi.fn(), pause: vi.fn() });
+
+    // Missing command exits 2.
+    const exitMissing: number[] = [];
+    startPosixParentGuard({ argv: ["node", "guard.js", POSIX_PARENT_GUARD_FLAG], exit: (c) => exitMissing.push(c) });
+    expect(exitMissing).toEqual([2]);
+
+    // Normal child exit mirrors exit code without calling killGroup.
+    const child1 = new EventEmitter();
+    const kill1 = vi.fn();
+    const exit1: number[] = [];
+    startPosixParentGuard({
+      argv: ["node", "guard.js", POSIX_PARENT_GUARD_FLAG, "python3", "run.py"],
+      stdin: mkStdin() as never,
+      spawner: (() => child1) as never,
+      killGroup: kill1,
+      exit: (c) => exit1.push(c),
+    });
+    child1.emit("exit", 0, null);
+    expect(kill1).not.toHaveBeenCalled();
+    expect(exit1).toEqual([0]);
+
+    // Stdin EOF while child is running kills the process group and exits 137.
+    const stdin2 = mkStdin();
+    const child2 = new EventEmitter();
+    const kill2 = vi.fn();
+    const exit2: number[] = [];
+    startPosixParentGuard({
+      argv: ["node", "guard.js", POSIX_PARENT_GUARD_FLAG, "python3", "run.py"],
+      stdin: stdin2 as never,
+      spawner: (() => child2) as never,
+      killGroup: kill2,
+      exit: (c) => exit2.push(c),
+    });
+    stdin2.emit("end");
+    expect(kill2).toHaveBeenCalledWith(process.pid);
+    expect(exit2).toEqual([137]);
+
+    // Spawn error logs to stderr and exits 127.
+    const child3 = new EventEmitter();
+    const errs: string[] = [];
+    const exit3: number[] = [];
+    startPosixParentGuard({
+      argv: ["node", "guard.js", "missing-py"],
+      stdin: mkStdin() as never,
+      stderr: { write: (s: string) => { errs.push(s); return true; } } as never,
+      spawner: (() => child3) as never,
+      exit: (c) => exit3.push(c),
+    });
+    child3.emit("error", new Error("ENOENT"));
+    expect(errs[0]).toContain("ENOENT");
+    expect(exit3).toEqual([127]);
   });
 });

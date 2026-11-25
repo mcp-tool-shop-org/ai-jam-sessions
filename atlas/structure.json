@@ -12199,7 +12199,7 @@
           "path": ".polyglot-cache.json"
         },
         {
-          "hash": "15f50aa11f7078f2990f9c9b6b0e4f5e40603d103bcad0074c8489b3300c0353",
+          "hash": "4fac51de34529089f7b7f732dd90fe00d2a513fc7de6eef8a4e1bde0cbf006b9",
           "path": "CHANGELOG.md"
         },
         {
@@ -29198,6 +29198,23 @@
           "path": "src/vocal/melody-notes.ts"
         },
         {
+          "exports": [
+            "startPosixParentGuard"
+          ],
+          "failurePaths": [
+            {
+              "in": "startPosixParentGuard",
+              "kind": "catch",
+              "line": 45
+            }
+          ],
+          "hash": "bb94baa8366f2ceb912686c2c2544b29e6b849e3dc781effea2aaea965cf9fd4",
+          "importsFiles": [
+            "src/entry-guard.ts"
+          ],
+          "path": "src/vocal/posix-parent-guard.ts"
+        },
+        {
           "hash": "be784632cdc2922175bcc7547aa3f8bceb564b0222452aa2929365b90c9df51c",
           "importsFiles": [
             "src/songs/types.ts",
@@ -29597,7 +29614,7 @@
           "path": "src/vocal/song-generate.ts"
         },
         {
-          "hash": "da132196a8a0eb3da299a8f73fc9e89f95e3c4b724c6a6a2c86531f1d1e48c6e",
+          "hash": "a6a9860fb48ddc0ca202f6164bcaa6a6679dc5116fa631271c5d58468b9b58cd",
           "importsFiles": [
             "src/audio-shared.ts",
             "src/state-home.ts",
@@ -29614,14 +29631,16 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "6a3242b264dda438096bf1ae848afb3c8874248df5ea97af08b6bf7ca9176c17",
+          "hash": "3b384d71aead37286e5de5c2dfb1349cdc80cb2eaeee7c7e0ae99c4f94682977",
           "importOrder": [
+            "src/vocal/posix-parent-guard.ts",
             "src/vocal/soulx-singer.ts",
             "src/cancel.ts",
             "src/vocal/score-clock.ts"
           ],
           "importsFiles": [
             "src/cancel.ts",
+            "src/vocal/posix-parent-guard.ts",
             "src/vocal/score-clock.ts",
             "src/vocal/soulx-singer.ts"
           ],
@@ -29651,132 +29670,127 @@
             {
               "in": "cacheHit",
               "kind": "catch",
-              "line": 198
+              "line": 199
             },
             {
               "in": "resolvePrompt",
               "kind": "throw",
-              "line": 284
+              "line": 285
             },
             {
               "in": "resolvePrompt",
               "kind": "throw",
-              "line": 291
+              "line": 292
             },
             {
               "in": "resolvePrompt",
               "kind": "throw",
-              "line": 302
+              "line": 303
             },
             {
               "in": "resolvePrompt",
               "kind": "catch",
-              "line": 304
+              "line": 305
             },
             {
               "in": "resolvePrompt",
               "kind": "throw",
-              "line": 306
+              "line": 307
             },
             {
               "in": "killProcessTreeSync",
               "kind": "catch",
-              "line": 329
+              "line": 330
             },
             {
               "in": "killProcessTreeSync",
               "kind": "catch",
-              "line": 336
+              "line": 337
             },
             {
               "in": "killProcessTreeSync",
               "kind": "catch",
-              "line": 341
+              "line": 342
             },
             {
               "in": "killChildProcessTree",
               "kind": "catch",
-              "line": 421
+              "line": 425
             },
             {
               "in": "killChildProcessTree",
               "kind": "catch",
-              "line": 427
+              "line": 431
             },
             {
               "in": "killChildProcessTree",
               "kind": "catch",
-              "line": 434
+              "line": 438
             },
             {
               "in": "killChildProcessTree",
               "kind": "catch",
-              "line": 440
+              "line": 444
             },
             {
               "in": "killAllSoulxChildrenSync",
               "kind": "catch",
-              "line": 463
+              "line": 467
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 658
+              "line": 662
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 666
+              "line": 670
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 691
+              "line": 695
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 698
+              "line": 702
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 731
+              "line": 735
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 750
+              "line": 754
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 757
+              "line": 761
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 779
+              "line": 783
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 788
+              "line": 792
             },
             {
               "in": "renderSoulxLead",
               "kind": "catch",
-              "line": 797
+              "line": 801
             },
             {
               "in": "renderSoulxLead",
               "kind": "catch",
-              "line": 809
-            },
-            {
-              "in": "renderSoulxLead",
-              "kind": "catch",
-              "line": 814
+              "line": 813
             },
             {
               "in": "renderSoulxLead",
@@ -29785,41 +29799,46 @@
             },
             {
               "in": "renderSoulxLead",
-              "kind": "throw",
+              "kind": "catch",
               "line": 822
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 823
+              "line": 826
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 824
+              "line": 827
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 828
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 922
+              "line": 926
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 927
+              "line": 931
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 935
+              "line": 939
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 944
+              "line": 948
             }
           ],
-          "hash": "9b7fd62be3b57c9e654f377a1404795129dfed6fe469cde48e5226010accdc0e",
+          "hash": "cdd73960b6d0db7f4f568d58d7c73ea7437b78ade84ebc4758b47149e7b30552",
           "importsFiles": [
             "src/audio-shared.ts",
             "src/cancel.ts",
@@ -29833,14 +29852,14 @@
             {
               "calls": [
                 {
-                  "line": 192,
+                  "line": 193,
                   "name": "soulxCacheDir",
                   "target": {
                     "file": "src/state-home.ts"
                   }
                 },
                 {
-                  "line": 196,
+                  "line": 197,
                   "name": "readMonoWav",
                   "target": {
                     "file": "src/vocal/kokoro-lead.ts"
@@ -29855,7 +29874,7 @@
             {
               "calls": [
                 {
-                  "line": 204,
+                  "line": 205,
                   "name": "soulxCacheDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -29870,12 +29889,12 @@
             {
               "calls": [
                 {
-                  "line": 407,
+                  "line": 411,
                   "name": "once",
                   "target": null
                 },
                 {
-                  "line": 426,
+                  "line": 430,
                   "name": "kill",
                   "target": null
                 }
@@ -29888,13 +29907,13 @@
             {
               "calls": [
                 {
-                  "line": 407,
+                  "line": 411,
                   "name": "once",
                   "target": null,
                   "via": "killChildProcessTree"
                 },
                 {
-                  "line": 426,
+                  "line": 430,
                   "name": "kill",
                   "target": null,
                   "via": "killChildProcessTree"
@@ -29908,7 +29927,7 @@
             {
               "calls": [
                 {
-                  "line": 498,
+                  "line": 502,
                   "name": "toCancelledError",
                   "target": {
                     "file": "src/cancel.ts"
@@ -29924,7 +29943,7 @@
               "calls": [
                 {
                   "branch": "signal?.aborted",
-                  "line": 498,
+                  "line": 502,
                   "name": "toCancelledError",
                   "target": {
                     "file": "src/cancel.ts"
@@ -29932,7 +29951,7 @@
                   "via": "abortReasonToError"
                 },
                 {
-                  "line": 558,
+                  "line": 562,
                   "name": "addEventListener",
                   "target": null
                 }
@@ -29945,14 +29964,14 @@
             {
               "calls": [
                 {
-                  "line": 587,
+                  "line": 591,
                   "name": "throwIfAborted",
                   "target": {
                     "file": "src/cancel.ts"
                   }
                 },
                 {
-                  "line": 192,
+                  "line": 193,
                   "name": "soulxCacheDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -29960,7 +29979,7 @@
                   "via": "cacheHit"
                 },
                 {
-                  "line": 196,
+                  "line": 197,
                   "name": "readMonoWav",
                   "target": {
                     "file": "src/vocal/kokoro-lead.ts"
@@ -29969,7 +29988,7 @@
                 },
                 {
                   "branch": "cached",
-                  "line": 599,
+                  "line": 603,
                   "name": "peakNormalize",
                   "target": {
                     "file": "src/vocal/score-singer.ts"
@@ -29977,7 +29996,7 @@
                 },
                 {
                   "branch": "signal?.aborted",
-                  "line": 498,
+                  "line": 502,
                   "name": "toCancelledError",
                   "target": {
                     "file": "src/cancel.ts"
@@ -29985,32 +30004,32 @@
                   "via": "abortReasonToError"
                 },
                 {
-                  "line": 558,
+                  "line": 562,
                   "name": "addEventListener",
                   "target": null,
                   "via": "runPy"
                 },
                 {
-                  "line": 662,
+                  "line": 666,
                   "name": "onProgress",
                   "target": null
                 },
                 {
-                  "line": 791,
+                  "line": 795,
                   "name": "readMonoWav",
                   "target": {
                     "file": "src/vocal/kokoro-lead.ts"
                   }
                 },
                 {
-                  "line": 792,
+                  "line": 796,
                   "name": "peakNormalize",
                   "target": {
                     "file": "src/vocal/score-singer.ts"
                   }
                 },
                 {
-                  "line": 204,
+                  "line": 205,
                   "name": "soulxCacheDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -30681,7 +30700,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 429
+          "files": 430
         }
       ],
       "readers": [
@@ -34573,7 +34592,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 531,
+      "runsCount": 532,
       "runsCut": true,
       "secrets": [],
       "sends": {
@@ -35657,7 +35676,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 429
+          "files": 430
         }
       ],
       "readers": [
@@ -38159,7 +38178,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 466,
+      "runsCount": 467,
       "runsCut": true,
       "secrets": [
         "GITHUB_TOKEN"
@@ -38549,8 +38568,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "2d501c9145037fcc172850c3d6ab8dcb027655f6",
-    "tracked": 3100
+    "commit": "77b5ec1340100bff0e30af392447784ee9c9fc92",
+    "tracked": 3101
   },
   "landings": [
     {
@@ -51316,6 +51335,17 @@
         }
       ],
       "target": "src/vocal/hymns.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/vocal/soulx-singer.ts",
+          "call": "existsSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "src/vocal/posix-parent-guard.js",
       "writers": []
     },
     {
