@@ -12199,7 +12199,7 @@
           "path": ".polyglot-cache.json"
         },
         {
-          "hash": "13faf2c7d4e043aac7eca5368e2c54e2394b16c9aebaba43dd52699df6394afb",
+          "hash": "7a79c90d7cebd24c65fc25d3a643cde0591c055cf7833b84834d8917363c0642",
           "path": "CHANGELOG.md"
         },
         {
@@ -12219,35 +12219,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "393d2ca19cb237e603498c25fdb262bde3eb44de8f522f36a9132476188d68b9",
+          "hash": "399ece34f9cf3acbde079b6c84d5b4ae0037df6b6866b7e4308deca578f4ded2",
           "path": "README.es.md"
         },
         {
-          "hash": "aac491103eaeeefc7817717ea248f0f6f6e4aef35812babc35b8ac15f93ca125",
+          "hash": "f6f20f30ec5830da311aa134a658d48fec386e60c68a88e8ca8cecc82626a23f",
           "path": "README.fr.md"
         },
         {
-          "hash": "99f1d62b985aaa37b1a190715633c3f92059896369c610ebfa5364360be29986",
+          "hash": "ceb607c2b557c4ee55e4256c83e5cd1e725617f99d796809b68f6344bd08adec",
           "path": "README.hi.md"
         },
         {
-          "hash": "2d30407cc33ce85063fd348d8c57c134f7a5661ae31f034a036ee8e8e2ca096f",
+          "hash": "9a3d039ee0ff8085aec028b7f7e781b1bc10e080f61eb1346be31071f7e8a55a",
           "path": "README.it.md"
         },
         {
-          "hash": "f2dbe688b32f7fb638eb5eb2fccdcc430b88ddc0ce0351aab13cdd3a73bac778",
+          "hash": "4ac7cbb7b18d660cc65c510c13ab06d47d0200d5531719d81da0fe4ff70f565a",
           "path": "README.ja.md"
         },
         {
-          "hash": "ec287e1618335ac5814e65714289c377e658037aaea283e474623bae97d9f4db",
+          "hash": "5bc36b5d6ea90f5c3cf3d24d763831459fa100bc890287d3f28060c4fe50b890",
           "path": "README.md"
         },
         {
-          "hash": "c1ac4f27e4d6c7a493479d80cbbd526ccb7e925a2e0b3809c73146fd90ba589f",
+          "hash": "2a13cbbd1025d90af08679e765daf89fccea5bb7d94c705be2d73bd977e66673",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "23c7f49ce874027a463e55338d20e3a914e26cd6b6f6938f588d4ab0e7df51a1",
+          "hash": "77539f5e4cb61412fd3a9e09b2c07cff4822c5bbf03c6b35db9f63746e7362a6",
           "path": "README.zh.md"
         },
         {
@@ -13683,10 +13683,10 @@
             {
               "in": "main",
               "kind": "catch",
-              "line": 103
+              "line": 107
             }
           ],
-          "hash": "86392f67306c60ba6a54dce4d0b9265193197bc0139269e5025fc862891be5c1",
+          "hash": "afaca4b7a81d9c35138748630acacbaff65d09c41951d12f668fa143a6a2aa5b",
           "importOrder": [
             "src/songs/library.ts",
             "src/songs/registry.ts",
@@ -16283,7 +16283,7 @@
           "path": "site/src/content/docs/handbook/live-ensemble.md"
         },
         {
-          "hash": "9e60e8cda16ee74c70a80acf3ec8a68b220facf106d38e47037cad4fcfa877b8",
+          "hash": "19bd7ba241fe1c72d0f00d6f1e57dd28eaae2fbdf58f3940d7b796550713b8a6",
           "path": "site/src/content/docs/handbook/mcp-tools.md"
         },
         {
@@ -17057,7 +17057,7 @@
     },
     {
       "dynamicReads": 45,
-      "dynamicSpawns": 12,
+      "dynamicSpawns": 8,
       "dynamicSpawnsInTests": 1,
       "dynamicWrites": 17,
       "entryPoints": [
@@ -17502,6 +17502,89 @@
               "invokedAtTopLevel": false,
               "isDefaultExport": false,
               "name": "createAudioEngine"
+            }
+          ]
+        },
+        {
+          "hash": "186a56b91a88a1c62e7668b5ce99d105998871ea75e6e3eabed50076628a6ac2",
+          "importsFiles": [
+            "src/audio-limits.ts"
+          ],
+          "path": "src/audio-limits.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "entry": "checkAudioInputCaps",
+          "entryRule": 4,
+          "exports": [
+            "checkAudioInputCaps",
+            "peekWavDurationSec",
+            "peekWavHeader",
+            "resolveAudioMaxDurationSec",
+            "resolveAudioMaxFileBytes"
+          ],
+          "failurePaths": [
+            {
+              "in": "peekWavHeader",
+              "kind": "catch",
+              "line": 111
+            },
+            {
+              "in": "peekWavHeader",
+              "kind": "catch",
+              "line": 187
+            },
+            {
+              "in": "checkAudioInputCaps",
+              "kind": "catch",
+              "line": 222
+            }
+          ],
+          "hash": "a0d90efc859945e0e819a0772da30d637a17f73f25e4c90a618dba358ed50285",
+          "importsFiles": [
+            "src/mcp-error.ts"
+          ],
+          "path": "src/audio-limits.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "branch": "explicitMaxBytes !== null && fileSize > explicitMaxBytes",
+                  "line": 235,
+                  "name": "mcpStructuredError",
+                  "target": {
+                    "file": "src/mcp-error.ts"
+                  }
+                },
+                {
+                  "branch": "header.durationSec > maxDurationSec",
+                  "line": 250,
+                  "name": "mcpStructuredError",
+                  "target": {
+                    "file": "src/mcp-error.ts"
+                  }
+                },
+                {
+                  "branch": "fileSize > derivedMaxBytes",
+                  "line": 267,
+                  "name": "mcpStructuredError",
+                  "target": {
+                    "file": "src/mcp-error.ts"
+                  }
+                },
+                {
+                  "branch": "fileSize > fallbackCeiling",
+                  "line": 284,
+                  "name": "mcpStructuredError",
+                  "target": {
+                    "file": "src/mcp-error.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkAudioInputCaps"
             }
           ]
         },
@@ -18718,6 +18801,30 @@
           ],
           "hash": "b0e21bd1dfe17d7c5da70fd639edd25c3b5419c76f082d6f071bba15a4dd00be",
           "path": "src/audio/window.ts"
+        },
+        {
+          "hash": "ee90ce7e01dfa9558e2a31dc28f62cf6fb27cd2885554e3c3262617130162fc1",
+          "importsFiles": [
+            "src/cancel.ts"
+          ],
+          "path": "src/cancel.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "isCancelledError",
+            "throwIfAborted",
+            "toCancelledError"
+          ],
+          "failurePaths": [
+            {
+              "in": "throwIfAborted",
+              "kind": "throw",
+              "line": 51
+            }
+          ],
+          "hash": "e9c655176e562093841df75fcbd4b18389d066a06792293a64bb6b1e13d13638",
+          "path": "src/cancel.ts"
         },
         {
           "hash": "56342024b3eb96687ea1ed2c8e1bc7a51136eb77bed5bc6debb51f4121661e20",
@@ -20455,7 +20562,7 @@
             "renderVoicingText",
             "shuffledOrder"
           ],
-          "hash": "c88a008ff9f8911de5603311340572c1a587779e52bdda30b960a2bd7c21a3c6",
+          "hash": "bb34b2be2f1ecab0014203a5a3f0f159456ba970ef3871c042e9400947669929",
           "importsFiles": [
             "src/compose/types.ts"
           ],
@@ -20465,7 +20572,7 @@
           "exports": [
             "runComposePanelTool"
           ],
-          "hash": "50a5ab5f2668e483aa65f50b85c94d9c3b4e0bcefa92d091198d899a472662b4",
+          "hash": "f0620b57dc70b0074dc5258140328c4768e727d959998447fe81b6610bc5c8bd",
           "importOrder": [
             "src/compose/panel-run.ts",
             "src/compose/realize.ts",
@@ -20580,7 +20687,7 @@
           "exports": [
             "progressionFromAnalysis"
           ],
-          "hash": "43b7a795513e9f8f792efb2e075abb927379b581789431af410bbf6f7125b100",
+          "hash": "a6507b056e0f329cbc1bd656b3318f7dadb1fa4c16b9af8c26e97dcac1988467",
           "importOrder": [
             "src/analysis/index.ts",
             "src/compose/realize.ts",
@@ -20680,34 +20787,79 @@
           "path": "src/compose/llm-panel.ts"
         },
         {
-          "hash": "6c07fb9dcff3ccad9558053aab3c5fc85b3da505bf6ca338ff4d1c2b33a5bbdf",
+          "hash": "6cbee06318881cf7d1486e1bacc7c11ba8576d14c06ed158f7a1e5693818c826",
           "importOrder": [
+            "src/songs/library.ts",
+            "src/songs/registry.ts",
+            "src/analysis/index.ts",
+            "src/dataset/eval/llm-backends/ollama.ts",
             "src/maker/chord-proposer.ts",
-            "src/compose/ollama-bws-judge.ts"
+            "src/compose/ollama-bws-judge.ts",
+            "src/compose/ollama-spec-realizer.ts",
+            "src/compose/bws.ts",
+            "src/compose/realize.ts",
+            "src/compose/refine.ts",
+            "src/compose/index.ts",
+            "src/compose/compose-panel-tool.ts",
+            "src/compose/panel-run.ts"
           ],
           "importsFiles": [
+            "src/analysis/index.ts",
+            "src/compose/bws.ts",
+            "src/compose/compose-panel-tool.ts",
+            "src/compose/index.ts",
             "src/compose/ollama-bws-judge.ts",
-            "src/maker/chord-proposer.ts"
+            "src/compose/ollama-spec-realizer.ts",
+            "src/compose/panel-run.ts",
+            "src/compose/realize.ts",
+            "src/compose/refine.ts",
+            "src/dataset/eval/llm-backends/ollama.ts",
+            "src/maker/chord-proposer.ts",
+            "src/songs/library.ts",
+            "src/songs/registry.ts"
           ],
           "path": "src/compose/ollama-bws-judge.test.ts",
           "testFramework": "vitest"
         },
         {
+          "exports": [
+            "estimateJudgeContextTokens",
+            "makeUnreachablePanelJudge"
+          ],
           "failurePaths": [
             {
-              "in": "judge",
+              "in": "judgeDetailed",
               "kind": "catch",
-              "line": 57
+              "line": 155
+            },
+            {
+              "in": "judgeDetailed",
+              "kind": "throw",
+              "line": 157
+            },
+            {
+              "in": "judgeDetailed",
+              "kind": "catch",
+              "line": 180
+            },
+            {
+              "in": "judgeDetailed",
+              "kind": "throw",
+              "line": 182
             }
           ],
-          "hash": "d3a49b085221995d71c46214b98bed0bb5413690ccca696ac5f204aac09d73ea",
+          "hash": "e9991c8f6a4643bc08b0c336b04b637bef695979b499a3959657a0ecd12b058e",
           "importOrder": [
             "src/dataset/eval/llm-backends/ollama.ts",
+            "src/cancel.ts",
             "src/maker/chord-proposer.ts",
-            "src/compose/bws-judge-text.ts"
+            "src/compose/bws-judge-text.ts",
+            "src/compose/panel-run.ts"
           ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/compose/bws-judge-text.ts",
+            "src/compose/panel-run.ts",
             "src/dataset/eval/llm-backends/ollama.ts",
             "src/maker/chord-proposer.ts"
           ],
@@ -20767,7 +20919,7 @@
           "path": "src/compose/ollama-realizer.ts"
         },
         {
-          "hash": "818488c4d25d90e9453d9f2f14a35b62081dcc851c780eb0767dfe9cc01eeab3",
+          "hash": "bb04697161f30d4a61f87b93078043aa69c6a632448d2b4f740193dbb893bc9f",
           "importOrder": [
             "src/compose/ollama-spec-realizer.ts",
             "src/maker/verify-harmony.ts",
@@ -20793,28 +20945,35 @@
             {
               "in": "parseSpecResponse",
               "kind": "catch",
-              "line": 109
+              "line": 110
             },
             {
               "in": "parseSpecResponse",
               "kind": "catch",
-              "line": 115
+              "line": 116
             },
             {
               "in": "proposeRealization",
               "kind": "catch",
-              "line": 205
+              "line": 222
+            },
+            {
+              "in": "proposeRealization",
+              "kind": "throw",
+              "line": 224
             }
           ],
-          "hash": "308f34eadfbe9c4f678b16bf1d89f9c287364ed74b73e7febb54d5e155cee780",
+          "hash": "0ae20d6ff3bf7893575b0d863a242f9f439974b1c7443f38bdf2a281273fdb96",
           "importOrder": [
             "src/dataset/eval/llm-backends/ollama.ts",
+            "src/cancel.ts",
             "src/maker/chord-proposer.ts",
             "src/compose/voicing-spec.ts",
             "src/compose/types.ts",
             "src/compose/realize.ts"
           ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/compose/realize.ts",
             "src/compose/types.ts",
             "src/compose/voicing-spec.ts",
@@ -20839,15 +20998,19 @@
           "path": "src/compose/panel-progress.ts"
         },
         {
-          "hash": "e090b9e806528403ca3bc86a8a26c4b1f7977849c637b4ecb35c88d81fd02e2b",
+          "hash": "59ac4ae3e99f8725affc307a4abb5e9c682d629cb3a6f566df9d674f1d9cd7eb",
           "importOrder": [
             "src/compose/panel-run.ts",
             "src/compose/compose-panel-tool.ts",
+            "src/compose/index.ts",
             "src/compose/realize.ts",
-            "src/compose/refine.ts"
+            "src/compose/refine.ts",
+            "src/cancel.ts"
           ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/compose/compose-panel-tool.ts",
+            "src/compose/index.ts",
             "src/compose/panel-run.ts",
             "src/compose/realize.ts",
             "src/compose/refine.ts"
@@ -20860,9 +21023,18 @@
             "renderPanelReport",
             "runVoiceLeadingPanel"
           ],
-          "hash": "398c50baef0495880f468a7ffbb305a2ec7f11c196f91820a1dd5924717ff65e",
-          "importsFiles": [
+          "hash": "fb4d4088bfcfb415d0e756b170e6e14f7b85f0bc9094e83077bb3f412e54e84e",
+          "importOrder": [
             "src/compose/bws.ts",
+            "src/compose/ollama-bws-judge.ts",
+            "src/cancel.ts",
+            "src/compose/realize.ts",
+            "src/compose/types.ts"
+          ],
+          "importsFiles": [
+            "src/cancel.ts",
+            "src/compose/bws.ts",
+            "src/compose/ollama-bws-judge.ts",
             "src/compose/realize.ts",
             "src/compose/types.ts"
           ],
@@ -20889,9 +21061,10 @@
             "realizeProgression",
             "rootPositionRealization"
           ],
-          "hash": "195ade14f391c8810ef437d0a91d27191953f69e907b460162a323988356fc28",
+          "hash": "2e44e171596c0dce24c2a37a11bea32595947cfed2eb3147d617a7b86da32980",
           "importOrder": [
             "src/maker/verify-harmony.ts",
+            "src/cancel.ts",
             "src/compose/voice-leading.ts",
             "src/compose/scorer.ts",
             "src/compose/style-cost.ts",
@@ -20899,6 +21072,7 @@
             "src/compose/types.ts"
           ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/compose/scorer.ts",
             "src/compose/style-cost.ts",
             "src/compose/style.ts",
@@ -20934,7 +21108,7 @@
             "gatingViolationCount",
             "refineRealization"
           ],
-          "hash": "1663899bfb2676377f7bba7b4fe9e090fc46be8f6608d0554851f38600fb4add",
+          "hash": "3f5b86db9c699c14f11dd7a7a90f50a89137e28f35d58be27784cad491c028e7",
           "importOrder": [
             "src/maker/verify-harmony.ts",
             "src/compose/voice-leading.ts",
@@ -22356,63 +22530,122 @@
           "path": "src/dataset/eval/llm-backends/ollama-intern.ts"
         },
         {
-          "hash": "161eff3eb3a7faddb0210722fbb305ae944ed897d17f1cb904b8b6a7b8dd8071",
+          "hash": "075864822510544d38c4cd3b49c2899db9082891b7b0a944fdf37aae45a4d66e",
+          "importOrder": [
+            "src/dataset/eval/llm-backends/ollama.ts",
+            "src/cancel.ts"
+          ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/dataset/eval/llm-backends/ollama.ts"
           ],
           "path": "src/dataset/eval/llm-backends/ollama.test.ts",
           "testFramework": "vitest"
         },
         {
+          "exports": [
+            "formatStructuredSystemPrompt",
+            "resolveOllamaTimeoutMs"
+          ],
           "failurePaths": [
             {
+              "in": "runBounded",
+              "kind": "catch",
+              "line": 215
+            },
+            {
+              "in": "runBounded",
+              "kind": "throw",
+              "line": 217
+            },
+            {
+              "in": "runBounded",
+              "kind": "throw",
+              "line": 220
+            },
+            {
+              "in": "runBounded",
+              "kind": "throw",
+              "line": 227
+            },
+            {
               "in": "post",
               "kind": "catch",
-              "line": 95
+              "line": 252
             },
             {
               "in": "post",
               "kind": "throw",
-              "line": 96
+              "line": 253
             },
             {
               "in": "post",
               "kind": "throw",
-              "line": 106
+              "line": 254
+            },
+            {
+              "in": "post",
+              "kind": "throw",
+              "line": 264
             },
             {
               "in": "probe",
               "kind": "throw",
-              "line": 127
+              "line": 291
             },
             {
               "in": "probe",
               "kind": "catch",
-              "line": 129
+              "line": 293
             },
             {
               "in": "probe",
               "kind": "throw",
-              "line": 130
+              "line": 294
+            },
+            {
+              "in": "probe",
+              "kind": "throw",
+              "line": 295
+            },
+            {
+              "in": "supportsThinking",
+              "kind": "catch",
+              "line": 324
+            },
+            {
+              "in": "supportsThinking",
+              "kind": "throw",
+              "line": 325
+            },
+            {
+              "in": "supportsThinking",
+              "kind": "throw",
+              "line": 326
             },
             {
               "in": "callWithTools",
               "kind": "throw",
-              "line": 166
+              "line": 377
             },
             {
               "in": "callStructured",
               "kind": "catch",
-              "line": 209
+              "line": 427
             },
             {
               "in": "callStructured",
               "kind": "throw",
-              "line": 210
+              "line": 428
             }
           ],
-          "hash": "d53986d07a32123d93cbf38164a1c3cc9df393cc10b24e9f5200ea8915b6f82b",
+          "hash": "cc2e8698d7776802d769acca836d156ebeb86797f6c6b081e8e44627c98f4780",
+          "importOrder": [
+            "src/dataset/eval/llm-runner.ts",
+            "src/cancel.ts"
+          ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/dataset/eval/llm-runner.ts"
           ],
           "path": "src/dataset/eval/llm-backends/ollama.ts"
@@ -24677,7 +24910,7 @@
           "path": "src/layered-engine.ts"
         },
         {
-          "hash": "559c49f58353736f2be78d6f12195e0e283f8aee1fb2f0af417126b82db929ce",
+          "hash": "d13b1415b393422c226d563c9ab446c1e3cec5c5d4e2ed1c2d74ac0e0b8f1099",
           "importsFiles": [
             "src/maker/abc-chord-proposer.ts",
             "src/maker/er-gate.ts"
@@ -24694,11 +24927,23 @@
             {
               "in": "proposeChords",
               "kind": "catch",
-              "line": 150
+              "line": 170
+            },
+            {
+              "in": "proposeChords",
+              "kind": "throw",
+              "line": 172
             }
           ],
-          "hash": "14e5a20cc66b4c8e645d4efcd024b7ec9623a51a7d181fd9e2229dc4e22024a5",
+          "hash": "bd9f7c84c8a3ead26be1d8a813b71cd5022693ad6a61105759339ba16adcec97",
+          "importOrder": [
+            "src/dataset/eval/llm-backends/ollama.ts",
+            "src/cancel.ts",
+            "src/maker/er-gate.ts",
+            "src/maker/reharmonize.ts"
+          ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/dataset/eval/llm-backends/ollama.ts",
             "src/maker/er-gate.ts",
             "src/maker/reharmonize.ts"
@@ -24721,7 +24966,7 @@
           "path": "src/maker/abc-syntax.ts"
         },
         {
-          "hash": "b25c406cda8d20d245bc9b8a32c6cb3b3a5a67449bb4d3c418ea3b89e77bec76",
+          "hash": "384d75e08bdf4aae52e71879ffa1010c4135c76ee65702fb6fd2fe46685a0f6f",
           "importsFiles": [
             "src/maker/auto-reharmonize-tool.ts",
             "src/maker/reharmonize.ts",
@@ -24733,9 +24978,10 @@
         {
           "exports": [
             "parseSectionRange",
+            "reharmonizeProgressNotification",
             "reharmonizeSongSection"
           ],
-          "hash": "4edcabf9ebee999ea82bf1e3ffc20f93272ce033bed1cae9f7b532ee2d47179e",
+          "hash": "98a3aff53069f57d54d479bcc05c117928830591e15d9637acb59340980aeee4",
           "importOrder": [
             "src/maker/reharmonize.ts",
             "src/maker/er-gate.ts",
@@ -24751,7 +24997,7 @@
           "path": "src/maker/auto-reharmonize-tool.ts"
         },
         {
-          "hash": "a3003c8c92a741df594dcb2a01c7edb13120ddfc13678ccd1d8c85d1f55d94d7",
+          "hash": "60097293315e5ee723a1fd9426e994190e460b58813241bcdf4b3c4becf7cd1b",
           "importsFiles": [
             "src/maker/chord-proposer.ts",
             "src/maker/er-gate.ts"
@@ -24768,21 +25014,33 @@
             {
               "in": "parseChordsOnly",
               "kind": "catch",
-              "line": 60
+              "line": 61
             },
             {
               "in": "parseChordsOnly",
               "kind": "catch",
-              "line": 66
+              "line": 67
             },
             {
               "in": "proposeChords",
               "kind": "catch",
-              "line": 177
+              "line": 193
+            },
+            {
+              "in": "proposeChords",
+              "kind": "throw",
+              "line": 195
             }
           ],
-          "hash": "06d61882eaf9d3ac36f09bc495ae1f7d8cd16a158f51a0d90cf0bbfc20541b1a",
+          "hash": "c9a0e1c72265eb783c602b6c5b9a336957a6b1a016d798ac843721b663e6c7e0",
+          "importOrder": [
+            "src/dataset/eval/llm-backends/ollama.ts",
+            "src/cancel.ts",
+            "src/maker/er-gate.ts",
+            "src/maker/reharmonize.ts"
+          ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/dataset/eval/llm-backends/ollama.ts",
             "src/maker/er-gate.ts",
             "src/maker/reharmonize.ts"
@@ -24838,12 +25096,14 @@
           "path": "src/maker/er-gate.ts"
         },
         {
-          "hash": "6f11734ca19561991fd48924eb3ec7ae0f32abeb345da7428e8009359719a96e",
+          "hash": "9cd0aba249f873fe892c31246f31d7af5a3820de14da798e9ec5b8ffc20a0a56",
           "importOrder": [
             "src/maker/reharmonize.ts",
-            "src/maker/er-gate.ts"
+            "src/maker/er-gate.ts",
+            "src/cancel.ts"
           ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/maker/er-gate.ts",
             "src/maker/reharmonize.ts"
           ],
@@ -24854,13 +25114,15 @@
           "exports": [
             "autoReharmonize"
           ],
-          "hash": "89e722840c9f00297feda57256083c676094b783155cd94ebc0ea5ad210728de",
+          "hash": "e733bb92000d784edafefb26ec1e28cd807a7d209a73d3e6790cc8292a2b0027",
           "importOrder": [
             "src/maker/voicer.ts",
+            "src/cancel.ts",
             "src/maker/er-gate.ts",
             "src/maker/verify-harmony.ts"
           ],
           "importsFiles": [
+            "src/cancel.ts",
             "src/maker/er-gate.ts",
             "src/maker/verify-harmony.ts",
             "src/maker/voicer.ts"
@@ -24936,6 +25198,39 @@
           ],
           "hash": "1dbc1127d36f65691294cafd11f3e35d2b9d6fe4e94bdbee146aad9266c29b6d",
           "path": "src/mcp-error.ts"
+        },
+        {
+          "hash": "4bab27f6211d7bd896e9c7dae9a503615a33981a3513cf316e98497e10952cb0",
+          "importOrder": [
+            "src/audio-engine.ts",
+            "src/sample-engine.ts",
+            "src/vocal-engine.ts",
+            "src/vocal-tract-engine.ts",
+            "src/guitar-engine.ts",
+            "src/playback/metronome.ts",
+            "src/mcp-server.ts",
+            "src/audio-shared.ts"
+          ],
+          "importsFiles": [
+            "src/audio-engine.ts",
+            "src/audio-shared.ts",
+            "src/guitar-engine.ts",
+            "src/mcp-server.ts",
+            "src/playback/metronome.ts",
+            "src/sample-engine.ts",
+            "src/vocal-engine.ts",
+            "src/vocal-tract-engine.ts"
+          ],
+          "names": [
+            "scripts/export_soulx_target.py",
+            "scripts/soulx_take.py",
+            "scripts/vocal_clock.py"
+          ],
+          "path": "src/mcp-real-stops.test.ts",
+          "spawns": [
+            "src/mcp-server.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "f3cb595b70ea183beeea0c56f37d1679cbadc1302dab9f83e3ec50aadcef3d41",
@@ -25016,212 +25311,224 @@
           "entry": "main",
           "entryRule": 1,
           "exports": [
+            "attachShutdownHandlers",
             "prepareMcpServer",
-            "setLiveEnsemble"
+            "setLiveEnsemble",
+            "shutdownMcpServer",
+            "signalExitCode"
           ],
           "failurePaths": [
             {
               "in": "getCanonicalHomeDir",
               "kind": "catch",
-              "line": 213
+              "line": 236
             },
             {
               "in": "resolveContainedExistingPath",
               "kind": "catch",
-              "line": 246
+              "line": 269
             },
             {
               "in": "stopActive",
               "kind": "catch",
-              "line": 1225
+              "line": 1258
             },
             {
               "in": "stopActive",
               "kind": "catch",
-              "line": 1233
+              "line": 1266
             },
             {
               "kind": "catch",
-              "line": 1359
+              "line": 1396
             },
             {
               "kind": "catch",
-              "line": 1373
+              "line": 1410
             },
             {
               "kind": "catch",
-              "line": 1466
+              "line": 1503
             },
             {
               "in": "unsubscribeEnsemble",
               "kind": "catch",
-              "line": 1484
+              "line": 1521
             },
             {
               "kind": "catch",
-              "line": 1694
+              "line": 1763
             },
             {
               "kind": "catch",
-              "line": 1858
+              "line": 1774
             },
             {
               "kind": "catch",
-              "line": 1872
+              "line": 1974
+            },
+            {
+              "kind": "catch",
+              "line": 1988
             },
             {
               "kind": "throw",
-              "line": 2260
+              "line": 2377
             },
             {
               "kind": "throw",
-              "line": 2268
+              "line": 2385
             },
             {
               "kind": "catch",
-              "line": 2274
+              "line": 2391
             },
             {
               "kind": "catch",
-              "line": 2300
+              "line": 2417
             },
             {
               "kind": "throw",
-              "line": 2313
+              "line": 2430
             },
             {
               "kind": "throw",
-              "line": 2317
+              "line": 2434
             },
             {
               "kind": "catch",
-              "line": 2321
+              "line": 2438
             },
             {
               "kind": "catch",
-              "line": 2398
+              "line": 2517
             },
             {
               "kind": "catch",
-              "line": 2410
+              "line": 2545
             },
             {
               "kind": "catch",
-              "line": 2488
+              "line": 2550
             },
             {
               "kind": "catch",
-              "line": 2502
+              "line": 2644
             },
             {
               "kind": "catch",
-              "line": 2528
+              "line": 2669
             },
             {
               "kind": "catch",
-              "line": 2533
+              "line": 2704
             },
             {
               "kind": "catch",
-              "line": 2598
+              "line": 2709
             },
             {
               "kind": "catch",
-              "line": 2619
+              "line": 2777
             },
             {
               "kind": "catch",
-              "line": 2724
+              "line": 2798
             },
             {
               "kind": "catch",
-              "line": 2821
+              "line": 2903
+            },
+            {
+              "kind": "catch",
+              "line": 3000
             },
             {
               "in": "loadAudioFile",
               "kind": "catch",
-              "line": 2871
+              "line": 3070
             },
             {
               "kind": "catch",
-              "line": 3314
+              "line": 3513
             },
             {
               "kind": "catch",
-              "line": 3364
+              "line": 3563
             },
             {
               "kind": "catch",
-              "line": 3444
+              "line": 3643
             },
             {
               "kind": "catch",
-              "line": 3609
+              "line": 3808
             },
             {
               "kind": "catch",
-              "line": 3703
+              "line": 3902
             },
             {
               "kind": "catch",
-              "line": 3788
+              "line": 3987
             },
             {
               "kind": "catch",
-              "line": 3907
+              "line": 4106
             },
             {
               "kind": "catch",
-              "line": 3992
+              "line": 4191
             },
             {
               "kind": "catch",
-              "line": 4133
+              "line": 4332
             },
             {
               "kind": "catch",
-              "line": 4233
+              "line": 4432
             },
             {
               "kind": "catch",
-              "line": 4255
+              "line": 4454
             },
             {
               "kind": "catch",
-              "line": 4328
+              "line": 4527
             },
             {
               "kind": "catch",
-              "line": 4633
+              "line": 4832
             },
             {
               "kind": "catch",
-              "line": 4705
+              "line": 4904
             },
             {
               "kind": "catch",
-              "line": 4734
+              "line": 4933
             },
             {
               "kind": "catch",
-              "line": 4789
+              "line": 4988
             },
             {
               "in": "persistSessionState",
               "kind": "catch",
-              "line": 4868
+              "line": 5067
             },
             {
               "in": "loadSessionState",
               "kind": "catch",
-              "line": 4898
+              "line": 5097
             }
           ],
-          "hash": "8413b14c9326d6c344b861b8535add6303b1d0b94631c831089ef5caf39c9c7a",
+          "hash": "c92c0e40e20f4d565448bcce73bb2fabe7b315027c9824ef24060ae40dc53e2b",
           "importsFiles": [
             "src/analysis/index.ts",
             "src/annotation-scorer.ts",
             "src/audio-engine.ts",
+            "src/audio-limits.ts",
             "src/audio-shared.ts",
             "src/audio/bridge.ts",
             "src/audio/ensemble.ts",
@@ -25229,6 +25536,7 @@
             "src/audio/roster.ts",
             "src/audio/stream.ts",
             "src/audio/tap.ts",
+            "src/cancel.ts",
             "src/chord-detect.ts",
             "src/compose/index.ts",
             "src/compose/panel-progress.ts",
@@ -25270,14 +25578,15 @@
             "src/vocal-engine.ts",
             "src/vocal-tract-engine.ts",
             "src/vocal/prepare.ts",
-            "src/vocal/score-singer.ts"
+            "src/vocal/score-singer.ts",
+            "src/vocal/soulx-singer.ts"
           ],
           "path": "src/mcp-server.ts",
           "sequences": [
             {
               "calls": [
                 {
-                  "line": 274,
+                  "line": 297,
                   "name": "toUserString",
                   "target": null
                 }
@@ -25290,7 +25599,7 @@
             {
               "calls": [
                 {
-                  "line": 1075,
+                  "line": 1103,
                   "name": "getRecording",
                   "target": null
                 }
@@ -25303,10 +25612,17 @@
             {
               "calls": [
                 {
-                  "line": 1075,
+                  "line": 1103,
                   "name": "getRecording",
                   "target": null,
                   "via": "captureLastRecording"
+                },
+                {
+                  "line": 1253,
+                  "name": "abortAllSoulxRenders",
+                  "target": {
+                    "file": "src/vocal/soulx-singer.ts"
+                  }
                 }
               ],
               "exported": false,
@@ -25317,7 +25633,14 @@
             {
               "calls": [
                 {
-                  "line": 2870,
+                  "line": 3055,
+                  "name": "checkAudioInputCaps",
+                  "target": {
+                    "file": "src/audio-limits.ts"
+                  }
+                },
+                {
+                  "line": 3069,
                   "name": "decodeWav",
                   "target": {
                     "file": "src/audio/index.ts"
@@ -25332,7 +25655,7 @@
             {
               "calls": [
                 {
-                  "line": 2891,
+                  "line": 3090,
                   "name": "toFixed",
                   "target": null,
                   "via": "signed"
@@ -25346,7 +25669,7 @@
             {
               "calls": [
                 {
-                  "line": 3490,
+                  "line": 3689,
                   "name": "getSharedAudioContext",
                   "target": {
                     "file": "src/audio-shared.ts"
@@ -25361,7 +25684,7 @@
             {
               "calls": [
                 {
-                  "line": 4829,
+                  "line": 5028,
                   "name": "userSongsDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25376,7 +25699,7 @@
             {
               "calls": [
                 {
-                  "line": 4833,
+                  "line": 5032,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25391,7 +25714,7 @@
             {
               "calls": [
                 {
-                  "line": 4833,
+                  "line": 5032,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25399,7 +25722,7 @@
                   "via": "getServerStateFile"
                 },
                 {
-                  "line": 4866,
+                  "line": 5065,
                   "name": "stateHome",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25414,7 +25737,7 @@
             {
               "calls": [
                 {
-                  "line": 4833,
+                  "line": 5032,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25430,7 +25753,7 @@
             {
               "calls": [
                 {
-                  "line": 4829,
+                  "line": 5028,
                   "name": "userSongsDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25438,14 +25761,14 @@
                   "via": "getUserSongsDir"
                 },
                 {
-                  "line": 4923,
+                  "line": 5122,
                   "name": "initializeFromLibrary",
                   "target": {
                     "file": "src/songs/index.ts"
                   }
                 },
                 {
-                  "line": 4833,
+                  "line": 5032,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25461,7 +25784,25 @@
             {
               "calls": [
                 {
-                  "line": 4944,
+                  "line": 5314,
+                  "name": "once",
+                  "target": null
+                },
+                {
+                  "line": 5321,
+                  "name": "on",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "attachShutdownHandlers"
+            },
+            {
+              "calls": [
+                {
+                  "line": 5350,
                   "name": "shouldSuperviseStdio",
                   "target": {
                     "file": "src/stdio-supervisor.ts"
@@ -25469,14 +25810,14 @@
                 },
                 {
                   "branch": "shouldSuperviseStdio()",
-                  "line": 4945,
+                  "line": 5351,
                   "name": "runStdioSupervisor",
                   "target": {
                     "file": "src/stdio-supervisor.ts"
                   }
                 },
                 {
-                  "line": 4829,
+                  "line": 5028,
                   "name": "userSongsDir",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25484,7 +25825,7 @@
                   "via": "getUserSongsDir"
                 },
                 {
-                  "line": 4923,
+                  "line": 5122,
                   "name": "initializeFromLibrary",
                   "target": {
                     "file": "src/songs/index.ts"
@@ -25492,7 +25833,7 @@
                   "via": "prepareMcpServer"
                 },
                 {
-                  "line": 4833,
+                  "line": 5032,
                   "name": "serverStatePath",
                   "target": {
                     "file": "src/state-home.ts"
@@ -25500,11 +25841,23 @@
                   "via": "getServerStateFile"
                 },
                 {
-                  "line": 4954,
+                  "line": 5360,
                   "name": "openRpcOutputStream",
                   "target": {
                     "file": "src/stdio-supervisor.ts"
                   }
+                },
+                {
+                  "line": 5314,
+                  "name": "once",
+                  "target": null,
+                  "via": "attachShutdownHandlers"
+                },
+                {
+                  "line": 5321,
+                  "name": "on",
+                  "target": null,
+                  "via": "attachShutdownHandlers"
                 }
               ],
               "exported": false,
@@ -25513,6 +25866,19 @@
               "name": "main"
             }
           ]
+        },
+        {
+          "exports": [
+            "assertDocCountsMatchRegistry",
+            "parseHandbookCounts",
+            "parseReadmeCounts"
+          ],
+          "hash": "19163c10903cb0ea59fbc02ac9b5201009e2fcd8f652536e38247e738a7224c5",
+          "importsFiles": [
+            "src/mcp-server.ts"
+          ],
+          "path": "src/mcp-tool-count.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e27bca3b7c5b6d3426509f91449a194be933c6d6df4d4400ffba4a17e686a47f",
@@ -28890,6 +29256,23 @@
           "path": "src/vocal/melody-notes.ts"
         },
         {
+          "exports": [
+            "startPosixParentGuard"
+          ],
+          "failurePaths": [
+            {
+              "in": "startPosixParentGuard",
+              "kind": "catch",
+              "line": 45
+            }
+          ],
+          "hash": "bb94baa8366f2ceb912686c2c2544b29e6b849e3dc781effea2aaea965cf9fd4",
+          "importsFiles": [
+            "src/entry-guard.ts"
+          ],
+          "path": "src/vocal/posix-parent-guard.ts"
+        },
+        {
           "hash": "be784632cdc2922175bcc7547aa3f8bceb564b0222452aa2929365b90c9df51c",
           "importsFiles": [
             "src/songs/types.ts",
@@ -28929,15 +29312,15 @@
             {
               "in": "prepareScoreLocked",
               "kind": "throw",
-              "line": 74
+              "line": 88
             },
             {
               "in": "prepareScoreLocked",
               "kind": "throw",
-              "line": 88
+              "line": 102
             }
           ],
-          "hash": "8d62cbd797b3a402b1b808d4f69cd35de74c7050e763b37786c79f2806a97886",
+          "hash": "ca76a808c032ed79299087df035e86a2e1f57be72530c67fc65271e9b1fcdb48",
           "importsFiles": [
             "src/songs/library.ts",
             "src/songs/types.ts",
@@ -28953,7 +29336,7 @@
             {
               "calls": [
                 {
-                  "line": 48,
+                  "line": 62,
                   "name": "getVocalTune",
                   "target": {
                     "file": "src/vocal/tunes.ts"
@@ -28968,7 +29351,7 @@
             {
               "calls": [
                 {
-                  "line": 48,
+                  "line": 62,
                   "name": "getVocalTune",
                   "target": {
                     "file": "src/vocal/tunes.ts"
@@ -28976,14 +29359,14 @@
                   "via": "resolveLyricsText"
                 },
                 {
-                  "line": 60,
+                  "line": 74,
                   "name": "loadEngineG2P",
                   "target": {
                     "file": "src/vocal/g2p.ts"
                   }
                 },
                 {
-                  "line": 61,
+                  "line": 75,
                   "name": "buildScoreLockedVocals",
                   "target": {
                     "file": "src/vocal/score-locked.ts"
@@ -28991,7 +29374,7 @@
                 },
                 {
                   "branch": "backend === \"soulx\"",
-                  "line": 78,
+                  "line": 92,
                   "name": "resolveLibraryMidiPath",
                   "target": {
                     "file": "src/songs/library.ts"
@@ -28999,7 +29382,7 @@
                 },
                 {
                   "branch": "backend === \"soulx\"",
-                  "line": 83,
+                  "line": 97,
                   "name": "parseMidiTracks",
                   "target": {
                     "file": "src/vocal/score-clock.ts"
@@ -29007,7 +29390,7 @@
                 },
                 {
                   "branch": "backend === \"soulx\"",
-                  "line": 86,
+                  "line": 100,
                   "name": "detectMelodyTrack",
                   "target": {
                     "file": "src/vocal/score-clock.ts"
@@ -29015,7 +29398,7 @@
                 },
                 {
                   "branch": "backend === \"soulx\"",
-                  "line": 96,
+                  "line": 110,
                   "name": "deriveScoreClock",
                   "target": {
                     "file": "src/vocal/score-clock.ts"
@@ -29023,14 +29406,14 @@
                 },
                 {
                   "branch": "backend === \"soulx\"",
-                  "line": 105,
+                  "line": 119,
                   "name": "createSoulxScoreSinger",
                   "target": {
                     "file": "src/vocal/soulx-singer.ts"
                   }
                 },
                 {
-                  "line": 112,
+                  "line": 133,
                   "name": "createScoreSinger",
                   "target": {
                     "file": "src/vocal/score-singer.ts"
@@ -29289,7 +29672,7 @@
           "path": "src/vocal/song-generate.ts"
         },
         {
-          "hash": "da132196a8a0eb3da299a8f73fc9e89f95e3c4b724c6a6a2c86531f1d1e48c6e",
+          "hash": "a6a9860fb48ddc0ca202f6164bcaa6a6679dc5116fa631271c5d58468b9b58cd",
           "importsFiles": [
             "src/audio-shared.ts",
             "src/state-home.ts",
@@ -29306,131 +29689,418 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "a5102e8f3471d617cf9324cb92d2611227d9ce3336012a572fdf19ec7e58ccf4",
+          "hash": "3b384d71aead37286e5de5c2dfb1349cdc80cb2eaeee7c7e0ae99c4f94682977",
           "importOrder": [
+            "src/vocal/posix-parent-guard.ts",
             "src/vocal/soulx-singer.ts",
+            "src/cancel.ts",
             "src/vocal/score-clock.ts"
           ],
           "importsFiles": [
+            "src/cancel.ts",
+            "src/vocal/posix-parent-guard.ts",
             "src/vocal/score-clock.ts",
             "src/vocal/soulx-singer.ts"
+          ],
+          "names": [
+            "scripts/export_soulx_target.py",
+            "scripts/soulx_take.py",
+            "scripts/vocal_clock.py"
           ],
           "path": "src/vocal/soulx-singer.test.ts",
           "testFramework": "vitest"
         },
         {
+          "entry": "renderSoulxLead",
+          "entryRule": 4,
           "exports": [
+            "abortAllSoulxRenders",
+            "buildSoulxSpawnSpec",
             "createSoulxScoreSinger",
-            "renderSoulxLead"
+            "killAllSoulxChildrenSync",
+            "killChildProcessTree",
+            "killProcessTreeSync",
+            "renderSoulxLead",
+            "resolveSoulxDeadlineMs",
+            "soulxProgressNotification"
           ],
           "failurePaths": [
             {
               "in": "cacheHit",
               "kind": "catch",
-              "line": 109
+              "line": 199
             },
             {
               "in": "resolvePrompt",
               "kind": "throw",
-              "line": 195
+              "line": 285
             },
             {
               "in": "resolvePrompt",
               "kind": "throw",
-              "line": 202
+              "line": 292
             },
             {
               "in": "resolvePrompt",
               "kind": "throw",
-              "line": 213
+              "line": 303
             },
             {
               "in": "resolvePrompt",
               "kind": "catch",
-              "line": 215
+              "line": 305
             },
             {
               "in": "resolvePrompt",
               "kind": "throw",
-              "line": 217
+              "line": 307
+            },
+            {
+              "in": "killProcessTreeSync",
+              "kind": "catch",
+              "line": 330
+            },
+            {
+              "in": "killProcessTreeSync",
+              "kind": "catch",
+              "line": 337
+            },
+            {
+              "in": "killProcessTreeSync",
+              "kind": "catch",
+              "line": 342
+            },
+            {
+              "in": "killChildProcessTree",
+              "kind": "catch",
+              "line": 425
+            },
+            {
+              "in": "killChildProcessTree",
+              "kind": "catch",
+              "line": 431
+            },
+            {
+              "in": "killChildProcessTree",
+              "kind": "catch",
+              "line": 438
+            },
+            {
+              "in": "killChildProcessTree",
+              "kind": "catch",
+              "line": 444
+            },
+            {
+              "in": "killAllSoulxChildrenSync",
+              "kind": "catch",
+              "line": 467
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 295
+              "line": 662
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 328
+              "line": 670
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 335
+              "line": 695
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 373
+              "line": 702
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 394
+              "line": 735
             },
             {
               "in": "renderSoulxLead",
               "kind": "throw",
-              "line": 402
+              "line": 754
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 761
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 783
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 792
             },
             {
               "in": "renderSoulxLead",
               "kind": "catch",
-              "line": 411
+              "line": 801
             },
             {
               "in": "renderSoulxLead",
               "kind": "catch",
-              "line": 423
+              "line": 813
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "catch",
+              "line": 818
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "catch",
+              "line": 822
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 826
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 827
+            },
+            {
+              "in": "renderSoulxLead",
+              "kind": "throw",
+              "line": 828
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 486
+              "line": 926
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 491
+              "line": 931
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 499
+              "line": 939
             },
             {
               "in": "stop",
               "kind": "catch",
-              "line": 508
+              "line": 948
             }
           ],
-          "hash": "4b9ad851d105f5fdd75600443f761d92186306822c77984c07909c79ccf5cd75",
-          "importOrder": [
-            "src/state-home.ts",
-            "src/audio-shared.ts",
-            "src/vocal/kokoro-lead.ts",
-            "src/vocal/score-singer.ts",
-            "src/vocal/score-clock.ts"
-          ],
+          "hash": "cdd73960b6d0db7f4f568d58d7c73ea7437b78ade84ebc4758b47149e7b30552",
           "importsFiles": [
             "src/audio-shared.ts",
+            "src/cancel.ts",
             "src/state-home.ts",
             "src/vocal/kokoro-lead.ts",
             "src/vocal/score-clock.ts",
             "src/vocal/score-singer.ts"
           ],
-          "path": "src/vocal/soulx-singer.ts"
+          "path": "src/vocal/soulx-singer.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 193,
+                  "name": "soulxCacheDir",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  }
+                },
+                {
+                  "line": 197,
+                  "name": "readMonoWav",
+                  "target": {
+                    "file": "src/vocal/kokoro-lead.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "cacheHit"
+            },
+            {
+              "calls": [
+                {
+                  "line": 205,
+                  "name": "soulxCacheDir",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "cacheStore"
+            },
+            {
+              "calls": [
+                {
+                  "line": 411,
+                  "name": "once",
+                  "target": null
+                },
+                {
+                  "line": 430,
+                  "name": "kill",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "killChildProcessTree"
+            },
+            {
+              "calls": [
+                {
+                  "line": 411,
+                  "name": "once",
+                  "target": null,
+                  "via": "killChildProcessTree"
+                },
+                {
+                  "line": 430,
+                  "name": "kill",
+                  "target": null,
+                  "via": "killChildProcessTree"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "abortAllSoulxRenders"
+            },
+            {
+              "calls": [
+                {
+                  "line": 502,
+                  "name": "toCancelledError",
+                  "target": {
+                    "file": "src/cancel.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "abortReasonToError"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "signal?.aborted",
+                  "line": 502,
+                  "name": "toCancelledError",
+                  "target": {
+                    "file": "src/cancel.ts"
+                  },
+                  "via": "abortReasonToError"
+                },
+                {
+                  "line": 562,
+                  "name": "addEventListener",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runPy"
+            },
+            {
+              "calls": [
+                {
+                  "line": 591,
+                  "name": "throwIfAborted",
+                  "target": {
+                    "file": "src/cancel.ts"
+                  }
+                },
+                {
+                  "line": 193,
+                  "name": "soulxCacheDir",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  },
+                  "via": "cacheHit"
+                },
+                {
+                  "line": 197,
+                  "name": "readMonoWav",
+                  "target": {
+                    "file": "src/vocal/kokoro-lead.ts"
+                  },
+                  "via": "cacheHit"
+                },
+                {
+                  "branch": "cached",
+                  "line": 603,
+                  "name": "peakNormalize",
+                  "target": {
+                    "file": "src/vocal/score-singer.ts"
+                  }
+                },
+                {
+                  "branch": "signal?.aborted",
+                  "line": 502,
+                  "name": "toCancelledError",
+                  "target": {
+                    "file": "src/cancel.ts"
+                  },
+                  "via": "abortReasonToError"
+                },
+                {
+                  "line": 562,
+                  "name": "addEventListener",
+                  "target": null,
+                  "via": "runPy"
+                },
+                {
+                  "line": 666,
+                  "name": "onProgress",
+                  "target": null
+                },
+                {
+                  "line": 795,
+                  "name": "readMonoWav",
+                  "target": {
+                    "file": "src/vocal/kokoro-lead.ts"
+                  }
+                },
+                {
+                  "line": 796,
+                  "name": "peakNormalize",
+                  "target": {
+                    "file": "src/vocal/score-singer.ts"
+                  }
+                },
+                {
+                  "line": 205,
+                  "name": "soulxCacheDir",
+                  "target": {
+                    "file": "src/state-home.ts"
+                  },
+                  "via": "cacheStore"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "renderSoulxLead"
+            }
+          ]
         },
         {
           "hash": "1a3f713948f9ef2c08966041c24b73d623bf80ab2fe2af89eceadf448aaeea6b",
@@ -29580,7 +30250,7 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 130,
+          "reads": 132,
           "where": [
             "caller"
           ],
@@ -29677,13 +30347,13 @@
           "writes": 8
         }
       ],
-      "outsideReads": 149,
+      "outsideReads": 151,
       "outsideWrites": 36,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 214,
+      "testedBy": 218,
       "unresolvedSites": 0
     }
   ],
@@ -30088,7 +30758,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 423
+          "files": 430
         }
       ],
       "readers": [
@@ -31154,6 +31824,44 @@
           "via": "tsc tsconfig.json"
         },
         {
+          "job": "ci",
+          "matched": true,
+          "path": "src/audio-limits.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "pnpm10-install",
+          "matched": true,
+          "path": "src/audio-limits.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "ci",
+          "matched": true,
+          "path": "src/audio-limits.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "docker-image",
+          "matched": true,
+          "path": "src/audio-limits.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "pnpm10-install",
+          "matched": true,
+          "path": "src/audio-limits.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
           "built": true,
           "job": "ci",
           "matched": true,
@@ -31370,6 +32078,44 @@
         {
           "job": "ci",
           "matched": true,
+          "path": "src/cancel.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "pnpm10-install",
+          "matched": true,
+          "path": "src/cancel.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "ci",
+          "matched": true,
+          "path": "src/cancel.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "docker-image",
+          "matched": true,
+          "path": "src/cancel.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "pnpm10-install",
+          "matched": true,
+          "path": "src/cancel.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "ci",
+          "matched": true,
           "path": "src/chord-detect.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -31402,58 +32148,6 @@
           "job": "pnpm10-install",
           "matched": true,
           "path": "src/chord-detect.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "job": "ci",
-          "matched": true,
-          "path": "src/cli-commands.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "pnpm10-install",
-          "matched": true,
-          "path": "src/cli-commands.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "ci",
-          "matched": true,
-          "path": "src/cli.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "pnpm10-install",
-          "matched": true,
-          "path": "src/cli.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "built": true,
-          "job": "ci",
-          "matched": true,
-          "path": "src/cli.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "docker-image",
-          "matched": true,
-          "path": "src/cli.ts",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "pnpm10-install",
-          "matched": true,
-          "path": "src/cli.ts",
           "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
@@ -31642,20 +32336,6 @@
           "path": "src/compose/index.ts",
           "runKind": "executes",
           "via": "tsc tsconfig.json"
-        },
-        {
-          "job": "ci",
-          "matched": true,
-          "path": "src/compose/llm-panel.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "pnpm10-install",
-          "matched": true,
-          "path": "src/compose/llm-panel.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
         },
         {
           "job": "ci",
@@ -33970,7 +34650,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 525,
+      "runsCount": 532,
       "runsCut": true,
       "secrets": [],
       "sends": {
@@ -33987,7 +34667,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 235,
+          "files": 239,
           "job": "ci",
           "runner": "vitest",
           "step": "Test",
@@ -33998,7 +34678,7 @@
         {
           "config": "vitest.config.ts",
           "coverage": true,
-          "files": 235,
+          "files": 239,
           "job": "ci",
           "runner": "vitest",
           "step": "Test with coverage",
@@ -34008,7 +34688,7 @@
         },
         {
           "config": "vitest.config.ts",
-          "files": 235,
+          "files": 239,
           "job": "pnpm10-install",
           "runner": "vitest",
           "step": "Test",
@@ -34188,7 +34868,7 @@
             "file": "src/compose/human-audio-panel.ts",
             "from": "apps/cockpit/src/panel-clip.ts"
           },
-          "files": 35
+          "files": 36
         }
       ],
       "readers": [],
@@ -35054,7 +35734,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 423
+          "files": 430
         }
       ],
       "readers": [
@@ -35811,6 +36491,29 @@
           "via": "tsc tsconfig.json"
         },
         {
+          "job": "publish-npm",
+          "matched": true,
+          "path": "src/audio-limits.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "publish-docker",
+          "matched": true,
+          "path": "src/audio-limits.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "publish-npm",
+          "matched": true,
+          "path": "src/audio-limits.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
           "built": true,
           "job": "publish-docker",
           "matched": true,
@@ -35944,6 +36647,29 @@
         {
           "job": "publish-npm",
           "matched": true,
+          "path": "src/cancel.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "publish-docker",
+          "matched": true,
+          "path": "src/cancel.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc tsconfig.json"
+        },
+        {
+          "built": true,
+          "job": "publish-npm",
+          "matched": true,
+          "path": "src/cancel.ts",
+          "runKind": "executes",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "publish-npm",
+          "matched": true,
           "path": "src/chord-detect.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -35961,36 +36687,6 @@
           "job": "publish-npm",
           "matched": true,
           "path": "src/chord-detect.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
-        },
-        {
-          "job": "publish-npm",
-          "matched": true,
-          "path": "src/cli-commands.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "job": "publish-npm",
-          "matched": true,
-          "path": "src/cli.test.ts",
-          "runKind": "executes",
-          "via": "vitest vitest.config.ts"
-        },
-        {
-          "built": true,
-          "job": "publish-docker",
-          "matched": true,
-          "path": "src/cli.ts",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "publish-npm",
-          "matched": true,
-          "path": "src/cli.ts",
           "runKind": "executes",
           "via": "tsc tsconfig.json"
         },
@@ -36575,22 +37271,6 @@
           "path": "src/dataset/eval/markov-foil.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
-        },
-        {
-          "built": true,
-          "job": "publish-docker",
-          "matched": true,
-          "path": "src/dataset/eval/markov-foil.ts",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc tsconfig.json"
-        },
-        {
-          "built": true,
-          "job": "publish-npm",
-          "matched": true,
-          "path": "src/dataset/eval/markov-foil.ts",
-          "runKind": "executes",
-          "via": "tsc tsconfig.json"
         },
         {
           "job": "publish-npm",
@@ -37556,7 +38236,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 460,
+      "runsCount": 467,
       "runsCut": true,
       "secrets": [
         "GITHUB_TOKEN"
@@ -37585,7 +38265,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 235,
+          "files": 239,
           "job": "publish-npm",
           "runner": "vitest",
           "step": "5",
@@ -37772,7 +38452,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 85
+          "files": 86
         }
       ],
       "readers": [],
@@ -37814,7 +38494,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 86
+          "files": 87
         }
       ],
       "readers": [],
@@ -37856,7 +38536,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 145
+          "files": 147
         }
       ],
       "readers": [],
@@ -37946,8 +38626,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "2aa1ca729dd336ed6308c1679a61995ce195a51b",
-    "tracked": 3094
+    "commit": "9677684d73c3798556eb77a6c5133ce61b451a66",
+    "tracked": 3101
   },
   "landings": [
     {
@@ -38003,6 +38683,12 @@
         {
           "by": "src/dataset/package-public.test.ts",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/mcp-tool-count.test.ts",
+          "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -48299,6 +48985,18 @@
     {
       "readers": [
         {
+          "by": "src/mcp-tool-count.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/src/content/docs/handbook/mcp-tools.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "docs/findings/derived-content-inventory.json",
           "call": "literal",
           "confidence": "text"
@@ -48521,6 +49219,12 @@
           "by": "src/cli.ts",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "src/compose/ollama-bws-judge.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "src/dataset/acoustic-v1/allowlist.test.ts",
@@ -50515,6 +51219,12 @@
           "by": "docs/findings/derived-content-inventory.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "src/mcp-real-stops.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "src/mcp-server.ts",
@@ -50694,6 +51404,17 @@
     {
       "readers": [
         {
+          "by": "src/vocal/soulx-singer.ts",
+          "call": "existsSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "src/vocal/posix-parent-guard.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "docs/findings/derived-content-inventory.json",
           "call": "literal",
           "confidence": "text"
@@ -50798,7 +51519,7 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 252,
+  "testFiles": 256,
   "testsNotRun": [
     "scripts/detector/test_detector.py",
     "scripts/test_aligner_fill.py",

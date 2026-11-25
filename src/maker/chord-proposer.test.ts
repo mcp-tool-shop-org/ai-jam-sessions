@@ -183,4 +183,29 @@ describe("OllamaChordProposer", () => {
     expect(built[0].seed).toBe(7);
     expect(built[0].probed).toBe(true);
   });
+
+  it("rethrows RequestCancelledError instead of swallowing abort into []", async () => {
+    const ac = new AbortController();
+    ac.abort("stop proposer");
+    const proposer = new OllamaChordProposer("m", {
+      signal: ac.signal,
+      backendFactory: (seed) => new StubBackend(seed, null, true),
+    });
+    await expect(proposer.probe()).rejects.toThrow("stop proposer");
+    await expect(proposer.proposeChords(item, 0)).rejects.toThrow("stop proposer");
+
+    const ac2 = new AbortController();
+    const proposer2 = new OllamaChordProposer("m", {
+      backendFactory: (seed) => ({
+        ...new StubBackend(seed, null),
+        async callStructured() {
+          ac2.abort("mid-call abort");
+          throw new Error("aborted");
+        },
+        lastRawText: () => null,
+        probe: async () => {},
+      }),
+    });
+    await expect(proposer2.proposeChords(item, 0, ac2.signal)).rejects.toThrow("mid-call abort");
+  });
 });

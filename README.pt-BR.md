@@ -405,7 +405,7 @@ A imagem inclui os 14 arquivos MIDI redistribuíveis; executar o `library fetch 
 | Ferramenta | O que ela faz |
 |------|--------------|
 | `play_song` | Reproduzir através de alto-falantes — músicas da biblioteca ou arquivos .mid brutos. Quatro mecanismos (piano, vocal, trato, guitarra), qualquer velocidade, modo, intervalo de compassos — além de um metrônomo com contagem inicial e uma flag `record` que captura a sessão para pontuação. Os mecanismos de sintetizador e camadas são apenas para CLI. |
-| `stop_playback` | Parar |
+| `stop_playback` | Parar a reprodução ou uma renderização vocal SoulX em andamento |
 | `pause_playback` | Pausar ou retomar |
 | `set_speed` | Alterar a velocidade durante a reprodução (0,1×–4,0×) |
 | `playback_status` | Instantâneo em tempo real: compasso atual, andamento, velocidade, voz do teclado, estado |
@@ -433,6 +433,8 @@ A imagem inclui os 14 arquivos MIDI redistribuíveis; executar o `library fetch 
 | `verify_harmony` | O portão de verificação do loop de criação: uma rearmonização proposta é verificada pelas próprias ferramentas determinísticas da plataforma — fidelidade do acorde (o mecanismo de acordes deve detectar cada acorde pretendido), consonância da melodia (tom/tensão/cromaticismo), condução da voz do baixo, pertencimento à tonalidade |
 | `auto_reharmonize` | O loop de criação em uma única chamada — um modelo local propõe uma rearmonização, o portão determinístico do `verify_harmony` verifica cada voz, o melhor de n até que uma interpretação verificada seja retornada |
 | `compose_panel` | Executar o painel de composição de condução de voz em qualquer música: quatro sistemas realizam acompanhamentos, um LLM cego de família diferente classifica-os, Bradley-Terry agrega — com um portão de discriminação que invalida execuções não interpretáveis (apenas sinal direcional, nunca uma pontuação de qualidade). Executa por minutos e transmite notificações de progresso enquanto trabalha. |
+
+As ferramentas de longa duração (`compose_panel`, `auto_reharmonize` e `play_song` com o cantor SoulX) podem ser canceladas e informam o progresso; cada chamada ao Ollama tem um tempo limite (`OLLAMA_TIMEOUT_MS`, padrão de 120 s), e uma renderização vocal SoulX tem um prazo para a renderização inteira (`SOULX_RENDER_DEADLINE_MS`, padrão de 15 min) que também encerra seus processos filhos.
 
 **Uma música inteira no tempo: a rota vocal.** Qualquer música pode ter uma voz cantada real que se encaixa no piano.
 - **O relógio.** Um relógio de partitura (`scripts/build-score-clock.mjs`) deriva o tom, o início e a duração de cada sílaba do arranjo da música, na linha do tempo do próprio reprodutor.
@@ -494,6 +496,8 @@ uma imagem.
 | `check_loop_seam` | Determine onde o final de um loop se conecta ao seu início — etapa da forma de onda extrapolada, energia de pico na junção, mudança de nível ao longo dela |
 | `compare_balance` | Compare o equilíbrio tonal de uma renderização com uma referência, faixa por faixa em dB, com a mudança no brilho e na inclinação. O volume é cancelado. |
 | `ensemble_now` | O que cada instrumento está tocando **no momento**, durante a performance. As notas vêm do que foi enviado, portanto, são exatas, em vez de estimadas. |
+
+Cada ferramenta de áudio lê arquivos WAV de até 64 MiB e 600 s (`AJS_AUDIO_MAX_FILE_BYTES`, `AJS_AUDIO_MAX_DURATION_SEC`).
 
 ### Sugestões do MCP
 

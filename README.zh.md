@@ -365,7 +365,7 @@ npm install -g @mcptoolshop/ai-jam-sessions
 | 工具 | 它的作用 |
 |------|--------------|
 | `play_song` | 通过扬声器播放——库中的歌曲或原始 .mid 文件。四种引擎（钢琴、人声、声道、吉他），任何速度、模式、小节范围——以及一个带有预数拍的节拍器和一个 `record` 标志，用于捕获会话以进行评分。合成器和分层引擎仅通过 CLI 使用。 |
-| `stop_playback` | 停止 |
+| `stop_playback` | 停止播放，或停止正在进行的 SoulX 人声渲染 |
 | `pause_playback` | 暂停或恢复 |
 | `set_speed` | 在播放过程中更改速度（0.1 倍 – 4.0 倍） |
 | `playback_status` | 实时快照：当前小节、速度、速度、键盘音色、状态 |
@@ -393,6 +393,8 @@ npm install -g @mcptoolshop/ai-jam-sessions
 | `verify_harmony` | 制作者循环的验证门：平台自身的确定性工具会检查提出的重新和声，以验证其是否符合要求——和弦保真度（和弦引擎必须检测到每个预期的和弦）、旋律和谐（音/张力/半音）、低音声部进行、调性成员 |
 | `auto_reharmonize` | 制作者循环（一次性）：本地模型提出重新和声，`verify_harmony` 的确定性门检查每个音色，选择最佳的 n 个，直到返回经过验证的诠释 |
 | `compose_panel` | 对任何歌曲运行声部进行作曲面板：四个系统实现伴奏，盲目跨家族的 LLM 裁判对其进行排名，Bradley-Terry 聚合——并具有一个判别阈值门，该门会使无法解释的运行无效（仅方向信号，绝不提供质量分数）。运行时间长达几分钟，并在运行过程中流式传输进度通知。 |
+
+耗时较长的工具（`compose_panel`、`auto_reharmonize`，以及使用 SoulX 歌手的 `play_song`）可以取消，并会报告进度；每次 Ollama 调用都有超时（`OLLAMA_TIMEOUT_MS`，默认 120 秒），SoulX 人声渲染有整次渲染的期限（`SOULX_RENDER_DEADLINE_MS`，默认 15 分钟），到期时也会停止其子进程。
 
 **一首完整的歌曲，按时间顺序：人声路线。**任何歌曲都可以包含一首真实的演唱人声，并将其与钢琴匹配。
 - **时钟。**一个评分时钟（`scripts/build-score-clock.mjs`）从歌曲的编排中推导出每个音节的音高、起始时间和持续时间，并将其与播放器的自己的时间线对齐。
@@ -452,6 +454,8 @@ npm install -g @mcptoolshop/ai-jam-sessions
 | `check_loop_seam` | 判断一个循环的结尾如何回到其开始——外推波形步长、连接处的爆发能量、跨越它的电平变化 |
 | `compare_balance` | 在dB中，将渲染图像的色调平衡与参考图像进行逐个频带的比较，同时考虑亮度和倾斜度的变化。响度会相互抵消。 |
 | `ensemble_now` | 在演奏过程中，每种乐器**当前**正在演奏的内容。音符来自发送的内容，因此是精确的，而不是估计的。 |
+
+每个音频工具可读取最大 64 MiB、600 秒的 WAV 文件（`AJS_AUDIO_MAX_FILE_BYTES`、`AJS_AUDIO_MAX_DURATION_SEC`）。
 
 ### MCP 提示
 

@@ -395,7 +395,7 @@ L'immagine include 14 file MIDI ridistribuibili; l'esecuzione di `library fetch 
 | Strumento | Cosa fa |
 |------|--------------|
 | `play_song` | Riproduci tramite gli altoparlanti: brani della libreria o file .mid grezzi. Quattro motori (pianoforte, voce, tratto, chitarra), qualsiasi velocità, modalità, intervallo di misure, oltre a un metronomo con conteggio iniziale e un flag `record` che registra la sessione per la valutazione. I motori synth e a livelli sono disponibili solo tramite CLI. |
-| `stop_playback` | Ferma |
+| `stop_playback` | Arresta la riproduzione o un rendering vocale SoulX in corso |
 | `pause_playback` | Metti in pausa o riprendi |
 | `set_speed` | Cambia la velocità durante la riproduzione (0,1×–4,0×) |
 | `playback_status` | Snapshot in tempo reale: misura corrente, tempo, velocità, voce della tastiera, stato |
@@ -423,6 +423,8 @@ L'immagine include 14 file MIDI ridistribuibili; l'esecuzione di `library fetch 
 | `verify_harmony` | Il gate di verifica del ciclo di creazione: una riarmonizzazione proposta viene controllata dagli strumenti deterministici della piattaforma: fedeltà degli accordi (il motore degli accordi deve rilevare ogni accordo previsto), consonanza della melodia (tono/tensione/cromatico), conduzione delle voci del basso, appartenenza alla tonalità |
 | `auto_reharmonize` | Il ciclo di creazione in una sola chiamata: un modello locale propone una riarmonizzazione, il gate deterministico di `verify_harmony` controlla ogni voicing, il migliore tra n fino a quando non viene restituita un'interpretazione verificata |
 | `compose_panel` | Esegui il pannello di composizione della conduzione delle voci su qualsiasi brano: quattro sistemi realizzano accompagnamenti, un LLM cross-familiare esegue una valutazione alla cieca e li classifica, l'aggregazione di Bradley-Terry, con un gate di discriminazione che annulla le esecuzioni non interpretabili (solo segnale direzionale, mai un punteggio di qualità). Funziona per minuti e trasmette notifiche di avanzamento durante l'esecuzione. |
+
+Gli strumenti di lunga durata (`compose_panel`, `auto_reharmonize` e `play_song` con il cantante SoulX) si possono annullare e segnalano i propri progressi; ogni chiamata a Ollama ha un timeout (`OLLAMA_TIMEOUT_MS`, 120 s di default) e un rendering vocale SoulX ha una scadenza per l'intero rendering (`SOULX_RENDER_DEADLINE_MS`, 15 min di default) che arresta anche i suoi processi figli.
 
 **Un intero brano a tempo: la via vocale.** Qualsiasi brano può avere una vera voce cantata che si sovrappone al pianoforte.
 - **Il cronometro.** Un cronometro dello spartito (`scripts/build-score-clock.mjs`) deriva l'intonazione, l'inizio e la durata di ogni sillaba dall'arrangiamento del brano, sulla linea temporale del riproduttore.
@@ -483,6 +485,8 @@ producono risultati incoerenti. Ogni numero deriva dall'elaborazione del segnale
 | `check_loop_seam` | Giudica dove la fine di un loop si ricollega al suo inizio: estrapolazione della forma d'onda, energia del picco alla giunzione, variazione di livello |
 | `compare_balance` | Confronta l'equilibrio tonale di un rendering con un riferimento, banda per banda in dB, con la variazione di luminosità e inclinazione. Il volume viene annullato. |
 | `ensemble_now` | Mostra cosa sta suonando **in questo momento** ogni strumento, durante l'esecuzione. Le note derivano da ciò che è stato inviato, quindi sono esatte anziché stimate. |
+
+Ogni strumento audio legge file WAV fino a 64 MiB e 600 s (`AJS_AUDIO_MAX_FILE_BYTES`, `AJS_AUDIO_MAX_DURATION_SEC`).
 
 ### Suggerimenti MCP
 

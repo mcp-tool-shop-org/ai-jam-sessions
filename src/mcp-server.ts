@@ -18,12 +18,29 @@
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { constants as osConstants } from "node:os";
+import type { Writable } from "node:stream";
 import { VERSION } from "./version.js";
 import { shouldSuperviseStdio, runStdioSupervisor, openRpcOutputStream } from "./stdio-supervisor.js";
 import { z } from "zod";
 import { zDifficulty, zGenre, zMeasure, zMidiNotes, zSongId } from "./mcp-schema.js";
 import { mcpStructuredError } from "./mcp-error.js";
+import { isCancelledError, RequestCancelledError, throwIfAborted } from "./cancel.js";
+import {
+  AUDIO_MAX_DURATION_SEC,
+  AUDIO_MAX_DURATION_SEC_ENV,
+  AUDIO_MAX_FILE_BYTES,
+  AUDIO_MAX_FILE_BYTES_ENV,
+  checkAudioInputCaps,
+} from "./audio-limits.js";
 import { panelProgressNotification } from "./compose/panel-progress.js";
+import {
+  SOULX_DEADLINE_ENV,
+  SoulxRenderDeadlineError,
+  abortAllSoulxRenders,
+  killAllSoulxChildrenSync,
+  soulxProgressNotification,
+} from "./vocal/soulx-singer.js";
 import {
   getAllSongs,
   getSong,
@@ -52,7 +69,11 @@ import {
   type MelodyMeasureInput,
   type ReharmonizedMeasure,
 } from "./maker/verify-harmony.js";
-import { reharmonizeSongSection, type AutoReharmonizeToolResult } from "./maker/auto-reharmonize-tool.js";
+import {
+  reharmonizeProgressNotification,
+  reharmonizeSongSection,
+  type AutoReharmonizeToolResult,
+} from "./maker/auto-reharmonize-tool.js";
 import { OllamaChordProposer } from "./maker/chord-proposer.js";
 import { AbcChordProposer } from "./maker/abc-chord-proposer.js";
 import type { SongEntry, Difficulty, Genre } from "./songs/types.js";
@@ -66,6 +87,8 @@ import {
   RefiningProposer,
   OllamaSpecRealizer,
   OllamaBwsJudge,
+  makeUnreachablePanelJudge,
+  MIN_PANEL_JUDGES,
   runComposePanelTool,
   type PanelSystemSpec,
   type PanelJudge,
@@ -1016,6 +1039,11 @@ let activeMidiEngine: MidiPlaybackEngine | null = null;
 let activeController: PlaybackController | null = null;
 let activeConnector: VmpkConnector | null = null;
 let activeScoreSinger: ScoreSinger | null = null;
+let activeVocalRender: {
+  songTitle: string;
+  abort: (reason?: unknown) => void;
+  settled: Promise<void>;
+} | null = null;
 let activeVoiceId: string = "grand";
 let activeNotes: Set<number> = new Set();
 let activePracticeLoop: PracticeLoop | null = null;
@@ -1219,6 +1247,11 @@ async function stopActive(): Promise<void> {
   }
   activeController = null;
 
+  if (activeVocalRender) {
+    activeVocalRender.abort(new RequestCancelledError("Playback stopped"));
+  }
+  await abortAllSoulxRenders("Playback stopped");
+
   if (activeScoreSinger) {
     try {
       await activeScoreSinger.stop();
@@ -1267,7 +1300,11 @@ registerTool(
     singerPromptWav: z.string().optional().describe("Path to a reference singing voice clip (WAV/MP3) for SoulX zero-shot timbre. Requires singerPromptMeta. If omitted, the default example prompt in the SoulX checkout is used."),
     singerPromptMeta: z.string().optional().describe("Path to the SoulX metadata JSON for the reference voice clip. Required when singerPromptWav is set."),
   },
-  async ({ id, speed, tempo, mode, startMeasure, endMeasure, withSinging, withTeaching, singMode, keyboard, engine, tractVoice, guitarVoice, syncMode: syncModeParam, metronome, countIn, record, lyrics, singerBackend, melodyTrack, singerPromptWav, singerPromptMeta }) => withStateLock(async () => {
+  async ({ id, speed, tempo, mode, startMeasure, endMeasure, withSinging, withTeaching, singMode, keyboard, engine, tractVoice, guitarVoice, syncMode: syncModeParam, metronome, countIn, record, lyrics, singerBackend, melodyTrack, singerPromptWav, singerPromptMeta }, extra) => {
+    if (activeVocalRender) {
+      activeVocalRender.abort(new RequestCancelledError("Superseded by play_song"));
+    }
+    return withStateLock(async () => {
     // Stop whatever is currently playing
     await stopActive();
 
@@ -1669,6 +1706,38 @@ registerTool(
     activeSession = session;
 
     if (lyrics && lyrics.trim().length > 0) {
+      const requestSignal = extra?.signal;
+      const progressToken = extra?._meta?.progressToken;
+      if (requestSignal?.aborted) {
+        await stopActive();
+        return mcpStructuredError(
+          "cancelled",
+          `Vocal render cancelled for "${song.title}".`,
+          "Request was aborted before vocal synthesis started.",
+        );
+      }
+
+      const renderController = new AbortController();
+      const onRequestAbort = () => {
+        renderController.abort(requestSignal?.reason);
+      };
+      requestSignal?.addEventListener("abort", onRequestAbort, { once: true });
+
+      let resolveSettled!: () => void;
+      const settled = new Promise<void>((res) => {
+        resolveSettled = res;
+      });
+      const renderHandle = {
+        songTitle: song.title,
+        abort: (reason?: unknown) => {
+          if (!renderController.signal.aborted) {
+            renderController.abort(reason ?? new RequestCancelledError("Vocal render cancelled"));
+          }
+        },
+        settled,
+      };
+      activeVocalRender = renderHandle;
+
       try {
         const { dirname } = await import("node:path");
         const { fileURLToPath } = await import("node:url");
@@ -1685,19 +1754,51 @@ registerTool(
           melodyTrack,
           soulxPromptWav: singerPromptWav,
           soulxPromptMeta: singerPromptMeta,
+          signal: renderController.signal,
+          onSoulxProgress: progressToken === undefined
+            ? undefined
+            : async (event) => {
+                try {
+                  await extra.sendNotification(soulxProgressNotification(progressToken, event));
+                } catch {
+                  // Progress is best-effort — a dropped client must not fail playback.
+                }
+              },
         });
         if (prepared) {
-          await prepared.singer.connect();
-          prepared.singer.start();
           activeScoreSinger = prepared.singer;
+          await prepared.singer.connect();
+          throwIfAborted(renderController.signal, "Vocal render cancelled");
+          prepared.singer.start();
         }
       } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
+        const isDeadline = err instanceof SoulxRenderDeadlineError;
+        const wasCancelled = !isDeadline && (isCancelledError(err) || renderController.signal.aborted);
+        if (activeVocalRender === renderHandle) activeVocalRender = null;
         await stopActive();
+        if (isDeadline) {
+          return mcpStructuredError(
+            "soulx_deadline_exceeded",
+            err.message,
+            `Increase ${SOULX_DEADLINE_ENV} or reduce takes.`,
+          );
+        }
+        if (wasCancelled) {
+          return mcpStructuredError(
+            "cancelled",
+            `Vocal render cancelled for "${song.title}".`,
+            err instanceof Error ? err.message : String(err),
+          );
+        }
+        const msg = err instanceof Error ? err.message : String(err);
         return {
           content: [{ type: "text", text: `Couldn't start the sung lead: ${msg}` }],
           isError: true,
         };
+      } finally {
+        requestSignal?.removeEventListener("abort", onRequestAbort);
+        if (activeVocalRender === renderHandle) activeVocalRender = null;
+        resolveSettled();
       }
     }
 
@@ -1786,7 +1887,8 @@ registerTool(
     lines.push(``, `Tip: After listening, use \`save_practice_note\` to record what you learned.`);
 
     return { content: [{ type: "text", text: lines.join("\n") }] };
-  })
+  });
+  }
 );
 
 // ─── Tool: stop_playback ──────────────────────────────────────────────────
@@ -1795,7 +1897,14 @@ registerTool(
   "stop_playback",
   "Stop the currently playing song and disconnect MIDI.",
   {},
-  async () => withStateLock(async () => {
+  async () => {
+    const inFlightRender = activeVocalRender;
+    if (inFlightRender) {
+      inFlightRender.abort(new RequestCancelledError("Stopped by stop_playback"));
+      await inFlightRender.settled.catch(() => {});
+    }
+
+    return withStateLock(async () => {
     // A FINISHED practice loop deliberately stays in activePracticeLoop
     // (see the practice_loop tool below) so practice_status can still
     // report its final state — only a still-RUNNING loop counts as "was
@@ -1803,28 +1912,31 @@ registerTool(
     // doesn't silently clear that memory.
     const practiceLoopRunning = activePracticeLoop?.getState().status === "running";
     const wasPlaying = activeSession || activeMidiEngine || activeController || practiceLoopRunning;
-    if (!wasPlaying) {
+    if (!wasPlaying && !inFlightRender) {
       return {
         content: [{ type: "text", text: "No song is currently playing." }],
       };
     }
 
-    const info = activeSession
-      ? `${activeSession.session.song.title} (${activeSession.session.measuresPlayed} measures played)`
-      : practiceLoopRunning
-        ? `Practice loop on "${activePracticeLoop!.song.title}" (pass ${activePracticeLoop!.getState().currentPassNumber})`
-        : activeMidiEngine
-          ? `MIDI file (${activeMidiEngine.eventsPlayed}/${activeMidiEngine.totalEvents} events played)`
-          : activeController
-            ? `MIDI file (${activeController.eventsPlayed}/${activeController.totalEvents} events played)`
-            : "Unknown";
+    const info = inFlightRender
+      ? `${inFlightRender.songTitle} (vocal render cancelled)`
+      : activeSession
+        ? `${activeSession.session.song.title} (${activeSession.session.measuresPlayed} measures played)`
+        : practiceLoopRunning
+          ? `Practice loop on "${activePracticeLoop!.song.title}" (pass ${activePracticeLoop!.getState().currentPassNumber})`
+          : activeMidiEngine
+            ? `MIDI file (${activeMidiEngine.eventsPlayed}/${activeMidiEngine.totalEvents} events played)`
+            : activeController
+              ? `MIDI file (${activeController.eventsPlayed}/${activeController.totalEvents} events played)`
+              : "Unknown";
 
     await stopActive();
 
     return {
       content: [{ type: "text", text: `Stopped: ${info}` }],
     };
-  })
+  });
+  }
 );
 
 // ─── Tool: practice_loop ────────────────────────────────────────────────────
@@ -1841,7 +1953,11 @@ registerTool(
     rampStepPct: z.number().min(0.1).max(100).optional().describe("Speed increase applied after each CLEAN pass. Default: 5"),
     maxPasses: z.number().int().min(1).optional().describe("Optional cap on total passes. Default: no cap — runs until a clean pass at speedTargetPct, or stop_playback."),
   },
-  async ({ id, startMeasure, endMeasure, speedStartPct, speedTargetPct, rampStepPct, maxPasses }) => withStateLock(async () => {
+  async ({ id, startMeasure, endMeasure, speedStartPct, speedTargetPct, rampStepPct, maxPasses }) => {
+    if (activeVocalRender) {
+      activeVocalRender.abort(new RequestCancelledError("Superseded by practice_loop"));
+    }
+    return withStateLock(async () => {
     await stopActive();
 
     const song = getSong(id);
@@ -1921,7 +2037,8 @@ registerTool(
     lines.push(``, `Use \`practice_status\` to check progress, \`stop_playback\` to stop. Runs in the background.`);
 
     return { content: [{ type: "text", text: lines.join("\n") }] };
-  })
+  });
+  }
 );
 
 // ─── Tool: practice_status ──────────────────────────────────────────────────
@@ -2364,16 +2481,18 @@ registerTool(
     model: z.string().optional().describe("Local Ollama model tag (default 'qwen2.5:7b')."),
     format: z.enum(["abc", "chords"]).optional().describe("How the model emits its choice: 'abc' (default — an ABC lead sheet, far fewer empty outputs) or 'chords' (a JSON chord array)."),
   },
-  async ({ songId, measures, style, maxSamples, model, format }) => {
-    const structuredError = (code: string, message: string, hint: string) => ({
-      content: [
-        {
-          type: "text" as const,
-          text: `❌ ${message}\n\n` + JSON.stringify({ error: { code, message, hint } }, null, 2),
-        },
-      ],
-      isError: true,
-    });
+  async ({ songId, measures, style, maxSamples, model, format }, extra) => {
+    const structuredError = mcpStructuredError;
+    const signal = extra?.signal;
+    const progressToken = extra?._meta?.progressToken;
+
+    if (signal?.aborted) {
+      return structuredError(
+        "cancelled",
+        `auto_reharmonize cancelled for "${songId}".`,
+        "Request was aborted before reharmonization started.",
+      );
+    }
 
     const song = getSong(songId);
     if (!song) {
@@ -2391,11 +2510,18 @@ registerTool(
     const modelTag = model ?? "qwen2.5:7b";
     const proposer =
       format === "chords"
-        ? new OllamaChordProposer(modelTag, { maxTokens: 1024, styleHint: style })
-        : new AbcChordProposer(modelTag, { maxTokens: 1024, styleHint: style });
+        ? new OllamaChordProposer(modelTag, { maxTokens: 1024, styleHint: style, signal })
+        : new AbcChordProposer(modelTag, { maxTokens: 1024, styleHint: style, signal });
     try {
-      await proposer.probe();
+      await proposer.probe(signal);
     } catch (err) {
+      if (isCancelledError(err) || signal?.aborted) {
+        return structuredError(
+          "cancelled",
+          `auto_reharmonize cancelled for "${songId}".`,
+          "Request was aborted while probing the local model.",
+        );
+      }
       return structuredError(
         "ollama_unreachable",
         `The local model "${modelTag}" is not reachable — auto_reharmonize needs Ollama running.`,
@@ -2406,8 +2532,29 @@ registerTool(
 
     let result: AutoReharmonizeToolResult;
     try {
-      result = await reharmonizeSongSection(song, { measures, maxSamples, proposer });
+      result = await reharmonizeSongSection(song, {
+        measures,
+        maxSamples,
+        proposer,
+        signal,
+        onSampleProgress: progressToken === undefined
+          ? undefined
+          : async (info) => {
+              try {
+                await extra.sendNotification(reharmonizeProgressNotification(progressToken, info));
+              } catch {
+                // Progress is best-effort — a dropped client must not fail the loop.
+              }
+            },
+      });
     } catch (err) {
+      if (isCancelledError(err) || signal?.aborted) {
+        return structuredError(
+          "cancelled",
+          `auto_reharmonize cancelled for "${songId}".`,
+          "Request was aborted; no further model calls were issued.",
+        );
+      }
       return structuredError(
         "reharmonize_failed",
         `The maker loop errored while reharmonizing "${songId}".`,
@@ -2448,7 +2595,16 @@ registerTool(
   },
   async ({ songs, measures, style, n, judges, genModel }, extra) => {
     const structuredError = mcpStructuredError;
+    const signal = extra?.signal;
     const progressToken = extra?._meta?.progressToken;
+
+    if (signal?.aborted) {
+      return structuredError(
+        "cancelled",
+        "compose_panel was cancelled.",
+        "Request was aborted before the panel started.",
+      );
+    }
 
     const voices = 4;
     const STYLE_PRESETS = ["common-practice", "lead-sheet", "film-ambient"] as const;
@@ -2482,34 +2638,53 @@ registerTool(
     // Ollama is OPTIONAL + fail-soft. Probe the engine generator + each judge; drop
     // unreachable judges. The generator family (qwen) is never a judge.
     const genTag = genModel ?? "qwen2.5:7b";
-    const specRealizer = new OllamaSpecRealizer(genTag, { voices, maxTokens: 1024 });
+    const specRealizer = new OllamaSpecRealizer(genTag, { voices, maxTokens: 1024, signal });
     try {
-      await specRealizer.probe();
+      await specRealizer.probe(signal);
     } catch (err) {
+      if (isCancelledError(err) || signal?.aborted) {
+        return structuredError("cancelled", "compose_panel was cancelled.", "Request was aborted while probing the engine model.");
+      }
       return structuredError("ollama_unreachable", `The engine model "${genTag}" is not reachable — compose_panel needs Ollama running.`, `Start Ollama ("ollama serve") and pull the model. Underlying: ${err instanceof Error ? err.message : String(err)}`);
     }
     const engineProposer = new RefiningProposer(specRealizer, { voices, style: styleName });
 
     const DEFAULT_JUDGES = "mistral-small:24b:mistral,granite4.1:30b:granite,gemma4:31b:gemma,aya-expanse:32b:aya";
     const judgeSpecs = (judges ?? DEFAULT_JUDGES).split(",").map((s: string) => s.trim()).filter(Boolean);
+    const panelJudges: PanelJudge[] = [];
     const reachableJudges: PanelJudge[] = [];
     const unreachableJudges: string[] = [];
     for (const spec of judgeSpecs) {
+      if (signal?.aborted) {
+        return structuredError("cancelled", "compose_panel was cancelled.", "Request was aborted while probing judge models.");
+      }
       const li = spec.lastIndexOf(":");
       const parts = spec.split(":");
       const [model, family] = parts.length === 3 ? [spec.slice(0, li), spec.slice(li + 1)] : [spec, spec];
-      const j = new OllamaBwsJudge(model, family);
-      try { await j.probe(); reachableJudges.push(j); } catch { unreachableJudges.push(model); }
+      const j = new OllamaBwsJudge(model, family, { signal });
+      try {
+        await j.probe(signal);
+        reachableJudges.push(j);
+        panelJudges.push(j);
+      } catch (err) {
+        if (isCancelledError(err) || signal?.aborted) {
+          return structuredError("cancelled", "compose_panel was cancelled.", "Request was aborted while probing judge models.");
+        }
+        unreachableJudges.push(model);
+        panelJudges.push(
+          makeUnreachablePanelJudge(model, family, err instanceof Error ? err.message : String(err)),
+        );
+      }
     }
-    if (reachableJudges.length < 3) {
-      return structuredError("too_few_judges", `An honest cross-family panel needs ≥3 reachable judge families; only ${reachableJudges.length} of ${judgeSpecs.length} responded${unreachableJudges.length ? ` (down: ${unreachableJudges.join(", ")})` : ""}.`, "Pull more local models (e.g. 'ollama pull mistral-small:24b'), or pass --judges with models you have.");
+    if (reachableJudges.length < MIN_PANEL_JUDGES) {
+      return structuredError("too_few_judges", `An honest cross-family panel needs ≥${MIN_PANEL_JUDGES} reachable judge families; only ${reachableJudges.length} of ${judgeSpecs.length} responded${unreachableJudges.length ? ` (down: ${unreachableJudges.join(", ")})` : ""}.`, "Pull more local models (e.g. 'ollama pull mistral-small:24b'), or pass --judges with models you have.");
     }
 
     const systems: PanelSystemSpec[] = [
       { id: "floor", note: "root-position floor (theory-INVALID discrimination anchor)", realize: (p: ChordProgression) => rootPositionRealization(p, voices) },
       { id: "nearest", note: "nearest-tone deterministic leader", realize: (p) => nearestToneRealization(p, voices) },
       { id: "refined", note: "refined nearest-tone (theory-VALID discrimination anchor)", realize: (p) => refineRealization(nearestToneRealization(p, voices), { voices, style: styleName }).realization },
-      { id: "engine", note: "the composition engine: model-spec best-of-n + part-at-a-time refine", realize: async (p) => (await realizeProgression(p, engineProposer, { maxSamples: n ?? 6, voices, style: styleName })).realization },
+      { id: "engine", note: "the composition engine: model-spec best-of-n + part-at-a-time refine", realize: async (p, realizeSignal) => (await realizeProgression(p, engineProposer, { maxSamples: n ?? 6, voices, style: styleName, signal: realizeSignal ?? signal })).realization },
     ];
 
     let result;
@@ -2517,9 +2692,10 @@ registerTool(
       result = await runComposePanelTool({
         progressions,
         systems,
-        judges: reachableJudges,
+        judges: panelJudges,
         style: styleName,
         anchors: { floor: "floor", valid: "refined", engine: "engine" },
+        signal,
         onVoteStep: progressToken === undefined
           ? undefined
           : async (info) => {
@@ -2531,6 +2707,9 @@ registerTool(
           },
       });
     } catch (err) {
+      if (isCancelledError(err) || signal?.aborted) {
+        return structuredError("cancelled", "compose_panel was cancelled.", "Request was aborted; no further realizations or judge calls were issued.");
+      }
       return structuredError("panel_failed", "The panel errored while running.", err instanceof Error ? err.message : String(err));
     }
     if (!result.ok) return structuredError(result.code, result.message, result.hint);
@@ -2846,10 +3025,17 @@ registerTool(
 // language models answer better from scientific pitch notation than from a
 // frequency.
 
+export {
+  AUDIO_MAX_FILE_BYTES,
+  AUDIO_MAX_FILE_BYTES_ENV,
+  AUDIO_MAX_DURATION_SEC,
+  AUDIO_MAX_DURATION_SEC_ENV,
+};
+
 /** Load a WAV from disk for any of the audio tools, with actionable failures. */
 function loadAudioFile(path: string):
   | { ok: true; audio: DecodedAudio }
-  | { ok: false; result: { content: [{ type: "text"; text: string }]; isError: true } } {
+  | { ok: false; result: { content: { type: "text"; text: string }[]; isError: true } } {
   if (!existsSync(path)) {
     return {
       ok: false,
@@ -2865,6 +3051,19 @@ function loadAudioFile(path: string):
         isError: true,
       },
     };
+  }
+  const caps = checkAudioInputCaps(path);
+  if (!caps.ok) {
+    if (caps.missing) {
+      return {
+        ok: false,
+        result: {
+          content: [{ type: "text", text: `No file at "${path}".` }],
+          isError: true,
+        },
+      };
+    }
+    return { ok: false, result: caps.result };
   }
   try {
     return { ok: true, audio: decodeWav(readFileSync(path)) };
@@ -4934,6 +5133,213 @@ export async function prepareMcpServer(): Promise<McpServer> {
   return server;
 }
 
+let shutdownPromise: Promise<void> | null = null;
+
+/** Abort any active vocal render, kill tracked SoulX child trees, and stop active playback. */
+export async function shutdownMcpServer(reason = "Server shutting down"): Promise<void> {
+  if (shutdownPromise) return shutdownPromise;
+  shutdownPromise = (async () => {
+    const inFlight = activeVocalRender;
+    if (inFlight) {
+      inFlight.abort(new RequestCancelledError(reason));
+    }
+    await abortAllSoulxRenders(reason);
+    if (inFlight) {
+      await inFlight.settled.catch(() => {});
+    }
+    await stopActive();
+  })().finally(() => {
+    shutdownPromise = null;
+  });
+  return shutdownPromise;
+}
+
+/** Maximum grace period before a stalled shutdown forces process exit (5 s). */
+export const SHUTDOWN_HARD_EXIT_MS = 5_000;
+
+const SIGNAL_NUMBER_FALLBACK: Record<string, number> = {
+  SIGHUP: 1,
+  SIGINT: 2,
+  SIGTERM: 15,
+};
+
+/** Compute conventional exit code (`128 + signal number`) for signal shutdowns. */
+export function signalExitCode(sig: NodeJS.Signals): number {
+  const num =
+    (osConstants.signals as Record<string, number | undefined>)[sig] ??
+    SIGNAL_NUMBER_FALLBACK[sig] ??
+    15;
+  return 128 + num;
+}
+
+/**
+ * Attach stdio-close, stdin-EOF drain, and POSIX-signal shutdown hooks that kill
+ * any tracked SoulX child trees, bound shutdown by `SHUTDOWN_HARD_EXIT_MS`, exit
+ * immediately on a second signal, and exit with `128 + signal number`.
+ */
+export function attachShutdownHandlers(
+  transport: {
+    onclose?: (() => void) | undefined;
+    onmessage?: ((...args: any[]) => void) | undefined;
+    send?: ((...args: any[]) => Promise<void>) | undefined;
+  },
+  options: {
+    stdin?: Pick<NodeJS.ReadStream, "once">;
+    proc?: Pick<NodeJS.Process, "on">;
+    onExit?: (code: number) => void;
+    outputStream?: Writable;
+    hardExitMs?: number;
+  } = {},
+): (reason: string) => void {
+  const stdin = options.stdin ?? process.stdin;
+  const proc = options.proc ?? process;
+  const onExit = options.onExit ?? ((code: number) => process.exit(code));
+  const hardExitMs = options.hardExitMs ?? SHUTDOWN_HARD_EXIT_MS;
+
+  const inFlightRequests = new Set<string>();
+  const drainWaiters = new Set<() => void>();
+  const notifyDrainIfEmpty = () => {
+    if (inFlightRequests.size === 0) {
+      for (const resolve of [...drainWaiters]) resolve();
+      drainWaiters.clear();
+    }
+  };
+
+  const prevOnMessage = transport.onmessage;
+  transport.onmessage = (...args: any[]) => {
+    const msg = args[0] as Record<string, unknown> | undefined;
+    if (msg && typeof msg === "object") {
+      if ("method" in msg && "id" in msg && msg.id !== undefined && msg.id !== null) {
+        inFlightRequests.add(String(msg.id));
+      } else if (msg.method === "notifications/cancelled") {
+        const params = msg.params as Record<string, unknown> | undefined;
+        if (params && params.requestId !== undefined && params.requestId !== null) {
+          inFlightRequests.delete(String(params.requestId));
+          notifyDrainIfEmpty();
+        }
+      }
+    }
+    prevOnMessage?.(...args);
+  };
+
+  if (typeof transport.send === "function") {
+    const origSend = transport.send;
+    transport.send = (...args: any[]) => {
+      const msg = args[0] as Record<string, unknown> | undefined;
+      const isResponse =
+        Boolean(msg && typeof msg === "object" && !("method" in msg) && "id" in msg && msg.id !== undefined && msg.id !== null);
+      const idKey = isResponse ? String(msg!.id) : null;
+      return origSend.apply(transport, args).finally(() => {
+        if (idKey !== null) {
+          inFlightRequests.delete(idKey);
+          notifyDrainIfEmpty();
+        }
+      });
+    };
+  }
+
+  let shuttingDown = false;
+  let signalCount = 0;
+  let exited = false;
+  let currentExitCode = 0;
+  let hardTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const finishExit = (code: number) => {
+    if (exited) return;
+    exited = true;
+    if (hardTimer) {
+      clearTimeout(hardTimer);
+      hardTimer = null;
+    }
+    notifyDrainIfEmpty();
+    onExit(code);
+  };
+
+  const armHardExit = () => {
+    if (hardTimer) return;
+    hardTimer = setTimeout(() => {
+      killAllSoulxChildrenSync();
+      finishExit(currentExitCode);
+    }, hardExitMs);
+    hardTimer.unref?.();
+  };
+
+  const flushOutput = async () => {
+    const out = options.outputStream;
+    if (out && out.writableLength > 0 && !out.destroyed) {
+      await new Promise<void>((resolve) => {
+        out.write("", () => resolve());
+      });
+    }
+  };
+
+  const runGracefulTeardown = (reason: string) => {
+    armHardExit();
+    killAllSoulxChildrenSync();
+    void shutdownMcpServer(reason)
+      .then(() => new Promise<void>((resolve) => setTimeout(resolve, 25)))
+      .then(() => server.close().catch(() => {}))
+      .then(() => flushOutput())
+      .finally(() => finishExit(currentExitCode));
+  };
+
+  const onStdinEof = async (reason: string) => {
+    if (shuttingDown || exited) return;
+    shuttingDown = true;
+    currentExitCode = 0;
+    armHardExit();
+
+    await new Promise<void>((resolve) => setImmediate(resolve));
+    if (inFlightRequests.size > 0 && !exited && signalCount === 0) {
+      await new Promise<void>((resolve) => {
+        if (inFlightRequests.size === 0 || exited || signalCount > 0) {
+          resolve();
+          return;
+        }
+        drainWaiters.add(resolve);
+      });
+    }
+    if (exited || signalCount > 0) return;
+    runGracefulTeardown(reason);
+  };
+
+  const prevOnClose = transport.onclose;
+  transport.onclose = () => {
+    prevOnClose?.();
+    if (shuttingDown || exited) return;
+    shuttingDown = true;
+    currentExitCode = 0;
+    runGracefulTeardown("stdio transport closed");
+  };
+  stdin.once("end", () => {
+    void onStdinEof("stdin ended");
+  });
+  stdin.once("close", () => {
+    void onStdinEof("stdin closed");
+  });
+  for (const sig of ["SIGINT", "SIGTERM", "SIGHUP"] as NodeJS.Signals[]) {
+    proc.on(sig, () => {
+      signalCount++;
+      const sigCode = signalExitCode(sig);
+      currentExitCode = sigCode;
+      if (signalCount >= 2) {
+        killAllSoulxChildrenSync();
+        finishExit(sigCode);
+        return;
+      }
+      shuttingDown = true;
+      notifyDrainIfEmpty();
+      runGracefulTeardown(`received ${sig}`);
+    });
+  }
+
+  return (reason: string) => {
+    if (shuttingDown || exited) return;
+    shuttingDown = true;
+    runGracefulTeardown(reason);
+  };
+}
+
 async function main(): Promise<void> {
   // On POSIX, re-exec into the stdio-purity supervisor before doing any real
   // work: it runs this server as an inner child with the native audio layer's
@@ -4951,7 +5357,10 @@ async function main(): Promise<void> {
   // JSON-RPC output target: fd 3 when running as the supervised inner server
   // (the supervisor wired fd 3 to the host's stdout), otherwise stdout. This
   // is what keeps fd 1 free for the native audio layer's stray prints.
-  const transport = new StdioServerTransport(process.stdin, openRpcOutputStream());
+  const rpcOut = openRpcOutputStream();
+  const transport = new StdioServerTransport(process.stdin, rpcOut);
+  attachShutdownHandlers(transport, { outputStream: rpcOut });
+
   await server.connect(transport);
   console.error("ai-jam-sessions MCP server running on stdio");
 }

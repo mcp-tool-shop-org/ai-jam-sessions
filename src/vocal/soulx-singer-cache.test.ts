@@ -180,7 +180,10 @@ function scriptBase(args: string[]): string {
   return (args[0] ?? "").replace(/\\/g, "/").split("/").pop() ?? "";
 }
 
-py.spawn = (cmd, args, opts) => {
+py.spawn = (rawCmd, rawArgs, opts) => {
+  const guardIdx = rawArgs.indexOf("--ajs-parent-guard");
+  const cmd = guardIdx >= 0 ? rawArgs[guardIdx + 1] : rawCmd;
+  const args = guardIdx >= 0 ? rawArgs.slice(guardIdx + 2) : rawArgs;
   py.calls.push({ cmd, args, cwd: opts?.cwd, pythonPath: opts?.env?.PYTHONPATH });
   const stdout = new EventEmitter();
   const stderr = new EventEmitter();

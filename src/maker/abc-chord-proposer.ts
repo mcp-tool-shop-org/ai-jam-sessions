@@ -19,6 +19,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { OllamaBackend } from "../dataset/eval/llm-backends/ollama.js";
+import { isCancelledError, throwIfAborted, toCancelledError } from "../cancel.js";
 import { buildERBrief, type ERItem } from "./er-gate.js";
 import type { ChordChoice, ChordProposer } from "./reharmonize.js";
 
@@ -91,9 +92,14 @@ export function parseAbcChords(abc: string, measureNumbers: number[]): ChordChoi
 
 /** The minimal backend surface the ABC proposer needs (OllamaBackend satisfies it). */
 export interface AbcProposerBackend {
-  generateText(args: { systemPrompt: string; userMessage: string }): Promise<string>;
+  generateText(args: {
+    systemPrompt: string;
+    userMessage: string;
+    signal?: AbortSignal;
+    timeoutMs?: number;
+  }): Promise<string>;
   lastRawText(): string | null;
-  probe(): Promise<void>;
+  probe(opts?: { signal?: AbortSignal; timeoutMs?: number }): Promise<void>;
 }
 
 export interface AbcChordProposerOptions {
@@ -105,6 +111,10 @@ export interface AbcChordProposerOptions {
   baseUrl?: string;
   /** Optional style hint appended to the brief (e.g. "jazz"). */
   styleHint?: string;
+  /** Optional abort signal cancelling probing and per-sample calls. */
+  signal?: AbortSignal;
+  /** Optional per-call HTTP timeout in ms. */
+  timeoutMs?: number;
   /** Test seam: build the backend for a given per-sample seed. */
   backendFactory?: (seed: number) => AbcProposerBackend;
 }
@@ -120,6 +130,7 @@ export class AbcChordProposer implements ChordProposer {
   readonly baseSeed: number;
   readonly maxTokens: number;
   private readonly styleHint?: string;
+  private readonly signal?: AbortSignal;
   private readonly makeBackend: (seed: number) => AbcProposerBackend;
 
   constructor(model = "qwen2.5:7b", opts: AbcChordProposerOptions = {}) {
@@ -127,29 +138,42 @@ export class AbcChordProposer implements ChordProposer {
     this.baseSeed = opts.baseSeed ?? 42;
     this.maxTokens = opts.maxTokens ?? 1024;
     this.styleHint = opts.styleHint?.trim() || undefined;
-    const { baseUrl, backendFactory } = opts;
+    this.signal = opts.signal;
+    const { baseUrl, backendFactory, signal, timeoutMs } = opts;
     const maxTokens = this.maxTokens;
     this.makeBackend =
       backendFactory ??
-      ((seed) => new OllamaBackend(model, baseUrl, { seed, num_predict: maxTokens }));
+      ((seed) => new OllamaBackend(model, baseUrl, { seed, num_predict: maxTokens }, { signal, timeoutMs }));
   }
 
   /** One-shot reachability check (Ollama is optional). Throws if unreachable. */
-  async probe(): Promise<void> {
-    await this.makeBackend(this.baseSeed).probe();
+  async probe(signal?: AbortSignal): Promise<void> {
+    const effectiveSignal = signal ?? this.signal;
+    throwIfAborted(effectiveSignal, "Ollama probe cancelled");
+    await this.makeBackend(this.baseSeed).probe({ signal: effectiveSignal });
   }
 
-  async proposeChords(item: ERItem, sampleIndex: number): Promise<ChordChoice[]> {
+  async proposeChords(item: ERItem, sampleIndex: number, signal?: AbortSignal): Promise<ChordChoice[]> {
+    const effectiveSignal = signal ?? this.signal;
+    throwIfAborted(effectiveSignal, "auto_reharmonize cancelled");
     const backend = this.makeBackend(this.baseSeed + sampleIndex);
     const user = this.styleHint
       ? `${buildAbcReharmUser(item)}\n\nTarget style: ${this.styleHint} — prefer its idiomatic reharmonizations.`
       : buildAbcReharmUser(item);
     let text = "";
     try {
-      text = await backend.generateText({ systemPrompt: ABC_REHARM_SYSTEM, userMessage: user });
-    } catch {
+      text = await backend.generateText({
+        systemPrompt: ABC_REHARM_SYSTEM,
+        userMessage: user,
+        signal: effectiveSignal,
+      });
+    } catch (err) {
+      if (effectiveSignal?.aborted || isCancelledError(err)) {
+        throw toCancelledError(effectiveSignal?.reason ?? err, "auto_reharmonize cancelled");
+      }
       text = backend.lastRawText() ?? "";
     }
+    throwIfAborted(effectiveSignal, "auto_reharmonize cancelled");
     return parseAbcChords(text, item.melody.map((m) => m.number));
   }
 }

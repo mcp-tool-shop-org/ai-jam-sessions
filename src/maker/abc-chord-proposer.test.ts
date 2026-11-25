@@ -155,4 +155,29 @@ describe("AbcChordProposer", () => {
     expect(built[0].seed).toBe(9);
     expect(built[0].probed).toBe(true);
   });
+
+  it("rethrows RequestCancelledError instead of swallowing abort into []", async () => {
+    const ac = new AbortController();
+    ac.abort("stop abc");
+    const p = new AbcChordProposer("m", {
+      signal: ac.signal,
+      backendFactory: (s) => new StubAbcBackend(s, null, true),
+    });
+    await expect(p.probe()).rejects.toThrow("stop abc");
+    await expect(p.proposeChords(item, 0)).rejects.toThrow("stop abc");
+
+    const ac2 = new AbortController();
+    const p2 = new AbcChordProposer("m", {
+      backendFactory: (s) => ({
+        ...new StubAbcBackend(s, null),
+        async generateText() {
+          ac2.abort("abc mid-call");
+          throw new Error("aborted");
+        },
+        lastRawText: () => null,
+        probe: async () => {},
+      }),
+    });
+    await expect(p2.proposeChords(item, 0, ac2.signal)).rejects.toThrow("abc mid-call");
+  });
 });

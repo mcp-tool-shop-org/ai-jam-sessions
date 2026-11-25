@@ -193,8 +193,12 @@ export class RefiningProposer implements RealizationProposer {
     private readonly base: RealizationProposer,
     private readonly opts: RefineOptions = {},
   ) {}
-  async proposeRealization(progression: ChordProgression, sampleIndex: number): Promise<Realization | null> {
-    const seed = await this.base.proposeRealization(progression, sampleIndex);
+  async proposeRealization(
+    progression: ChordProgression,
+    sampleIndex: number,
+    signal?: AbortSignal,
+  ): Promise<Realization | null> {
+    const seed = await this.base.proposeRealization(progression, sampleIndex, signal);
     if (!seed) return null;
     return refineRealization(seed, this.opts).realization;
   }
