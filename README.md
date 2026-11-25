@@ -434,8 +434,8 @@ in Ollama, with the measured cost of a 4-bit base: [docs/ollama-adapters.md](doc
 
 | Tool | What it does |
 |------|--------------|
-| `play_song` | Play through speakers — library songs or raw .mid files. Four engines (piano, vocal, tract, guitar), any speed, mode, measure range — plus a metronome with count-in and a `record` flag that captures the session for scoring. Supports request cancellation, a whole-render SoulX deadline (`SOULX_RENDER_DEADLINE_MS`, default 15 min) with process-tree cleanup, and per-stage/take progress notifications for `singerBackend: "soulx"`. The synth and layered engines are CLI-only. |
-| `stop_playback` | Stop active playback or cancel an in-flight SoulX vocal render |
+| `play_song` | Play through speakers — library songs or raw .mid files. Four engines (piano, vocal, tract, guitar), any speed, mode, measure range — plus a metronome with count-in and a `record` flag that captures the session for scoring. The synth and layered engines are CLI-only. |
+| `stop_playback` | Stop playback, or a SoulX vocal render in progress |
 | `pause_playback` | Pause or resume |
 | `set_speed` | Change speed mid-playback (0.1×–4.0×) |
 | `playback_status` | Real-time snapshot: current measure, tempo, speed, keyboard voice, state |
@@ -461,8 +461,10 @@ in Ollama, with the measured cost of a 4-bit base: [docs/ollama-adapters.md](doc
 | `sing_along` | Singable text — note-names, solfege, contour, or syllables. With or without piano accompaniment. |
 | `ai_jam_sessions` | Generate a jam brief — chord progression, melody outline, and style hints for reinterpretation |
 | `verify_harmony` | The maker loop's verification gate: a proposed reharmonization is checked by the platform's own deterministic tools — chord fidelity (the chord engine must detect each intended chord), melody consonance (tone/tension/chromatic), bass voice-leading, key membership |
-| `auto_reharmonize` | The maker loop in one call — a local model proposes a reharmonization, `verify_harmony`'s deterministic gate checks every voicing, best-of-n until a verified interpretation comes back. Supports request cancellation, per-call Ollama timeouts (`OLLAMA_TIMEOUT_MS`, default 120 s), and per-sample progress notifications when a progress token is sent. |
-| `compose_panel` | Run the voice-leading composition panel on any songs: four systems realize accompaniments, blind cross-family LLM judges rank them, Bradley-Terry aggregates — with a discrimination-floor gate that voids uninterpretable runs (directional signal only, never a quality score). Runs for minutes, streams progress notifications while it works, and supports request cancellation and per-call Ollama timeouts (`OLLAMA_TIMEOUT_MS`, default 120 s). |
+| `auto_reharmonize` | The maker loop in one call — a local model proposes a reharmonization, `verify_harmony`'s deterministic gate checks every voicing, best-of-n until a verified interpretation comes back |
+| `compose_panel` | Run the voice-leading composition panel on any songs: four systems realize accompaniments, blind cross-family LLM judges rank them, Bradley-Terry aggregates — with a discrimination-floor gate that voids uninterpretable runs (directional signal only, never a quality score). Runs for minutes and streams progress notifications while it works. |
+
+Long-running tools (`compose_panel`, `auto_reharmonize`, and `play_song` with the SoulX singer) can be cancelled and report their progress; each Ollama call has a timeout (`OLLAMA_TIMEOUT_MS`, default 120 s), and a SoulX vocal render has a whole-render deadline (`SOULX_RENDER_DEADLINE_MS`, default 15 min) that also stops its child processes.
 
 **A whole song on the clock: the vocal route.** Any song can carry a real sung vocal that lands on the piano.
 - **The clock.** A score clock (`scripts/build-score-clock.mjs`) derives every syllable's pitch, onset and duration from the song's arrangement, on the player's own timeline.
@@ -517,13 +519,15 @@ a picture.
 
 | Tool | What it does |
 |------|--------------|
-| `analyze_audio` | Measure a WAV (up to 64 MiB / 600 s; overridable via `AJS_AUDIO_MAX_FILE_BYTES` and `AJS_AUDIO_MAX_DURATION_SEC`) — onset times, the pitch contour as note names with cents, level (BS.1770-4 LUFS, peak dBFS, clipped samples), spectral balance by band, and an integrity pass (dropouts, noise bursts, clicks) |
-| `transcribe_audio` | Turn a monophonic recording (up to 64 MiB / 600 s; overridable via `AJS_AUDIO_MAX_FILE_BYTES` and `AJS_AUDIO_MAX_DURATION_SEC`) into notes, with each note's deviation from concert pitch. Notes the tracker could not follow are omitted rather than guessed |
-| `score_audio_take` | Grade a performance (up to 64 MiB / 600 s; overridable via `AJS_AUDIO_MAX_FILE_BYTES` and `AJS_AUDIO_MAX_DURATION_SEC`) against a library song **by ear**, then hand the result to `view_scored_piano_roll` |
-| `view_spectrogram` | See the sound (up to 64 MiB / 600 s; overridable via `AJS_AUDIO_MAX_FILE_BYTES` and `AJS_AUDIO_MAX_DURATION_SEC`) — a constant-Q spectrogram on a piano-keyboard axis, optionally overlaid with the intended notes. Blind by default |
-| `check_loop_seam` | Judge where a loop's end wraps back to its start (up to 64 MiB / 600 s; overridable via `AJS_AUDIO_MAX_FILE_BYTES` and `AJS_AUDIO_MAX_DURATION_SEC`) — extrapolated waveform step, burst energy at the join, level shift across it |
-| `compare_balance` | Compare a render's tonal balance against a reference (both up to 64 MiB / 600 s; overridable via `AJS_AUDIO_MAX_FILE_BYTES` and `AJS_AUDIO_MAX_DURATION_SEC`), band by band in dB, with the change in brightness and tilt. Loudness cancels out |
+| `analyze_audio` | Measure a WAV — onset times, the pitch contour as note names with cents, level (BS.1770-4 LUFS, peak dBFS, clipped samples), spectral balance by band, and an integrity pass (dropouts, noise bursts, clicks) |
+| `transcribe_audio` | Turn a monophonic recording into notes, with each note's deviation from concert pitch. Notes the tracker could not follow are omitted rather than guessed |
+| `score_audio_take` | Grade a performance against a library song **by ear**, then hand the result to `view_scored_piano_roll` |
+| `view_spectrogram` | See the sound — a constant-Q spectrogram on a piano-keyboard axis, optionally overlaid with the intended notes. Blind by default |
+| `check_loop_seam` | Judge where a loop's end wraps back to its start — extrapolated waveform step, burst energy at the join, level shift across it |
+| `compare_balance` | Compare a render's tonal balance against a reference, band by band in dB, with the change in brightness and tilt. Loudness cancels out |
 | `ensemble_now` | What every instrument is playing **right now**, mid-performance. Notes come from what was sent, so they are exact rather than estimated |
+
+Each audio tool reads WAV files up to 64 MiB and 600 s (`AJS_AUDIO_MAX_FILE_BYTES`, `AJS_AUDIO_MAX_DURATION_SEC`).
 
 ### MCP Prompts
 

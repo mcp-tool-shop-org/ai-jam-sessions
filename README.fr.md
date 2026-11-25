@@ -394,7 +394,7 @@ L’image contient les 14 fichiers MIDI redistribuables ; l’exécution de `l
 | Outil | Fonctionnement |
 |------|--------------|
 | `play_song` | Lecture via les haut-parleurs : morceaux de la bibliothèque ou fichiers .mid bruts. Quatre moteurs (piano, voix, tract, guitare), n’importe quelle vitesse, mode, plage de mesures, plus un métronome avec une fonction de pré-compte et un indicateur `record` qui enregistre la session pour l’évaluation. Les moteurs synthétiques et superposés ne sont accessibles que via la ligne de commande. |
-| `stop_playback` | Arrêter |
+| `stop_playback` | Arrêter la lecture, ou un rendu vocal SoulX en cours |
 | `pause_playback` | Mettre en pause ou reprendre |
 | `set_speed` | Modifier la vitesse pendant la lecture (de 0,1× à 4,0×) |
 | `playback_status` | Instantané en temps réel : mesure actuelle, tempo, vitesse, voix du clavier, état |
@@ -422,6 +422,8 @@ L’image contient les 14 fichiers MIDI redistribuables ; l’exécution de `l
 | `verify_harmony` | La porte de vérification de la boucle de création : une réharmonisation proposée est vérifiée par les propres outils déterministes de la plateforme : fidélité de l’accord (le moteur d’accord doit détecter chaque accord prévu), consonance de la mélodie (ton/tension/chromatisme), fluidité de la voix de basse, appartenance à la tonalité |
 | `auto_reharmonize` | La boucle de création en une seule étape : un modèle local propose une réharmonisation, la porte déterministe de `verify_harmony` vérifie chaque sonorité, le meilleur des n résultats est sélectionné jusqu’à ce qu’une interprétation vérifiée soit renvoyée |
 | `compose_panel` | Exécuter le panneau de composition de la fluidité vocale sur n’importe quel morceau : quatre systèmes réalisent des accompagnements, un juge LLM inter-famille aveugle les classe, agrégation de Bradley-Terry : avec une porte de discrimination qui annule les exécutions non interprétables (signal directionnel uniquement, jamais un score de qualité). S’exécute pendant des minutes et diffuse des notifications de progression pendant son fonctionnement. |
+
+Les outils de longue durée (`compose_panel`, `auto_reharmonize` et `play_song` avec le chanteur SoulX) peuvent être annulés et indiquent leur progression ; chaque appel à Ollama a un délai d'expiration (`OLLAMA_TIMEOUT_MS`, 120 s par défaut), et un rendu vocal SoulX a une échéance pour l'ensemble du rendu (`SOULX_RENDER_DEADLINE_MS`, 15 min par défaut) qui arrête aussi ses processus enfants.
 
 **Un morceau entier sur le temps : la voie vocale.** N’importe quel morceau peut comporter une voix chantée réelle qui se superpose au piano.
 - **Le chronomètre.** Un chronomètre de partition (`scripts/build-score-clock.mjs`) dérive la hauteur, le début et la durée de chaque syllabe à partir de l’arrangement du morceau, sur la propre ligne de temps du lecteur.
@@ -483,6 +485,8 @@ une image.
 | `check_loop_seam` | Déterminer où la fin d’une boucle revient à son début — étape de forme d’onde extrapolée, énergie de pic au niveau du joint, décalage de niveau à travers celui-ci |
 | `compare_balance` | Comparer l’équilibre tonal d’un rendu par rapport à une référence, bande par bande en dB, avec la variation de luminosité et d’inclinaison. Le volume est neutralisé. |
 | `ensemble_now` | Ce que chaque instrument joue **en ce moment**, pendant l’interprétation. Les notes proviennent de ce qui a été envoyé, elles sont donc exactes plutôt qu’estimées. |
+
+Chaque outil audio lit des fichiers WAV jusqu'à 64 Mio et 600 s (`AJS_AUDIO_MAX_FILE_BYTES`, `AJS_AUDIO_MAX_DURATION_SEC`).
 
 ### Invites MCP
 
