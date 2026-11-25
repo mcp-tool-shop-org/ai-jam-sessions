@@ -527,7 +527,7 @@ a picture.
 | `compare_balance` | Compare a render's tonal balance against a reference, band by band in dB, with the change in brightness and tilt. Loudness cancels out |
 | `ensemble_now` | What every instrument is playing **right now**, mid-performance. Notes come from what was sent, so they are exact rather than estimated |
 
-Each audio tool reads WAV files up to 64 MiB and 600 s (`AJS_AUDIO_MAX_FILE_BYTES`, `AJS_AUDIO_MAX_DURATION_SEC`).
+Each audio tool reads WAV files up to 600 s, with a byte cap derived from the WAV header and a 1 GiB fallback when the header can't be read (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).
 
 ### MCP Prompts
 

@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.10.0] - 2026-11-25
 
-**Long MCP calls can be cancelled and are bounded.** Cancellation reaches composition, reharmonization and the SoulX vocal path, Ollama calls have a timeout, SoulX child processes are cleaned up as a whole tree, long calls report progress, and audio inputs are capped.
+**Long LLM and SoulX MCP calls can be cancelled and report progress.** Cancellation reaches `compose_panel`, `auto_reharmonize` and `play_song` with SoulX; Ollama calls made through the MCP tools have a timeout; SoulX child process trees are cleaned up on cancel, deadline or shutdown (and on parent death on POSIX); and the audio-inspection tools cap their WAV inputs.
 
 ### Added — cancellation, deadlines, child-process cleanup, progress, and input caps
 - Request cancellation (`AbortSignal`) is wired from MCP tool handlers into `compose_panel`, `auto_reharmonize`, and the SoulX vocal path of `play_song`, stopping further model calls or takes and returning a structured `cancelled` error.

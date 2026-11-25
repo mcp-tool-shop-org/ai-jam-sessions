@@ -486,7 +486,7 @@ une image.
 | `compare_balance` | Comparer l’équilibre tonal d’un rendu par rapport à une référence, bande par bande en dB, avec la variation de luminosité et d’inclinaison. Le volume est neutralisé. |
 | `ensemble_now` | Ce que chaque instrument joue **en ce moment**, pendant l’interprétation. Les notes proviennent de ce qui a été envoyé, elles sont donc exactes plutôt qu’estimées. |
 
-Chaque outil audio lit des fichiers WAV jusqu'à 64 Mio et 600 s (`AJS_AUDIO_MAX_FILE_BYTES`, `AJS_AUDIO_MAX_DURATION_SEC`).
+Chaque outil audio lit des fichiers WAV jusqu'à 600 s, avec une limite d'octets déduite de l'en-tête WAV et une limite de repli de 1 Gio quand l'en-tête est illisible (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).
 
 ### Invites MCP
 

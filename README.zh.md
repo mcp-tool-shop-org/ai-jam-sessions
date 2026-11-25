@@ -455,7 +455,7 @@ npm install -g @mcptoolshop/ai-jam-sessions
 | `compare_balance` | 在dB中，将渲染图像的色调平衡与参考图像进行逐个频带的比较，同时考虑亮度和倾斜度的变化。响度会相互抵消。 |
 | `ensemble_now` | 在演奏过程中，每种乐器**当前**正在演奏的内容。音符来自发送的内容，因此是精确的，而不是估计的。 |
 
-每个音频工具可读取最大 64 MiB、600 秒的 WAV 文件（`AJS_AUDIO_MAX_FILE_BYTES`、`AJS_AUDIO_MAX_DURATION_SEC`）。
+每个音频工具可读取最长 600 秒的 WAV 文件；字节上限由 WAV 文件头推算，文件头无法读取时适用 1 GiB 的后备上限（`AJS_AUDIO_MAX_DURATION_SEC`、`AJS_AUDIO_MAX_FILE_BYTES`）。
 
 ### MCP 提示
 

@@ -486,7 +486,7 @@ producono risultati incoerenti. Ogni numero deriva dall'elaborazione del segnale
 | `compare_balance` | Confronta l'equilibrio tonale di un rendering con un riferimento, banda per banda in dB, con la variazione di luminosità e inclinazione. Il volume viene annullato. |
 | `ensemble_now` | Mostra cosa sta suonando **in questo momento** ogni strumento, durante l'esecuzione. Le note derivano da ciò che è stato inviato, quindi sono esatte anziché stimate. |
 
-Ogni strumento audio legge file WAV fino a 64 MiB e 600 s (`AJS_AUDIO_MAX_FILE_BYTES`, `AJS_AUDIO_MAX_DURATION_SEC`).
+Ogni strumento audio legge file WAV fino a 600 s, con un limite di byte ricavato dall'intestazione WAV e un limite di riserva di 1 GiB quando l'intestazione non è leggibile (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).
 
 ### Suggerimenti MCP
 
