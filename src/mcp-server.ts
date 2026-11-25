@@ -5130,10 +5130,14 @@ let shutdownPromise: Promise<void> | null = null;
 export async function shutdownMcpServer(reason = "Server shutting down"): Promise<void> {
   if (shutdownPromise) return shutdownPromise;
   shutdownPromise = (async () => {
-    if (activeVocalRender) {
-      activeVocalRender.abort(new RequestCancelledError(reason));
+    const inFlight = activeVocalRender;
+    if (inFlight) {
+      inFlight.abort(new RequestCancelledError(reason));
     }
     await abortAllSoulxRenders(reason);
+    if (inFlight) {
+      await inFlight.settled.catch(() => {});
+    }
     await stopActive();
   })().finally(() => {
     shutdownPromise = null;
@@ -5163,6 +5167,7 @@ export function attachShutdownHandlers(
     exiting = true;
     killAllSoulxChildrenSync();
     void shutdownMcpServer(reason)
+      .then(() => new Promise<void>((resolve) => setTimeout(resolve, 25)))
       .then(() => server.close().catch(() => {}))
       .finally(() => onExit(0));
   };
