@@ -8,7 +8,11 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { describe, it, expect } from "vitest";
-import { reharmonizeSongSection, parseSectionRange } from "./auto-reharmonize-tool.js";
+import {
+  reharmonizeSongSection,
+  parseSectionRange,
+  reharmonizeProgressNotification,
+} from "./auto-reharmonize-tool.js";
 import type { ChordProposer, ChordChoice } from "./reharmonize.js";
 import type { SongEntry } from "../songs/types.js";
 
@@ -113,5 +117,30 @@ describe("reharmonizeSongSection", () => {
     expect(r.ok).toBe(false);
     if (r.ok) return;
     expect(r.code).toBe("bad_measure_range");
+  });
+
+  it("formats per-sample progress notifications matching compose_panel", () => {
+    expect(
+      reharmonizeProgressNotification("tok-1", { done: 2, total: 16, verified: false }),
+    ).toEqual({
+      method: "notifications/progress",
+      params: {
+        progressToken: "tok-1",
+        progress: 2,
+        total: 16,
+        message: "Sample 2/16: resampling",
+      },
+    });
+    expect(
+      reharmonizeProgressNotification(9, { done: 3, total: 16, verified: true }),
+    ).toEqual({
+      method: "notifications/progress",
+      params: {
+        progressToken: 9,
+        progress: 3,
+        total: 16,
+        message: "Sample 3/16: verified",
+      },
+    });
   });
 });

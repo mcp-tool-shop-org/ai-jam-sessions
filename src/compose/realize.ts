@@ -22,6 +22,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { parseChordSymbol } from "../maker/verify-harmony.js";
+import { throwIfAborted } from "../cancel.js";
 import { verifyVoiceLeading, type VoiceLeadingVerdict, type VLRule } from "./voice-leading.js";
 import { scoreRealization, type RealizationScore, type ScoreWeights } from "./scorer.js";
 import type { StyleReference } from "./style-cost.js";
@@ -45,7 +46,11 @@ export interface ChordProgression {
  * cannot propose (so one bad sample never aborts the loop).
  */
 export interface RealizationProposer {
-  proposeRealization(progression: ChordProgression, sampleIndex: number): Promise<Realization | null>;
+  proposeRealization(
+    progression: ChordProgression,
+    sampleIndex: number,
+    signal?: AbortSignal,
+  ): Promise<Realization | null>;
 }
 
 export interface RealizeOptions {
@@ -73,6 +78,8 @@ export interface RealizeOptions {
   scoreWeights?: ScoreWeights;
   /** Opt-in A2 style-typicality reference band, forwarded to the scorer (default off). */
   styleReference?: StyleReference;
+  /** Optional abort signal cancelling further realization samples. */
+  signal?: AbortSignal;
 }
 
 export interface RealizeResult {
@@ -243,8 +250,10 @@ export async function realizeProgression(
   let samplesUsed = 0;
 
   for (let k = 0; k < maxSamples; k++) {
+    throwIfAborted(opts.signal, "compose_panel cancelled");
     samplesUsed = k + 1;
-    const real = await proposer.proposeRealization(progression, k);
+    const real = await proposer.proposeRealization(progression, k, opts.signal);
+    throwIfAborted(opts.signal, "compose_panel cancelled");
     if (!real) continue;
     const verdict = verifyVoiceLeading(real, {
       requireVoiceCount,

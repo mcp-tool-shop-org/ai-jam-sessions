@@ -44,4 +44,19 @@ describe("OllamaBwsJudge", () => {
     expect(dropped).toBeNull();
     expect(seeds).toEqual([7, 7, 12]);
   });
+
+  it("rethrows RequestCancelledError on abort instead of dropping the vote", async () => {
+    const ac = new AbortController();
+    const judge = new OllamaBwsJudge("judge-model", "granite", {
+      backendFactory: () => ({
+        async probe() {},
+        async callStructured() {
+          ac.abort("judge cancelled");
+          throw new Error("aborted");
+        },
+        lastRawText: () => null,
+      }),
+    });
+    await expect(judge.judge("C major", ["a", "b"], 0, ac.signal)).rejects.toThrow("judge cancelled");
+  });
 });

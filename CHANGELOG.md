@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — cancellation, deadlines, child-process cleanup, progress, and input caps
+- Request cancellation (`AbortSignal`) is wired from MCP tool handlers into `compose_panel`, `auto_reharmonize`, and the SoulX vocal path of `play_song`, stopping further model calls or takes and returning a structured `cancelled` error.
+- `OllamaBackend` (`src/dataset/eval/llm-backends/ollama.ts`) now accepts an `AbortSignal` and enforces a per-call HTTP timeout (`OLLAMA_CALL_TIMEOUT_MS = 120_000`, overridable via `OLLAMA_TIMEOUT_MS` with stderr logging).
+- `src/vocal/soulx-singer.ts` tracks active subprocesses, enforces a whole-render deadline (`SOULX_RENDER_DEADLINE_MS = 900_000`, overridable via `SOULX_RENDER_DEADLINE_MS` with stderr logging), kills the full child process tree on abort, deadline, `stop_playback`, or server shutdown (stdio close and `SIGINT`/`SIGTERM`/`SIGHUP`), and allows `stop_playback` to cancel an in-flight SoulX render.
+- Progress notifications (`notifications/progress`) are emitted per sample in `auto_reharmonize` (`done/maxSamples`) and per stage/take in the SoulX render path of `play_song` when a progress token is provided.
+- The six audio inspection tools (`analyze_audio`, `transcribe_audio`, `score_audio_take`, `view_spectrogram`, `check_loop_seam`, `compare_balance`) enforce input caps before reading whole files (`AUDIO_MAX_FILE_BYTES = 67_108_864`, `AUDIO_MAX_DURATION_SEC = 600`; overridable via `AJS_AUDIO_MAX_FILE_BYTES` and `AJS_AUDIO_MAX_DURATION_SEC`).
+- Added a live registry test verifying `README.md:416` and `site/src/content/docs/handbook/mcp-tools.md` stay aligned with the server's registered tools and prompt templates.
+
 ## [2.9.0] - 2026-11-05
 
 ### Added — a listening review in the cockpit

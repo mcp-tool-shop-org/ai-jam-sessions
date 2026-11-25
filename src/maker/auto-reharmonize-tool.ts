@@ -12,7 +12,11 @@
 // core is proposer-agnostic and deterministic given a deterministic proposer.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { autoReharmonize, type ChordProposer } from "./reharmonize.js";
+import {
+  autoReharmonize,
+  type ChordProposer,
+  type ReharmonizeSampleProgress,
+} from "./reharmonize.js";
 import { buildERItemFromSong } from "./er-gate.js";
 import type { SongEntry } from "../songs/types.js";
 import type { ReharmonizedMeasure } from "./verify-harmony.js";
@@ -49,6 +53,31 @@ export interface ReharmonizeSectionOptions {
   maxSamples?: number;
   /** The chord proposer (inject a stub in tests; OllamaChordProposer in the tool). */
   proposer: ChordProposer;
+  /** Optional abort signal cancelling the sampling loop. */
+  signal?: AbortSignal;
+  /** Optional per-sample progress callback. */
+  onSampleProgress?: (info: ReharmonizeSampleProgress) => void | Promise<void>;
+}
+
+/** Format a per-sample auto_reharmonize progress notification matching compose_panel. */
+export function reharmonizeProgressNotification(
+  progressToken: string | number,
+  info: ReharmonizeSampleProgress,
+): {
+  method: "notifications/progress";
+  params: { progressToken: string | number; progress: number; total: number; message: string };
+} {
+  return {
+    method: "notifications/progress",
+    params: {
+      progressToken,
+      progress: info.done,
+      total: info.total,
+      message: info.verified
+        ? `Sample ${info.done}/${info.total}: verified`
+        : `Sample ${info.done}/${info.total}: resampling`,
+    },
+  };
 }
 
 /** Parse "N" or "start-end" into 1-based { start, bars }, or an error message. */
@@ -93,7 +122,11 @@ export async function reharmonizeSongSection(
   }
 
   const maxSamples = opts.maxSamples ?? 16;
-  const result = await autoReharmonize(item, opts.proposer, { maxSamples });
+  const result = await autoReharmonize(item, opts.proposer, {
+    maxSamples,
+    signal: opts.signal,
+    onSampleProgress: opts.onSampleProgress,
+  });
   const s = result.score;
 
   const payload: AutoReharmonizePayload = {

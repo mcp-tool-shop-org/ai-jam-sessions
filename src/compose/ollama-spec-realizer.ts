@@ -16,6 +16,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { OllamaBackend } from "../dataset/eval/llm-backends/ollama.js";
+import { isCancelledError, throwIfAborted, toCancelledError } from "../cancel.js";
 import type { ChordProposerBackend } from "../maker/chord-proposer.js";
 import { renderSpecRealization, type VoicingSpec } from "./voicing-spec.js";
 import type { Realization } from "./types.js";
@@ -153,6 +154,10 @@ export interface OllamaSpecRealizerOptions {
   baseUrl?: string;
   /** Optional style hint appended to the brief (e.g. "jazz"). */
   styleHint?: string;
+  /** Optional abort signal cancelling probing and realization calls. */
+  signal?: AbortSignal;
+  /** Optional per-call HTTP timeout in ms. */
+  timeoutMs?: number;
   /** Test seam: build the backend for a given per-sample seed. */
   backendFactory?: (seed: number) => ChordProposerBackend;
 }
@@ -171,6 +176,7 @@ export class OllamaSpecRealizer implements RealizationProposer {
   readonly maxTokens: number;
   readonly voices: number;
   private readonly styleHint?: string;
+  private readonly signal?: AbortSignal;
   private readonly makeBackend: (seed: number) => ChordProposerBackend;
 
   constructor(model = "qwen2.5:7b", opts: OllamaSpecRealizerOptions = {}) {
@@ -179,18 +185,28 @@ export class OllamaSpecRealizer implements RealizationProposer {
     this.maxTokens = opts.maxTokens ?? 1024;
     this.voices = opts.voices ?? 4;
     this.styleHint = opts.styleHint?.trim() || undefined;
-    const { baseUrl, backendFactory } = opts;
+    this.signal = opts.signal;
+    const { baseUrl, backendFactory, signal, timeoutMs } = opts;
     const maxTokens = this.maxTokens;
     this.makeBackend =
-      backendFactory ?? ((seed) => new OllamaBackend(model, baseUrl, { seed, num_predict: maxTokens }));
+      backendFactory ??
+      ((seed) => new OllamaBackend(model, baseUrl, { seed, num_predict: maxTokens }, { signal, timeoutMs }));
   }
 
   /** One-shot reachability check (Ollama is optional). Throws if unreachable. */
-  async probe(): Promise<void> {
-    await this.makeBackend(this.baseSeed).probe();
+  async probe(signal?: AbortSignal): Promise<void> {
+    const effectiveSignal = signal ?? this.signal;
+    throwIfAborted(effectiveSignal, "Ollama probe cancelled");
+    await this.makeBackend(this.baseSeed).probe({ signal: effectiveSignal });
   }
 
-  async proposeRealization(progression: ChordProgression, sampleIndex: number): Promise<Realization | null> {
+  async proposeRealization(
+    progression: ChordProgression,
+    sampleIndex: number,
+    signal?: AbortSignal,
+  ): Promise<Realization | null> {
+    const effectiveSignal = signal ?? this.signal;
+    throwIfAborted(effectiveSignal, "compose_panel cancelled");
     const backend = this.makeBackend(this.baseSeed + sampleIndex);
     const base = buildSpecUser(progression, this.voices);
     const userMessage = this.styleHint
@@ -201,11 +217,16 @@ export class OllamaSpecRealizer implements RealizationProposer {
         systemPrompt: specSystem(this.voices),
         userMessage,
         outputSchema: SPEC_OUTPUT_SCHEMA as unknown as Record<string, unknown>,
+        signal: effectiveSignal,
       });
-    } catch {
+    } catch (err) {
+      if (effectiveSignal?.aborted || isCancelledError(err)) {
+        throw toCancelledError(effectiveSignal?.reason ?? err, "compose_panel cancelled");
+      }
       // Tolerant: callStructured throws on non-JSON (rawText still set) or on an
       // unreachable/erroring Ollama (rawText null → null below).
     }
+    throwIfAborted(effectiveSignal, "compose_panel cancelled");
     const raw = backend.lastRawText() ?? "";
     if (!raw) return null;
     return renderSpecRealization(progression, parseSpecResponse(raw), this.voices);

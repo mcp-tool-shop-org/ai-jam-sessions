@@ -94,6 +94,21 @@ describe("OllamaSpecRealizer — seed threading + fail-soft", () => {
     const real = await realizer.proposeRealization(PROG, 0);
     expect(real!.frames[0].voices).toEqual([48, 52, 55, 60]);
   });
+
+  it("rethrows RequestCancelledError on abort instead of returning null", async () => {
+    const ac = new AbortController();
+    const realizer = new OllamaSpecRealizer("m", {
+      backendFactory: () => ({
+        async callStructured() {
+          ac.abort("realizer cancelled");
+          throw new Error("aborted");
+        },
+        lastRawText: () => null,
+        probe: async () => {},
+      }),
+    });
+    await expect(realizer.proposeRealization(PROG, 0, ac.signal)).rejects.toThrow("realizer cancelled");
+  });
 });
 
 describe("parseSpecResponse — tolerant", () => {

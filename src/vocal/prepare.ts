@@ -6,7 +6,7 @@ import { loadEngineG2P } from "./g2p.js";
 import { buildScoreLockedVocals, type BuiltVocalScore } from "./score-locked.js";
 import { createScoreSinger, type ScoreSinger } from "./score-singer.js";
 import { deriveScoreClock, detectMelodyTrack } from "./score-clock.js";
-import { createSoulxScoreSinger } from "./soulx-singer.js";
+import { createSoulxScoreSinger, type SoulxProgressEvent } from "./soulx-singer.js";
 import { getVocalTune } from "./tunes.js";
 
 export interface LyricsRequest {
@@ -37,6 +37,20 @@ export interface LyricsRequest {
    * Required when soulxPromptWav is set.
    */
   soulxPromptMeta?: string;
+  /** Optional abort signal cancelling SoulX synthesis. */
+  signal?: AbortSignal;
+  /** Optional whole-render deadline override in ms for SoulX synthesis. */
+  soulxDeadlineMs?: number;
+  /** Optional progress callback for SoulX synthesis. */
+  onSoulxProgress?: (event: SoulxProgressEvent) => void | Promise<void>;
+  /** Optional SoulX python executable override (primarily for tests). */
+  soulxPythonExecutable?: string;
+  /** Optional SoulX scripts directory override (primarily for tests). */
+  soulxScriptsDir?: string;
+  /** Optional SoulX root override (primarily for tests). */
+  soulxRoot?: string;
+  /** Optional SoulX take count override. */
+  soulxTakes?: number;
 }
 
 export function resolveLyricsText(req: LyricsRequest, songId?: string): string | null {
@@ -105,6 +119,13 @@ export async function prepareScoreLocked(
     const singer = createSoulxScoreSinger(clock, {
       promptWav: req.soulxPromptWav,
       promptMeta: req.soulxPromptMeta,
+      signal: req.signal,
+      deadlineMs: req.soulxDeadlineMs,
+      onProgress: req.onSoulxProgress,
+      pythonExecutable: req.soulxPythonExecutable,
+      scriptsDir: req.soulxScriptsDir,
+      soulxRoot: req.soulxRoot,
+      takes: req.soulxTakes,
     });
     return { score, singer };
   }

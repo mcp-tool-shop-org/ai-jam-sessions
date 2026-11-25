@@ -1,5 +1,13 @@
+import { createServer } from "node:http";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { OllamaBackend } from "./ollama.js";
+import {
+  OLLAMA_CALL_TIMEOUT_MS,
+  OLLAMA_TIMEOUT_ENV,
+  OllamaBackend,
+  OllamaTimeoutError,
+  resolveOllamaTimeoutMs,
+} from "./ollama.js";
+import { RequestCancelledError } from "../../../cancel.js";
 
 const BASE = "http://ollama.invalid:11434";
 const MODEL = "qwen2.5:7b";
@@ -202,5 +210,80 @@ describe("OllamaBackend", () => {
       stream: false,
       options: { num_predict: 12 },
     });
+  });
+
+  it("aborts in-flight fetch against a hanging fake HTTP server when timeoutMs expires", async () => {
+    let socketClosed = false;
+    const srv = createServer((req) => {
+      req.on("close", () => {
+        socketClosed = true;
+      });
+      // Deliberately never write headers or body.
+    });
+    await new Promise<void>((resolve) => srv.listen(0, "127.0.0.1", resolve));
+    const addr = srv.address();
+    if (!addr || typeof addr === "string") throw new Error("unexpected address");
+    const url = `http://127.0.0.1:${addr.port}`;
+
+    try {
+      const backend = new OllamaBackend(MODEL, url, undefined, { timeoutMs: 80 });
+      await expect(
+        backend.callPlain({ systemPrompt: "sys", userMessage: "user" }),
+      ).rejects.toThrow(OllamaTimeoutError);
+      // Give the socket close event a tick to propagate.
+      await new Promise((r) => setTimeout(r, 30));
+      expect(socketClosed).toBe(true);
+    } finally {
+      await new Promise<void>((resolve) => srv.close(() => resolve()));
+    }
+  });
+
+  it("aborts immediately when the caller AbortSignal aborts", async () => {
+    const srv = createServer(() => {
+      // Never respond.
+    });
+    await new Promise<void>((resolve) => srv.listen(0, "127.0.0.1", resolve));
+    const addr = srv.address();
+    if (!addr || typeof addr === "string") throw new Error("unexpected address");
+    const url = `http://127.0.0.1:${addr.port}`;
+
+    try {
+      const ac = new AbortController();
+      const backend = new OllamaBackend(MODEL, url, undefined, {
+        signal: ac.signal,
+        timeoutMs: 30_000,
+      });
+      setTimeout(() => ac.abort("user aborted"), 40);
+      await expect(
+        backend.generateText({ systemPrompt: "sys", userMessage: "user" }),
+      ).rejects.toThrow(RequestCancelledError);
+    } finally {
+      await new Promise<void>((resolve) => srv.close(() => resolve()));
+    }
+  });
+
+  it("uses OLLAMA_TIMEOUT_MS env override and logs it to stderr when set", () => {
+    const prev = process.env[OLLAMA_TIMEOUT_ENV];
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      delete process.env[OLLAMA_TIMEOUT_ENV];
+      expect(resolveOllamaTimeoutMs()).toBe(OLLAMA_CALL_TIMEOUT_MS);
+
+      process.env[OLLAMA_TIMEOUT_ENV] = "1500";
+      expect(resolveOllamaTimeoutMs()).toBe(1500);
+      expect(errSpy).toHaveBeenCalledWith(
+        expect.stringContaining(`${OLLAMA_TIMEOUT_ENV}=1500ms`),
+      );
+
+      process.env[OLLAMA_TIMEOUT_ENV] = "not-a-number";
+      expect(resolveOllamaTimeoutMs()).toBe(OLLAMA_CALL_TIMEOUT_MS);
+      expect(errSpy).toHaveBeenCalledWith(
+        expect.stringContaining(`Ignoring invalid ${OLLAMA_TIMEOUT_ENV}`),
+      );
+    } finally {
+      errSpy.mockRestore();
+      if (prev === undefined) delete process.env[OLLAMA_TIMEOUT_ENV];
+      else process.env[OLLAMA_TIMEOUT_ENV] = prev;
+    }
   });
 });

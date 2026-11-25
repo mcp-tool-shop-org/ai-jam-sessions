@@ -11,6 +11,7 @@ import { runVoiceLeadingPanel, type PanelSystemSpec, type PanelJudge } from "./p
 import { runComposePanelTool } from "./compose-panel-tool.js";
 import { rootPositionRealization, nearestToneRealization, type ChordProgression } from "./realize.js";
 import { refineRealization } from "./refine.js";
+import { RequestCancelledError } from "../cancel.js";
 
 const PROG: ChordProgression = {
   key: "C major",
@@ -116,6 +117,33 @@ describe("runVoiceLeadingPanel — orchestration with stub judges", () => {
     expect(dones).toHaveLength(PROGS.length * judges.length);
     expect(dones[0]).toMatchObject({ songId: "song-a", judgeFamily: "f1", step: 1, total: 6, dropped: false });
     expect(dones.at(-1)).toMatchObject({ step: 6, total: 6 });
+  });
+
+  it("stops issuing judge calls when aborted mid-panel", async () => {
+    const ac = new AbortController();
+    let judgeCalls = 0;
+    const abortingJudge = (family: string): PanelJudge => ({
+      family,
+      model: `stub-${family}`,
+      async judge(_key, options) {
+        judgeCalls++;
+        if (judgeCalls === 2) ac.abort("panel cancelled");
+        return { best: 0, worst: options.length - 1 };
+      },
+    });
+    const judges = [abortingJudge("f1"), abortingJudge("f2"), abortingJudge("f3")];
+    await expect(
+      runVoiceLeadingPanel({
+        progressions: PROGS,
+        systems: SYSTEMS,
+        judges,
+        anchors: { floor: "floor", valid: "refined", engine: "engine" },
+        bootstrap: 50,
+        seed: 1,
+        signal: ac.signal,
+      }),
+    ).rejects.toThrow(RequestCancelledError);
+    expect(judgeCalls).toBe(2);
   });
 });
 

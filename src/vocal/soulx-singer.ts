@@ -11,7 +11,7 @@
  *   SOULX_PROMPT_META — SoulX metadata JSON for the reference clip
  */
 
-import { spawn } from "node:child_process";
+import { spawn, spawnSync, type ChildProcess } from "node:child_process";
 import {
   mkdtempSync,
   writeFileSync,
@@ -28,16 +28,99 @@ import { tmpdir } from "node:os";
 import { join, resolve, extname, basename } from "node:path";
 import { soulxCacheDir } from "../state-home.js";
 import { getSharedAudioContext, setSharedAudioContext } from "../audio-shared.js";
+import { RequestCancelledError, throwIfAborted, toCancelledError } from "../cancel.js";
 import { readMonoWav } from "./kokoro-lead.js";
 import { peakNormalize } from "./score-singer.js";
 import type { ScoreSinger, ScoreSingerOptions } from "./score-singer.js";
 import type { ScoreClock } from "./score-clock.js";
+
+/** Default whole-render deadline for SoulX-Singer pipelines (15 minutes). */
+export const SOULX_RENDER_DEADLINE_MS = 15 * 60 * 1000;
+
+/** Env override for the SoulX whole-render deadline in milliseconds. */
+export const SOULX_DEADLINE_ENV = "SOULX_RENDER_DEADLINE_MS";
+
+export class SoulxRenderDeadlineError extends Error {
+  readonly deadlineMs: number;
+
+  constructor(message: string, deadlineMs: number) {
+    super(message);
+    this.name = "SoulxRenderDeadlineError";
+    this.deadlineMs = deadlineMs;
+  }
+}
+
+export type SoulxProgressEvent =
+  | { stage: "export"; step: number; total: number }
+  | { stage: "take"; take: number; takes: number; step: number; total: number }
+  | { stage: "repin"; step: number; total: number }
+  | { stage: "place"; step: number; total: number };
+
+/** Format a SoulX progress event as an MCP notifications/progress payload. */
+export function soulxProgressNotification(
+  progressToken: string | number,
+  event: SoulxProgressEvent,
+): {
+  method: "notifications/progress";
+  params: { progressToken: string | number; progress: number; total: number; message: string };
+} {
+  let detail: string;
+  switch (event.stage) {
+    case "export":
+      detail = "exported target";
+      break;
+    case "take":
+      detail = `take ${event.take}/${event.takes} verified`;
+      break;
+    case "repin":
+      detail = "repinned words";
+      break;
+    case "place":
+      detail = "placed vocal stem";
+      break;
+  }
+  return {
+    method: "notifications/progress",
+    params: {
+      progressToken,
+      progress: event.step,
+      total: event.total,
+      message: `SoulX [${event.step}/${event.total}]: ${detail}`,
+    },
+  };
+}
+
+/**
+ * Resolve the whole-render SoulX deadline in milliseconds.
+ * Logs to stderr whenever the SOULX_RENDER_DEADLINE_MS env override is read.
+ */
+export function resolveSoulxDeadlineMs(explicit?: number): number {
+  if (explicit !== undefined && Number.isFinite(explicit) && explicit > 0) {
+    return explicit;
+  }
+  const raw = process.env[SOULX_DEADLINE_ENV];
+  if (raw !== undefined && raw.trim().length > 0) {
+    const parsed = Number(raw);
+    if (Number.isFinite(parsed) && parsed > 0) {
+      console.error(
+        `[soulx] Using ${SOULX_DEADLINE_ENV}=${parsed}ms override (default ${SOULX_RENDER_DEADLINE_MS}ms)`,
+      );
+      return parsed;
+    }
+    console.error(
+      `[soulx] Ignoring invalid ${SOULX_DEADLINE_ENV}="${raw}"; using default ${SOULX_RENDER_DEADLINE_MS}ms`,
+    );
+  }
+  return SOULX_RENDER_DEADLINE_MS;
+}
 
 export interface SoulxSingerConfig {
   /** SoulX-Singer checkout directory. */
   soulxRoot?: string;
   /** Python interpreter with the SoulX venv packages. */
   pythonExecutable?: string;
+  /** Directory holding SoulX helper scripts (defaults to <cwd>/scripts). */
+  scriptsDir?: string;
   /** Reference voice clip (16-bit mono WAV or MP3). Overrides SOULX_PROMPT_WAV. */
   promptWav?: string;
   /** SoulX metadata JSON for the reference clip. Overrides SOULX_PROMPT_META. */
@@ -50,6 +133,12 @@ export interface SoulxSingerConfig {
   pitchShift?: number;
   /** Whether to clean up the temp directory after rendering. */
   cleanup?: boolean;
+  /** Optional abort signal cancelling the render and killing any live child tree. */
+  signal?: AbortSignal;
+  /** Optional whole-render deadline override in ms. */
+  deadlineMs?: number;
+  /** Optional per-stage and per-take progress callback. */
+  onProgress?: (event: SoulxProgressEvent) => void | Promise<void>;
 }
 
 function defaults(): {
@@ -220,29 +309,207 @@ function resolvePrompt(
   return { wav, meta };
 }
 
+const activeChildren = new Set<ChildProcess>();
+const activeRenderControllers = new Set<AbortController>();
+
+/** Synchronously kill a process tree (used on process exit and signal shutdown). */
+export function killProcessTreeSync(
+  pid: number,
+  platform: NodeJS.Platform = process.platform,
+  runSync: typeof spawnSync = spawnSync,
+): void {
+  if (!Number.isInteger(pid) || pid <= 0) return;
+  if (platform === "win32") {
+    try {
+      runSync("taskkill", ["/PID", String(pid), "/T", "/F"], {
+        stdio: "ignore",
+        windowsHide: true,
+        timeout: 5000,
+      });
+    } catch {
+      /* process already gone */
+    }
+    return;
+  }
+  try {
+    process.kill(-pid, "SIGKILL");
+  } catch {
+    /* process group already gone */
+  }
+  try {
+    process.kill(pid, "SIGKILL");
+  } catch {
+    /* process already gone */
+  }
+}
+
+/** Kill a child process and all of its descendants, awaiting exit (bounded). */
+export async function killChildProcessTree(
+  proc: ChildProcess,
+  platform: NodeJS.Platform = process.platform,
+  spawner: typeof spawn = spawn,
+): Promise<void> {
+  const pid = proc.pid;
+  if (!pid) return;
+
+  const waitClosed =
+    proc.exitCode !== null || proc.signalCode !== null
+      ? Promise.resolve()
+      : new Promise<void>((resolveClose) => {
+          const timer = setTimeout(done, 2000);
+          function done(): void {
+            clearTimeout(timer);
+            proc.removeListener("close", done);
+            proc.removeListener("exit", done);
+            resolveClose();
+          }
+          proc.once("close", done);
+          proc.once("exit", done);
+        });
+
+  if (platform === "win32") {
+    await new Promise<void>((resolveTaskkill) => {
+      try {
+        const killer = spawner("taskkill", ["/PID", String(pid), "/T", "/F"], {
+          stdio: "ignore",
+          windowsHide: true,
+        });
+        killer.once("close", () => resolveTaskkill());
+        killer.once("error", () => resolveTaskkill());
+      } catch {
+        resolveTaskkill();
+      }
+    });
+    try {
+      proc.kill("SIGKILL");
+    } catch {
+      /* already terminated */
+    }
+  } else {
+    try {
+      process.kill(-pid, "SIGKILL");
+    } catch {
+      /* process group already gone */
+    }
+    try {
+      proc.kill("SIGKILL");
+    } catch {
+      /* process already gone */
+    }
+  }
+
+  await waitClosed;
+}
+
+/** Synchronously abort active render controllers and kill any tracked SoulX children. */
+export function killAllSoulxChildrenSync(): void {
+  for (const ctrl of [...activeRenderControllers]) {
+    if (!ctrl.signal.aborted) {
+      ctrl.abort(new RequestCancelledError("Server shutting down"));
+    }
+  }
+  for (const proc of [...activeChildren]) {
+    if (proc.pid) {
+      killProcessTreeSync(proc.pid);
+    }
+  }
+}
+
+/** Abort all active SoulX renders and wait for every child process tree to die. */
+export async function abortAllSoulxRenders(reason = "Server shutting down"): Promise<void> {
+  const err = new RequestCancelledError(reason);
+  for (const ctrl of [...activeRenderControllers]) {
+    if (!ctrl.signal.aborted) {
+      ctrl.abort(err);
+    }
+  }
+  const children = [...activeChildren];
+  await Promise.all(children.map((proc) => killChildProcessTree(proc)));
+}
+
+let exitHookRegistered = false;
+function ensureExitHook(): void {
+  if (exitHookRegistered) return;
+  exitHookRegistered = true;
+  process.on("exit", () => {
+    killAllSoulxChildrenSync();
+  });
+}
+
+function abortReasonToError(reason: unknown): Error {
+  if (reason instanceof SoulxRenderDeadlineError) return reason;
+  return toCancelledError(reason, "SoulX render cancelled");
+}
+
 function runPy(
   cmd: string,
   args: string[],
   cwd?: string,
   extraEnv?: Record<string, string>,
+  signal?: AbortSignal,
 ): Promise<{ code: number; stdout: string; stderr: string }> {
-  return new Promise((resolve, reject) => {
+  if (signal?.aborted) {
+    return Promise.reject(abortReasonToError(signal.reason));
+  }
+  ensureExitHook();
+
+  return new Promise((resolveRun, rejectRun) => {
+    let settled = false;
     const proc = spawn(cmd, args, {
       cwd,
       env: { ...process.env, ...extraEnv },
+      stdio: ["ignore", "pipe", "pipe"],
+      windowsHide: true,
+      detached: process.platform !== "win32",
     });
+    activeChildren.add(proc);
+
     let stdout = "";
     let stderr = "";
-    proc.stdout.setEncoding("utf8");
-    proc.stderr.setEncoding("utf8");
-    proc.stdout.on("data", (d: string) => {
+    proc.stdout?.setEncoding("utf8");
+    proc.stderr?.setEncoding("utf8");
+    proc.stdout?.on("data", (d: string) => {
       stdout += d;
     });
-    proc.stderr.on("data", (d: string) => {
+    proc.stderr?.on("data", (d: string) => {
       stderr += d;
     });
-    proc.on("close", (code) => resolve({ code: code ?? 0, stdout, stderr }));
-    proc.on("error", (err) => reject(err));
+
+    const cleanup = () => {
+      activeChildren.delete(proc);
+      signal?.removeEventListener("abort", onAbort);
+    };
+
+    const onAbort = () => {
+      void killChildProcessTree(proc).finally(() => {
+        cleanup();
+        if (!settled) {
+          settled = true;
+          rejectRun(abortReasonToError(signal?.reason));
+        }
+      });
+    };
+
+    signal?.addEventListener("abort", onAbort, { once: true });
+
+    proc.on("close", (code) => {
+      cleanup();
+      if (!settled) {
+        settled = true;
+        if (signal?.aborted) {
+          rejectRun(abortReasonToError(signal.reason));
+          return;
+        }
+        resolveRun({ code: code ?? 0, stdout, stderr });
+      }
+    });
+    proc.on("error", (err) => {
+      cleanup();
+      if (!settled) {
+        settled = true;
+        rejectRun(signal?.aborted ? abortReasonToError(signal.reason) : err);
+      }
+    });
   });
 }
 
@@ -252,6 +519,8 @@ export async function renderSoulxLead(
   config: SoulxSingerConfig = {},
   options: ScoreSingerOptions = {},
 ): Promise<{ pcm: Float32Array; sampleRate: number; warnings: string[]; tmpDir: string }> {
+  throwIfAborted(config.signal, "SoulX render cancelled");
+
   const defs = defaults();
   const root = config.soulxRoot ?? defs.soulxRoot;
   const py = config.pythonExecutable ?? defs.pythonExecutable;
@@ -271,160 +540,228 @@ export async function renderSoulxLead(
     };
   }
 
-  const scriptsDir = join(resolve(), "scripts");
+  const scriptsDir =
+    config.scriptsDir ??
+    process.env.SOULX_SCRIPTS_DIR ??
+    join(resolve(), "scripts");
   const tmpDir = mkdtempSync(join(tmpdir(), "ajs-soulx-"));
   const clockPath = join(tmpDir, "clock.json");
   const targetPath = join(tmpDir, "target.json");
 
-  writeFileSync(clockPath, JSON.stringify(clock, null, 2) + "\n");
+  const deadlineMs = resolveSoulxDeadlineMs(config.deadlineMs);
+  const renderController = new AbortController();
+  activeRenderControllers.add(renderController);
 
-  // ── 1. Export target ──────────────────────────────────────────────
-  const exportArgs = [
-    join(scriptsDir, "export_soulx_target.py"),
-    "--clock",
-    clockPath,
-    "--out",
-    targetPath,
-  ];
-  if (config.syllableWords !== false) {
-    exportArgs.push("--syllable-words");
-  }
+  const onCallerAbort = () => {
+    renderController.abort(toCancelledError(config.signal?.reason, "SoulX render cancelled"));
+  };
+  config.signal?.addEventListener("abort", onCallerAbort, { once: true });
 
-  const exportResult = await runPy(py, exportArgs);
-  if (exportResult.code !== 0) {
-    throw new Error(
-      `export_soulx_target.py failed (exit ${exportResult.code}): ${exportResult.stderr || exportResult.stdout}`,
+  let deadlineTimer: ReturnType<typeof setTimeout> | null = null;
+  let deadlineError: SoulxRenderDeadlineError | null = null;
+  deadlineTimer = setTimeout(() => {
+    deadlineError = new SoulxRenderDeadlineError(
+      `SoulX render exceeded the ${deadlineMs}ms whole-render deadline (set ${SOULX_DEADLINE_ENV} to override).`,
+      deadlineMs,
     );
-  }
+    renderController.abort(deadlineError);
+  }, deadlineMs);
 
-  // ── 2. Render takes ─────────────────────────────────────────────
+  const signal = renderController.signal;
   const nTakes = Math.max(1, config.takes ?? 6);
+  const totalSteps = nTakes + 3;
   const takeDirs: string[] = [];
   const candidateSpecs: string[] = [];
 
-  for (let i = 1; i <= nTakes; i++) {
-    const tDir = join(tmpDir, `take-${String(i).padStart(2, "0")}`);
-    takeDirs.push(tDir);
+  try {
+    writeFileSync(clockPath, JSON.stringify(clock, null, 2) + "\n");
 
-    const takeResult = await runPy(
-      py,
-      [
-        join(scriptsDir, "soulx_take.py"),
-        "--target",
-        targetPath,
-        "--prompt-wav",
-        prompt.wav,
-        "--prompt-meta",
-        prompt.meta,
-        "--out-dir",
-        tDir,
-        ...(config.pitchShift ? ["--pitch-shift", String(config.pitchShift)] : []),
-      ],
-      root,
-      { PYTHONPATH: root },
-    );
-
-    if (takeResult.code !== 0) {
-      throw new Error(
-        `soulx_take.py take ${i} failed (exit ${takeResult.code}): ${takeResult.stderr || takeResult.stdout}`,
-      );
-    }
-
-    const takeWav = join(tDir, "take-48k.wav");
-    if (!existsSync(takeWav)) {
-      throw new Error(`SoulX take ${i} did not produce ${takeWav}`);
-    }
-
-    // ── 3. Energy verify (receipt for repin) ───────────────────────
-    const receiptPath = join(tDir, "verify-energy.json");
-    await runPy(py, [
-      join(scriptsDir, "vocal_clock.py"),
-      "verify",
+    // ── 1. Export target ──────────────────────────────────────────────
+    const exportArgs = [
+      join(scriptsDir, "export_soulx_target.py"),
       "--clock",
       clockPath,
-      "--vocal",
-      takeWav,
-      "--receipt",
-      receiptPath,
-    ]);
-
-    candidateSpecs.push(`${takeWav}=${receiptPath}`);
-  }
-
-  // ── 4. Repin (word-level pick) ──────────────────────────────────
-  const planPath = join(tmpDir, "plan.json");
-  const repinArgs = [
-    join(scriptsDir, "vocal_clock.py"),
-    "repin",
-    "--clock",
-    clockPath,
-    "--out",
-    planPath,
-  ];
-  if (config.syllableWords !== false) {
-    repinArgs.push("--split-words");
-  }
-  for (const spec of candidateSpecs) {
-    repinArgs.push("--candidate", spec);
-  }
-
-  const repinResult = await runPy(py, repinArgs);
-  if (repinResult.code !== 0) {
-    throw new Error(
-      `vocal_clock.py repin failed (exit ${repinResult.code}): ${repinResult.stderr || repinResult.stdout}`,
-    );
-  }
-
-  // ── 5. Place local ──────────────────────────────────────────────
-  const placedDir = join(tmpDir, "placed");
-  const placedInfoPath = join(placedDir, "placed.json");
-  const placeResult = await runPy(py, [
-    join(scriptsDir, "vocal_clock.py"),
-    "place",
-    "--local",
-    "--plan",
-    planPath,
-    "--out-dir",
-    placedDir,
-    "--out-info",
-    placedInfoPath,
-  ]);
-
-  if (placeResult.code !== 0) {
-    throw new Error(
-      `vocal_clock.py place failed (exit ${placeResult.code}): ${placeResult.stderr || placeResult.stdout}`,
-    );
-  }
-
-  const placedInfo = JSON.parse(readFileSync(placedInfoPath, "utf8"));
-  const placedWav: string = placedInfo.path;
-  if (!placedWav || !existsSync(placedWav)) {
-    throw new Error(`Place did not produce a WAV file (expected ${placedWav})`);
-  }
-
-  const wav = readMonoWav(placedWav);
-  const pcm = peakNormalize(wav.pcm, options.masterGain ?? 0.45);
-
-  // Store in cache for next time
-  try {
-    cacheStore(cacheKey, pcm, wav.sampleRate);
-  } catch {
-    /* cache failure is non-fatal */
-  }
-
-  const warnings: string[] = [];
-  if (nTakes === 1) {
-    warnings.push("SoulX: single take (no bag-of-takes selection).");
-  }
-
-  if (config.cleanup !== false) {
-    // Keep the placed output; delete intermediate takes to save space
-    for (const tDir of takeDirs) {
-      try { rmSync(tDir, { recursive: true }); } catch { /* ok */ }
+      "--out",
+      targetPath,
+    ];
+    if (config.syllableWords !== false) {
+      exportArgs.push("--syllable-words");
     }
-  }
 
-  return { pcm, sampleRate: wav.sampleRate, warnings, tmpDir };
+    const exportResult = await runPy(py, exportArgs, undefined, undefined, signal);
+    if (exportResult.code !== 0) {
+      throw new Error(
+        `export_soulx_target.py failed (exit ${exportResult.code}): ${exportResult.stderr || exportResult.stdout}`,
+      );
+    }
+    await config.onProgress?.({ stage: "export", step: 1, total: totalSteps });
+
+    // ── 2. Render takes ─────────────────────────────────────────────
+    for (let i = 1; i <= nTakes; i++) {
+      if (signal.aborted) throw abortReasonToError(signal.reason);
+
+      const tDir = join(tmpDir, `take-${String(i).padStart(2, "0")}`);
+      takeDirs.push(tDir);
+
+      const takeResult = await runPy(
+        py,
+        [
+          join(scriptsDir, "soulx_take.py"),
+          "--target",
+          targetPath,
+          "--prompt-wav",
+          prompt.wav,
+          "--prompt-meta",
+          prompt.meta,
+          "--out-dir",
+          tDir,
+          ...(config.pitchShift ? ["--pitch-shift", String(config.pitchShift)] : []),
+        ],
+        root,
+        { PYTHONPATH: root },
+        signal,
+      );
+
+      if (takeResult.code !== 0) {
+        throw new Error(
+          `soulx_take.py take ${i} failed (exit ${takeResult.code}): ${takeResult.stderr || takeResult.stdout}`,
+        );
+      }
+
+      const takeWav = join(tDir, "take-48k.wav");
+      if (!existsSync(takeWav)) {
+        throw new Error(`SoulX take ${i} did not produce ${takeWav}`);
+      }
+
+      // ── 3. Energy verify (receipt for repin) ───────────────────────
+      const receiptPath = join(tDir, "verify-energy.json");
+      await runPy(
+        py,
+        [
+          join(scriptsDir, "vocal_clock.py"),
+          "verify",
+          "--clock",
+          clockPath,
+          "--vocal",
+          takeWav,
+          "--receipt",
+          receiptPath,
+        ],
+        undefined,
+        undefined,
+        signal,
+      );
+
+      candidateSpecs.push(`${takeWav}=${receiptPath}`);
+      await config.onProgress?.({
+        stage: "take",
+        take: i,
+        takes: nTakes,
+        step: 1 + i,
+        total: totalSteps,
+      });
+    }
+
+    // ── 4. Repin (word-level pick) ──────────────────────────────────
+    if (signal.aborted) throw abortReasonToError(signal.reason);
+    const planPath = join(tmpDir, "plan.json");
+    const repinArgs = [
+      join(scriptsDir, "vocal_clock.py"),
+      "repin",
+      "--clock",
+      clockPath,
+      "--out",
+      planPath,
+    ];
+    if (config.syllableWords !== false) {
+      repinArgs.push("--split-words");
+    }
+    for (const spec of candidateSpecs) {
+      repinArgs.push("--candidate", spec);
+    }
+
+    const repinResult = await runPy(py, repinArgs, undefined, undefined, signal);
+    if (repinResult.code !== 0) {
+      throw new Error(
+        `vocal_clock.py repin failed (exit ${repinResult.code}): ${repinResult.stderr || repinResult.stdout}`,
+      );
+    }
+    await config.onProgress?.({ stage: "repin", step: nTakes + 2, total: totalSteps });
+
+    // ── 5. Place local ──────────────────────────────────────────────
+    if (signal.aborted) throw abortReasonToError(signal.reason);
+    const placedDir = join(tmpDir, "placed");
+    const placedInfoPath = join(placedDir, "placed.json");
+    const placeResult = await runPy(
+      py,
+      [
+        join(scriptsDir, "vocal_clock.py"),
+        "place",
+        "--local",
+        "--plan",
+        planPath,
+        "--out-dir",
+        placedDir,
+        "--out-info",
+        placedInfoPath,
+      ],
+      undefined,
+      undefined,
+      signal,
+    );
+
+    if (placeResult.code !== 0) {
+      throw new Error(
+        `vocal_clock.py place failed (exit ${placeResult.code}): ${placeResult.stderr || placeResult.stdout}`,
+      );
+    }
+    await config.onProgress?.({ stage: "place", step: totalSteps, total: totalSteps });
+
+    const placedInfo = JSON.parse(readFileSync(placedInfoPath, "utf8"));
+    const placedWav: string = placedInfo.path;
+    if (!placedWav || !existsSync(placedWav)) {
+      throw new Error(`Place did not produce a WAV file (expected ${placedWav})`);
+    }
+
+    const wav = readMonoWav(placedWav);
+    const pcm = peakNormalize(wav.pcm, options.masterGain ?? 0.45);
+
+    // Store in cache for next time
+    try {
+      cacheStore(cacheKey, pcm, wav.sampleRate);
+    } catch {
+      /* cache failure is non-fatal */
+    }
+
+    const warnings: string[] = [];
+    if (nTakes === 1) {
+      warnings.push("SoulX: single take (no bag-of-takes selection).");
+    }
+
+    if (config.cleanup !== false) {
+      // Keep the placed output; delete intermediate takes to save space
+      for (const tDir of takeDirs) {
+        try { rmSync(tDir, { recursive: true }); } catch { /* ok */ }
+      }
+    }
+
+    return { pcm, sampleRate: wav.sampleRate, warnings, tmpDir };
+  } catch (err) {
+    if (config.cleanup !== false) {
+      try {
+        rmSync(tmpDir, { recursive: true, force: true });
+      } catch {
+        /* best-effort cleanup */
+      }
+    }
+    if (deadlineError) throw deadlineError;
+    if (signal.aborted) throw abortReasonToError(signal.reason);
+    throw err;
+  } finally {
+    if (deadlineTimer) clearTimeout(deadlineTimer);
+    config.signal?.removeEventListener("abort", onCallerAbort);
+    activeRenderControllers.delete(renderController);
+  }
 }
 
 /** Build a ScoreSinger whose connect() runs the full SoulX pipeline. */
@@ -441,6 +778,8 @@ export function createSoulxScoreSinger(
   let AudioContextCtor: (new (o: object) => any) | null = null;
   const durationSec = clock.total_seconds + 0.15;
   let warnings: string[] = [];
+  let connectController: AbortController | null = null;
+  let connectPromise: Promise<void> | null = null;
 
   return {
     durationSec,
@@ -449,12 +788,38 @@ export function createSoulxScoreSinger(
     },
 
     async connect(): Promise<void> {
-      const rendered = await renderSoulxLead(clock, config, options);
-      pcm = rendered.pcm;
-      pcmRate = rendered.sampleRate;
-      warnings = rendered.warnings;
-      const mod = await import("node-web-audio-api");
-      AudioContextCtor = mod.AudioContext as new (o: object) => any;
+      const localController = new AbortController();
+      connectController = localController;
+      const forwardAbort = () => {
+        localController.abort(config.signal?.reason);
+      };
+      if (config.signal?.aborted) {
+        localController.abort(config.signal.reason);
+      } else {
+        config.signal?.addEventListener("abort", forwardAbort, { once: true });
+      }
+
+      const run = (async () => {
+        const rendered = await renderSoulxLead(
+          clock,
+          { ...config, signal: localController.signal },
+          options,
+        );
+        pcm = rendered.pcm;
+        pcmRate = rendered.sampleRate;
+        warnings = rendered.warnings;
+        const mod = await import("node-web-audio-api");
+        AudioContextCtor = mod.AudioContext as new (o: object) => any;
+      })();
+      connectPromise = run;
+
+      try {
+        await run;
+      } finally {
+        config.signal?.removeEventListener("abort", forwardAbort);
+        if (connectController === localController) connectController = null;
+        if (connectPromise === run) connectPromise = null;
+      }
     },
 
     start(): void {
@@ -480,6 +845,12 @@ export function createSoulxScoreSinger(
     },
 
     async stop(): Promise<void> {
+      if (connectController && !connectController.signal.aborted) {
+        connectController.abort(new RequestCancelledError("ScoreSinger stopped"));
+      }
+      if (connectPromise) {
+        await connectPromise.catch(() => {});
+      }
       if (source) {
         try {
           source.stop();

@@ -23,19 +23,25 @@ import {
   type BwsVote,
   type PanelResult,
 } from "./bws.js";
+import { throwIfAborted } from "../cancel.js";
 import type { ChordProgression } from "./realize.js";
 import type { Realization } from "./types.js";
 
 /** A system under test + how to realize it (deterministic realizer or model proposer). */
 export interface PanelSystemSpec extends PanelSystem {
-  realize: (progression: ChordProgression) => Promise<Realization> | Realization;
+  realize: (progression: ChordProgression, signal?: AbortSignal) => Promise<Realization> | Realization;
 }
 
 /** A judge family (OllamaBwsJudge satisfies this; a stub does in tests). */
 export interface PanelJudge {
   family: string;
   model?: string;
-  judge(key: string, options: string[], tupleSeed: number): Promise<{ best: number; worst: number } | null>;
+  judge(
+    key: string,
+    options: string[],
+    tupleSeed: number,
+    signal?: AbortSignal,
+  ): Promise<{ best: number; worst: number } | null>;
 }
 
 export interface PanelRunOptions {
@@ -47,6 +53,8 @@ export interface PanelRunOptions {
   floorMargin?: number;
   bootstrap?: number;
   seed?: number;
+  /** Optional abort signal cancelling further realizations and judge calls. */
+  signal?: AbortSignal;
   /** Progress callback (a dot per collected vote, an "x" per dropped) — optional. */
   onProgress?: (mark: string) => void;
   /** Per judge × song step (P9-004). Optional; existing onProgress dots stay. */
@@ -87,6 +95,7 @@ export async function runVoiceLeadingPanel(opts: PanelRunOptions): Promise<Panel
   let step = 0;
 
   for (let si = 0; si < progressions.length; si++) {
+    throwIfAborted(opts.signal, "compose_panel cancelled");
     const { id: songId, progression } = progressions[si];
     // Start events keep progress notifications flowing from the first second
     // (P9-004): realization and a cold first judgment can each run past the
@@ -100,9 +109,13 @@ export async function runVoiceLeadingPanel(opts: PanelRunOptions): Promise<Panel
       phase: "start",
     });
     const real: Record<string, Realization> = {};
-    for (const s of systems) real[s.id] = await s.realize(progression);
+    for (const s of systems) {
+      throwIfAborted(opts.signal, "compose_panel cancelled");
+      real[s.id] = await s.realize(progression, opts.signal);
+    }
 
     for (let fi = 0; fi < judges.length; fi++) {
+      throwIfAborted(opts.signal, "compose_panel cancelled");
       const judge = judges[fi];
       await opts.onVoteStep?.({
         songId,
@@ -116,7 +129,8 @@ export async function runVoiceLeadingPanel(opts: PanelRunOptions): Promise<Panel
       const order = shuffledOrder(systems.length, makeRng(1000 * (si + 1) + 31 * (fi + 1)));
       const orderedIds = order.map((k) => systems[k].id);
       const optionsText = orderedIds.map((id) => renderVoicingText(real[id]));
-      const v = await judge.judge(progression.key, optionsText, si * 10 + fi);
+      const v = await judge.judge(progression.key, optionsText, si * 10 + fi, opts.signal);
+      throwIfAborted(opts.signal, "compose_panel cancelled");
       if (v) {
         votes.push({ options: order, best: v.best, worst: v.worst, family: judge.family });
         tupleSystems.push(orderedIds);

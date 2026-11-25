@@ -26,6 +26,7 @@ export interface ComposePanelToolInput {
   floorMargin?: number;
   bootstrap?: number;
   seed?: number;
+  signal?: AbortSignal;
   onProgress?: (mark: string) => void;
   onVoteStep?: (info: {
     songId: string;
@@ -92,6 +93,7 @@ export async function runComposePanelTool(input: ComposePanelToolInput): Promise
     floorMargin: input.floorMargin,
     bootstrap: input.bootstrap,
     seed: input.seed,
+    signal: input.signal,
     onProgress: input.onProgress,
     onVoteStep: input.onVoteStep,
   });

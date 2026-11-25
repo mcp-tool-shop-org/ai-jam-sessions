@@ -12,6 +12,7 @@
 import { describe, it, expect } from "vitest";
 import { autoReharmonize, type ChordProposer, type ChordChoice } from "./reharmonize.js";
 import type { ERItem } from "./er-gate.js";
+import { RequestCancelledError } from "../cancel.js";
 
 function mkItem(source: string[]): ERItem {
   return {
@@ -90,5 +91,39 @@ describe("autoReharmonize", () => {
     const r = await autoReharmonize(item, { proposeChords: async () => withBadChord }, { maxSamples: 1 });
     // Only the 2 voiceable measures survive; still a valid (verifiable) proposal.
     expect(r.reharmonization.map((m) => m.measure)).toEqual([1, 3]);
+  });
+
+  it("stops issuing proposer calls when aborted mid-loop and throws RequestCancelledError", async () => {
+    const ac = new AbortController();
+    let calls = 0;
+    const proposer: ChordProposer = {
+      proposeChords: async () => {
+        calls++;
+        if (calls === 2) {
+          ac.abort("client cancelled");
+        }
+        return TRIVIAL;
+      },
+    };
+    await expect(
+      autoReharmonize(item, proposer, { maxSamples: 10, signal: ac.signal }),
+    ).rejects.toThrow(RequestCancelledError);
+    expect(calls).toBe(2);
+  });
+
+  it("reports per-sample progress (done/maxSamples)", async () => {
+    const events: Array<{ done: number; total: number; verified: boolean }> = [];
+    const r = await autoReharmonize(item, passOnSample(2, GOOD, TRIVIAL), {
+      maxSamples: 5,
+      onSampleProgress: (info) => {
+        events.push(info);
+      },
+    });
+    expect(r.verified).toBe(true);
+    expect(events).toEqual([
+      { done: 1, total: 5, verified: false },
+      { done: 2, total: 5, verified: false },
+      { done: 3, total: 5, verified: true },
+    ]);
   });
 });

@@ -16,6 +16,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { OllamaBackend } from "../dataset/eval/llm-backends/ollama.js";
+import { isCancelledError, throwIfAborted, toCancelledError } from "../cancel.js";
 import { buildERBrief, type ERItem } from "./er-gate.js";
 import type { ChordChoice, ChordProposer } from "./reharmonize.js";
 
@@ -109,9 +110,11 @@ export interface ChordProposerBackend {
     systemPrompt: string;
     userMessage: string;
     outputSchema: Record<string, unknown>;
+    signal?: AbortSignal;
+    timeoutMs?: number;
   }): Promise<unknown>;
   lastRawText(): string | null;
-  probe(): Promise<void>;
+  probe(opts?: { signal?: AbortSignal; timeoutMs?: number }): Promise<void>;
 }
 
 export interface OllamaChordProposerOptions {
@@ -125,6 +128,10 @@ export interface OllamaChordProposerOptions {
   /** Optional style hint appended to the brief (e.g. "jazz"). Omitted → the
    *  pinned experiment prompt, byte-for-byte. */
   styleHint?: string;
+  /** Optional abort signal cancelling probing and per-sample calls. */
+  signal?: AbortSignal;
+  /** Optional per-call HTTP timeout in ms. */
+  timeoutMs?: number;
   /** Test seam: build the backend for a given per-sample seed. */
   backendFactory?: (seed: number) => ChordProposerBackend;
 }
@@ -144,6 +151,7 @@ export class OllamaChordProposer implements ChordProposer {
   readonly baseSeed: number;
   readonly maxTokens: number;
   private readonly styleHint?: string;
+  private readonly signal?: AbortSignal;
   private readonly makeBackend: (seed: number) => ChordProposerBackend;
 
   constructor(model = "qwen2.5:7b", opts: OllamaChordProposerOptions = {}) {
@@ -151,19 +159,24 @@ export class OllamaChordProposer implements ChordProposer {
     this.baseSeed = opts.baseSeed ?? 42;
     this.maxTokens = opts.maxTokens ?? 1024;
     this.styleHint = opts.styleHint?.trim() || undefined;
-    const { baseUrl, backendFactory } = opts;
+    this.signal = opts.signal;
+    const { baseUrl, backendFactory, signal, timeoutMs } = opts;
     const maxTokens = this.maxTokens;
     this.makeBackend =
       backendFactory ??
-      ((seed) => new OllamaBackend(model, baseUrl, { seed, num_predict: maxTokens }));
+      ((seed) => new OllamaBackend(model, baseUrl, { seed, num_predict: maxTokens }, { signal, timeoutMs }));
   }
 
   /** One-shot reachability check (Ollama is optional). Throws if unreachable. */
-  async probe(): Promise<void> {
-    await this.makeBackend(this.baseSeed).probe();
+  async probe(signal?: AbortSignal): Promise<void> {
+    const effectiveSignal = signal ?? this.signal;
+    throwIfAborted(effectiveSignal, "Ollama probe cancelled");
+    await this.makeBackend(this.baseSeed).probe({ signal: effectiveSignal });
   }
 
-  async proposeChords(item: ERItem, sampleIndex: number): Promise<ChordChoice[]> {
+  async proposeChords(item: ERItem, sampleIndex: number, signal?: AbortSignal): Promise<ChordChoice[]> {
+    const effectiveSignal = signal ?? this.signal;
+    throwIfAborted(effectiveSignal, "auto_reharmonize cancelled");
     const backend = this.makeBackend(this.baseSeed + sampleIndex);
     const userMessage = this.styleHint
       ? `${buildChordsOnlyUser(item)}\n\nTarget style: ${this.styleHint} — prefer its idiomatic reharmonizations.`
@@ -173,12 +186,17 @@ export class OllamaChordProposer implements ChordProposer {
         systemPrompt: CHORDS_ONLY_SYSTEM,
         userMessage,
         outputSchema: {},
+        signal: effectiveSignal,
       });
-    } catch {
+    } catch (err) {
+      if (effectiveSignal?.aborted || isCancelledError(err)) {
+        throw toCancelledError(effectiveSignal?.reason ?? err, "auto_reharmonize cancelled");
+      }
       // Tolerant: callStructured throws on non-JSON output (rawText is still set,
       // and parseChordsOnly recovers fences/embedded arrays) and on an
       // unreachable/erroring Ollama (rawText null → []). The loop resamples.
     }
+    throwIfAborted(effectiveSignal, "auto_reharmonize cancelled");
     return parseChordsOnly(backend.lastRawText() ?? "");
   }
 }

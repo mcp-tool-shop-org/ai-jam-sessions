@@ -24,6 +24,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { renderReharmonization } from "./voicer.js";
+import { throwIfAborted } from "../cancel.js";
 import {
   scoreERProposal,
   ER_NON_TRIVIALITY_FRACTION,
@@ -44,7 +45,13 @@ export interface ChordChoice {
  * — a deterministic proposer may ignore it. Returns [] when it cannot propose.
  */
 export interface ChordProposer {
-  proposeChords(item: ERItem, sampleIndex: number): Promise<ChordChoice[]>;
+  proposeChords(item: ERItem, sampleIndex: number, signal?: AbortSignal): Promise<ChordChoice[]>;
+}
+
+export interface ReharmonizeSampleProgress {
+  done: number;
+  total: number;
+  verified: boolean;
 }
 
 export interface AutoReharmonizeOptions {
@@ -54,6 +61,10 @@ export interface AutoReharmonizeOptions {
   nonTrivialityThreshold?: number;
   /** Voicing register (root octave). Default 2 (left hand). */
   rootOctave?: number;
+  /** Abort signal that stops issuing further samples and cancels the loop. */
+  signal?: AbortSignal;
+  /** Optional per-sample progress callback (`done` of `total`). */
+  onSampleProgress?: (info: ReharmonizeSampleProgress) => void | Promise<void>;
 }
 
 export interface AutoReharmonizeResult {
@@ -91,11 +102,18 @@ export async function autoReharmonize(
   let samplesUsed = 0;
 
   for (let k = 0; k < maxSamples; k++) {
+    throwIfAborted(opts.signal, "auto_reharmonize cancelled");
     samplesUsed = k + 1;
-    const chords = await proposer.proposeChords(item, k);
+    const chords = await proposer.proposeChords(item, k, opts.signal);
+    throwIfAborted(opts.signal, "auto_reharmonize cancelled");
     const rehar = renderReharmonization(chords, { rootOctave }); // 100% fidelity by construction
     const score = scoreERProposal(item, { measures: rehar, status: rehar.length ? "clean" : "unrecoverable" }, {
       nonTrivialityThreshold,
+    });
+    await opts.onSampleProgress?.({
+      done: k + 1,
+      total: maxSamples,
+      verified: score.passes,
     });
     if (score.passes) {
       return { verified: true, reharmonization: rehar, score, passedAtSample: k + 1, samplesUsed };
