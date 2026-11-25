@@ -559,67 +559,9 @@ ai-jam-sessions --version
 
 ## Status
 
-**v2.9.0: three hymns, over real piano arrangements.** Amazing Grace, America the Beautiful and the Battle Hymn of the Republic are sung over piano arrangements written for each hymn, each with its own tempo and shape, and phrase endings held into the rest. A voice gate now runs by default and caught a near-silent syllable in the Battle Hymn, which is re-published with it. The cockpit gains a listening Review mode. See [CHANGELOG](CHANGELOG.md).
+Three public-domain hymns, Amazing Grace, America the Beautiful and the Battle Hymn of the Republic, are sung on the beat over piano arrangements written for each one, with a voice gate that runs by default.
 
-**v2.8.0: two hymns, sung.** Amazing Grace and America the Beautiful are sung whole, every verse, on the piano's clock: sixteen takes, one take per phrase, warp placement, two-instrument timing and pitch gates, and a person listening last. Both passed by ear, and the [landing page](https://mcp-tool-shop-org.github.io/ai-jam-sessions/) leads with them. The library's America the Beautiful is now Ward's own Materna melody. See [CHANGELOG](CHANGELOG.md).
-
-**v2.7.0 — America the Beautiful.** The library is 109 annotated songs. Fifteen MIDI files ship; 94 are still fetched from their sources. The new one is a public-domain arrangement made in this repository (melody by Samuel A. Ward, 1882), in F major, and it is the folk exemplar. A SoulX-Singer route sings it: timing and pitch gates pass, and the landing page keeps the three pitch warnings. See [CHANGELOG](CHANGELOG.md).
-
-**v2.6.0 — the release that stops shipping what it had no licence to ship** (see [CHANGELOG](CHANGELOG.md)).
-A per-file provenance audit of the song library found that of the 108 MIDI arrangements, 14 carry a
-licence that permits redistribution and 94 do not — and that twelve files were a different piece
-than their name. Every song now carries an evidence-backed `provenance` block (source URL, the
-site's terms, the arranger as the file's own copyright event names them, SHA-256, title verdict);
-the twelve are quarantined; the npm package ships the 14 and marks the rest *unfetched*, and
-`ai-jam-sessions library fetch --accept-source-terms` downloads each from the site that published
-it, under that site's terms, refusing any file whose hash no longer matches. Earlier versions shipped
-all 120 files and are deprecated on npm. The same audit reset the jam-actions-v1 dataset to the
-eleven songs whose arrangements are verified (three Krueger CC-BY-SA-3.0-DE, eight Mutopia Public
-Domain); the corpus, its near-gate probe and the training arc that found the shown-work target — a
-3B rank-16 LoRA at one unchanged recipe going from a class prior to 54/54 held-out and 72/72 near
-the gate once the assistant turn wrote the digits of the comparison — are in the repo under
-`datasets/` and `experiments/coverage-v1-sft/`, with publication to Hugging Face and Zenodo to
-follow from the verified corpus. Also in this release: `scorePerformance` caps the correct window
-at the caller's gate, so the 40 ms house rule is exactly the verdict window.
-
-Previously in v2.5.0 — the release where the model can watch the band play.
-`ensemble_now` reports what every instrument is doing while the music is still going: held notes
-per instrument, how long each has been held, and the combined chord. It runs on two channels, and
-the cheap one is the accurate one — when this server performs it knows exactly what it sent, so a
-chord is three note-ons rather than a transcription problem, while a separate acoustic tap measures
-each engine **at the source** for verification. Measured cost is about **9 microseconds per audio
-callback**; latency is stated rather than implied (~23 ms pitch, ~70 ms confirmed onset); and the
-limits are documented because they are actionable — the tracker is monophonic, layered children are
-tapped individually and never as a mix, and an instrument with no tap is not a silent instrument.
-The same release turns the dataset machinery into a contract anyone can declare against, with a
-worked template, so users can build their own corpora and train their own adapters against the same
-discipline. Along the way the acoustic corpus's reproducibility gate was found to cover 109 of its
-115 published paths, and three of the six it missed were never emitted by the generator at all —
-regenerating deleted them. A full regeneration now reproduces every file and the checksum manifest
-byte for byte. The live surface is **54 tools and 4 prompt templates**, with **3,389 tests passing
-across 165 files (1 skipped)**.
-
-Previously in v2.4.0 — the release where the model got ears. Four tools closed the gap between
-rendering audio and examining it: `analyze_audio` for onsets, pitch contour and level;
-`transcribe_audio` for a monophonic recording as notes; `score_audio_take` to grade a performance
-by ear and hand the result to the existing scored piano roll unchanged; and `view_spectrogram` to
-see the sound on a constant-Q, piano-keyboard axis. All of it is dependency-free signal processing
-written in this repo — its own FFT, windows, mel and constant-Q transforms, onset detection and
-pitch tracking — because a model cannot reliably eyeball a picture and deterministic queries beat
-inference for questions with exact answers. That release also published
-**jam-actions-acoustic-v0**, 108 constructible-gold records of tool use over audio.
-
-Previously in v2.3.0 — the release where the instrument learned to sing on the clock (see [CHANGELOG](CHANGELOG.md)). Any library song can now carry a real sung line that lands on the piano: a **score clock** derives every syllable's pitch, onset and duration from the song's MIDI on the player's own timeline; a local, Apache-2.0, score-conditioned singer ([SoulX-Singer](https://github.com/Soul-AILab/SoulX-Singer)) sings from it; and two gates measure the artifact before anything is called a mix — timing (every vowel within 40 ms of the score) and pitch (every note within 50 cents). The shipped Amazing Grace run measures 6 ms worst timing and −2.7 cents global pitch, with receipts committed; the landing page carries it as an honest state, with the one remaining defect named (the opening splice, handed off). The route, its levers, and the research behind each choice (five study lanes, cited) are in the [handbook](https://mcp-tool-shop-org.github.io/ai-jam-sessions/handbook/vocals/) and [`docs/`](docs/). The live surface is unchanged at **49 tools and 4 prompt templates**, with **3,080 tests passing (1 skipped)** plus the vocal instrument's own pytest suite. **Publication state:** published — [`@mcptoolshop/ai-jam-sessions@2.3.0`](https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions) on npm, provenance-attested.
-
-Previously in v2.2.0 — the release where the instrument got real ears and a listening room. The cockpit's default piano is now a **sampled Concert Grand** — a pruned Salamander pack that loads on your first gesture and falls back to the tuned oscillator synth until it's ready — and the server picks the sample engine automatically whenever a full pack is installed. On top of it sits the **Composition Panel**: a blind, loudness-matched A/B listening room where a human ranks the composition engine's voicings against theory-valid and theory-invalid anchors (Bradley-Terry with bootstrap CIs, a MUSHRA-style discrimination floor, PROVISIONAL and UNINTERPRETABLE as first-class outcomes), beside a local-models panel that runs the same ranking with cross-family LLM judges and a Compare view (Kendall τ) that asks whether the cheap proxy tracks the human truth.
-
-The same release carries the composition engine that feeds the panel (`src/compose/`: a deterministic voice-leading gate with named style presets, membership-by-construction voicing specs, a part-at-a-time refiner), a full health pass (45 findings fixed — security currency, humanized strings, a look-preserving visual amend), Satie and Debussy library entries re-sourced from receipted Mutopia public-domain bytes, and a stranger-test hardening pass: descriptive validation errors, structured `{code, message, hint}` error envelopes, a curated tarball, progress notifications on long tools, and CLI error grammar. That release shipped as [`@mcptoolshop/ai-jam-sessions@2.2.0`](https://www.npmjs.com/package/@mcptoolshop/ai-jam-sessions) with 49 tools, 4 prompt templates, and 3,033 tests.
-
-Previously in v2.1.0 — the release where the analyst became a **maker**. The maker loop ships as product: a model proposes a reharmonization of any library song, and the platform's own deterministic tools gate it — the chord engine must confirm every intended voicing (`verify_harmony`), every melody note is labeled against the new harmony, and only a verified interpretation goes on to `add_song` → `play_song` → `view_piano_roll`. Generation verified by construction — no rubric, no self-grading; the same `inferChord` that writes jam briefs is the judge. The `maker_loop` prompt template walks the whole loop.
-
-Previously in v2.0.0 — the release where the dataset proved its discipline. **Breaking: the Node.js floor is now 22** (`node-web-audio-api` 2.0); the tool surface itself is unchanged — six sound engines, 47 MCP tools, 3 prompt templates, and a **fully annotated library: 120/120 songs across 12 genres** (12 key fields corrected to content-detected keys this release). The teaching loop is closed end-to-end: metronome with count-in → live recording → per-note scoring → the marked-up scored piano roll → practice loops that ramp tempo only after clean passes. The browser cockpit is a real composition tool — beat-accurate transport with loop regions, record-arm capture, full undo/redo, multi-select and clipboard, touch support — [live on the web](https://mcp-tool-shop-org.github.io/ai-jam-sessions/cockpit/).
-
-Also publishes **[jam-actions-v0](#training-dataset)** — a 57-record training dataset of multi-turn MCP tool-use traces over classical piano, with a 7-axis release gate, cold-start reproducibility, and full Zenodo + CITATION.cff metadata (CC-BY-SA-3.0-DE) — mirrored on [Hugging Face](https://huggingface.co/datasets/mcp-tool-shop/jam-actions-v0), and now carrying **receipted fine-tuning results both ways**: an honest negative (v0) and a preregistration-disciplined positive that stopped one paired win short of its own victory bar (v1) — see the [fine-tuning receipts](#training-dataset). This release also fixes the Bach records at the source (working-set revisions r001/r002 with errata) after the v1 pipeline's execution gate caught the published window overshooting BWV 846's actual 62 measures. 2506 tests passing across the MCP server + cockpit + dataset packagers + eval harnesses + release-gate validator. The MIDI is all there, every song can teach, and the corpus of that learning ships with it.
+Every release, with what changed and why, is in [CHANGELOG.md](CHANGELOG.md).
 
 ## Security & Privacy
 
