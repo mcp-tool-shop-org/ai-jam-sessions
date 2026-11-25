@@ -180,7 +180,11 @@ function scriptBase(args: string[]): string {
   return (args[0] ?? "").replace(/\\/g, "/").split("/").pop() ?? "";
 }
 
-py.spawn = (cmd, args, opts) => {
+py.spawn = (rawCmd, rawArgs, opts) => {
+  const guarded =
+    rawCmd === "/bin/sh" && rawArgs[0] === "-c" && rawArgs[2] === "ajs-soulx-guard";
+  const cmd = guarded ? rawArgs[3] : rawCmd;
+  const args = guarded ? rawArgs.slice(4) : rawArgs;
   py.calls.push({ cmd, args, cwd: opts?.cwd, pythonPath: opts?.env?.PYTHONPATH });
   const stdout = new EventEmitter();
   const stderr = new EventEmitter();
