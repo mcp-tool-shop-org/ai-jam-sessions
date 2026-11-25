@@ -487,7 +487,7 @@ Medir el audio grabado. Monofónico: siguen una línea a la vez, por lo que un a
 | `compare_balance` | Compara el equilibrio tonal de una reproducción con una referencia, banda por banda en dB, con el cambio en el brillo y la inclinación. La sonoridad se anula. |
 | `ensemble_now` | Qué está tocando **cada instrumento en este momento**, a mitad de la interpretación. Las notas provienen de lo que se envió, por lo que son exactas en lugar de estimadas. |
 
-Cada herramienta de audio lee archivos WAV de hasta 64 MiB y 600 s (`AJS_AUDIO_MAX_FILE_BYTES`, `AJS_AUDIO_MAX_DURATION_SEC`).
+Cada herramienta de audio lee archivos WAV de hasta 600 s, con un límite de bytes derivado del encabezado WAV y un límite de reserva de 1 GiB cuando el encabezado no se puede leer (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).
 
 ### Indicaciones de MCP
 

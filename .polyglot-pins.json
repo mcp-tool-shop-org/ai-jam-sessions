@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "pins": {
+    "f3979bbbaa4d4eda:es": {
+      "lang": "es",
+      "source": "Each audio tool reads WAV files up to 600 s, with a byte cap derived from the WAV header and a 1 GiB fallback when the header can't be read (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "translation": "Cada herramienta de audio lee archivos WAV de hasta 600 s, con un límite de bytes derivado del encabezado WAV y un límite de reserva de 1 GiB cuando el encabezado no se puede leer (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "pinnedAt": "2026-11-25T19:39:11.754Z"
+    },
+    "f3979bbbaa4d4eda:fr": {
+      "lang": "fr",
+      "source": "Each audio tool reads WAV files up to 600 s, with a byte cap derived from the WAV header and a 1 GiB fallback when the header can't be read (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "translation": "Chaque outil audio lit des fichiers WAV jusqu'à 600 s, avec une limite d'octets déduite de l'en-tête WAV et une limite de repli de 1 Gio quand l'en-tête est illisible (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "pinnedAt": "2026-11-25T19:39:11.755Z"
+    },
+    "f3979bbbaa4d4eda:hi": {
+      "lang": "hi",
+      "source": "Each audio tool reads WAV files up to 600 s, with a byte cap derived from the WAV header and a 1 GiB fallback when the header can't be read (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "translation": "हर ऑडियो टूल 600 s तक की WAV फ़ाइलें पढ़ता है; बाइट सीमा WAV हेडर से तय होती है, और हेडर न पढ़ा जा सके तो 1 GiB की वैकल्पिक सीमा लागू होती है (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`)।",
+      "pinnedAt": "2026-11-25T19:39:11.756Z"
+    },
+    "f3979bbbaa4d4eda:it": {
+      "lang": "it",
+      "source": "Each audio tool reads WAV files up to 600 s, with a byte cap derived from the WAV header and a 1 GiB fallback when the header can't be read (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "translation": "Ogni strumento audio legge file WAV fino a 600 s, con un limite di byte ricavato dall'intestazione WAV e un limite di riserva di 1 GiB quando l'intestazione non è leggibile (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "pinnedAt": "2026-11-25T19:39:11.756Z"
+    },
+    "f3979bbbaa4d4eda:ja": {
+      "lang": "ja",
+      "source": "Each audio tool reads WAV files up to 600 s, with a byte cap derived from the WAV header and a 1 GiB fallback when the header can't be read (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "translation": "各オーディオツールが読み込める WAV ファイルは最大 600 秒です。バイト上限は WAV ヘッダーから決まり、ヘッダーを読めない場合は 1 GiB の予備上限が適用されます（`AJS_AUDIO_MAX_DURATION_SEC`、`AJS_AUDIO_MAX_FILE_BYTES`）。",
+      "pinnedAt": "2026-11-25T19:39:11.757Z"
+    },
+    "f3979bbbaa4d4eda:pt": {
+      "lang": "pt",
+      "source": "Each audio tool reads WAV files up to 600 s, with a byte cap derived from the WAV header and a 1 GiB fallback when the header can't be read (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "translation": "Cada ferramenta de áudio lê arquivos WAV de até 600 s, com um limite de bytes derivado do cabeçalho WAV e um limite de reserva de 1 GiB quando o cabeçalho não pode ser lido (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "pinnedAt": "2026-11-25T19:39:11.757Z"
+    },
+    "f3979bbbaa4d4eda:zh": {
+      "lang": "zh",
+      "source": "Each audio tool reads WAV files up to 600 s, with a byte cap derived from the WAV header and a 1 GiB fallback when the header can't be read (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).",
+      "translation": "每个音频工具可读取最长 600 秒的 WAV 文件；字节上限由 WAV 文件头推算，文件头无法读取时适用 1 GiB 的后备上限（`AJS_AUDIO_MAX_DURATION_SEC`、`AJS_AUDIO_MAX_FILE_BYTES`）。",
+      "pinnedAt": "2026-11-25T19:39:11.757Z"
+    }
+  }
+}

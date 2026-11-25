@@ -497,7 +497,7 @@ uma imagem.
 | `compare_balance` | Compare o equilíbrio tonal de uma renderização com uma referência, faixa por faixa em dB, com a mudança no brilho e na inclinação. O volume é cancelado. |
 | `ensemble_now` | O que cada instrumento está tocando **no momento**, durante a performance. As notas vêm do que foi enviado, portanto, são exatas, em vez de estimadas. |
 
-Cada ferramenta de áudio lê arquivos WAV de até 64 MiB e 600 s (`AJS_AUDIO_MAX_FILE_BYTES`, `AJS_AUDIO_MAX_DURATION_SEC`).
+Cada ferramenta de áudio lê arquivos WAV de até 600 s, com um limite de bytes derivado do cabeçalho WAV e um limite de reserva de 1 GiB quando o cabeçalho não pode ser lido (`AJS_AUDIO_MAX_DURATION_SEC`, `AJS_AUDIO_MAX_FILE_BYTES`).
 
 ### Sugestões do MCP
 

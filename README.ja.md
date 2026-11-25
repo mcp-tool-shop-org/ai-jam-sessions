@@ -454,7 +454,7 @@ npm install -g @mcptoolshop/ai-jam-sessions
 | `compare_balance` | レンダリングされた画像のトーンバランスを、基準画像と比較します。比較は、dBで、帯ごとに、明るさの変化と傾きを考慮して行います。音量は相殺されます。 |
 | `ensemble_now` | 各楽器が**現在**演奏している音を、演奏中に表示します。音符は送信されたものから取得されるため、推定値ではなく正確な値が表示されます。 |
 
-各オーディオツールが読み込める WAV ファイルは最大 64 MiB、600 秒です（`AJS_AUDIO_MAX_FILE_BYTES`、`AJS_AUDIO_MAX_DURATION_SEC`）。
+各オーディオツールが読み込める WAV ファイルは最大 600 秒です。バイト上限は WAV ヘッダーから決まり、ヘッダーを読めない場合は 1 GiB の予備上限が適用されます（`AJS_AUDIO_MAX_DURATION_SEC`、`AJS_AUDIO_MAX_FILE_BYTES`）。
 
 ### MCPプロンプト
 
