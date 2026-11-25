@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.0] - 2026-11-25
+
+**Long MCP calls can be cancelled and are bounded.** Cancellation reaches composition, reharmonization and the SoulX vocal path, Ollama calls have a timeout, SoulX child processes are cleaned up as a whole tree, long calls report progress, and audio inputs are capped.
+
 ### Added — cancellation, deadlines, child-process cleanup, progress, and input caps
 - Request cancellation (`AbortSignal`) is wired from MCP tool handlers into `compose_panel`, `auto_reharmonize`, and the SoulX vocal path of `play_song`, stopping further model calls or takes and returning a structured `cancelled` error.
 - `OllamaBackend` (`src/dataset/eval/llm-backends/ollama.ts`) now accepts an `AbortSignal` and enforces a per-call HTTP timeout (`OLLAMA_CALL_TIMEOUT_MS = 120_000`, overridable via `OLLAMA_TIMEOUT_MS` with stderr logging). The 120 s default is 2x the slowest measured cold call (`gemma4:31b`: 59.2 s whole HTTP call including 45.9 s load; `mistral-small:24b`: 34.8 s; `granite4.1:30b`: 27.1 s; measured 2026-11-24 on RTX 5090, Ollama 0.40.18, local NVMe, server-default context 32768; `aya-expanse:32b` not installed/measured), rounded up to 30 s; slower disks or smaller GPUs should raise `OLLAMA_TIMEOUT_MS`.
